@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC 
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jydp.dao.impl.user.UserDaoImpl">
+	
+	<insert id="User_insertUser" parameterType="UserDO">
+		INSERT INTO user_tab(userAccount, password, payPassword, phoneAreaCode, phoneNumber, userBalance,
+			userBalanceLock, accountStatus, addTime)
+		VALUES (#{userAccount}, #{password}, #{payPassword}, #{phoneAreaCode}, #{phoneNumber}, #{userBalance},
+			#{userBalanceLock}, #{accountStatus}, #{addTime})
+	</insert>
+	
+	<select id="User_getUserByUserId" parameterType="int" resultType="UserDO">
+		SELECT userId, userAccount, password, payPassword, phoneAreaCode, phoneNumber, userBalance,
+			userBalanceLock, accountStatus, addTime
+		FROM user_tab
+		WHERE userId = #{userId}
+	</select>
+	
+	<update id="User_updateUserAccountStatus" parameterType="java.util.Map">
+ 		UPDATE FROM user_tab
+		SET accountStatus = #{accountStatus}
+ 		WHERE userId = #{userId}
+ 		  AND accountStatus = #{oldAccountStatus}
+ 	</update>
+	
+</mapper>

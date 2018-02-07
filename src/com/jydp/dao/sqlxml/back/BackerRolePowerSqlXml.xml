@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jydp.dao.impl.back.BackerRolePowerDaoImpl">
+	
+	<insert id="BackerRolePower_insertRolePower" parameterType="BackerRolePowerDO">
+		INSERT INTO backer_role_power_tab
+			(roleId, powerJson, addTime)
+		VALUES
+			(#{roleId}, #{powerJson}, #{addTime})
+	</insert>
+	
+	<select id="BackerRolePower_getRolePower" parameterType="int" resultType="BackerRolePowerDO">
+		SELECT roleId, powerJson, addTime
+		FROM backer_role_power_tab
+		WHERE roleId = #{roleId}
+	</select>
+	
+	<update id="BackerRolePower_updateRolePower" parameterType="java.util.Map">
+		UPDATE backer_role_power_tab
+		SET powerJson = #{powerJson}
+		WHERE roleId = #{roleId}
+	</update>
+	
+	<delete id="BackerRolePower_deleteRolePowerByRoleId" parameterType="int">
+		DELETE FROM backer_role_power_tab
+		WHERE roleId = #{roleId}
+	</delete>
+
+</mapper>
