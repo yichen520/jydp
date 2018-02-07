@@ -1,13 +1,13 @@
-package com.jydp.service;
+package com.jydp.dao;
 
 import com.jydp.entity.DO.user.UserBalanceDO;
 
 /**
- * Description:用户认证记录
+ * Description:用户账户记录
  * Author: hht
- * Date: 2018-02-07 15:42
+ * Date: 2018-02-07 15:29
  */
-public interface UserBalanceService {
+public interface IUserBalanceDao {
 
     /**
      * 新增用户账户记录

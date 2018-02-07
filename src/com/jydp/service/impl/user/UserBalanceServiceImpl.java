@@ -1,8 +1,8 @@
 package com.jydp.service.impl.user;
 
-import com.jydp.dao.UserBalanceDao;
+import com.jydp.dao.IUserBalanceDao;
 import com.jydp.entity.DO.user.UserBalanceDO;
-import com.jydp.service.UserBalanceService;
+import com.jydp.service.IUserBalanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +12,11 @@ import org.springframework.stereotype.Service;
  * Date: 2018-02-07 15:44
  */
 @Service("userBalanceService")
-public class UserBalanceServiceImpl implements UserBalanceService {
+public class UserBalanceServiceImpl implements IUserBalanceService {
 
     /** 用户认证记录 */
     @Autowired
-    private UserBalanceDao userBalanceDao;
+    private IUserBalanceDao userBalanceDao;
 
     /**
      * 新增用户账户记录

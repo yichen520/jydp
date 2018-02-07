@@ -1,7 +1,7 @@
 package com.jydp.dao.impl.user;
 
 import com.iqmkj.utils.LogUtil;
-import com.jydp.dao.UserBalanceDao;
+import com.jydp.dao.IUserBalanceDao;
 import com.jydp.entity.DO.user.UserBalanceDO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
  * Date: 2018-02-07 15:33
  */
 @Repository
-public class UserBalanceDaoImpl implements UserBalanceDao{
+public class UserBalanceDaoImpl implements IUserBalanceDao {
 
     @Autowired
     private SqlSessionTemplate sqlSessionTemplate;
@@ -25,7 +25,6 @@ public class UserBalanceDaoImpl implements UserBalanceDao{
      */
     public boolean insertUserBalance(UserBalanceDO userBalanceDO) {
         int result = 0;
-
         try {
             result = sqlSessionTemplate.insert("UserBalance_insertUserBalance", userBalanceDO);
         } catch (Exception e) {
