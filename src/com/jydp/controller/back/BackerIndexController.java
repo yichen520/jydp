@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * 后台管理系统首页Index
- * @author whx
+ * @author sy
  *
  */
 @Controller
