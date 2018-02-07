@@ -32,4 +32,26 @@ public interface IUserDao {
      */
     boolean updateUserAccountStatus (int userId, int accountStatus, int oldAccountStatus);
 
+    /**
+     * 修改用户信息
+     * @param user 用户信息
+     * @return 修改成功：返回true，修改失败：返回false
+     */
+    boolean updateUser (UserDO user);
+
+    /**
+     * 验证用户登录
+     * @param userAccount 用户账号
+     * @param password 账号密码（密文）
+     * @return 验证成功：返回用户信息，验证失败：返回null
+     */
+    UserDO validateUserLogin(String userAccount, String password);
+
+    /**
+     * 根据用户账号查询用户信息
+     * @param userAccount 用户账号
+     * @return 查询成功：返回用户信息；查询失败：返回null
+     */
+    UserDO getUserByUserAccount(String userAccount);
+
 }

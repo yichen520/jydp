@@ -2,6 +2,8 @@ package com.jydp.service;
 
 import com.jydp.entity.DO.user.UserBalanceDO;
 
+import java.util.List;
+
 /**
  * Description:用户认证记录
  * Author: hht
@@ -22,5 +24,12 @@ public interface IUserBalanceService {
      * @return 查询成功：返回用户账户记录，查询失败或无数据：返回null
      */
     UserBalanceDO getUserBalanceByOrderNo(String orderNo);
+
+    /**
+     * 根据用户Id查询用户账户记录
+     * @param userId 用户Id
+     * @return 查询成功：返回用户账户记录列表；查询失败：返回null
+     */
+    List<UserBalanceDO> getUserBalancelist(int userId);
 
 }

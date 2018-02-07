@@ -25,5 +25,43 @@
  		WHERE userId = #{userId}
  		  AND accountStatus = #{oldAccountStatus}
  	</update>
-	
+
+	<update id="User_updateUser" parameterType="UserDO">
+		UPDATE user_tab
+		<set>
+			<if test="password != null and password !=''">
+				password = #{password},
+			</if>
+			<if test="payPassword != null and payPassword != ''">
+				payPassword = #{payPassword},
+			</if>
+			<if test="phoneAreaCode != null and phoneAreaCode != ''">
+				phoneAreaCode = #{phoneAreaCode},
+			</if>
+			<if test="phoneNumber != null and phoneNumber != ''">
+				phoneNumber = #{phoneNumber},
+			</if>
+			<if test="userBalance != null">
+				userBalance = #{userBalance},
+			</if>
+			<if test="userBalanceLock != null">
+				userBalanceLock = #{userBalanceLock},
+			</if>
+		</set>
+		WHERE userId = #{userId}
+	</update>
+
+	<select id="User_validateUserLogin" parameterType="java.util.Map" resultType="UserDO">
+		SELECT userId, userAccount, phoneAreaCode, phoneNumber, userBalance,
+			userBalanceLock, accountStatus, addTime
+		FROM user_tab
+		WHERE userAccount = #{userAccount} AND password = #{password} AND accountStatus = 1
+	</select>
+
+	<select id="getUserByUserAccount" parameterType="String" resultType="UserDO">
+		SELECT userId, userAccount, phoneAreaCode, phoneNumber, userBalance,
+			userBalanceLock, accountStatus, addTime
+		FROM user_tab
+		WHERE  userAccount = #{userAccount}
+	</select>
 </mapper>

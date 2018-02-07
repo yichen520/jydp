@@ -7,6 +7,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Description:用户账户记录
  * Author: hht
@@ -51,5 +53,21 @@ public class UserBalanceDaoImpl implements IUserBalanceDao {
             LogUtil.printErrorLog(e);
         }
         return result;
+    }
+
+    /**
+     * 查询用户账户记录列表
+     * @param userId 用户Id
+     * @return 查询成功：返回用户账户记录列表；查询失败：返回null
+     */
+    @Override
+    public List<UserBalanceDO> getUserBalancelist(int userId) {
+        List<UserBalanceDO> userBalanceDOList = null;
+        try {
+            userBalanceDOList = sqlSessionTemplate.selectList("UserBalance_getUserBalancelistByUserId",userId);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return userBalanceDOList;
     }
 }

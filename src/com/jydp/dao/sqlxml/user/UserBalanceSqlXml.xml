@@ -17,5 +17,11 @@
 		FROM user_balance_tab
 		WHERE orderNo = #{orderNo}
 	</select>
+
+	<select id="UserBalance_getUserBalancelistByUserId" parameterType="String" resultType="UserBalanceDO">
+		SELECT orderNo, userId, paymentType, fromType, balanceNumber, remark, addTime
+		FROM user_balance_tab
+		WHERE userId = #{userId}
+	</select>
 	
 </mapper>
