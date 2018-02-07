@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC
+		"-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jydp.dao.impl.transaction.TransactionCurrencyDaoImpl">
+
+	<insert id="TransactionCurrency_insertTransactionCurrency" parameterType="TransactionCurrencyDO">
+        INSERT INTO transaction_currency_tab
+            (currencyShortName, currencyName, addTime)
+        VALUES
+            (#{currencyShortName}, #{currencyName}, #{addTime})
+    </insert>
+
+	<select id="TransactionCurrency_getTransactionCurrencyByCurrencyId" parameterType="int" resultType="TransactionCurrencyDO">
+        SELECT currencyId, currencyShortName, currencyName, addTime
+        FROM transaction_currency_tab
+        WHERE currencyId = #{currencyId}
+	</select>
+
+	<update id="TransactionCurrency_updateTransactionCurrency" parameterType="TransactionCurrencyDO">
+        UPDATE transaction_currency_tab
+        SET currencyShortName = #{currencyShortName}, currencyName = #{currencyName}, addTime = #{addTime}
+        WHERE currencyId = #{currencyId}
+    </update>
+
+    <delete id="TransactionCurrency_deleteTransactionCurrencyByCurrencyId" parameterType="int">
+        DELETE FROM transaction_currency_tab
+        WHERE currencyId = #{currencyId}
+    </delete>
+</mapper>
