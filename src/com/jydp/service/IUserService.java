@@ -32,4 +32,12 @@ public interface IUserService {
      */
     boolean updateUserAccountStatus (int userId, int accountStatus, int oldAccountStatus);
 
+    /**
+     * 忘记密码
+     * @param userAccount 用户账户
+     * @param password 新密码
+     * @return  修改成功：返回true，修改失败：返回false
+     */
+    boolean forgetPwd(String userAccount, String password);
+
 }

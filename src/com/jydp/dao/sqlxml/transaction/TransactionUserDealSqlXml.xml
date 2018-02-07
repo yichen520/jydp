@@ -5,5 +5,10 @@
 
 <mapper namespace="com.jydp.dao.impl.transaction.TransactionUserDealDaoImpl">
 
-
+	<select id="TransactionUserDeal_getTransactionUserDeallist" parameterType="int">
+		SELECT orderNo, pendingOrderNo, userId, paymentType, currencyId, currencyName,
+				currencyNumber, currencyTotalPrice, remark, addTime
+	  	FROM transaction_user_deal_tab
+	  	WHERE userId = #{userId}
+	</select>
 </mapper>

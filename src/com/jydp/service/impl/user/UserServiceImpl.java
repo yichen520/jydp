@@ -47,4 +47,18 @@ public class UserServiceImpl implements IUserService {
         return userDao.updateUserAccountStatus(userId, accountStatus, oldAccountStatus);
     }
 
+    /**
+     * 忘记密码
+     * @param userAccount 用户账户
+     * @param password 新密码
+     * @return  修改成功：返回true，修改失败：返回false
+     */
+    @Override
+    public boolean forgetPwd(String userAccount, String password) {
+        UserDO user = new UserDO();
+        user.setUserAccount(userAccount);
+        user.setPassword(password);
+        return userDao.updateUser(user);
+    }
+
 }
