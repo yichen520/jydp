@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jydp.dao.impl.back.BackerRoleDaoImpl">
+
+	<insert id="BackerRole_insertRole" parameterType="BackerRoleDO"
+		useGeneratedKeys="true" keyColumn="roleId" keyProperty="roleId">
+		INSERT INTO backer_role_tab
+			(roleName, addTime)
+		VALUES
+			(#{roleName}, #{addTime})
+	</insert>
+	
+	<select id="BackerRole_getRoleById" parameterType="int" resultType="BackerRoleDO">
+		SELECT roleId, roleName, addTime
+		FROM backer_role_tab
+		WHERE roleId = #{roleId}
+	</select>
+	
+	<select id="BackerRole_listRole" resultType="BackerRoleDO">
+		SELECT roleId, roleName
+		FROM backer_role_tab
+	</select>
+	
+	<select id="BackerRole_listRolePower" parameterType="int" resultType="BackerRoleDTO">
+		SELECT roleTab.roleId, roleTab.roleName, powerTab.powerJson
+		FROM backer_role_tab AS roleTab, backer_role_power_tab AS powerTab
+		WHERE roleTab.roleId = powerTab.roleId
+	</select>
+	
+	<select id="BackerRole_getRolePower" parameterType="int" resultType="BackerRoleDTO">
+		SELECT roleTab.roleId, roleTab.roleName, powerTab.powerJson
+		FROM backer_role_tab AS roleTab, backer_role_power_tab AS powerTab
+		WHERE roleTab.roleId = #{roleId}
+		  AND roleTab.roleId = powerTab.roleId
+	</select>
+
+	<update id="BackerRole_updateRoleNameById" parameterType="java.util.Map">
+		UPDATE backer_role_tab
+		SET roleName = #{roleName}
+		WHERE roleId = #{roleId}
+	</update>
+	
+	<delete id="BackerRole_deleteRoleById" parameterType="int">
+		DELETE FROM backer_role_tab
+		WHERE roleId = #{roleId}
+	</delete>
+	
+</mapper>
