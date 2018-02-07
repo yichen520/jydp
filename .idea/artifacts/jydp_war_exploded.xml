@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="jydp:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/jydp_war_exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="jydp" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="jydp/web/Web" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC 
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jydp.dao.impl.user.UserSessionDaoImpl">
+	
+	<insert id="UserSession_insertUserSession" parameterType="UserSessionDO">
+		INSERT INTO user_session_tab
+			(sessionId, userId, loginForm, ipAddress, loginTime)
+		VALUES
+			(#{sessionId}, #{userId}, #{loginForm}, #{ipAddress}, #{loginTime})
+	</insert>
+	
+	<select id="UserSession_getUserSessionBySessionId" parameterType="java.lang.Long" resultType="UserSessionDO">
+		SELECT sessionId, userId, loginForm, ipAddress, loginTime
+		FROM user_session_tab
+		WHERE sessionId = #{sessionId}
+	</select>
+	
+	<select id="UserSession_countSession" parameterType="java.sql.Timestamp" resultType="int">
+		SELECT COUNT(sessionId)
+		FROM user_session_tab
+		WHERE loginTime <![CDATA[ < ]]> #{loginTime}
+	</select>
+	
+	<delete id="UserSession_deleteSessionByTimeForTimer" parameterType="java.util.Map">
+ 		DELETE FROM user_session_tab
+ 		WHERE loginTime <![CDATA[ < ]]> #{loginTime}
+ 		LIMIT #{pageSize}
+ 	</delete>
+	
+</mapper>

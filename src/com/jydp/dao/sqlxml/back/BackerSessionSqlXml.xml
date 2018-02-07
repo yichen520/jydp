@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+		"-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jydp.dao.impl.back.BackerSessionDaoImpl">
+	
+	<insert id="BackerSession_insertBackerSession" parameterType="BackerSessionDO">
+		INSERT INTO backer_session_tab
+			(sessionId, backerId, backerAccount, ipAddress, loginTime) 
+		VALUES
+			(#{sessionId}, #{backerId}, #{backerAccount}, #{ipAddress}, #{loginTime})
+ 	</insert>
+ 	
+ 	<select id="BackerSession_queryBackerSessionById" parameterType="java.util.Map" resultType="BackerSessionDO">
+		SELECT sessionId, backerId, backerAccount, ipAddress, loginTime
+		FROM backer_session_tab
+		WHERE sessionId = #{sessionId}
+ 	</select>
+ 	
+ 	<select id="BackerSession_listBackerSessionByPage" parameterType="java.util.Map" resultType="BackerSessionDO">
+		SELECT backerAccount, ipAddress, loginTime
+		FROM backer_session_tab
+		<where>
+			<if test="backerAccount != null and backerAccount != ''">
+				backerAccount = #{backerAccount}
+			</if>
+            <if test="startTime != null">
+                AND loginTime <![CDATA[ >= ]]> #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND loginTime <![CDATA[ <= ]]> #{endTime}
+            </if>
+		</where>
+		ORDER BY loginTime DESC
+		LIMIT #{startNumber}, #{pageSize}
+ 	</select>
+ 	
+ 	<select id="BackerSession_countBackerSession" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(sessionId)
+		FROM backer_session_tab
+		<where>
+			<if test="backerAccount != null and backerAccount != ''">
+				backerAccount = #{backerAccount}
+			</if>
+            <if test="startTime != null">
+                AND loginTime <![CDATA[ >= ]]> #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND loginTime <![CDATA[ <= ]]> #{endTime}
+            </if>
+		</where>
+ 	</select>
+ 	
+ 	<update id="BackerSession_updateSessionById" parameterType="java.util.Map">
+		UPDATE backer_session_tab 
+		SET loginTime = #{loginTime}
+		WHERE sessionId = #{sessionId}
+ 	</update>
+ 	
+ 	<delete id="BackerSession_deleteSession" parameterType="java.util.Map" >
+ 		DELETE FROM backer_session_tab
+ 		WHERE loginTime <![CDATA[ < ]]> #{queryStartTime}
+ 	</delete>
+ 	
+ 	<select id="BackerSession_countSession" parameterType="java.sql.Timestamp" resultType="int">
+		SELECT COUNT(sessionId)
+		FROM backer_session_tab
+		WHERE loginTime <![CDATA[ < ]]> #{loginTime}
+	</select>
+ 	
+ 	<delete id="BackerSession_deleteSessionByTimeForTimer" parameterType="java.util.Map" >
+ 		DELETE FROM backer_session_tab
+ 		WHERE loginTime <![CDATA[ < ]]> #{loginTime}
+ 		LIMIT #{pageSize}
+ 	</delete>
+ 	
+</mapper>
