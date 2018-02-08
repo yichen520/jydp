@@ -61,4 +61,15 @@ public class UserServiceImpl implements IUserService {
         return userDao.updateUser(user);
     }
 
+    /**
+     * 验证用户登录
+     * @param userAccount 用户账号
+     * @param password 账号密码（密文）
+     * @return 验证成功：返回用户信息，验证失败：返回null
+     */
+    @Override
+    public UserDO validateUserLogin(String userAccount, String password) {
+        return userDao.validateUserLogin(userAccount,password);
+    }
+
 }
