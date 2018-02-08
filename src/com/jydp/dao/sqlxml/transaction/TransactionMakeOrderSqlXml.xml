@@ -16,12 +16,12 @@
 
 	<select id="TransactionMakeOrder_getTransactionMakeOrderByOrderNo" parameterType="java.lang.String" resultType="TransactionMakeOrderDO">
         SELECT orderNo, paymentType, currencyId, currencyName, currencyNumber, currencyTotalPrice,
-            backerAccount, ipAddress, executeStatus, remark, executeTime, addTime FROM
-            transaction_make_order_tab
+            backerAccount, ipAddress, executeStatus, remark, executeTime, addTime
+        FROM transaction_make_order_tab
         WHERE orderNo = #{orderNo}
 	</select>
 
-    <select id="TransactionMakeOrder_countTransactionMakeOrderForBack" parameterType="java.util.Map" resultType="TransactionMakeOrderDO">
+    <select id="TransactionMakeOrder_countTransactionMakeOrderForBack" parameterType="java.util.Map" resultType="int">
         SELECT COUNT(orderNo)
         FROM transaction_make_order_tab
         WHERE
@@ -49,7 +49,7 @@
             </if>
     </select>
 
-    <select id="TransactionMakeOrder_getTransactionMakeOrderByOrderNo" parameterType="java.lang.String" resultType="TransactionMakeOrderDO">
+    <select id="TransactionMakeOrder_listTransactionMakeOrderForBack" parameterType="java.util.Map" resultType="TransactionMakeOrderDO">
         SELECT orderNo, paymentType, currencyId, currencyName, currencyNumber, currencyTotalPrice,
         backerAccount, ipAddress, executeStatus, remark, executeTime, addTime FROM
         transaction_make_order_tab
