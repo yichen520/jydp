@@ -17,7 +17,7 @@ public class TransactionPendOrderDO {
     private double pendingPrice;  //挂单单价
     private double pendingNumber;  //挂单数量
     private double dealNumber;  //成交数量
-    private int pendingStatus;  //挂单状态
+    private int pendingStatus;  //挂单状态，1：挂单中，2：部分完成，3：已完成，4：已撤销
     private String remark;  //备注
     private Timestamp endTime;  //完成时间
     private Timestamp addTime;  //添加时间

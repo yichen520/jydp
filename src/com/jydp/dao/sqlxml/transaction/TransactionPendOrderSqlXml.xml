@@ -5,5 +5,94 @@
 
 <mapper namespace="com.jydp.dao.impl.transaction.TransactionPendOrderDaoImpl">
 
+	<insert id="TransactionPendOrder_insertPendOrder" parameterType="TransactionPendOrderDO">
+		INSERT INTO transaction_pend_order_tab
+		(pendingOrderNo, userId, paymentType, currencyId, currencyName, pendingPrice,
+		pendingNumber, dealNumber, pendingStatus, remark, addTime)
+		VALUES
+		(#{pendingOrderNo}, #{userId}, #{paymentType}, #{currencyId}, #{currencyName}, #{pendingPrice},
+		#{pendingNumber}, #{dealNumber}, #{pendingStatus}, #{remark}, #{addTime})
+	</insert>
+
+	<update id="TransactionPendOrder_updatePendOrder" parameterType="TransactionPendOrderDO">
+		UPDATE transaction_pend_order_tab
+		SET remark = #{remark}, endTime = #{endTime}, dealNumber = #{dealNumber}, pendingStatus = #{pendingStatus}
+		WHERE pendingOrderNo = #{pendingOrderNo}
+	</update>
+
+	<select id="TransactionPendOrder_getPendOrderByPendingOrderNo" parameterType="java.lang.String" resultType="TransactionPendOrderDO">
+		SELECT pendingOrderNo, userId, paymentType, currencyId, currencyName, pendingPrice,
+		pendingNumber, dealNumber, pendingStatus, remark, addTime, endTime
+		FROM transaction_pend_order_tab
+		WHERE pendingOrderNo = #{pendingOrderNo}
+	</select>
+
+	<select id="TransactionPendOrder_countPendOrderByUserId" parameterType="int" resultType="int">
+		SELECT COUNT(pendingOrderNo)
+		FROM transaction_pend_order_tab
+		WHERE userId = #{userId}
+	</select>
+
+	<select id="TransactionPendOrder_listPendOrderByUserId" parameterType="java.util.Map" resultType="TransactionPendOrderDO">
+		SELECT pendingOrderNo, userId, paymentType, currencyId, currencyName, pendingPrice,
+		pendingNumber, dealNumber, pendingStatus, remark, addTime, endTime
+		FROM transaction_pend_order_tab
+		WHERE userId = #{userId}
+		ORDER BY addTime DESC
+		LIMIT #{startNumber}, #{pageSize}
+	</select>
+
+	<update id="TransactionPendOrder_updatePendingStatus" parameterType="java.util.Map">
+		UPDATE transaction_pend_order_tab
+		SET pendingStatus = #{pendingStatus}
+		WHERE pendingOrderNo = #{pendingOrderNo}
+	</update>
+
+	<select id="TransactionPendOrder_listLatestRecords" parameterType="java.util.Map" resultType="TransactionPendOrderDO">
+		SELECT pendingPrice, SUM(pendingNumber) AS pendingNumber, SUM(dealNumber) AS dealNumber
+		FROM transaction_pend_order_tab
+		WHERE currencyId = #{currencyId}
+			AND paymentType = #{paymentType}
+			AND pendingStatus IN (1,2)
+		GROUP BY pendingPrice
+		<if test="paymentType == 1 ">
+			DESC
+		</if>
+		<if test="paymentType == 2 ">
+			ASC
+		</if>
+		LIMIT #{num}
+	</select>
+
+	<select id="TransactionPendOrder_countPendOrderForBack" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(pendingOrderNo)
+		FROM transaction_pend_order_tab
+		WHERE
+		1 = 1
+		<if test="userAccount != null and userAccount !=''">
+			AND userAccount LIKE CONCAT('%', #{userAccount}, '%')
+		</if>
+		<if test="currencyId != 0">
+			AND currencyId = #{currencyId}
+		</if>
+		<if test="paymentType != 0">
+			AND paymentType = #{paymentType}
+		</if>
+		<if test="pendingStatus != 0">
+			AND pendingStatus = #{pendingStatus}
+		</if>
+		<if test="startAddTime != null">
+			AND addTime <![CDATA[ >= ]]> #{startAddTime}
+		</if>
+		<if test="endAddTime != null">
+			AND addTime <![CDATA[ <= ]]> #{endAddTime}
+		</if>
+		<if test="startFinishTime != null">
+			AND endTime <![CDATA[ >= ]]> #{startFinishTime}
+		</if>
+		<if test="endFinishTime != null">
+			AND endTime <![CDATA[ <= ]]> #{endFinishTime}
+		</if>
+	</select>
 
 </mapper>
