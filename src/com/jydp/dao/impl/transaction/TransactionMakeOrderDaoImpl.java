@@ -88,7 +88,7 @@ public class TransactionMakeOrderDaoImpl implements ITransactionMakeOrderDao{
         map.put("endExecuteTime", endExecuteTime);
 
         try {
-            result = sqlSessionTemplate.insert("TransactionMakeOrder_countTransactionMakeOrderForBack", map);
+            result = sqlSessionTemplate.selectOne("TransactionMakeOrder_countTransactionMakeOrderForBack", map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }

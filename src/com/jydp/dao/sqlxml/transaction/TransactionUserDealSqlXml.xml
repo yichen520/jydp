@@ -5,10 +5,80 @@
 
 <mapper namespace="com.jydp.dao.impl.transaction.TransactionUserDealDaoImpl">
 
-	<select id="TransactionUserDeal_getTransactionUserDeallist" parameterType="int">
+	<select id="TransactionUserDeal_getTransactionUserDeallist" parameterType="java.util.Map" resultType="TransactionUserDealDO">
 		SELECT orderNo, pendingOrderNo, userId, paymentType, currencyId, currencyName,
 				currencyNumber, currencyTotalPrice, remark, addTime
 	  	FROM transaction_user_deal_tab
 	  	WHERE userId = #{userId}
+	  	ORDER BY addTime DESC
+		LIMIT #{startNumber}, #{pageSize}
 	</select>
+
+	<insert id="TransactionUserDeal_insertTransactionUserDeal" parameterType="TransactionUserDealDO">
+		INSERT INTO transaction_user_deal_tab
+			(orderNo, pendingOrderNo, userId, paymentType, currencyId, currencyName,
+			 currencyNumber, currencyTotalPrice, remark, addTime)
+		VALUES
+			(#{orderNo}, #{pendingOrderNo}, #{userId}, #{paymentType}, #{currencyId}, #{currencyName},
+			 #{currencyNumber}, #{currencyNumber}, #{remark}, #{addTime})
+	</insert>
+
+	<select id="TransactionUserDeal_countTransactionUserDealForBack" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(orderNo)
+		FROM transaction_user_deal_tab TRUDTab
+            <if test="userAccount != null and userAccount !=''">
+              INNER JOIN user_tab UTab ON TRUDTab.userId = UTab.userId
+            </if>
+		WHERE 1=1
+			<if test="orderNo != null and orderNo !=''">
+				AND TRUDTab.orderNo LIKE CONCAT('%', #{orderNo}, '%')
+			</if>
+			<if test="userAccount != null and userAccount !=''">
+				AND UTab.userAccount LIKE CONCAT('%', #{userAccount}, '%')
+			</if>
+			<if test="paymentType != 0">
+				AND TRUDTab.paymentType = #{paymentType}
+			</if>
+			<if test="currencyName != null and currencyName !=''">
+				AND TRUDTab.currencyName = #{currencyName}
+			</if>
+			<if test="startAddTime != null">
+				AND TRUDTab.addTime <![CDATA[ >= ]]> #{startAddTime}
+			</if>
+			<if test="endAddTime != null">
+				AND TRUDTab.addTime <![CDATA[ <= ]]> #{endAddTime}
+			</if>
+	</select>
+
+	<select id="TransactionUserDeal_listTransactionUserDealForBack" parameterType="java.util.Map" resultType="TransactionUserDealDO">
+		SELECT TRUDTab.orderNo, TRUDTab.pendingOrderNo, TRUDTab.userId, TRUDTab.paymentType,
+			TRUDTab.currencyId, TRUDTab.currencyName, TRUDTab.currencyNumber, TRUDTab.currencyTotalPrice,
+			TRUDTab.remark, TRUDTab.addTime
+		FROM transaction_user_deal_tab TRUDTab
+            <if test="userAccount != null and userAccount !=''">
+                INNER JOIN user_tab UTab ON TRUDTab.userId = UTab.userId
+            </if>
+		WHERE 1=1
+			<if test="orderNo != null and orderNo !=''">
+				AND TRUDTab.orderNo LIKE CONCAT('%', #{orderNo}, '%')
+			</if>
+			<if test="userAccount != null and userAccount !=''">
+				AND UTab.userAccount LIKE CONCAT('%', #{userAccount}, '%')
+			</if>
+			<if test="paymentType != 0">
+				AND TRUDTab.paymentType = #{paymentType}
+			</if>
+			<if test="currencyName != null and currencyName !=''">
+				AND TRUDTab.currencyName = #{currencyName}
+			</if>
+			<if test="startAddTime != null">
+				AND TRUDTab.addTime <![CDATA[ >= ]]> #{startAddTime}
+			</if>
+			<if test="endAddTime != null">
+				AND TRUDTab.addTime <![CDATA[ <= ]]> #{endAddTime}
+			</if>
+		ORDER BY addTime DESC
+		LIMIT #{startNumber}, #{pageSize}
+	</select>
+
 </mapper>

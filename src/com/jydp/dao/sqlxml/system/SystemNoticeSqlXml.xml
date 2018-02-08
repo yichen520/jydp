@@ -5,5 +5,10 @@
 
 <mapper namespace="com.jydp.dao.impl.system.SystemNoticeDaoImpl">
 
-
+	<select id="SystemNotice_getSystemNoticlistForWeb" resultType="SystemNoticeDO">
+		SELECT id, noticeType, noticeTitle, noticeUrl, content, addTime, topTime
+		FROM system_notice_tab
+		ORDER BY topTime DESC
+		LIMIT 4
+	</select>
 </mapper>

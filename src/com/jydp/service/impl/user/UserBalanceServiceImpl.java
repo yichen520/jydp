@@ -41,11 +41,13 @@ public class UserBalanceServiceImpl implements IUserBalanceService {
     /**
      * 根据用户Id查询用户账户记录
      * @param userId 用户Id
+     * @param pageNumber  当前页数
+     * @param pageSize  每页条数
      * @return 查询成功：返回用户账户记录列表；查询失败：返回null
      */
     @Override
-    public List<UserBalanceDO> getUserBalancelist(int userId) {
-        return userBalanceDao.getUserBalancelist(userId);
+    public List<UserBalanceDO> getUserBalancelist(int userId, int pageNumber, int pageSize) {
+        return userBalanceDao.getUserBalancelist(userId, pageNumber, pageSize);
     }
 
 }
