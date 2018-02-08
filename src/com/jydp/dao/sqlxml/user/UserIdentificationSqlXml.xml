@@ -18,5 +18,59 @@
 		FROM user_identification_tab
 		WHERE id = #{id}
 	</select>
+
+	<select id="UserIdentification_getUserIdentificationByUserCertNo" parameterType="String" resultType="UserIdentificationDO">
+		SELECT id, userId, userAccount, userName, userPhone, userCertNo,
+			identificationStatus, remark, identiTime, addTime
+		FROM user_identification_tab
+		WHERE userCertNo = #{userCertNo}
+	</select>
+
+	<select id="UserIdentification_countUserIdentificationForBacker" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(id)
+		FROM user_identification_tab
+		<where>
+			<if test="userAccount != null and userAccount != '' ">
+				AND userAccount LIKE CONCAT('%', #{userAccount}, '%')
+			</if>
+			<if test="userPhone != null and userPhone != '' ">
+				AND userPhone LIKE CONCAT('%', #{userPhone}, '%')
+			</if>
+			<if test="identificationStatus != null and identificationStatus != '' ">
+				AND identificationStatus = #{identificationStatus}
+			</if>
+			<if test="startTime != null">
+				AND addTime <![CDATA[ >= ]]> #{startTime}
+			</if>
+			<if test="endTime != null">
+				AND addTime <![CDATA[ <= ]]> #{endTime}
+			</if>
+		</where>
+	</select>
+
+	<select id="UserIdentification_listUserIdentificationForBacker" parameterType="java.util.Map" resultType="UserIdentificationDO">
+		SELECT id, userId, userAccount, userName, userPhone, userCertNo,
+			identificationStatus, remark, identiTime, addTime
+		FROM UserIdentification_listUserIdentificationForBacker
+		<where>
+			<if test="userAccount != null and userAccount != '' ">
+				AND userAccount LIKE CONCAT('%', #{userAccount}, '%')
+			</if>
+			<if test="userPhone != null and userPhone != '' ">
+				AND userPhone LIKE CONCAT('%', #{userPhone}, '%')
+			</if>
+			<if test="identificationStatus != null and identificationStatus != '' ">
+				AND identificationStatus = #{identificationStatus}
+			</if>
+			<if test="startTime != null">
+				AND addTime <![CDATA[ >= ]]> #{startTime}
+			</if>
+			<if test="endTime != null">
+				AND addTime <![CDATA[ <= ]]> #{endTime}
+			</if>
+		</where>
+		ORDER BY addTime DESC
+		LIMIT #{startNumber}, #{pageSize}
+	</select>
 	
 </mapper>
