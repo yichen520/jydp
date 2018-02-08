@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC
+		"-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jydp.dao.impl.transaction.TransactionMakeOrderDaoImpl">
+
+	<insert id="TransactionMakeOrder_insertMakeOrder" parameterType="TransactionMakeOrderDO">
+        INSERT INTO transaction_make_order_tab
+            (orderNo, paymentType, currencyId, currencyName, currencyNumber, currencyTotalPrice,
+             backerAccount, ipAddress, executeStatus, remark, executeTime, addTime)
+        VALUES
+            (#{orderNo}, #{paymentType}, #{currencyId}, #{currencyName}, #{currencyNumber}, #{currencyTotalPrice},
+              #{backerAccount}, #{ipAddress}, #{executeStatus}, #{remark}, #{executeTime}, #{addTime})
+	</insert>
+
+	<select id="TransactionMakeOrder_getTransactionMakeOrderByOrderNo" parameterType="java.lang.String" resultType="TransactionMakeOrderDO">
+        SELECT orderNo, paymentType, currencyId, currencyName, currencyNumber, currencyTotalPrice,
+            backerAccount, ipAddress, executeStatus, remark, executeTime, addTime FROM
+            transaction_make_order_tab
+        WHERE orderNo = #{orderNo}
+	</select>
+
+    <select id="TransactionMakeOrder_countTransactionMakeOrderForBack" parameterType="java.util.Map" resultType="TransactionMakeOrderDO">
+        SELECT COUNT(orderNo)
+        FROM transaction_make_order_tab
+        WHERE
+            1 = 1
+            <if test="currencyName != null and currencyName !=''">
+                AND currencyName LIKE CONCAT('%', #{currencyName}, '%')
+            </if>
+            <if test="backerAccount != null and backerAccount !=''">
+                AND backerAccount LIKE CONCAT('%', #{backerAccount}, '%')
+            </if>
+            <if test="executeStatus != 0">
+                AND executeStatus = #{executeStatus}
+            </if>
+            <if test="startAddTime != null">
+                AND addTime <![CDATA[ >= ]]> #{startAddTime}
+            </if>
+            <if test="endAddTime != null">
+                AND addTime <![CDATA[ <= ]]> #{endAddTime}
+            </if>
+            <if test="startExecuteTime != null">
+                AND executeTime <![CDATA[ >= ]]> #{startExecuteTime}
+            </if>
+            <if test="endExecuteTime != null">
+                AND executeTime <![CDATA[ <= ]]> #{endExecuteTime}
+            </if>
+    </select>
+
+    <select id="TransactionMakeOrder_getTransactionMakeOrderByOrderNo" parameterType="java.lang.String" resultType="TransactionMakeOrderDO">
+        SELECT orderNo, paymentType, currencyId, currencyName, currencyNumber, currencyTotalPrice,
+        backerAccount, ipAddress, executeStatus, remark, executeTime, addTime FROM
+        transaction_make_order_tab
+        WHERE
+            1 = 1
+            <if test="currencyName != null and currencyName !=''">
+                AND currencyName LIKE CONCAT('%', #{currencyName}, '%')
+            </if>
+            <if test="backerAccount != null and backerAccount !=''">
+                AND backerAccount LIKE CONCAT('%', #{backerAccount}, '%')
+            </if>
+            <if test="executeStatus != 0">
+                AND executeStatus = #{executeStatus}
+            </if>
+            <if test="startAddTime != null">
+                AND addTime <![CDATA[ >= ]]> #{startAddTime}
+            </if>
+            <if test="endAddTime != null">
+                AND addTime <![CDATA[ <= ]]> #{endAddTime}
+            </if>
+            <if test="startExecuteTime != null">
+                AND executeTime <![CDATA[ >= ]]> #{startExecuteTime}
+            </if>
+            <if test="endExecuteTime != null">
+                AND executeTime <![CDATA[ <= ]]> #{endExecuteTime}
+            </if>
+        ORDER BY addTime DESC
+        LIMIT #{startNumber}, #{pageSize}
+    </select>
+
+</mapper>

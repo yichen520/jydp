@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+		<!DOCTYPE mapper PUBLIC
+				"-//mybatis.org//DTD Mapper 3.0//EN"
+				"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jydp.dao.impl.back.BackerRolePowerMapDaoImpl">
+
+<select id="BackerRolePowerMap_getRolePowerMap" parameterType="int" resultType="BackerRolePowerMapDO">
+	SELECT powerId, powerName, powerLevel, uperPowerId, addTime
+	FROM backer_role_power_map_tab
+	WHERE powerId = #{powerId}
+</select>
+
+<select id="BackerRolePowerMap_listRolePowerAll" resultType="BackerRolePowerMapDO">
+	SELECT powerId, powerName, powerLevel, uperPowerId, addTime
+	FROM backer_role_power_map_tab
+	ORDER BY powerId ASC
+</select>
+
+</mapper>

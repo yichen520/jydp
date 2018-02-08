@@ -5,5 +5,10 @@
 
 <mapper namespace="com.jydp.dao.impl.system.SystemHotDaoImpl">
 
-
+	<select id="SystemHot_getSystemHotlistForWeb" resultType="SystemHotDO">
+		SELECT id, noticeTitle, noticeUrl, content, addTime, topTime
+		FROM system_notice_tab
+		ORDER BY topTime DESC
+		LIMIT 4
+	</select>
 </mapper>

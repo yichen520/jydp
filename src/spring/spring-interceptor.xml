@@ -13,10 +13,10 @@
 	<!-- 拦截器 -->
 	<mvc:interceptors>
 		<!-- 后台管理员拦截器(WEB端访问) -->
-        <!--<mvc:interceptor>
+        <mvc:interceptor>
             <mvc:mapping path="/backerWeb/**/*.htm"/>
             <bean class="com.jydp.interceptor.BackerWebInterceptor"></bean>
-        </mvc:interceptor>-->
+        </mvc:interceptor>
 
         <!--用户WEB拦截器(WEB端访问)-->
         <mvc:interceptor>

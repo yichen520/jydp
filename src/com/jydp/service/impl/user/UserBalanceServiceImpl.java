@@ -1,10 +1,12 @@
 package com.jydp.service.impl.user;
 
-import com.jydp.dao.UserBalanceDao;
+import com.jydp.dao.IUserBalanceDao;
 import com.jydp.entity.DO.user.UserBalanceDO;
-import com.jydp.service.UserBalanceService;
+import com.jydp.service.IUserBalanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Description:用户认证记录
@@ -12,11 +14,11 @@ import org.springframework.stereotype.Service;
  * Date: 2018-02-07 15:44
  */
 @Service("userBalanceService")
-public class UserBalanceServiceImpl implements UserBalanceService {
+public class UserBalanceServiceImpl implements IUserBalanceService {
 
     /** 用户认证记录 */
     @Autowired
-    private UserBalanceDao userBalanceDao;
+    private IUserBalanceDao userBalanceDao;
 
     /**
      * 新增用户账户记录
@@ -34,6 +36,16 @@ public class UserBalanceServiceImpl implements UserBalanceService {
      */
     public UserBalanceDO getUserBalanceByOrderNo(String orderNo) {
         return userBalanceDao.getUserBalanceByOrderNo(orderNo);
+    }
+
+    /**
+     * 根据用户Id查询用户账户记录
+     * @param userId 用户Id
+     * @return 查询成功：返回用户账户记录列表；查询失败：返回null
+     */
+    @Override
+    public List<UserBalanceDO> getUserBalancelist(int userId) {
+        return userBalanceDao.getUserBalancelist(userId);
     }
 
 }

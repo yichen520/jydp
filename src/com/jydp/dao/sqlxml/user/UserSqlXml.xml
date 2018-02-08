@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC 
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jydp.dao.impl.user.UserDaoImpl">
+	
+	<insert id="User_insertUser" parameterType="UserDO">
+		INSERT INTO user_tab(userAccount, password, payPassword, phoneAreaCode, phoneNumber, userBalance,
+			userBalanceLock, accountStatus, addTime)
+		VALUES (#{userAccount}, #{password}, #{payPassword}, #{phoneAreaCode}, #{phoneNumber}, #{userBalance},
+			#{userBalanceLock}, #{accountStatus}, #{addTime})
+	</insert>
+	
+	<select id="User_getUserByUserId" parameterType="int" resultType="UserDO">
+		SELECT userId, userAccount, password, payPassword, phoneAreaCode, phoneNumber, userBalance,
+			userBalanceLock, accountStatus, addTime
+		FROM user_tab
+		WHERE userId = #{userId}
+	</select>
+	
+	<update id="User_updateUserAccountStatus" parameterType="java.util.Map">
+ 		UPDATE FROM user_tab
+		SET accountStatus = #{accountStatus}
+ 		WHERE userId = #{userId}
+ 		  AND accountStatus = #{oldAccountStatus}
+ 	</update>
+
+	<update id="User_updateUser" parameterType="UserDO">
+		UPDATE user_tab
+		<set>
+			<if test="password != null and password !=''">
+				password = #{password},
+			</if>
+			<if test="payPassword != null and payPassword != ''">
+				payPassword = #{payPassword},
+			</if>
+			<if test="phoneAreaCode != null and phoneAreaCode != ''">
+				phoneAreaCode = #{phoneAreaCode},
+			</if>
+			<if test="phoneNumber != null and phoneNumber != ''">
+				phoneNumber = #{phoneNumber},
+			</if>
+			<if test="userBalance != null">
+				userBalance = #{userBalance},
+			</if>
+			<if test="userBalanceLock != null">
+				userBalanceLock = #{userBalanceLock},
+			</if>
+		</set>
+		WHERE userId = #{userId}
+	</update>
+
+	<select id="User_validateUserLogin" parameterType="java.util.Map" resultType="UserDO">
+		SELECT userId, userAccount, phoneAreaCode, phoneNumber, userBalance,
+			userBalanceLock, accountStatus, addTime
+		FROM user_tab
+		WHERE userAccount = #{userAccount} AND password = #{password} AND accountStatus = 1
+	</select>
+
+	<select id="getUserByUserAccount" parameterType="String" resultType="UserDO">
+		SELECT userId, userAccount, phoneAreaCode, phoneNumber, userBalance,
+			userBalanceLock, accountStatus, addTime
+		FROM user_tab
+		WHERE  userAccount = #{userAccount}
+	</select>
+</mapper>

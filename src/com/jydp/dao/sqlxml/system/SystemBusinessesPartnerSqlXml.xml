@@ -5,5 +5,9 @@
 
 <mapper namespace="com.jydp.dao.impl.system.SystemBusinessesPartnerDaoImpl">
 
-
+	<select id="SystemBusinessesPartner_getSystemBusinessesPartnerForWeb" resultType="SystemBusinessesPartnerDO">
+		SELECT id, businessesName, businessesImageUrl, webLinkUrl, wapLinkUrl, addTime, topTime
+		FROM  system_businesses_partner_tab
+		ORDER BY topTime DESC
+	</select>
 </mapper>

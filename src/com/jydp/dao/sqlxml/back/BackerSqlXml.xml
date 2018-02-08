@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+		"-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jydp.dao.impl.back.BackerDaoImpl">
+
+	<insert id="Backer_insertBacker" parameterType="BackerDO">
+		INSERT INTO	backer_tab
+			(backerAccount, password, roleId, accountStatus, addTime) 
+		VALUES
+			(#{backerAccount}, #{password}, #{roleId}, #{accountStatus}, #{addTime})
+ 	</insert>
+ 	
+	<select id="Backer_validateBackerExist" parameterType="java.lang.String" resultType="int">
+		SELECT COUNT(backerId)
+		FROM backer_tab
+		WHERE backerAccount = #{backerAccount}
+	</select>
+	
+	<select id="Backer_validateBackerLogin" parameterType="java.util.Map" resultType="BackerDO">
+		SELECT backerId, backerAccount, roleId, accountStatus, addTime
+		FROM backer_tab
+		WHERE backerAccount = #{backerAccount}
+			AND password = #{password}
+			AND accountStatus = 1
+	</select>
+	
+ 	<select id="Backer_getBackerById" parameterType="int" resultType="BackerDO">
+		SELECT DISTINCT backerTab.backerId AS backerId, backerTab.backerAccount AS backerAccount, 
+			backerTab.roleId AS roleId, backerTab.accountStatus AS accountStatus, backerTab.addTime AS addTime, backerTab.phone AS phone
+		FROM backer_tab AS backerTab
+		WHERE backerTab.backerId = #{backerId}
+ 	</select>
+ 	
+ 	<select id="Backer_getBackerByAccount" parameterType="java.lang.String" resultType="BackerDO">
+		SELECT DISTINCT backerTab.backerId AS backerId, backerTab.backerAccount AS backerAccount, 
+			backerTab.roleId AS roleId, backerTab.accountStatus AS accountStatus, backerTab.addTime AS addTime, backerTab.phone AS phone
+		FROM backer_tab AS backerTab
+		WHERE backerTab.backerAccount = #{backerAccount}
+ 	</select>
+ 	
+ 	<select id="Backer_listBackerByPage" parameterType="java.util.Map" resultType="BackerDO">
+		SELECT DISTINCT backerTab.backerId AS backerId, backerTab.backerAccount AS backerAccount, 
+			backerTab.roleId AS roleId, backerTab.accountStatus AS accountStatus, backerTab.addTime AS addTime,
+			roleTab.roleName AS roleName
+		FROM backer_tab AS backerTab, backer_role_tab AS roleTab
+		WHERE backerTab.roleId = roleTab.roleId
+		  AND backerTab.accountStatus <![CDATA[ > ]]> 0
+		ORDER BY backerTab.addTime DESC
+		LIMIT #{startNumber}, #{pageSize}
+ 	</select>
+ 	
+ 	<select id="Backer_getBackerNumberByRoleId" parameterType="int" resultType="int">
+		SELECT COUNT(backerId)
+		FROM backer_tab
+		WHERE accountStatus <![CDATA[ != ]]> -1
+			AND roleId = #{roleId}
+ 	</select>
+ 	
+ 	<select id="Backer_countBacker" resultType="int">
+		SELECT COUNT(backerId)
+		FROM backer_tab
+		WHERE accountStatus <![CDATA[ != ]]> -1
+ 	</select>
+ 	
+ 	<select id="Backer_countBackerByRoleId" parameterType="int" resultType="int">
+		SELECT COUNT(backerId)
+		FROM backer_tab
+		WHERE roleId = #{roleId}
+			AND accountStatus <![CDATA[ != ]]> -1
+ 	</select>
+ 	
+ 	<update id="Backer_updateBackerRole" parameterType="java.util.Map">
+		UPDATE backer_tab 
+		SET roleId = #{roleId}
+		WHERE backerId = #{backerId}
+ 	</update>
+ 	
+ 	<update id="Backer_updatePassword" parameterType="java.util.Map">
+		UPDATE backer_tab 
+		SET password = #{newPassword}
+		WHERE backerId = #{backerId}
+			AND password = #{oldPassword}
+ 	</update>
+ 	
+ 	<update id="Backer_resetPassword" parameterType="java.util.Map">
+		UPDATE backer_tab 
+		SET password = #{newPassword}
+		WHERE backerId = #{backerId}
+ 	</update>
+ 	
+ 	<update id="Backer_updateAccountStatus" parameterType="java.util.Map">
+		UPDATE backer_tab 
+		SET accountStatus = #{accountStatus}
+		WHERE backerId = #{backerId}
+ 	</update>
+ 	
+</mapper>
