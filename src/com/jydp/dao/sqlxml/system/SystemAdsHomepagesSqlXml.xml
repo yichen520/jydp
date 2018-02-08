@@ -5,5 +5,9 @@
 
 <mapper namespace="com.jydp.dao.impl.system.SystemAdsHomepagesDaoImpl">
 
-
+	<select id="SystemAdsHomepages_getSystemAdsHomepageslistForWeb" resultType="SystemAdsHomepagesDO">
+		SELECT id, adsTitle, adsImageUrl, webLinkUrl, wapLinkUrl, rankNumber, addTime
+		FROM system_ads_homepages_tab
+		ORDER BY rankNumber ASC
+	</select>
 </mapper>
