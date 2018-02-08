@@ -22,4 +22,7 @@ public class FileUrlConfig {
 	/** 文件服务器删除文件访问地址 */
 	public static final String file_remote_delete_url = file_handle_url + "/fileService/delete";
 
+	/** 首页广告图片目录 */
+	public static final String file_remote_adImage_url ="adImage";
+
 }
