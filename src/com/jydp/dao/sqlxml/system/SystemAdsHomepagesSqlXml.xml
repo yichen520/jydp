@@ -5,5 +5,73 @@
 
 <mapper namespace="com.jydp.dao.impl.system.SystemAdsHomepagesDaoImpl">
 
+	<select id="SystemAdsHomepages_getAdsHomepagesForBack" resultType="SystemAdsHomepagesDO">
+		SELECT id, adsTitle, adsImageUrl, webLinkUrl, wapLinkUrl, rankNumber, addTime
+		FROM system_ads_homepages_tab
+		ORDER BY rankNumber
+	</select>
 
+	<select id="SystemAdsHomepages_getMaxRankForBack" resultType="int">
+		SELECT MAX(rankNumber)
+		FROM system_ads_homepages_tab
+	</select>
+
+	<insert id="SystemAdsHomepages_insertSystemAdsHomePages" parameterType="SystemAdsHomepagesDO">
+		INSERT INTO system_ads_homepages_tab
+		(adsTitle, adsImageUrl, webLinkUrl, wapLinkUrl, rankNumber, addTime)
+		VALUES
+		(#{adsTitle}, #{adsImageUrl}, #{webLinkUrl}, #{wapLinkUrl}, #{rankNumber}, #{addTime})
+	</insert>
+
+	<select id="SystemAdsHomepages_getSystemAdsHomePagesById" parameterType="int" resultType="SystemAdsHomepagesDO">
+		SELECT id, adsTitle, adsImageUrl, webLinkUrl, wapLinkUrl, rankNumber, addTime
+		FROM system_ads_homepages_tab
+		WHERE id = #{id}
+	</select>
+
+	<update id="SystemAdsHomepages_updateSystemAdsHomePages" parameterType="SystemAdsHomepagesDO">
+		UPDATE system_ads_homepages_tab
+		SET webLinkUrl = #{webLinkUrl}, wapLinkUrl = #{wapLinkUrl}
+		<if test="adsTitle != null and adsTitle != '' ">
+			,adsTitle = #{adsTitle}
+		</if>
+		<if test="adsImageUrl != null and adsImageUrl != '' ">
+			,adsImageUrl = #{adsImageUrl}
+		</if>
+		WHERE id = #{id}
+	</update>
+
+	<delete id="SystemAdsHomepages_deleteSystemAdsHomePages" parameterType="int">
+		DELETE FROM system_ads_homepages_tab
+		WHERE id = #{id}
+	</delete>
+
+	<update id="SystemAdsHomepages_updateAdsHomepagesRank" parameterType="int">
+		UPDATE system_ads_homepages_tab
+		SET rankNumber = rankNumber - 1
+		WHERE rankNumber <![CDATA[ > ]]> #{rankNumber}
+	</update>
+
+	<select id="SystemAdsHomepages_getIdByRankForBack" parameterType="int" resultType="int">
+		SELECT id
+		FROM system_ads_homepages_tab
+		WHERE rankNumber = #{rankNumber}
+	</select>
+
+	<update id="SystemAdsHomepages_upMoveAdsHomepagesForBack" parameterType="int">
+		UPDATE system_ads_homepages_tab
+		SET rankNumber = rankNumber - 1
+		WHERE id = #{id}
+	</update>
+
+	<update id="SystemAdsHomepages_downMoveAdsHomepagesForBack" parameterType="int">
+		UPDATE system_ads_homepages_tab
+		SET rankNumber = rankNumber + 1
+		WHERE id = #{id}
+	</update>
+	<select id="SystemAdsHomepages_getSystemAdsHomepageslistForWeb" resultType="SystemAdsHomepagesDO">
+		SELECT id, adsTitle, adsImageUrl, webLinkUrl, wapLinkUrl, rankNumber, addTime
+		FROM system_ads_homepages_tab
+		ORDER BY rankNumber ASC
+	</select>
 </mapper>
