@@ -27,14 +27,20 @@ public class TransactionUserDealDaoImpl implements ITransactionUserDealDao{
     /**
      * 查询用户成交记录
      * @param userId 用户Id
+     * @param pageNumber  当前页数
+     * @param pageSize  每页条数
      * @return 查询成功：返回用户成交记录；查询失败：返回null
      */
     @Override
-    public List<TransactionUserDealDO> getTransactionUserDeallist(int userId) {
-        List<TransactionUserDealDO> transactionUserDealList = null;
+    public List<TransactionUserDealDO> getTransactionUserDeallist(int userId, int pageNumber, int pageSize) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("startNumber", pageNumber * pageSize);
+        map.put("pageSize", pageSize);
 
+        List<TransactionUserDealDO> transactionUserDealList = null;
         try {
-            transactionUserDealList = sqlSessionTemplate.selectList("TransactionUserDeal_getTransactionUserDeallist",userId);
+            transactionUserDealList = sqlSessionTemplate.selectList("TransactionUserDeal_getTransactionUserDeallist",map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }

@@ -55,7 +55,9 @@
 		SELECT userId, userAccount, phoneAreaCode, phoneNumber, userBalance,
 			userBalanceLock, accountStatus, addTime
 		FROM user_tab
-		WHERE userAccount = #{userAccount} AND password = #{password} AND accountStatus = 1
+		WHERE userAccount = #{userAccount}
+		 	  AND password = #{password}
+		 	  AND accountStatus <![CDATA[ > ]]> 0
 	</select>
 
 	<select id="getUserByUserAccount" parameterType="String" resultType="UserDO">

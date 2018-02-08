@@ -5,11 +5,13 @@
 
 <mapper namespace="com.jydp.dao.impl.transaction.TransactionUserDealDaoImpl">
 
-	<select id="TransactionUserDeal_getTransactionUserDeallist" parameterType="int" resultType="TransactionUserDealDO">
+	<select id="TransactionUserDeal_getTransactionUserDeallist" parameterType="java.util.Map" resultType="TransactionUserDealDO">
 		SELECT orderNo, pendingOrderNo, userId, paymentType, currencyId, currencyName,
 				currencyNumber, currencyTotalPrice, remark, addTime
 	  	FROM transaction_user_deal_tab
 	  	WHERE userId = #{userId}
+	  	ORDER BY addTime DESC
+		LIMIT #{startNumber}, #{pageSize}
 	</select>
 
 	<insert id="TransactionUserDeal_insertTransactionUserDeal" parameterType="TransactionUserDealDO">

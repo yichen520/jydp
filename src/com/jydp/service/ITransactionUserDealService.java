@@ -15,9 +15,11 @@ public interface ITransactionUserDealService {
     /**
      * 查询用户成交记录
      * @param userId 用户Id
+     * @param pageNumber  当前页数
+     * @param pageSize  每页条数
      * @return 查询成功：返回用户成交记录；查询失败：返回null
      */
-    List<TransactionUserDealDO> getTransactionUserDeallist(int userId);
+    List<TransactionUserDealDO> getTransactionUserDeallist(int userId, int pageNumber, int pageSize);
 
     /**
      * 新增成交记录

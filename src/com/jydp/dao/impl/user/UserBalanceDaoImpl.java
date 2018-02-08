@@ -7,7 +7,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description:用户账户记录
@@ -58,13 +60,20 @@ public class UserBalanceDaoImpl implements IUserBalanceDao {
     /**
      * 查询用户账户记录列表
      * @param userId 用户Id
+     * @param pageNumber  当前页数
+     * @param pageSize  每页条数
      * @return 查询成功：返回用户账户记录列表；查询失败：返回null
      */
     @Override
-    public List<UserBalanceDO> getUserBalancelist(int userId) {
+    public List<UserBalanceDO> getUserBalancelist(int userId, int pageNumber, int pageSize) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("startNumber", pageNumber * pageSize);
+        map.put("pageSize", pageSize);
+
         List<UserBalanceDO> userBalanceDOList = null;
         try {
-            userBalanceDOList = sqlSessionTemplate.selectList("UserBalance_getUserBalancelistByUserId",userId);
+            userBalanceDOList = sqlSessionTemplate.selectList("UserBalance_getUserBalancelistByUserId",map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
