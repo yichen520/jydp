@@ -69,6 +69,7 @@
 		SET rankNumber = rankNumber + 1
 		WHERE id = #{id}
 	</update>
+
 	<select id="SystemAdsHomepages_getSystemAdsHomepageslistForWeb" resultType="SystemAdsHomepagesDO">
 		SELECT id, adsTitle, adsImageUrl, webLinkUrl, wapLinkUrl, rankNumber, addTime
 		FROM system_ads_homepages_tab
