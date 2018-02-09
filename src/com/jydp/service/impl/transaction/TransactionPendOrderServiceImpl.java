@@ -162,7 +162,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
                                                       int pendingStatus, Timestamp startAddTime, Timestamp endAddTime,
                                                       Timestamp startFinishTime, Timestamp endFinishTime,
                                                       int pageNumber, int pageSize){
-        return listPendOrderForBack(userAccount, currencyId, paymentType, pendingStatus, startAddTime, endAddTime,
+        return transactionPendOrderDao.listPendOrderForBack(userAccount, currencyId, paymentType, pendingStatus, startAddTime, endAddTime,
                 startFinishTime, endFinishTime, pageNumber, pageSize);
     }
 

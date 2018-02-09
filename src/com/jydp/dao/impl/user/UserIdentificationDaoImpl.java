@@ -1,3 +1,5 @@
+package com.jydp.dao.impl.user;
+
 import com.jydp.dao.IUserIdentificationDao;
 import org.springframework.stereotype.Repository;
 
