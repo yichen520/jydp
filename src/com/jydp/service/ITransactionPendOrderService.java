@@ -84,13 +84,13 @@ public interface ITransactionPendOrderService {
     /**
      * 查询挂单记录个数（后台）
      * @param userAccount 用户账号
-     * @param currencyId 币种Id
-     * @param paymentType 交易类型,1：买入，2：卖出
-     * @param pendingStatus 挂单状态，1：挂单中，2：部分完成，3：已完成，4：已撤销
-     * @param startAddTime 挂单起始时间
-     * @param endAddTime 挂单结束时间
-     * @param startFinishTime 完成起始时间
-     * @param endFinishTime 完成结束时间
+     * @param currencyId 币种Id（查全部为0）
+     * @param paymentType 交易类型,1：买入，2：卖出（查全部为0）
+     * @param pendingStatus 挂单状态，1：挂单中，2：部分完成，3：已完成，4：已撤销（查全部为0）
+     * @param startAddTime 挂单起始时间，没有值填null
+     * @param endAddTime 挂单结束时间，没有值填null
+     * @param startFinishTime 完成起始时间，没有值填null
+     * @param endFinishTime 完成结束时间，没有值填null
      * @return 操作成功：返回挂单记录数量，操作失败：返回0
      */
     int countPendOrderForBack(String userAccount, int currencyId, int paymentType, int pendingStatus,
@@ -100,13 +100,13 @@ public interface ITransactionPendOrderService {
     /**
      * 分页查询挂单记录列表（后台）
      * @param userAccount 用户账号
-     * @param currencyId 币种Id
-     * @param paymentType 交易类型,1：买入，2：卖出
-     * @param pendingStatus 挂单状态，1：挂单中，2：部分完成，3：已完成，4：已撤销
-     * @param startAddTime 挂单起始时间
-     * @param endAddTime 挂单结束时间
-     * @param startFinishTime 完成起始时间
-     * @param endFinishTime 完成结束时间
+     * @param currencyId 币种Id（查全部为0）
+     * @param paymentType 交易类型,1：买入，2：卖出（查全部为0）
+     * @param pendingStatus 挂单状态，1：挂单中，2：部分完成，3：已完成，4：已撤销（查全部为0）
+     * @param startAddTime 挂单起始时间，没有值填null
+     * @param endAddTime 挂单结束时间，没有值填null
+     * @param startFinishTime 完成起始时间，没有值填null
+     * @param endFinishTime 完成结束时间，没有值填null
      * @param pageNumber 起始页数
      * @param pageSize 每页条数
      * @return 操作成功：返回挂单记录列表，操作失败：返回null
