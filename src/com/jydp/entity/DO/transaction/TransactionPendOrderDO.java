@@ -22,99 +22,196 @@ public class TransactionPendOrderDO {
     private Timestamp endTime;  //完成时间
     private Timestamp addTime;  //添加时间
 
+    /**
+     * 记录号,业务类型（2）+日期（6）+随机位（10）
+     * @return the pendingOrderNo
+     */
     public String getPendingOrderNo() {
         return pendingOrderNo;
     }
 
+    /**
+     * 记录号,业务类型（2）+日期（6）+随机位（10）
+     * @param pendingOrderNo the pendingOrderNo to set
+     */
     public void setPendingOrderNo(String pendingOrderNo) {
         this.pendingOrderNo = pendingOrderNo;
     }
 
+    /**
+     * 用户Id
+     * @return the userId
+     */
     public int getUserId() {
         return userId;
     }
 
+    /**
+     * 用户Id
+     * @param userId the userId to set
+     */
     public void setUserId(int userId) {
         this.userId = userId;
     }
 
+    /**
+     * 收支类型,1：买入，2：卖出
+     * @return the paymentType
+     */
     public int getPaymentType() {
         return paymentType;
     }
 
+    /**
+     * 收支类型,1：买入，2：卖出
+     * @param paymentType the paymentType to set
+     */
     public void setPaymentType(int paymentType) {
         this.paymentType = paymentType;
     }
 
+    /**
+     * 币种Id
+     * @return the currencyId
+     */
     public int getCurrencyId() {
         return currencyId;
     }
 
+    /**
+     * 币种Id
+     * @param currencyId the currencyId to set
+     */
     public void setCurrencyId(int currencyId) {
         this.currencyId = currencyId;
     }
 
+    /**
+     * 货币名称
+     * @return the currencyName
+     */
     public String getCurrencyName() {
         return currencyName;
     }
 
+    /**
+     * 货币名称
+     * @param currencyName the currencyName to set
+     */
     public void setCurrencyName(String currencyName) {
         this.currencyName = currencyName;
     }
 
+    /**
+     * 挂单单价
+     * @return the pendingPrice
+     */
     public double getPendingPrice() {
         return pendingPrice;
     }
 
+    /**
+     * 挂单单价
+     * @param pendingPrice the pendingPrice to set
+     */
     public void setPendingPrice(double pendingPrice) {
         this.pendingPrice = pendingPrice;
     }
 
+    /**
+     * 挂单数量
+     * @return the pendingNumber
+     */
     public double getPendingNumber() {
         return pendingNumber;
     }
 
+    /**
+     * 挂单数量
+     * @param pendingNumber the pendingNumber to set
+     */
     public void setPendingNumber(double pendingNumber) {
         this.pendingNumber = pendingNumber;
     }
 
+    /**
+     * 成交数量
+     * @return the dealNumber
+     */
     public double getDealNumber() {
         return dealNumber;
     }
 
+    /**
+     * 成交数量
+     * @param dealNumber the dealNumber to set
+     */
     public void setDealNumber(double dealNumber) {
         this.dealNumber = dealNumber;
     }
 
+    /**
+     * 挂单状态，1：挂单中，2：部分完成，3：已完成，4：已撤销
+     * @return the pendingStatus
+     */
     public int getPendingStatus() {
         return pendingStatus;
     }
 
+    /**
+     * 挂单状态，1：挂单中，2：部分完成，3：已完成，4：已撤销
+     * @param pendingStatus the pendingStatus to set
+     */
     public void setPendingStatus(int pendingStatus) {
         this.pendingStatus = pendingStatus;
     }
 
+    /**
+     * 备注
+     * @return the remark
+     */
     public String getRemark() {
         return remark;
     }
 
+    /**
+     * 备注
+     * @param remark the remark to set
+     */
     public void setRemark(String remark) {
         this.remark = remark;
     }
 
+    /**
+     * 完成时间
+     * @return the endTime
+     */
     public Timestamp getEndTime() {
         return endTime;
     }
 
+    /**
+     * 完成时间
+     * @param endTime the endTime to set
+     */
     public void setEndTime(Timestamp endTime) {
         this.endTime = endTime;
     }
 
+    /**
+     * 添加时间
+     * @return the addTime
+     */
     public Timestamp getAddTime() {
         return addTime;
     }
 
+    /**
+     * 添加时间
+     * @param addTime the addTime to set
+     */
     public void setAddTime(Timestamp addTime) {
         this.addTime = addTime;
     }
+
 }
