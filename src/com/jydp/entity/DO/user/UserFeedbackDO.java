@@ -11,12 +11,12 @@ import java.sql.Timestamp;
 public class UserFeedbackDO {
 
     private long id;  //记录Id
-    private long userId;  //用户Id
+    private int userId;  //用户Id
     private String userAccount;  //用户账号
     private String feedbackTitle;  //反馈标题
     private String feedbackContent;  //反馈内容
     private Timestamp addTime;  //反馈时间
-    private long handleStatus;  //处理状态，1：待处理，2：处理中，3：已处理
+    private int handleStatus;  //处理状态，1：待处理，2：处理中，3：已处理
     private String handleContent;  //处理说明
     private String backerAccount;  //处理的后台管理员帐号
     private Timestamp handleTime;  //处理时间
@@ -36,7 +36,7 @@ public class UserFeedbackDO {
      *
      * @param id the id
      */
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -46,7 +46,7 @@ public class UserFeedbackDO {
      *
      * @return the user id
      */
-    public long getUserId() {
+    public int getUserId() {
         return userId;
     }
 
@@ -55,7 +55,7 @@ public class UserFeedbackDO {
      *
      * @param userId the user id
      */
-    public void setUserId(long userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
@@ -141,7 +141,7 @@ public class UserFeedbackDO {
      *
      * @return the handle status
      */
-    public long getHandleStatus() {
+    public int getHandleStatus() {
         return handleStatus;
     }
 
@@ -150,7 +150,7 @@ public class UserFeedbackDO {
      *
      * @param handleStatus the handle status
      */
-    public void setHandleStatus(long handleStatus) {
+    public void setHandleStatus(int handleStatus) {
         this.handleStatus = handleStatus;
     }
 
