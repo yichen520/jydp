@@ -5,7 +5,7 @@ import config.FileUrlConfig;
 import java.sql.Timestamp;
 
 /**
- * 系统公告
+ * 用户公告管理
  * @author zym
  *
  */

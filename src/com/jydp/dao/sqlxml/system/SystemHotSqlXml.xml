@@ -11,4 +11,65 @@
 		ORDER BY topTime DESC
 		LIMIT 4
 	</select>
+
+	<select id="SystemHot_sumHotForBack" resultType="int">
+		SELECT COUNT(1)
+		FROM system_hot_tab
+        <where>
+            <if test="noticeType != null and noticeType != '' ">
+                AND noticeType LIKE CONCAT('%', #{noticeType}, '%')
+            </if>
+            <if test="noticeTitle != null and noticeTitle != '' ">
+                AND noticeTitle LIKE CONCAT('%', #{noticeTitle}, '%')
+            </if>
+        </where>
+	</select>
+
+	<select id="SystemHot_listSystemHotForBack" resultType="SystemHotDO" parameterType="java.util.Map">
+		SELECT id, noticeTitle, noticeUrl, content, addTime, topTime, noticeType
+		FROM system_hot_tab
+        <where>
+            <if test="noticeType != null and noticeType != '' ">
+                AND noticeType LIKE CONCAT('%', #{noticeType}, '%')
+            </if>
+            <if test="noticeTitle != null and noticeTitle != '' ">
+                AND noticeTitle LIKE CONCAT('%', #{noticeTitle}, '%')
+            </if>
+        </where>
+        ORDER BY topTime DESC, addTime DESC
+		LIMIT #{startNumber}, #{pageSize}
+	</select>
+
+	<insert id="SystemHot_insertSystemHot" parameterType="java.util.Map">
+		INSERT INTO system_hot_tab(
+		noticeTitle, noticeType, noticeUrl, content, addTime, topTime)
+		VALUES
+		(#{noticeTitle}, #{noticeType}, #{noticeUrl}, #{content}, #{addTime}, #{topTime})
+	</insert>
+
+    <select id="SystemHot_getSystemHotById" resultType="SystemHotDO" parameterType="int">
+        SELECT id, noticeTitle, noticeUrl, content, addTime, topTime, noticeType
+        FROM system_hot_tab
+        WHERE id = #{id}
+    </select>
+
+    <update id="SystemHot_updateSystemHot" parameterType="java.util.Map">
+        UPDATE system_hot_tab
+        SET noticeTitle = #{noticeTitle}, noticeType = #{noticeType}, content = #{content}
+        <if test="noticeUrl != null and noticeUrl != '' ">
+            ,noticeUrl = #{noticeUrl}
+        </if>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="SystemHot_deteleSystemHot" parameterType="int">
+        DELETE FROM system_hot_tab
+        WHERE id = #{id}
+    </delete>
+
+    <update id="SystemHot_topHotTopic" parameterType="java.util.Map">
+        UPDATE system_hot_tab
+        SET topTime = #{topTime}
+        WHERE id = #{id}
+    </update>
 </mapper>

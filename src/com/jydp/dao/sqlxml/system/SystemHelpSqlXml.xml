@@ -5,5 +5,27 @@
 
 <mapper namespace="com.jydp.dao.impl.system.SystemHelpDaoImpl">
 
+	<insert id="SystemHelp_insertSystemHelp" parameterType="SystemHelpDO">
+		INSERT INTO system_help_tab
+		(id, helpType, helpTitle, content, addTime)
+		VALUES
+		(#{id}, #{helpType}, #{helpTitle}, #{content}, #{addTime})
+	</insert>
 
+	<select id="SystemHelp_getSystemHelpById" parameterType="int" resultType="SystemHelpDO">
+		SELECT id, helpType, helpTitle, content, addTime
+		FROM system_help_tab
+		WHERE id = #{id}
+	</select>
+
+	<update id="SystemHelp_updateSystemHelp" parameterType="SystemHelpDO">
+		UPDATE system_help_tab
+		SET helpType = #{helpType}, helpTitle = #{helpTitle}, content = #{content}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="SystemHelp_deleteSystemHelp" parameterType="int">
+		DELETE FROM system_help_tab
+		WHERE id = #{id}
+	</delete>
 </mapper>

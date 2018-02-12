@@ -25,4 +25,10 @@ public class FileUrlConfig {
 	/** 首页广告图片目录 */
 	public static final String file_remote_adImage_url ="adImage";
 
+	/** 合作商家图片目录 */
+	public static final String file_remote_systemBusinessesPartner_url ="systemBusinessesPartner";
+
+	/** 公告图片目录 */
+	public static final String file_remote_noticeImage_url ="noticeImage";
+
 }

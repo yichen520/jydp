@@ -10,4 +10,56 @@
 		FROM  system_businesses_partner_tab
 		ORDER BY topTime DESC
 	</select>
+
+	<insert id="SystemBusinessesPartner_insertSystemBusinessesPartner" parameterType="SystemBusinessesPartnerDO" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		INSERT INTO system_businesses_partner_tab
+		(businessesName, businessesImageUrl, webLinkUrl, wapLinkUrl, topTime, addTime)
+		VALUES
+		(#{businessesName}, #{businessesImageUrl}, #{webLinkUrl}, #{wapLinkUrl}, #{topTime}, #{addTime})
+	</insert>
+
+	<select id="SystemBusinessesPartner_getSystemBusinessesPartnerById" parameterType="int" resultType="SystemBusinessesPartnerDO">
+		SELECT id, businessesName, businessesImageUrl, webLinkUrl, wapLinkUrl, topTime, addTime
+		FROM system_businesses_partner_tab
+		WHERE id = #{id}
+	</select>
+
+	<select id="SystemBusinessesPartner_countSystemBusinessesPartner" resultType="int">
+		SELECT count(id)
+		FROM system_businesses_partner_tab
+	</select>
+
+	<select id="SystemBusinessesPartner_listSystemBusinessesPartnerByPage" parameterType="java.util.Map" resultType="SystemBusinessesPartnerDO">
+		SELECT id, businessesName, businessesImageUrl, webLinkUrl, wapLinkUrl, topTime, addTime
+		FROM system_businesses_partner_tab
+		ORDER BY topTime DESC, addTime DESC
+		LIMIT #{startNumber}, #{pageSize}
+	</select>
+
+	<update id="SystemBusinessesPartner_updateSystemBusinessesPartner" parameterType="SystemBusinessesPartnerDO">
+		UPDATE system_businesses_partner_tab
+		<set>
+			<if test="businessesName != null and businessesName != ''" >
+				businessesName = #{businessesName},
+			</if>
+			<if test="businessesImageUrl != null and businessesImageUrl != ''" >
+				businessesImageUrl = #{businessesImageUrl},
+			</if>
+			<if test="webLinkUrl != null and webLinkUrl != ''" >
+				webLinkUrl = #{webLinkUrl},
+			</if>
+			<if test="wapLinkUrl != null and wapLinkUrl != ''" >
+				wapLinkUrl = #{wapLinkUrl},
+			</if>
+			<if test="topTime != null" >
+				topTime = #{topTime}
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<delete id="SystemBusinessesPartner_deleteSystemBusinessesPartner" parameterType="int">
+		DELETE FROM system_businesses_partner_tab
+		WHERE id = #{id}
+	</delete>
 </mapper>

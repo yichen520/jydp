@@ -11,4 +11,72 @@
 		ORDER BY topTime DESC
 		LIMIT 4
 	</select>
+
+	<insert id="SystemNotice_insertSystemNotice" parameterType="SystemNoticeDO" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+		INSERT INTO system_notice_tab
+		(noticeType, noticeTitle, noticeUrl, content, topTime, addTime)
+		VALUES
+		(#{noticeType}, #{noticeTitle}, #{noticeUrl}, #{content}, #{topTime}, #{addTime})
+	</insert>
+
+	<select id="SystemNotice_getSystemNoticeById" parameterType="int" resultType="SystemNoticeDO">
+		SELECT id, noticeType, noticeTitle, noticeUrl, content, topTime, addTime
+		FROM system_notice_tab
+		WHERE id = #{id}
+	</select>
+
+	<select id="SystemNotice_getNoticeForBack" parameterType="java.util.Map" resultType="SystemNoticeDO">
+		SELECT id, noticeType, noticeTitle, noticeUrl, content, topTime, addTime
+		FROM system_notice_tab
+		<where>
+			<if test="noticeType != null and noticeType != '' ">
+				AND noticeType LIKE CONCAT('%', #{noticeType}, '%')
+			</if>
+			<if test="noticeTitle != null and noticeTitle != '' ">
+				AND noticeTitle LIKE CONCAT('%', #{noticeTitle}, '%')
+			</if>
+		</where>
+		ORDER BY topTime DESC, addTime DESC
+		LIMIT #{startNumber}, #{pageSize}
+	</select>
+
+	<select id="SystemNotice_sumNoticeForBack" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(id)
+		FROM system_notice_tab
+		<where>
+			<if test="noticeType != null and noticeType != '' ">
+				AND noticeType LIKE CONCAT('%', #{noticeType}, '%')
+			</if>
+			<if test="noticeTitle != null and noticeTitle != '' ">
+				AND noticeTitle LIKE CONCAT('%', #{noticeTitle}, '%')
+			</if>
+		</where>
+	</select>
+
+	<update id="SystemNotice_updateSystemNotice">
+		UPDATE system_notice_tab
+		<set>
+			<if test="noticeType != null and noticeType != '' ">
+				noticeType = #{noticeType},
+			</if>
+			<if test="noticeTitle != null and noticeTitle != '' ">
+				noticeTitle = #{noticeTitle},
+			</if>
+			<if test="noticeUrl != null and noticeUrl != '' ">
+				noticeUrl = #{noticeUrl},
+			</if>
+			<if test="content != null and content != '' ">
+				content = #{content},
+			</if>
+			<if test="topTime != null ">
+				topTime = #{topTime},
+			</if>
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<delete id="SystemNotice_deleteSystemNotice" parameterType="int">
+		DELETE FROM system_notice_tab
+		WHERE id = #{id}
+	</delete>
 </mapper>
