@@ -187,6 +187,13 @@ public class BackerRoleController {
 		JSONObject power = JSONObject.parseObject(powerJson);
 		JSONObject powerMain = JSONObject.parseObject(mainPowerJson);
 		power.putAll(powerMain);
+
+		if(power == null || power.isEmpty()){
+			request.setAttribute("code", 2);
+			request.setAttribute("message", "权限参数为空");
+			return "page/back/roleAdd";
+		}
+
         Timestamp addTime = DateUtil.getCurrentTime();
         //账号角色
         BackerRoleDO role = new BackerRoleDO();
