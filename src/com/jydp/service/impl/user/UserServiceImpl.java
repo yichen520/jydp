@@ -1,10 +1,13 @@
 package com.jydp.service.impl.user;
 
 import com.jydp.dao.IUserDao;
+import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.regex.Pattern;
 
 /**
  * Description: 用户账户
@@ -70,6 +73,72 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserDO validateUserLogin(String userAccount, String password) {
         return userDao.validateUserLogin(userAccount,password);
+    }
+
+    /**
+     * 根据用户账号查询用户信息
+     * @param userAccount 用户账号
+     * @return 查询成功：返回用户信息；查询失败：返回null
+     */
+    @Override
+    public UserDO getUserByUserAccount(String userAccount) {
+        return userDao.getUserByUserAccount(userAccount);
+    }
+
+    /**
+     * 根据手机号查询用户信息
+     * @param phoneNumber 用户手机号
+     * @return 查询成功：返回用户信息；查询失败：返回null
+     */
+    @Override
+    public UserDO getUserByPhone(String phoneNumber) {
+        return userDao.getUserByPhone(phoneNumber);
+    }
+
+    /**
+     *  验证用户信息合法性
+     * @param userAccount 用户名
+     * @param password 密码
+     * @param userPhone 用户手机号
+     * @param refereeAccount 推荐人账号
+     * @return 查询成功：返回验证结果; 查询失败：返回null
+     */
+    @Override
+    public JsonObjectBO validateUserInfo(String userAccount, String password, String userPhone, String refereeAccount) {
+        JsonObjectBO jsonObjectBO = new JsonObjectBO();
+        String phoneReg = "^[1][3,4,5,7,8][0-9]{9}$";
+        String accountReg ="^[A-Za-z0-9]{6,16}$";
+        String passwordReg = "^[A-Za-z0-9]{6,16}$";
+
+        if (!Pattern.matches(accountReg,userAccount)) {
+            jsonObjectBO.setCode(2);
+            jsonObjectBO.setMessage("账户必须是字母或者数字,长度6~16位");
+            return jsonObjectBO;
+        }
+
+        if (!Pattern.matches(passwordReg,password)) {
+            jsonObjectBO.setCode(2);
+            jsonObjectBO.setMessage("密码必须是字母或者数字,长度6~16位");
+            return jsonObjectBO;
+        }
+
+        if (!Pattern.matches(phoneReg,userPhone)) {
+            jsonObjectBO.setCode(2);
+            jsonObjectBO.setMessage("请填写正确的手机号");
+            return jsonObjectBO;
+        }
+
+        if (refereeAccount != null && !"".equals(refereeAccount)) {
+            if (!Pattern.matches(accountReg,userAccount)) {
+                jsonObjectBO.setCode(2);
+                jsonObjectBO.setMessage("推荐人账户必须是字母或者数字,长度6~16位");
+                return jsonObjectBO;
+            }
+        }
+
+        jsonObjectBO.setCode(1);
+        jsonObjectBO.setMessage("用户信息合法");
+        return jsonObjectBO;
     }
 
 }

@@ -9,7 +9,7 @@ import java.sql.Timestamp;
  */
 public class UserDO {
 
-    private long userId;  //用户Id
+    private int userId;  //用户Id
     private String userAccount;  //用户账号
     private String password;  //登录密码
     private String payPassword;  //支付密码
@@ -17,7 +17,7 @@ public class UserDO {
     private String phoneNumber;  //绑定手机号
     private double userBalance;  //可用资产单位(美刀$)
     private double userBalanceLock;  //锁定资产单位(美刀$)
-    private long accountStatus;  //账号状态：1：启用，2：禁用，-1：删除
+    private int accountStatus;  //账号状态：1：启用，2：禁用，-1：删除
     private Timestamp addTime;  //注册时间
 
 
@@ -26,7 +26,7 @@ public class UserDO {
      *
      * @return the user id
      */
-    public long getUserId() {
+    public int getUserId() {
         return userId;
     }
 
@@ -35,7 +35,7 @@ public class UserDO {
      *
      * @param userId the user id
      */
-    public void setUserId(long userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
@@ -178,7 +178,7 @@ public class UserDO {
      *
      * @return the account status
      */
-    public long getAccountStatus() {
+    public int getAccountStatus() {
         return accountStatus;
     }
 
@@ -187,7 +187,7 @@ public class UserDO {
      *
      * @param accountStatus the account status
      */
-    public void setAccountStatus(long accountStatus) {
+    public void setAccountStatus(int accountStatus) {
         this.accountStatus = accountStatus;
     }
 

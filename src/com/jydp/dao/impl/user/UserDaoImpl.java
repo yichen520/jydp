@@ -142,4 +142,21 @@ public class UserDaoImpl implements IUserDao {
         }
         return user;
     }
+
+    /**
+     * 根据手机号查询用户信息
+     * @param phoneNumber 用户手机号
+     * @return 查询成功：返回用户信息；查询失败：返回null
+     */
+    @Override
+    public UserDO getUserByPhone(String phoneNumber) {
+        UserDO user = null;
+
+        try {
+            user = sqlSessionTemplate.selectOne("User_getUserByPhone",phoneNumber);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return user;
+    }
 }

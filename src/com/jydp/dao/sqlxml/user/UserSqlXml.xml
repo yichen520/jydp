@@ -60,10 +60,17 @@
 		 	  AND accountStatus <![CDATA[ > ]]> 0
 	</select>
 
-	<select id="getUserByUserAccount" parameterType="String" resultType="UserDO">
+	<select id="User_getUserByUserAccount" parameterType="String" resultType="UserDO">
 		SELECT userId, userAccount, phoneAreaCode, phoneNumber, userBalance,
 			userBalanceLock, accountStatus, addTime
 		FROM user_tab
 		WHERE  userAccount = #{userAccount}
+	</select>
+
+	<select id="User_getUserByPhone" parameterType="String" resultType="UserDO">
+		SELECT userId, userAccount, phoneAreaCode, phoneNumber, userBalance,
+			userBalanceLock, accountStatus, addTime
+		FROM user_tab
+		WHERE phoneNumber = #{phoneNumber}
 	</select>
 </mapper>

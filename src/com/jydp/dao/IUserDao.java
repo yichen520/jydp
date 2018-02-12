@@ -54,4 +54,11 @@ public interface IUserDao {
      */
     UserDO getUserByUserAccount(String userAccount);
 
+    /**
+     * 根据手机号查询用户信息
+     * @param phoneNumber 用户手机号
+     * @return 查询成功：返回用户信息；查询失败：返回null
+     */
+    UserDO getUserByPhone(String phoneNumber);
+
 }
