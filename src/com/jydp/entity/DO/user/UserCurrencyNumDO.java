@@ -10,8 +10,8 @@ import java.sql.Timestamp;
  */
 public class UserCurrencyNumDO {
 
-    private long userId;  //用户Id
-    private long currencyId;  //币种Id
+    private int userId;  //用户Id
+    private int currencyId;  //币种Id
     private double currencyNumber;  //货币数量
     private double currencyNumberLock;  //冻结数量
     private Timestamp addTime;  //添加时间
@@ -21,7 +21,7 @@ public class UserCurrencyNumDO {
      *
      * @return the user id
      */
-    public long getUserId() {
+    public int getUserId() {
         return userId;
     }
 
@@ -30,7 +30,7 @@ public class UserCurrencyNumDO {
      *
      * @param userId the user id
      */
-    public void setUserId(long userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
@@ -39,7 +39,7 @@ public class UserCurrencyNumDO {
      *
      * @return the currency id
      */
-    public long getCurrencyId() {
+    public int getCurrencyId() {
         return currencyId;
     }
 
@@ -48,7 +48,7 @@ public class UserCurrencyNumDO {
      *
      * @param currencyId the currency id
      */
-    public void setCurrencyId(long currencyId) {
+    public void setCurrencyId(int currencyId) {
         this.currencyId = currencyId;
     }
 

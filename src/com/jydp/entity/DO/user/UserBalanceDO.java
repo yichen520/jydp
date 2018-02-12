@@ -10,8 +10,8 @@ import java.sql.Timestamp;
 public class UserBalanceDO {
 
     private String orderNo;  //记录号：业务类型（2）+日期（6）+随机位（10）
-    private long userId;  //用户Id
-    private long paymentType;  //收支类型：1：买入，2：卖出
+    private int userId;  //用户Id
+    private int paymentType;  //收支类型：1：买入，2：卖出
     private String fromType;  //账户来源
     private double balanceNumber;  //交易金额：单位(美刀$)
     private String remark;  //备注：手续费
@@ -40,7 +40,7 @@ public class UserBalanceDO {
      *
      * @return the user id
      */
-    public long getUserId() {
+    public int getUserId() {
         return userId;
     }
 
@@ -49,7 +49,7 @@ public class UserBalanceDO {
      *
      * @param userId the user id
      */
-    public void setUserId(long userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
@@ -58,7 +58,7 @@ public class UserBalanceDO {
      *
      * @return the payment type
      */
-    public long getPaymentType() {
+    public int getPaymentType() {
         return paymentType;
     }
 
@@ -67,7 +67,7 @@ public class UserBalanceDO {
      *
      * @param paymentType the payment type
      */
-    public void setPaymentType(long paymentType) {
+    public void setPaymentType(int paymentType) {
         this.paymentType = paymentType;
     }
 

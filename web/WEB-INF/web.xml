@@ -14,7 +14,7 @@
     <context-param>
         <!-- 不同的项目使用相同的日志系统一定要设置该参数 -->
         <param-name>webAppRootKey</param-name>
-        <param-value>syl</param-value>
+        <param-value>jydp</param-value>
     </context-param>
     <listener>
         <listener-class>ch.qos.logback.ext.spring.web.LogbackConfigListener</listener-class>

@@ -4,4 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jydp.dao.impl.user.UserCurrencyNumDaoImpl">
+
+    <select id="UserCurrency_getUserCurrencyByUserId" parameterType="int" resultType="UserCurrencyDO">
+        SELECT userId, currencyId, currencyNumber, currencyNumberLock, addTime
+        FROM user_currency_num_tab
+        WHERE userId = #{userId}
+        ORDER BY currencyId
+    </select>
 </mapper>

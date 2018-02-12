@@ -25,15 +25,11 @@ import java.util.List;
 @Scope(value = "prototype")
 public class BackerIdentificationController {
 
-    /**
-     * 用户认证
-     */
+    /** 用户认证 */
     @Autowired
     private IUserIdentificationService userIdentificationService;
 
-    /**
-     * 展示列表页面
-     */
+    /** 展示列表页面 */
     @RequestMapping(value = "/show.htm")
     public String show(HttpServletRequest request) {
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
@@ -51,13 +47,11 @@ public class BackerIdentificationController {
             return "page/back/index";
         }
 
-        show(request);
+        showList(request);
         return "page/back/userIdentification";
     }
 
-    /**
-     * 获取列表数据
-     */
+    /** 获取列表数据 */
     private void showList(HttpServletRequest request) {
         String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
         String startTimeStr = StringUtil.stringNullHandle(request.getParameter("startTime"));
@@ -92,6 +86,10 @@ public class BackerIdentificationController {
             totalPageNumber = 1;
         }
 
+        if (totalPageNumber <= pageNumber) {
+            pageNumber = totalPageNumber -1;
+        }
+
         List<UserIdentificationDO> userIdentificationList = null;
         if (totalNumber > 0) {
             userIdentificationList = userIdentificationService.listUserIdentificationForBacker(userAccount, userPhone, identificationStatus, startTime, endTime, pageNumber, pageSize);
@@ -111,9 +109,7 @@ public class BackerIdentificationController {
         request.getSession().setAttribute("backer_pagePowerId", 141000);
     }
 
-    /**
-     * 实名认证详情页面
-     */
+    /** 实名认证详情页面 */
     @RequestMapping(value = "/detail.htm")
     public String detail(HttpServletRequest request) {
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
@@ -150,9 +146,7 @@ public class BackerIdentificationController {
         return "page/back/userIdentificationDetail";
     }
 
-    /**
-     * 审核通过
-     */
+    /** 审核通过 */
     @RequestMapping(value = "/pass.htm")
     public String pass(HttpServletRequest request) {
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
@@ -186,13 +180,11 @@ public class BackerIdentificationController {
             request.setAttribute("code", 5);
             request.setAttribute("message", "操作失败");
         }
-        show(request);
+        showList(request);
         return "page/back/userIdentification";
     }
 
-    /**
-     * 审核拒绝
-     */
+    /** 审核拒绝 */
     @RequestMapping(value = "/refuse.htm")
     public String refuse(HttpServletRequest request) {
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
@@ -226,7 +218,7 @@ public class BackerIdentificationController {
             request.setAttribute("code", 5);
             request.setAttribute("message", "操作失败");
         }
-        show(request);
+        showList(request);
         return "page/back/userIdentification";
     }
 }
