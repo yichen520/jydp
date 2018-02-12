@@ -48,7 +48,7 @@
 				userBalanceLock = #{userBalanceLock},
 			</if>
 		</set>
-		WHERE userId = #{userId}
+		WHERE userAccount = #{userAccount}
 	</update>
 
 	<select id="User_validateUserLogin" parameterType="java.util.Map" resultType="UserDO">

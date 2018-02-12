@@ -3,11 +3,14 @@ package com.jydp.dao.impl.user;
 import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.IUserCurrencyNumDao;
 import com.jydp.entity.DO.user.UserCurrencyDO;
+import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description: 用户币数量
@@ -33,5 +36,26 @@ public class UserCurrencyNumDaoImpl implements IUserCurrencyNumDao {
             LogUtil.printErrorLog(e);
         }
         return resultList;
+    }
+
+    /**
+     * web端添加用户币数量(用户注册时添加记录，默认各币种数量为0)
+     * @return 操作成功：返回true;操作失败：返回false
+     */
+    @Override
+    public boolean insertUserCurrencyForWeb(List<UserCurrencyNumDO> userCurrencyNumDOList) {
+        int result = 0;
+
+        try {
+            result = sqlSessionTemplate.insert("UserCurrency_insertUserCurrencyForWeb",userCurrencyNumDOList);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

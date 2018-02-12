@@ -72,4 +72,6 @@ public interface IUserService {
      * @return 查询成功：返回验证结果; 查询失败：返回null
      */
     JsonObjectBO validateUserInfo(String userAccount, String password, String userPhone, String refereeAccount);
+
+    boolean register(UserDO userDO);
 }

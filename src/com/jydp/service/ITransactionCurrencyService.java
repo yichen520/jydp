@@ -3,6 +3,7 @@ package com.jydp.service;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * 交易币种
@@ -40,4 +41,10 @@ public interface ITransactionCurrencyService {
      * @return  操作成功：返回true，操作失败：返回false
      */
     boolean deleteTransactionCurrencyByCurrencyId(int currencyId);
+
+    /**
+     * 获取所有币种信息(web端用户注册时使用)
+     * @return 查询成功：返回币种信息列表；查询失败：返回null
+     */
+    List<TransactionCurrencyDO> getTransactionCurrencyListForWeb();
 }

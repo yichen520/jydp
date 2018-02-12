@@ -10,4 +10,14 @@
         FROM user_currency_num_tab
         WHERE userId = #{userId}
     </select>
+
+    <insert id="UserCurrency_insertUserCurrencyForWeb" parameterType="java.util.List">
+        INSERT INTO user_currency_num_tab(userId, currencyId, addTime)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.userId},
+             #{item.currencyId},
+             #{item.addTime})
+        </foreach>
+    </insert>
 </mapper>

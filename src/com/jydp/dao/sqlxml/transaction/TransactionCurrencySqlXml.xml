@@ -28,4 +28,9 @@
         DELETE FROM transaction_currency_tab
         WHERE currencyId = #{currencyId}
     </delete>
+
+    <select id="TransactionCurrency_getTransactionCurrencyListForWeb" resultType="TransactionCurrencyDO">
+        SELECT  currencyId, currencyShortName, currencyName, addTime
+        FROM transaction_currency_tab
+    </select>
 </mapper>

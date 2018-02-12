@@ -1,12 +1,21 @@
 package com.jydp.service.impl.user;
 
+import com.iqmkj.utils.DateUtil;
 import com.jydp.dao.IUserDao;
 import com.jydp.entity.BO.JsonObjectBO;
+import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
+import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
+import com.jydp.service.ITransactionCurrencyService;
+import com.jydp.service.IUserCurrencyNumService;
 import com.jydp.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -20,6 +29,14 @@ public class UserServiceImpl implements IUserService {
     /** 用户账户 */
     @Autowired
     private IUserDao userDao;
+
+    /** 用户币数量 */
+    @Autowired
+    private IUserCurrencyNumService userCurrencyNumService;
+
+    /**  交易币种 */
+    @Autowired
+    private ITransactionCurrencyService transactionCurrencyService;
 
     /**
      * 新增用户账号
@@ -141,4 +158,40 @@ public class UserServiceImpl implements IUserService {
         return jsonObjectBO;
     }
 
+    /**
+     * 用户注册
+     * @param userDO 用户信息
+     * @return 操作成功：返回true；操作失败：返回false
+     */
+    @Override
+    @Transactional
+    public boolean register(UserDO userDO){
+        //用戶信息新增
+        boolean result = userDao.insertUser(userDO);
+
+        if (result) {
+            //查询所有币种
+            List<TransactionCurrencyDO> transactionCurrencyDOList = transactionCurrencyService.getTransactionCurrencyListForWeb();
+
+            if (transactionCurrencyDOList != null) {
+                List<UserCurrencyNumDO> userCurrencyNumDOList = new ArrayList<UserCurrencyNumDO>();
+                for (int i = 0; i < transactionCurrencyDOList.size(); i ++) {
+                    UserCurrencyNumDO userCurrencyNum =  new UserCurrencyNumDO();
+                    userCurrencyNum.setUserId(userDO.getUserId());
+                    userCurrencyNum.setCurrencyId(transactionCurrencyDOList.get(i).getCurrencyId());
+                    userCurrencyNum.setAddTime(DateUtil.getCurrentTime());
+                }
+                //新增用户币数量记录
+                result = userCurrencyNumService.insertUserCurrencyForWeb(userCurrencyNumDOList);
+
+                if (!result) {
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
+        return result;
+    }
 }
