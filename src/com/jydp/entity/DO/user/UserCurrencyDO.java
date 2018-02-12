@@ -11,11 +11,11 @@ import java.sql.Timestamp;
 public class UserCurrencyDO {
 
     private String orderNo;  //记录号：业务类型（2）+日期（6）+随机位（10）
-    private long userId;  //用户Id
-    private long paymentType;  //收支类型：1：增加，2：减少
+    private int userId;  //用户Id
+    private int paymentType;  //收支类型：1：增加，2：减少
     private String fromType;  //账户来源
     private double currencyNumber;  //货币数量
-    private long currencyId;  //币种Id
+    private int currencyId;  //币种Id
     private String remark;  //备注：手续费
     private Timestamp addTime;  //添加时间
 
@@ -43,7 +43,7 @@ public class UserCurrencyDO {
      *
      * @return the user id
      */
-    public long getUserId() {
+    public int getUserId() {
         return userId;
     }
 
@@ -52,7 +52,7 @@ public class UserCurrencyDO {
      *
      * @param userId the user id
      */
-    public void setUserId(long userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
@@ -62,7 +62,7 @@ public class UserCurrencyDO {
      *
      * @return the payment type
      */
-    public long getPaymentType() {
+    public int getPaymentType() {
         return paymentType;
     }
 
@@ -71,7 +71,7 @@ public class UserCurrencyDO {
      *
      * @param paymentType the payment type
      */
-    public void setPaymentType(long paymentType) {
+    public void setPaymentType(int paymentType) {
         this.paymentType = paymentType;
     }
 
@@ -119,7 +119,7 @@ public class UserCurrencyDO {
      *
      * @return the currency id
      */
-    public long getCurrencyId() {
+    public int getCurrencyId() {
         return currencyId;
     }
 
@@ -128,7 +128,7 @@ public class UserCurrencyDO {
      *
      * @param currencyId the currency id
      */
-    public void setCurrencyId(long currencyId) {
+    public void setCurrencyId(int currencyId) {
         this.currencyId = currencyId;
     }
 

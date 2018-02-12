@@ -9,6 +9,7 @@
         SELECT userId, currencyId, currencyNumber, currencyNumberLock, addTime
         FROM user_currency_num_tab
         WHERE userId = #{userId}
+        ORDER BY currencyId
     </select>
 
     <insert id="UserCurrency_insertUserCurrencyForWeb" parameterType="java.util.List">

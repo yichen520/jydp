@@ -11,12 +11,12 @@ import java.sql.Timestamp;
 public class UserIdentificationDO {
 
     private long id;  //记录Id
-    private long userId;  //用户Id
+    private int userId;  //用户Id
     private String userAccount;  //用户账号
     private String userName;  //用户姓名
     private String userPhone;  //手机号
     private String userCertNo;  //身份证号码
-    private long identificationStatus;  //实名认证状态
+    private int identificationStatus;  //实名认证状态
     private String remark;  //备注
     private Timestamp identiTime;  //审核时间
     private Timestamp addTime;  //提交时间
@@ -46,7 +46,7 @@ public class UserIdentificationDO {
      *
      * @return the user id
      */
-    public long getUserId() {
+    public int getUserId() {
         return userId;
     }
 
@@ -55,7 +55,7 @@ public class UserIdentificationDO {
      *
      * @param userId the user id
      */
-    public void setUserId(long userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
@@ -141,7 +141,7 @@ public class UserIdentificationDO {
      *
      * @return the identification status
      */
-    public long getIdentificationStatus() {
+    public int getIdentificationStatus() {
         return identificationStatus;
     }
 
@@ -150,7 +150,7 @@ public class UserIdentificationDO {
      *
      * @param identificationStatus the identification status
      */
-    public void setIdentificationStatus(long identificationStatus) {
+    public void setIdentificationStatus(int identificationStatus) {
         this.identificationStatus = identificationStatus;
     }
 
