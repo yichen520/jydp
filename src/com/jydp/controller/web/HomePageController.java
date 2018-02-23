@@ -1,4 +1,4 @@
-package com.jydp.controller;
+package com.jydp.controller.web;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jydp.entity.BO.JsonObjectBO;

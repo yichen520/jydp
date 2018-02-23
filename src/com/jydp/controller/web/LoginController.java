@@ -1,4 +1,4 @@
-package com.jydp.controller;
+package com.jydp.controller.web;
 
 import com.google.code.kaptcha.Constants;
 import com.iqmkj.utils.MD5Util;

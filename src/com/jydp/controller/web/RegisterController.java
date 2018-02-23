@@ -1,4 +1,4 @@
-package com.jydp.controller;
+package com.jydp.controller.web;
 
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.MD5Util;
