@@ -4,4 +4,69 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jydp.dao.impl.user.UserFeedbackDaoImpl">
+
+    <select id="UserFeedback_countUserFeedback" parameterType="java.util.Map" resultType="int">
+        SELECT COUNT(id)
+        FROM user_feedback_tab
+        <where>
+            <if test="userAccount != null and userAccount != '' ">
+                AND userAccount LIKE CONCAT('%', #{userAccount}, '%')
+            </if>
+            <if test="feedbackTitle != null and feedbackTitle != '' ">
+                AND feedbackTitle LIKE CONCAT('%', #{feedbackTitle}, '%')
+            </if>
+            <if test="handleStatus > 0">
+                AND handleStatus = #{handleStatus}
+            </if>
+            <if test="startTime != null">
+                AND addTime <![CDATA[ >= ]]> #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND addTime <![CDATA[ <= ]]> #{endTime}
+            </if>
+        </where>
+    </select>
+
+    <select id="UserFeedback_listUserFeedbackByPage" parameterType="java.util.Map" resultType="UserFeedbackDO">
+        SELECT id, userId, userAccount, feedbackTitle, feedbackContent, addTime, handleStatus, handleContent,
+        backerAccount, handleTime
+        FROM user_feedback_tab
+        <where>
+            <if test="userAccount != null and userAccount != '' ">
+                AND userAccount LIKE CONCAT('%', #{userAccount}, '%')
+            </if>
+            <if test="feedbackTitle != null and feedbackTitle != '' ">
+                AND feedbackTitle LIKE CONCAT('%', #{feedbackTitle}, '%')
+            </if>
+            <if test="handleStatus > 0">
+                AND handleStatus = #{handleStatus}
+            </if>
+            <if test="startTime != null">
+                AND addTime <![CDATA[ >= ]]> #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND addTime <![CDATA[ <= ]]> #{endTime}
+            </if>
+        </where>
+        ORDER BY addTime DESC
+        LIMIT #{startNumber}, #{pageSize}
+    </select>
+
+    <update id="UserFeedback_updateUserFeedbackById" parameterType="java.util.Map">
+        UPDATE user_feedback_tab
+        <set>
+            handleStatus = #{handleStatus},
+            <if test="handleContent != null">
+                handleContent = #{handleContent},
+            </if>
+            <if test="backerAccount != null and backerAccount != ''">
+                backerAccount = #{backerAccount},
+            </if>
+            <if test="handleTime != null">
+                handleTime = #{handleTime}
+            </if>
+        </set>
+        WHERE id = #{id}
+        AND #{handleStatus} <![CDATA[ > ]]> handleStatus
+    </update>
 </mapper>
