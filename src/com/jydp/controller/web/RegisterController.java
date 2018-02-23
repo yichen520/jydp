@@ -67,7 +67,6 @@ public class RegisterController {
         String validateCode = StringUtil.stringNullHandle(request.getParameter("validateCode"));
         String phoneAreaCode = StringUtil.stringNullHandle(request.getParameter("phoneAreaCode"));
         String userPhone = StringUtil.stringNullHandle(request.getParameter("userPhone"));
-        String refereeAccount = StringUtil.stringNullHandle(request.getParameter("refereeAccount"));
         if (!StringUtil.isNotNull(userAccount) || !StringUtil.isNotNull(password) || !StringUtil.isNotNull(phoneAreaCode) ||
                 !StringUtil.isNotNull(validateCode) || !StringUtil.isNotNull(userPhone)) {
             responseJson.setCode(2);
@@ -90,7 +89,7 @@ public class RegisterController {
         }
 
         //校验用户注册信息合法性
-        responseJson = userService.validateUserInfo(userAccount,password,userPhone,refereeAccount);
+        responseJson = userService.validateUserInfo(userAccount,password,userPhone);
 
         if (responseJson.getCode() != 1) {
             return responseJson;
