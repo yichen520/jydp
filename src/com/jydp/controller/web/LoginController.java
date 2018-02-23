@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * web端用户登录
+ * @author yk
  */
 @Controller
 @RequestMapping("/web/user")

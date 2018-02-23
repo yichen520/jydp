@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * web端首页
+ * @author yk
  */
 @Service("homePageService")
 public class HomePageServiceImpl implements IHomePageService{

@@ -73,5 +73,10 @@ public interface IUserService {
      */
     JsonObjectBO validateUserInfo(String userAccount, String password, String userPhone, String refereeAccount);
 
+    /**
+     * 用户注册
+     * @param userDO 用户注册信息
+     * @return 操作成功：返回true; 操作失败：返回false
+     */
     boolean register(UserDO userDO);
 }

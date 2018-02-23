@@ -14,6 +14,7 @@ import java.util.List;
 
 /**
  * 成交记录
+ * @author yk
  */
 @Controller
 @RequestMapping("/web/myrecord")

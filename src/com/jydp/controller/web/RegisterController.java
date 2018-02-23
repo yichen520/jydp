@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * web端用户注册
+ * @author yk
  */
 @Controller
 @RequestMapping("/web/user")

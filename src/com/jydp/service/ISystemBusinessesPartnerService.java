@@ -59,4 +59,10 @@ public interface ISystemBusinessesPartnerService {
      * @return 删除成功：返回true，删除失败：返回false
      */
     boolean deleteSystemBusinessesPartner(int id);
+
+    /**
+     * web用户端查询合作商家
+     * @return 查询成功：返回合作商家列表；查询失败：返回null
+     */
+    List<SystemBusinessesPartnerDO> getSystemBusinessesPartnerForWeb();
 }

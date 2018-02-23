@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * web端首页
+ * @author yk
  */
 public interface IHomePageService {
 

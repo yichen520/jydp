@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * 忘记密码
+ * @author yk
  */
 @Controller
 @RequestMapping("/web/user")
