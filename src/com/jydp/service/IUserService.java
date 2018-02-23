@@ -99,7 +99,7 @@ public interface IUserService {
      * @param refereeAccount 推荐人账号
      * @return 查询成功：返回验证结果; 查询失败：返回null
      */
-    JsonObjectBO validateUserInfo(String userAccount, String password, String userPhone, String refereeAccount);
+    JsonObjectBO validateUserInfo(String userAccount, String password, String userPhone);
 
     /**
      * 用户注册

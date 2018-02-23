@@ -153,7 +153,7 @@ public class UserServiceImpl implements IUserService {
      * @return 查询成功：返回验证结果; 查询失败：返回null
      */
     @Override
-    public JsonObjectBO validateUserInfo(String userAccount, String password, String userPhone, String refereeAccount) {
+    public JsonObjectBO validateUserInfo(String userAccount, String password, String userPhone) {
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         String phoneReg = "^[1][3,4,5,7,8][0-9]{9}$";
         String accountReg ="^[A-Za-z0-9]{6,16}$";
@@ -175,14 +175,6 @@ public class UserServiceImpl implements IUserService {
             jsonObjectBO.setCode(2);
             jsonObjectBO.setMessage("请填写正确的手机号");
             return jsonObjectBO;
-        }
-
-        if (refereeAccount != null && !"".equals(refereeAccount)) {
-            if (!Pattern.matches(accountReg,userAccount)) {
-                jsonObjectBO.setCode(2);
-                jsonObjectBO.setMessage("推荐人账户必须是字母或者数字,长度6~16位");
-                return jsonObjectBO;
-            }
         }
 
         jsonObjectBO.setCode(1);

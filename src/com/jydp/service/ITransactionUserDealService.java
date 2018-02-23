@@ -29,6 +29,7 @@ public interface ITransactionUserDealService {
      * @param paymentType  收支类型,1：买入，2：卖出
      * @param currencyId  币种Id
      * @param currencyName  货币名称
+     * @param transactionPrice 成交单价
      * @param currencyNumber  成交数量
      * @param currencyTotalPrice  成交总价
      * @param remark  备注
@@ -36,7 +37,7 @@ public interface ITransactionUserDealService {
      * @return  操作成功：返回true，操作失败：返回false
      */
     boolean insertTransactionUserDeal(String orderNo, String pendingOrderNo, int userId, int paymentType,
-                                      int currencyId, String currencyName, double currencyNumber, double currencyTotalPrice,
+                                      int currencyId, String currencyName, double transactionPrice, double currencyNumber, double currencyTotalPrice,
                                       String remark, Timestamp addTime);
 
     /**
