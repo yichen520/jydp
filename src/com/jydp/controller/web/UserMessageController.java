@@ -3,7 +3,7 @@ package com.jydp.controller.web;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
-import com.jydp.entity.DO.user.UserCurrencyDO;
+import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.IUserCurrencyNumService;
@@ -50,7 +50,7 @@ public class UserMessageController {
         UserDO userMessage = userService.getUserByUserId(user.getUserId());
 
         //查询用户币信息
-        List<UserCurrencyDO> userCurrencyList = IUserCurrencyNumService.getUserCurrencyByUserId(user.getUserId());
+        List<UserCurrencyNumDO> userCurrencyList = IUserCurrencyNumService.getUserCurrencyNumByUserId(user.getUserId());
 
         request.setAttribute("code", 1);
         request.setAttribute("message", "查询成功");

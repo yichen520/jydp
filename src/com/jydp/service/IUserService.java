@@ -1,6 +1,10 @@
 package com.jydp.service;
 
+import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.user.UserDO;
+
+import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Description: 用户账号
@@ -22,6 +26,31 @@ public interface IUserService {
      * @return 查询成功：返回用户信息，查询失败或无数据：返回null
      */
     UserDO getUserByUserId (int userId);
+
+    /**
+     * 查询用户账号总数（后台）
+     * @param userAccount 用户账号（可为null）
+     * @param phoneNumber 手机号（可为null）
+     * @param accountStatus 账号状态（可为null）
+     * @param startTime   开始时间(可为null)
+     * @param endTime     结束时间(可为null)
+     * @return 查询成功：返回用户账户总数，查询失败：返回0
+     */
+    int countUserForBacker (String userAccount, String phoneNumber, int accountStatus, Timestamp startTime, Timestamp endTime);
+
+    /**
+     * 查询用户账号列表（后台）
+     * @param userAccount 用户账号（可为null）
+     * @param phoneNumber 手机号（可为null）
+     * @param accountStatus 账号状态（可为null）
+     * @param startTime   开始时间(可为null)
+     * @param endTime     结束时间(可为null)
+     * @param pageNumber  当前页数
+     * @param pageSize    查询条数
+     * @return 查询成功：返回用户账户列表，查询失败：返回null
+     */
+    List<UserDO> listUserForBacker (String userAccount, String phoneNumber, int accountStatus,
+                                    Timestamp startTime, Timestamp endTime, int pageNumber, int pageSize);
 
     /**
      * 修改用户账号状态
@@ -48,4 +77,34 @@ public interface IUserService {
      */
     UserDO validateUserLogin(String userAccount, String password);
 
+    /**
+     * 根据用户账号查询用户信息
+     * @param userAccount 用户账号
+     * @return 查询成功：返回用户信息；查询失败：返回null
+     */
+    UserDO getUserByUserAccount(String userAccount);
+
+    /**
+     * 根据手机号查询用户信息
+     * @param phoneNumber 用户手机号
+     * @return 查询成功：返回用户信息；查询失败：返回null
+     */
+    UserDO getUserByPhone(String phoneNumber);
+
+    /**
+     * 验证用户信息合法性
+     * @param userAccount 用户名
+     * @param password 密码
+     * @param userPhone 用户手机号
+     * @param refereeAccount 推荐人账号
+     * @return 查询成功：返回验证结果; 查询失败：返回null
+     */
+    JsonObjectBO validateUserInfo(String userAccount, String password, String userPhone, String refereeAccount);
+
+    /**
+     * 用户注册
+     * @param userDO 用户注册信息
+     * @return 操作成功：返回true; 操作失败：返回false
+     */
+    boolean register(UserDO userDO);
 }

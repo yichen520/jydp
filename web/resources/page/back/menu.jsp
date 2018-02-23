@@ -12,16 +12,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <body>
 <ul class="menu">
-    <li class="levelOne">
-        <p class="menuTitle  titleChoose">
+    <li class="levelOne" id="li_140000">
+        <p class="menuTitle">
             账号管理
             <img src="<%=path %>/resources/image/back/down.png" class="menu_down" />
             <img src="<%=path %>/resources/image/back/up.png" class="menu_up" />
         </p>
 
         <ul class="levelTwo">
-            <li class="menuInfo"><a href="#" class="personal_pitch">实名认证</a></li>
-            <li class="menuInfo"><a href="#">用户账号</a></li>
+            <li class="menuInfo" id="li_141000"><a id="a_141000" href="#">实名认证</a></li>
+            <li class="menuInfo" id="li_141100"><a id="a_141100" href="<%=path%>/backerWeb/backerUserAccount/show.htm">用户账号</a></li>
         </ul>
     </li>
 

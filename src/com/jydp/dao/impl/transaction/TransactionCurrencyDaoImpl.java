@@ -7,6 +7,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * 交易币种
  * @author fk
@@ -96,5 +98,21 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
         } else {
             return false;
         }
+    }
+
+    /**
+     * 获取所有币种信息(web端用户注册时使用)
+     * @return 查询成功：返回币种信息列表；查询失败：返回null
+     */
+    @Override
+    public List<TransactionCurrencyDO> getTransactionCurrencyListForWeb() {
+        List<TransactionCurrencyDO> transactionCurrencyDOList = null;
+
+        try {
+            transactionCurrencyDOList = sqlSessionTemplate.selectList("TransactionCurrency_getTransactionCurrencyListForWeb");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return transactionCurrencyDOList;
     }
 }
