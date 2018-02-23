@@ -74,6 +74,13 @@ public class RegisterController {
             return responseJson;
         }
 
+        UserDO valiUserDO = userService.getUserByUserAccount(userAccount);
+        if (valiUserDO != null) {
+            responseJson.setCode(2);
+            responseJson.setMessage("用户名重复");
+            return responseJson;
+        }
+
         UserDO user = userService.getUserByPhone(userPhone);
         if (user != null) {
             responseJson.setCode(2);
@@ -81,43 +88,37 @@ public class RegisterController {
             return responseJson;
         }
 
-        JsonObjectBO resultJson = systemValidatePhoneService.validatePhone(userPhone, validateCode);
-        if (resultJson.getCode() != 1) {
-            responseJson.setCode(2);
-            responseJson.setMessage("验证码错误");
-            return responseJson;
-        }
-
-        UserDO valiUserDO = userService.getUserByUserAccount(userAccount);
-        if (valiUserDO != null) {
-            responseJson.setCode(102002);
-            responseJson.setMessage("用户名重复");
-            return responseJson;
-        }
-
         //校验用户注册信息合法性
-        JsonObjectBO jsonObjectBO = userService.validateUserInfo(userAccount,password,userPhone,refereeAccount);
+        responseJson = userService.validateUserInfo(userAccount,password,userPhone,refereeAccount);
 
-        if (jsonObjectBO.getCode() != 1) {
-            return jsonObjectBO;
+        if (responseJson.getCode() != 1) {
+            return responseJson;
         }
+
+        responseJson = systemValidatePhoneService.validatePhone(userPhone, validateCode);
+        if (responseJson.getCode() != 1) {
+            return responseJson;
+        }
+
         UserDO userDO = new UserDO();
         userDO.setUserAccount(userAccount);
         userDO.setPassword(MD5Util.toMd5(password));
         userDO.setPhoneAreaCode(phoneAreaCode);
         userDO.setPhoneNumber(userPhone);
+        userDO.setPayPassword(MD5Util.toMd5("123456"));
+        userDO.setAccountStatus(1);
         userDO.setAddTime(DateUtil.getCurrentTime());
 
         boolean result = userService.register(userDO);
 
         if (result) {
-            jsonObjectBO.setCode(1);
-            jsonObjectBO.setMessage("注册成功");
+            responseJson.setCode(1);
+            responseJson.setMessage("注册成功");
         } else {
-            jsonObjectBO.setCode(2);
-            jsonObjectBO.setMessage("注册失败");
+            responseJson.setCode(2);
+            responseJson.setMessage("注册失败");
         }
-        return jsonObjectBO;
+        return responseJson;
     }
 
 }

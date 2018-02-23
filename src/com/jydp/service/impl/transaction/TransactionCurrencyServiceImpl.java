@@ -70,6 +70,6 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      */
     @Override
     public List<TransactionCurrencyDO> getTransactionCurrencyListForWeb() {
-        return null;
+        return transactionCurrencyDao.getTransactionCurrencyListForWeb();
     }
 }

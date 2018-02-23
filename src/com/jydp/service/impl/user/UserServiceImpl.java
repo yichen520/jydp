@@ -170,27 +170,32 @@ public class UserServiceImpl implements IUserService {
         boolean result = userDao.insertUser(userDO);
 
         if (result) {
+            //查询出新增用户userId，给用户币数量表添加记录
+            userDO = userDao.getUserByUserAccount(userDO.getUserAccount());
+            if (userDO == null) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return false;
+            }
             //查询所有币种
             List<TransactionCurrencyDO> transactionCurrencyDOList = transactionCurrencyService.getTransactionCurrencyListForWeb();
 
             if (transactionCurrencyDOList != null) {
                 List<UserCurrencyNumDO> userCurrencyNumDOList = new ArrayList<UserCurrencyNumDO>();
                 for (int i = 0; i < transactionCurrencyDOList.size(); i ++) {
+                    //注册时添加用户所有币种默认数量为0的记录
                     UserCurrencyNumDO userCurrencyNum =  new UserCurrencyNumDO();
                     userCurrencyNum.setUserId(userDO.getUserId());
                     userCurrencyNum.setCurrencyId(transactionCurrencyDOList.get(i).getCurrencyId());
                     userCurrencyNum.setAddTime(DateUtil.getCurrentTime());
+                    userCurrencyNumDOList.add(userCurrencyNum);
                 }
                 //新增用户币数量记录
                 result = userCurrencyNumService.insertUserCurrencyForWeb(userCurrencyNumDOList);
 
                 if (!result) {
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                    return false;
                 }
             }
-        } else {
-            return false;
         }
         return result;
     }

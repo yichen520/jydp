@@ -49,6 +49,7 @@
 			</if>
 		</set>
 		WHERE userAccount = #{userAccount}
+			  AND accountStatus <![CDATA[ > ]]> 0
 	</update>
 
 	<select id="User_validateUserLogin" parameterType="java.util.Map" resultType="UserDO">

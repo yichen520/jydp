@@ -1,6 +1,7 @@
 package com.jydp.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.iqmkj.utils.MD5Util;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.user.UserDO;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 忘记密码
@@ -31,34 +34,17 @@ public class ForgetController {
 
     /** 忘记密码 */
     @RequestMapping(value = "/forgetPassword")
-    public @ResponseBody
-    JsonObjectBO forgetPassword(@RequestBody String requestJsonString){
+    public @ResponseBody JsonObjectBO forgetPassword(HttpServletRequest request){
         JsonObjectBO responseJson = new JsonObjectBO();
 
-        JSONObject requestJson = null;
-        try {
-            requestJson = JSONObject.parseObject(requestJsonString);
-        } catch (Exception e) {
-            responseJson.setCode(2);
-            responseJson.setMessage("JSON格式错误");
-            return responseJson;
-        }
-
-        String userAccount = StringUtil.stringNullHandle(requestJson.getString("userAccount"));
-        String password = StringUtil.stringNullHandle(requestJson.getString("password"));
-        String validateCode = StringUtil.stringNullHandle(requestJson.getString("validateCode"));
-        String userPhone = StringUtil.stringNullHandle(requestJson.getString("userPhone"));
+        String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
+        String password = StringUtil.stringNullHandle(request.getParameter("password"));
+        String validateCode = StringUtil.stringNullHandle(request.getParameter("validateCode"));
+        String userPhone = StringUtil.stringNullHandle(request.getParameter("userPhone"));
         if (!StringUtil.isNotNull(userAccount) || !StringUtil.isNotNull(password) ||
                 !StringUtil.isNotNull(validateCode) || !StringUtil.isNotNull(userPhone)) {
             responseJson.setCode(2);
             responseJson.setMessage("提交信息存在为空选项");
-            return responseJson;
-        }
-
-        JsonObjectBO resultJson = systemValidatePhoneService.validatePhone(userPhone, validateCode);
-        if (resultJson.getCode() != 1) {
-            responseJson.setCode(2);
-            responseJson.setMessage("验证码错误");
             return responseJson;
         }
 
@@ -74,7 +60,20 @@ public class ForgetController {
             responseJson.setMessage("用户被禁用");
             return responseJson;
         }
-        boolean resetResult = userService.forgetPwd(userAccount, password);
+
+        UserDO user = userService.getUserByPhone(userPhone);
+        if (user == null || !userAccount.equals(user.getUserAccount())) {
+            responseJson.setCode(2);
+            responseJson.setMessage("手机号与用户所绑手机号不匹配");
+            return responseJson;
+        }
+
+        responseJson = systemValidatePhoneService.validatePhone(userPhone, validateCode);
+        if (responseJson.getCode() != 1) {
+            return responseJson;
+        }
+
+        boolean resetResult = userService.forgetPwd(userAccount, MD5Util.toMd5(password));
         if (resetResult) {
             responseJson.setCode(1);
             responseJson.setMessage("找回密码成功");
