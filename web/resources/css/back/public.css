@@ -202,18 +202,22 @@ input:-webkit-autofill{
     margin-left: 15px;
     margin-bottom: 15px;
     color: #666666;
-    font-size: 15px;
+    font-size: 14px;
 }
 .askInput,.endTime,.startTime{
     padding-left: 4px;
     height: 35px;
     border: 1px solid #cccccc;
     border-radius: 4px;
+    font-size: 13px;
+    color: #898989;
 }
 .askSelect{
     height: 37px;
     border: 1px solid #cccccc;
     border-radius: 4px;
+    font-size: 13px;
+    color: #898989;
 }
 .ask{
     margin-left: 20px;

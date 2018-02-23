@@ -8,9 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Description: 用户币数量
@@ -24,14 +22,14 @@ public class UserCurrencyNumDaoImpl implements IUserCurrencyNumDao {
     private SqlSessionTemplate sqlSessionTemplate;
 
     /**
-     * 根据用户id查询币种记录
+     * 查询用户币数量
      * @param userId 用户Id
-     * @return 查询成功：返回用户币种记录信息，查询失败：返回null
+     * @return 查询成功：返回用户币数量，查询失败：返回null
      */
-    public List<UserCurrencyDO> getUserCurrencyByUserId (int userId) {
-        List<UserCurrencyDO> resultList = null;
+    public List<UserCurrencyNumDO> getUserCurrencyNumByUserId (int userId) {
+        List<UserCurrencyNumDO> resultList = null;
         try {
-            resultList = sqlSessionTemplate.selectList("UserCurrency_getUserCurrencyByUserId", userId);
+            resultList = sqlSessionTemplate.selectList("UserCurrencyNum_getUserCurrencyNumByUserId", userId);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }

@@ -2,6 +2,9 @@ package com.jydp.dao;
 
 import com.jydp.entity.DO.user.UserDO;
 
+import java.sql.Timestamp;
+import java.util.List;
+
 /**
  * Description: 用户帐号
  * Author: hht
@@ -22,6 +25,31 @@ public interface IUserDao {
      * @return 查询成功：返回用户信息，查询失败或无数据：返回null
      */
     UserDO getUserByUserId (int userId);
+
+    /**
+     * 查询用户账号总数（后台）
+     * @param userAccount 用户账号（可为null）
+     * @param phoneNumber 手机号（可为null）
+     * @param accountStatus 账号状态（可为null）
+     * @param startTime   开始时间(可为null)
+     * @param endTime     结束时间(可为null)
+     * @return 查询成功：返回用户账户总数，查询失败：返回0
+     */
+    int countUserForBacker (String userAccount, String phoneNumber, int accountStatus, Timestamp startTime, Timestamp endTime);
+
+    /**
+     * 查询用户账号列表（后台）
+     * @param userAccount 用户账号（可为null）
+     * @param phoneNumber 手机号（可为null）
+     * @param accountStatus 账号状态（可为null）
+     * @param startTime   开始时间(可为null)
+     * @param endTime     结束时间(可为null)
+     * @param pageNumber  当前页数
+     * @param pageSize    查询条数
+     * @return 查询成功：返回用户账户列表，查询失败：返回null
+     */
+    List<UserDO> listUserForBacker (String userAccount, String phoneNumber, int accountStatus,
+                                           Timestamp startTime, Timestamp endTime, int pageNumber, int pageSize);
 
     /**
      * 修改用户账号状态

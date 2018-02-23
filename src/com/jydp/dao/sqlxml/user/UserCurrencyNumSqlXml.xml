@@ -5,7 +5,7 @@
 
 <mapper namespace="com.jydp.dao.impl.user.UserCurrencyNumDaoImpl">
 
-    <select id="UserCurrency_getUserCurrencyByUserId" parameterType="int" resultType="UserCurrencyDO">
+    <select id="UserCurrencyNum_getUserCurrencyNumByUserId" parameterType="int" resultType="UserCurrencyNumDO">
         SELECT userId, currencyId, currencyNumber, currencyNumberLock, addTime
         FROM user_currency_num_tab
         WHERE userId = #{userId}
