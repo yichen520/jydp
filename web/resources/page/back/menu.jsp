@@ -19,9 +19,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <img src="<%=path %>/resources/image/back/up.png" class="menu_up" />
         </p>
 
-        <ul class="levelTwo">
-            <li class="menuInfo"><a href="#" class="personal_pitch">实名认证</a></li>
-            <li class="menuInfo"><a href="#">用户账号</a></li>
+        <ul class="levelTwo" id="li_140000">
+            <li class="menuInfo" id="li_141000"><a id="a_141000" href="#">实名认证</a></li>
+            <li class="menuInfo" id="li_141100"><a id="a_141100" href="<%=path%>/backerWeb/backerUserAccount/show.htm">用户账号</a></li>
         </ul>
     </li>
 

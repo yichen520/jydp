@@ -22,12 +22,12 @@ public class UserCurrencyNumServiceImpl implements IUserCurrencyNumService {
     private IUserCurrencyNumDao userCurrencyNumDao;
 
     /**
-     * 根据用户id查询币种记录
+     * 查询用户币数量
      * @param userId 用户Id
-     * @return 查询成功：返回用户币种记录信息，查询失败：返回null
+     * @return 查询成功：返回用户币数量，查询失败：返回null
      */
-    public List<UserCurrencyDO> getUserCurrencyByUserId (int userId){
-        return userCurrencyNumDao.getUserCurrencyByUserId(userId);
+    public List<UserCurrencyNumDO> getUserCurrencyNumByUserId (int userId){
+        return userCurrencyNumDao.getUserCurrencyNumByUserId(userId);
     }
 
     /**

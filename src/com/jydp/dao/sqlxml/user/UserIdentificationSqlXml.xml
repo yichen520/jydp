@@ -51,7 +51,7 @@
 	<select id="UserIdentification_listUserIdentificationForBacker" parameterType="java.util.Map" resultType="UserIdentificationDO">
 		SELECT id, userId, userAccount, userName, userPhone, userCertNo,
 			identificationStatus, remark, identiTime, addTime
-		FROM UserIdentification_listUserIdentificationForBacker
+		FROM user_identification_tab
 		<where>
 			<if test="userAccount != null and userAccount != '' ">
 				AND userAccount LIKE CONCAT('%', #{userAccount}, '%')

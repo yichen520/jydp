@@ -7,7 +7,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -50,6 +52,63 @@ public class UserDaoImpl implements IUserDao {
         UserDO result = null;
         try {
             result = sqlSessionTemplate.selectOne("User_getUserByUserId", userId);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return result;
+    }
+
+    /**
+     * 查询用户账号总数（后台）
+     * @param userAccount 用户账号（可为null）
+     * @param phoneNumber 手机号（可为null）
+     * @param accountStatus 账号状态（可为null）
+     * @param startTime   开始时间(可为null)
+     * @param endTime     结束时间(可为null)
+     * @return 查询成功：返回用户账户总数，查询失败：返回0
+     */
+    public int countUserForBacker (String userAccount, String phoneNumber, int accountStatus, Timestamp startTime, Timestamp endTime) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("userAccount", userAccount);
+        map.put("phoneNumber", phoneNumber);
+        map.put("accountStatus", accountStatus);
+        map.put("startTime", startTime);
+        map.put("endTime", endTime);
+
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.selectOne("User_countUserForBacker", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return result;
+    }
+
+    /**
+     * 查询用户账号列表（后台）
+     * @param userAccount 用户账号（可为null）
+     * @param phoneNumber 手机号（可为null）
+     * @param accountStatus 账号状态（可为null）
+     * @param startTime   开始时间(可为null)
+     * @param endTime     结束时间(可为null)
+     * @param pageNumber  当前页数
+     * @param pageSize    查询条数
+     * @return 查询成功：返回用户账户列表，查询失败：返回null
+     */
+    public List<UserDO> listUserForBacker (String userAccount, String phoneNumber, int accountStatus,
+                                           Timestamp startTime, Timestamp endTime, int pageNumber, int pageSize) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("userAccount", userAccount);
+        map.put("phoneNumber", phoneNumber);
+        map.put("accountStatus", accountStatus);
+        map.put("startTime", startTime);
+        map.put("endTime", endTime);
+        map.put("startNumber", pageNumber * pageSize);
+        map.put("pageSize", pageSize);
+
+        List<UserDO> result = null;
+        try {
+            result = sqlSessionTemplate.selectList("User_listUserForBacker", map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }

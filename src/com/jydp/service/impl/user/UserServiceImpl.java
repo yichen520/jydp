@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import java.sql.Timestamp;
+import java.util.List;
+
 /**
  * Description: 用户账户
  * Author: hht
@@ -54,6 +57,35 @@ public class UserServiceImpl implements IUserService {
      */
     public UserDO getUserByUserId (int userId) {
         return userDao.getUserByUserId(userId);
+    }
+
+    /**
+     * 查询用户账号总数（后台）
+     * @param userAccount 用户账号（可为null）
+     * @param phoneNumber 手机号（可为null）
+     * @param accountStatus 账号状态（可为null）
+     * @param startTime   开始时间(可为null)
+     * @param endTime     结束时间(可为null)
+     * @return 查询成功：返回用户账户总数，查询失败：返回0
+     */
+    public int countUserForBacker (String userAccount, String phoneNumber, int accountStatus, Timestamp startTime, Timestamp endTime) {
+        return userDao.countUserForBacker(userAccount, phoneNumber, accountStatus, startTime, endTime);
+    }
+
+    /**
+     * 查询用户账号列表（后台）
+     * @param userAccount 用户账号（可为null）
+     * @param phoneNumber 手机号（可为null）
+     * @param accountStatus 账号状态（可为null）
+     * @param startTime   开始时间(可为null)
+     * @param endTime     结束时间(可为null)
+     * @param pageNumber  当前页数
+     * @param pageSize    查询条数
+     * @return 查询成功：返回用户账户列表，查询失败：返回null
+     */
+    public List<UserDO> listUserForBacker (String userAccount, String phoneNumber, int accountStatus,
+                                    Timestamp startTime, Timestamp endTime, int pageNumber, int pageSize) {
+        return userDao.listUserForBacker(userAccount, phoneNumber, accountStatus, startTime, endTime, pageNumber, pageSize);
     }
 
     /**
