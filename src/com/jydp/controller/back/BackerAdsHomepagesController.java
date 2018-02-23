@@ -1,6 +1,7 @@
 package com.jydp.controller.back;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.*;
 import com.jydp.entity.DO.system.SystemAdsHomepagesDO;
 import com.jydp.interceptor.BackerWebInterceptor;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -67,27 +69,26 @@ public class BackerAdsHomepagesController {
 
     /** 新增首页广告 */
     @RequestMapping(value = "/addHomeAd.htm", method = RequestMethod.POST)
-    public String addHomeAd(HttpServletRequest request, MultipartFile adsImageUrl) {
+    public @ResponseBody JSONObject addHomeAd(HttpServletRequest request, MultipartFile adsImageUrl) {
+        JSONObject response = new JSONObject();
         //业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 111002);
         if (!havePower) {
-            list(request);
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
+            response.put("code", 6);
+            response.put("message", "您没有该权限");
             request.getSession().setAttribute("backer_pagePowerId", 0);
-            return "page/back/adsHomepages";
+            return response;
+
         }
 
         //获取参数
         String adsTitle = StringUtil.stringNullHandle(request.getParameter("adsTitle"));
         String webLinkUrl = StringUtil.stringNullHandle(request.getParameter("webLinkUrl"));
         String wapLinkUrl = StringUtil.stringNullHandle(request.getParameter("wapLinkUrl"));
-
         if (!StringUtil.isNotNull(adsTitle) || adsImageUrl == null || !adsImageUrl.isEmpty()) {
-            list(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误！");
-            return "page/back/adsHomepages";
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
         }
 
         int maxRankNumber = 0;
@@ -116,15 +117,14 @@ public class BackerAdsHomepagesController {
 
         boolean addResult = systemAdsHomepagesService.insertSystemAdsHomePages(systemAdsHomepagesDO);
         if (addResult) {
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "新增成功！");
+            response.put("code", 1);
+            response.put("message", "新增成功！");
         } else {
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "新增失败！");
+            response.put("code", 5);
+            response.put("message", "新增失败！");
         }
 
-        list(request);
-        return "page/back/adsHomepages";
+        return response;
     }
 
     /** 修改首页广告 */
@@ -141,10 +141,10 @@ public class BackerAdsHomepagesController {
         }
 
         //获取参数
-        String idStr = StringUtil.stringNullHandle(request.getParameter("updateId"));
-        String adsTitle = StringUtil.stringNullHandle(request.getParameter("updateAdsTitle"));
-        String webLinkUrl = StringUtil.stringNullHandle(request.getParameter("updateWebLinkUrl"));
-        String wapLinkUrl = StringUtil.stringNullHandle(request.getParameter("updateWapLinkUrl"));
+        String idStr = StringUtil.stringNullHandle(request.getParameter("modifyId"));
+        String adsTitle = StringUtil.stringNullHandle(request.getParameter("modifyAdsTitle"));
+        String webLinkUrl = StringUtil.stringNullHandle(request.getParameter("modifyWebLinkUrl"));
+        String wapLinkUrl = StringUtil.stringNullHandle(request.getParameter("modifyWapLinkUrl"));
 
         if (!StringUtil.isNotNull(adsTitle) || !StringUtil.isNotNull(idStr)) {
             list(request);
