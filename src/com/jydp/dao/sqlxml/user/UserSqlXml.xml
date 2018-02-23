@@ -13,7 +13,7 @@
 	</insert>
 	
 	<select id="User_getUserByUserId" parameterType="int" resultType="UserDO">
-		SELECT userId, userAccount, password, payPassword, phoneAreaCode, phoneNumber, userBalance,
+		SELECT userId, userAccount, phoneAreaCode, phoneNumber, userBalance,
 			userBalanceLock, accountStatus, addTime
 		FROM user_tab
 		WHERE userId = #{userId}
@@ -48,7 +48,8 @@
 				userBalanceLock = #{userBalanceLock},
 			</if>
 		</set>
-		WHERE userId = #{userId}
+		WHERE userAccount = #{userAccount}
+			  AND accountStatus <![CDATA[ > ]]> 0
 	</update>
 
 	<select id="User_validateUserLogin" parameterType="java.util.Map" resultType="UserDO">
@@ -60,10 +61,63 @@
 		 	  AND accountStatus <![CDATA[ > ]]> 0
 	</select>
 
-	<select id="getUserByUserAccount" parameterType="String" resultType="UserDO">
+	<select id="User_getUserByUserAccount" parameterType="String" resultType="UserDO">
 		SELECT userId, userAccount, phoneAreaCode, phoneNumber, userBalance,
 			userBalanceLock, accountStatus, addTime
 		FROM user_tab
 		WHERE  userAccount = #{userAccount}
+	</select>
+
+	<select id="User_countUserForBacker" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(userId)
+		FROM user_tab
+		<where>
+			<if test="userAccount != null and userAccount != '' ">
+				userAccount LIKE CONCAT('%', #{userAccount}, '%')
+			</if>
+			<if test="phoneNumber != null and phoneNumber != '' ">
+				AND phoneNumber LIKE CONCAT('%', #{phoneNumber}, '%')
+			</if>
+			<if test="accountStatus != null and accountStatus != '' ">
+				AND accountStatus = #{accountStatus}
+			</if>
+			<if test="startTime != null">
+				AND addTime <![CDATA[ >= ]]> #{startTime}
+			</if>
+			<if test="endTime != null">
+				AND addTime <![CDATA[ <= ]]> #{endTime}
+			</if>
+		</where>
+	</select>
+
+	<select id="User_listUserForBacker" parameterType="java.util.Map" resultType="UserDO">
+		SELECT  userId, userAccount, phoneAreaCode, phoneNumber, userBalance, userBalanceLock, accountStatus, addTime
+		FROM user_tab
+		<where>
+			<if test="userAccount != null and userAccount != '' ">
+				userAccount LIKE CONCAT('%', #{userAccount}, '%')
+			</if>
+			<if test="phoneNumber != null and phoneNumber != '' ">
+				AND phoneNumber LIKE CONCAT('%', #{phoneNumber}, '%')
+			</if>
+			<if test="accountStatus != null and accountStatus != '' ">
+				AND accountStatus = #{accountStatus}
+			</if>
+			<if test="startTime != null">
+				AND addTime <![CDATA[ >= ]]> #{startTime}
+			</if>
+			<if test="endTime != null">
+				AND addTime <![CDATA[ <= ]]> #{endTime}
+			</if>
+		</where>
+		ORDER BY addTime DESC
+		LIMIT #{startNumber}, #{pageSize}
+	</select>
+
+	<select id="User_getUserByPhone" parameterType="String" resultType="UserDO">
+		SELECT userId, userAccount, phoneAreaCode, phoneNumber, userBalance,
+			userBalanceLock, accountStatus, addTime
+		FROM user_tab
+		WHERE phoneNumber = #{phoneNumber}
 	</select>
 </mapper>

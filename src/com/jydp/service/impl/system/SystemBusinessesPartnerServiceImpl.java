@@ -28,7 +28,6 @@ public class SystemBusinessesPartnerServiceImpl implements ISystemBusinessesPart
      * web用户端查询合作商家
      * @return 查询成功：返回合作商家列表；查询失败：返回null
      */
-
     public List<SystemBusinessesPartnerDO> getSystemBusinessesPartnerForWeb() {
         return systemBusinessesPartnerDao.getSystemBusinessesPartnerForWeb();
     }

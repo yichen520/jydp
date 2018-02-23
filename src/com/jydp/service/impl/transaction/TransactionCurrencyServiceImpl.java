@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * 交易币种
@@ -61,5 +62,14 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      */
     public boolean deleteTransactionCurrencyByCurrencyId(int currencyId){
         return transactionCurrencyDao.deleteTransactionCurrencyByCurrencyId(currencyId);
+    }
+
+    /**
+     * 获取所有币种信息(web端用户注册时使用)
+     * @return 查询成功：返回币种信息列表；查询失败：返回null
+     */
+    @Override
+    public List<TransactionCurrencyDO> getTransactionCurrencyListForWeb() {
+        return transactionCurrencyDao.getTransactionCurrencyListForWeb();
     }
 }
