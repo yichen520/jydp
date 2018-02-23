@@ -4,4 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jydp.dao.impl.user.UserCurrencyDaoImpl">
+    <insert id="UserCurrency_insertUserCurrency" parameterType="UserCurrencyDO">
+        INSERT INTO user_currency_tab
+        (orderNo, userId, paymentType, fromType, currencyNumber, currencyId, remark, addTime)
+        VALUES(#{orderNo}, #{userId}, #{paymentType}, #{fromType}, #{currencyNumber}, #{currencyId},
+               #{remark}, #{addTime})
+    </insert>
 </mapper>

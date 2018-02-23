@@ -12,7 +12,14 @@
         ORDER BY currencyId
     </select>
 
-    <insert id="UserCurrency_insertUserCurrencyForWeb" parameterType="java.util.List">
+    <select id="UserCurrencyNum_getUserCurrencyNumByUserIdAndCurrencyId" parameterType="java.util.Map" resultType="UserCurrencyNumDO">
+        SELECT userId, currencyId, currencyNumber, currencyNumberLock, addTime
+        FROM user_currency_num_tab
+        WHERE userId = #{userId}
+          AND currencyId = #{currencyId}
+    </select>
+
+    <insert id="UserCurrencyNum_insertUserCurrencyForWeb" parameterType="java.util.List">
         INSERT INTO user_currency_num_tab(userId, currencyId, addTime)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
@@ -21,4 +28,33 @@
              #{item.addTime})
         </foreach>
     </insert>
+
+    <update id="UserCurrencyNum_increaseCurrencyNumber" parameterType="UserCurrencyNumDO">
+        UPDATE FROM user_currency_num_tab
+        SET currencyNumber = currencyNumber + #{currencyNumber}
+        WHERE userId = #{userId}
+          AND currencyId = {currencyId}
+    </update>
+
+    <update id="UserCurrencyNum_reduceCurrencyNumber" parameterType="UserCurrencyNumDO">
+        UPDATE FROM user_currency_num_tab
+        SET currencyNumber = currencyNumber - #{currencyNumber}
+        WHERE userId = #{userId}
+          AND currencyId = {currencyId}
+    </update>
+
+    <update id="UserCurrencyNum_increaseCurrencyNumberLock" parameterType="UserCurrencyNumDO">
+        UPDATE FROM user_currency_num_tab
+        SET currencyNumberLock = currencyNumberLock + #{currencyNumberLock}
+        WHERE userId = #{userId}
+          AND currencyId = {currencyId}
+    </update>
+
+    <update id="UserCurrencyNum_reduceCurrencyNumberLock" parameterType="UserCurrencyNumDO">
+        UPDATE FROM user_currency_num_tab
+        SET currencyNumberLock = currencyNumberLock + #{currencyNumberLock}
+        WHERE userId = #{userId}
+          AND currencyId = {currencyId}
+    </update>
+
 </mapper>

@@ -1,10 +1,17 @@
 package com.jydp.service.impl.transaction;
 
+import com.iqmkj.utils.DateUtil;
+import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.ITransactionPendOrderDao;
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
-import com.jydp.service.ITransactionPendOrderService;
+import com.jydp.entity.DO.user.UserCurrencyNumDO;
+import com.jydp.entity.DO.user.UserDO;
+import com.jydp.service.*;
+import config.SystemCommonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -20,6 +27,22 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
     /** 挂单记录 */
     @Autowired
     private ITransactionPendOrderDao transactionPendOrderDao;
+
+    /** 用户账号 */
+    @Autowired
+    private IUserService userService;
+
+    /** 用户账户记录 */
+    @Autowired
+    private IUserBalanceService userBalanceService;
+
+    /** 用户货币记录 */
+    @Autowired
+    private IUserCurrencyService userCurrencyService;
+
+    /** 用户币数量 */
+    @Autowired
+    private IUserCurrencyNumService userCurrencyNumService;
 
     /**
      * 新增挂单记录
@@ -164,6 +187,79 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
                                                       int pageNumber, int pageSize){
         return transactionPendOrderDao.listPendOrderForBack(userAccount, currencyId, paymentType, pendingStatus, startAddTime, endAddTime,
                 startFinishTime, endFinishTime, pageNumber, pageSize);
+    }
+
+    /**
+     * 撤销挂单
+     * @param pendingOrderNo 记录号,业务类型（2）+日期（6）+随机位（10）
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    @Transactional
+    public boolean revokePendOrder(String pendingOrderNo){
+        //获取挂单记录
+        TransactionPendOrderDO transactionPendOrder = getPendOrderByPendingOrderNo(pendingOrderNo);
+        int paymentType = transactionPendOrder.getPaymentType();
+        int pendingStatus = transactionPendOrder.getPendingStatus();
+        int currencyId = transactionPendOrder.getCurrencyId();
+        int userId = transactionPendOrder.getUserId();
+        if(pendingStatus!=1 || pendingStatus != 2){
+            return false;
+        }
+        //计算撤销的数量
+        double num = transactionPendOrder.getPendingNumber() - transactionPendOrder.getDealNumber();
+        //业务执行状态
+        boolean excuteSuccess = true;
+
+        if(paymentType == 1){ //如果是买入
+            //查询用户美金金额
+            UserDO user = userService.getUserByUserId(userId);
+            //判断冻结数量是否大于等于num
+            if(user.getUserBalanceLock() < num){
+                return false;
+            }
+            //减少冻结数量
+
+            //增加美金数量
+
+            //增加美金记录
+
+        }else if(paymentType == 2){ //如果是卖出
+            //查询用户币数量
+            UserCurrencyNumDO userCurrencyNum = userCurrencyNumService.getUserCurrencyNumByUserIdAndCurrencyId(
+                    userId, currencyId);
+            //判断冻结数量是否大于等于num
+            if(userCurrencyNum.getCurrencyNumberLock() < num){
+                return false;
+            }
+            //减少冻结数量
+            if(excuteSuccess){
+                excuteSuccess = userCurrencyNumService.reduceCurrencyNumberLock(userId, currencyId, num);
+            }
+            //增加币数量
+            if(excuteSuccess){
+                excuteSuccess = userCurrencyNumService.increaseCurrencyNumber(userId, currencyId, num);
+            }
+            //增加币记录
+            if(excuteSuccess){
+                Timestamp curTime = DateUtil.getCurrentTime();
+                String orderNo = SystemCommonConfig.USER_CURRENCY + DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10)
+                        + NumberUtil.createNumberStr(10);
+
+                excuteSuccess = userCurrencyService.insertUserCurrency(orderNo, currencyId,
+                        1, "撤销挂单", num, currencyId, "无手续费", curTime);
+            }
+        }
+
+        //修改挂单状态
+        if(excuteSuccess){
+            excuteSuccess = transactionPendOrderDao.updatePendingStatus(pendingOrderNo, 4);
+        }
+
+        if(!excuteSuccess){
+            //数据回滚
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return excuteSuccess;
     }
 
 }
