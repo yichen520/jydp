@@ -26,6 +26,9 @@
 	<select id="TransactionUserDeal_countTransactionUserDealForBack" parameterType="java.util.Map" resultType="int">
 		SELECT COUNT(orderNo)
 		FROM transaction_user_deal_tab TRUDTab
+			<if test="startPendTime != null or endPendTime != null">
+				INNER JOIN transaction_pend_order_tab PTab ON TRUDTab.pendingOrderNo = PTab.pendingOrderNo
+			</if>
             <if test="userAccount != null and userAccount !=''">
               INNER JOIN user_tab UTab ON TRUDTab.userId = UTab.userId
             </if>
@@ -48,6 +51,12 @@
 			<if test="endAddTime != null">
 				AND TRUDTab.addTime <![CDATA[ <= ]]> #{endAddTime}
 			</if>
+			<if test="startPendTime != null">
+				AND PTab.addTime <![CDATA[ >= ]]> #{startPendTime}
+			</if>
+			<if test="endPendTime != null">
+				AND PTab.addTime <![CDATA[ <= ]]> #{endPendTime}
+			</if>
 	</select>
 
 	<select id="TransactionUserDeal_listTransactionUserDealForBack" parameterType="java.util.Map" resultType="TransactionUserDealDO">
@@ -55,6 +64,9 @@
 			TRUDTab.currencyId, TRUDTab.currencyName, TRUDTab.currencyNumber, TRUDTab.currencyTotalPrice,
 			TRUDTab.remark, TRUDTab.addTime
 		FROM transaction_user_deal_tab TRUDTab
+			<if test="startPendTime != null or endPendTime != null">
+				INNER JOIN transaction_pend_order_tab PTab ON TRUDTab.pendingOrderNo = PTab.pendingOrderNo
+			</if>
             <if test="userAccount != null and userAccount !=''">
                 INNER JOIN user_tab UTab ON TRUDTab.userId = UTab.userId
             </if>
@@ -76,6 +88,12 @@
 			</if>
 			<if test="endAddTime != null">
 				AND TRUDTab.addTime <![CDATA[ <= ]]> #{endAddTime}
+			</if>
+			<if test="startPendTime != null">
+				AND PTab.addTime <![CDATA[ >= ]]> #{startPendTime}
+			</if>
+			<if test="endPendTime != null">
+				AND PTab.addTime <![CDATA[ <= ]]> #{endPendTime}
 			</if>
 		ORDER BY addTime DESC
 		LIMIT #{startNumber}, #{pageSize}

@@ -115,4 +115,21 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
         }
         return transactionCurrencyDOList;
     }
+
+    /**
+     * 根据币种名称获取交易币种
+     * @param currencyName  币种名称
+     * @return  操作成功：返回交易币种，操作失败：返回null
+     */
+    public TransactionCurrencyDO getTransactionCurrencyByCurrencyName(String currencyName){
+        TransactionCurrencyDO transactionCurrency = null;
+
+        try {
+            transactionCurrency = sqlSessionTemplate.selectOne("TransactionCurrency_getTransactionCurrencyByCurrencyName", currencyName);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return  transactionCurrency;
+    }
 }

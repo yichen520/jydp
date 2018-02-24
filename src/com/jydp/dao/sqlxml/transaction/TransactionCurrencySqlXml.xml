@@ -33,4 +33,10 @@
         SELECT  currencyId, currencyShortName, currencyName, addTime
         FROM transaction_currency_tab
     </select>
+
+    <select id="TransactionCurrency_getTransactionCurrencyByCurrencyName" parameterType="java.lang.String" resultType="TransactionCurrencyDO">
+        SELECT  currencyId, currencyShortName, currencyName, addTime
+        FROM transaction_currency_tab
+        WHERE currencyName = #{currencyName}
+    </select>
 </mapper>

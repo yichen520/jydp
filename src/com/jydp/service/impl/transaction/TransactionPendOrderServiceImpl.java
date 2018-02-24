@@ -211,7 +211,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
         if(pendingStatus != 1 && pendingStatus != 2){
             return false;
         }
-        //计算撤销的数量
+        //计算撤销的币数量
         double num = transactionPendOrder.getPendingNumber() - dealNumber;
         //业务执行状态
         boolean excuteSuccess = true;
@@ -219,18 +219,19 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
         if(paymentType == 1){ //如果是买入
             //查询用户美金金额
             UserDO user = userService.getUserByUserId(userId);
-            //判断冻结金额是否大于等于num
-            num = num * transactionPendOrder.getPendingPrice() * (1+0.002);
-            if(user.getUserBalanceLock() < num){
+            //计算撤销的美金数量
+            double balanceRevoke = num * transactionPendOrder.getPendingPrice() * (1+0.002);
+            //判断冻结金额是否大于等于balanceRevoke
+            if(user.getUserBalanceLock() < balanceRevoke){
                 return false;
             }
             //减少冻结数量
             if(excuteSuccess){
-                excuteSuccess = userService.updateReduceUserBalanceLock(userId, num);
+                excuteSuccess = userService.updateReduceUserBalanceLock(userId, balanceRevoke);
             }
             //增加美金数量
             if(excuteSuccess){
-                excuteSuccess = userService.updateAddUserAmount(userId, num,0);
+                excuteSuccess = userService.updateAddUserAmount(userId, balanceRevoke,0);
             }
             //增加美金记录
             if(excuteSuccess){
@@ -244,7 +245,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
                 userBalance.setUserId(userId);
                 userBalance.setPaymentType(1);
                 userBalance.setFromType("撤销挂单返还冻结美金");
-                userBalance.setBalanceNumber(num);
+                userBalance.setBalanceNumber(balanceRevoke);
                 userBalance.setRemark("返还冻结的手续费");
                 userBalance.setAddTime(curTime);
 
@@ -281,10 +282,11 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
 
         //修改挂单状态
         if(excuteSuccess) {
+            Timestamp curTime = DateUtil.getCurrentTime();
             if (dealNumber > 0) {
-                excuteSuccess = transactionPendOrderDao.updatePartRevoke(pendingOrderNo, num);
+                excuteSuccess = transactionPendOrderDao.updatePartRevoke(pendingOrderNo, num, curTime);
             } else if (dealNumber == 0) {
-                excuteSuccess = transactionPendOrderDao.updateAllRevoke(pendingOrderNo, num);
+                excuteSuccess = transactionPendOrderDao.updateAllRevoke(pendingOrderNo, num, curTime);
             }
         }
 

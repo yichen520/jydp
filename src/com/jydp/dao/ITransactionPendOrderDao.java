@@ -105,16 +105,18 @@ public interface ITransactionPendOrderDao {
      * 修改挂单状态为部分撤销（仅撤单用）
      * @param pendingOrderNo 记录号,业务类型（2）+日期（6）+随机位（10）
      * @param revokeNumber 撤销数量
+     * @param endTime 撤销时间
      * @return 操作成功：返回true，操作失败：返回false
      */
-    boolean updatePartRevoke(String pendingOrderNo, double revokeNumber);
+    boolean updatePartRevoke(String pendingOrderNo, double revokeNumber, Timestamp endTime);
 
     /**
      * 修改挂单状态为全部撤销（仅撤单用）
      * @param pendingOrderNo 记录号,业务类型（2）+日期（6）+随机位（10）
      * @param revokeNumber 撤销数量
+     * @param endTime 撤销时间
      * @return 操作成功：返回true，操作失败：返回false
      */
-    boolean updateAllRevoke(String pendingOrderNo, double revokeNumber);
+    boolean updateAllRevoke(String pendingOrderNo, double revokeNumber, Timestamp endTime);
 
 }

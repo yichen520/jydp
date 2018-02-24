@@ -35,6 +35,9 @@
             <if test="executeStatus != 0">
                 AND executeStatus = #{executeStatus}
             </if>
+            <if test="paymentType != 0">
+                AND paymentType = #{paymentType}
+            </if>
             <if test="startAddTime != null">
                 AND addTime <![CDATA[ >= ]]> #{startAddTime}
             </if>
@@ -63,6 +66,9 @@
             </if>
             <if test="executeStatus != 0">
                 AND executeStatus = #{executeStatus}
+            </if>
+            <if test="paymentType != 0">
+                AND paymentType = #{paymentType}
             </if>
             <if test="startAddTime != null">
                 AND addTime <![CDATA[ >= ]]> #{startAddTime}

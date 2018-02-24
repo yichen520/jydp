@@ -109,20 +109,23 @@
                             <td class="type">卖出</td>
                         </c:if>
                         <c:if test="${pend.pendingStatus == 1}">
-                            <td class="state">挂单中</td>
+                            <td class="state">未成交</td>
                         </c:if>
                         <c:if test="${pend.pendingStatus == 2}">
-                            <td class="state">部分完成</td>
+                            <td class="state">部分成交</td>
                         </c:if>
                         <c:if test="${pend.pendingStatus == 3}">
-                            <td class="state">已完成</td>
+                            <td class="state">已成交</td>
                         </c:if>
                         <c:if test="${pend.pendingStatus == 4}">
-                            <td class="state">已撤销</td>
+                            <td class="state">部分撤销</td>
+                        </c:if>
+                        <c:if test="${pend.pendingStatus == 5}">
+                            <td class="state">全部撤销</td>
                         </c:if>
 
                         <td class="time">
-                            <c:if test="${pend.pendingStatus == 3}">
+                            <c:if test="${pend.pendingStatus != 1}">
                                 <fmt:formatDate type="time" value="${pend.endTime}" pattern="yyyy-MM-dd HH:mm:ss" />
                             </c:if>
                         </td>
