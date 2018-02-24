@@ -3,6 +3,7 @@ package com.jydp.dao.impl.user;
 import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.IUserCurrencyNumDao;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
+import com.jydp.entity.DTO.BackerUserCurrencyNumDTO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -31,6 +32,21 @@ public class UserCurrencyNumDaoImpl implements IUserCurrencyNumDao {
         List<UserCurrencyNumDO> resultList = null;
         try {
             resultList = sqlSessionTemplate.selectList("UserCurrencyNum_getUserCurrencyNumByUserId", userId);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return resultList;
+    }
+
+    /**
+     * 查询用户币数量（后台）
+     * @param userId 用户Id
+     * @return 查询成功：返回用户币数量，查询失败：返回null
+     */
+    public List<BackerUserCurrencyNumDTO> getUserCurrencyNumByUserIdForBacker (int userId) {
+        List<BackerUserCurrencyNumDTO> resultList = null;
+        try {
+            resultList = sqlSessionTemplate.selectList("UserCurrencyNum_getUserCurrencyNumByUserIdForBacker", userId);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }

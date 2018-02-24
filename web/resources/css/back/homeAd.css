@@ -1,0 +1,107 @@
+.location{
+    width: 64px;
+}
+.time{
+    width: 160px;
+}
+.pic{
+    width: 70px;
+}
+.adTitle{
+    width: 192px;
+}
+.link{
+    width: 215px;
+    word-break: break-all;
+}
+.link a{
+    color: #333333;
+    text-decoration: underline;
+}
+.link a:hover{
+    color: #2c94fd;
+}
+.pic img{
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+}
+.operate{
+    width: 195px;
+}
+.tableInfo .operate{
+    text-align: right;
+}
+.adUp,.adDown,.change,.delete{
+    margin-right: 5px;
+    width: 40px;
+    text-align: center;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 12px;
+    color: #49a2fb;
+}
+.adUp:hover,.adDown:hover,.change:hover,.delete:hover{
+    color: #2c94fd;
+}
+
+.delete_pop,.add_pop,.change_pop
+{
+    display: none;
+}
+.popName{
+    display: inline-block;
+    width: 100px;
+    height: 35px;
+    line-height: 35px;
+    text-align: left;
+    color: #666666;
+    font-size: 14px;
+}
+.star{
+    color: #ff0000;
+}
+.entry{
+    float: right;
+    padding-left: 5px;
+    border: 1px solid #ececec;
+    width: 250px;
+    height: 35px;
+}
+.popPic{
+    position: relative;
+    float: right;
+    border: 1px solid #ececec;
+    width: 255px;
+    height: 35px;
+    text-align: left;
+}
+.choosePic{
+    float: left;
+    padding-left: 5px;
+    width: 155px;
+    border: none;
+    height: 34px;
+}
+.file{
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: -1;
+    width: 70px;
+    height: 35px;
+}
+.choose_button{
+    float: right;
+    width: 85px;
+    text-align: center;
+    color: #ffffff;
+    border: none;
+    height: 35px;
+    background-color: #49a2fb;
+    cursor: pointer;
+}
+.choose_button:hover{
+    background-color: #2c94fd;
+}

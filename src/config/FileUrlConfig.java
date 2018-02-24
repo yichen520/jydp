@@ -14,7 +14,7 @@ public class FileUrlConfig {
 	public static final String file_handle_url = "http://test.oksheng.com.cn/fileservice";
 
 	/**  文件服务器操作凭证 */
-	public static final String file_remote_token = "syl@xt@20180110@1.0@iqmkj#kingtjmngff.04hlsu";
+	public static final String file_remote_token = "sljz@20170923@4.1@iqmkj#jnbttioioahbu.134nfgv";
 	
 	/** 文件服务器上传文件访问地址 */
 	public static final String file_remote_upload_url = file_handle_url + "/fileService/upload";
