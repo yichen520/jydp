@@ -35,7 +35,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <ul class="levelTwo">
             <li class="menuInfo"><a href="<%=path %>/backerWeb/backerAdsHomepages/show.htm">首页广告</a></li>
             <li class="menuInfo"><a href="#">合作伙伴</a></li>
-            <li class="menuInfo"><a href="#">用户公告管理</a></li>
+            <li class="menuInfo"><a href="<%=path %>/backerWeb/backerNotice/show.htm">用户公告管理</a></li>
             <li class="menuInfo"><a href="#">热门话题管理</a></li>
             <li class="menuInfo"><a href="#">用户帮助中心</a></li>
             <li class="menuInfo"><a href="#">意见反馈</a></li>

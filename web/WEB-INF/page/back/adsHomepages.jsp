@@ -29,8 +29,9 @@
         <div class="caption">
             <span class="title">首页广告</span>
         </div>
-        <p class="add">新增广告</p>
-
+        <c:if test="${backer_rolePower['111002'] == 111002}">
+            <p class="add">新增广告</p>
+        </c:if>
         <div class="bottom">
             <table class="table" cellspacing="0" cellpadding="0">
                 <tr class="tableTitle">
@@ -89,7 +90,7 @@
                 <input type="hidden" name="id" id="deleteId"/>
                 <div class="buttons">
                     <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                    <input type="submit" value="确&nbsp;定" class="yes" onfocus="this.blur()" />
+                    <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="deleteCheck()"/>
                 </div>
             </div>
         </form>
@@ -159,12 +160,21 @@
         </div>
     </div>
 </div>
-
-<script type="text/javascript" src=http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
-<script type="text/javascript" src="<%=path %>/resources/js/public.js"></script>
+<script type="text/javascript" src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" src="<%=path %>/resources/js/simpleTips.js"></script>
+<script type="text/javascript" src="<%=path %>/resources/js/loadPageBack.js"></script>
 
 <script type="text/javascript">
+
+    window.onload = function() {
+        var code = '${code}';
+        var message = '${message}';
+        if (code != 1 && message != "") {
+            openTips(message);
+            return false;
+        }
+    }
+
     var popObj;
     $(function(){
         $(".delete").click(function(){
@@ -192,17 +202,6 @@
         });*/
     });
 
-</script>
-<script type="text/javascript">
-    window.onload = function() {
-        var code = '${code}';
-        var message = '${message}';
-        if (code != 1 && message != "") {
-            openTips(message);
-            return false;
-        }
-    }
-
     //删除
     function openDelete(id) {
         document.getElementById("deleteId").value = id;
@@ -211,34 +210,14 @@
         $(".delete_pop").fadeIn();
         popObj = ".delete_pop"
     }
-    //新增
-    function addCheck() {
-        var adsTitle = document.getElementById("addAdsTitle").value;
-        var webLinkUrl = document.getElementById("addWebLinkUrl").value;
-        var wapLinkUrl = document.getElementById("addWapLinkUrl").value;
-        var adsImageUrl = document.getElementById("changead_t1").value;
 
-        if(adsTitle == null || adsTitle == ""){
-            return openTips("标题不能为空");
-        }
-
-        if(adsImageUrl == null || adsImageUrl == '')
-        {
-            return openTips("请上传封面图");
-        }
-
-        if(adsTitle.length < 2 || adsTitle.length > 16){
-            return openTips("广告标题为2~16个字符");
-        }
+    function deleteCheck(){
+        var deleteId = document.getElementById("deleteId").value;
 
         $.ajax({
-            url: '<%=path %>' + "/backerWeb/backerAdsHomepages/addHomeAd.htm",
-            data:{
-                adsTitle : adsTitle,
-                webLinkUrl : webLinkUrl,
-                wapLinkUrl : wapLinkUrl,
-                adsImageUrl : adsImageUrl,
-
+            url: '<%=path %>' + "/backerWeb/backerAdsHomepages/deleteHomeAd.htm",
+            data: {
+                deleteId : deleteId,
             },//参数
             dataType: "json",
             type: 'POST',
@@ -258,6 +237,57 @@
                 openTips("数据加载出错，请稍候重试");
             }
         });
+    }
+    //新增
+    function addCheck() {
+        var adsTitle = document.getElementById("addAdsTitle").value;
+        var webLinkUrl = document.getElementById("addWebLinkUrl").value;
+        var wapLinkUrl = document.getElementById("addWapLinkUrl").value;
+        var adsImageUrlStr = document.getElementById("changead_t1").value;
+        var adsImageUrl = document.getElementById("changead_a1").files[0];
+
+        if (adsTitle == null || adsTitle == "") {
+            return openTips("标题不能为空");
+        }
+
+        if (adsImageUrlStr == null || adsImageUrlStr == '') {
+            return openTips("请上传封面图");
+        }
+
+        if (adsTitle.length < 2 || adsTitle.length > 16) {
+            return openTips("广告标题为2~16个字符");
+        }
+
+        var formData = new FormData();
+        formData.append("adsImageUrl", adsImageUrl);
+        formData.append("adsTitle", adsTitle);
+        formData.append("webLinkUrl", webLinkUrl);
+        formData.append("wapLinkUrl", wapLinkUrl);
+
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerAdsHomepages/addHomeAd.htm",
+            data:formData,//参数
+            dataType: "json",
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            processData : false,
+            contentType : false,
+            success: function (resultData) {
+                var code = resultData.code;
+                var message = resultData.message;
+                if (code != 1 && message != "") {
+                    openTips(message);
+                    return;
+                }
+
+                window.location.href = "<%=path%>" + "/backerWeb/backerAdsHomepages/show.htm";
+            },
+
+            error: function () {
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+    }
 
         //修改
         function openModify(id, adsTitle, webLinkUrl, wapLinkUrl) {
@@ -281,21 +311,101 @@
             if(adsTitle.length < 2 || adsTitle.length > 16){
                 return openTips("广告标题为2~16个字符");
             }
+            var formData = new FormData();
+            var modifyId = document.getElementById("modifyId").value;
+            var modifyAdsTitle = document.getElementById("modifyAdsTitle").value;
+            var modifyWebLinkUrl = document.getElementById("modifyWebLinkUrl").value;
+            var modifyWapLinkUrl = document.getElementById("modifyWapLinkUrl").value;
+            var adsImageUrl = document.getElementById("changead_a2").files[0];
 
-            $("#modifyForm").submit();
+            formData.append("adsImageUrl", adsImageUrl);
+            formData.append("modifyAdsTitle", modifyAdsTitle);
+            formData.append("modifyId", modifyId);
+            formData.append("modifyWebLinkUrl", modifyWebLinkUrl);
+            formData.append("modifyWapLinkUrl", modifyWapLinkUrl);
+
+            $.ajax({
+                url: '<%=path %>' + "/backerWeb/backerAdsHomepages/modifyHomeAd.htm",
+                data:formData,//参数
+                dataType: "json",
+                type: 'POST',
+                async: true, //默认异步调用 (false：同步)
+                processData : false,
+                contentType : false,
+                success: function (resultData) {
+                    var code = resultData.code;
+                    var message = resultData.message;
+                    if (code != 1 && message != "") {
+                        openTips(message);
+                        return;
+                    }
+
+                    window.location.href = "<%=path%>" + "/backerWeb/backerAdsHomepages/show.htm";
+                },
+
+                error: function () {
+                    openTips("数据加载出错，请稍候重试");
+                }
+            });
+
         }
-    }
+
 
     //上移
     function upMove(id) {
-        url = "<%=path%>/backerWeb/backerAdsHomepages/upMoveHomeAd.htm?id=" + id;
-        window.location.href = url;
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerAdsHomepages/upMoveHomeAd.htm",
+            data: {
+                id : id,
+            },//参数
+            dataType: "json",
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (resultData) {
+                var code = resultData.code;
+                var message = resultData.message;
+                if (code != 1 && message != "") {
+                    openTips(message);
+                    return;
+                }
+
+                window.location.href = "<%=path%>" + "/backerWeb/backerAdsHomepages/show.htm";
+            },
+
+            error: function () {
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+
     }
 
     //下移
     function downMove(id) {
-        url = "<%=path%>/backerWeb/backerAdsHomepages/downMoveHomeAd.htm?id=" + id;
-        window.location.href = url;
+
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerAdsHomepages/downMoveHomeAd.htm",
+            data: {
+                id : id,
+            },//参数
+            dataType: "json",
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (resultData) {
+                var code = resultData.code;
+                var message = resultData.message;
+                if (code != 1 && message != "") {
+                    openTips(message);
+                    return;
+                }
+
+                window.location.href = "<%=path%>" + "/backerWeb/backerAdsHomepages/show.htm";
+            },
+
+            error: function () {
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+
     }
 </script>
 
