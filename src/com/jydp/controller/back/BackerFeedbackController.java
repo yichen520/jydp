@@ -3,6 +3,7 @@ package com.jydp.controller.back;
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.BackerSessionBO;
+import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.user.UserFeedbackDO;
 import com.jydp.interceptor.BackerWebInterceptor;
 import com.jydp.service.IUserFeedbackService;
@@ -10,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
@@ -107,14 +108,14 @@ public class BackerFeedbackController {
 
     /** 回复 */
     @RequestMapping(value = "/reply.htm")
-    public String reply(HttpServletRequest request) {
+    public @ResponseBody JsonObjectBO reply(HttpServletRequest request) {
+        JsonObjectBO responsJson = new JsonObjectBO();
         //业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 116002);
         if (!havePower) {
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
-            request.getSession().setAttribute("backer_pagePowerId", 0);
-            return "page/back/index";
+            responsJson.setCode(6);
+            responsJson.setMessage("您没有该权限");
+            return responsJson;
         }
 
         String idStr = StringUtil.stringNullHandle(request.getParameter("replyId"));
@@ -122,31 +123,30 @@ public class BackerFeedbackController {
         String handleContent = StringUtil.stringNullHandle(request.getParameter("replyHandleContent"));
 
         if (!StringUtil.isNotNull(idStr) || !StringUtil.isNotNull(handleStatusStr)) {
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "未接受到参数");
-            return "page/back/feedback";
+            responsJson.setCode(3);
+            responsJson.setMessage("未接受到参数");
+            return responsJson;
         }
         long id = Long.parseLong(idStr);
         int handleStatus = Integer.parseInt(handleStatusStr);
 
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
         if (backerSession == null) {
-            request.setAttribute("code", 4);
-            request.setAttribute("message", "登录过期");
-            return "page/back/login";
+            responsJson.setCode(4);
+            responsJson.setMessage("登录过期");
+            return responsJson;
         }
 
         boolean updateResult = userFeedbackService.updateUserFeedbackById(id, handleStatus,
                 handleContent, backerSession.getBackerAccount(), DateUtil.getCurrentTime());
         if (updateResult) {
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "回复成功！");
+            responsJson.setCode(1);
+            responsJson.setMessage("回复成功！");
         } else {
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "回复失败！");
+            responsJson.setCode(5);
+            responsJson.setMessage("回复失败！");
         }
 
-        showList(request);
-        return "page/back/feedback";
+        return responsJson;
     }
 }

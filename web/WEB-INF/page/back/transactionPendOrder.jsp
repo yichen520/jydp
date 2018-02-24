@@ -56,7 +56,7 @@
                             <option value="2">部分成交</option>
                             <option value="3">全部成交</option>
                             <option value="4">部分撤销</option>
-                            <option value="5">已撤销</option>
+                            <option value="5">全部撤销</option>
                         </select>
                     </p>
                     <p class="condition">

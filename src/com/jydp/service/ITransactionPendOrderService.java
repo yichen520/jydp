@@ -21,7 +21,7 @@ public interface ITransactionPendOrderService {
      * @param pendingPrice 挂单单价
      * @param pendingNumber 挂单数量
      * @param dealNumber 成交数量
-     * @param pendingStatus 挂单状态，1：挂单中，2：部分完成，3：已完成，4：已撤销
+     * @param pendingStatus 挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销
      * @param remark 备注
      * @param addTime 添加时间
      * @return 操作成功：返回true，操作失败：返回false
@@ -34,7 +34,7 @@ public interface ITransactionPendOrderService {
      * 修改挂单记录
      * @param pendingOrderNo 记录号,业务类型（2）+日期（6）+随机位（10）
      * @param dealNumber 成交数量
-     * @param pendingStatus 挂单状态，1：挂单中，2：部分完成，3：已完成，4：已撤销
+     * @param pendingStatus 挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销
      * @param remark 备注
      * @param endTime 完成时间
      * @return 操作成功：返回true，操作失败：返回false
@@ -67,7 +67,7 @@ public interface ITransactionPendOrderService {
     /**
      * 修改挂单状态
      * @param pendingOrderNo 记录号,业务类型（2）+日期（6）+随机位（10）
-     * @param pendingStatus 挂单状态，1：挂单中，2：部分完成，3：已完成，4：已撤销
+     * @param pendingStatus 挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销
      * @return 操作成功：返回true，操作失败：返回false
      */
     boolean updatePendingStatus(String pendingOrderNo, int pendingStatus);
@@ -86,7 +86,7 @@ public interface ITransactionPendOrderService {
      * @param userAccount 用户账号
      * @param currencyId 币种Id（查全部为0）
      * @param paymentType 交易类型,1：买入，2：卖出（查全部为0）
-     * @param pendingStatus 挂单状态，1：挂单中，2：部分完成，3：已完成，4：已撤销（查全部为0）
+     * @param pendingStatus 挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销（查全部为0）
      * @param startAddTime 挂单起始时间，没有值填null
      * @param endAddTime 挂单结束时间，没有值填null
      * @param startFinishTime 完成起始时间，没有值填null
@@ -102,7 +102,7 @@ public interface ITransactionPendOrderService {
      * @param userAccount 用户账号
      * @param currencyId 币种Id（查全部为0）
      * @param paymentType 交易类型,1：买入，2：卖出（查全部为0）
-     * @param pendingStatus 挂单状态，1：挂单中，2：部分完成，3：已完成，4：已撤销（查全部为0）
+     * @param pendingStatus 挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销（查全部为0）
      * @param startAddTime 挂单起始时间，没有值填null
      * @param endAddTime 挂单结束时间，没有值填null
      * @param startFinishTime 完成起始时间，没有值填null

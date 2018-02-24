@@ -3,6 +3,7 @@ package com.jydp.controller.back;
 import com.iqmkj.config.SystemHelpConfig;
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.StringUtil;
+import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.system.SystemHelpDO;
 import com.jydp.interceptor.BackerWebInterceptor;
 import com.jydp.service.ISystemHelpService;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -73,29 +75,31 @@ public class BackerHelpCenterController {
 
     /** 提交帮助信息 */
     @RequestMapping(value = "/submitHelp.htm", method = RequestMethod.POST)
-    public String submitHelp(HttpServletRequest request) {
+    public @ResponseBody
+    JsonObjectBO submitHelp(HttpServletRequest request) {
+        JsonObjectBO responsJson = new JsonObjectBO();
+
         //业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 115002);
         if (!havePower) {
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
-            request.getSession().setAttribute("backer_pagePowerId", 0);
-            return "page/back/index";
+            responsJson.setCode(6);
+            responsJson.setMessage("您没有该权限");
+            return responsJson;
         }
 
         String helpIdStr = StringUtil.stringNullHandle(request.getParameter("helpId"));
         String content = StringUtil.stringNullHandle(request.getParameter("submit_content"));
         if (!StringUtil.isNotNull(helpIdStr) || !StringUtil.isNotNull(content)) {
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误");
-            return "page/back/index";
+            responsJson.setCode(3);
+            responsJson.setMessage("参数错误");
+            return responsJson;
         }
 
         int helpId = Integer.parseInt(helpIdStr);
         if (!SystemHelpConfig.userHelpMap.containsKey(helpId)) {
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误");
-            return "page/back/index";
+            responsJson.setCode(3);
+            responsJson.setMessage("参数错误");
+            return responsJson;
         }
 
         SystemHelpDO systemHelp = new SystemHelpDO();
@@ -111,15 +115,13 @@ public class BackerHelpCenterController {
         }
 
         if (updateResult) {
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "操作成功");
+            responsJson.setCode(1);
+            responsJson.setMessage("操作成功");
         } else {
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "操作失败");
+            responsJson.setCode(5);
+            responsJson.setMessage("操作失败");
         }
 
-        selectOne(request);
-        return "page/back/helpCenter";
+        return responsJson;
     }
-
 }

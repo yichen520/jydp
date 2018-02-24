@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50635
 File Encoding         : 65001
 
-Date: 2018-02-23 14:32:48
+Date: 2018-02-24 15:22:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -32,7 +32,7 @@ CREATE TABLE `backer_handle_user_balance_tab` (
   `addTime` datetime NOT NULL COMMENT '记录时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='后台管理员增减用户余额记录';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='后台管理员增减用户余额记录';
 
 -- ----------------------------
 -- Table structure for backer_role_power_map_tab
@@ -67,7 +67,7 @@ CREATE TABLE `backer_role_tab` (
   `roleName` varchar(20) NOT NULL COMMENT '角色名称',
   `addTime` datetime NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`roleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='后台管理员账户角色';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='后台管理员账户角色';
 
 -- ----------------------------
 -- Table structure for backer_session_tab
@@ -96,7 +96,7 @@ CREATE TABLE `backer_tab` (
   `addTime` datetime NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`backerId`),
   UNIQUE KEY `backerAccount` (`backerAccount`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='后台管理员';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='后台管理员';
 
 -- ----------------------------
 -- Table structure for system_ads_homepages_tab
@@ -112,7 +112,7 @@ CREATE TABLE `system_ads_homepages_tab` (
   `addTime` datetime NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='首页广告';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='首页广告';
 
 -- ----------------------------
 -- Table structure for system_businesses_partner_tab
@@ -174,7 +174,7 @@ CREATE TABLE `system_notice_tab` (
   `topTime` datetime DEFAULT NULL COMMENT '置顶时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='用户公告管理';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='用户公告管理';
 
 -- ----------------------------
 -- Table structure for system_validate_phone_tab
@@ -202,7 +202,24 @@ CREATE TABLE `transaction_currency_tab` (
   `currencyName` varchar(32) NOT NULL COMMENT '货币名称',
   `addTime` datetime NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`currencyId`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='交易币种';
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='交易币种';
+
+-- ----------------------------
+-- Table structure for transaction_deal_redis_tab
+-- ----------------------------
+DROP TABLE IF EXISTS `transaction_deal_redis_tab`;
+CREATE TABLE `transaction_deal_redis_tab` (
+  `orderNo` varchar(18) NOT NULL COMMENT '记录号',
+  `paymentType` tinyint(1) NOT NULL COMMENT '收支类型',
+  `currencyId` int(11) NOT NULL COMMENT '币种Id',
+  `transactionPrice` decimal(18,8) NOT NULL COMMENT '成交单价',
+  `currencyNumber` decimal(18,8) NOT NULL COMMENT '成交数量',
+  `currencyTotalPrice` decimal(18,8) NOT NULL COMMENT '成交总价',
+  `addTime` datetime NOT NULL COMMENT '添加时间',
+  PRIMARY KEY (`orderNo`),
+  UNIQUE KEY `orderNo` (`orderNo`) USING BTREE,
+  KEY `addTime` (`addTime`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='redis成交记录';
 
 -- ----------------------------
 -- Table structure for transaction_make_order_tab
@@ -241,7 +258,7 @@ CREATE TABLE `transaction_pend_order_tab` (
   `pendingPrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '挂单单价',
   `pendingNumber` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '挂单数量',
   `dealNumber` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '成交数量',
-  `pendingStatus` tinyint(1) NOT NULL COMMENT '挂单状态，1：挂单中，2：部分完成，3：已完成，4：已撤销',
+  `pendingStatus` tinyint(1) NOT NULL COMMENT '挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销',
   `remark` varchar(200) DEFAULT NULL COMMENT '备注',
   `endTime` datetime DEFAULT NULL COMMENT '完成时间',
   `addTime` datetime NOT NULL COMMENT '添加时间',
@@ -260,7 +277,7 @@ CREATE TABLE `transaction_user_deal_tab` (
   `orderNo` varchar(18) NOT NULL COMMENT '记录号,业务类型（2）+日期（6）+随机位（10）',
   `pendingOrderNo` varchar(18) NOT NULL COMMENT '挂单记录号',
   `userId` int(11) NOT NULL COMMENT '用户Id',
-  `paymentType` tinyint(1) NOT NULL COMMENT '收支类型,1：买入，2：卖出',
+  `paymentType` tinyint(1) NOT NULL COMMENT '收支类型,1：买入，2：卖出，3：撤销',
   `currencyId` int(11) NOT NULL COMMENT '币种Id',
   `currencyName` varchar(32) NOT NULL COMMENT '货币名称',
   `transactionPrice` decimal(18,8) NOT NULL,
