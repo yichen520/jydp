@@ -135,7 +135,7 @@
                 exportDataBoo = false;
             }, error:function(){
                 exportDataBoo = false;
-                openTips("导出失败,请重新刷新页面后重试");
+                openTips("系统错误！");
             }
         });
     }

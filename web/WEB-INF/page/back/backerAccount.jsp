@@ -95,11 +95,10 @@
 
                 <div class="buttons">
                     <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                    <input type="submit" value="确&nbsp;定" class="yes" onfocus="this.blur()" />
+                    <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="enableConfirm()" />
                 </div>
             </div>
             <input type="hidden" id="enbaleBackerId" name="enbaleBackerId">
-            <input type="hidden" name="pageNumber" value="${pageNumber }">
         </form>
 
         <form action="<%=path %>/backerWeb/backerAccount/forbidden.htm" method="post">
@@ -109,11 +108,10 @@
 
                 <div class="buttons">
                     <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                    <input type="submit" value="确&nbsp;定" class="yes" onfocus="this.blur()" />
+                    <input type="submit" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="disableConfirm()" />
                 </div>
             </div>
             <input type="hidden" id="disableBackerId" name="disableBackerId">
-            <input type="hidden" name="pageNumber" value="${pageNumber }">
         </form>
 
         <form action="<%=path %>/backerWeb/backerAccount/delete.htm" method="post">
@@ -263,8 +261,54 @@
         $("#enbaleBackerId").val(backerId);
     }
 
+    //启用确定
+    function enableConfirm() {
+        var enbaleBackerId = $("#enbaleBackerId").val();
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerAccount/startUp.htm",
+            type:'post',
+            dataType:'json',
+            async:true,
+            data:{
+                enbaleBackerId : enbaleBackerId
+            },
+            success:function(result){
+                if(result.code == 1) {
+                    $("#queryForm").submit();
+                } else {
+                    openTips(result.message);
+                }
+            }, error:function(){
+                openTips("系统错误！");
+            }
+        });
+    }
+
     function disable(backerId) {
         $("#disableBackerId").val(backerId);
+    }
+
+    //禁用确定
+    function disableConfirm() {
+        var disableBackerId = $("#disableBackerId").val();
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerAccount/forbidden.htm",
+            type:'post',
+            dataType:'json',
+            async:true,
+            data:{
+                disableBackerId : disableBackerId
+            },
+            success:function(result){
+                if(result.code == 1) {
+                    $("#queryForm").submit();
+                } else {
+                    openTips(result.message);
+                }
+            }, error:function(){
+                openTips("系统错误！");
+            }
+        });
     }
 
     function resetPassword(backerId) {
