@@ -95,10 +95,10 @@ public class BackerTransactionPendOrderController {
         boolean updateResult = transactionPendOrderService.revokePendOrder(pendingOrderNo);
         if (updateResult) {
             resultJson.setCode(1);
-            resultJson.setMessage("操作成功");
+            resultJson.setMessage("撤单成功");
         } else {
             resultJson.setCode(5);
-            resultJson.setMessage("操作失败");
+            resultJson.setMessage("撤单失败");
         }
 
         return resultJson;
