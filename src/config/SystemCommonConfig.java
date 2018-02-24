@@ -13,4 +13,15 @@ public class SystemCommonConfig {
 	/** 后台管理员登录记录 -业务类型（2）+日期（6）+随机位（12） */
 	public static final String LOGIN_BACKER = "11";
 
+	/** 用户账户记录 -业务类型（2）+日期（6）+随机位（10） */
+	public static final String USER_BALANCE = "20";
+	/** 用户货币记录 -业务类型（2）+日期（6）+随机位（10） */
+	public static final String USER_CURRENCY = "21";
+
+	/** 挂单记录 -业务类型（2）+日期（6）+随机位（10） */
+	public static final String TRANSACTION_PEND_ORDER = "30";
+	/** 成交记录 -业务类型（2）+日期（6）+随机位（10） */
+	public static final String TRANSACTION_USER_DEAL = "31";
+	/** 做单记录 -业务类型（2）+日期（6）+随机位（10） */
+	public static final String TRANSACTION_MAKE_ORDER = "32";
 }

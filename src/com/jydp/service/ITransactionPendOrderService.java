@@ -115,4 +115,11 @@ public interface ITransactionPendOrderService {
                                                       int pendingStatus, Timestamp startAddTime, Timestamp endAddTime,
                                                       Timestamp startFinishTime, Timestamp endFinishTime,
                                                       int pageNumber, int pageSize);
+
+    /**
+     * 撤销挂单
+     * @param pendingOrderNo 记录号,业务类型（2）+日期（6）+随机位（10）
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean revokePendOrder(String pendingOrderNo);
 }

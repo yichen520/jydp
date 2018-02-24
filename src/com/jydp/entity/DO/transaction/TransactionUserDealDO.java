@@ -15,6 +15,7 @@ public class TransactionUserDealDO {
     private int paymentType;  //收支类型,1：买入，2：卖出
     private int currencyId;  //币种Id
     private String currencyName;  //货币名称
+    private double transactionPrice; //成交单价
     private double currencyNumber;  //成交数量
     private double currencyTotalPrice;  //成交总价
     private String remark;  //备注
@@ -178,5 +179,21 @@ public class TransactionUserDealDO {
      */
     public void setAddTime(Timestamp addTime) {
         this.addTime = addTime;
+    }
+
+    /**
+     * 获取成交单价
+     * @return transactionPrice 成交单价
+     */
+    public double getTransactionPrice() {
+        return transactionPrice;
+    }
+
+    /**
+     * 设置成交单价
+     * @param transactionPrice 成交单价
+     */
+    public void setTransactionPrice(double transactionPrice) {
+        this.transactionPrice = transactionPrice;
     }
 }
