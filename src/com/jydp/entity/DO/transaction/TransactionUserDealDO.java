@@ -12,7 +12,7 @@ public class TransactionUserDealDO {
     private String orderNo;  //记录号,业务类型（2）+日期（6）+随机位（10）
     private String pendingOrderNo;  //挂单记录号
     private int userId;  //用户Id
-    private int paymentType;  //收支类型,1：买入，2：卖出
+    private int paymentType;  //收支类型,1：买入，2：卖出，3：撤销
     private int currencyId;  //币种Id
     private String currencyName;  //货币名称
     private double transactionPrice; //成交单价
@@ -70,7 +70,7 @@ public class TransactionUserDealDO {
     }
 
     /**
-     * 收支类型,1：买入，2：卖出
+     * 收支类型,1：买入，2：卖出，3：撤销
      * @return the paymentType
      */
     public int getPaymentType() {
@@ -78,7 +78,7 @@ public class TransactionUserDealDO {
     }
 
     /**
-     * 收支类型,1：买入，2：卖出
+     * 收支类型,1：买入，2：卖出，3：撤销
      * @param paymentType the paymentType to set
      */
     public void setPaymentType(int paymentType) {

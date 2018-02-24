@@ -1,0 +1,41 @@
+.askSelect{
+    width: 100px;
+}
+.askInput{
+    width: 150px;
+}
+.startTime,.endTime{
+    width: 160px;
+}
+.time{
+    width: 135px;
+}
+.account{
+    width: 150px;
+}
+.amount{
+    width: 126px;
+}
+.type,.state{
+    width: 70px;
+}
+.operate{
+    width: 65px;
+}
+.revoke{
+    margin-left: 5px;
+    width: 55px;
+    text-align: center;
+    border: none;
+    color: #49a2fb;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 12px;
+}
+.revoke:hover{
+    color: #2c94fd;
+}
+
+.revoke_pop{
+    display: none;
+}
