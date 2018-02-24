@@ -34,7 +34,7 @@
                 <form id="queryForm" action="<%=path %>/backerWeb/backerAdministratorOperation/show.htm" method="post">
                     <p class="condition">
                         操作时间：
-                        从&nbsp;<input placeholder="请选择起始时间" name="startAddTime" class="startTime" id="startOrder"  onfocus="this.blur()" value="${startTime }"
+                        从&nbsp;<input placeholder="请选择起始时间" name="startAddTime" class="startTime" id="startOrder"  onfocus="this.blur()" value="${startAddTime }"
                                       onClick="laydate({istime: true,format:'YYYY-MM-DD hh:mm:ss'})" />
                         到&nbsp;<input placeholder="请选择结束时间" name="endAddTime" class="endTime" id="endOrder"  onfocus="this.blur()" value="${endAddTime }"
                                       onClick="laydate({istime: true,format: 'YYYY-MM-DD hh:mm:ss'})" />
@@ -43,9 +43,9 @@
                                                      onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/></p>
                     <p class="condition">操作类型：
                         <select class="askSelect" id="typeHandle" name="typeHandle">
-                            <option>全部</option>
-                            <option>增加</option>
-                            <option>减少</option>
+                            <option value="0">全部</option>
+                            <option value="1">增加</option>
+                            <option value="2">减少</option>
                         </select>
                     </p>
                     <p class="condition">操作管理员账号：<input type="text" class="askInput" maxlength="16" name="backerAccount" value="${backerAccount }"
