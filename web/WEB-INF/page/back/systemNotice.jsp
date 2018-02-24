@@ -136,6 +136,12 @@
         });
     });
 
+    //查询
+    function queryForm() {
+        $("#queryPageNumber").val("0");
+        $("#queryForm").submit();
+    }
+
     //删除
     function deleteHandle(id) {
         document.getElementById("deleteId").value = id;
@@ -173,6 +179,36 @@
         });
 
     }
+
+    //置顶
+    function topNotice(id) {
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerNotice/top.htm",
+            data: {
+                id : id,
+            },//参数
+            dataType: "json",
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (resultData) {
+                var code = resultData.code;
+                var message = resultData.message;
+                if (code != 1 && message != "") {
+                    openTips(message);
+                    return;
+                }
+
+                $("#queryForm").submit();
+            },
+
+            error: function () {
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+
+    }
+
+
 
 </script>
 

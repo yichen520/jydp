@@ -36,7 +36,7 @@ public class BackerNoticeController {
     private ISystemNoticeService systemNoticeService;
 
     /** 用户公告管理 首页 */
-    @RequestMapping(value = "/show.htm", method = RequestMethod.GET)
+    @RequestMapping(value = "/show.htm")
     public String show(HttpServletRequest request) {
         // 业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 113001);
@@ -340,46 +340,43 @@ public class BackerNoticeController {
     }
 
     /** 置顶用户公告 */
-    @RequestMapping(value = "/top.htm", method = RequestMethod.GET)
-    public String top(HttpServletRequest request) {
+    @RequestMapping(value = "/top.htm", method = RequestMethod.POST)
+    public @ResponseBody JSONObject top(HttpServletRequest request) {
+        JSONObject response = new JSONObject();
         // 业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 113003);
         if (!havePower) {
-            list(request);
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
+            response.put("code", 6);
+            response.put("message", "您没有该权限");
             request.getSession().setAttribute("backer_pagePowerId", 0);
-            return "page/back/systemNotice";
+            return response;
         }
 
         String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
 
         // 处理页面参数
         if (!StringUtil.isNotNull(idStr)) {
-            list(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误");
-            return "page/back/systemNotice";
+            response.put("code", 3);
+            response.put("message", "参数错误");
+            return response;
         }
 
         int id = Integer.parseInt(idStr);
         if (id <= 0) {
-            list(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误");
-            return "page/back/systemNotice";
+            response.put("code", 3);
+            response.put("message", "参数错误");
+            return response;
         }
 
         boolean topResult = systemNoticeService.topSystemNotice(id);
         if (topResult) {
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "置顶成功");
+            response.put("code", 1);
+            response.put("message", "置顶成功");
         } else {
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "置顶失败");
+            response.put("code", 5);
+            response.put("message", "置顶失败");
         }
 
-        list(request);
-        return "page/back/systemNotice";
+        return response;
     }
 }
