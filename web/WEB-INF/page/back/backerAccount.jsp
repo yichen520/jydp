@@ -88,155 +88,136 @@
 
 <div class="mask">
     <div class="mask_content">
-        <form action="<%=path %>/backerWeb/backerAccount/startUp.htm" method="post">
-            <div class="start_pop">
-                <p class="popTitle">启用操作</p>
-                <p class="popTips"><img src="<%=path %>/resources/image/back/tips.png" class="tipsImg" />确定启用该账号？</p>
+        <div class="start_pop">
+            <p class="popTitle">启用操作</p>
+            <p class="popTips"><img src="<%=path %>/resources/image/back/tips.png" class="tipsImg" />确定启用该账号？</p>
 
-                <div class="buttons">
-                    <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                    <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="enableConfirm()" />
-                </div>
+            <div class="buttons">
+                <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="enableConfirm()" />
             </div>
-            <input type="hidden" id="enbaleBackerId" name="enbaleBackerId">
-        </form>
+        </div>
+        <input type="hidden" id="enbaleBackerId" name="enbaleBackerId">
 
-        <form action="<%=path %>/backerWeb/backerAccount/forbidden.htm" method="post">
-            <div class="stop_pop">
-                <p class="popTitle">禁用操作</p>
-                <p class="popTips"><img src="<%=path %>/resources/image/back/tips.png" class="tipsImg" />确定禁用该账号？</p>
+        <div class="stop_pop">
+            <p class="popTitle">禁用操作</p>
+            <p class="popTips"><img src="<%=path %>/resources/image/back/tips.png" class="tipsImg" />确定禁用该账号？</p>
 
-                <div class="buttons">
-                    <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                    <input type="submit" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="disableConfirm()" />
-                </div>
+            <div class="buttons">
+                <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="disableConfirm()" />
             </div>
-            <input type="hidden" id="disableBackerId" name="disableBackerId">
-        </form>
+        </div>
+        <input type="hidden" id="disableBackerId" name="disableBackerId">
 
-        <form action="<%=path %>/backerWeb/backerAccount/delete.htm" method="post">
-            <div class="delete_pop">
-                <p class="popTitle">删除操作</p>
-                <p class="popTips"><img src="<%=path %>/resources/image/back/tips.png" class="tipsImg" />确定删除该账号？</p>
+        <div class="delete_pop">
+            <p class="popTitle">删除操作</p>
+            <p class="popTips"><img src="<%=path %>/resources/image/back/tips.png" class="tipsImg" />确定删除该账号？</p>
 
-                <div class="buttons">
-                    <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                    <input type="submit" value="确&nbsp;定" class="yes" onfocus="this.blur()" />
-                </div>
+            <div class="buttons">
+                <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="deleteConfirm()" />
             </div>
-            <input type="hidden" id="deleteBackerId" name="deleteBackerId">
-            <input type="hidden" name="pageNumber" value="${pageNumber }">
-        </form>
+        </div>
+        <input type="hidden" id="deleteBackerId" name="deleteBackerId">
 
-        <form action="<%=path %>/backerWeb/backerAccount/resetPassword.htm" method="post">
-            <div class="reset_pop">
-                <p class="popTitle">重置密码</p>
-                <p class="popTips"><img src="<%=path %>/resources/image/back/tips.png" class="tipsImg" />确定重置密码？重置后的密码为123456</p>
+        <div class="reset_pop">
+            <p class="popTitle">重置密码</p>
+            <p class="popTips"><img src="<%=path %>/resources/image/back/tips.png" class="tipsImg" />确定重置密码？重置后的密码为123456</p>
 
-                <div class="buttons">
-                    <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                    <input type="submit" value="确&nbsp;定" class="yes" onfocus="this.blur()" />
-                </div>
+            <div class="buttons">
+                <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="resetConfirm()" />
             </div>
-            <input type="hidden" id="resetPasswordBackerId" name="resetPasswordBackerId">
-            <input type="hidden" name="pageNumber" value="${pageNumber }">
-        </form>
+        </div>
+        <input type="hidden" id="resetPasswordBackerId" name="resetPasswordBackerId">
 
-        <form id="addForm" action="<%=path %>/backerWeb/backerAccount/insert.htm" method="post">
-            <div class="add_pop">
-                <p class="popTitle">新增后台账号</p>
-                <p class="popInput">
-                    <label class="popName">用户账号<span class="star">*</span></label>
-                    <input type="text" class="entry" placeholder="用户账号，6~16个字符，字母或数字" maxlength="16"
-                        onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="validateUser(this);"
-                           id="addBackerAccount" name="addBackerAccount"/>
-                </p>
-                <p class="popInput">
-                    <label class="popName">登录密码<span class="star">*</span></label>
-                    <input type="password" class="entry" placeholder="登录密码，6~16个字符，字母或数字" maxlength="16"
-                        onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"
-                        id="addBackerPassword" name="addBackerPassword"/>
-                </p>
-                <p class="popInput">
-                    <label class="popName">重复密码<span class="star">*</span></label>
-                    <input type="password" class="entry" placeholder="再次输入登录密码" maxlength="16"
-                           onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"
-                        id="addBackerRepeatPassword" name="addBackerRepeatPassword"/>
-                </p>
-                <p class="popInput">
-                    <label class="popName">账号角色<span class="star">*</span></label>
-                    <select class="popSelected" id="addRoleId" name="addRoleId">
-                        <option disabled selected>选择账号角色</option>
-                        <c:forEach items="${roleList}" var="role">
-                            <option value="${role.roleId}">${role.roleName}</option>
-                        </c:forEach>
-                    </select>
-                </p>
+        <div class="add_pop">
+            <p class="popTitle">新增后台账号</p>
+            <p class="popInput">
+                <label class="popName">用户账号<span class="star">*</span></label>
+                <input type="text" class="entry" placeholder="用户账号，6~16个字符，字母或数字" maxlength="16"
+                    onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="validateUser(this);"
+                       id="addBackerAccount" name="addBackerAccount"/>
+            </p>
+            <p class="popInput">
+                <label class="popName">登录密码<span class="star">*</span></label>
+                <input type="password" class="entry" placeholder="登录密码，6~16个字符，字母或数字" maxlength="16"
+                    onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"
+                    id="addBackerPassword" name="addBackerPassword"/>
+            </p>
+            <p class="popInput">
+                <label class="popName">重复密码<span class="star">*</span></label>
+                <input type="password" class="entry" placeholder="再次输入登录密码" maxlength="16"
+                       onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"
+                    id="addBackerRepeatPassword" name="addBackerRepeatPassword"/>
+            </p>
+            <p class="popInput">
+                <label class="popName">账号角色<span class="star">*</span></label>
+                <select class="popSelected" id="addRoleId" name="addRoleId">
+                    <option disabled selected>选择账号角色</option>
+                    <c:forEach items="${roleList}" var="role">
+                        <option value="${role.roleId}">${role.roleName}</option>
+                    </c:forEach>
+                </select>
+            </p>
 
-                <div class="buttons">
-                    <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                    <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="addBackerSubmit()" />
-                </div>
+            <div class="buttons">
+                <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="addBackerSubmit()" />
             </div>
-            <input type="hidden" name="pageNumber" value="${pageNumber }">
-        </form>
+        </div>
 
-        <form id="updateRoleForm" action="<%=path %>/backerWeb/backerAccount/updateRole.htm" method="post">
-            <div class="changeRole_pop">
-                <p class="popTitle">修改角色</p>
-                <p class="popInput">
-                    <label class="popName">用户名<span class="star">*</span></label>
-                    <span class="popAccount" id="account_span"></span>
-                </p>
-                <p class="popInput">
-                    <label class="popName">账号角色<span class="star">*</span></label>
-                    <select class="popSelected" id="updateRoleId" name="updateRoleId">
-                        <option disabled selected>选择账号角色</option>
-                        <c:forEach items="${roleList}" var="role">
-                            <option value="${role.roleId}">${role.roleName}</option>
-                        </c:forEach>
-                    </select>
-                </p>
+        <div class="changeRole_pop">
+            <p class="popTitle">修改角色</p>
+            <p class="popInput">
+                <label class="popName">用户名<span class="star">*</span></label>
+                <span class="popAccount" id="account_span"></span>
+            </p>
+            <p class="popInput">
+                <label class="popName">账号角色<span class="star">*</span></label>
+                <select class="popSelected" id="updateRoleId" name="updateRoleId">
+                    <option disabled selected>选择账号角色</option>
+                    <c:forEach items="${roleList}" var="role">
+                        <option value="${role.roleId}">${role.roleName}</option>
+                    </c:forEach>
+                </select>
+            </p>
 
-                <div class="buttons">
-                    <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                    <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="updateRoleSubmit()" />
-                </div>
+            <div class="buttons">
+                <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="updateRoleSubmit()" />
             </div>
-            <input type="hidden" id="updateRoleBackerId" name="updateRoleBackerId">
-            <input type="hidden" name="pageNumber" value="${pageNumber }">
-        </form>
+        </div>
+        <input type="hidden" id="updateRoleBackerId" name="updateRoleBackerId">
 
-        <form id="updatePasswordForm" action="<%=path %>/backerWeb/backerAccount/updatePassword.htm" method="post">
-            <div class="changePassword_pop">
-                <p class="popTitle">修改密码</p>
-                <p class="popInput">
-                    <label class="popName">旧密码<span class="star">*</span></label>
-                    <input type="password" class="entry" placeholder="旧登录密码，6~16个字符，字母或数字" maxlength="16"
-                           onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"
-                           id="updateBackerOldPassword" name="updateBackerOldPassword"/>
-                </p>
-                <p class="popInput">
-                    <label class="popName">登录密码<span class="star">*</span></label>
-                    <input type="password" class="entry" placeholder="新登录密码，6~16个字符，字母或数字" maxlength="16"
-                           onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"
-                           id="updateBackerNewPassword" name="updateBackerNewPassword"/>
-                </p>
-                <p class="popInput">
-                    <label class="popName">重复密码<span class="star">*</span></label>
-                    <input type="password" class="entry" placeholder="再次输入新登录密码" maxlength="16"
-                           onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"
-                        id="updateBackerRepeatPassword" name="updateBackerRepeatPassword"/>
-                </p>
+        <div class="changePassword_pop">
+            <p class="popTitle">修改密码</p>
+            <p class="popInput">
+                <label class="popName">旧密码<span class="star">*</span></label>
+                <input type="password" class="entry" placeholder="旧登录密码，6~16个字符，字母或数字" maxlength="16"
+                       onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"
+                       id="updateBackerOldPassword" name="updateBackerOldPassword"/>
+            </p>
+            <p class="popInput">
+                <label class="popName">登录密码<span class="star">*</span></label>
+                <input type="password" class="entry" placeholder="新登录密码，6~16个字符，字母或数字" maxlength="16"
+                       onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"
+                       id="updateBackerNewPassword" name="updateBackerNewPassword"/>
+            </p>
+            <p class="popInput">
+                <label class="popName">重复密码<span class="star">*</span></label>
+                <input type="password" class="entry" placeholder="再次输入新登录密码" maxlength="16"
+                       onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"
+                    id="updateBackerRepeatPassword" name="updateBackerRepeatPassword"/>
+            </p>
 
-                <div class="buttons">
-                    <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                    <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="updatePasswordSubmit()" />
-                </div>
+            <div class="buttons">
+                <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="updatePasswordSubmit()" />
             </div>
-            <input type="hidden" id="updatePasswordBackerId" name="updatePasswordBackerId">
-            <input type="hidden" name="pageNumber" value="${pageNumber }">
-        </form>
+        </div>
+        <input type="hidden" id="updatePasswordBackerId" name="updatePasswordBackerId">
     </div>
 </div>
 
@@ -315,8 +296,54 @@
         $("#resetPasswordBackerId").val(backerId);
     }
 
+    //重置确定
+    function resetConfirm() {
+        var resetPasswordBackerId = $("#resetPasswordBackerId").val();
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerAccount/resetPassword.htm",
+            type:'post',
+            dataType:'json',
+            async:true,
+            data:{
+                resetPasswordBackerId : resetPasswordBackerId
+            },
+            success:function(result){
+                if(result.code == 1) {
+                    $("#queryForm").submit();
+                } else {
+                    openTips(result.message);
+                }
+            }, error:function(){
+                openTips("系统错误！");
+            }
+        });
+    }
+
     function deleteBacker(backerId) {
         $("#deleteBackerId").val(backerId);
+    }
+
+    //删除确定
+    function deleteConfirm() {
+        var deleteBackerId = $("#deleteBackerId").val();
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerAccount/delete.htm",
+            type:'post',
+            dataType:'json',
+            async:true,
+            data:{
+                deleteBackerId : deleteBackerId
+            },
+            success:function(result){
+                if(result.code == 1) {
+                    $("#queryForm").submit();
+                } else {
+                    openTips(result.message);
+                }
+            }, error:function(){
+                openTips("系统错误！");
+            }
+        });
     }
 
     function updateRole(backerId, backerAccount, roleId) {
@@ -325,15 +352,36 @@
         $("#updateRoleId").val(roleId);
     }
 
+    //修改角色
     function updateRoleSubmit() {
         var updateRoleId = $("#updateRoleId").val();
+        var updateRoleBackerId = $("#updateRoleBackerId").val();
         if (!updateRoleId) {
             return openTips("请选择角色");
         }
-        $("#updateRoleForm").submit();
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerAccount/updateRole.htm",
+            type:'post',
+            dataType:'json',
+            async:true,
+            data:{
+                updateRoleId : updateRoleId,
+                updateRoleBackerId : updateRoleBackerId
+            },
+            success:function(result){
+                if(result.code == 1) {
+                    $("#queryForm").submit();
+                } else {
+                    openTips(result.message);
+                }
+            }, error:function(){
+                openTips("系统错误！");
+            }
+        });
     }
 
-    function updatePasswordSubmit(backerId) {
+    //修改密码
+    function updatePasswordSubmit() {
         var oldPassword = $("#updateBackerOldPassword").val();
         var newPassword = $("#updateBackerNewPassword").val();
         var newRepeatPassword = $("#updateBackerRepeatPassword").val();
@@ -350,9 +398,34 @@
             return openTips("两次密码不匹配");
         }
 
-        $("#updatePasswordForm").submit();
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerAccount/updatePassword.htm",
+            type:'post',
+            dataType:'json',
+            async:true,
+            data:{
+                updateBackerOldPassword : oldPassword,
+                updateBackerNewPassword : newPassword,
+                updateBackerRepeatPassword : newRepeatPassword
+            },
+            success:function(result){
+                if(result.code == 1) {
+                    openTips(result.message);
+                    setTimeout("backLogin()",1000 );
+                } else {
+                    openTips(result.message);
+                }
+            }, error:function(){
+                openTips("系统错误！");
+            }
+        });
+    }
+    //登陆页跳转
+    function backLogin() {
+        window.location.href = "<%=path%>" + "/backLogin";
     }
 
+    //新增账号
     function addBackerSubmit() {
         var reg = /^[0-9a-zA-Z]{6,16}$/;
         var addBackerAccount = $("#addBackerAccount").val();
@@ -378,7 +451,27 @@
             return openTips("两次密码不一致");
         }
 
-        $("#addForm").submit();
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerAccount/insert.htm",
+            type:'post',
+            dataType:'json',
+            async:true,
+            data:{
+                addBackerAccount : addBackerAccount,
+                addRoleId : addRoleId,
+                addBackerPassword : addBackerPassword,
+                addBackerRepeatPassword : addBackerRepeatPassword
+            },
+            success:function(result){
+                if(result.code == 1) {
+                    $("#queryForm").submit();
+                } else {
+                    openTips(result.message);
+                }
+            }, error:function(){
+                openTips("系统错误！");
+            }
+        });
     }
 
     //验证用户账号

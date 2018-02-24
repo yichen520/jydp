@@ -113,14 +113,14 @@
     }();
 
     var start = {
-        elem: '#start',
+        elem: '#startOrder',
         format: 'YYYY-MM-DD hh:mm:ss',
         istime: true,
         istoday: false
     };
 
     var end = {
-        elem: '#end',
+        elem: '#endOrder',
         format: 'YYYY-MM-DD hh:mm:ss',
         istime: true,
         istoday: false
