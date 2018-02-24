@@ -57,7 +57,5 @@
                 AND addTime <![CDATA[ <= ]]> #{endAddTime}
             </if>
         </where>
-        ORDER BY addTime DESC
-        LIMIT #{startNumber}, #{pageSize}
     </select>
 </mapper>

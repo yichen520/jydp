@@ -55,7 +55,7 @@ public class BackerUserAccountController {
         if (!havePower) {
             request.setAttribute("code", 6);
             request.setAttribute("message", "您没有该权限");
-            request.getSession().setAttribute("backer_rolePowerId", 0);
+            request.getSession().setAttribute("backer_pagePowerId", 0);
             return "page/back/index";
         }
 

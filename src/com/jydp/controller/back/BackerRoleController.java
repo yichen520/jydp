@@ -57,7 +57,7 @@ public class BackerRoleController {
 		if (!havePower) {
 			request.setAttribute("code", 6);
 			request.setAttribute("message", "您没有该权限");
-			request.getSession().setAttribute("backer_rolePowerId", 0);
+			request.getSession().setAttribute("backer_pagePowerId", 0);
 			return "page/back/index";
 		}
 
@@ -71,7 +71,7 @@ public class BackerRoleController {
 		List<BackerRoleVO> backerRoleList = roleService.listRoleInfor(backerSession.getBackerId());
         request.setAttribute("backerRoleList", backerRoleList);
         //当前页面的权限标识
-        request.getSession().setAttribute("backer_rolePowerId", 131000);
+        request.getSession().setAttribute("backer_pagePowerId", 131000);
         
         Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
 		if(map != null){
@@ -147,7 +147,7 @@ public class BackerRoleController {
 		if (!havePower) {
 			request.setAttribute("code", 6);
 			request.setAttribute("message", "您没有该权限");
-			request.getSession().setAttribute("backer_rolePowerId", 0);
+			request.getSession().setAttribute("backer_pagePowerId", 0);
 			return "page/back/index";
 		}
     	
@@ -163,7 +163,7 @@ public class BackerRoleController {
 		if (!havePower) {
 			request.setAttribute("code", 6);
 			request.setAttribute("message", "您没有该权限");
-			request.getSession().setAttribute("backer_rolePowerId", 0);
+			request.getSession().setAttribute("backer_pagePowerId", 0);
 			return "page/back/index";
 		}
 
@@ -223,7 +223,7 @@ public class BackerRoleController {
 		if (!havePower) {
 			request.setAttribute("code", 6);
 			request.setAttribute("message", "您没有该权限");
-			request.getSession().setAttribute("backer_rolePowerId", 0);
+			request.getSession().setAttribute("backer_pagePowerId", 0);
 			return "page/back/index";
 		}
     	
@@ -257,7 +257,7 @@ public class BackerRoleController {
 		if (!havePower) {
 			request.setAttribute("code", 6);
 			request.setAttribute("message", "您没有该权限");
-			request.getSession().setAttribute("backer_rolePowerId", 0);
+			request.getSession().setAttribute("backer_pagePowerId", 0);
 			return "page/back/index";
 		}
     	
@@ -306,7 +306,7 @@ public class BackerRoleController {
 		if (!havePower) {
 			request.setAttribute("code", 6);
 			request.setAttribute("message", "您没有该权限");
-			request.getSession().setAttribute("backer_rolePowerId", 0);
+			request.getSession().setAttribute("backer_pagePowerId", 0);
 			return "page/back/index";
 		}
     	

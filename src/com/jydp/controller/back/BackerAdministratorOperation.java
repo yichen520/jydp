@@ -39,7 +39,7 @@ public class BackerAdministratorOperation {
         if (!havePower) {
             request.setAttribute("code", 6);
             request.setAttribute("message", "您没有该权限");
-            request.getSession().setAttribute("backer_rolePowerId", 0);
+            request.getSession().setAttribute("backer_pagePowerId", 0);
             return "page/back/index";
         }
 
@@ -51,7 +51,7 @@ public class BackerAdministratorOperation {
         }
 
         showList(request);
-        return "page/back/backerAccount";
+        return "page/back/userBalanceRecord";
     }
 
     /** 分页查询 后台管理员增减用户余额记录数据  */
@@ -102,9 +102,13 @@ public class BackerAdministratorOperation {
         request.setAttribute("pageNumber", pageNumber);
         request.setAttribute("totalNumber", totalNumber);
         request.setAttribute("totalPageNumber", totalPageNumber);
-
         request.setAttribute("backerHandleUserRecordBalanceList", backerHandleUserRecordBalanceList);
+        request.setAttribute("userAccount", userAccount);
+        request.setAttribute("typeHandle", typeHandle);
+        request.setAttribute("backerAccount", backerAccount);
+        request.setAttribute("startAddTime", startAddTimeStr);
+        request.setAttribute("endAddTimeStr", endAddTimeStr);
         //当前页面的权限标识
-        request.getSession().setAttribute("backer_rolePowerId", 121000);
+        request.getSession().setAttribute("backer_pagePowerId", 121000);
     }
 }

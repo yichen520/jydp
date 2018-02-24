@@ -102,7 +102,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         </p>
 
         <ul class="levelTwo">
-            <li class="menuInfo" id="li_121000"><a id="a_271000" href="<%=path%>/backerWeb/backerAdministratorOperation/show.htm">用户余额操作记录</a></li>
+            <li class="menuInfo" id="li_121000"><a id="a_121000" href="<%=path%>/backerWeb/backerAdministratorOperation/show.htm">用户余额操作记录</a></li>
         </ul>
     </li>
 </ul>
@@ -110,16 +110,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript">
     $(function() {
         $(".menuTitle").click(function () {
-            $(this).parent().find(".levelTwo").toggle();
-            if ($(this).parent().find(".levelTwo").css("display")=="block") {
-                $(this).find(".menu_up").show();
+            if($(this).parent().find(".levelTwo").css("display")=="block"){
+                $(this).find(".menu_up").css("display","block");
+                $(this).parent().find(".levelTwo").slideUp();
+            }else{
+                $(".levelTwo").hide();
+                $(this).parent().find(".levelTwo").slideDown();
+            }
+
+            if($(this).find(".menu_up").css("display")=="block"){
+                $(this).find(".menu_up").hide();
+                $(this).find(".menu_down").css("display","block");
+            }else{
+                $(".menu_up").hide();
+                $(".menu_down").show();
+                $(this).find(".menu_up").css("display","block");
                 $(this).find(".menu_down").hide();
-            } else {
-                $(this).parent().find(".menu_down").show();
-                $(this).parent().find(".menu_up").hide();
             }
         })
-    })
+    });
     $(function(){
         $(".menuInfo a").click(function(){
             $(".levelOne").find("p").removeClass("titleChoose");
@@ -149,20 +158,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	}
 
     function showMenu(){
+        $('.levelOne').hide();
+        $('.menuInfo').hide();
         //显示有权限的模块
         var rolePowerList = JSON.parse('${backer_rolePower}');
         Object.keys(rolePowerList).map(menuSelect);
-
         //显示当前模块
         var pagePowerId = ${backer_pagePowerId};
         if(pagePowerId > 0){
             var menuPower = parseInt(pagePowerId/10000)*10000;
             var curMenuLi = document.getElementById("li_"+menuPower);
+
             if(curMenuLi != null && curMenuLi != ""){
+                $('#li_'+menuPower).find('.menu_down').hide();
+                $('#li_'+menuPower).find('.menu_up').show();
                 $("#li_"+menuPower).find(".levelTwo").show();
-                $("#li_"+menuPower).find(".pullUp").show();
-                $("#li_"+menuPower).find(".pullDown").hide();
                 $("#li_"+menuPower).find(".menuTitle").addClass("titleChoose");
+
             }
 
             //给当前模块添加选中标记
@@ -170,6 +182,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             if(curMenuA != null && curMenuA != ""){
                 curMenuA.setAttribute("class", "personal_pitch");
             }
+            curMenuA.p
         }
     }
 

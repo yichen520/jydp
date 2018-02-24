@@ -1,0 +1,81 @@
+.time,.account{
+    width: 225px;
+}
+.role{
+    width: 321px;
+}
+.state{
+    width: 130px;
+}
+.operate{
+    width: 230px;
+}
+.operate input{
+    font-size: 12px;
+}
+.delete,.stop,.start{
+    width: 40px;
+    text-align: center;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+.changeRole,.changePassword,.reset{
+    width: 60px;
+    text-align: center;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+.stop{
+    color: #ff0000;
+}
+.start{
+    color: #00CC00;
+}
+.delete,.changePassword,.changeRole,.reset{
+    color: #49a2fb;
+}
+.stop:hover,.start:hover{
+    opacity: 0.8;
+}
+.changePassword:hover,.changeRole:hover,.reset:hover,.delete:hover{
+    color: #2c94fd;
+}
+.delete_pop,.stop_pop,.start_pop,.reset_pop,.add_pop,.changeRole_pop,.changePassword_pop{
+    display: none;
+}
+.popName{
+    display: inline-block;
+    width: 70px;
+    height: 35px;
+    line-height: 35px;
+    text-align: left;
+    color: #666666;
+    font-size: 14px;
+}
+.star{
+    color: #ff0000;
+}
+.entry{
+    float: right;
+    padding-left: 5px;
+    border: 1px solid #ececec;
+    width: 280px;
+    height: 35px;
+}
+.popSelected{
+    float: right;
+    padding-left: 5px;
+    border: 1px solid #ececec;
+    width: 285px;
+    height: 35px;
+}
+.popAccount{
+    float: right;
+    text-align: left;
+    width: 280px;
+    height: 35px;
+    line-height: 35px;
+    color: #999999;
+}

@@ -1,0 +1,137 @@
+.bottom{
+    margin-top: 0 !important;
+}
+.addInfo{
+    margin: 0 15px 20px 15px;
+    padding-top: 15px;
+    width: 1170px;
+    background-color: #ffffff;
+    border-top: 1px solid #ececec;
+}
+.role{
+    margin-bottom: 10px;
+}
+.name{
+    display: inline-block;
+    width: 95px;
+    font-size: 15px;
+    color: #666666;
+}
+.star{
+    color: #ff0000;
+}
+.nameInput{
+    padding-left: 5px;
+    width: 250px;
+    height: 35px;
+    border: 1px solid #dddddd;
+    color: #999999;
+    font-size: 14px;
+}
+.roleInfo{
+    display: inline-block;
+    vertical-align: top;
+    width: 1060px;
+    border-top: 1px solid #ececec;
+    border-left: 1px solid #ececec;
+    border-right: 1px solid #ececec;
+    border-radius: 5px;
+}
+.infoOne{
+    border-bottom: 1px solid #ececec;
+}
+.infoTitle{
+    padding-left: 10px;
+    width: 1050px;
+    height: 45px;
+    line-height: 45px;
+    color: #666666;
+    background-color: #f5f5f5;
+    font-size: 16px;
+    border-bottom: 1px solid #ececec;
+    cursor: pointer;
+}
+.infoTitle:hover{
+    background-color: #e4f4fc;
+}
+.infoTitle .chooseImg{
+    position: absolute;
+    top:0;
+    left:0;
+}
+.check{
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    margin-top: -2px;
+    margin-right: 8px;
+    width: 16px;
+    height: 16px;
+    border-radius: 2px;
+    background-color: transparent;
+}
+.info_down{
+    float: right;
+    margin:16px 10px 16px 0;
+    height: 12px;
+}
+.info_up{
+    float: right;
+    margin:18px 10px 18px 0;
+    height: 8px;
+}
+.info_up{
+    display: none;
+}
+.infoTwo{
+    display: none;
+    padding: 10px 10px 0 10px;
+    width: 1040px;
+    font-size: 14px;
+    color: #666666;
+}
+.infoTwo li{
+    display: inline-block;
+}
+.box{
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.operate{
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: 100px;
+}
+.back{
+    display: inline-block;
+    margin-right: 20px;
+    width: 70px;
+    height: 35px;
+    line-height: 35px;
+    border: none;
+    background-color: #dddddd;
+    text-align: center;
+    font-size: 14px;
+    color: #ffffff;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.back:hover{
+    opacity: 0.8;
+}
+.submit{
+    width: 70px;
+    height: 35px;
+    background-color: #ff9a3b;
+    text-align: center;
+    font-size: 14px;
+    color: #ffffff;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+}
+.submit:hover{
+    background-color: #fd891d;
+}
