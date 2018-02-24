@@ -3,22 +3,18 @@ package com.jydp.entity.DO.transaction;
 import java.sql.Timestamp;
 
 /**
- * 成交记录
- * @author fk
+ * redis成交记录
+ * @author hz
  *
  */
-public class TransactionUserDealDO {
+public class TransactionDealRedisDO {
 
     private String orderNo;  //记录号,业务类型（2）+日期（6）+随机位（10）
-    private String pendingOrderNo;  //挂单记录号
-    private int userId;  //用户Id
-    private int paymentType;  //收支类型,1：买入，2：卖出，3：撤销
+    private int paymentType;  //收支类型,1：买入，2：卖出
     private int currencyId;  //币种Id
-    private String currencyName;  //货币名称
     private double transactionPrice; //成交单价
     private double currencyNumber;  //成交数量
     private double currencyTotalPrice;  //成交总价
-    private String remark;  //备注
     private Timestamp addTime;  //添加时间
 
     /**
@@ -38,39 +34,7 @@ public class TransactionUserDealDO {
     }
 
     /**
-     * 挂单记录号
-     * @return the pendingOrderNo
-     */
-    public String getPendingOrderNo() {
-        return pendingOrderNo;
-    }
-
-    /**
-     * 挂单记录号
-     * @param pendingOrderNo the pendingOrderNo to set
-     */
-    public void setPendingOrderNo(String pendingOrderNo) {
-        this.pendingOrderNo = pendingOrderNo;
-    }
-
-    /**
-     * 用户Id
-     * @return the userId
-     */
-    public int getUserId() {
-        return userId;
-    }
-
-    /**
-     * 用户Id
-     * @param userId the userId to set
-     */
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * 收支类型,1：买入，2：卖出，3：撤销
+     * 收支类型,1：买入，2：卖出
      * @return the paymentType
      */
     public int getPaymentType() {
@@ -78,7 +42,7 @@ public class TransactionUserDealDO {
     }
 
     /**
-     * 收支类型,1：买入，2：卖出，3：撤销
+     * 收支类型,1：买入，2：卖出
      * @param paymentType the paymentType to set
      */
     public void setPaymentType(int paymentType) {
@@ -99,22 +63,6 @@ public class TransactionUserDealDO {
      */
     public void setCurrencyId(int currencyId) {
         this.currencyId = currencyId;
-    }
-
-    /**
-     * 货币名称
-     * @return the currencyName
-     */
-    public String getCurrencyName() {
-        return currencyName;
-    }
-
-    /**
-     * 货币名称
-     * @param currencyName the currencyName to set
-     */
-    public void setCurrencyName(String currencyName) {
-        this.currencyName = currencyName;
     }
 
     /**
@@ -147,22 +95,6 @@ public class TransactionUserDealDO {
      */
     public void setCurrencyTotalPrice(double currencyTotalPrice) {
         this.currencyTotalPrice = currencyTotalPrice;
-    }
-
-    /**
-     * 备注
-     * @return the remark
-     */
-    public String getRemark() {
-        return remark;
-    }
-
-    /**
-     * 备注
-     * @param remark the remark to set
-     */
-    public void setRemark(String remark) {
-        this.remark = remark;
     }
 
     /**

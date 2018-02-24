@@ -1,6 +1,7 @@
 package com.jydp.dao;
 
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
+import com.jydp.entity.DTO.BackerUserCurrencyNumDTO;
 
 import java.util.List;
 
@@ -17,6 +18,13 @@ public interface IUserCurrencyNumDao {
      * @return 查询成功：返回用户币数量，查询失败：返回null
      */
     List<UserCurrencyNumDO> getUserCurrencyNumByUserId (int userId);
+
+    /**
+     * 查询用户币数量（后台）
+     * @param userId 用户Id
+     * @return 查询成功：返回用户币数量，查询失败：返回null
+     */
+    List<BackerUserCurrencyNumDTO> getUserCurrencyNumByUserIdForBacker (int userId);
 
     /**
      * 根据currencyId查询用户币数量

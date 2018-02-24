@@ -1,8 +1,8 @@
 package com.jydp.controller.back;
 
-import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.BackerSessionBO;
+import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
 import com.jydp.interceptor.BackerWebInterceptor;
@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
@@ -19,11 +21,11 @@ import java.util.List;
 
 /**
  * 后台挂单记录
- * @author fk
+ * @author hz
  *
  */
 @Controller
-@RequestMapping("/backerWeb/transactionPendOrder")
+@RequestMapping("/backerWeb/backerTransactionPendOrder")
 @Scope(value="prototype")
 public class BackerTransactionPendOrderController {
 
@@ -31,160 +33,154 @@ public class BackerTransactionPendOrderController {
     @Autowired
     private ITransactionPendOrderService transactionPendOrderService;
 
-    /** 币种信息 */
+    /** 交易币种 */
     @Autowired
     private ITransactionCurrencyService transactionCurrencyService;
 
-    /** 展示页面 */
-    @RequestMapping("/show.htm")
-    public String show(HttpServletRequest request){
+    /** 展示 后台挂单记录页面 */
+    @RequestMapping(value = "/show.htm")
+    public String show(HttpServletRequest request) {
+        //业务功能权限
+        boolean havePower = BackerWebInterceptor.validatePower(request, 101000);
+        if (!havePower) {
+            request.setAttribute("code", 6);
+            request.setAttribute("message", "您没有该权限");
+            request.getSession().setAttribute("backer_rolePowerId", 0);
+            return "page/back/index";
+        }
+
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
         if (backerSession == null) {
             request.setAttribute("code", 4);
             request.setAttribute("message", "登录过期");
             return "page/back/login";
         }
-        //业务功能权限
-        boolean havePower = BackerWebInterceptor.validatePower(request, 101001);
-        if (!havePower) {
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "您没有该权限");
-            request.getSession().setAttribute("backer_rolePowerId", 0);
-            return "page/back/index";
+
+        List<TransactionCurrencyDO> transactionCurrencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
+        if(transactionCurrencyList != null){
+            request.setAttribute("transactionCurrencyList", transactionCurrencyList);
         }
 
-        List(request);
-
-        request.setAttribute("code", 1);
-        request.setAttribute("message", "查询成功");
+        showList(request);
         return "page/back/transactionPendOrder";
     }
 
-    /** 查询数据 */
-    public void List(HttpServletRequest request) {
-        String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
+    /** 撤销挂单 */
+    @RequestMapping(value = "/revoke.htm", method = RequestMethod.POST)
+    public @ResponseBody
+    JsonObjectBO revoke(HttpServletRequest request) {
+        JsonObjectBO resultJson = new JsonObjectBO();
+        //业务功能权限
+        boolean havePower = BackerWebInterceptor.validatePower(request, 101002);
+        if (!havePower) {
+            resultJson.setCode(6);
+            resultJson.setMessage("您没有该权限");
+            return resultJson;
+        }
+
+        String pendingOrderNo = StringUtil.stringNullHandle(request.getParameter("pendingOrderNo"));
+        if (!StringUtil.isNotNull(pendingOrderNo)) {
+            resultJson.setCode(3);
+            resultJson.setMessage("参数错误");
+            return resultJson;
+        }
+
+        TransactionPendOrderDO transactionPendOrder = transactionPendOrderService.getPendOrderByPendingOrderNo(pendingOrderNo);
+        if(transactionPendOrder == null){
+            resultJson.setCode(3);
+            resultJson.setMessage("参数错误");
+            return resultJson;
+        }
+
+        boolean updateResult = transactionPendOrderService.revokePendOrder(pendingOrderNo);
+        if (updateResult) {
+            resultJson.setCode(1);
+            resultJson.setMessage("操作成功");
+        } else {
+            resultJson.setCode(5);
+            resultJson.setMessage("操作失败");
+        }
+
+        return resultJson;
+    }
+
+    /** 列表数据 */
+    private void showList(HttpServletRequest request) {
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
         String paymentTypeStr = StringUtil.stringNullHandle(request.getParameter("paymentType"));
         String pendingStatusStr = StringUtil.stringNullHandle(request.getParameter("pendingStatus"));
+        String pageNumberStr  = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
         String startAddTimeStr = StringUtil.stringNullHandle(request.getParameter("startAddTime"));
         String endAddTimeStr = StringUtil.stringNullHandle(request.getParameter("endAddTime"));
-        String startEndTimeStr = StringUtil.stringNullHandle(request.getParameter("startEndTime"));
-        String endEndTimeStr = StringUtil.stringNullHandle(request.getParameter("endEndTime"));
+        String startFinishTimeStr = StringUtil.stringNullHandle(request.getParameter("startFinishTime"));
+        String endFinishTimeStr = StringUtil.stringNullHandle(request.getParameter("endFinishTime"));
 
         Timestamp startAddTime = null;
-        Timestamp endAddTime = null;
-        Timestamp startEndTime = null;
-        Timestamp endEndTime = null;
-        int paymentType = 0;
-        int currencyId = 0;
-        int pendingStatus = 0;
-        int pageNumber = 0;
-
         if (StringUtil.isNotNull(startAddTimeStr)) {
-            startAddTime = DateUtil.stringToTimestamp(startAddTimeStr);
+            startAddTime = Timestamp.valueOf(startAddTimeStr);
         }
+        Timestamp endAddTime = null;
         if (StringUtil.isNotNull(endAddTimeStr)) {
-            endAddTime = DateUtil.stringToTimestamp(endAddTimeStr);
+            endAddTime = Timestamp.valueOf(endAddTimeStr);
         }
-        if (StringUtil.isNotNull(startEndTimeStr)) {
-            startEndTime = DateUtil.stringToTimestamp(startEndTimeStr);
+        Timestamp startFinishTime = null;
+        if (StringUtil.isNotNull(startFinishTimeStr)) {
+            startFinishTime = Timestamp.valueOf(startFinishTimeStr);
         }
-        if (StringUtil.isNotNull(endEndTimeStr)) {
-            endEndTime = DateUtil.stringToTimestamp(endEndTimeStr);
+        Timestamp endFinishTime = null;
+        if (StringUtil.isNotNull(endFinishTimeStr)) {
+            endFinishTime = Timestamp.valueOf(endFinishTimeStr);
         }
-        if (StringUtil.isNotNull(paymentTypeStr)) {
-            paymentType = Integer.parseInt(paymentTypeStr);
-        }
-        if (StringUtil.isNotNull(pendingStatusStr)) {
-            pendingStatus = Integer.parseInt(pendingStatusStr);
-        }
+        int currencyId = 0;
         if (StringUtil.isNotNull(currencyIdStr)) {
             currencyId = Integer.parseInt(currencyIdStr);
         }
+        int paymentType = 0;
+        if (StringUtil.isNotNull(paymentTypeStr)) {
+            paymentType = Integer.parseInt(paymentTypeStr);
+        }
+        int pendingStatus = 0;
+        if (StringUtil.isNotNull(pendingStatusStr)) {
+            pendingStatus = Integer.parseInt(pendingStatusStr);
+        }
+        int pageNumber = 0;
         if (StringUtil.isNotNull(pageNumberStr)) {
             pageNumber = Integer.parseInt(pageNumberStr);
         }
 
         int pageSize = 20;
-        int totalNumber = transactionPendOrderService.countPendOrderForBack(userAccount, currencyId, paymentType, pendingStatus, startAddTime, endAddTime, startEndTime, endEndTime);
+        int totalNumber = transactionPendOrderService.countPendOrderForBack(userAccount, currencyId, paymentType,
+                pendingStatus, startAddTime, endAddTime, startFinishTime, endFinishTime);
 
-        int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
+        List<TransactionPendOrderDO> transactionPendOrderRecord = null;
+        if (totalNumber > 0) {
+            transactionPendOrderRecord = transactionPendOrderService.listPendOrderForBack(userAccount, currencyId,
+                    paymentType, pendingStatus, startAddTime, endAddTime, startFinishTime, endFinishTime, pageNumber,
+                    pageSize);
+        }
+
+        int totalPageNumber = (int) Math.ceil(totalNumber/(pageSize*1.0));
         if (totalPageNumber <= 0) {
             totalPageNumber = 1;
         }
 
-        List<TransactionPendOrderDO> transactionPendOrderList = null;
-        if (totalNumber > 0) {
-            transactionPendOrderList = transactionPendOrderService.listPendOrderForBack(userAccount, currencyId, paymentType, pendingStatus, startAddTime, endAddTime, startEndTime, endEndTime, pageNumber, pageSize);
-        }
+        //返回数据
+        request.setAttribute("pageNumber",pageNumber);
+        request.setAttribute("totalNumber",totalNumber);
+        request.setAttribute("totalPageNumber",totalPageNumber);
 
-        List<TransactionCurrencyDO> transactionCurrencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
-
-        request.setAttribute("pageNumber", pageNumber);
-        request.setAttribute("startAddTime", startAddTime);
-        request.setAttribute("endAddTime", endAddTime);
-        request.setAttribute("startEndTime", startEndTime);
-        request.setAttribute("endEndTime", endEndTime);
+        request.setAttribute("startAddTime", startAddTimeStr);
+        request.setAttribute("endAddTime", endAddTimeStr);
+        request.setAttribute("startFinishTime", startFinishTimeStr);
+        request.setAttribute("endFinishTime", endFinishTimeStr);
         request.setAttribute("userAccount", userAccount);
+        request.setAttribute("currencyId", currencyId);
         request.setAttribute("paymentType", paymentType);
         request.setAttribute("pendingStatus", pendingStatus);
-        request.setAttribute("currencyId", currencyId);
-
-        request.setAttribute("totalNumber", totalNumber);
-        request.setAttribute("totalPageNumber", totalPageNumber);
-        request.setAttribute("transactionPendOrderList", transactionPendOrderList);
-        request.setAttribute("transactionCurrencyList", transactionCurrencyList);
+        request.setAttribute("transactionPendOrderRecord", transactionPendOrderRecord);
         //当前页面的权限标识
-        request.getSession().setAttribute("backer_pagePowerId", 101000);
-    }
-
-    /** 撤销挂单 */
-    @RequestMapping("/cancle.htm")
-    public String cancle(HttpServletRequest request){
-        BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
-        if (backerSession == null) {
-            request.setAttribute("code", 4);
-            request.setAttribute("message", "登录超时");
-            return "page/back/login";
-        }
-        //业务功能权限
-        boolean havePower = BackerWebInterceptor.validatePower(request, 101002);
-        if (!havePower) {
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "您没有权限进行此操作");
-            request.getSession().setAttribute("backer_rolePowerId", 0);
-            return "page/back/index";
-        }
-
-        String pendingOrderNo = StringUtil.stringNullHandle(request.getParameter("pendingOrderNo"));
-        if (StringUtil.isNotNull(pendingOrderNo)) {
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误");
-            request.getSession().setAttribute("backer_rolePowerId", 101000);
-            return "page/back/transactionPendOrder";
-        }
-        //获取订单并判断状态是否可以撤单
-        TransactionPendOrderDO pendOrder = transactionPendOrderService.getPendOrderByPendingOrderNo(pendingOrderNo);
-        if (pendOrder == null || pendOrder.getPendingStatus() >= 3) {
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "该订单不存在或已完成");
-            request.getSession().setAttribute("backer_rolePowerId", 101000);
-            return "page/back/transactionPendOrder";
-        }
-        //撤单
-        boolean result = transactionPendOrderService.revokePendOrder(pendingOrderNo);
-        if (result) {
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "撤单成功");
-        } else {
-            request.setAttribute("code", 2);
-            request.setAttribute("message", "撤单失败");
-        }
-
-        List(request);
-
-        return "page/back/transactionPendOrder";
+        request.getSession().setAttribute("backer_pagePowerId", 100000);
     }
 
 }

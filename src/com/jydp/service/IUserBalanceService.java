@@ -5,7 +5,7 @@ import com.jydp.entity.DO.user.UserBalanceDO;
 import java.util.List;
 
 /**
- * Description:用户认证记录
+ * Description:用户账户记录
  * Author: hht
  * Date: 2018-02-07 15:42
  */

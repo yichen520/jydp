@@ -2,6 +2,7 @@ package com.jydp.service.impl.user;
 
 import com.jydp.dao.IUserCurrencyNumDao;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
+import com.jydp.entity.DTO.BackerUserCurrencyNumDTO;
 import com.jydp.service.IUserCurrencyNumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,15 @@ public class UserCurrencyNumServiceImpl implements IUserCurrencyNumService {
      */
     public List<UserCurrencyNumDO> getUserCurrencyNumByUserId (int userId){
         return userCurrencyNumDao.getUserCurrencyNumByUserId(userId);
+    }
+
+    /**
+     * 查询用户币数量（后台）
+     * @param userId 用户Id
+     * @return 查询成功：返回用户币数量，查询失败：返回null
+     */
+    public List<BackerUserCurrencyNumDTO> getUserCurrencyNumByUserIdForBacker (int userId) {
+        return userCurrencyNumDao.getUserCurrencyNumByUserIdForBacker(userId);
     }
 
     /**

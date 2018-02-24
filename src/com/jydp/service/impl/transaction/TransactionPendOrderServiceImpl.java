@@ -4,6 +4,7 @@ import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.ITransactionPendOrderDao;
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
+import com.jydp.entity.DO.user.UserBalanceDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.service.*;
@@ -44,6 +45,10 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
     @Autowired
     private IUserCurrencyNumService userCurrencyNumService;
 
+    /** 成交记录 */
+    @Autowired
+    private ITransactionUserDealService transactionUserDealService;
+
     /**
      * 新增挂单记录
      * @param pendingOrderNo 记录号,业务类型（2）+日期（6）+随机位（10）
@@ -54,7 +59,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
      * @param pendingPrice 挂单单价
      * @param pendingNumber 挂单数量
      * @param dealNumber 成交数量
-     * @param pendingStatus 挂单状态，1：挂单中，2：部分完成，3：已完成，4：已撤销
+     * @param pendingStatus 挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销
      * @param remark 备注
      * @param addTime 添加时间
      * @return 操作成功：返回true，操作失败：返回false
@@ -82,7 +87,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
      * 修改挂单记录
      * @param pendingOrderNo 记录号,业务类型（2）+日期（6）+随机位（10）
      * @param dealNumber 成交数量
-     * @param pendingStatus 挂单状态，1：挂单中，2：部分完成，3：已完成，4：已撤销
+     * @param pendingStatus 挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销
      * @param remark 备注
      * @param endTime 完成时间
      * @return 操作成功：返回true，操作失败：返回false
@@ -130,7 +135,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
     /**
      * 修改挂单状态
      * @param pendingOrderNo 记录号,业务类型（2）+日期（6）+随机位（10）
-     * @param pendingStatus 挂单状态，1：挂单中，2：部分完成，3：已完成，4：已撤销
+     * @param pendingStatus 挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销
      * @return 操作成功：返回true，操作失败：返回false
      */
     public boolean updatePendingStatus(String pendingOrderNo, int pendingStatus){
@@ -153,7 +158,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
      * @param userAccount 用户账号
      * @param currencyId 币种Id（查全部为0）
      * @param paymentType 交易类型,1：买入，2：卖出（查全部为0）
-     * @param pendingStatus 挂单状态，1：挂单中，2：部分完成，3：已完成，4：已撤销（查全部为0）
+     * @param pendingStatus 挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销（查全部为0）
      * @param startAddTime 挂单起始时间，没有值填null
      * @param endAddTime 挂单结束时间，没有值填null
      * @param startFinishTime 完成起始时间，没有值填null
@@ -172,7 +177,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
      * @param userAccount 用户账号
      * @param currencyId 币种Id（查全部为0）
      * @param paymentType 交易类型,1：买入，2：卖出（查全部为0）
-     * @param pendingStatus 挂单状态，1：挂单中，2：部分完成，3：已完成，4：已撤销（查全部为0）
+     * @param pendingStatus 挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销（查全部为0）
      * @param startAddTime 挂单起始时间，没有值填null
      * @param endAddTime 挂单结束时间，没有值填null
      * @param startFinishTime 完成起始时间，没有值填null
@@ -202,26 +207,50 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
         int pendingStatus = transactionPendOrder.getPendingStatus();
         int currencyId = transactionPendOrder.getCurrencyId();
         int userId = transactionPendOrder.getUserId();
-        if(pendingStatus!=1 || pendingStatus != 2){
+        double dealNumber = transactionPendOrder.getDealNumber();
+        if(pendingStatus != 1 && pendingStatus != 2){
             return false;
         }
-        //计算撤销的数量
-        double num = transactionPendOrder.getPendingNumber() - transactionPendOrder.getDealNumber();
+        //计算撤销的币数量
+        double num = transactionPendOrder.getPendingNumber() - dealNumber;
         //业务执行状态
         boolean excuteSuccess = true;
 
         if(paymentType == 1){ //如果是买入
             //查询用户美金金额
             UserDO user = userService.getUserByUserId(userId);
-            //判断冻结数量是否大于等于num
-            if(user.getUserBalanceLock() < num){
+            //计算撤销的美金数量
+            double balanceRevoke = num * transactionPendOrder.getPendingPrice() * (1+0.002);
+            //判断冻结金额是否大于等于balanceRevoke
+            if(user.getUserBalanceLock() < balanceRevoke){
                 return false;
             }
             //减少冻结数量
-
+            if(excuteSuccess){
+                excuteSuccess = userService.updateReduceUserBalanceLock(userId, balanceRevoke);
+            }
             //增加美金数量
-
+            if(excuteSuccess){
+                excuteSuccess = userService.updateAddUserAmount(userId, balanceRevoke,0);
+            }
             //增加美金记录
+            if(excuteSuccess){
+                Timestamp curTime = DateUtil.getCurrentTime();
+                String orderNo = SystemCommonConfig.USER_BALANCE +
+                        DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
+                        NumberUtil.createNumberStr(10);
+
+                UserBalanceDO userBalance = new UserBalanceDO();
+                userBalance.setOrderNo(orderNo);
+                userBalance.setUserId(userId);
+                userBalance.setPaymentType(1);
+                userBalance.setFromType("撤销挂单返还冻结美金");
+                userBalance.setBalanceNumber(balanceRevoke);
+                userBalance.setRemark("返还冻结的手续费");
+                userBalance.setAddTime(curTime);
+
+                excuteSuccess = userBalanceService.insertUserBalance(userBalance);
+            }
 
         }else if(paymentType == 2){ //如果是卖出
             //查询用户币数量
@@ -242,17 +271,35 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
             //增加币记录
             if(excuteSuccess){
                 Timestamp curTime = DateUtil.getCurrentTime();
-                String orderNo = SystemCommonConfig.USER_CURRENCY + DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10)
-                        + NumberUtil.createNumberStr(10);
+                String orderNo = SystemCommonConfig.USER_CURRENCY +
+                        DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
+                        NumberUtil.createNumberStr(10);
 
                 excuteSuccess = userCurrencyService.insertUserCurrency(orderNo, currencyId,
-                        1, "撤销挂单", num, currencyId, "无手续费", curTime);
+                        1, "撤销挂单返还币", num, currencyId, "无手续费", curTime);
             }
         }
 
         //修改挂单状态
+        if(excuteSuccess) {
+            Timestamp curTime = DateUtil.getCurrentTime();
+            if (dealNumber > 0) {
+                excuteSuccess = transactionPendOrderDao.updatePartRevoke(pendingOrderNo, num, curTime);
+            } else if (dealNumber == 0) {
+                excuteSuccess = transactionPendOrderDao.updateAllRevoke(pendingOrderNo, num, curTime);
+            }
+        }
+
+        //增加撤单记录
         if(excuteSuccess){
-            excuteSuccess = transactionPendOrderDao.updatePendingStatus(pendingOrderNo, 4);
+            Timestamp curTime = DateUtil.getCurrentTime();
+            String orderNo = SystemCommonConfig.TRANSACTION_USER_DEAL +
+                    DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
+                    NumberUtil.createNumberStr(10);
+
+            excuteSuccess = transactionUserDealService.insertTransactionUserDeal(orderNo, "0", userId,
+                    3, currencyId, transactionPendOrder.getCurrencyName(), 0, num,
+                    0,"撤销挂单", curTime);
         }
 
         if(!excuteSuccess){

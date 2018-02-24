@@ -1,6 +1,7 @@
 package com.jydp.controller.back;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.*;
 import com.jydp.entity.DO.system.SystemAdsHomepagesDO;
 import com.jydp.interceptor.BackerWebInterceptor;
@@ -11,11 +12,17 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 首页广告
@@ -67,15 +74,16 @@ public class BackerAdsHomepagesController {
 
     /** 新增首页广告 */
     @RequestMapping(value = "/addHomeAd.htm", method = RequestMethod.POST)
-    public String addHomeAd(HttpServletRequest request, MultipartFile adsImageUrl) {
+    public @ResponseBody JSONObject addHomeAd(HttpServletRequest request, @RequestParam MultipartFile adsImageUrl) {
+        JSONObject response = new JSONObject();
         //业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 111002);
         if (!havePower) {
-            list(request);
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
+            response.put("code", 6);
+            response.put("message", "您没有该权限");
             request.getSession().setAttribute("backer_pagePowerId", 0);
-            return "page/back/adsHomepages";
+            return response;
+
         }
 
         //获取参数
@@ -83,11 +91,10 @@ public class BackerAdsHomepagesController {
         String webLinkUrl = StringUtil.stringNullHandle(request.getParameter("webLinkUrl"));
         String wapLinkUrl = StringUtil.stringNullHandle(request.getParameter("wapLinkUrl"));
 
-        if (!StringUtil.isNotNull(adsTitle) || adsImageUrl == null || !adsImageUrl.isEmpty()) {
-            list(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误！");
-            return "page/back/adsHomepages";
+        if (!StringUtil.isNotNull(adsTitle) || adsImageUrl == null) {
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
         }
 
         int maxRankNumber = 0;
@@ -104,7 +111,7 @@ public class BackerAdsHomepagesController {
                     adsImageUrl.getInputStream(), FileUrlConfig.file_remote_adImage_url);
         } catch (IOException e) {
             LogUtil.printErrorLog(e);
-        }
+         }
 
         SystemAdsHomepagesDO systemAdsHomepagesDO = new SystemAdsHomepagesDO();
         systemAdsHomepagesDO.setAdsTitle(adsTitle);
@@ -116,50 +123,47 @@ public class BackerAdsHomepagesController {
 
         boolean addResult = systemAdsHomepagesService.insertSystemAdsHomePages(systemAdsHomepagesDO);
         if (addResult) {
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "新增成功！");
+            response.put("code", 1);
+            response.put("message", "新增成功！");
         } else {
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "新增失败！");
+            response.put("code", 5);
+            response.put("message", "新增失败！");
         }
 
-        list(request);
-        return "page/back/adsHomepages";
+        return response;
     }
 
     /** 修改首页广告 */
     @RequestMapping(value = "/modifyHomeAd.htm", method = RequestMethod.POST)
-    public String modifyHomeAd(HttpServletRequest request, MultipartFile adsImageUrl) {
+    public @ResponseBody JSONObject modifyHomeAd(HttpServletRequest request, MultipartFile adsImageUrl) {
+        JSONObject response = new JSONObject();
         // 业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 111005);
         if (!havePower) {
-            list(request);
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
+            response.put("code", 6);
+            response.put("message", "您没有该权限");
             request.getSession().setAttribute("backer_pagePowerId", 0);
-            return "page/back/adsHomepages";
+            return response;
         }
 
         //获取参数
-        String idStr = StringUtil.stringNullHandle(request.getParameter("updateId"));
-        String adsTitle = StringUtil.stringNullHandle(request.getParameter("updateAdsTitle"));
-        String webLinkUrl = StringUtil.stringNullHandle(request.getParameter("updateWebLinkUrl"));
-        String wapLinkUrl = StringUtil.stringNullHandle(request.getParameter("updateWapLinkUrl"));
+        String idStr = StringUtil.stringNullHandle(request.getParameter("modifyId"));
+        String adsTitle = StringUtil.stringNullHandle(request.getParameter("modifyAdsTitle"));
+        String webLinkUrl = StringUtil.stringNullHandle(request.getParameter("modifyWebLinkUrl"));
+        String wapLinkUrl = StringUtil.stringNullHandle(request.getParameter("modifyWapLinkUrl"));
 
         if (!StringUtil.isNotNull(adsTitle) || !StringUtil.isNotNull(idStr)) {
-            list(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误！");
-            return "page/back/adsHomepages";
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
         }
 
         int id = Integer.parseInt(idStr);
         //处理页面参数
         if (id <= 0) {
-            list(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误！");
-            return "page/back/adsHomepages";
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
         }
 
         SystemAdsHomepagesDO updateDO = new SystemAdsHomepagesDO();
@@ -187,55 +191,52 @@ public class BackerAdsHomepagesController {
 
         boolean updateResult = systemAdsHomepagesService.updateSystemAdsHomePages(updateDO);
         if (updateResult) {
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "修改成功！");
+            response.put("code", 1);
+            response.put("message", "修改成功！");
         } else {
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "修改失败！");
+            response.put("code", 5);
+            response.put("message", "修改失败！");
         }
 
-        list(request);
-        return "page/back/adsHomepages";
+        return response;
     }
 
     /** 删除首页广告 */
     @RequestMapping(value = "/deleteHomeAd.htm", method = RequestMethod.POST)
-    public String deleteHomeAd(HttpServletRequest request) {
+    public @ResponseBody JSONObject deleteHomeAd(HttpServletRequest request) {
+        JSONObject response = new JSONObject();
         // 业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 111006);
         if (!havePower) {
-            list(request);
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
+            response.put("code", 6);
+            response.put("message", "您没有该权限");
             request.getSession().setAttribute("backer_pagePowerId", 0);
-            return "page/back/adsHomepages";
+            return response;
         }
 
         //获取参数
         String idStr = StringUtil.stringNullHandle(request.getParameter("deleteId"));
 
         if (!StringUtil.isNotNull(idStr)) {
-            list(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误！");
-            return "page/back/adsHomepages";
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
         }
 
         int id = Integer.parseInt(idStr);
         //处理页面参数
         if (id <= 0) {
-            list(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误！");
-            return "page/back/adsHomepages";
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
         }
 
         SystemAdsHomepagesDO systemAdsHomepagesDO = systemAdsHomepagesService.getSystemAdsHomePagesById(id);
         if (systemAdsHomepagesDO == null) {
             list(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误！");
-            return "page/back/adsHomepages";
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
         }
 
         boolean deleteResult = systemAdsHomepagesService.deleteSystemAdsHomePages(id);
@@ -243,105 +244,96 @@ public class BackerAdsHomepagesController {
             // 删除图片
             FileWriteLocalUtil.deleteFile(systemAdsHomepagesDO.getAdsImageUrl());
 
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "删除成功！");
+            response.put("code", 1);
+            response.put("message", "删除成功！");
         } else {
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "删除失败！");
+            response.put("code", 5);
+            response.put("message", "删除失败！");
         }
 
-        list(request);
-        return "page/back/adsHomepages";
+        return response;
     }
 
     /** 上移首页广告 */
-    @RequestMapping(value = "/upMoveHomeAd.htm", method = RequestMethod.GET)
-    public String upMoveHomeAd(HttpServletRequest request) {
+    @RequestMapping(value = "/upMoveHomeAd.htm", method = RequestMethod.POST)
+    public @ResponseBody JSONObject upMoveHomeAd(HttpServletRequest request) {
+        JSONObject response = new JSONObject();
         // 业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 111003);
         if (!havePower) {
-            list(request);
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
+            response.put("code", 6);
+            response.put("message", "您没有该权限");
             request.getSession().setAttribute("backer_pagePowerId", 0);
-            return "page/back/adsHomepages";
+            return response;
         }
 
         //获取参数
         String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
-
         if (!StringUtil.isNotNull(idStr)) {
-            list(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误！");
-            return "page/back/adsHomepages";
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
         }
 
         int id = Integer.parseInt(idStr);
         //处理页面参数
         if (id <= 0) {
-            list(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误！");
-            return "page/back/adsHomepages";
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
         }
 
         boolean updateResult = systemAdsHomepagesService.upMoveAdsHomepagesForBack(id);
         if (updateResult) {
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "上移成功！");
+            response.put("code", 1);
+            response.put("message", "上移成功！");
         } else {
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "上移失败！");
+            response.put("code", 5);
+            response.put("message", "上移失败！");
         }
 
-        list(request);
-        return "page/back/adsHomepages";
+        return response;
     }
 
     /** 下移首页广告 */
-    @RequestMapping(value = "/downMoveHomeAd.htm", method = RequestMethod.GET)
-    public String downMoveHomeAd(HttpServletRequest request) {
+    @RequestMapping(value = "/downMoveHomeAd.htm", method = RequestMethod.POST)
+    public @ResponseBody JSONObject downMoveHomeAd(HttpServletRequest request) {
+        JSONObject response = new JSONObject();
         // 业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 111004);
         if (!havePower) {
-            list(request);
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
+            response.put("code", 6);
+            response.put("message", "您没有该权限");
             request.getSession().setAttribute("backer_pagePowerId", 0);
-            return "page/back/adsHomepages";
+            return response;
         }
 
         // 获取参数
         String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
 
         if (!StringUtil.isNotNull(idStr)) {
-            list(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误！");
-            return "page/back/adsHomepages";
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
         }
 
         int id = Integer.parseInt(idStr);
         // 处理页面参数
         if (id <= 0) {
-            list(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误！");
-            return "page/back/adsHomepages";
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
         }
 
         boolean updateResult = systemAdsHomepagesService.downMoveAdsHomepagesForBack(id);
         if (updateResult) {
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "下移成功！");
+            response.put("code", 1);
+            response.put("message", "下移成功！");
         } else {
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "下移失败！");
+            response.put("code", 5);
+            response.put("message", "下移失败！");
         }
 
-        list(request);
-        return "page/back/adsHomepages";
+        return response;
     }
-
 }
