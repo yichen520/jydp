@@ -17,7 +17,7 @@ public class TransactionPendOrderDO {
     private double pendingPrice;  //挂单单价
     private double pendingNumber;  //挂单数量
     private double dealNumber;  //成交数量
-    private int pendingStatus;  //挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：已撤销
+    private int pendingStatus;  //挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销
     private String remark;  //备注
     private Timestamp endTime;  //完成时间
     private Timestamp addTime;  //添加时间
@@ -153,7 +153,7 @@ public class TransactionPendOrderDO {
     }
 
     /**
-     * 挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：已撤销
+     * 挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销
      * @return the pendingStatus
      */
     public int getPendingStatus() {
@@ -161,7 +161,7 @@ public class TransactionPendOrderDO {
     }
 
     /**
-     * 挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：已撤销
+     * 挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销
      * @param pendingStatus the pendingStatus to set
      */
     public void setPendingStatus(int pendingStatus) {

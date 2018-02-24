@@ -127,4 +127,17 @@
 		LIMIT #{startNumber}, #{pageSize}
 	</select>
 
+	<update id="TransactionPendOrder_updatePartRevoke" parameterType="java.util.Map">
+		UPDATE transaction_pend_order_tab
+		SET pendingStatus = 4
+		WHERE pendingOrderNo = #{pendingOrderNo}
+		  AND dealNumber + #{revokeNumber} <![CDATA[ < ]]> pendingNumber
+	</update>
+
+	<update id="TransactionPendOrder_updateAllRevoke" parameterType="java.util.Map">
+		UPDATE transaction_pend_order_tab
+		SET pendingStatus = 5
+		WHERE pendingOrderNo = #{pendingOrderNo}
+		AND dealNumber + #{revokeNumber} <![CDATA[ = ]]> pendingNumber
+	</update>
 </mapper>
