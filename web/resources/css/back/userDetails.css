@@ -1,0 +1,11 @@
+.bottom{
+    margin-top: 0!important;
+}
+.account{
+    width: 1170px;
+    margin: 0 15px;
+    padding-top: 10px;
+    font-size: 13px;
+    color: #ff9a3b;
+    border-top: 1px solid #ececec;
+}
