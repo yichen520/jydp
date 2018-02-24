@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50635
 File Encoding         : 65001
 
-Date: 2018-02-24 14:13:52
+Date: 2018-02-24 15:22:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -96,7 +96,7 @@ CREATE TABLE `backer_tab` (
   `addTime` datetime NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`backerId`),
   UNIQUE KEY `backerAccount` (`backerAccount`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='后台管理员';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='后台管理员';
 
 -- ----------------------------
 -- Table structure for system_ads_homepages_tab
@@ -174,7 +174,7 @@ CREATE TABLE `system_notice_tab` (
   `topTime` datetime DEFAULT NULL COMMENT '置顶时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='用户公告管理';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='用户公告管理';
 
 -- ----------------------------
 -- Table structure for system_validate_phone_tab
@@ -205,10 +205,10 @@ CREATE TABLE `transaction_currency_tab` (
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='交易币种';
 
 -- ----------------------------
--- Table structure for transaction_deal_redis__tab
+-- Table structure for transaction_deal_redis_tab
 -- ----------------------------
-DROP TABLE IF EXISTS `transaction_deal_redis__tab`;
-CREATE TABLE `transaction_deal_redis__tab` (
+DROP TABLE IF EXISTS `transaction_deal_redis_tab`;
+CREATE TABLE `transaction_deal_redis_tab` (
   `orderNo` varchar(18) NOT NULL COMMENT '记录号',
   `paymentType` tinyint(1) NOT NULL COMMENT '收支类型',
   `currencyId` int(11) NOT NULL COMMENT '币种Id',
