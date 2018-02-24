@@ -6,7 +6,7 @@
 <mapper namespace="com.jydp.dao.impl.transaction.TransactionUserDealDaoImpl">
 
 	<select id="TransactionUserDeal_getTransactionUserDeallist" parameterType="java.util.Map" resultType="TransactionUserDealDO">
-		SELECT orderNo, pendingOrderNo, userId, paymentType, currencyId, currencyName,
+		SELECT orderNo, pendingOrderNo, userId, paymentType, currencyId, currencyName, transactionPrice,
 				currencyNumber, currencyTotalPrice, remark, addTime
 	  	FROM transaction_user_deal_tab
 	  	WHERE userId = #{userId}
@@ -16,10 +16,10 @@
 
 	<insert id="TransactionUserDeal_insertTransactionUserDeal" parameterType="TransactionUserDealDO">
 		INSERT INTO transaction_user_deal_tab
-			(orderNo, pendingOrderNo, userId, paymentType, currencyId, currencyName,
+			(orderNo, pendingOrderNo, userId, paymentType, currencyId, currencyName, transactionPrice,
 			 currencyNumber, currencyTotalPrice, remark, addTime)
 		VALUES
-			(#{orderNo}, #{pendingOrderNo}, #{userId}, #{paymentType}, #{currencyId}, #{currencyName},
+			(#{orderNo}, #{pendingOrderNo}, #{userId}, #{paymentType}, #{currencyId}, #{currencyName}, #{transactionPrice},
 			 #{currencyNumber}, #{currencyNumber}, #{remark}, #{addTime})
 	</insert>
 

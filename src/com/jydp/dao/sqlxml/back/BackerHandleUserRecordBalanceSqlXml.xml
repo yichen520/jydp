@@ -27,7 +27,7 @@
                 AND backerAccount LIKE CONCAT('%', #{backerAccount}, '%')
             </if>
             <if test="startAddTime != null">
-                AND addTime <![CDATA[ <= ]]> #{startAddTime}
+                AND addTime <![CDATA[ >= ]]> #{startAddTime}
             </if>
             <if test="endAddTime != null">
                 AND addTime <![CDATA[ <= ]]> #{endAddTime}
@@ -41,7 +41,7 @@
         SELECT COUNT(id)
         FROM backer_handle_user_balance_tab
         <where>
-            <if test="startTime != null and userAccount !=''">
+            <if test="userAccount != null and userAccount !=''">
                 AND userAccount LIKE CONCAT('%', #{userAccount}, '%')
             </if>
             <if test="typeHandle != null and typeHandle !=0 ">
@@ -51,13 +51,11 @@
                 AND backerAccount LIKE CONCAT('%', #{backerAccount}, '%')
             </if>
             <if test="startAddTime != null">
-                AND addTime <![CDATA[ <= ]]> #{startAddTime}
+                AND addTime <![CDATA[ >= ]]> #{startAddTime}
             </if>
             <if test="endAddTime != null">
                 AND addTime <![CDATA[ <= ]]> #{endAddTime}
             </if>
         </where>
-        ORDER BY addTime DESC
-        LIMIT #{startNumber}, #{pageSize}
     </select>
 </mapper>

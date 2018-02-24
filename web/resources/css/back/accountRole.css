@@ -1,0 +1,26 @@
+.name{
+    width: 300px;
+}
+.role{
+   width: 722px;
+}
+.operate{
+    width: 128px;
+}
+.change,.delete{
+    margin-left: 15px;
+    color: #49a2fb;
+}
+.delete{
+    width: 40px;
+    text-align: center;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+.change:hover,.delete:hover{
+    color: #2c94fd;
+}
+.delete_pop{
+    display: none;
+}
