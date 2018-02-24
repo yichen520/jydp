@@ -54,7 +54,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         </ul>
     </li>
 
-    <li class="levelOne">
+    <li class="levelOne" id="li_100000">
         <p class="menuTitle">
             交易记录
             <img src="<%=path %>/resources/image/back/down.png" class="menu_down" />
@@ -62,9 +62,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         </p>
 
         <ul class="levelTwo">
-            <li class="menuInfo"><a href="#">挂单记录</a></li>
-            <li class="menuInfo"><a href="#">交易记录</a></li>
-            <li class="menuInfo"><a href="#">后台挂单</a></li>
+            <li class="menuInfo" id="li_101000"><a href="<%=path%>/backerWeb/backerTransactionPendOrder/show.htm">挂单记录</a></li>
+            <li class="menuInfo" id="li_102000"><a href="#">交易记录</a></li>
+            <li class="menuInfo" id="li_103000"><a href="#">后台挂单</a></li>
         </ul>
     </li>
 
