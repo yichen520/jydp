@@ -107,7 +107,7 @@ public class BackerAdministratorOperation {
         request.setAttribute("typeHandle", typeHandle);
         request.setAttribute("backerAccount", backerAccount);
         request.setAttribute("startAddTime", startAddTimeStr);
-        request.setAttribute("endAddTimeStr", endAddTimeStr);
+        request.setAttribute("endAddTime", endAddTimeStr);
         //当前页面的权限标识
         request.getSession().setAttribute("backer_pagePowerId", 121000);
     }

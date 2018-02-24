@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
@@ -242,7 +243,7 @@ public class BackerRoleController {
         	attributes.addFlashAttribute("message", "账号角色信息错误");
         	return "redirect:/backer/backerRole/show.htm";
         }
-        
+
         request.setAttribute("role", role);
 
         getRolePower(request);
@@ -300,29 +301,29 @@ public class BackerRoleController {
     
     /** 删除角色*/
     @RequestMapping(value = "/roleDelete.htm", method = RequestMethod.POST)
-    public String roleDelete(HttpServletRequest request, RedirectAttributes attributes) {
+    public @ResponseBody JsonObjectBO roleDelete(HttpServletRequest request) {
+        JsonObjectBO responseJson = new JsonObjectBO();
 		//业务功能权限
 		boolean havePower = BackerWebInterceptor.validatePower(request, 131004);
 		if (!havePower) {
-			request.setAttribute("code", 6);
-			request.setAttribute("message", "您没有该权限");
-			request.getSession().setAttribute("backer_pagePowerId", 0);
-			return "page/back/index";
+            responseJson.setCode(6);
+            responseJson.setMessage("您没有该权限");
+            return responseJson;
 		}
     	
         String roleIdStr = StringUtil.stringNullHandle(request.getParameter("delete_roleId"));
         if (!StringUtil.isNotNull(roleIdStr)) {
-            attributes.addFlashAttribute("code", 3);
-        	attributes.addFlashAttribute("message", "参数错误");
-        	return "redirect:/backerWeb/backerRole/show.htm";
+            responseJson.setCode(3);
+            responseJson.setMessage("参数错误");
+            return responseJson;
         }
         
         int roleId = Integer.parseInt(roleIdStr);
         JsonObjectBO deleteResult = roleService.deleteRoleForBacker(roleId);
-        
-        attributes.addFlashAttribute("code", deleteResult.getCode());
-    	attributes.addFlashAttribute("message", deleteResult.getMessage());
-    	return "redirect:/backerWeb/backerRole/show.htm";
+
+        responseJson.setCode(deleteResult.getCode());
+        responseJson.setMessage(deleteResult.getMessage());
+        return responseJson;
     }
 	
 }

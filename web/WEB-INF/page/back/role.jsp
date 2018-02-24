@@ -71,7 +71,7 @@
 
                 <div class="buttons">
                     <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                    <input type="submit" value="确&nbsp;定" class="yes" onfocus="this.blur()" />
+                    <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="deleteConfirm()" />
                 </div>
             </div>
             <input type="hidden" id="delete_roleId" name="delete_roleId">
@@ -108,6 +108,38 @@
         $(".mask").fadeIn();
         $(".delete_pop").fadeIn();
     }
+
+    var exportDataBoo = false;
+    function deleteConfirm(){
+        if(exportDataBoo){
+            return;
+        }else{
+            exportDataBoo = true;
+        }
+        var delete_roleId = $("#delete_roleId").val();
+
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerRole/roleDelete.htm",
+            type:'post',
+            dataType:'json',
+            async:true,
+            data:{
+                delete_roleId : delete_roleId
+            },
+            success:function(result){
+                if(result.code == 1) {
+                    window.location.href = "<%=path %>/backerWeb/backerRole/show.htm";
+                } else {
+                    openTips(result.message);
+                }
+                exportDataBoo = false;
+            }, error:function(){
+                exportDataBoo = false;
+                openTips("导出失败,请重新刷新页面后重试");
+            }
+        });
+    }
+
     function updateRole(roleId) {
         $("#modify_roleId").val(roleId);
         $("#updateForm").submit();
