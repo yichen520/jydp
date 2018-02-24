@@ -25,7 +25,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         </ul>
     </li>
 
-    <li class="levelOne">
+    <li class="levelOne" id="li_110000">
         <p class="menuTitle">
             运营中心
             <img src="<%=path %>/resources/image/back/down.png" class="menu_down" />
@@ -37,8 +37,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <li class="menuInfo"><a href="#">合作伙伴</a></li>
             <li class="menuInfo"><a href="#">用户公告管理</a></li>
             <li class="menuInfo"><a href="#">热门话题管理</a></li>
-            <li class="menuInfo"><a href="#">用户帮助中心</a></li>
-            <li class="menuInfo"><a href="#">意见反馈</a></li>
+            <li class="menuInfo" id="li_115000"><a id="a_115000" href="<%=path%>/backerWeb/helpCenter/show.htm">用户帮助中心</a></li>
+            <li class="menuInfo" id="li_116000"><a id="a_116000" href="<%=path%>/backerWeb/backerFeedback/show.htm">意见反馈</a></li>
         </ul>
     </li>
 
