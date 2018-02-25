@@ -20,7 +20,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         </p>
 
         <ul class="levelTwo">
-            <li class="menuInfo" id="li_141000"><a id="a_141000" href="#">实名认证</a></li>
+            <li class="menuInfo" id="li_141000"><a id="a_141000" href="<%=path%>/backerWeb/backerIdentification/show.htm">实名认证</a></li>
             <li class="menuInfo" id="li_141100"><a id="a_141100" href="<%=path%>/backerWeb/backerUserAccount/show.htm">用户账号</a></li>
         </ul>
     </li>

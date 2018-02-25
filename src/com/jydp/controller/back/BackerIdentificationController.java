@@ -4,12 +4,15 @@ import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.BackerSessionBO;
 import com.jydp.entity.DO.user.UserIdentificationDO;
+import com.jydp.entity.DO.user.UserIdentificationImageDO;
 import com.jydp.interceptor.BackerWebInterceptor;
+import com.jydp.service.IUserIdentificationImageService;
 import com.jydp.service.IUserIdentificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
@@ -21,13 +24,17 @@ import java.util.List;
  * Date: 2018-02-08 9:50
  */
 @Controller
-@RequestMapping("/backerWeb/backerIndex")
+@RequestMapping("/backerWeb/backerIdentification")
 @Scope(value = "prototype")
 public class BackerIdentificationController {
 
     /** 用户认证 */
     @Autowired
     private IUserIdentificationService userIdentificationService;
+
+    /** 用户认证详情图 */
+    @Autowired
+    private IUserIdentificationImageService userIdentificationImageService;
 
     /** 展示列表页面 */
     @RequestMapping(value = "/show.htm")
@@ -110,7 +117,7 @@ public class BackerIdentificationController {
     }
 
     /** 实名认证详情页面 */
-    @RequestMapping(value = "/detail.htm")
+    @RequestMapping(value = "/detail.htm", method = RequestMethod.POST)
     public String detail(HttpServletRequest request) {
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
         if (backerSession == null) {
@@ -127,27 +134,45 @@ public class BackerIdentificationController {
             return "page/back/index";
         }
 
-        String userIdStr = StringUtil.stringNullHandle(request.getParameter("userId"));
-        if (!StringUtil.isNotNull(userIdStr)) {
+        //查询条件 回显
+        String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
+        String startTimeStr = StringUtil.stringNullHandle(request.getParameter("startTime"));
+        String endTimeStr = StringUtil.stringNullHandle(request.getParameter("endTime"));
+        String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
+        String userPhone = StringUtil.stringNullHandle(request.getParameter("userPhone"));
+        String identificationStatusStr = StringUtil.stringNullHandle(request.getParameter("identificationStatus"));
+        request.setAttribute("pageNumber", pageNumberStr);
+        request.setAttribute("startTime", startTimeStr);
+        request.setAttribute("endTime", endTimeStr);
+        request.setAttribute("userAccount", userAccount);
+        request.setAttribute("userPhone", userPhone);
+        request.setAttribute("identificationStatus", identificationStatusStr);
+
+        String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
+        if (!StringUtil.isNotNull(idStr)) {
             request.setAttribute("code", 2);
             request.setAttribute("message", "未接收到参数！");
             return "page/back/index";
         }
 
-        long userId = Long.parseLong(userIdStr);
-        UserIdentificationDO userIdentification = userIdentificationService.getUserIdentificationById(userId);
+        long id = Long.parseLong(idStr);
+        UserIdentificationDO userIdentification = userIdentificationService.getUserIdentificationById(id);
         if (userIdentification == null) {
             request.setAttribute("code", 3);
             request.setAttribute("message", "参数错误！");
             return "page/back/index";
         }
 
+        List<UserIdentificationImageDO> userIdentificationImageList =
+                userIdentificationImageService.listUserIdentificationImageByIdentificationId(userIdentification.getId());
+
         request.setAttribute("userIdentification", userIdentification);
+        request.setAttribute("userIdentificationImageList", userIdentificationImageList);
         return "page/back/userIdentificationDetail";
     }
 
     /** 审核通过 */
-    @RequestMapping(value = "/pass.htm")
+    @RequestMapping(value = "/pass.htm", method = RequestMethod.POST)
     public String pass(HttpServletRequest request) {
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
         if (backerSession == null) {
@@ -172,7 +197,7 @@ public class BackerIdentificationController {
         }
 
         boolean passResult = false;
-        //TODO
+        //TODO 发送短信
         if (passResult) {
             request.setAttribute("code", 1);
             request.setAttribute("message", "操作成功");
@@ -185,7 +210,7 @@ public class BackerIdentificationController {
     }
 
     /** 审核拒绝 */
-    @RequestMapping(value = "/refuse.htm")
+    @RequestMapping(value = "/refuse.htm", method = RequestMethod.POST)
     public String refuse(HttpServletRequest request) {
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
         if (backerSession == null) {
@@ -210,7 +235,7 @@ public class BackerIdentificationController {
         }
 
         boolean passResult = false;
-        //TODO
+        //TODO 发送短信
         if (passResult) {
             request.setAttribute("code", 1);
             request.setAttribute("message", "操作成功");

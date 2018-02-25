@@ -1,0 +1,37 @@
+.endTime,.startTime{
+    width: 135px;
+}
+.askInput{
+    width: 140px;
+}
+.askSelect{
+    width: 85px;
+}
+.time{
+    width: 180px;
+}
+.account{
+    width: 200px;
+}
+.tel{
+    width: 130px;
+}
+.identity{
+    width: 170px;
+}
+.state{
+    width: 110px;
+}
+.mark{
+    width: 210px;
+}
+.operate{
+    width: 110px;
+}
+.details{
+    font-size: 12px;
+    color: #49a2fb;
+}
+.details:hover{
+    color: #2c94fd;
+}
