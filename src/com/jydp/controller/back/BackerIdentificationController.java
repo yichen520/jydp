@@ -10,7 +10,6 @@ import com.jydp.interceptor.BackerWebInterceptor;
 import com.jydp.other.SendMessage;
 import com.jydp.service.IUserIdentificationImageService;
 import com.jydp.service.IUserIdentificationService;
-import com.sun.xml.internal.bind.v2.runtime.SwaRefAdapterMarker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -107,8 +106,8 @@ public class BackerIdentificationController {
         }
 
         request.setAttribute("pageNumber", pageNumber);
-        request.setAttribute("startTime", startTime);
-        request.setAttribute("endTime", endTime);
+        request.setAttribute("startTime", startTimeStr);
+        request.setAttribute("endTime", endTimeStr);
         request.setAttribute("userAccount", userAccount);
         request.setAttribute("userPhone", userPhone);
         request.setAttribute("identificationStatus", identificationStatusStr);
@@ -220,7 +219,7 @@ public class BackerIdentificationController {
 
         boolean passResult = userIdentificationService.updateUserIdentificationStatus
                 (userIdentification.getId(), 2, DateUtil.getCurrentTime(), remark);
-        if (passResult == false) {
+        if (!passResult) {
             responseJson.setCode(5);
             responseJson.setMessage("操作失败");
             return responseJson;
@@ -228,7 +227,7 @@ public class BackerIdentificationController {
 
         String messageContent = "您在交易大盘中提交的实名认证信息审核已通过。";
         passResult = SendMessage.send(userIdentification.getUserPhone(), messageContent);
-        if (passResult == false) {
+        if (!passResult) {
             responseJson.setCode(5);
             responseJson.setMessage("短信发送失败，请拨打电话或发送短信通知用户");
             return responseJson;
@@ -282,7 +281,7 @@ public class BackerIdentificationController {
 
         boolean passResult = userIdentificationService.updateUserIdentificationStatus
                 (userIdentification.getId(), 3, DateUtil.getCurrentTime(), remark);
-        if (passResult == false) {
+        if (!passResult) {
             responseJson.setCode(5);
             responseJson.setMessage("操作失败");
             return responseJson;
@@ -290,7 +289,7 @@ public class BackerIdentificationController {
 
         String messageContent = "您在交易大盘中提交的实名认证信息审核被拒绝。";
         passResult = SendMessage.send(userIdentification.getUserPhone(), messageContent);
-        if (passResult == false) {
+        if (!passResult) {
             responseJson.setCode(5);
             responseJson.setMessage("短信发送失败，请拨打电话或发送短信通知用户");
             return responseJson;

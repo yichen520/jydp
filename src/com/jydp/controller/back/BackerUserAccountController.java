@@ -15,7 +15,13 @@ import com.jydp.service.IBackerService;
 import com.jydp.service.IUserCurrencyNumService;
 import com.jydp.service.IUserService;
 import com.jydp.service.IUserSessionService;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFDataFormat;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -31,6 +37,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -168,8 +175,8 @@ public class BackerUserAccountController {
         }
 
         request.setAttribute("pageNumber", pageNumber);
-        request.setAttribute("startTime", startTime);
-        request.setAttribute("endTime", endTime);
+        request.setAttribute("startTime", startTimeStr);
+        request.setAttribute("endTime", endTimeStr);
         request.setAttribute("userAccount", userAccount);
         request.setAttribute("phoneNumber", phoneNumber);
         request.setAttribute("accountStatus", accountStatus);
@@ -471,9 +478,9 @@ public class BackerUserAccountController {
             sheet1.setColumnWidth(0, 5000);
             sheet1.setColumnWidth(1, 5000);
             sheet1.setColumnWidth(2, 6000);
-            sheet1.setColumnWidth(3, 5000);
-            sheet1.setColumnWidth(4, 5000);
-            sheet1.setColumnWidth(5, 5000);
+            sheet1.setColumnWidth(3, 6000);
+            sheet1.setColumnWidth(4, 6000);
+            sheet1.setColumnWidth(5, 6000);
 
             int rowNumber = 1;
             for (UserDO user : userList) {
@@ -488,7 +495,8 @@ public class BackerUserAccountController {
                 cell = row.createCell(3);
                 cell.setCellValue(user.getUserBalanceLock());
                 cell = row.createCell(4);
-                cell.setCellValue(BigDecimalUtil.add(user.getUserBalance(), user.getUserBalanceLock()));
+                double countBalance = BigDecimalUtil.add(user.getUserBalance(), user.getUserBalanceLock());
+                cell.setCellValue(countBalance);
                 cell = row.createCell(5);
                 if (user.getAccountStatus() == 1) {
                     cell.setCellValue("启用");
