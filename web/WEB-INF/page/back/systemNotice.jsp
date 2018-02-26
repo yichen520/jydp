@@ -70,10 +70,10 @@
                             </c:if>
                         </c:if>
                         <c:if test="${backer_rolePower['113004'] == 113004}">
-                            <a href="<%=path%>/backerWeb/backerNotice/openModifyPage.htm?id=${systemNotice.id }" class="change">修&nbsp;改</a>
+                            <a href="javascript:;" class="change" onclick="updateHandle(${systemNotice.id });">修&nbsp;改</a>
                         </c:if>
                         <c:if test="${backer_rolePower['113005'] == 113005}">
-                            <a href="<%=path%>/backerWeb/backerNotice/details.htm?id=${systemNotice.id }" class="details">详&nbsp;情</a>
+                            <a href="javascript:;" class="details" onclick="openDetails(${systemNotice.id });">详&nbsp;情</a>
                         </c:if>
                         <c:if test="${backer_rolePower['113006'] == 113006}">
                             <input type="text" value="删&nbsp;除" class="delete" onfocus="this.blur()" onclick="deleteHandle(${systemNotice.id });"/>
@@ -88,7 +88,19 @@
     </div>
 </div>
 
+<form id="openDetailsForm" action="<%=path %>/backerWeb/backerNotice/details.htm" method="post">
+    <input type="hidden" id="open_pageNumber" name="pageNumber">
+    <input type="hidden" id="open_noticeType" name="query_noticeType">
+    <input type="hidden" id="open_noticeTitle" name="query_noticeTitle">
+    <input type="hidden" id="open_id" name="id">
+</form>
 
+<form id="openUpdateForm" action="<%=path %>/backerWeb/backerNotice/openModifyPage.htm" method="post">
+    <input type="hidden" id="update_pageNumber" name="pageNumber">
+    <input type="hidden" id="update_noticeType" name="query_noticeType">
+    <input type="hidden" id="update_noticeTitle" name="query_noticeTitle">
+    <input type="hidden" id="update_id" name="id">
+</form>
 <div id="footer"></div>
 
 
@@ -153,9 +165,16 @@
         popObj = ".delete_pop"
     }
 
+    var deleteNoticeBoo = false;
     function deleteNotice(){
         var deleteId = document.getElementById("deleteId").value;
 
+        if(deleteNoticeBoo){
+            openTips("正在删除，请稍后！");
+            return;
+        }else{
+            deleteNoticeBoo = true;
+        }
         $.ajax({
             url: '<%=path %>' + "/backerWeb/backerNotice/deleteNotice.htm",
             data: {
@@ -169,6 +188,7 @@
                 var message = resultData.message;
                 if (code != 1 && message != "") {
                     openTips(message);
+                    deleteNoticeBoo = false;
                     return;
                 }
 
@@ -176,6 +196,7 @@
             },
 
             error: function () {
+                deleteNoticeBoo = false;
                 openTips("数据加载出错，请稍候重试");
             }
         });
@@ -210,7 +231,31 @@
 
     }
 
+    function openDetails(id){
+        var pageNumber = $("#queryPageNumber").val();
+        var noticeType = $("#query_noticeType").val();
+        var noticeTitle = $("#query_noticeTitle").val();
 
+        $("#open_pageNumber").val(pageNumber);
+        $("#open_noticeType").val(noticeType);
+        $("#open_noticeTitle").val(noticeTitle);
+        $("#open_id").val(id);
+
+        $("#openDetailsForm").submit();
+    }
+
+    function updateHandle(id){
+        var pageNumber = $("#queryPageNumber").val();
+        var noticeType = $("#query_noticeType").val();
+        var noticeTitle = $("#query_noticeTitle").val();
+
+        $("#update_pageNumber").val(pageNumber);
+        $("#update_noticeType").val(noticeType);
+        $("#update_noticeTitle").val(noticeTitle);
+        $("#update_id").val(id);
+
+        $("#openUpdateForm").submit();
+    }
 
 </script>
 

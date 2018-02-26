@@ -333,11 +333,16 @@
 
         var addId = $("#addId").val();
         var addAccount = $("#addAccount").html();
-        var addBalanceNumber = $("#addBalanceNumber").val();
+        var addBalanceNumberStr = $("#addBalanceNumber").val();
+        var addBalanceNumber = parseFloat(addBalanceNumberStr);
         var addMark = $("#addMark").val();
 
         $("#addBalanceNumber").val("");
         $("#addMark").val("");
+        if (addBalanceNumberStr == null || addBalanceNumberStr == "" || addBalanceNumber <= 0) {
+            addAmountBoo = false;
+            return openTips("请输入要增加的金额");
+        }
         $.ajax({
             url: '<%=path %>' + "/backerWeb/backerUserAccount/addAmount.htm",
             type:'post',
@@ -374,12 +379,17 @@
 
         var reduceId = $("#reduceId").val();
         var reduceAccount = $("#reduceAccount").html();
-        var reduceBalanceNumber = $("#reduceBalanceNumber").val();
+        var reduceBalanceNumberStr = $("#reduceBalanceNumber").val();
+        var reduceBalanceNumber = parseFloat(reduceBalanceNumberStr);
         var reduceMark = $("#reduceMark").val();
-        var userBalance = $("#reduceUserBalance").val();
+        var userBalance = parseFloat($("#reduceUserBalance").val());
 
         $("#reduceBalanceNumber").val("");
         $("#reduceMark").val("");
+        if (reduceBalanceNumberStr == null || reduceBalanceNumberStr == "" || reduceBalanceNumber <= 0) {
+            reduceAmountBoo = false;
+            return openTips("请输入要减少的金额");
+        }
         if (userBalance < reduceBalanceNumber) {
             reduceAmountBoo = false;
             return openTips("您输入的金额大于该账户的可用余额");
@@ -521,10 +531,10 @@
             $(".mask").fadeOut("fast");
             $(popObj).fadeOut("fast");
         });
-        $(".yes").click(function(){
+        /*$(".yes").click(function(){
             $(".mask").fadeOut("fast");
             $(popObj).fadeOut("fast");
-        });
+        });*/
     });
 </script>
 </body>

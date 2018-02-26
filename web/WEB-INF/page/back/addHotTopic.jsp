@@ -70,6 +70,7 @@
 <div id="footer"></div>
 
 <script type="text/javascript">
+    var exportDataBoo = false;
     //确定
     function addHandle() {
         var noticeType = document.getElementById("noticeType").value;
@@ -110,6 +111,12 @@
         formData.append("content", content);
         formData.append("noticeUrl", noticeUrl);
 
+        if(exportDataBoo){
+            openTips("正在保存，请稍后！");
+            return;
+        }else{
+            exportDataBoo = true;
+        }
         $.ajax({
             url: '<%=path %>' + "/backerWeb/hotTopic/addHotTopic.htm",
             data:formData,//参数
@@ -123,6 +130,7 @@
                 var message = resultData.message;
                 if (code != 1 && message != "") {
                     openTips(message);
+                    exportDataBoo = false;
                     return;
                 }
 
@@ -130,6 +138,7 @@
             },
 
             error: function () {
+                exportDataBoo = false;
                 openTips("数据加载出错，请稍候重试");
             }
         });

@@ -1,0 +1,51 @@
+.notice{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 20px 15px;
+    width: 1170px;
+    background-color: #ffffff;
+    border-radius: 0 0 4px 4px;
+}
+.noticeTitle{
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ececec;
+}
+.nTitle{
+    display: inline-block;
+    color: #333333;
+    font-size: 16px;
+    width: 100%;
+}
+.time{
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #999999;
+}
+.editor{
+    width: 1200px;
+    padding: 10px 0;
+    color: #666666;
+    font-size: 15px;
+}
+.operate{
+    display: inline-block;
+    margin-top: 10px;
+}
+.back{
+    display: inline-block;
+    margin-right: 20px;
+    width: 70px;
+    height: 35px;
+    line-height: 35px;
+    border: none;
+    background-color: #dddddd;
+    text-align: center;
+    font-size: 14px;
+    color: #ffffff;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.back:hover{
+    opacity: 0.8;
+}

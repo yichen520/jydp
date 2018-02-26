@@ -11,7 +11,7 @@
     <meta charset="UTF-8">
     <link rel="icon" href="<%=path%>/resources/image/back/icon.ico" type="image/x-ico" />
 
-    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/noticeDetails.css" />
+    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/hotDetail.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/public.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/simpleTips.css" />
 
@@ -31,11 +31,11 @@
 
         <div class="notice">
             <p class="noticeTitle">
-                <span class="nTitle">【<span>${systemNoticeDO.noticeType }</span>】${systemNoticeDO.noticeTitle }</span>
-                <span class="time"><fmt:formatDate type="time" value="${systemNotice.addTime }" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></span>
+                <span class="nTitle">【<span>${systemHotDO.noticeType }</span>】${systemHotDO.noticeTitle }</span>
+                <span class="time"><fmt:formatDate type="time" value="${systemHotDO.addTime }" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></span>
             </p>
 
-            <div class="editor">${systemNoticeDO.content }</div>
+            <div class="editor">${systemHotDO.content }</div>
 
             <div class="operate">
                 <a href="javascript:;" class="back" onclick="backList()">返&nbsp;回</a>
@@ -44,10 +44,10 @@
     </div>
 </div>
 
-<form id="openDetailsForm" action="<%=path %>/backerWeb/backerNotice/show.htm" method="post">
+<form id="openDetailsForm" action="<%=path %>/backerWeb/hotTopic/show.htm" method="post">
     <input type="hidden" id="open_pageNumber" name="pageNumber" value="${pageNumber }">
-    <input type="hidden" id="open_noticeType" name="query_noticeType" value="${noticeType }">
-    <input type="hidden" id="open_noticeTitle" name="query_noticeTitle" value="${noticeTitle }">
+    <input type="hidden" id="open_noticeType" name="noticeType" value="${noticeType }">
+    <input type="hidden" id="open_noticeTitle" name="noticeTitle" value="${noticeTitle }">
 </form>
 <div id="footer"></div>
 

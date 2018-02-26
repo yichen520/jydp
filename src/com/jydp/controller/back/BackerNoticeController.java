@@ -58,7 +58,7 @@ public class BackerNoticeController {
         // 查询参数
         String noticeType = StringUtil.stringNullHandle(request.getParameter("query_noticeType"));
         String noticeTitle = StringUtil.stringNullHandle(request.getParameter("query_noticeTitle"));
-        String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("query_pageNumber"));
+        String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
         int pageNumber = 0;
         if (StringUtil.isNotNull(pageNumberStr)) {
             pageNumber = Integer.parseInt(pageNumberStr);
@@ -165,7 +165,7 @@ public class BackerNoticeController {
     }
 
     /** 打开修改用户公告页面 */
-    @RequestMapping(value = "/openModifyPage.htm", method = RequestMethod.GET)
+    @RequestMapping(value = "/openModifyPage.htm", method = RequestMethod.POST)
     public String openModifyPage(HttpServletRequest request) {
         // 业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 113004);
@@ -178,6 +178,9 @@ public class BackerNoticeController {
         }
 
         String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
+        String noticeType = StringUtil.stringNullHandle(request.getParameter("query_noticeType"));
+        String noticeTitle = StringUtil.stringNullHandle(request.getParameter("query_noticeTitle"));
+        String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
         if (!StringUtil.isNotNull(idStr)) {
             list(request);
             request.setAttribute("code", 3);
@@ -195,7 +198,9 @@ public class BackerNoticeController {
         }
 
         SystemNoticeDO systemNoticeDO = systemNoticeService.getSystemNoticeById(id);
-
+        request.setAttribute("noticeType", noticeType);
+        request.setAttribute("noticeTitle", noticeTitle);
+        request.setAttribute("pageNumber", pageNumberStr);
         request.setAttribute("systemNoticeDO", systemNoticeDO);
         return "page/back/systemNoticeModify";
     }
@@ -268,7 +273,7 @@ public class BackerNoticeController {
     }
 
     /** 打开用户公告详情页面 */
-    @RequestMapping(value = "/details.htm", method = RequestMethod.GET)
+    @RequestMapping(value = "/details.htm", method = RequestMethod.POST)
     public String details(HttpServletRequest request) {
         // 业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 113005);
@@ -281,6 +286,9 @@ public class BackerNoticeController {
         }
 
         String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
+        String noticeType = StringUtil.stringNullHandle(request.getParameter("query_noticeType"));
+        String noticeTitle = StringUtil.stringNullHandle(request.getParameter("query_noticeTitle"));
+        String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
         if (!StringUtil.isNotNull(idStr)) {
             list(request);
             request.setAttribute("code", 3);
@@ -298,7 +306,9 @@ public class BackerNoticeController {
         }
 
         SystemNoticeDO systemNoticeDO = systemNoticeService.getSystemNoticeById(id);
-
+        request.setAttribute("noticeType", noticeType);
+        request.setAttribute("noticeTitle", noticeTitle);
+        request.setAttribute("pageNumber", pageNumberStr);
         request.setAttribute("systemNoticeDO", systemNoticeDO);
         return "page/back/systemNoticeDetails";
     }

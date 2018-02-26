@@ -151,7 +151,7 @@ DROP TABLE IF EXISTS `system_hot_tab`;
 CREATE TABLE `system_hot_tab` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '记录Id',
   `noticeTitle` varchar(64) NOT NULL COMMENT '话题标题',
-  `noticeType` varchar(8) NOT NULL COMMENT '话题类型',
+  `noticeType` varchar(16) NOT NULL COMMENT '话题类型',
   `noticeUrl` varchar(500) NOT NULL COMMENT '话题封面图地址',
   `content` text NOT NULL COMMENT '话题内容',
   `addTime` datetime NOT NULL COMMENT '添加时间',
@@ -166,7 +166,7 @@ CREATE TABLE `system_hot_tab` (
 DROP TABLE IF EXISTS `system_notice_tab`;
 CREATE TABLE `system_notice_tab` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '记录Id',
-  `noticeType` varchar(8) NOT NULL COMMENT '公告类型',
+  `noticeType` varchar(16)NOT NULL COMMENT '公告类型',
   `noticeTitle` varchar(64) NOT NULL COMMENT '公告标题',
   `noticeUrl` varchar(500) NOT NULL COMMENT '公告封面图地址',
   `content` text NOT NULL COMMENT '公告内容',
