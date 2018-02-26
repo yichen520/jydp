@@ -51,6 +51,7 @@
                     <p class="condition">操作管理员账号：<input type="text" class="askInput" maxlength="16" name="backerAccount" value="${backerAccount }"
                                                         onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/></p>
 
+                    <input type="hidden" id="queryPageNumber" name="pageNumber" value="${pageNumber}">
                     <input type="submit" value="查&nbsp;询" class="ask" onfocus="this.blur()" />
                 </form>
             </div>
