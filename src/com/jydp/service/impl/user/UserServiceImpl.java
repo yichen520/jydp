@@ -105,8 +105,8 @@ public class UserServiceImpl implements IUserService {
     /**
      * 修改用户账号状态
      * @param userId 用户Id
-     * @param accountStatus 用户状态
-     * @param oldAccountStatus 用户原来的状态
+     * @param accountStatus 用户状态，1：启用，2：禁用，-1：删除
+     * @param oldAccountStatus 用户原来的状态，1：启用，2：禁用，-1：删除
      * @return 修改成功：返回true，修改失败：返回false
      */
     public boolean updateUserAccountStatus (int userId, int accountStatus, int oldAccountStatus) {

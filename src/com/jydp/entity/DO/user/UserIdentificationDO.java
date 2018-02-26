@@ -16,7 +16,7 @@ public class UserIdentificationDO {
     private String userName;  //用户姓名
     private String userPhone;  //手机号
     private String userCertNo;  //身份证号码
-    private int identificationStatus;  //实名认证状态
+    private int identificationStatus;  //实名认证状态，1：待审核，2：审核通过，3：审核拒绝
     private String remark;  //备注
     private Timestamp identiTime;  //审核时间
     private Timestamp addTime;  //提交时间
@@ -137,7 +137,7 @@ public class UserIdentificationDO {
 
 
     /**
-     * 实名认证状态
+     * 实名认证状态，1：待审核，2：审核通过，3：审核拒绝
      *
      * @return the identification status
      */
@@ -146,7 +146,7 @@ public class UserIdentificationDO {
     }
 
     /**
-     * 实名认证状态
+     * 实名认证状态，1：待审核，2：审核通过，3：审核拒绝
      *
      * @param identificationStatus the identification status
      */

@@ -40,7 +40,7 @@
                     <p class="condition">用户账号：<input type="text" class="askInput" id="userAccount" name="userAccount" value="${userAccount }"
                                                      maxlength="16" onkeyup="matchUtil(this, 'ENumber')" onblur="matchUtil(this, 'ENumber')"/></p>
                     <p class="condition">手机号：<input type="text" class="askInput" id="userPhone" name="userPhone" value="${userPhone }"
-                                                    maxlength="32" onkeyup="matchUtil(this, 'number')" onblur="matchUtil(this, 'number')"/></p>
+                                                    maxlength="11" onkeyup="matchUtil(this, 'number')" onblur="matchUtil(this, 'number')"/></p>
                     <p class="condition">审核状态：
                         <select class="askSelect" id="identificationStatus" name="identificationStatus">
                             <option value="0">全部</option>
@@ -154,7 +154,7 @@
     mapMatch['number'] = /[^\d]/g;
     mapMatch['double'] = true;
     function matchUtil(o, str) {
-        mapMatch[str] === true ? matchDouble(o, 4) : o.value = o.value.replace(mapMatch[str], '');
+        mapMatch[str] === true ? matchDouble(o, 2) : o.value = o.value.replace(mapMatch[str], '');
     }
     function matchDouble(o, num){
         var matchStr = /^-?\d+\.?\d{0,num}$/;

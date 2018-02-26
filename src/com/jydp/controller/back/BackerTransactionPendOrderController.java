@@ -180,7 +180,7 @@ public class BackerTransactionPendOrderController {
         request.setAttribute("pendingStatus", pendingStatus);
         request.setAttribute("transactionPendOrderRecord", transactionPendOrderRecord);
         //当前页面的权限标识
-        request.getSession().setAttribute("backer_pagePowerId", 100000);
+        request.getSession().setAttribute("backer_pagePowerId", 101000);
     }
 
 }

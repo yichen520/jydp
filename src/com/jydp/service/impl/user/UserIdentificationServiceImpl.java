@@ -19,7 +19,7 @@ public class UserIdentificationServiceImpl implements IUserIdentificationService
 
     /** 用户认证 */
     @Autowired
-    private IUserIdentificationDao userIdentificationService;
+    private IUserIdentificationDao userIdentificationDao;
 
     /**
      * 新增用户认证
@@ -27,7 +27,7 @@ public class UserIdentificationServiceImpl implements IUserIdentificationService
      * @return 操作成功：返回true，操作失败：返回false
      */
     public boolean insertUserIdentification (UserIdentificationDO userIdentificationDO) {
-        return userIdentificationService.insertUserIdentification(userIdentificationDO);
+        return userIdentificationDao.insertUserIdentification(userIdentificationDO);
     }
 
     /**
@@ -36,7 +36,7 @@ public class UserIdentificationServiceImpl implements IUserIdentificationService
      * @return 操作成功：返回用户认证信息，操作失败：返回null
      */
     public UserIdentificationDO getUserIdentificationById(long id) {
-        return userIdentificationService.getUserIdentificationById(id);
+        return userIdentificationDao.getUserIdentificationById(id);
     }
 
     /**
@@ -46,7 +46,7 @@ public class UserIdentificationServiceImpl implements IUserIdentificationService
      * @return 操作成功：返回用户认证信息，操作失败：返回null
      */
     public UserIdentificationDO getUserIdentificationByUserCertNo(String userCertNo) {
-        return userIdentificationService.getUserIdentificationByUserCertNo(userCertNo);
+        return userIdentificationDao.getUserIdentificationByUserCertNo(userCertNo);
     }
 
     /**
@@ -60,7 +60,7 @@ public class UserIdentificationServiceImpl implements IUserIdentificationService
      * @return 操作成功：返回用户信息总数，操作失败：返回0
      */
     public int countUserIdentificationForBacker(String userAccount, String userPhone, int identificationStatus, Timestamp startTime, Timestamp endTime) {
-        return userIdentificationService.countUserIdentificationForBacker(userAccount, userPhone, identificationStatus, startTime, endTime);
+        return userIdentificationDao.countUserIdentificationForBacker(userAccount, userPhone, identificationStatus, startTime, endTime);
     }
 
     /**
@@ -77,6 +77,18 @@ public class UserIdentificationServiceImpl implements IUserIdentificationService
      */
     public List<UserIdentificationDO> listUserIdentificationForBacker(String userAccount, String userPhone, int identificationStatus,
                                                                       Timestamp startTime, Timestamp endTime, int pageNumber, int pageSize) {
-        return userIdentificationService.listUserIdentificationForBacker(userAccount, userPhone, identificationStatus, startTime, endTime, pageNumber, pageSize);
+        return userIdentificationDao.listUserIdentificationForBacker(userAccount, userPhone, identificationStatus, startTime, endTime, pageNumber, pageSize);
+    }
+
+    /**
+     * 修改用户实名认证状态
+     * @param id 记录Id
+     * @param identificationStatus 实名状态，1：待审核，2：审核通过，3：审核拒绝
+     * @param identiTime 审核时间
+     * @param remark 备注，可为null
+     * @return 修改成功：返回true，修改失败：返回false
+     */
+    public boolean updateUserIdentificationStatus (long id, int identificationStatus, Timestamp identiTime, String remark) {
+        return userIdentificationDao.updateUserIdentificationStatus(id, identificationStatus, identiTime, remark);
     }
 }
