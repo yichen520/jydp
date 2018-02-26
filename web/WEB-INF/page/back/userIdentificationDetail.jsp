@@ -70,11 +70,13 @@
 
             <div class="operate">
                 <a href="#" class="back" onclick="goBack()">返&nbsp;回</a>
-                <c:if test="${backer_rolePower['141003'] == 141003}">
-                    <input type="text" value="审核通过" class="pass" onfocus="this.blur()" />
-                </c:if>
-                <c:if test="${backer_rolePower['141004'] == 141004}">
-                    <input type="text" value="审核拒绝" class="refuse" onfocus="this.blur()" />
+                <c:if test="${userIdentification.identificationStatus == 1}">
+                    <c:if test="${backer_rolePower['141003'] == 141003}">
+                        <input type="text" value="审核通过" class="pass" onfocus="this.blur()" />
+                    </c:if>
+                    <c:if test="${backer_rolePower['141004'] == 141004}">
+                        <input type="text" value="审核拒绝" class="refuse" onfocus="this.blur()" />
+                    </c:if>
                 </c:if>
             </div>
 
@@ -95,7 +97,6 @@
 
 <form id="backForm" action="<%=path %>/backerWeb/backerIdentification/show.htm" method="post">
     <input type="hidden" value="${pageNumber}" name="pageNumber">
-    <input type="hidden" value="${pageNumber}" name="pageNumber">
     <input type="hidden" value="${startTime}" name="startTime">
     <input type="hidden" value="${endTime}" name="endTime">
     <input type="hidden" value="${userAccount}" name="userAccount">
@@ -114,12 +115,12 @@
             <p class="popTips"><img src="<%=path%>/resources/image/back/tips.png" class="tipsImg" />确定认证通过？</p>
             <p class="popInput">
                 <label class="popName" style="line-height: 20px">备注：</label>
-                <textarea class="txt" placeholder="备注，非必填，最多100个字符"></textarea>
+                <textarea class="txt" id="passRemark" placeholder="备注，非必填，最多100个字符"></textarea>
             </p>
 
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="openTip()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="passSubmit()" />
             </div>
         </div>
 
@@ -128,12 +129,12 @@
             <p class="popTips"><img src="<%=path%>/resources/image/back/tips.png" class="tipsImg" />确定认证拒绝？</p>
             <p class="popInput">
                 <label class="popName" style="line-height: 20px">备注：</label>
-                <textarea class="txt" placeholder="备注，非必填，最多100个字符"></textarea>
+                <textarea class="txt" id="refuseRemark" placeholder="备注，非必填，最多100个字符"></textarea>
             </p>
 
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="openTip()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="refuseSubmit()" />
             </div>
         </div>
     </div>
@@ -155,6 +156,73 @@
 
     function goBack() {
         $("#backForm").submit();
+    }
+
+    var identiId = '${userIdentification.id}';
+
+    var passBoo = false;
+    function passSubmit() {
+        if(passBoo){
+            return false;
+        }else{
+            passBoo = true;
+        }
+
+        var passRemark = $("#passRemark").val();
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerIdentification/pass.htm",
+            type:'post',
+            dataType:'json',
+            async:true,
+            data:{
+                id : identiId,
+                remark : passRemark
+            },
+            success:function(result){
+                passBoo = false;
+                if(result.code == 1) {
+                    $("#backForm").submit();
+                } else {
+                    openTips(result.message);
+                }
+            }, error:function(){
+                passBoo = false;
+                openTips("服务器异常，请稍后再试！");
+            }
+        });
+    }
+
+    var refuseBoo = false;
+    function refuseSubmit() {
+        if(refuseBoo){
+            return false;
+        }else{
+            refuseBoo = true;
+        }
+
+        var refuseRemark = $("#refuseRemark").val();
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerIdentification/refuse.htm",
+            type:'post',
+            dataType:'json',
+            async:true,
+            data:{
+                id : identiId,
+                remark : refuseRemark
+            },
+            success:function(result){
+                refuseBoo = false;
+                if(result.code == 1) {
+                    $("#backForm").submit();
+                } else {
+                    openTips(result.message);
+                }
+            }, error:function(){
+                refuseBoo = false;
+                openTips("服务器异常，请稍后再试！");
+            }
+        });
+
     }
 
     var popObj;

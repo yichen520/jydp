@@ -14,6 +14,7 @@ import com.jydp.interceptor.BackerWebInterceptor;
 import com.jydp.service.IBackerService;
 import com.jydp.service.IUserCurrencyNumService;
 import com.jydp.service.IUserService;
+import com.jydp.service.IUserSessionService;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -53,6 +54,10 @@ public class BackerUserAccountController {
     /** 后台管理员 */
     @Autowired
     private IBackerService backerService;
+
+    /** 用户登录记录 */
+    @Autowired
+    private IUserSessionService userSessionService;
 
     /** 展示列表页面 */
     @RequestMapping(value = "/show.htm")
@@ -256,6 +261,9 @@ public class BackerUserAccountController {
         int userId = Integer.parseInt(userIdStr);
         boolean updateResult = userService.updateUserAccountStatus(userId, 2,1);
         if (updateResult) {
+            //删除用户session
+            userSessionService.deleteSessionByUserId(userId);
+
             responseJson.setCode(1);
             responseJson.setMessage("操作成功");
             return responseJson;
@@ -369,7 +377,7 @@ public class BackerUserAccountController {
         BackerDO backer = backerService.getBackerById(backerSession.getBackerId());
         if (backer == null || backer.getAccountStatus() != 1) {
             responseJson.setCode(3);
-            responseJson.setMessage("操作非法");
+            responseJson.setMessage("操作非法，您的账号不可用");
             return responseJson;
         }
 

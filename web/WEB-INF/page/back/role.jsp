@@ -42,7 +42,7 @@
                         <td class="role">${backerRole.roleData}</td>
                         <td class="operate">
                             <c:if test="${backer_rolePower['131003'] == 131003}">
-                                <a onclick="updateRole('${backerRole.roleId}');" class="change">修改角色</a>
+                                <a onclick="updateRole('${backerRole.roleId}');" href="javascript:;" class="change">修改角色</a>
                             </c:if>
                             <c:if test="${backer_rolePower['131004'] == 131004}">
                                 <input type="text" value="删&nbsp;除" class="delete" onfocus="this.blur()" onclick="deletePower('${backerRole.roleId}');"/>
@@ -85,12 +85,16 @@
 
 <script type="text/javascript">
     $(function(){
+        $(".delete").click(function(){
+            $(".mask").fadeIn();
+            $(".delete_pop").fadeIn();
+        });
         $(".cancel").click(function(){
             $(".mask").fadeOut("fast");
         });
-        /*$(".yes").click(function(){
+        $(".yes").click(function(){
             $(".mask").fadeOut("fast");
-        });*/
+        });
     })
 
 </script>

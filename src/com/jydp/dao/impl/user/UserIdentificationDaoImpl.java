@@ -137,4 +137,33 @@ public class UserIdentificationDaoImpl implements IUserIdentificationDao {
         }
         return resultList;
     }
+
+    /**
+     * 修改用户实名认证状态
+     * @param id 记录Id
+     * @param identificationStatus 实名认证状态，1：待审核，2：审核通过，3：审核拒绝
+     * @param identiTime 审核时间
+     * @param remark 备注，可为null
+     * @return 修改成功：返回true，修改失败：返回false
+     */
+    public boolean updateUserIdentificationStatus (long id, int identificationStatus, Timestamp identiTime, String remark) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        map.put("identificationStatus", identificationStatus);
+        map.put("identiTime", identiTime);
+        map.put("remark", remark);
+
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.update("UserIdentification_updateUserIdentificationStatus", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
