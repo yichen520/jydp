@@ -1,7 +1,6 @@
 package com.jydp.controller.back;
 
-import com.iqmkj.utils.DateUtil;
-import com.iqmkj.utils.StringUtil;
+import com.iqmkj.utils.*;
 import com.jydp.entity.BO.BackerSessionBO;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
@@ -9,6 +8,7 @@ import com.jydp.entity.DO.transaction.TransactionMakeOrderDO;
 import com.jydp.interceptor.BackerWebInterceptor;
 import com.jydp.service.ITransactionCurrencyService;
 import com.jydp.service.ITransactionMakeOrderService;
+import config.SystemCommonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -113,6 +113,9 @@ public class BackerTransactionMakeOrderController {
         if (totalPageNumber <= 0) {
             totalPageNumber = 1;
         }
+        if (totalPageNumber < pageNumber) {
+            pageNumber = totalPageNumber;
+        }
 
         List<TransactionMakeOrderDO> transactionMakeOrderList = null;
         if (totalNumber > 0) {
@@ -144,8 +147,92 @@ public class BackerTransactionMakeOrderController {
     public JsonObjectBO addOrder(HttpServletRequest request) {
         JsonObjectBO response = new JsonObjectBO();
 
+        BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
+        if (backerSession == null) {
+            response.setCode(4);
+            response.setMessage("登录过期");
+            return response;
+        }
+        //业务功能权限
+        boolean havePower = BackerWebInterceptor.validatePower(request, 103002);
+        if (!havePower) {
+            response.setCode(5);
+            response.setMessage("您没有该权限");
+            return response;
+        }
 
+        String currencyNameStr = StringUtil.stringNullHandle(request.getParameter("currencyName"));
+        String paymentTypeStr = StringUtil.stringNullHandle(request.getParameter("paymentType"));
+        String currencyNumberStr = StringUtil.stringNullHandle(request.getParameter("currencyNumber"));
+        String currencyPriceStr = StringUtil.stringNullHandle(request.getParameter("currencyPrice"));
+        String executeTimeStr = StringUtil.stringNullHandle(request.getParameter("executeTime"));
 
+        if (!StringUtil.isNotNull(currencyNameStr)) {
+            response.setCode(3);
+            response.setMessage("参数不能为空");
+            return response;
+        }
+
+        Timestamp executeTime = null;
+        int paymentType = 0;
+        double currencyNumber = 0;
+        double currencyPrice = 0;
+
+        if (StringUtil.isNotNull(currencyNumberStr)) {
+            currencyNumber = Double.parseDouble(currencyNumberStr);
+        }
+        if (StringUtil.isNotNull(currencyPriceStr)) {
+            currencyPrice = Double.parseDouble(currencyPriceStr);
+        }
+        if (StringUtil.isNotNull(executeTimeStr)) {
+            executeTime = DateUtil.stringToTimestamp(executeTimeStr);
+        }
+        if (StringUtil.isNotNull(paymentTypeStr)) {
+            paymentType = Integer.parseInt(paymentTypeStr);
+        }
+
+        Timestamp curTime = DateUtil.getCurrentTime();
+        if (executeTime.getTime() <= curTime.getTime()) {
+            response.setCode(3);
+            response.setMessage("执行时间必须大于当前时间");
+            return response;
+        }
+
+        TransactionCurrencyDO currency = transactionCurrencyService.getTransactionCurrencyByCurrencyName(currencyNameStr);
+        if (currency == null) {
+            response.setCode(3);
+            response.setMessage("币种信息不存在");
+            return response;
+        }
+
+        String orderNo = SystemCommonConfig.TRANSACTION_MAKE_ORDER
+                + DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10)
+                + NumberUtil.createNumberStr(10);
+
+        double currencyTotalPrice = BigDecimalUtil.mul(currencyNumber, currencyPrice);
+        if (currencyTotalPrice <= 0) {
+            response.setCode(3);
+            response.setMessage("总价格不能为空");
+            return response;
+        }
+
+        String ipAddress = IpAddressUtil.getIpAddress(request);
+        if (!StringUtil.isNotNull(ipAddress)) {
+            response.setCode(3);
+            response.setMessage("ip地址不能为空");
+            return response;
+        }
+
+        boolean result = transactionMakeOrderService.insertMakeOrder(orderNo, paymentType, currency.getCurrencyId(),
+                currencyNameStr, currencyNumber, currencyTotalPrice, backerSession.getBackerAccount(), ipAddress, 1, null, executeTime, curTime);
+
+        if (result) {
+            response.setCode(1);
+            response.setMessage("交易记录添加成功");
+        } else {
+            response.setCode(2);
+            response.setMessage("交易记录添加失败");
+        }
         return response;
     }
 
@@ -163,6 +250,29 @@ public class BackerTransactionMakeOrderController {
     @RequestMapping(value = "/execute.htm", method = RequestMethod.POST)
     public JsonObjectBO execute(HttpServletRequest request) {
         JsonObjectBO response = new JsonObjectBO();
+        BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
+        if (backerSession == null) {
+            response.setCode(4);
+            response.setMessage("登录过期");
+            return response;
+        }
+        //业务功能权限
+        boolean havePower = BackerWebInterceptor.validatePower(request, 103005);
+        if (!havePower) {
+            response.setCode(5);
+            response.setMessage("您没有该权限");
+            return response;
+        }
+
+        String orderNo = StringUtil.stringNullHandle(request.getParameter("orderNo"));
+
+        if (!StringUtil.isNotNull(orderNo)) {
+            response.setCode(3);
+            response.setMessage("参数不能为空");
+            return response;
+        }
+
+        //执行添加记录
 
 
 
@@ -174,6 +284,42 @@ public class BackerTransactionMakeOrderController {
     public JsonObjectBO cancle(HttpServletRequest request) {
         JsonObjectBO response = new JsonObjectBO();
 
+        BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
+        if (backerSession == null) {
+            response.setCode(4);
+            response.setMessage("登录过期");
+            return response;
+        }
+        //业务功能权限
+        boolean havePower = BackerWebInterceptor.validatePower(request, 103006);
+        if (!havePower) {
+            response.setCode(5);
+            response.setMessage("您没有该权限");
+            return response;
+        }
+
+        String orderNo = StringUtil.stringNullHandle(request.getParameter("orderNo"));
+
+        if (!StringUtil.isNotNull(orderNo)) {
+            response.setCode(3);
+            response.setMessage("参数不能为空");
+            return response;
+        }
+
+        TransactionMakeOrderDO order = transactionMakeOrderService.getTransactionMakeOrderByOrderNo(orderNo);
+        if (order == null) {
+            response.setCode(5);
+            response.setMessage("该记录不存在");
+            return response;
+        }
+
+        if (order.getExecuteStatus() != 1) {
+            response.setCode(5);
+            response.setMessage("该记录已被操作");
+            return response;
+        }
+
+        //修改状态, 原状态必须为1
 
 
         return response;
