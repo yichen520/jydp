@@ -20,7 +20,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         </p>
 
         <ul class="levelTwo">
-            <li class="menuInfo" id="li_141000"><a id="a_141000" href="#">实名认证</a></li>
+            <li class="menuInfo" id="li_141000"><a id="a_141000" href="<%=path%>/backerWeb/backerIdentification/show.htm">实名认证</a></li>
             <li class="menuInfo" id="li_141100"><a id="a_141100" href="<%=path%>/backerWeb/backerUserAccount/show.htm">用户账号</a></li>
         </ul>
     </li>
@@ -36,9 +36,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <li class="menuInfo" id="li_111000"><a id="a_111000" href="<%=path %>/backerWeb/backerAdsHomepages/show.htm">首页广告</a></li>
             <li class="menuInfo"><a href="#">合作伙伴</a></li>
             <li class="menuInfo" id="li_113000"><a id="a_113000" href="<%=path %>/backerWeb/backerNotice/show.htm">用户公告管理</a></li>
-            <li class="menuInfo"><a href="#">热门话题管理</a></li>
-            <li class="menuInfo" id="li_115000"><a id="a_115000" href="<%=path%>/backerWeb/helpCenter/show.htm">用户帮助中心</a></li>
-            <li class="menuInfo" id="li_116000"><a id="a_116000" href="<%=path%>/backerWeb/backerFeedback/show.htm">意见反馈</a></li>
+            <li class="menuInfo" id="li_114000"><a id="a_114000" href="<%=path %>/backerWeb/hotTopic/show.htm">热门话题管理</a></li>
+            <li class="menuInfo"><a href="#">用户帮助中心</a></li>
+            <li class="menuInfo"><a href="#">意见反馈</a></li>
         </ul>
     </li>
 

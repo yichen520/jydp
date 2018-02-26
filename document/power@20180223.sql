@@ -100,7 +100,7 @@ INSERT INTO `backer_role_power_map_tab` VALUES ('141000', '实名认证', '2', '
 INSERT INTO `backer_role_power_map_tab` VALUES ('141001', '查询', '3', '141000', '2018-02-08 17:10:23');
 INSERT INTO `backer_role_power_map_tab` VALUES ('141002', '详情', '3', '141000', '2018-02-08 17:12:06');
 INSERT INTO `backer_role_power_map_tab` VALUES ('141003', '审核通过', '3', '141000', '2018-02-08 17:12:24');
-INSERT INTO `backer_role_power_map_tab` VALUES ('141004', '审核通过', '3', '141000', '2018-02-08 17:12:38');
+INSERT INTO `backer_role_power_map_tab` VALUES ('141004', '审核拒绝', '3', '141000', '2018-02-08 17:12:38');
 INSERT INTO `backer_role_power_map_tab` VALUES ('141100', '用户账号', '2', '140000', '2018-02-08 17:14:50');
 INSERT INTO `backer_role_power_map_tab` VALUES ('141101', '查询', '3', '141100', '2018-02-08 17:15:15');
 INSERT INTO `backer_role_power_map_tab` VALUES ('141102', '导出', '3', '141100', '2018-02-08 17:15:27');

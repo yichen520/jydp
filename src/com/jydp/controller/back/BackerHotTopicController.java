@@ -1,5 +1,6 @@
 package com.jydp.controller.back;
 
+import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.FileWriteRemoteUtil;
 import com.iqmkj.utils.LogUtil;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +37,7 @@ public class BackerHotTopicController {
     private ISystemHotService systemHotService;
 
     /** 热门话题首页 */
-    @RequestMapping(value = "/show.htm", method = RequestMethod.GET)
+    @RequestMapping(value = "/show.htm")
     public String show(HttpServletRequest request) {
         // 业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 114001);
@@ -69,7 +71,7 @@ public class BackerHotTopicController {
         List<SystemHotDO> systemHotList = null;
         int pageSize = 20;
         if (totalNumber > 0) {
-            systemHotList = systemHotService.listSystemHotForBack(noticeTitle, noticeType, pageNumber, pageNumber);
+            systemHotList = systemHotService.listSystemHotForBack(noticeTitle, noticeType, pageNumber, pageSize);
         }
 
         int totalPageNumber = (int) Math.ceil(totalNumber / (pageSize * 1.0));
@@ -110,15 +112,15 @@ public class BackerHotTopicController {
 
     /** 新增热门话题 */
     @RequestMapping(value = "/addHotTopic.htm", method = RequestMethod.POST)
-    public String addHotTopic(HttpServletRequest request, MultipartFile noticeUrl) {
+    public @ResponseBody JSONObject addHotTopic(HttpServletRequest request, MultipartFile noticeUrl) {
+        JSONObject response = new JSONObject();
         // 业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 114002);
         if (!havePower) {
-            list(request);
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
+            response.put("code", 6);
+            response.put("message", "您没有该权限");
             request.getSession().setAttribute("backer_pagePowerId", 0);
-            return "page/back/systemNotice";
+            return response;
         }
 
         // 获取参数
@@ -127,10 +129,9 @@ public class BackerHotTopicController {
         String content = StringUtil.stringNullHandle(request.getParameter("content"));
 
         if (!StringUtil.isNotNull(noticeType) || !StringUtil.isNotNull(noticeTitle) || !StringUtil.isNotNull(content) || noticeUrl == null) {
-            list(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误！");
-            return "page/back/addHotTopic";
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
         }
 
         String imageUrl = "";
@@ -145,15 +146,14 @@ public class BackerHotTopicController {
 
         boolean addResult = systemHotService.insertSystemHot(noticeTitle, noticeType, imageUrl, content, addTime, null);
         if (addResult) {
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "新增成功！");
+            response.put("code", 1);
+            response.put("message", "新增成功！");
         } else {
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "新增失败！");
+            response.put("code", 5);
+            response.put("message", "新增失败！");
         }
 
-        list(request);
-        return "page/back/hotTopic";
+        return response;
     }
 
     /** 打开修改热门页面 */
@@ -292,44 +292,40 @@ public class BackerHotTopicController {
         return "page/back/hotTopicDetails";
     }
 
-    /** 删除系统公告 */
+    /** 删除热门话题 */
     @RequestMapping(value = "/deleteHotTopic.htm", method = RequestMethod.POST)
-    public String deleteNotice(HttpServletRequest request) {
+    public @ResponseBody JSONObject deleteNotice(HttpServletRequest request) {
+        JSONObject response = new JSONObject();
         // 业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 114006);
         if (!havePower) {
-            list(request);
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
+            response.put("code", 6);
+            response.put("message", "您没有该权限");
             request.getSession().setAttribute("backer_pagePowerId", 0);
-            return "page/back/hotTopic";
+            return response;
         }
 
         // 获取参数
-        String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
-
+        String idStr = StringUtil.stringNullHandle(request.getParameter("deleteId"));
         if (!StringUtil.isNotNull(idStr)) {
-            list(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误！");
-            return "page/back/hotTopic";
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
         }
 
         int id = Integer.parseInt(idStr);
         // 处理页面参数
         if (id <= 0) {
-            request.setAttribute("code", 3);
-            list(request);
-            request.setAttribute("message", "参数错误！");
-            return "page/back/hotTopic";
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
         }
 
         SystemHotDO systemHotDO = systemHotService.getSystemHotById(id);
         if (systemHotDO == null) {
-            list(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误！");
-            return "page/back/hotTopic";
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
         }
 
         boolean deleteResult = systemHotService.deteleSystemHot(id);
@@ -337,58 +333,54 @@ public class BackerHotTopicController {
             // 删除图片
             FileWriteRemoteUtil.deleteFile(systemHotDO.getNoticeUrl());
 
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "删除成功！");
+            response.put("code", 1);
+            response.put("message", "删除成功！");
         } else {
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "删除失败！");
+            response.put("code", 5);
+            response.put("message", "删除失败！");
         }
 
-        list(request);
-        return "page/back/hotTopic";
+        return response;
     }
 
     /** 置顶热门话题 */
-    @RequestMapping(value = "/top.htm", method = RequestMethod.GET)
-    public String top(HttpServletRequest request) {
+    @RequestMapping(value = "/top.htm", method = RequestMethod.POST)
+    public @ResponseBody JSONObject top(HttpServletRequest request) {
+        JSONObject response = new JSONObject();
         // 业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 114003);
         if (!havePower) {
-            list(request);
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
+            response.put("code", 6);
+            response.put("message", "您没有该权限");
             request.getSession().setAttribute("backer_pagePowerId", 0);
-            return "page/back/hotTopic";
+            return response;
         }
 
         String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
 
         // 处理页面参数
         if (!StringUtil.isNotNull(idStr)) {
-            list(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误");
-            return "page/back/hotTopic";
+            response.put("code", 3);
+            response.put("message", "参数错误");
+            return response;
         }
 
         int id = Integer.parseInt(idStr);
         if (id <= 0) {
-            list(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误");
-            return "page/back/hotTopic";
+            response.put("code", 3);
+            response.put("message", "参数错误");
+            return response;
         }
         Timestamp topTime = DateUtil.getCurrentTime();
         boolean topResult = systemHotService.topHotTopic(id, topTime);
         if (topResult) {
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "置顶成功");
+            response.put("code", 1);
+            response.put("message", "置顶成功");
         } else {
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "置顶失败");
+            response.put("code", 5);
+            response.put("message", "置顶失败");
         }
 
-        list(request);
-        return "page/back/hotTopic";
+        return response;
     }
 }
