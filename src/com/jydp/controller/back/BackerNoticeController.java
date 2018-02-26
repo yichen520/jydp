@@ -139,6 +139,12 @@ public class BackerNoticeController {
             LogUtil.printErrorLog(e);
         }
 
+        if(imageUrl == "" || imageUrl == null){
+            response.put("code", 3);
+            response.put("message", "新增失败！");
+            return response;
+        }
+
         SystemNoticeDO systemNoticeDO = new SystemNoticeDO();
         systemNoticeDO.setNoticeTitle(noticeTitle);
         systemNoticeDO.setNoticeType(noticeType);

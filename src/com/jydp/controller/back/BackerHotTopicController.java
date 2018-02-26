@@ -142,6 +142,12 @@ public class BackerHotTopicController {
             LogUtil.printErrorLog(e);
         }
 
+        if(imageUrl == "" || imageUrl == null){
+            response.put("code", 3);
+            response.put("message", "新增失败！");
+            return response;
+        }
+
         Timestamp addTime = DateUtil.getCurrentTime();
 
         boolean addResult = systemHotService.insertSystemHot(noticeTitle, noticeType, imageUrl, content, addTime, null);
@@ -193,15 +199,15 @@ public class BackerHotTopicController {
 
     /** 修改热门话题 */
     @RequestMapping(value = "/updateHotTopic.htm", method = RequestMethod.POST)
-    public String modifyNotice(HttpServletRequest request, MultipartFile noticeUrl) {
+    public @ResponseBody JSONObject modifyNotice(HttpServletRequest request, MultipartFile noticeUrl) {
+        JSONObject response = new JSONObject();
         // 业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 114004);
         if (!havePower) {
-            list(request);
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
+            response.put("code", 6);
+            response.put("message", "您没有该权限");
             request.getSession().setAttribute("backer_pagePowerId", 0);
-            return "page/back/hotTopic";
+            return response;
         }
 
         //获取参数
@@ -211,19 +217,17 @@ public class BackerHotTopicController {
         String content = StringUtil.stringNullHandle(request.getParameter("content"));
 
         if (!StringUtil.isNotNull(noticeType) || !StringUtil.isNotNull(idStr) || !StringUtil.isNotNull(noticeTitle) || !StringUtil.isNotNull(content)) {
-            list(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误！");
-            return "page/back/hotTopic";
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
         }
 
         int id = Integer.parseInt(idStr);
         // 处理页面参数
         if (id <= 0) {
-            list(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误！");
-            return "page/back/hotTopic";
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
         }
 
         // 判断是否修改了图片
@@ -245,15 +249,14 @@ public class BackerHotTopicController {
 
         boolean updateResult = systemHotService.updateSystemHot(id, noticeTitle, noticeType, imageUrl, content);
         if (updateResult) {
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "修改成功！");
+            response.put("code", 1);
+            response.put("message", "修改成功！");
         } else {
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "修改失败！");
+            response.put("code", 5);
+            response.put("message", "修改失败！");
         }
 
-        list(request);
-        return "page/back/hotTopic";
+        return response;
     }
 
     /** 打开热门话题详情页面 */
