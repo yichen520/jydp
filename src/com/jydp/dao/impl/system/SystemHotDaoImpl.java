@@ -201,7 +201,7 @@ public class SystemHotDaoImpl implements ISystemHotDao {
         int result = 0;
 
         try{
-            result = sqlSessionTemplate.update("SystemHot_topHotTopic", id);
+            result = sqlSessionTemplate.update("SystemHot_topHotTopic", map);
         }catch (Exception e){
             LogUtil.printErrorLog(e);
         }

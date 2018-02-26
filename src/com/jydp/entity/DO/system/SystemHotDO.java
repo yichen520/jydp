@@ -13,12 +13,29 @@ public class SystemHotDO {
 
     private int id; //记录Id
     private String noticeTitle; //话题标题
+    private String noticeType; //话题类型
     private String noticeUrl; //话题封面图地址
     private String content; //话题内容
     private Timestamp addTime; //添加时间
     private Timestamp topTime; //置顶时间
 
     private String noticeUrlFormat; //话题封面图绝对路径
+
+    /**
+     * 话题类型
+     * @return noticeType
+     */
+    public String getNoticeType() {
+        return noticeType;
+    }
+
+    /**
+     * 话题类型
+     * @param noticeType the noticeType to set
+     */
+    public void setNoticeType(String noticeType) {
+        this.noticeType = noticeType;
+    }
 
     /**
      * 话题封面图绝对路径
