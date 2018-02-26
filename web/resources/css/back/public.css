@@ -191,8 +191,7 @@ input:-webkit-autofill{
     background-color: #fd891d;
 }
 .top{
-    border-top: 1px solid #ececec;
-    background-color: #ffffff;
+    background: url("../../image/back/line.png") #ffffff no-repeat 15px 0;
 }
 .askArea{
     padding-top: 15px;
@@ -404,7 +403,7 @@ input:-webkit-autofill{
     min-width: 1400px;
     height:100%;
     background-color:rgba(0,0,0,0.6);
-    z-index:10;
+    z-index:999;
     top:0;
 }
 .mask_content{

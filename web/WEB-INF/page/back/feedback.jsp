@@ -90,8 +90,10 @@
                         </c:if>
                         <td class="opinion">${item.handleContent}</td>
                         <td class="operate">
-                            <c:if test="${backer_rolePower['116002'] == 116002}">
-                                <input type="text" value="回&nbsp;复" class="reply" onfocus="this.blur()" onclick="reply('${item.id}','${item.handleStatus}')"/>
+                            <c:if test="${item.handleStatus != 3}">
+                                <c:if test="${backer_rolePower['116002'] == 116002}">
+                                    <input type="text" value="回&nbsp;复" class="reply" onfocus="this.blur()" onclick="reply('${item.id}','${item.handleStatus}')"/>
+                                </c:if>
                             </c:if>
                         </td>
                     </tr>

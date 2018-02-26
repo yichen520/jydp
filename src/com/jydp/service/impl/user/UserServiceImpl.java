@@ -143,11 +143,11 @@ public class UserServiceImpl implements IUserService {
     /**
      * 修改绑定手机号
      * @param userAccount 用户账户
-     * @param areaCode  手机号
+     * @param areaCode  手机区号
      * @param phone  手机号
      * @return  修改成功：返回true，修改失败：返回false
      */
-    public boolean forgetPayPwd(String userAccount, String areaCode, String phone){
+    public boolean updatePhone(String userAccount, String areaCode, String phone){
         UserDO user = new UserDO();
         user.setUserAccount(userAccount);
         user.setPhoneAreaCode(areaCode);

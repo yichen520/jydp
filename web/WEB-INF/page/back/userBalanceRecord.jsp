@@ -51,7 +51,8 @@
                     <p class="condition">操作管理员账号：<input type="text" class="askInput" maxlength="16" name="backerAccount" value="${backerAccount }"
                                                         onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/></p>
 
-                    <input type="submit" value="查&nbsp;询" class="ask" onfocus="this.blur()" />
+                    <input type="hidden" id="queryPageNumber" name="pageNumber" value="${pageNumber}">
+                    <input type="test" value="查&nbsp;询" class="ask" onfocus="this.blur()" onclick="queryForm()"/>
                 </form>
             </div>
         </div>
@@ -98,16 +99,6 @@
 <script type="text/javascript" src="<%=path %>/resources/js/laydate.js"></script>
 
 <script type="text/javascript">
-
-    window.onload = function() {
-        var code = '${code}';
-        var message = '${message}';
-        $("#typeHandle").val('${typeHandle}');
-        if (code != 1 && message != "") {
-            openTips(message);
-            return false;
-        }
-    }
     !function(){
         laydate.skin('danlan');//切换皮肤，请查看skins下面皮肤库
     }();
@@ -127,6 +118,24 @@
     };
     laydate(start);
     laydate(end);//日期控件
+</script>
+
+<script type="text/javascript">
+
+    window.onload = function() {
+        var code = '${code}';
+        var message = '${message}';
+        $("#typeHandle").val('${typeHandle}');
+        if (code != 1 && message != "") {
+            openTips(message);
+            return false;
+        }
+    }
+
+    function queryForm() {
+        $("#queryPageNumber").val("0");
+        $("#queryForm").submit();
+    }
 </script>
 
 </body>

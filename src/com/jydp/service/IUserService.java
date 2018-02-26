@@ -79,6 +79,15 @@ public interface IUserService {
     boolean forgetPayPwd(String userAccount, String password);
 
     /**
+     * 修改绑定手机号
+     * @param userAccount 用户账户
+     * @param areaCode  手机区号
+     * @param phone  手机号
+     * @return  修改成功：返回true，修改失败：返回false
+     */
+    boolean updatePhone(String userAccount, String areaCode, String phone);
+
+    /**
      * 验证用户登录
      * @param userAccount 用户账号
      * @param password 账号密码（密文）
