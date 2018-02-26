@@ -5,18 +5,17 @@
     String path = request.getContextPath();
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <link rel="icon" href="<%=path%>/resources/image/back/icon.ico" type="image/x-ico" />
 
-    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/notice.css" />
+    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/hot.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/public.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/simpleTips.css" />
 
-    <title>用户公告管理</title>
+    <title>热门话题管理</title>
 </head>
 <body>
 <div id="header"></div>
@@ -27,20 +26,19 @@
 
     <div class="contentRight">
         <div class="caption">
-            <span class="title">用户公告管理</span>
+            <span class="title">热门话题管理</span>
         </div>
 
         <div class="top">
-            <c:if test="${backer_rolePower['113002'] == 113002}">
-                <a href="<%=path%>/backerWeb/backerNotice/openAddPage.htm" class="add">新增公告</a>
+            <c:if test="${backer_rolePower['114002'] == 114002}">
+                <a href="<%=path%>/backerWeb/hotTopic/openAddHotTopic.htm" class="add">新增热门</a>
             </c:if>
-            <form id="queryForm" action="<%=path %>/backerWeb/backerNotice/show.htm" method="post">
+            <form id="queryForm" action="<%=path%>/backerWeb/hotTopic/show.htm" method="post">
                 <div class="askArea">
-                    <p class="condition">公告类型：<input type="text" class="askInput" id="query_noticeType" name="query_noticeType" value="${noticeType }" maxLength="8"/></p>
-                    <p class="condition">公告标题：<input type="text" class="askInput" id="query_noticeTitle" name="query_noticeTitle" value="${noticeTitle }" maxLength="64"/></p>
-
-                    <input type="hidden" id="queryPageNumber" name="pageNumber" value="${pageNumber}">
-                    <c:if test="${backer_rolePower['113001'] == 113001}">
+                    <p class="condition">话题类型：<input type="text" class="askInput" name="noticeType" value="${noticeType }" maxLength="8"/></p>
+                    <p class="condition">话题标题：<input type="text" class="askInput"  name="noticeTitle" value="${noticeTitle }" maxLength="64"/></p>
+                    <input type="hidden" id="query_pageNumber" name=query_pageNumber value="${pageNumber }">
+                    <c:if test="${backer_rolePower['114001'] == 114001}">
                         <input type="text" value="查&nbsp;询" class="ask" onfocus="this.blur()" onclick="queryForm()"/>
                     </c:if>
                 </div>
@@ -51,36 +49,36 @@
             <table class="table" cellpadding="0" cellspacing="0">
                 <tr class="tableTitle">
                     <td class="time">添加时间</td>
-                    <td class="pic">公告图片</td>
-                    <td class="type">公告类型</td>
-                    <td class="nTitle">公告标题</td>
+                    <td class="pic">话题图片</td>
+                    <td class="type">话题类型</td>
+                    <td class="nTitle">话题标题</td>
                     <td class="operate">操作</td>
                 </tr>
-
-                <c:forEach items="${systemNoticeList}" var="systemNotice" varStatus="status" >
+                <c:forEach items="${systemHotList}" var="systemHot" varStatus="status">
                     <tr class="tableInfo">
-                    <td class="time"><fmt:formatDate type="time" value="${systemNotice.addTime }" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
-                    <td class="pic"><img src="${systemNotice.noticeUrlFormat }" /></td>
-                    <td class="type">${systemNotice.noticeType }</td>
-                    <td class="nTitle">${systemNotice.noticeTitle }</td>
-                    <td class="operate">
-                        <c:if test="${status.count != 1 || pageNumber != 0}">
-                            <c:if test="${backer_rolePower['113003'] == 113003}">
-                                <input type="text" value="置&nbsp; 顶" class="toTop" onfocus="this.blur()" onclick="topNotice(${systemNotice.id });"/>
+                        <td class="time"><fmt:formatDate type="time" value="${systemHot.addTime }" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
+                        <td class="pic"><img src="${systemHot.noticeUrlFormat }" /></td>
+                        <td class="type">${systemHot.noticeType }</td>
+                        <td class="nTitle">${systemHot.noticeTitle }</td>
+                        <td class="operate">
+                            <c:if test="${status.count != 1 || pageNumber != 0}">
+                                <c:if test="${backer_rolePower['114003'] == 114003}">
+                                    <input type="text" value="置&nbsp; 顶" class="toTop" onfocus="this.blur()" onclick="topNotice(${systemHot.id });"/>
+                                </c:if>
                             </c:if>
-                        </c:if>
-                        <c:if test="${backer_rolePower['113004'] == 113004}">
-                            <a href="<%=path%>/backerWeb/backerNotice/openModifyPage.htm?id=${systemNotice.id }" class="change">修&nbsp;改</a>
-                        </c:if>
-                        <c:if test="${backer_rolePower['113005'] == 113005}">
-                            <a href="<%=path%>/backerWeb/backerNotice/details.htm?id=${systemNotice.id }" class="details">详&nbsp;情</a>
-                        </c:if>
-                        <c:if test="${backer_rolePower['113006'] == 113006}">
-                            <input type="text" value="删&nbsp;除" class="delete" onfocus="this.blur()" onclick="deleteHandle(${systemNotice.id });"/>
-                        </c:if>
-                    </td>
-                </tr>
-            </c:forEach>
+                            <c:if test="${backer_rolePower['114004'] == 114004}">
+                                <a href="<%=path%>/backerWeb/hotTopic/openUpdateHotTopic.htm?id=${systemHot.id }" class="change">修&nbsp;改</a>
+                            </c:if>
+                            <c:if test="${backer_rolePower['114005'] == 114005}">
+                                <a href="<%=path%>/backerWeb/hotTopic/hotTopicDetails.htm?id=${systemHot.id }" class="details">详&nbsp;情</a>
+                            </c:if>
+                            <c:if test="${backer_rolePower['114006'] == 114006}">
+                                <input type="text" value="删&nbsp;除" class="delete" onfocus="this.blur()" onclick="deleteHandle(${systemHot.id });"/>
+                            </c:if>
+                        </td>
+                    </tr>
+                </c:forEach>
+
             </table>
 
             <jsp:include page="/resources/page/common/paging.jsp"></jsp:include>
@@ -94,7 +92,7 @@
 
 <div class="mask">
     <div class="mask_content">
-        <form action="<%=path%>/backerWeb/backerNotice/deleteNotice.htm" method="post">
+        <form action="<%=path%>/backerWeb/hotTopic/deleteHotTopic.htm" method="post">
             <div class="delete_pop">
                 <p class="popTitle">删除操作</p>
                 <p class="popTips"><img src="<%=path%>/resources/image/back/tips.png" class="tipsImg" />确定删除？</p>
@@ -121,6 +119,7 @@
             return false;
         }
     }
+
     var popObj;
     $(function(){
         $(".delete").click(function(){
@@ -157,7 +156,7 @@
         var deleteId = document.getElementById("deleteId").value;
 
         $.ajax({
-            url: '<%=path %>' + "/backerWeb/backerNotice/deleteNotice.htm",
+            url: '<%=path %>' + "/backerWeb/hotTopic/deleteHotTopic.htm",
             data: {
                 deleteId : deleteId,
             },//参数
@@ -185,7 +184,7 @@
     //置顶
     function topNotice(id) {
         $.ajax({
-            url: '<%=path %>' + "/backerWeb/backerNotice/top.htm",
+            url: '<%=path %>' + "/backerWeb/hotTopic/top.htm",
             data: {
                 id : id,
             },//参数
@@ -209,9 +208,6 @@
         });
 
     }
-
-
-
 </script>
 
 </body>

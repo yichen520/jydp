@@ -1,6 +1,9 @@
 package com.jydp.entity.DO.user;
 
 
+import com.iqmkj.utils.StringUtil;
+import config.FileUrlConfig;
+
 import java.sql.Timestamp;
 
 /**
@@ -14,7 +17,7 @@ public class UserIdentificationImageDO {
     private long identificationId;  //用户认证Id
     private String imageUrl;  //用户认证详情图地址
     private Timestamp addTime;  //添加时间
-
+    private String imageUrlFormat;  //用户认证详情图地址（绝对路径）
 
     /**
      * 记录Id
@@ -70,6 +73,9 @@ public class UserIdentificationImageDO {
      */
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+        if (StringUtil.isNotNull(imageUrl)) {
+            setImageUrlFormat(FileUrlConfig.file_visit_url + imageUrl);
+        }
     }
 
 
@@ -91,4 +97,21 @@ public class UserIdentificationImageDO {
         this.addTime = addTime;
     }
 
+    /**
+     * 用户认证详情图地址（绝对路径）
+     *
+     * @return the image url format
+     */
+    public String getImageUrlFormat() {
+        return imageUrlFormat;
+    }
+
+    /**
+     * 用户认证详情图地址（绝对路径）
+     *
+     * @param imageUrlFormat the image url format
+     */
+    public void setImageUrlFormat(String imageUrlFormat) {
+        this.imageUrlFormat = imageUrlFormat;
+    }
 }

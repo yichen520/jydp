@@ -71,6 +71,14 @@ public interface IUserService {
     boolean forgetPwd(String userAccount, String password);
 
     /**
+     * 忘记支付密码
+     * @param userAccount 用户账户
+     * @param password 新密码（密文）
+     * @return  修改成功：返回true，修改失败：返回false
+     */
+    boolean forgetPayPwd(String userAccount, String password);
+
+    /**
      * 验证用户登录
      * @param userAccount 用户账号
      * @param password 账号密码（密文）

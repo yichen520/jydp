@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="images/icon.ico" type="image/x-ico" />
+    <link rel="icon" href="<%=path %>/resources/image/back/icon.ico" type="image/x-ico" />
 
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/manageMoney.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/public.css" />

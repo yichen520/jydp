@@ -92,9 +92,9 @@ public class BackerNoticeController {
         request.getSession().setAttribute("backer_pagePowerId", 113000);
     }
 
-    /** 新增用户公告*/
-    @RequestMapping(value = "/addNotice.htm", method = RequestMethod.POST)
-    public String addNotice(HttpServletRequest request, MultipartFile noticeUrl) {
+    /** 打开新增公告页面 */
+    @RequestMapping(value = "/openAddPage.htm", method = RequestMethod.GET)
+    public String openAddPage(HttpServletRequest request) {
         // 业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 113002);
         if (!havePower) {
@@ -105,16 +105,30 @@ public class BackerNoticeController {
             return "page/back/systemNotice";
         }
 
+        return "page/back/systemNoticeAdd";
+    }
+
+    /** 新增用户公告*/
+    @RequestMapping(value = "/addNotice.htm", method = RequestMethod.POST)
+    public @ResponseBody JSONObject addNotice(HttpServletRequest request, MultipartFile noticeUrl) {
+        JSONObject response = new JSONObject();
+        // 业务功能权限
+        boolean havePower = BackerWebInterceptor.validatePower(request, 113002);
+        if (!havePower) {
+            response.put("code", 6);
+            response.put("message", "您没有该权限");
+            request.getSession().setAttribute("backer_pagePowerId", 0);
+            return response;
+        }
+
         // 获取参数
         String noticeType = StringUtil.stringNullHandle(request.getParameter("noticeType"));
         String noticeTitle = StringUtil.stringNullHandle(request.getParameter("noticeTitle"));
         String content = StringUtil.stringNullHandle(request.getParameter("content"));
-
         if (!StringUtil.isNotNull(noticeType) || !StringUtil.isNotNull(noticeTitle) || !StringUtil.isNotNull(content) || noticeUrl == null) {
-            list(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误！");
-            return "page/back/systemNotice";
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
         }
 
         String imageUrl = "";
@@ -123,6 +137,12 @@ public class BackerNoticeController {
                     noticeUrl.getInputStream(), FileUrlConfig.file_remote_noticeImage_url);
         } catch (IOException e) {
             LogUtil.printErrorLog(e);
+        }
+
+        if(imageUrl == "" || imageUrl == null){
+            response.put("code", 3);
+            response.put("message", "新增失败！");
+            return response;
         }
 
         SystemNoticeDO systemNoticeDO = new SystemNoticeDO();
@@ -134,15 +154,14 @@ public class BackerNoticeController {
 
         boolean addResult = systemNoticeService.insertSystemNotice(systemNoticeDO);
         if (addResult) {
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "新增成功！");
+            response.put("code", 1);
+            response.put("message", "新增成功！");
         } else {
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "新增失败！");
+            response.put("code", 5);
+            response.put("message", "新增失败！");
         }
 
-        list(request);
-        return "page/back/systemNotice";
+        return response;
     }
 
     /** 打开修改用户公告页面 */
@@ -183,15 +202,15 @@ public class BackerNoticeController {
 
     /** 修改用户公告 */
     @RequestMapping(value = "/modifyNotice.htm", method = RequestMethod.POST)
-    public String modifyNotice(HttpServletRequest request, MultipartFile noticeUrl) {
+    public @ResponseBody JSONObject modifyNotice(HttpServletRequest request, MultipartFile noticeUrl) {
+        JSONObject response = new JSONObject();
         // 业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 113004);
         if (!havePower) {
-            list(request);
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
+            response.put("code", 6);
+            response.put("message", "您没有该权限");
             request.getSession().setAttribute("backer_pagePowerId", 0);
-            return "page/back/systemNotice";
+            return response;
         }
 
         // 获取参数
@@ -199,21 +218,18 @@ public class BackerNoticeController {
         String noticeType = StringUtil.stringNullHandle(request.getParameter("noticeType"));
         String noticeTitle = StringUtil.stringNullHandle(request.getParameter("noticeTitle"));
         String content = StringUtil.stringNullHandle(request.getParameter("content"));
-
         if (!StringUtil.isNotNull(noticeType) || !StringUtil.isNotNull(idStr) || !StringUtil.isNotNull(noticeTitle) || !StringUtil.isNotNull(content)) {
-            list(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误！");
-            return "page/back/systemNotice";
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
         }
 
         int id = Integer.parseInt(idStr);
         // 处理页面参数
         if (id <= 0) {
-            list(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误！");
-            return "page/back/systemNotice";
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
         }
 
         SystemNoticeDO updateDO = new SystemNoticeDO();
@@ -241,15 +257,14 @@ public class BackerNoticeController {
 
         boolean updateResult = systemNoticeService.updateSystemNotice(updateDO);
         if (updateResult) {
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "修改成功！");
+            response.put("code", 1);
+            response.put("message", "修改成功！");
         } else {
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "修改失败！");
+            response.put("code", 5);
+            response.put("message", "修改失败！");
         }
 
-        list(request);
-        return "page/back/systemNotice";
+        return response;
     }
 
     /** 打开用户公告详情页面 */
@@ -302,7 +317,7 @@ public class BackerNoticeController {
         }
 
         // 获取参数
-        String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
+        String idStr = StringUtil.stringNullHandle(request.getParameter("deleteId"));
         if (!StringUtil.isNotNull(idStr)) {
             response.put("code", 3);
             response.put("message", "参数错误！");

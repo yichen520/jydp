@@ -113,6 +113,11 @@ public class BackerAdsHomepagesController {
             LogUtil.printErrorLog(e);
          }
 
+         if(imageUrl == "" || imageUrl == null){
+             response.put("code", 3);
+             response.put("message", "新增失败！");
+             return response;
+         }
         SystemAdsHomepagesDO systemAdsHomepagesDO = new SystemAdsHomepagesDO();
         systemAdsHomepagesDO.setAdsTitle(adsTitle);
         systemAdsHomepagesDO.setWebLinkUrl(webLinkUrl);
