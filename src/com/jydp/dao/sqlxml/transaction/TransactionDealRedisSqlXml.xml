@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC
+		"-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jydp.dao.impl.transaction.TransactionDealRedisDaoImpl">
+
+	<select id="TransactionDealRedis_listTransactionDealRedis" parameterType="java.util.Map" resultType="TransactionDealRedisDO">
+		SELECT paymentType, transactionPrice, currencyNumber, currencyTotalPrice, addTime
+	  	FROM transaction_deal_redis_tab
+	  	WHERE currencyId = #{currencyId}
+	  	ORDER BY addTime DESC
+		LIMIT #{num}
+	</select>
+
+	<insert id="TransactionDealRedis_insertTransactionDealRedis" parameterType="TransactionDealRedisDO">
+		INSERT INTO transaction_deal_redis_tab
+			(orderNo, paymentType, currencyId, transactionPrice,
+				currencyNumber, currencyTotalPrice, addTime)
+		VALUES
+			(#{orderNo}, #{paymentType}, #{currencyId}, #{transactionPrice},
+			 #{currencyNumber}, #{currencyNumber}, #{addTime})
+	</insert>
+
+</mapper>

@@ -89,4 +89,29 @@ public interface IUserDao {
      */
     UserDO getUserByPhone(String phoneNumber);
 
+    /**
+     * 增加用户账户金额
+     * @param userId 用户Id
+     * @param userBalance 可用资产（增加的值）
+     * @param userBalanceLock 锁定资产（增加的值）
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean updateAddUserAmount(int userId, double userBalance, double userBalanceLock);
+
+    /**
+     * 减少用户的可用资产
+     * @param userId 用户Id
+     * @param userBalance 可用资产(减少的值)
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean updateReduceUserBalance(int userId, double userBalance);
+
+    /**
+     * 减少用户的锁定资产
+     * @param userId 用户Id
+     * @param userBalanceLock 锁定资产(减少的值)
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean updateReduceUserBalanceLock(int userId, double userBalanceLock);
+
 }

@@ -20,7 +20,7 @@
 	</select>
 	
 	<update id="User_updateUserAccountStatus" parameterType="java.util.Map">
- 		UPDATE FROM user_tab
+ 		UPDATE user_tab
 		SET accountStatus = #{accountStatus}
  		WHERE userId = #{userId}
  		  AND accountStatus = #{oldAccountStatus}
@@ -120,4 +120,25 @@
 		FROM user_tab
 		WHERE phoneNumber = #{phoneNumber}
 	</select>
+
+	<update id="User_updateAddUserAmount" parameterType="java.util.Map">
+		UPDATE user_tab
+		SET userBalance = userBalance + #{userBalance},
+			userBalanceLock = userBalanceLock + #{userBalanceLock}
+		WHERE userId = #{userId}
+	</update>
+
+	<update id="User_updateReduceUserBalance" parameterType="java.util.Map">
+		UPDATE user_tab
+		SET userBalance = userBalance - #{userBalance}
+		WHERE userId = #{userId}
+		  AND userBalance <![CDATA[ >= ]]> #{userBalance}
+	</update>
+
+	<update id="User_updateReduceUserBalanceLock" parameterType="java.util.Map">
+		UPDATE user_tab
+		SET userBalanceLock = userBalanceLock - #{userBalanceLock}
+		WHERE userId = #{userId}
+		AND userBalanceLock <![CDATA[ >= ]]> #{userBalanceLock}
+	</update>
 </mapper>

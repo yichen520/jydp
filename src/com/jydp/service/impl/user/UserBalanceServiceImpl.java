@@ -9,14 +9,14 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Description:用户认证记录
+ * Description:用户账户记录
  * Author: hht
  * Date: 2018-02-07 15:44
  */
 @Service("userBalanceService")
 public class UserBalanceServiceImpl implements IUserBalanceService {
 
-    /** 用户认证记录 */
+    /** 用户账户记录 */
     @Autowired
     private IUserBalanceDao userBalanceDao;
 

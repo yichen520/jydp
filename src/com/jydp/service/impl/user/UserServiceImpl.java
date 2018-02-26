@@ -1,14 +1,20 @@
 package com.jydp.service.impl.user;
 
 import com.iqmkj.utils.DateUtil;
+import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.IUserDao;
 import com.jydp.entity.BO.JsonObjectBO;
+import com.jydp.entity.DO.back.BackerHandleUserRecordBalanceDO;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
+import com.jydp.entity.DO.user.UserBalanceDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
+import com.jydp.service.IBackerHandleUserRecordBalanceService;
 import com.jydp.service.ITransactionCurrencyService;
+import com.jydp.service.IUserBalanceService;
 import com.jydp.service.IUserCurrencyNumService;
 import com.jydp.service.IUserService;
+import config.SystemCommonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +46,14 @@ public class UserServiceImpl implements IUserService {
     /**  交易币种 */
     @Autowired
     private ITransactionCurrencyService transactionCurrencyService;
+
+    /**  用户账户记录 */
+    @Autowired
+    private IUserBalanceService userBalanceService;
+
+    /**  后台管理员增减用户余额记录 */
+    @Autowired
+    private IBackerHandleUserRecordBalanceService backerHandleUserRecordBalanceService;
 
     /**
      * 新增用户账号
@@ -114,6 +128,34 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
+     * 忘记支付密码
+     * @param userAccount 用户账户
+     * @param password 新密码（密文）
+     * @return  修改成功：返回true，修改失败：返回false
+     */
+    public boolean forgetPayPwd(String userAccount, String password){
+        UserDO user = new UserDO();
+        user.setUserAccount(userAccount);
+        user.setPayPassword(password);
+        return userDao.updateUser(user);
+    }
+
+    /**
+     * 修改绑定手机号
+     * @param userAccount 用户账户
+     * @param areaCode  手机号
+     * @param phone  手机号
+     * @return  修改成功：返回true，修改失败：返回false
+     */
+    public boolean forgetPayPwd(String userAccount, String areaCode, String phone){
+        UserDO user = new UserDO();
+        user.setUserAccount(userAccount);
+        user.setPhoneAreaCode(areaCode);
+        user.setPhoneNumber(phone);
+        return userDao.updateUser(user);
+    }
+
+    /**
      * 验证用户登录
      * @param userAccount 用户账号
      * @param password 账号密码（密文）
@@ -149,7 +191,6 @@ public class UserServiceImpl implements IUserService {
      * @param userAccount 用户名
      * @param password 密码
      * @param userPhone 用户手机号
-     * @param refereeAccount 推荐人账号
      * @return 查询成功：返回验证结果; 查询失败：返回null
      */
     @Override
@@ -223,4 +264,156 @@ public class UserServiceImpl implements IUserService {
         }
         return result;
     }
+
+    /**
+     * 增加用户余额（后台操作）
+     * @param userId 用户Id
+     * @param userAccount 用户账号
+     * @param balanceNumber 增加的账户金额
+     * @param backerId 后台管理员Id
+     * @param backerAccount 后台管理员帐号
+     * @param remarks 备注
+     * @param ipAddress 操作时的ip地址
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    @Transactional
+    public boolean addBalanceNumberForBack(int userId, String userAccount, double balanceNumber,
+                                             int backerId, String backerAccount, String remarks, String ipAddress) {
+        Timestamp currentTime = DateUtil.getCurrentTime();
+        //业务类型（2）+日期（6）+随机位（10）
+        String orderNo = SystemCommonConfig.AMOUNT_BALANCE_USER + DateUtil.longToTimeStr(currentTime.getTime(), DateUtil.dateFormat10) + NumberUtil.createNumberStr(10);
+        UserBalanceDO userBalanceDO = new UserBalanceDO();
+        userBalanceDO.setUserId(userId);
+        userBalanceDO.setAddTime(currentTime);
+        userBalanceDO.setBalanceNumber(balanceNumber);  //交易金额：单位(美刀$)
+        userBalanceDO.setFromType("系统操作");
+        userBalanceDO.setPaymentType(1);  //收支类型：1：买入，2：卖出
+        userBalanceDO.setOrderNo(orderNo);
+        userBalanceDO.setRemark(remarks);
+
+        //业务执行状态
+        boolean executeSuccess = true;
+
+        //添加用户账户记录
+        executeSuccess = userBalanceService.insertUserBalance(userBalanceDO);
+
+        //添加后台操作记录
+        if (executeSuccess) {
+            BackerHandleUserRecordBalanceDO backerHandleUserBalance = new BackerHandleUserRecordBalanceDO();
+            backerHandleUserBalance.setAddTime(currentTime);
+            backerHandleUserBalance.setBackerAccount(backerAccount);
+            backerHandleUserBalance.setBackerId(backerId);
+            backerHandleUserBalance.setIpAddress(ipAddress);
+            backerHandleUserBalance.setRemarks(remarks);
+            backerHandleUserBalance.setTypeHandle(1);  //操作类型，1：增加，2：减少
+            backerHandleUserBalance.setUserAccount(userAccount);
+            backerHandleUserBalance.setUserId(userId);
+            backerHandleUserBalance.setUserBalance(balanceNumber);  //可用资产
+
+            executeSuccess = backerHandleUserRecordBalanceService.insertBackerHandleUserRecordBalance(backerHandleUserBalance);
+        }
+
+        // 增加账户余额
+        if (executeSuccess) {
+            executeSuccess = updateAddUserAmount(userId, balanceNumber, 0);
+        }
+
+        //数据回滚
+        if(!executeSuccess){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return executeSuccess;
+    }
+
+    /**
+     * 减少用户余额（后台操作）
+     * @param userId 用户Id
+     * @param userAccount 用户账号
+     * @param balanceNumber 减少的账户金额
+     * @param backerId 后台管理员Id
+     * @param backerAccount 后台管理员帐号
+     * @param remarks 备注
+     * @param ipAddress 操作时的ip地址
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    @Transactional
+    public boolean reduceBalanceNumberForBack(int userId, String userAccount, double balanceNumber,
+                                           int backerId, String backerAccount, String remarks, String ipAddress) {
+        Timestamp currentTime = DateUtil.getCurrentTime();
+        //业务类型（2）+日期（6）+随机位（10）
+        String orderNo = SystemCommonConfig.AMOUNT_BALANCE_USER + DateUtil.longToTimeStr(currentTime.getTime(), DateUtil.dateFormat10) + NumberUtil.createNumberStr(10);
+        UserBalanceDO userBalanceDO = new UserBalanceDO();
+        userBalanceDO.setUserId(userId);
+        userBalanceDO.setAddTime(currentTime);
+        userBalanceDO.setBalanceNumber(balanceNumber);  //交易金额：单位(美刀$)
+        userBalanceDO.setFromType("系统操作");
+        userBalanceDO.setPaymentType(2);  //收支类型：1：买入，2：卖出
+        userBalanceDO.setOrderNo(orderNo);
+        userBalanceDO.setRemark(remarks);
+
+        //业务执行状态
+        boolean executeSuccess = true;
+
+        //添加用户账户记录
+        executeSuccess = userBalanceService.insertUserBalance(userBalanceDO);
+
+        //添加后台操作记录
+        if (executeSuccess) {
+            BackerHandleUserRecordBalanceDO backerHandleUserBalance = new BackerHandleUserRecordBalanceDO();
+            backerHandleUserBalance.setAddTime(currentTime);
+            backerHandleUserBalance.setBackerAccount(backerAccount);
+            backerHandleUserBalance.setBackerId(backerId);
+            backerHandleUserBalance.setIpAddress(ipAddress);
+            backerHandleUserBalance.setRemarks(remarks);
+            backerHandleUserBalance.setTypeHandle(2);  //操作类型，1：增加，2：减少
+            backerHandleUserBalance.setUserAccount(userAccount);
+            backerHandleUserBalance.setUserId(userId);
+            backerHandleUserBalance.setUserBalance(balanceNumber);  //可用资产
+
+            executeSuccess = backerHandleUserRecordBalanceService.insertBackerHandleUserRecordBalance(backerHandleUserBalance);
+        }
+
+        // 减少账户余额
+        if (executeSuccess) {
+            executeSuccess = updateReduceUserBalance(userId, balanceNumber);
+        }
+
+        //数据回滚
+        if(!executeSuccess){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return executeSuccess;
+    }
+
+    /**
+     * 增加用户账户金额
+     * @param userId 用户Id
+     * @param userBalance 可用资产（增加的值）
+     * @param userBalanceLock 锁定资产（增加的值）
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean updateAddUserAmount(int userId, double userBalance, double userBalanceLock){
+        return userDao.updateAddUserAmount(userId, userBalance, userBalanceLock);
+    }
+
+    /**
+     * 减少用户的可用资产
+     * @param userId 用户Id
+     * @param userBalance 可用资产(减少的值)
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean updateReduceUserBalance(int userId, double userBalance){
+        return userDao.updateReduceUserBalance(userId, userBalance);
+    }
+
+    /**
+     * 减少用户的锁定资产
+     * @param userId 用户Id
+     * @param userBalanceLock 锁定资产(减少的值)
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean updateReduceUserBalanceLock(int userId, double userBalanceLock){
+        return userDao.updateReduceUserBalanceLock(userId, userBalanceLock);
+    }
+
 }

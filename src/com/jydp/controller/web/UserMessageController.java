@@ -1,5 +1,6 @@
 package com.jydp.controller.web;
 
+import com.iqmkj.utils.MD5Util;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
@@ -90,6 +91,7 @@ public class UserMessageController {
         }
 
         //原密码判定
+        password = MD5Util.toMd5(password);
         UserDO userLog = userService.validateUserLogin(user.getUserAccount(), password);
         if(userLog == null){
             responseJson.setCode(3);
@@ -98,6 +100,7 @@ public class UserMessageController {
         }
 
         //新密码修改
+        newPassword = MD5Util.toMd5(newPassword);
         boolean forgetPwd = userService.forgetPwd(user.getUserAccount(), newPassword);
         if(!forgetPwd){
             responseJson.setCode(3);
@@ -149,7 +152,7 @@ public class UserMessageController {
         }
 
         //TODO 新密码修改
-        boolean forgetPwd = userService.forgetPwd(user.getUserAccount(), newPassword);
+        boolean forgetPwd = userService.forgetPayPwd(user.getUserAccount(), newPassword);
         if(!forgetPwd){
             responseJson.setCode(3);
             responseJson.setMessage("修改失败，请重试");

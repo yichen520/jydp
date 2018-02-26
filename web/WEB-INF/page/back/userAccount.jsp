@@ -51,8 +51,12 @@
                     </p>
 
                     <input type="hidden" id="queryPageNumber" name="pageNumber" value="${pageNumber}">
-                    <input type="text" value="查&nbsp;询" class="ask" onfocus="this.blur()" onclick="queryForm()"/>
-                    <input type="text" value="导&nbsp;出" class="educe" onfocus="this.blur()" onclick="exportData()"/>
+                    <c:if test="${backer_rolePower['141101'] == 141101}">
+                        <input type="text" value="查&nbsp;询" class="ask" onfocus="this.blur()" onclick="queryForm()"/>
+                    </c:if>
+                    <c:if test="${backer_rolePower['141102'] == 141102}">
+                        <input type="text" value="导&nbsp;出" class="educe" onfocus="this.blur()" onclick="exportData()"/>
+                    </c:if>
                 </form>
             </div>
         </div>
@@ -72,9 +76,9 @@
                     <tr class="tableInfo">
                         <td class="time"><fmt:formatDate type="time" value="${user.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                         <td class="account">${user.userAccount}</td>
-                        <td class="money">$<fmt:formatNumber type="number" value="${user.userBalance }" maxFractionDigits="2"/></td>
-                        <td class="money">$<fmt:formatNumber type="number" value="${user.userBalanceLock }" maxFractionDigits="2"/></td>
-                        <td class="money">$<fmt:formatNumber type="number" value="${user.userBalance + user.userBalanceLock}" maxFractionDigits="2"/></td>
+                        <td class="money">$<fmt:formatNumber type="number" value="${user.userBalance }" maxFractionDigits="8"/></td>
+                        <td class="money">$<fmt:formatNumber type="number" value="${user.userBalanceLock }" maxFractionDigits="8"/></td>
+                        <td class="money">$<fmt:formatNumber type="number" value="${user.userBalance + user.userBalanceLock}" maxFractionDigits="8"/></td>
                         <c:if test="${user.accountStatus == 1}">
                             <td class="state">启用</td>
                         </c:if>
@@ -82,15 +86,27 @@
                             <td class="state">禁用</td>
                         </c:if>
                         <td class="operate">
-                            <c:if test="${user.accountStatus == 1}">
-                                <input type="text" class="start" value="启&nbsp;用" onfocus="this.blur()" />
+                            <c:if test="${backer_rolePower['141105'] == 141105}">
+                                <c:if test="${user.accountStatus == 2}">
+                                    <input type="text" class="start" value="启&nbsp;用" onfocus="this.blur()" onclick="unlock(${user.userId })"/>
+                                </c:if>
                             </c:if>
-                            <c:if test="${user.accountStatus == 2}">
-                                <input type="text" class="stop" value="禁&nbsp;用" onfocus="this.blur()" />
+
+                            <c:if test="${backer_rolePower['141104'] == 141104}">
+                                <c:if test="${user.accountStatus == 1}">
+                                    <input type="text" class="stop" value="禁&nbsp;用" onfocus="this.blur()" onclick="lock(${user.userId })"/>
+                                </c:if>
                             </c:if>
-                            <a href="#" target="_blank" class="details">账户明细</a>
-                            <input type="text" class="addMoney" value="增加账户余额" onfocus="this.blur()" />
-                            <input type="text" class="minusMoney" value="减少账户余额" onfocus="this.blur()" />
+
+                            <c:if test="${backer_rolePower['141103'] == 141103}">
+                                <a href="<%=path %>/backerWeb/backerUserAccount/showDetail.htm?userId=${user.userId }" target="_blank" class="details">账户明细</a>
+                            </c:if>
+                            <c:if test="${backer_rolePower['141106'] == 141106}">
+                                <input type="text" class="addMoney" value="增加账户余额" onfocus="this.blur()" onclick="addAmount('${user.userId }', '${user.userAccount }')"/>
+                            </c:if>
+                            <c:if test="${backer_rolePower['141107'] == 141107}">
+                                <input type="text" class="minusMoney" value="减少账户余额" onfocus="this.blur()" onclick="reduceAmount('${user.userId }', '${user.userAccount }')"/>
+                            </c:if>
                         </td>
                     </tr>
                 </c:forEach>
@@ -112,8 +128,9 @@
             <p class="popTips"><img src="<%=path %>/resources/image/back/tips.png" class="tipsImg" />确定启用该账号？</p>
 
             <div class="buttons">
+                <input type="hidden" id="unlockId" />
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="openTip()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="unlockSubmit()" />
             </div>
         </div>
 
@@ -122,8 +139,9 @@
             <p class="popTips"><img src="<%=path %>/resources/image/back/tips.png" class="tipsImg" />确定禁用该账号？</p>
 
             <div class="buttons">
+                <input type="hidden" id="lockId" />
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="openTip()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="lockSubmit()" />
             </div>
         </div>
 
@@ -131,20 +149,21 @@
             <p class="popTitle">增加账户余额</p>
             <p class="popInput">
                 <label class="popName">用户账号</label>
-                <span class="popAccount">ASDFGHJKLASDFGHJ</span>
+                <span class="popAccount" id="addAccount"></span>
             </p>
             <p class="popInput">
                 <label class="popName">增加账户余额<span class="star">*</span></label>
-                <input type="text" class="entry" placeholder="要增加的金额" />
+                <input type="text" id="addBalanceNumber" class="entry" placeholder="要增加的金额" />
             </p>
             <p class="popInput">
                 <label class="popName" style="line-height: 20px">备注内容</label>
-                <textarea class="txt" placeholder="备注内容，非必填"></textarea>
+                <textarea class="txt" id="addMark" placeholder="备注内容，非必填"></textarea>
             </p>
 
+            <input type="hidden" id="addId" />
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="openTip()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="addAmountSubmit()" />
             </div>
         </div>
 
@@ -152,20 +171,21 @@
             <p class="popTitle">减少账户余额</p>
             <p class="popInput">
                 <label class="popName">用户账号</label>
-                <span class="popAccount">ASDFGHJKLASDFGHJ</span>
+                <span class="popAccount" id="reduceAccount"></span>
             </p>
             <p class="popInput">
                 <label class="popName">减少账户余额<span class="star">*</span></label>
-                <input type="text" class="entry" placeholder="要减少的金额" />
+                <input type="text" id="reduceBalanceNumber" class="entry" placeholder="要减少的金额" />
             </p>
             <p class="popInput">
                 <label class="popName" style="line-height: 20px">备注内容</label>
-                <textarea class="txt" placeholder="备注内容，非必填"></textarea>
+                <textarea class="txt" id="reduceMark" placeholder="备注内容，非必填"></textarea>
             </p>
 
+            <input type="hidden" id="reduceId" />
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="openTip()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="reduceAmountSubmit()" />
             </div>
         </div>
     </div>
@@ -194,6 +214,190 @@
     function queryForm() {
         $("#queryPageNumber").val("0");
         $("#queryForm").submit();
+    }
+
+    //启用
+    function unlock(userId) {
+        $(".mask").fadeIn();
+        $(".start_pop").fadeIn();
+        popObj = ".start_pop"
+
+        $("#unlockId").val(userId);
+    }
+
+    //禁用
+    function lock(userId) {
+        $(".mask").fadeIn();
+        $(".stop_pop").fadeIn();
+        popObj = ".stop_pop"
+
+        $("#lockId").val(userId);
+    }
+
+    //启用
+    var unlockBoo = false;
+    function unlockSubmit() {
+        if(unlockBoo){
+            return false;
+        }else{
+            unlockBoo = true;
+        }
+
+        var userId = $("#unlockId").val();
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerUserAccount/unlock.htm",
+            type:'post',
+            dataType:'json',
+            async:true,
+            data:{
+                userId : userId
+            },
+            success:function(result){
+                unlockBoo = false;
+                if(result.code == 1) {
+                    $("#queryForm").submit();
+                } else {
+                    openTips(result.message);
+                }
+            }, error:function(){
+                unlockBoo = false;
+                openTips("服务器异常，请稍后再试！");
+            }
+        });
+    }
+
+    //禁用
+    var lockBoo = false;
+    function lockSubmit() {
+        if(lockBoo){
+            return false;
+        }else{
+            lockBoo = true;
+        }
+
+        var userId = $("#lockId").val();
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerUserAccount/lock.htm",
+            type:'post',
+            dataType:'json',
+            async:true,
+            data:{
+                userId : userId
+            },
+            success:function(result){
+                lockBoo = false;
+                if(result.code == 1) {
+                    $("#queryForm").submit();
+                } else {
+                    openTips(result.message);
+                }
+            }, error:function(){
+                lockBoo = false;
+                openTips("服务器异常，请稍后再试！");
+            }
+        });
+    }
+
+    //增加账户金额
+    function addAmount(userId, userAccount) {
+        $(".mask").fadeIn();
+        $(".addMoney_pop").fadeIn();
+        popObj = ".addMoney_pop"
+
+        $("#addId").val(userId);
+        $("#addAccount").html(userAccount);
+    }
+
+    //减少账户金额
+    function reduceAmount(userId, userAccount) {
+        $(".mask").fadeIn();
+        $(".minusMoney_pop").fadeIn();
+        popObj = ".minusMoney_pop"
+
+        $("#reduceId").val(userId);
+        $("#reduceAccount").html(userAccount);
+    }
+
+    //增加账户金额
+    var addAmountBoo = false;
+    function addAmountSubmit() {
+        if(addAmountBoo){
+            return false;
+        }else{
+            addAmountBoo = true;
+        }
+
+        var addId = $("#addId").val();
+        var addAccount = $("#addAccount").html();
+        var addBalanceNumber = $("#addBalanceNumber").val();
+        var addMark = $("#addMark").val();
+
+        $("#addBalanceNumber").val("");
+        $("#addMark").val("");
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerUserAccount/addAmount.htm",
+            type:'post',
+            dataType:'json',
+            async:true,
+            data:{
+                userId : addId,
+                userAccount : addAccount,
+                balanceNumber : addBalanceNumber,
+                remark : addMark
+            },
+            success:function(result){
+                addAmountBoo = false;
+                if(result.code == 1) {
+                    $("#queryForm").submit();
+                } else {
+                    openTips(result.message);
+                }
+            }, error:function(){
+                addAmountBoo = false;
+                openTips("服务器异常，请稍后再试！");
+            }
+        });
+    }
+
+    //减少账户金额
+    var reduceAmountBoo = false;
+    function reduceAmountSubmit() {
+        if(reduceAmountBoo){
+            return false;
+        }else{
+            reduceAmountBoo = true;
+        }
+
+        var reduceId = $("#reduceId").val();
+        var reduceAccount = $("#reduceAccount").html();
+        var reduceBalanceNumber = $("#reduceBalanceNumber").val();
+        var reduceMark = $("#reduceMark").val();
+
+        $("#reduceBalanceNumber").val("");
+        $("#reduceMark").val("");
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerUserAccount/reduceAmount.htm",
+            type:'post',
+            dataType:'json',
+            async:true,
+            data:{
+                userId : reduceId,
+                userAccount : reduceAccount,
+                balanceNumber : reduceBalanceNumber,
+                remark : reduceMark
+            },
+            success:function(result){
+                reduceAmountBoo = false;
+                if(result.code == 1) {
+                    $("#queryForm").submit();
+                } else {
+                    openTips(result.message);
+                }
+            }, error:function(){
+                reduceAmountBoo = false;
+                openTips("服务器异常，请稍后再试！");
+            }
+        });
     }
 
     //导出数据
@@ -284,7 +488,7 @@
 
     var popObj;
     $(function(){
-        $(".stop").click(function(){
+        /*$(".stop").click(function(){
             $(".mask").fadeIn();
             $(".stop_pop").fadeIn();
             popObj = ".stop_pop"
@@ -303,7 +507,7 @@
             $(".mask").fadeIn();
             $(".minusMoney_pop").fadeIn();
             popObj = ".minusMoney_pop"
-        });
+        });*/
         $(".cancel").click(function(){
             $(".mask").fadeOut("fast");
             $(popObj).fadeOut("fast");

@@ -127,7 +127,7 @@ public class TransactionPendOrderDaoImpl implements ITransactionPendOrderDao{
     /**
      * 修改挂单状态
      * @param pendingOrderNo 记录号,业务类型（2）+日期（6）+随机位（10）
-     * @param pendingStatus 挂单状态，1：挂单中，2：部分完成，3：已完成，4：已撤销
+     * @param pendingStatus 挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销
      * @return 操作成功：返回true，操作失败：返回false
      */
     public boolean updatePendingStatus(String pendingOrderNo, int pendingStatus){
@@ -179,7 +179,7 @@ public class TransactionPendOrderDaoImpl implements ITransactionPendOrderDao{
      * @param userAccount 用户账号
      * @param currencyId 币种Id（查全部为0）
      * @param paymentType 交易类型,1：买入，2：卖出（查全部为0）
-     * @param pendingStatus 挂单状态，1：挂单中，2：部分完成，3：已完成，4：已撤销（查全部为0）
+     * @param pendingStatus 挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销（查全部为0）
      * @param startAddTime 挂单起始时间，没有值填null
      * @param endAddTime 挂单结束时间，没有值填null
      * @param startFinishTime 完成起始时间，没有值填null
@@ -215,7 +215,7 @@ public class TransactionPendOrderDaoImpl implements ITransactionPendOrderDao{
      * @param userAccount 用户账号
      * @param currencyId 币种Id（查全部为0）
      * @param paymentType 交易类型,1：买入，2：卖出（查全部为0）
-     * @param pendingStatus 挂单状态，1：挂单中，2：部分完成，3：已完成，4：已撤销（查全部为0）
+     * @param pendingStatus 挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销（查全部为0）
      * @param startAddTime 挂单起始时间，没有值填null
      * @param endAddTime 挂单结束时间，没有值填null
      * @param startFinishTime 完成起始时间，没有值填null
@@ -249,6 +249,62 @@ public class TransactionPendOrderDaoImpl implements ITransactionPendOrderDao{
         }
 
         return resultList;
+    }
+
+    /**
+     * 修改挂单状态为部分撤销（仅撤单用）
+     * @param pendingOrderNo 记录号,业务类型（2）+日期（6）+随机位（10）
+     * @param revokeNumber 撤销数量
+     * @param endTime 撤销时间
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean updatePartRevoke(String pendingOrderNo, double revokeNumber, Timestamp endTime){
+        int result = 0;
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("pendingOrderNo", pendingOrderNo);
+        map.put("revokeNumber", revokeNumber);
+        map.put("endTime", endTime);
+
+        try {
+            result = sqlSessionTemplate.update("TransactionPendOrder_updatePartRevoke", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 修改挂单状态为全部撤销（仅撤单用）
+     * @param pendingOrderNo 记录号,业务类型（2）+日期（6）+随机位（10）
+     * @param revokeNumber 撤销数量
+     * @param endTime 撤销时间
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean updateAllRevoke(String pendingOrderNo, double revokeNumber, Timestamp endTime){
+        int result = 0;
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("pendingOrderNo", pendingOrderNo);
+        map.put("revokeNumber", revokeNumber);
+        map.put("endTime", endTime);
+
+        try {
+            result = sqlSessionTemplate.update("TransactionPendOrder_updateAllRevoke", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

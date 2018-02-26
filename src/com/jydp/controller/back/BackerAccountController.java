@@ -99,20 +99,20 @@ public class BackerAccountController {
 
     /** 新增后台账号 */
     @RequestMapping(value="/insert.htm", method= RequestMethod.POST)
-    public String insert(HttpServletRequest request){
+    public @ResponseBody JsonObjectBO insert(HttpServletRequest request){
+        JsonObjectBO responseJson = new JsonObjectBO();
         //业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 131102);
         if (!havePower) {
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
-            request.getSession().setAttribute("backer_pagePowerId", 0);
-            return "page/back/index";
+            responseJson.setCode(6);
+            responseJson.setMessage("您没有该权限");
+            return responseJson;
         }
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
         if (backerSession == null) {
-            request.setAttribute("code", 4);
-            request.setAttribute("message", "登录过期");
-            return "page/back/login";
+            responseJson.setCode(4);
+            responseJson.setMessage("登陆过期");
+            return responseJson;
         }
 
         String backerAccount = StringUtil.stringNullHandle(request.getParameter("addBackerAccount"));
@@ -122,23 +122,23 @@ public class BackerAccountController {
         
         if (!StringUtil.isNotNull(backerAccount) || !StringUtil.isNotNull(password)
                 || !StringUtil.isNotNull(repeatPassword) || !StringUtil.isNotNull(roleIdStr)) {
-            request.setAttribute("code", 2);
-            request.setAttribute("message", "未接收到参数！");
-            return "page/back/index";
+            responseJson.setCode(3);
+            responseJson.setMessage("参数错误");
+            return responseJson;
         }
         
         if (!password.equals(repeatPassword)) {
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "两次密码输入不一致！");
-            return "page/back/index";
+            responseJson.setCode(3);
+            responseJson.setMessage("两次密码输入不一致！");
+            return responseJson;
         }
 
         boolean userIsExist = backerService.validateBackerExist(backerAccount);
         if (userIsExist) {
             showList(request, backerSession.getBackerId());
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "该帐号已存在！");
-            return "page/back/backerAccount";
+            responseJson.setCode(3);
+            responseJson.setMessage("该账号已存在");
+            return responseJson;
         }
         
         password = MD5Util.toMd5(password);
@@ -153,21 +153,19 @@ public class BackerAccountController {
         
         boolean insertResult = backerService.insertBacker(backer);
         if (insertResult) {
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "新增成功！");
+            responseJson.setCode(1);
+            responseJson.setMessage("新增成功");
         } else {
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "新增失败！");
+            responseJson.setCode(5);
+            responseJson.setMessage("新增失败");
         }
-        
-        showList(request, backerSession.getBackerId());
-        return "page/back/backerAccount";
+
+        return responseJson;
     }
 
     /** 验证账号是否存在 */
     @RequestMapping(value = "/validateAccount", method = RequestMethod.POST)
-    public @ResponseBody
-    JsonObjectBO validateAccount(HttpServletRequest request) {
+    public @ResponseBody JsonObjectBO validateAccount(HttpServletRequest request) {
         JsonObjectBO responsJson = new JsonObjectBO();
 
         String backerAccount = StringUtil.stringNullHandle(request.getParameter("backerAccount"));
@@ -190,30 +188,30 @@ public class BackerAccountController {
 
     /** 修改后台管理员账号角色 */
     @RequestMapping(value="/updateRole.htm", method= RequestMethod.POST)
-    public String updateRole(HttpServletRequest request) {
+    public @ResponseBody JsonObjectBO updateRole(HttpServletRequest request) {
+        JsonObjectBO responseJson = new JsonObjectBO();
         //业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 131103);
         if (!havePower) {
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
-            request.getSession().setAttribute("backer_pagePowerId", 0);
-            return "page/back/index";
+            responseJson.setCode(6);
+            responseJson.setMessage("您没有该权限");
+            return responseJson;
         }
 
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
         if (backerSession == null) {
-            request.setAttribute("code", 4);
-            request.setAttribute("message", "登录过期");
-            return "page/back/login";
+            responseJson.setCode(4);
+            responseJson.setMessage("登陆过期");
+            return responseJson;
         }
         
         String backerIdStr = StringUtil.stringNullHandle(request.getParameter("updateRoleBackerId"));
         String roleIdStr = StringUtil.stringNullHandle(request.getParameter("updateRoleId"));
         
         if(!StringUtil.isNotNull(backerIdStr) || !StringUtil.isNotNull(roleIdStr)){
-            request.setAttribute("code", 2);
-            request.setAttribute("message", "未接收到参数！");
-            return "page/back/index";
+            responseJson.setCode(3);
+            responseJson.setMessage("参数错误");
+            return responseJson;
         }
         
         int roleId = Integer.parseInt(roleIdStr);
@@ -221,66 +219,65 @@ public class BackerAccountController {
         
         boolean updateResult = backerService.updateBackerRole(backerId, roleId);
         if(updateResult){
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "修改成功！");
-        }else{
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "修改失败！");
+            responseJson.setCode(1);
+            responseJson.setMessage("修改成功");
+        } else {
+            responseJson.setCode(5);
+            responseJson.setMessage("修改失败");
         }
 
-        showList(request, backerSession.getBackerId());
-        return "page/back/backerAccount";
+        return responseJson;
     }
     
     /** 重置密码 ,默认123456*/
-    @RequestMapping(value = "/resetPassword.htm")
-    public String resetPassword(HttpServletRequest request){
+    @RequestMapping(value = "/resetPassword.htm", method = RequestMethod.POST)
+    public @ResponseBody JsonObjectBO resetPassword(HttpServletRequest request){
+        JsonObjectBO responseJson = new JsonObjectBO();
         //业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 131107);
         if (!havePower) {
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
-            request.getSession().setAttribute("backer_pagePowerId", 0);
-            return "page/back/index";
+            responseJson.setCode(6);
+            responseJson.setMessage("您没有该权限");
+            return responseJson;
         }
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
         if (backerSession == null) {
-            request.setAttribute("code", 4);
-            request.setAttribute("message", "登录过期");
-            return "page/back/login";
+            responseJson.setCode(4);
+            responseJson.setMessage("登陆过期");
+            return responseJson;
         }
 
         String backerIdStr = StringUtil.stringNullHandle(request.getParameter("resetPasswordBackerId"));
         String password = MD5Util.toMd5("123456");
         
         if(!StringUtil.isNotNull(backerIdStr)){
-            request.setAttribute("code", 2);
-            request.setAttribute("message", "未接收到参数！");
-            return "page/back/index";
+            responseJson.setCode(3);
+            responseJson.setMessage("参数错误");
+            return responseJson;
         }
         int backerId = Integer.parseInt(backerIdStr);
         
         boolean resetResult = backerService.resetPassword(backerId, password);
         if(resetResult){
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "重置密码成功！");
-        }else{
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "重置密码失败！");
+            responseJson.setCode(1);
+            responseJson.setMessage("密码重置成功");
+        } else {
+            responseJson.setCode(5);
+            responseJson.setMessage("密码重置失败");
         }
 
-        showList(request, backerSession.getBackerId());
-        return "page/back/backerAccount";
+        return responseJson;
     }
     
     /** 修改密码 */
     @RequestMapping(value = "/updatePassword.htm", method = RequestMethod.POST)
-    public String updatePassword(HttpServletRequest request){
+    public @ResponseBody JsonObjectBO updatePassword(HttpServletRequest request){
+        JsonObjectBO responseJson = new JsonObjectBO();
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
         if (backerSession == null) {
-            request.setAttribute("code", 4);
-            request.setAttribute("message", "登录过期");
-            return "page/back/login";
+            responseJson.setCode(4);
+            responseJson.setMessage("登陆过期");
+            return responseJson;
         }
         
         //修改密码不需要权限(修改自己的密码)
@@ -289,14 +286,14 @@ public class BackerAccountController {
         String repeatPassword = StringUtil.stringNullHandle(request.getParameter("updateBackerRepeatPassword"));
         
         if(!StringUtil.isNotNull(oldPassword) || !StringUtil.isNotNull(newPassword)){
-            request.setAttribute("code", 2);
-            request.setAttribute("message", "未接收到参数！");
-            return "page/back/index";
+            responseJson.setCode(3);
+            responseJson.setMessage("参数错误");
+            return responseJson;
         }
         if (!newPassword.equals(repeatPassword)) {
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "两次密码输入不一致！");
-            return "page/back/index";
+            responseJson.setCode(3);
+            responseJson.setMessage("两次密码不一致");
+            return responseJson;
         }
         
         oldPassword = MD5Util.toMd5(oldPassword);
@@ -305,149 +302,143 @@ public class BackerAccountController {
         boolean updateResult = backerService.updatePassword(backerSession.getBackerId(), oldPassword, newPassword);
         if(updateResult){
             BackerWebInterceptor.loginOut(request);
-            request.setAttribute("code", 4);
-            request.setAttribute("message", "修改成功！请重新登录");
-            return "page/back/login";
-        }else{
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "修改密码失败！");
-            showList(request, backerSession.getBackerId());
-            return "page/back/backerAccount";
+            responseJson.setCode(1);
+            responseJson.setMessage("修改成功，请重新登陆");
+        } else {
+            responseJson.setCode(5);
+            responseJson.setMessage("密码修改失败");
         }
+
+        return responseJson;
     }
     
     /** 修改后台账号状态，启用(1：启用，2：禁用，-1：删除 )*/
     @RequestMapping(value = "/startUp.htm")
-    public String startUp(HttpServletRequest request){
+    public  @ResponseBody JsonObjectBO startUp(HttpServletRequest request){
+        JsonObjectBO responseJson = new JsonObjectBO();
         //业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 131105);
         if (!havePower) {
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
-            request.getSession().setAttribute("backer_pagePowerId", 0);
-            return "page/back/index";
+            responseJson.setCode(6);
+            responseJson.setMessage("您没有该权限");
+            return responseJson;
         }
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
         if (backerSession == null) {
-            request.setAttribute("code", 4);
-            request.setAttribute("message", "登录过期");
-            return "page/back/login";
+            responseJson.setCode(4);
+            responseJson.setMessage("登陆过期");
+            return responseJson;
         }
 
         String backerIdStr = StringUtil.stringNullHandle(request.getParameter("enbaleBackerId"));
         if (!StringUtil.isNotNull(backerIdStr)) {
-            request.setAttribute("code", 2);
-            request.setAttribute("message", "未接收到参数！");
-            return "page/back/index";
+            responseJson.setCode(3);
+            responseJson.setMessage("参数错误");
+            return responseJson;
         }
         
         int backerId = Integer.parseInt(backerIdStr);
         int accountStatus = 1;
         boolean updateResult = backerService.updateAccountStatus(backerId, accountStatus);
         if (updateResult) {
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "启用成功！");
+            responseJson.setCode(1);
+            responseJson.setMessage("启用成功");
         } else {
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "启用失败！");
+            responseJson.setCode(5);
+            responseJson.setMessage("启用失败");
         }
 
-        showList(request, backerSession.getBackerId());
-        return "page/back/backerAccount";
+        return responseJson;
     }
 
     /** 修改后台账号状态，禁用(1：启用，2：禁用，-1：删除 )*/
-    @RequestMapping(value = "/forbidden.htm")
-    public String forbidden(HttpServletRequest request){
+    @RequestMapping(value = "/forbidden.htm", method = RequestMethod.POST)
+    public  @ResponseBody JsonObjectBO forbidden(HttpServletRequest request){
+        JsonObjectBO responseJson = new JsonObjectBO();
         //业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 131106);
         if (!havePower) {
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
-            request.getSession().setAttribute("backer_pagePowerId", 0);
-            return "page/back/index";
+            responseJson.setCode(6);
+            responseJson.setMessage("您没有该权限");
+            return responseJson;
         }
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
         if (backerSession == null) {
-            request.setAttribute("code", 4);
-            request.setAttribute("message", "登录过期");
-            return "page/back/login";
+            responseJson.setCode(4);
+            responseJson.setMessage("登陆过期");
+            return responseJson;
         }
 
         String backerIdStr = StringUtil.stringNullHandle(request.getParameter("disableBackerId"));
         if (!StringUtil.isNotNull(backerIdStr)) {
-            request.setAttribute("code", 2);
-            request.setAttribute("message", "未接收到参数！");
-            return "page/back/index";
+            responseJson.setCode(3);
+            responseJson.setMessage("参数错误");
+            return responseJson;
         }
 
         int backerId = Integer.parseInt(backerIdStr);
         if(backerId == backerSession.getBackerId()){
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "您不能禁用自己");
-            showList(request, backerSession.getBackerId());
-            return "page/back/backerAccount";
+            responseJson.setCode(3);
+            responseJson.setMessage("您不能禁用自己！");
+            return responseJson;
         }
 
         int accountStatus = 2;
         boolean updateResult = backerService.updateAccountStatus(backerId, accountStatus);
         if(updateResult){
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "禁用成功！");
-        }else{
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "禁用失败！");
+            responseJson.setCode(1);
+            responseJson.setMessage("禁用成功");
+        } else {
+            responseJson.setCode(5);
+            responseJson.setMessage("禁用失败");
         }
 
-        showList(request, backerSession.getBackerId());
-        return "page/back/backerAccount";
+        return responseJson;
     }
 
     /** 修改后台账号状态，删除(1：启用，2：禁用，-1：删除 )*/
     @RequestMapping(value = "/delete.htm")
-    public String delete(HttpServletRequest request){
+    public @ResponseBody JsonObjectBO delete(HttpServletRequest request){
+        JsonObjectBO responseJson = new JsonObjectBO();
         //业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 131104);
         if (!havePower) {
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
-            request.getSession().setAttribute("backer_pagePowerId", 0);
-            return "page/back/index";
+            responseJson.setCode(6);
+            responseJson.setMessage("您没有该权限");
+            return responseJson;
         }
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
         if (backerSession == null) {
-            request.setAttribute("code", 4);
-            request.setAttribute("message", "登录过期");
-            return "page/back/login";
+            responseJson.setCode(4);
+            responseJson.setMessage("登陆过期");
+            return responseJson;
         }
 
         String backerIdStr = StringUtil.stringNullHandle(request.getParameter("deleteBackerId"));
         
         if(!StringUtil.isNotNull(backerIdStr)){
-            request.setAttribute("code", 2);
-            request.setAttribute("message", "未接收到参数！");
-            return "page/back/index";
+            responseJson.setCode(3);
+            responseJson.setMessage("参数错误");
+            return responseJson;
         }
 
         int backerId = Integer.parseInt(backerIdStr);
         if(backerId == backerSession.getBackerId()){
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "您不能删除自己");
-            showList(request, backerSession.getBackerId());
-            return "page/back/backerAccount";
+            responseJson.setCode(3);
+            responseJson.setMessage("您不能删除自己！");
+            return responseJson;
         }
 
         int accountStatus = -1;
         boolean updateResult = backerService.updateAccountStatus(backerId, accountStatus);
         if(updateResult){
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "删除成功！");
-        }else{
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "删除失败！");
+            responseJson.setCode(1);
+            responseJson.setMessage("删除成功");
+        } else {
+            responseJson.setCode(5);
+            responseJson.setMessage("删除失败");
         }
 
-        showList(request, backerSession.getBackerId());
-        return "page/back/backerAccount";
+        return responseJson;
     }
 }

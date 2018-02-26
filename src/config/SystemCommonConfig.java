@@ -24,4 +24,7 @@ public class SystemCommonConfig {
 	public static final String TRANSACTION_USER_DEAL = "31";
 	/** 做单记录 -业务类型（2）+日期（6）+随机位（10） */
 	public static final String TRANSACTION_MAKE_ORDER = "32";
+
+	/** 用户账户可用资产记录 -业务类型（2）+日期（6）+随机位（10） */
+	public static final String AMOUNT_BALANCE_USER = "41";
 }

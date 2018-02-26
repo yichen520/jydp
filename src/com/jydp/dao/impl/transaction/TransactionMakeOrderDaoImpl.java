@@ -66,6 +66,7 @@ public class TransactionMakeOrderDaoImpl implements ITransactionMakeOrderDao{
      * 查询做单记录个数(后台)
      * @param currencyName 货币名称(币种)
      * @param executeStatus 执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败,5:已撤回
+     * @param paymentType 操作类型
      * @param backerAccount 后台管理员帐号
      * @param startAddTime 起始生成时间
      * @param endAddTime 结束生成时间
@@ -73,14 +74,15 @@ public class TransactionMakeOrderDaoImpl implements ITransactionMakeOrderDao{
      * @param endExecuteTime 结束执行时间
      * @return 操作成功：返回做单记录集合，操作失败：返回null
      */
-    public int countTransactionMakeOrderForBack(String currencyName, int executeStatus, String backerAccount,
-                                         Timestamp startAddTime, Timestamp endAddTime,
-                                         Timestamp startExecuteTime, Timestamp endExecuteTime){
+    public int countTransactionMakeOrderForBack(String currencyName, int executeStatus, int paymentType, String backerAccount,
+                                                Timestamp startAddTime, Timestamp endAddTime,
+                                                Timestamp startExecuteTime, Timestamp endExecuteTime){
         int result = 0;
 
         Map<String, Object> map = new HashMap<>();
         map.put("currencyName", currencyName);
         map.put("executeStatus", executeStatus);
+        map.put("paymentType", paymentType);
         map.put("backerAccount", backerAccount);
         map.put("startAddTime", startAddTime);
         map.put("endAddTime", endAddTime);
@@ -100,6 +102,7 @@ public class TransactionMakeOrderDaoImpl implements ITransactionMakeOrderDao{
      * 查询做单记录集合(后台)
      * @param currencyName 货币名称(币种)
      * @param executeStatus 执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败,5:已撤回
+     * @param paymentType 操作类型
      * @param backerAccount 后台管理员帐号
      * @param startAddTime 起始生成时间
      * @param endAddTime 结束生成时间
@@ -109,7 +112,7 @@ public class TransactionMakeOrderDaoImpl implements ITransactionMakeOrderDao{
      * @param pageSize 每页条数
      * @return 操作成功：返回做单记录集合，操作失败：返回null
      */
-    public List<TransactionMakeOrderDO> listTransactionMakeOrderForBack(String currencyName, int executeStatus, String backerAccount,
+    public List<TransactionMakeOrderDO> listTransactionMakeOrderForBack(String currencyName, int executeStatus, int paymentType, String backerAccount,
                                                                  Timestamp startAddTime, Timestamp endAddTime,
                                                                  Timestamp startExecuteTime, Timestamp endExecuteTime,
                                                                  int pageNumber, int pageSize){
@@ -118,6 +121,7 @@ public class TransactionMakeOrderDaoImpl implements ITransactionMakeOrderDao{
         Map<String, Object> map = new HashMap<>();
         map.put("currencyName", currencyName);
         map.put("executeStatus", executeStatus);
+        map.put("paymentType", paymentType);
         map.put("backerAccount", backerAccount);
         map.put("startAddTime", startAddTime);
         map.put("endAddTime", endAddTime);

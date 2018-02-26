@@ -2,6 +2,7 @@ package com.jydp.service;
 
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.user.UserDO;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -70,6 +71,14 @@ public interface IUserService {
     boolean forgetPwd(String userAccount, String password);
 
     /**
+     * 忘记支付密码
+     * @param userAccount 用户账户
+     * @param password 新密码（密文）
+     * @return  修改成功：返回true，修改失败：返回false
+     */
+    boolean forgetPayPwd(String userAccount, String password);
+
+    /**
      * 验证用户登录
      * @param userAccount 用户账号
      * @param password 账号密码（密文）
@@ -96,7 +105,6 @@ public interface IUserService {
      * @param userAccount 用户名
      * @param password 密码
      * @param userPhone 用户手机号
-     * @param refereeAccount 推荐人账号
      * @return 查询成功：返回验证结果; 查询失败：返回null
      */
     JsonObjectBO validateUserInfo(String userAccount, String password, String userPhone);
@@ -107,4 +115,56 @@ public interface IUserService {
      * @return 操作成功：返回true; 操作失败：返回false
      */
     boolean register(UserDO userDO);
+
+    /**
+     * 增加用户余额（后台操作）
+     * @param userId 用户Id
+     * @param userAccount 用户账号
+     * @param balanceNumber 增加的账户金额
+     * @param backerId 后台管理员Id
+     * @param backerAccount 后台管理员帐号
+     * @param remarks 备注
+     * @param ipAddress 操作时的ip地址
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean addBalanceNumberForBack(int userId, String userAccount, double balanceNumber,
+                                           int backerId, String backerAccount, String remarks, String ipAddress);
+
+    /**
+     * 减少用户余额（后台操作）
+     * @param userId 用户Id
+     * @param userAccount 用户账号
+     * @param balanceNumber 减少的账户金额
+     * @param backerId 后台管理员Id
+     * @param backerAccount 后台管理员帐号
+     * @param remarks 备注
+     * @param ipAddress 操作时的ip地址
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean reduceBalanceNumberForBack(int userId, String userAccount, double balanceNumber,
+                                              int backerId, String backerAccount, String remarks, String ipAddress);
+    /**
+     * 增加用户账户金额
+     * @param userId 用户Id
+     * @param userBalance 可用资产（增加的值）
+     * @param userBalanceLock 锁定资产（增加的值）
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean updateAddUserAmount(int userId, double userBalance, double userBalanceLock);
+
+    /**
+     * 减少用户的可用资产
+     * @param userId 用户Id
+     * @param userBalance 可用资产(减少的值)
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean updateReduceUserBalance(int userId, double userBalance);
+
+    /**
+     * 减少用户的锁定资产
+     * @param userId 用户Id
+     * @param userBalanceLock 锁定资产(减少的值)
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean updateReduceUserBalanceLock(int userId, double userBalanceLock);
 }

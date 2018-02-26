@@ -218,4 +218,82 @@ public class UserDaoImpl implements IUserDao {
         }
         return user;
     }
+
+    /**
+     * 增加用户账户金额
+     * @param userId 用户Id
+     * @param userBalance 可用资产（增加的值）
+     * @param userBalanceLock 锁定资产（增加的值）
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean updateAddUserAmount(int userId, double userBalance, double userBalanceLock){
+        Map<String,Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("userBalance", userBalance);
+        map.put("userBalanceLock", userBalanceLock);
+
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.update("User_updateAddUserAmount", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 减少用户的可用资产
+     * @param userId 用户Id
+     * @param userBalance 可用资产(减少的值)
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean updateReduceUserBalance(int userId, double userBalance){
+        Map<String,Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("userBalance", userBalance);
+
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.update("User_updateReduceUserBalance", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 减少用户的锁定资产
+     * @param userId 用户Id
+     * @param userBalanceLock 锁定资产(减少的值)
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean updateReduceUserBalanceLock(int userId, double userBalanceLock){
+        Map<String,Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("userBalanceLock", userBalanceLock);
+
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.update("User_updateReduceUserBalanceLock", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

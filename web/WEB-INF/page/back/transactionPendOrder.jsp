@@ -56,7 +56,7 @@
                             <option value="2">部分成交</option>
                             <option value="3">全部成交</option>
                             <option value="4">部分撤销</option>
-                            <option value="5">已撤销</option>
+                            <option value="5">全部撤销</option>
                         </select>
                     </p>
                     <p class="condition">
@@ -109,20 +109,23 @@
                             <td class="type">卖出</td>
                         </c:if>
                         <c:if test="${pend.pendingStatus == 1}">
-                            <td class="state">挂单中</td>
+                            <td class="state">未成交</td>
                         </c:if>
                         <c:if test="${pend.pendingStatus == 2}">
-                            <td class="state">部分完成</td>
+                            <td class="state">部分成交</td>
                         </c:if>
                         <c:if test="${pend.pendingStatus == 3}">
-                            <td class="state">已完成</td>
+                            <td class="state">已成交</td>
                         </c:if>
                         <c:if test="${pend.pendingStatus == 4}">
-                            <td class="state">已撤销</td>
+                            <td class="state">部分撤销</td>
+                        </c:if>
+                        <c:if test="${pend.pendingStatus == 5}">
+                            <td class="state">全部撤销</td>
                         </c:if>
 
                         <td class="time">
-                            <c:if test="${pend.pendingStatus == 3}">
+                            <c:if test="${pend.pendingStatus != 1}">
                                 <fmt:formatDate type="time" value="${pend.endTime}" pattern="yyyy-MM-dd HH:mm:ss" />
                             </c:if>
                         </td>
