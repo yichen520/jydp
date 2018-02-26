@@ -11,7 +11,7 @@
     <meta charset="UTF-8">
     <link rel="icon" href="<%=path%>/resources/image/back/icon.ico" type="image/x-ico" />
 
-    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/noticeDetails.css" />
+    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/hotDetail.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/public.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/simpleTips.css" />
 
