@@ -37,8 +37,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <li class="menuInfo"><a href="#">合作伙伴</a></li>
             <li class="menuInfo" id="li_113000"><a id="a_113000" href="<%=path %>/backerWeb/backerNotice/show.htm">用户公告管理</a></li>
             <li class="menuInfo" id="li_114000"><a id="a_114000" href="<%=path %>/backerWeb/hotTopic/show.htm">热门话题管理</a></li>
-            <li class="menuInfo"><a href="#">用户帮助中心</a></li>
-            <li class="menuInfo"><a href="#">意见反馈</a></li>
+            <li class="menuInfo" id="li_115000"><a id="a_115000" href="<%=path%>/backerWeb/helpCenter/show.htm">用户帮助中心</a></li>
+            <li class="menuInfo" id="li_116000"><a id="a_116000" href="<%=path%>/backerWeb/backerFeedback/show.htm">意见反馈</a></li>
         </ul>
     </li>
 
