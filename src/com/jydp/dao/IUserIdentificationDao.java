@@ -60,4 +60,14 @@ public interface IUserIdentificationDao {
      */
     List<UserIdentificationDO> listUserIdentificationForBacker(String userAccount, String userPhone, int identificationStatus,
                                                                Timestamp startTime, Timestamp endTime, int pageNumber, int pageSize);
+
+    /**
+     * 修改用户实名认证状态
+     * @param id 记录Id
+     * @param identificationStatus 实名状态，1：待审核，2：审核通过，3：审核拒绝
+     * @param identiTime 审核时间
+     * @param remark 备注，可为null
+     * @return 修改成功：返回true，修改失败：返回false
+     */
+    boolean updateUserIdentificationStatus (long id, int identificationStatus, Timestamp identiTime, String remark);
 }

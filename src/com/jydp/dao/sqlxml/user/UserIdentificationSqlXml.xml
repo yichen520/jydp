@@ -72,5 +72,15 @@
 		ORDER BY addTime DESC
 		LIMIT #{startNumber}, #{pageSize}
 	</select>
+
+	<update id="UserIdentification_updateUserIdentificationStatus" parameterType="java.util.Map">
+		UPDATE user_identification_tab
+		SET identificationStatus = #{identificationStatus},
+			identiTime = #{identiTime}
+			<if test="remark != null and remark != '' ">
+				,remark = #{remark}
+			</if>
+		WHERE id = #{id}
+	</update>
 	
 </mapper>

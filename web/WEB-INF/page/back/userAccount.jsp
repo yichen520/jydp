@@ -105,7 +105,7 @@
                                 <input type="text" class="addMoney" value="增加账户余额" onfocus="this.blur()" onclick="addAmount('${user.userId }', '${user.userAccount }')"/>
                             </c:if>
                             <c:if test="${backer_rolePower['141107'] == 141107}">
-                                <input type="text" class="minusMoney" value="减少账户余额" onfocus="this.blur()" onclick="reduceAmount('${user.userId }', '${user.userAccount }')"/>
+                                <input type="text" class="minusMoney" value="减少账户余额" onfocus="this.blur()" onclick="reduceAmount('${user.userId }', '${user.userAccount }', '${user.userBalance }')"/>
                             </c:if>
                         </td>
                     </tr>
@@ -153,7 +153,8 @@
             </p>
             <p class="popInput">
                 <label class="popName">增加账户余额<span class="star">*</span></label>
-                <input type="text" id="addBalanceNumber" class="entry" placeholder="要增加的金额" />
+                <input type="text" id="addBalanceNumber" class="entry" placeholder="要增加的金额"
+                       maxLength="9"  onkeyup="matchUtil(this, 'double')" onblur="matchUtil(this, 'double')"/>
             </p>
             <p class="popInput">
                 <label class="popName" style="line-height: 20px">备注内容</label>
@@ -175,7 +176,8 @@
             </p>
             <p class="popInput">
                 <label class="popName">减少账户余额<span class="star">*</span></label>
-                <input type="text" id="reduceBalanceNumber" class="entry" placeholder="要减少的金额" />
+                <input type="text" id="reduceBalanceNumber" class="entry" placeholder="要减少的金额"
+                       maxLength="9"  onkeyup="matchUtil(this, 'double')" onblur="matchUtil(this, 'double')"/>
             </p>
             <p class="popInput">
                 <label class="popName" style="line-height: 20px">备注内容</label>
@@ -183,6 +185,7 @@
             </p>
 
             <input type="hidden" id="reduceId" />
+            <input type="hidden" id="reduceUserBalance" />
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
                 <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="reduceAmountSubmit()" />
@@ -309,13 +312,14 @@
     }
 
     //减少账户金额
-    function reduceAmount(userId, userAccount) {
+    function reduceAmount(userId, userAccount, userBalance) {
         $(".mask").fadeIn();
         $(".minusMoney_pop").fadeIn();
         popObj = ".minusMoney_pop"
 
         $("#reduceId").val(userId);
         $("#reduceAccount").html(userAccount);
+        $("#reduceUserBalance").val(userBalance);
     }
 
     //增加账户金额
@@ -372,9 +376,14 @@
         var reduceAccount = $("#reduceAccount").html();
         var reduceBalanceNumber = $("#reduceBalanceNumber").val();
         var reduceMark = $("#reduceMark").val();
+        var userBalance = $("#reduceUserBalance").val();
 
         $("#reduceBalanceNumber").val("");
         $("#reduceMark").val("");
+        if (userBalance < reduceBalanceNumber) {
+            reduceAmountBoo = false;
+            return openTips("您输入的金额大于该账户的可用余额");
+        }
         $.ajax({
             url: '<%=path %>' + "/backerWeb/backerUserAccount/reduceAmount.htm",
             type:'post',
@@ -448,7 +457,7 @@
     mapMatch['number'] = /[^\d]/g;
     mapMatch['double'] = true;
     function matchUtil(o, str) {
-        mapMatch[str] === true ? matchDouble(o, 4) : o.value = o.value.replace(mapMatch[str], '');
+        mapMatch[str] === true ? matchDouble(o, 2) : o.value = o.value.replace(mapMatch[str], '');
     }
     function matchDouble(o, num){
         var matchStr = /^-?\d+\.?\d{0,num}$/;
