@@ -13,7 +13,7 @@
 	</select>
 
 	<select id="SystemHot_sumHotForBack" resultType="int">
-		SELECT COUNT(1)
+		SELECT COUNT(id)
 		FROM system_hot_tab
         <where>
             <if test="noticeType != null and noticeType != '' ">

@@ -149,10 +149,10 @@ public class SystemHotDaoImpl implements ISystemHotDao {
     public boolean updateSystemHot(int id, String noticeTitle, String noticeType, String noticeUrl, String content){
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("noticeTitle", noticeTitle);
-        map.put("noticeTitle", noticeType);
+        map.put("noticeType", noticeType);
         map.put("noticeUrl", noticeUrl);
         map.put("content", content);
-
+        map.put("id", id);
         int result = 0;
         try{
             result = sqlSessionTemplate.update("SystemHot_updateSystemHot", map);
