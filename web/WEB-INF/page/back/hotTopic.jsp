@@ -33,7 +33,7 @@
             <c:if test="${backer_rolePower['114002'] == 114002}">
                 <a href="<%=path%>/backerWeb/hotTopic/openAddHotTopic.htm" class="add">新增热门</a>
             </c:if>
-            <form id="queryForm" action="<%=path%>/backerWeb/hotTopic/show.htm">
+            <form id="queryForm" action="<%=path%>/backerWeb/hotTopic/show.htm" method="post">
                 <div class="askArea">
                     <p class="condition">话题类型：<input type="text" class="askInput" name="noticeType" value="${noticeType }" maxLength="8"/></p>
                     <p class="condition">话题标题：<input type="text" class="askInput"  name="noticeTitle" value="${noticeTitle }" maxLength="64"/></p>
