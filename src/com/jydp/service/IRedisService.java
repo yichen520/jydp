@@ -210,4 +210,23 @@ public interface IRedisService {
      */
     boolean updateListIndex(String redisKey, long index, Object value);
 
+    /**
+     * 保存list开始下标和结束下标之间的元素（包括开始下标和结束下标）
+     * @param redisKey redis键
+     * @param start 开始下标，大于0
+     * @param end 结束下标，大于0
+     * @return 操作成功：返回true，操作失败：返回false（redisKey为空则返回false，start或end小于0返回false）
+     */
+    boolean trimList(String redisKey, long start, long end);
+
+    /**
+     * 保存list开始下标和结束下标之间的元素（包括开始下标和结束下标）
+     * @param redisKey redis键
+     * @param start 开始下标，大于0
+     * @param end 结束下标，大于0
+     * @param time 时间(秒)
+     * @return 操作成功：返回true，操作失败：返回false（redisKey为空或time<=0，start或end小于0返回false）
+     */
+    boolean trimList(String redisKey, long start, long end, long time);
+
 }
