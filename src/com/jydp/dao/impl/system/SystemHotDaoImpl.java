@@ -212,4 +212,41 @@ public class SystemHotDaoImpl implements ISystemHotDao {
             return false;
         }
     }
+
+    /**
+     * 查询热门话题总数 (web端)
+     * @return 查询成功:返回热门话题总数, 查询失败:返回0
+     */
+    public int countSystemHotForUser() {
+        int result = 0;
+
+        try {
+            result = sqlSessionTemplate.selectOne("SystemHot_countSystemHotForUser");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return result;
+    }
+
+    /**
+     * 查询热门话题列表 (web端)
+     * @param pageNumber 当前页数
+     * @param pageSize 每面大小
+     * @return 查询成功:返回热门话题列表, 查询失败:返回null
+     */
+    public List<SystemHotDO> listSystemHotForUser(int pageNumber, int pageSize) {
+        List<SystemHotDO> resultList = null;
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("startNumber", pageNumber * pageSize);
+        map.put("pageSize", pageSize);
+
+        try {
+            resultList = sqlSessionTemplate.selectList("SystemHot_listSystemHotForUser", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return resultList;
+    }
 }

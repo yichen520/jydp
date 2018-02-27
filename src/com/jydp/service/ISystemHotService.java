@@ -80,4 +80,18 @@ public interface ISystemHotService {
      * @return 查询成功：返回true；查询失败：返回false
      */
     boolean topHotTopic(int id, Timestamp topTime);
+
+    /**
+     * 查询热门话题总数 (web端)
+     * @return 查询成功:返回热门话题总数, 查询失败:返回0
+     */
+    int countSystemHotForUser();
+
+    /**
+     * 查询热门话题列表 (web端)
+     * @param pageNumber 当前页数
+     * @param pageSize 每面大小
+     * @return 查询成功:返回热门话题列表, 查询失败:返回null
+     */
+    List<SystemHotDO> listSystemHotForUser(int pageNumber, int pageSize);
 }

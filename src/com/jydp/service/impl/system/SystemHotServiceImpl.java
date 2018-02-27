@@ -105,4 +105,22 @@ public class SystemHotServiceImpl implements ISystemHotService {
     public boolean topHotTopic(int id, Timestamp topTime){
         return systemHotDao.topHotTopic(id, topTime);
         }
+
+    /**
+     * 查询热门话题总数 (web端)
+     * @return 查询成功:返回热门话题总数, 查询失败:返回0
+     */
+    public int countSystemHotForUser() {
+        return systemHotDao.countSystemHotForUser();
+    }
+
+    /**
+     * 查询热门话题列表 (web端)
+     * @param pageNumber 当前页数
+     * @param pageSize 每面大小
+     * @return 查询成功:返回热门话题列表, 查询失败:返回null
+     */
+    public List<SystemHotDO> listSystemHotForUser(int pageNumber, int pageSize) {
+        return systemHotDao.listSystemHotForUser(pageNumber, pageSize);
+    }
 }
