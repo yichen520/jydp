@@ -1,0 +1,178 @@
+body{
+    background-color: #ffffff !important;
+}
+.top{
+    width: 1200px;
+    height: 480px;
+}
+.swiper-container{
+    margin: 0 auto;
+    width: 1200px;
+    height: 480px;
+    float: left;
+}
+.swiper-wrapper{
+    width: 1200px;
+    height: 480px;
+}
+.swiper-slide{
+    width: 1200px;
+    height: 480px;
+    float: left;
+    overflow: hidden;
+}
+.swiper-slide img{
+    width: 1200px;
+    height: 480px;
+    object-fit: cover;
+}
+.coinTable{
+    margin:20px 0 40px 0;
+    width: 1200px;
+}
+.coinTable td{
+    padding:0 10px;
+    border-bottom: 1px solid #ececec;
+    text-align: center;
+}
+.coinTitle{
+    height: 40px;
+    background-color: #f5f5f5;
+    font-size: 16px;
+    color: #333333;
+}
+.coinTitle td{
+    border-top: 1px solid #ececec;
+}
+.coinInfo{
+    height: 45px;
+    font-size: 14px;
+    color: #666666;
+}
+.coin{
+    width: 250px;
+}
+.coin img{
+    margin-right: 10px;
+    vertical-align: middle;
+    width: 30px;
+}
+.new{
+    width: 150px;
+}
+.coinInfo .new{
+    color: #e83a33;
+}
+.money{
+    width: 150px;
+}
+.uplift{
+    width: 102px;
+}
+.operate{
+    width: 110px;
+}
+.operate a{
+    color: #68adfa;
+    font-size: 14px;
+    cursor: pointer;
+}
+.operate a:hover{
+    color: #52a1f9;
+}
+.in{
+    color: #e83a33;
+}
+.minus{
+    color: #4dac7b;
+}
+.bottom{
+    display: inline-block;
+}
+.notice,.hot{
+    float: left;
+    width: 565px;
+}
+.notice{
+    margin-right: 70px;
+}
+.bTitle{
+    display: inline-block;
+    margin-bottom: 5px;
+    width: 100%;
+    font-size: 18px;
+    color: #333333;
+}
+.bTitle img{
+    margin:-3px 10px 0 9px;
+    height: 26px;
+    vertical-align: middle;
+}
+.more{
+    float: right;
+    margin-top: 4px;
+    font-size: 14px;
+    color: #999999;
+}
+.more:hover{
+    opacity: 0.8;
+}
+.list{
+    float: left;
+    width: 100%;
+}
+.listInfo{
+    float: left;
+    margin-top: 10px;
+    width: 100%;
+}
+.list a{
+    font-size: 14px;
+    color: #666666
+}
+.list a:hover{
+    color: #e83a33;
+}
+.noticeTitle{
+    float: left;
+    width: 440px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.time{
+    float: right;
+}
+.cooperation{
+    display: inline-block;
+    margin-top: 40px;
+    width: 1200px;
+}
+.cTitle{
+    margin-bottom: 15px;
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+    color: #333333;
+}
+.company{
+    float: left;
+    padding: 0 15px;
+    width: 270px;
+    color: #333333;
+    font-size: 17px;
+    cursor: pointer;
+}
+.company img{
+    margin-right: 15px;
+    vertical-align: middle;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 1px solid #cccccc;
+}
+.company span{
+    display: inline-block;
+    width: 190px;
+    white-space: nowrap;
+    overflow: hidden;
+}
