@@ -62,10 +62,10 @@
         </p>
 
         <ul class="levelTwo">
-            <li class="menuInfo"><a href="#">系统公告</a></li>
-            <li class="menuInfo"><a href="#">热门话题</a></li>
-            <li class="menuInfo"><a href="#">帮助中心</a></li>
-            <li class="menuInfo"><a href="#">联系客服</a></li>
+            <li class="menuInfo"><a id="webSystemNotice" href="<%=path %>/userWeb/webSystemNotice/show">系统公告</a></li>
+            <li class="menuInfo"><a id="webSystemHot" href="<%=path %>/userWeb/webSystemHot/show">热门话题</a></li>
+            <li class="menuInfo"><a id="webHelpCenter" href="<%=path %>/userWeb/webHelpCenter/show">帮助中心</a></li>
+            <li class="menuInfo"><a id="webCustomerService" href="<%=path %>/userWeb/webCustomerService/show">联系客服</a></li>
         </ul>
     </li>
 </ul>

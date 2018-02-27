@@ -95,4 +95,9 @@
 		LIMIT #{startNumber}, #{pageSize}
 	</select>
 
+	<select id="TransactionUserDeal_countUserDealForWeb" parameterType="int" resultType="int">
+		SELECT COUNT(orderNo)
+		FROM transaction_user_deal_tab
+		WHERE userId = #{userId}
+	</select>
 </mapper>

@@ -17,7 +17,7 @@ import java.util.List;
  * @author yk
  */
 @Controller
-@RequestMapping("/web/myrecord")
+@RequestMapping("/userWeb/dealRecord")
 @Scope(value = "prototype")
 public class DealRecordController {
 
@@ -26,7 +26,7 @@ public class DealRecordController {
     private ITransactionUserDealService transactionUserDealService;
 
     /** 查询用户成交记录 */
-    @RequestMapping("/dealRecord")
+    @RequestMapping("/show.htm")
     public String getAccountRecord(HttpServletRequest request) {
 
         UserSessionBO userSession = UserWebInterceptor.getUser(request);
@@ -38,7 +38,8 @@ public class DealRecordController {
         if (!StringUtil.isNotNull(pageNumberStr)) {
             request.setAttribute("code",2);
             request.setAttribute("message","请求参数错误");
-            return "page/myrecord";
+            //todo 页面路径修改
+            return "page/web/myrecord";
         }
 
         int pageNumber = 0;
@@ -48,10 +49,28 @@ public class DealRecordController {
 
         int userId = userSession.getUserId();
         int pageSize = 20;
-        List<TransactionUserDealDO> transactionUserDealList = transactionUserDealService.getTransactionUserDeallist(userId,pageNumber,pageSize);
+        int totalNumber = transactionUserDealService.countUserDealForWeb(userId);
+
+        int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
+        if (totalPageNumber <= 0) {
+            totalPageNumber = 1;
+        }
+
+        if (totalPageNumber <= pageNumber) {
+            pageNumber = totalPageNumber -1;
+        }
+
+        List<TransactionUserDealDO> transactionUserDealList = null;
+        if (totalNumber > 0) {
+            transactionUserDealList = transactionUserDealService.getTransactionUserDeallist(userId,pageNumber,pageSize);
+        }
+
         request.setAttribute("code",1);
         request.setAttribute("message","查询成功");
+        request.setAttribute("pageNumber", pageNumber);
+        request.setAttribute("totalNumber", totalNumber);
+        request.setAttribute("totalPageNumber", totalPageNumber);
         request.setAttribute("dealRecordList",transactionUserDealList);
-        return "page/dealRecord";
+        return "page/web/recordTrade";
     }
 }

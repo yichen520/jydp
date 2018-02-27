@@ -140,5 +140,22 @@ public class TransactionUserDealDaoImpl implements ITransactionUserDealDao{
         return resultList;
     }
 
+    /**
+     * 查询用户成交记录总数
+     * @param userId 用户Id
+     * @return 查询成功：返回记录总数，查询失败：返回0
+     */
+    @Override
+    public int countUserDealForWeb(int userId) {
 
+        int result = 0;
+
+        try {
+            result = sqlSessionTemplate.selectOne("TransactionUserDeal_countUserDealForWeb", userId);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return result;
+    }
 }

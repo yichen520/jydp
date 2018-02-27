@@ -165,4 +165,42 @@ public class SystemNoticeDaoImpl implements ISystemNoticeDao {
             return false;
         }
     }
+
+    /**
+     *  查询系统公告总数（web端）
+     * @return 查询成功:返回记录总数, 查询失败:返回0
+     */
+    public int countSystemNoticeForUser() {
+        int result = 0;
+
+        try {
+            result = sqlSessionTemplate.selectOne("SystemNotice_countSystemNoticeForUser");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return result;
+    }
+
+    /**
+     *  查询系统公告列表（web端）
+     * @param pageNumber 当前页数
+     * @param pageSize 每页大小
+     * @return 查询成功:返回公告列表, 查询失败:返回null
+     */
+    public List<SystemNoticeDO> listSystemNoticeForUser(int pageNumber, int pageSize) {
+        List<SystemNoticeDO> resultList = null;
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("startNumber", pageNumber * pageSize);
+        map.put("pageSize", pageSize);
+
+        try {
+            resultList = sqlSessionTemplate.selectList("SystemNotice_listSystemNoticeForUser", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return resultList;
+    }
 }

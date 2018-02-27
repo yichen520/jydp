@@ -62,4 +62,18 @@ public interface ISystemNoticeDao {
      * @return 删除成功：返回true，删除失败：返回false
      */
     boolean deleteSystemNotice(int id);
+
+    /**
+     *  查询系统公告总数（web端）
+     * @return 查询成功:返回记录总数, 查询失败:返回0
+     */
+    int countSystemNoticeForUser();
+
+    /**
+     *  查询系统公告列表（web端）
+     * @param pageNumber 当前页数
+     * @param pageSize 每页大小
+     * @return 查询成功:返回公告列表, 查询失败:返回null
+     */
+    List<SystemNoticeDO> listSystemNoticeForUser(int pageNumber, int pageSize);
 }
