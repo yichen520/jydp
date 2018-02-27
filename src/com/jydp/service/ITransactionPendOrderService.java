@@ -1,6 +1,7 @@
 package com.jydp.service;
 
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
+import com.jydp.entity.DTO.TransactionPendOrderDTO;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -79,7 +80,7 @@ public interface ITransactionPendOrderService {
      * @param num 需要查询的条数
      * @return 操作成功：返回挂单记录列表，操作失败：返回null
      */
-    List<TransactionPendOrderDO> listLatestRecords(int paymentType, int currencyId, int num);
+    List<TransactionPendOrderDTO> listLatestRecords(int paymentType, int currencyId, int num);
 
     /**
      * 查询挂单记录个数（后台）
