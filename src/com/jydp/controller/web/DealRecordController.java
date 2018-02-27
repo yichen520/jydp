@@ -71,6 +71,6 @@ public class DealRecordController {
         request.setAttribute("totalNumber", totalNumber);
         request.setAttribute("totalPageNumber", totalPageNumber);
         request.setAttribute("dealRecordList",transactionUserDealList);
-        return "page/web/record_trade";
+        return "page/web/recordTrade";
     }
 }
