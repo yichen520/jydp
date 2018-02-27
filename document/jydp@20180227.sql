@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50635
 File Encoding         : 65001
 
-Date: 2018-02-27 16:23:13
+Date: 2018-02-27 16:39:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -302,6 +302,7 @@ CREATE TABLE `user_balance_tab` (
   `userId` int(11) NOT NULL COMMENT '用户Id',
   `fromType` varchar(20) NOT NULL COMMENT '账户来源',
   `currencyId` int(11) NOT NULL COMMENT '币种id，美元id=999',
+  `currencyName` varchar(32) NOT NULL COMMENT '货币名称',
   `balanceNumber` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '交易数量',
   `frozenNumber` decimal(18,8) NOT NULL COMMENT '冻结数量',
   `remark` varchar(200) NOT NULL COMMENT '备注：手续费',

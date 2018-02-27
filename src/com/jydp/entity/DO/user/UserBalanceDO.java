@@ -13,6 +13,7 @@ public class UserBalanceDO {
     private int userId;  //用户Id
     private String fromType;  //账户来源
     private int currencyId;  //币种Id,美元id=999
+    private String currencyName;  //货币名称
     private double balanceNumber;  //交易数量
     private double frozenNumber;  //冻结数量
     private String remark;  //备注：手续费
@@ -145,4 +146,21 @@ public class UserBalanceDO {
     public void setFrozenNumber(double frozenNumber) {
         this.frozenNumber = frozenNumber;
     }
+
+    /**
+     * 货币名称
+     * @return the currencyName
+     */
+    public String getCurrencyName() {
+        return currencyName;
+    }
+
+    /**
+     * 货币名称
+     * @param currencyName the currencyName to set
+     */
+    public void setCurrencyName(String currencyName) {
+        this.currencyName = currencyName;
+    }
+
 }
