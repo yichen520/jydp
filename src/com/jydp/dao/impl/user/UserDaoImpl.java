@@ -185,6 +185,32 @@ public class UserDaoImpl implements IUserDao {
         return user;
     }
 
+
+    /**
+     * 验证用户支付密码
+     * @param userAccount 用户账号
+     * @param payPassword 支付密码（密文）
+     * @return 验证成功：返回true，验证失败：返回false
+     */
+    public boolean validateUserPay(String userAccount, String payPassword){
+        int result = 0;
+        Map<String, Object> map = new HashMap<>();
+        map.put("userAccount", userAccount);
+        map.put("payPassword", payPassword);
+
+        try {
+            result = sqlSessionTemplate.selectOne("User_validateUserPay",map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * 根据用户账号查询用户信息
      * @param userAccount 用户账号

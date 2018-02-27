@@ -3,6 +3,7 @@ package com.jydp.dao.impl.transaction;
 import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.ITransactionMakeOrderDao;
 import com.jydp.entity.DO.transaction.TransactionMakeOrderDO;
+import com.jydp.entity.VO.TransactionMakeOrderVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -112,11 +113,11 @@ public class TransactionMakeOrderDaoImpl implements ITransactionMakeOrderDao{
      * @param pageSize 每页条数
      * @return 操作成功：返回做单记录集合，操作失败：返回null
      */
-    public List<TransactionMakeOrderDO> listTransactionMakeOrderForBack(String currencyName, int executeStatus, int paymentType, String backerAccount,
-                                                                 Timestamp startAddTime, Timestamp endAddTime,
-                                                                 Timestamp startExecuteTime, Timestamp endExecuteTime,
-                                                                 int pageNumber, int pageSize){
-        List<TransactionMakeOrderDO> resultList = new ArrayList<TransactionMakeOrderDO>();
+    public List<TransactionMakeOrderVO> listTransactionMakeOrderForBack(String currencyName, int executeStatus, int paymentType, String backerAccount,
+                                                                        Timestamp startAddTime, Timestamp endAddTime,
+                                                                        Timestamp startExecuteTime, Timestamp endExecuteTime,
+                                                                        int pageNumber, int pageSize){
+        List<TransactionMakeOrderVO> resultList = null;
 
         Map<String, Object> map = new HashMap<>();
         map.put("currencyName", currencyName);
@@ -139,4 +140,75 @@ public class TransactionMakeOrderDaoImpl implements ITransactionMakeOrderDao{
         return resultList;
     }
 
+    /**
+     * 批量新增做单记录
+     * @param transactionMakeOrderList  做单记录集合
+     * @return  操作成功，返回true，操作失败，返回false
+     */
+    public boolean insertTransactionMakeOrderList(List<TransactionMakeOrderDO> transactionMakeOrderList){
+        int result = 0;
+
+        try {
+            result = sqlSessionTemplate.insert("TransactionMakeOrder_insertTransactionMakeOrderList", transactionMakeOrderList);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result == transactionMakeOrderList.size()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 修改记录执行状态
+     * @param orderNo  记录号
+     * @param executeStatus  执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败,5:已撤回
+     * @return  操作成功，返回true，操作失败，返回false
+     */
+    public boolean updateOrderExecuteStatusByOrderNo(String orderNo, int executeStatus){
+        int result = 0;
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("orderNo", orderNo);
+        map.put("executeStatus", executeStatus);
+
+        try {
+            result = sqlSessionTemplate.update("TransactionMakeOrder_updateOrderExecuteStatusByOrderNo", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 批量修改记录号状态
+     * @param orderNoList  记录号集合
+     * @param executeStatus  执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败,5:已撤回
+     * @return  操作成功：true，操作失败：返回false
+     */
+    public boolean updateMakeOrderExecuteStatusByOrderNoList(List<String> orderNoList, int executeStatus){
+        int result = 0;
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("orderNoList", orderNoList);
+        map.put("executeStatus", executeStatus);
+        try {
+            result = sqlSessionTemplate.update("TransactionMakeOrder_updateMakeOrderExecuteStatusByOrderNoList", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (orderNoList.size() == result) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

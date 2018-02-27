@@ -61,6 +61,14 @@
 		 	  AND accountStatus <![CDATA[ > ]]> 0
 	</select>
 
+	<select id="User_validateUserPay" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(userId)
+		FROM user_tab
+		WHERE userAccount = #{userAccount}
+		AND password = #{payPassword}
+		AND accountStatus <![CDATA[ > ]]> 0
+	</select>
+
 	<select id="User_getUserByUserAccount" parameterType="String" resultType="UserDO">
 		SELECT userId, userAccount, phoneAreaCode, phoneNumber, userBalance,
 			userBalanceLock, accountStatus, addTime
