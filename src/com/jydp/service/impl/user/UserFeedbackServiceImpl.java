@@ -1,5 +1,6 @@
 package com.jydp.service.impl.user;
 
+import com.iqmkj.utils.DateUtil;
 import com.jydp.dao.IUserFeedbackDao;
 import com.jydp.entity.DO.user.UserFeedbackDO;
 import com.jydp.service.IUserFeedbackService;
@@ -63,5 +64,43 @@ public class UserFeedbackServiceImpl implements IUserFeedbackService {
     public boolean updateUserFeedbackById(long id, int handleStatus, String handleContent,
                                    String backerAccount, Timestamp handleTime){
         return userFeedbackDao.updateUserFeedbackById(id, handleStatus, handleContent, backerAccount, handleTime);
+    }
+
+    /**
+     * 查询意见反馈总数 (web端)
+     * @return 查询成功:返回意见反馈总数, 查询失败:返回0
+     */
+    public int countUserFeedbackForUser() {
+        return userFeedbackDao.countUserFeedbackForUser();
+    }
+
+    /**
+     * 分页查询意见反馈 (web端)
+     * @param pageNumber 当前页数
+     * @param pageSize 每页大小
+     * @return 查询成功:返回当前页的意见反馈列表, 查询失败:返回null
+     */
+    public List<UserFeedbackDO> listUserFeedbackForUser(int pageNumber, int pageSize) {
+        return userFeedbackDao.listUserFeedbackForUser(pageNumber, pageSize);
+    }
+
+    /**
+     * 新增意见反馈
+     * @param userId 用户Id
+     * @param userAccount 用户帐号
+     * @param feedbackTitle 反馈标题
+     * @param feedbackContent 反馈内容
+     * @return 操作成功:返回true, 操作失败:返回false
+     */
+    public boolean insertUserFeedback(int userId, String userAccount, String feedbackTitle, String feedbackContent) {
+        UserFeedbackDO userFeedbackDO = new UserFeedbackDO();
+        userFeedbackDO.setUserId(userId);
+        userFeedbackDO.setUserAccount(userAccount);
+        userFeedbackDO.setFeedbackTitle(feedbackTitle);
+        userFeedbackDO.setFeedbackContent(feedbackContent);
+        userFeedbackDO.setAddTime(DateUtil.getCurrentTime());
+        userFeedbackDO.setHandleStatus(1);
+
+        return userFeedbackDao.insertUserFeedback(userFeedbackDO);
     }
 }

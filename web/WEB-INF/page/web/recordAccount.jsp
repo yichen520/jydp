@@ -1,13 +1,18 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@include file="/resources/page/common/path.jsp"%>
+<script type="text/javascript" src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="<%=path %>/resources/js/loadPageWeb.js"></script>
+<script type="text/javascript" src="<%=path %>/resources/js/simpleTips.js"></script>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="images/icon.ico" type="image/x-ico" />
-
-    <link rel="stylesheet" type="text/css" href="css/record_account.css" />
-    <link rel="stylesheet" type="text/css" href="css/public.css" />
-    <link rel="stylesheet" type="text/css" href="css/simpleTips.css" />
-
+    <link rel="icon" href="<%=path %>/resources/image/web/icon.ico" type="image/x-ico" />
+    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/record_account.css" />
+    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/public.css" />
+    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/simpleTips.css" />
     <title>账户记录</title>
 </head>
 <body>
@@ -31,8 +36,10 @@
                     <td class="amount">冻结资产</td>
                     <td class="mark">备注</td>
                 </tr>
+
+                <c:forEach items="${accountRecordList}" var="accountRecord">
                 <tr class="tableInfo">
-                    <td class="time">2016-06-06&nbsp;06:06:06</td>
+                    <td class="time"><fmt:formatDate type="time" value="${accountRecord.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                     <td class="coin">盛源链</td>
                     <td class="source">挂单卖出</td>
                     <td class="amount pay">-10.0000</td>
@@ -55,33 +62,14 @@
                     <td class="amount"></td>
                     <td class="mark">备注备注备注备注备注备注备注</td>
                 </tr>
+                </c:forEach>
             </table>
 
-            <div class="changePage">
-                <p class="total">共21条</p>
-                <p class="jump">
-                    <input type="text" />
-                    <input type="text" value="跳&nbsp;转" class="jumpButton" onfocus="this.blur()" />
-                </p>
-                <p class="page">
-                    <input type="text" class="first" value="首页" onfocus="this.blur()" />
-                    <input type="text" class="upPage" value="<上一页" onfocus="this.blur()" />
-                    <span class="pageNumber"><span>1</span>/<span>3</span></span>
-                    <input type="text" class="downPage" value="下一页>" onfocus="this.blur()" />
-                    <input type="text" class="end" value="尾页" onfocus="this.blur()" />
-                </p>
-            </div>
+            <jsp:include page="/resources/page/common/paging.jsp"></jsp:include>
         </div>
     </div>
 </div>
-
-
 <div id="helpFooter"></div>
 <div id="footer"></div>
-
-<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
-<script type="text/javascript" src="js/public.js"></script>
-<script type="text/javascript" src="js/simpleTips.js"></script>
-
 </body>
 </html>

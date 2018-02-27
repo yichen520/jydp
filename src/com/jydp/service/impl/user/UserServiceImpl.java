@@ -9,6 +9,7 @@ import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.user.UserBalanceDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
+import com.jydp.entity.DTO.UserDTO;
 import com.jydp.service.IBackerHandleUserRecordBalanceService;
 import com.jydp.service.ITransactionCurrencyService;
 import com.jydp.service.IUserBalanceService;
@@ -121,7 +122,7 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public boolean forgetPwd(String userAccount, String password) {
-        UserDO user = new UserDO();
+        UserDTO user = new UserDTO();
         user.setUserAccount(userAccount);
         user.setPassword(password);
         return userDao.updateUser(user);

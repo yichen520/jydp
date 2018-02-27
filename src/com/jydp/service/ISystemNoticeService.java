@@ -69,4 +69,18 @@ public interface ISystemNoticeService {
      * @return 成功返回：公告列表，失败或无数据返回：null
      */
     List<SystemNoticeDO> getNoticeForBack(String noticeType, String noticeTitle, int pageNumber, int pageSize);
+
+    /**
+     *  查询系统公告总数（web端）
+     * @return 查询成功:返回记录总数, 查询失败:返回0
+     */
+    int countSystemNoticeForUser();
+
+    /**
+     *  查询系统公告列表（web端）
+     * @param pageNumber 当前页数
+     * @param pageSize 每页大小
+     * @return 查询成功:返回公告列表, 查询失败:返回null
+     */
+    List<SystemNoticeDO> listSystemNoticeForUser(int pageNumber, int pageSize);
 }

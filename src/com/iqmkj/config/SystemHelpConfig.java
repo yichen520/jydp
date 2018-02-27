@@ -16,6 +16,10 @@ public class SystemHelpConfig {
 			put(101011, "常见问题");
 			put(101012, "关于我们");
 			put(101013, "联系我们");
+			put(101014, "公司简介");
+			put(101015, "充值流程");
+			put(101016, "注册指南");
+			put(101017, "交易指南");
 
 		}
 	};
@@ -31,5 +35,17 @@ public class SystemHelpConfig {
 	
 	/** 联系我们 */
 	public static final int CONTACT_US = 101013;
+
+	/** 公司简介 */
+	public static final int COMPANY_SYNOPSIS = 101014;
+
+	/** 充值流程 */
+	public static final int RECHARGE_PROCESS = 101015;
+
+	/** 注册指南 */
+	public static final int REGISTRATION_GUIDE = 101016;
+
+	/** 交易指南 */
+	public static final int TRADING_GUIDE = 101017;
 
 }
