@@ -79,12 +79,12 @@ public class WebCustomerServiceController {
     JsonObjectBO feedback(HttpServletRequest request){
         JsonObjectBO responseJson = new JsonObjectBO();
 
-//        UserSessionBO userBo = UserWebInterceptor.getUser(request);
-//        if (userBo == null) {
-//            responseJson.setCode(4);
-//            responseJson.setMessage("未登录！");
-//            return responseJson;
-//        }
+        UserSessionBO userBo = UserWebInterceptor.getUser(request);
+        if (userBo == null) {
+            responseJson.setCode(4);
+            responseJson.setMessage("未登录！");
+            return responseJson;
+        }
 
         boolean handleFrequent = UserWebInterceptor.handleFrequent(request);
         if (handleFrequent) {
@@ -107,7 +107,7 @@ public class WebCustomerServiceController {
             return responseJson;
         }
 
-        boolean userFeedbackBoo = userFeedbackService.insertUserFeedback(10000, "sfdgsfdg", feedbackTitle, feedbackContent);
+        boolean userFeedbackBoo = userFeedbackService.insertUserFeedback(userBo.getUserId(), userBo.getUserAccount(), feedbackTitle, feedbackContent);
         if (userFeedbackBoo) {
             responseJson.setCode(1);
             responseJson.setMessage("提交成功！");
