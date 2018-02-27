@@ -19,11 +19,18 @@
 		WHERE id = #{id}
 	</select>
 
-	<select id="UserIdentification_getUserIdentificationByUserCertNo" parameterType="String" resultType="UserIdentificationDO">
-		SELECT id, userId, userAccount, userName, userPhone, userCertNo,
-			identificationStatus, remark, identiTime, addTime
+	<select id="UserIdentification_validateIdentification" parameterType="String" resultType="int">
+		SELECT COUNT(id)
 		FROM user_identification_tab
 		WHERE userCertNo = #{userCertNo}
+		  AND identificationStatus = 2
+	</select>
+
+	<select id="UserIdentification_getUserIdentificationByUserAccountLately" parameterType="String" resultType="UserIdentificationDO">
+		SELECT id, userId, userAccount, userName, userPhone, userCertNo, identificationStatus, remark, identiTime, addTime
+		FROM user_identification_tab
+		WHERE userAccount = #{userAccount}
+		ORDER BY addTime DESC
 	</select>
 
 	<select id="UserIdentification_countUserIdentificationForBacker" parameterType="java.util.Map" resultType="int">

@@ -47,8 +47,8 @@
 
         <ul class="levelTwo">
             <li class="menuInfo"><a href="#">账户记录</a></li>
-            <li class="menuInfo"><a href="#">委托记录</a></li>
-            <li class="menuInfo"><a href="#">成交记录</a></li>
+            <li class="menuInfo"><a href="<%=path%>/userWeb/transactionPendOrderController/show.htm">委托记录</a></li>
+            <li class="menuInfo"><a href="<%=path %>/userWeb/dealRecord/show.htm">成交记录</a></li>
             <li class="menuInfo"><a href="#">充值记录</a></li>
             <li class="menuInfo"><a href="#">提现记录</a></li>
         </ul>

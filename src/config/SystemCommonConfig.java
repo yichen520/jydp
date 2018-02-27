@@ -15,8 +15,6 @@ public class SystemCommonConfig {
 
 	/** 用户账户记录 -业务类型（2）+日期（6）+随机位（10） */
 	public static final String USER_BALANCE = "20";
-	/** 用户货币记录 -业务类型（2）+日期（6）+随机位（10） */
-	public static final String USER_CURRENCY = "21";
 
 	/** 挂单记录 -业务类型（2）+日期（6）+随机位（10） */
 	public static final String TRANSACTION_PEND_ORDER = "30";
