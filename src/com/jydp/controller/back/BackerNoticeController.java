@@ -125,7 +125,8 @@ public class BackerNoticeController {
         String noticeType = StringUtil.stringNullHandle(request.getParameter("noticeType"));
         String noticeTitle = StringUtil.stringNullHandle(request.getParameter("noticeTitle"));
         String content = StringUtil.stringNullHandle(request.getParameter("content"));
-        if (!StringUtil.isNotNull(noticeType) || !StringUtil.isNotNull(noticeTitle) || !StringUtil.isNotNull(content) || noticeUrl == null) {
+        if (!StringUtil.isNotNull(noticeType) || !StringUtil.isNotNull(noticeTitle)
+                || !StringUtil.isNotNull(content) || noticeUrl == null || noticeUrl.isEmpty()) {
             response.put("code", 3);
             response.put("message", "参数错误！");
             return response;

@@ -26,6 +26,18 @@
  		  AND accountStatus = #{oldAccountStatus}
  	</update>
 
+    <update id="User_forgetPayPwd" parameterType="java.util.Map">
+        UPDATE user_tab
+        SET payPassword = #{payPassword}
+        WHERE userId = #{userId}
+    </update>
+
+    <update id="User_updatePhone" parameterType="java.util.Map">
+        UPDATE user_tab
+        SET areaCode = #{areaCode},phoneNumber = #{phone}
+        WHERE userId = #{userId}
+    </update>
+
 	<update id="User_updateUser" parameterType="UserDO">
 		UPDATE user_tab
 		<set>

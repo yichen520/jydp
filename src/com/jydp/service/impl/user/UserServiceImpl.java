@@ -129,30 +129,24 @@ public class UserServiceImpl implements IUserService {
 
     /**
      * 忘记支付密码
-     * @param userAccount 用户账户
-     * @param password 新密码（密文）
+     * @param userId 用户id
+     * @param payPassword 新密码（密文）
      * @return  修改成功：返回true，修改失败：返回false
      */
-    public boolean forgetPayPwd(String userAccount, String password){
-        UserDO user = new UserDO();
-        user.setUserAccount(userAccount);
-        user.setPayPassword(password);
-        return userDao.updateUser(user);
+    public boolean forgetPayPwd(int userId, String payPassword){
+
+        return userDao.forgetPayPwd(userId, payPassword);
     }
 
     /**
      * 修改绑定手机号
-     * @param userAccount 用户账户
+     * @param userId 用户id
      * @param areaCode  手机区号
      * @param phone  手机号
      * @return  修改成功：返回true，修改失败：返回false
      */
-    public boolean updatePhone(String userAccount, String areaCode, String phone){
-        UserDO user = new UserDO();
-        user.setUserAccount(userAccount);
-        user.setPhoneAreaCode(areaCode);
-        user.setPhoneNumber(phone);
-        return userDao.updateUser(user);
+    public boolean updatePhone(int userId, String areaCode, String phone){
+        return userDao.updatePhone(userId, areaCode, phone);
     }
 
     /**
