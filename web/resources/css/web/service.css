@@ -56,15 +56,15 @@
     color: #ffffff;
 }
 .finish{
-    background-image: url("../images/finish.png");
+    background-image: url("../../image/web/finish.png");
     background-repeat: no-repeat;
 }
 .wait{
-    background-image: url("../images/wait.png");
+    background-image: url("../../image/web/wait.png");
     background-repeat: no-repeat;
 }
 .handle{
-    background-image: url("../images/handle.png");
+    background-image: url("../../image/web/handle.png");
     background-repeat: no-repeat;
 }
 .info{
