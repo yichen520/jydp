@@ -124,4 +124,14 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
     public List<TransactionUserDealDO> listTransactionUserDealByPendNo(String pendNo, int pageNumber, int pageSize){
         return transactionUserDealDao.listTransactionUserDealByPendNo(pendNo, pageNumber, pageSize);
     }
+
+    /**
+     * 查询用户成交记录总数
+     * @param userId 用户Id
+     * @return 查询成功：返回记录总数，查询失败：返回0
+     */
+    @Override
+    public int countUserDealForWeb(int userId) {
+        return transactionUserDealDao.countUserDealForWeb(userId);
+    }
 }
