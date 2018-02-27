@@ -17,7 +17,7 @@ import java.util.List;
  * @author yk
  */
 @Controller
-@RequestMapping("/userWeb/myrecord")
+@RequestMapping("/userWeb/dealRecord")
 @Scope(value = "prototype")
 public class DealRecordController {
 
