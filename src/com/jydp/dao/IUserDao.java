@@ -1,6 +1,7 @@
 package com.jydp.dao;
 
 import com.jydp.entity.DO.user.UserDO;
+import com.jydp.entity.DTO.UserDTO;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -64,8 +65,25 @@ public interface IUserDao {
      * 修改用户信息
      * @param user 用户信息
      * @return 修改成功：返回true，修改失败：返回false
+    */
+    boolean updateUser (UserDTO user);
+
+    /**
+     * 忘记支付密码
+     * @param userId 用户id
+     * @param password 新密码（密文）
+     * @return  修改成功：返回true，修改失败：返回false
      */
-    boolean updateUser (UserDO user);
+    boolean forgetPayPwd(int userId, String password);
+
+    /**
+     * 修改绑定手机号
+     * @param userId 用户id
+     * @param areaCode  手机区号
+     * @param phone  手机号
+     * @return  修改成功：返回true，修改失败：返回false
+     */
+    boolean updatePhone(int userId, String areaCode, String phone);
 
     /**
      * 验证用户登录

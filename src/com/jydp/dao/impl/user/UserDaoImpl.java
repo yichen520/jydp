@@ -3,6 +3,7 @@ package com.jydp.dao.impl.user;
 import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.IUserDao;
 import com.jydp.entity.DO.user.UserDO;
+import com.jydp.entity.DTO.UserDTO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -148,7 +149,7 @@ public class UserDaoImpl implements IUserDao {
      * @return 修改成功：返回true，修改失败：返回false
      */
     @Override
-    public boolean updateUser(UserDO user) {
+    public boolean updateUser(UserDTO user) {
         int result = 0;
 
         try {
@@ -163,6 +164,59 @@ public class UserDaoImpl implements IUserDao {
             return false;
         }
     }
+
+    /**
+     * 忘记支付密码
+     * @param userId 用户id
+     * @param payPassword 新密码（密文）
+     * @return  修改成功：返回true，修改失败：返回false
+     */
+    public boolean forgetPayPwd(int userId, String payPassword){
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("payPassword", payPassword);
+
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.update("User_forgetPayPwd", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 修改绑定手机号
+     * @param userId 用户id
+     * @param areaCode  手机区号
+     * @param phone  手机号
+     * @return  修改成功：返回true，修改失败：返回false
+     */
+    public boolean updatePhone(int userId, String areaCode, String phone){
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("areaCode", areaCode);
+        map.put("phone", phone);
+
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.update("User_updatePhone", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     /**
      * 验证用户登录
