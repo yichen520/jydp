@@ -35,20 +35,43 @@ public class DealRecordController {
         }
 
         String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
-        if (!StringUtil.isNotNull(pageNumberStr)) {
-            request.setAttribute("code",2);
-            request.setAttribute("message","请求参数错误");
-            //todo 页面路径修改
-            return "page/web/myrecord";
-        }
+        String pendingOrderNo = StringUtil.stringNullHandle(request.getParameter("pendingOrderNo"));
 
         int pageNumber = 0;
         if (StringUtil.isNotNull(pageNumberStr)) {
             pageNumber = Integer.parseInt(pageNumberStr);
         }
 
-        int userId = userSession.getUserId();
         int pageSize = 20;
+
+        if (StringUtil.isNotNull(pendingOrderNo)) {
+            int totalNumber = transactionUserDealService.countTransactionUserDealByPendNo(pendingOrderNo);
+
+            int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
+            if (totalPageNumber <= 0) {
+                totalPageNumber = 1;
+            }
+            if (totalPageNumber < pageNumber) {
+                pageNumber = totalPageNumber;
+            }
+
+            List<TransactionUserDealDO> dealRecordList = null;
+            if (totalNumber > 0) {
+                dealRecordList = transactionUserDealService.listTransactionUserDealByPendNo(pendingOrderNo, pageNumber, pageSize);
+            }
+
+            request.setAttribute("pageNumber", pageNumber);
+            request.setAttribute("totalNumber", totalNumber);
+            request.setAttribute("totalPageNumber", totalPageNumber);
+            request.setAttribute("pendingOrderNo", pendingOrderNo);
+            request.setAttribute("dealRecordList", dealRecordList);
+
+            request.setAttribute("code", 1);
+            request.setAttribute("message", "查询成功");
+            return "page/web/recordTrade";
+        }
+
+        int userId = userSession.getUserId();
         int totalNumber = transactionUserDealService.countUserDealForWeb(userId);
 
         int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);

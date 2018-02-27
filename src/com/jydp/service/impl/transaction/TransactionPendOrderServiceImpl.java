@@ -38,10 +38,6 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
     @Autowired
     private IUserBalanceService userBalanceService;
 
-    /** 用户货币记录 */
-    @Autowired
-    private IUserCurrencyService userCurrencyService;
-
     /** 用户币数量 */
     @Autowired
     private IUserCurrencyNumService userCurrencyNumService;
@@ -244,9 +240,11 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
                 UserBalanceDO userBalance = new UserBalanceDO();
                 userBalance.setOrderNo(orderNo);
                 userBalance.setUserId(userId);
-                userBalance.setPaymentType(1);
+                userBalance.setCurrencyId(999);
+                userBalance.setCurrencyName("美金");
                 userBalance.setFromType("撤销挂单返还冻结美金");
                 userBalance.setBalanceNumber(balanceRevoke);
+                userBalance.setFrozenNumber(-balanceRevoke);
                 userBalance.setRemark("返还冻结的手续费");
                 userBalance.setAddTime(curTime);
 
@@ -272,12 +270,22 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
             //增加币记录
             if(excuteSuccess){
                 Timestamp curTime = DateUtil.getCurrentTime();
-                String orderNo = SystemCommonConfig.USER_CURRENCY +
+                String orderNo = SystemCommonConfig.USER_BALANCE +
                         DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
                         NumberUtil.createNumberStr(10);
 
-                excuteSuccess = userCurrencyService.insertUserCurrency(orderNo, currencyId,
-                        1, "撤销挂单返还币", num, currencyId, "无手续费", curTime);
+                UserBalanceDO userBalance = new UserBalanceDO();
+                userBalance.setOrderNo(orderNo);
+                userBalance.setUserId(userId);
+                userBalance.setCurrencyId(currencyId);
+                userBalance.setCurrencyName(transactionPendOrder.getCurrencyName());
+                userBalance.setFromType("撤销挂单返还冻结币");
+                userBalance.setBalanceNumber(num);
+                userBalance.setFrozenNumber(-num);
+                userBalance.setRemark("无手续费");
+                userBalance.setAddTime(curTime);
+
+                excuteSuccess = userBalanceService.insertUserBalance(userBalance);
             }
         }
 

@@ -27,7 +27,6 @@
 
     <div class="contentRight">
         <div class="title">成交记录</div>
-        <input type="hidden" id="queryPageNumber" name="pageNumber" value="${pageNumber}">
         <div class="main">
             <table class="table" cellpadding="0" cellspacing="0">
                 <tr class="tableTitle">
@@ -59,6 +58,11 @@
             </table>
 
             <jsp:include page="/resources/page/common/paging.jsp"></jsp:include>
+
+            <form id="queryForm" action="<%=path %>/userWeb/dealRecord/show.htm" method="post">
+                <input type="hidden" id="queryPageNumber" name="pageNumber">
+                <input type="hidden" id="pendingOrderNo" name="pendingOrderNo" value="${pendingOrderNo}">
+            </form>
         </div>
     </div>
 </div>
