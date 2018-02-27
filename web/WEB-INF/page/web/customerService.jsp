@@ -35,10 +35,10 @@
                     <div class="service">
                         <p class="serviceTitle">${item.feedbackTitle}</p>
                         <c:if test="${item.handleStatus == 1}">
-                            <p class="state finish">待处理</p>
+                            <p class="state wait">待处理</p>
                         </c:if>
                         <c:if test="${item.handleStatus == 2}">
-                            <p class="state finish">处理中</p>
+                            <p class="state handle">处理中</p>
                         </c:if>
                         <c:if test="${item.handleStatus == 3}">
                             <p class="state finish">已处理</p>
