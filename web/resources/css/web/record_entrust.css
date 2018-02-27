@@ -1,0 +1,44 @@
+.time{
+    width: 140px;
+}
+.coin{
+    width: 70px;
+}
+.type{
+    width: 50px;
+}
+.pay{
+    color: #4dac7b;
+}
+.in{
+    color: #e83a33;
+}
+.amount{
+    width: 115px;
+}
+.state{
+    width: 70px;
+}
+.operate{
+    width: 120px;
+}
+.revoke{
+    width: 55px;
+    text-align: center;
+    font-size: 13px;
+    color: #e83a33;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+}
+.revoke:hover{
+    color: #d0342e;
+}
+.details{
+    color: #68adfa;
+    font-size: 13px;
+    cursor: pointer;
+}
+.details:hover{
+    color: #52a1f9;
+}

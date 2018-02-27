@@ -1,0 +1,12 @@
+.content{
+    margin-top: 20px !important;
+    padding: 15px;
+    width: 1170px;
+    background-color: #ffffff;
+}
+.content img{
+    max-width: 100%;
+}
+.content p,span{
+    word-break: break-all;
+}
