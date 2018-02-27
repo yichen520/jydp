@@ -49,9 +49,9 @@ public class TransactionPendOrderCommonServiceImpl implements ITransactionPendOr
                     transactionPendOrderService.listLatestRecords(1,transactionCurrency.getCurrencyId(),15);
 
             //设置买入挂单记录key
-            String buyKey = RedisKeyConfig.BUYKEY + transactionCurrency.getCurrencyId();
+            String buyKey = RedisKeyConfig.BUY_KEY + transactionCurrency.getCurrencyId();
             //设置买一价key
-            String buyOneKey = RedisKeyConfig.BUYONEKEY + transactionCurrency.getCurrencyId();
+            String buyOneKey = RedisKeyConfig.BUY_ONE_KEY + transactionCurrency.getCurrencyId();
 
             List<Object> setBuyList = new ArrayList<>();
             if(transactionPendOrderBuyList.size() > 0){
@@ -77,9 +77,9 @@ public class TransactionPendOrderCommonServiceImpl implements ITransactionPendOr
                     transactionPendOrderService.listLatestRecords(2,transactionCurrency.getCurrencyId(),15);
 
             //设置卖出挂单记录key
-            String sellKey = RedisKeyConfig.SELLKEY + transactionCurrency.getCurrencyId();
+            String sellKey = RedisKeyConfig.SELL_KEY + transactionCurrency.getCurrencyId();
             //设置卖一价key
-            String sellOneKey = RedisKeyConfig.SELLONEKEY + transactionCurrency.getCurrencyId();
+            String sellOneKey = RedisKeyConfig.SELL_ONE_KEY + transactionCurrency.getCurrencyId();
 
             List<Object> setSellList = new ArrayList<>();
             if(transactionPendOrderSellList.size() > 0){
