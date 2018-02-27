@@ -70,4 +70,11 @@ public interface ITransactionUserDealService {
     List<TransactionUserDealDO> listTransactionUserDealForBack(String userAccount, int paymentType, String currencyName,
                                                                Timestamp startAddTime, Timestamp endAddTime, Timestamp startPendTime, Timestamp endPendTime,
                                                                int pageNumber, int pageSize);
+
+    /**
+     * 查询用户成交记录总数
+     * @param userId 用户Id
+     * @return 查询成功：返回记录总数，查询失败：返回0
+     */
+    int countUserDealForWeb(int userId);
 }

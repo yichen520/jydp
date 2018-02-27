@@ -104,4 +104,14 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
         return transactionUserDealDao.listTransactionUserDealForBack(userAccount, paymentType, currencyName, startAddTime, endAddTime, startPendTime, endPendTime, pageNumber, pageSize);
     }
 
+    /**
+     * 查询用户成交记录总数
+     * @param userId 用户Id
+     * @return 查询成功：返回记录总数，查询失败：返回0
+     */
+    @Override
+    public int countUserDealForWeb(int userId) {
+        return transactionUserDealDao.countUserDealForWeb(userId);
+    }
+
 }

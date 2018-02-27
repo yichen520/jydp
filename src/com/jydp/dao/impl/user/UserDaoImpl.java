@@ -3,6 +3,7 @@ package com.jydp.dao.impl.user;
 import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.IUserDao;
 import com.jydp.entity.DO.user.UserDO;
+import com.jydp.entity.DTO.UserDTO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -148,7 +149,7 @@ public class UserDaoImpl implements IUserDao {
      * @return 修改成功：返回true，修改失败：返回false
      */
     @Override
-    public boolean updateUser(UserDO user) {
+    public boolean updateUser(UserDTO user) {
         int result = 0;
 
         try {

@@ -72,20 +72,20 @@ public interface IUserService {
 
     /**
      * 忘记支付密码
-     * @param userAccount 用户账户
-     * @param password 新密码（密文）
+     * @param userId 用户id
+     * @param payPassword 新密码（密文）
      * @return  修改成功：返回true，修改失败：返回false
      */
-    boolean forgetPayPwd(String userAccount, String password);
+    boolean forgetPayPwd(int userId, String payPassword);
 
     /**
      * 修改绑定手机号
-     * @param userAccount 用户账户
+     * @param userId 用户id
      * @param areaCode  手机区号
      * @param phone  手机号
      * @return  修改成功：返回true，修改失败：返回false
      */
-    boolean updatePhone(String userAccount, String areaCode, String phone);
+    boolean updatePhone(int userId, String areaCode, String phone);
 
     /**
      * 验证用户登录
@@ -94,6 +94,14 @@ public interface IUserService {
      * @return 验证成功：返回用户信息，验证失败：返回null
      */
     UserDO validateUserLogin(String userAccount, String password);
+
+    /**
+     * 验证用户支付密码
+     * @param userAccount 用户账号
+     * @param payPassword 支付密码（密文）
+     * @return 验证成功：返回true，验证失败：返回false
+     */
+    boolean validateUserPay(String userAccount, String payPassword);
 
     /**
      * 根据用户账号查询用户信息

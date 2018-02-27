@@ -1,6 +1,7 @@
 package com.jydp.dao;
 
 import com.jydp.entity.DO.user.UserDO;
+import com.jydp.entity.DTO.UserDTO;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -64,8 +65,8 @@ public interface IUserDao {
      * 修改用户信息
      * @param user 用户信息
      * @return 修改成功：返回true，修改失败：返回false
-     */
-    boolean updateUser (UserDO user);
+    */
+    boolean updateUser (UserDTO user);
 
     /**
      * 验证用户登录
@@ -74,6 +75,14 @@ public interface IUserDao {
      * @return 验证成功：返回用户信息，验证失败：返回null
      */
     UserDO validateUserLogin(String userAccount, String password);
+
+    /**
+     * 验证用户支付密码
+     * @param userAccount 用户账号
+     * @param payPassword 支付密码（密文）
+     * @return 验证成功：返回true，验证失败：返回false
+     */
+    boolean validateUserPay(String userAccount, String payPassword);
 
     /**
      * 根据用户账号查询用户信息
