@@ -32,7 +32,8 @@
             <form id="queryForm" action="<%=path %>/backerWeb/backerTransactionPendOrder/show.htm" method="post">
                 <div class="askArea">
                     <p class="condition">用户账号：
-                        <input type="text" class="askInput" id="userAccount" name="userAccount" value="${userAccount}" />
+                        <input type="text" class="askInput" id="userAccount" name="userAccount" value="${userAccount}"
+                               maxlength="16" onkeyup="matchUtil(this, 'ENumber')" onblur="matchUtil(this, 'ENumber')"/>
                     </p>
                     <p class="condition">币种：
                         <select class="askSelect" id="currencyId" name="currencyId">
@@ -228,6 +229,28 @@
                 alert("导出失败,请重新刷新页面后重试");
             }
         });
+    }
+
+    var mapMatch = {};
+    mapMatch['ENumber'] = /[^\a-\z\A-\Z\d]/g;
+    mapMatch['number'] = /[^\d]/g;
+    mapMatch['double'] = true;
+    function matchUtil(o, str) {
+        mapMatch[str] === true ? matchDouble(o, 2) : o.value = o.value.replace(mapMatch[str], '');
+    }
+    function matchDouble(o, num){
+        var matchStr = /^-?\d+\.?\d{0,num}$/;
+        if(!matchStr.test(o.value)){
+            if(isNaN(o.value)){
+                o.value = '';
+            }else{
+                var n = o.value.indexOf('.');
+                var m = n + num + 1;
+                if(n > -1 && o.value.length > m){
+                    o.value = o.value.substring(0, m);
+                }
+            }
+        }
     }
 </script>
 
