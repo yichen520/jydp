@@ -71,10 +71,10 @@
                         </c:if>
                         <td class="operate">
                             <c:if test="${item.pendingStatus < 3}">
-                                <input type="text" value="撤销委托" class="revoke" onfocus="this.blur()" />&nbsp;
+                                <input type="text" value="撤销委托" class="revoke" onfocus="this.blur()" onclick="goCancle('${item.pendingOrderNo}')"/>&nbsp;
                             </c:if>
                             <c:if test="${item.pendingStatus == 1}">
-                                <a href="#" class="details">查看详情</a>
+                                <a href="<%=path %>/userWeb/dealRecord/show.htm?pendingOrderNo=${item.pendingOrderNo}" class="details" >查看详情</a>
                             </c:if>
                         </td>
                     </tr>
@@ -82,6 +82,10 @@
             </table>
 
             <jsp:include page="/resources/page/common/paging.jsp"></jsp:include>
+
+            <form id="queryForm" action="<%=path %>/userWeb/webCustomerService/show" method="post">
+                <input type="hidden" id="queryPageNumber" name="pageNumber">
+            </form>
         </div>
     </div>
 </div>
@@ -95,11 +99,12 @@
     <div class="mask_content">
         <div class="revoke_pop">
             <p class="popTitle">撤销委托</p>
-            <p class="popTips"><img src="images/tips.png" class="tipsImg" />确定撤销该委托内容？</p>
+            <p class="popTips"><img src="<%=path %>/resources/image/web/tips.png" class="tipsImg" />确定撤销该委托内容？</p>
 
+            <input type="hidden" id="cancleOrderNo" name="cancleOrderNo">
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="openTip()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="cancleOrder()" />
             </div>
         </div>
     </div>
@@ -113,9 +118,7 @@
     var popObj;
     $(function(){
         $(".revoke").click(function(){
-            $(".mask").fadeIn();
-            $(".revoke_pop").fadeIn();
-            popObj = ".revoke_pop"
+
         });
         $(".cancel").click(function(){
             $(".mask").fadeOut("fast");
@@ -128,6 +131,65 @@
     });
 
 </script>
+<script type="text/javascript">
+    window.onload = function() {
+        var code = ${code};
+        var message = '${message}';
+        if (code != 1 && message != "") {
+            openTips(message);
+            return;
+        }
+    }
 
+    //查看详情
+    function goCancle(pendOrderNo) {
+        document.getElementById("cancleOrderNo").value = pendOrderNo;
+
+        $(".mask").fadeIn();
+        $(".revoke_pop").fadeIn();
+        popObj = ".revoke_pop"
+    }
+
+    //撤回
+    var calMoreBoo = false;
+    function cancleOrder() {
+        if (calMoreBoo) {
+            return;
+        } else {
+            calMoreBoo = true;
+        }
+
+        var cancleOrderNo = $("#cancleOrderNo").val();
+        if (cancleOrderNo == "" || cancleOrderNo == null) {
+            calMoreBoo =false;
+            openTips("单号错误");
+            return;
+        }
+
+        $.ajax({
+            url: '<%=path %>' + "/userWeb/transactionPendOrderController/revoke.htm",
+            data: {
+                pendingOrderNo : cancleOrderNo
+            },//参数
+            dataType: "json",
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (resultData) {
+                var code = resultData.code;
+                var message = resultData.message;
+                if (code != 1 && message != "") {
+                    calMoreBoo = false;
+                    openTips(message);
+                    return;
+                }
+                window.onload();
+            },
+
+            error: function () {
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+    }
+</script>
 </body>
 </html>

@@ -91,7 +91,7 @@
                                       onClick="laydate({istime: true,format: 'YYYY-MM-DD hh:mm:ss'})" />
                     </p>
 
-                    <input type="hidden" id="pageNumber" name="pageNumber" value="${pageNumber}">
+                    <input type="hidden" id="queryPageNumber" name="pageNumber" value="${pageNumber}">
                     <input type="text" value="查&nbsp;询" class="ask" onfocus="this.blur()" onclick="queryForm()"/>
                 </div>
             </form>
@@ -366,6 +366,15 @@
 
 </script>
 <script type="text/javascript">
+    window.onload = function() {
+        var code = '${code}';
+        var message = '${message}';
+        if (code != 1 && message != "") {
+            openTips(message);
+            return ;
+        }
+    }
+
     //查询
     function queryForm() {
         $("#queryPageNumber").val("0");
