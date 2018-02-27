@@ -1,6 +1,7 @@
 package com.jydp.service;
 
 import com.jydp.entity.DO.transaction.TransactionUserDealDO;
+import com.jydp.entity.VO.TransactionUserDealVO;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -67,7 +68,7 @@ public interface ITransactionUserDealService {
      * @param pageSize  每页条数
      * @return  操作成功：返回成交记录，操作失败：返回null
      */
-    List<TransactionUserDealDO> listTransactionUserDealForBack(String userAccount, int paymentType, String currencyName,
+    List<TransactionUserDealVO> listTransactionUserDealForBack(String userAccount, int paymentType, String currencyName,
                                                                Timestamp startAddTime, Timestamp endAddTime, Timestamp startPendTime, Timestamp endPendTime,
                                                                int pageNumber, int pageSize);
 }

@@ -2,6 +2,7 @@ package com.jydp.service.impl.transaction;
 
 import com.jydp.dao.ITransactionUserDealDao;
 import com.jydp.entity.DO.transaction.TransactionUserDealDO;
+import com.jydp.entity.VO.TransactionUserDealVO;
 import com.jydp.service.ITransactionUserDealService;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,9 +99,9 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
      * @param pageSize  每页条数
      * @return  操作成功：返回成交记录，操作失败：返回null
      */
-    public List<TransactionUserDealDO> listTransactionUserDealForBack(String userAccount, int paymentType, String currencyName,
-                                                               Timestamp startAddTime, Timestamp endAddTime, Timestamp startPendTime, Timestamp endPendTime,
-                                                               int pageNumber, int pageSize){
+    public List<TransactionUserDealVO> listTransactionUserDealForBack(String userAccount, int paymentType, String currencyName,
+                                                                      Timestamp startAddTime, Timestamp endAddTime, Timestamp startPendTime, Timestamp endPendTime,
+                                                                      int pageNumber, int pageSize){
         return transactionUserDealDao.listTransactionUserDealForBack(userAccount, paymentType, currencyName, startAddTime, endAddTime, startPendTime, endPendTime, pageNumber, pageSize);
     }
 

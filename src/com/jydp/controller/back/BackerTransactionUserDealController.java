@@ -5,6 +5,7 @@ import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.BackerSessionBO;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.transaction.TransactionUserDealDO;
+import com.jydp.entity.VO.TransactionUserDealVO;
 import com.jydp.interceptor.BackerWebInterceptor;
 import com.jydp.service.ITransactionCurrencyService;
 import com.jydp.service.ITransactionUserDealService;
@@ -57,7 +58,7 @@ public class BackerTransactionUserDealController {
 
         request.setAttribute("code", 1);
         request.setAttribute("message", "查询成功");
-        return "page/back/transactionPendOrder";
+        return "page/back/transactionUserDeal";
     }
 
     /** 查询数据 */
@@ -106,7 +107,7 @@ public class BackerTransactionUserDealController {
             totalPageNumber = 1;
         }
 
-        List<TransactionUserDealDO> transactionUserDealList = null;
+        List<TransactionUserDealVO> transactionUserDealList = null;
         if (totalNumber > 0) {
             transactionUserDealList = transactionUserDealService.listTransactionUserDealForBack(userAccount, paymentType, currencyName, startAddTime, endAddTime, startPendTime, endPendTime, pageNumber, pageSize);
         }
