@@ -56,7 +56,7 @@
                                       onClick="laydate({istime: true,format: 'YYYY-MM-DD hh:mm:ss'})" />
                     </p>
                     <p class="condition">币种：
-                        <select class="askSelect" id="currencyId" name="currencyId">
+                        <select class="askSelect" id="currencyId" name="currencyName">
                             <option value="">全部</option>
                             <c:forEach items="${transactionCurrencyList}" var="item">
                                 <option value="${item.currencyName}">${item.currencyName}</option>
@@ -80,7 +80,7 @@
                             <option value="5">已撤回</option>
                         </select>
                     </p>
-                    <p class="condition">管理员账号：<input type="text" class="askInput" id="backAccount" name="backAccount" value="${backAccount}"/></p>
+                    <p class="condition">管理员账号：<input type="text" class="askInput" id="backAccount" name="backAccount" maxlength="16" onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" value="${backAccount}"/></p>
                     <p class="condition">
                         执行时间：
                         从&nbsp;<input placeholder="请选择起始时间" class="startTime" id="start"  name="startExecuteTime"
@@ -373,6 +373,23 @@
             openTips(message);
             return ;
         }
+
+        $("#currencyId option").each(function(){
+            if($(this).val()=='${currencyName}'){
+                $(this).attr('selected',true);
+            }
+        });
+        $("#paymentType option").each(function(){
+            if($(this).val()=='${paymentType}'){
+                $(this).attr('selected',true);
+            }
+        });
+        $("#executeStatus option").each(function(){
+            if($(this).val()=='${executeStatus}'){
+                $(this).attr('selected',true);
+            }
+        });
+
     }
 
     //查询

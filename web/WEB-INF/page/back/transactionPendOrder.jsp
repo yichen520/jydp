@@ -32,7 +32,8 @@
             <form id="queryForm" action="<%=path %>/backerWeb/backerTransactionPendOrder/show.htm" method="post">
                 <div class="askArea">
                     <p class="condition">用户账号：
-                        <input type="text" class="askInput" id="userAccount" name="userAccount" value="${userAccount}" />
+                        <input type="text" class="askInput" id="userAccount" name="userAccount"
+                               maxlength="16" onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" value="${userAccount}" />
                     </p>
                     <p class="condition">币种：
                         <select class="askSelect" id="currencyId" name="currencyId">
@@ -172,6 +173,7 @@
             openTips(message);
             return false;
         }
+
         $("#pendingStatus option").each(function(){
             if($(this).val()=='${pendingStatus}'){
                 $(this).attr('selected',true);
