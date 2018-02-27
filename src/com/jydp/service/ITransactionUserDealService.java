@@ -87,4 +87,11 @@ public interface ITransactionUserDealService {
      * @return  操作成功：返回成交记录集合，操作失败:返回null
      */
     List<TransactionUserDealDO> listTransactionUserDealByPendNo(String pendNo, int pageNumber, int pageSize);
+
+    /**
+     * 查询用户成交记录总数
+     * @param userId 用户Id
+     * @return 查询成功：返回记录总数，查询失败：返回0
+     */
+    int countUserDealForWeb(int userId);
 }
