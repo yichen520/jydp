@@ -61,7 +61,7 @@
 		 	  AND accountStatus <![CDATA[ > ]]> 0
 	</select>
 
-	<select id="User_validateUserLogin" parameterType="java.util.Map" resultType="int">
+	<select id="User_validateUserPay" parameterType="java.util.Map" resultType="int">
 		SELECT COUNT(userId)
 		FROM user_tab
 		WHERE userAccount = #{userAccount}
