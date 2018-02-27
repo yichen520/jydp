@@ -1,6 +1,7 @@
 package com.jydp.dao;
 
 import com.jydp.entity.DO.transaction.TransactionMakeOrderDO;
+import com.jydp.entity.VO.TransactionMakeOrderVO;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -56,8 +57,31 @@ public interface ITransactionMakeOrderDao {
      * @param pageSize 每页条数
      * @return 操作成功：返回做单记录集合，操作失败：返回null
      */
-    List<TransactionMakeOrderDO> listTransactionMakeOrderForBack(String currencyName, int executeStatus, int paymentType, String backerAccount,
+    List<TransactionMakeOrderVO> listTransactionMakeOrderForBack(String currencyName, int executeStatus, int paymentType, String backerAccount,
                                                                  Timestamp startAddTime, Timestamp endAddTime,
                                                                  Timestamp startExecuteTime, Timestamp endExecuteTime,
                                                                  int pageNumber, int pageSize);
+
+    /**
+     * 批量新增做单记录
+     * @param transactionMakeOrderList  做单记录集合
+     * @return  操作成功，返回true，操作失败，返回false
+     */
+    boolean insertTransactionMakeOrderList(List<TransactionMakeOrderDO> transactionMakeOrderList);
+
+    /**
+     * 修改记录执行状态
+     * @param orderNo  记录号
+     * @param executeStatus  执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败,5:已撤回
+     * @return  操作成功，返回true，操作失败，返回false
+     */
+    boolean updateOrderExecuteStatusByOrderNo(String orderNo, int executeStatus);
+
+    /**
+     * 批量修改记录号状态
+     * @param orderNoList  记录号集合
+     * @param executeStatus  执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败,5:已撤回
+     * @return  操作成功：true，操作失败：返回false
+     */
+    boolean updateMakeOrderExecuteStatusByOrderNoList(List<String> orderNoList, int executeStatus);
 }
