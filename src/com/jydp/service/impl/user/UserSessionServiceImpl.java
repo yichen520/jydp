@@ -55,5 +55,14 @@ public class UserSessionServiceImpl implements IUserSessionService {
     public boolean deleteSessionByTimeForTimer(Timestamp loginTime, int pageSize) {
     	return userSessionDao.deleteSessionByTimeForTimer(loginTime, pageSize);
     }
+
+	/**
+	 * 删除用户的session
+	 * @param userId 用户Id
+	 * @return 操作成功：返回true，操作失败：返回false
+	 */
+	public boolean deleteSessionByUserId(int userId) {
+		return userSessionDao.deleteSessionByUserId(userId);
+	}
 	
 }

@@ -52,8 +52,10 @@
                     <script id="editor" type="text/plain">${systemHotDO.content }</script>
                 </div>
 
+                <input type="hidden" id="id" name="id" value="${systemHotDO.id }"/>
+                <input type="hidden" id="content" name="content"/>
                 <div class="operate">
-                    <a href="<%=path%>/backerWeb/hotTopic/show.htm" class="back">返&nbsp;回</a>
+                    <a href="javascript:;" class="back"onclick="backList()">返&nbsp;回</a>
                     <input type="text" value="提&nbsp;交" class="submit" onfocus="this.blur()" onclick="modifyHandle()"/>
                 </div>
             </div>
@@ -62,6 +64,11 @@
     </div>
 </div>
 
+<form id="openListForm" action="<%=path %>/backerWeb/hotTopic/show.htm" method="post">
+    <input type="hidden" id="open_pageNumber" name="pageNumber" value="${pageNumber }">
+    <input type="hidden" id="open_noticeType" name="noticeType" value="${noticeType }">
+    <input type="hidden" id="open_noticeTitle" name="noticeTitle" value="${noticeTitle }">
+</form>
 <script type="text/javascript" src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" src="<%=path %>/resources/js/loadPageBack.js"></script>
 <script type="text/javascript" src="<%=path %>/resources/js/simpleTips.js"></script>
@@ -122,13 +129,19 @@
                     return;
                 }
 
-                window.location.href = "<%=path%>" + "/backerWeb/hotTopic/show.htm";
+                $("#openListForm").submit();
             },
 
             error: function () {
                 openTips("数据加载出错，请稍候重试");
             }
         });
+
+    }
+
+    function backList(){
+
+        $("#openListForm").submit();
 
     }
 </script>

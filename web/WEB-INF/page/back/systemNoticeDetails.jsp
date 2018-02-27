@@ -38,18 +38,28 @@
             <div class="editor">${systemNoticeDO.content }</div>
 
             <div class="operate">
-                <a href="<%=path%>/backerWeb/backerNotice/show.htm" class="back">返&nbsp;回</a>
+                <a href="javascript:;" class="back" onclick="backList()">返&nbsp;回</a>
             </div>
         </div>
     </div>
 </div>
 
-
+<form id="openDetailsForm" action="<%=path %>/backerWeb/backerNotice/show.htm" method="post">
+    <input type="hidden" id="open_pageNumber" name="pageNumber" value="${pageNumber }">
+    <input type="hidden" id="open_noticeType" name="query_noticeType" value="${noticeType }">
+    <input type="hidden" id="open_noticeTitle" name="query_noticeTitle" value="${noticeTitle }">
+</form>
 <div id="footer"></div>
 
 <script type="text/javascript" src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" src="<%=path %>/resources/js/loadPageBack.js"></script>
 <script type="text/javascript" src="<%=path %>/resources/js/simpleTips.js"></script>
+<script type="text/javascript">
+    function backList(){
 
+        $("#openDetailsForm").submit();
+
+    }
+</script>
 </body>
 </html>

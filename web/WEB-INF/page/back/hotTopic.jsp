@@ -35,9 +35,9 @@
             </c:if>
             <form id="queryForm" action="<%=path%>/backerWeb/hotTopic/show.htm" method="post">
                 <div class="askArea">
-                    <p class="condition">话题类型：<input type="text" class="askInput" name="noticeType" value="${noticeType }" maxLength="8"/></p>
-                    <p class="condition">话题标题：<input type="text" class="askInput"  name="noticeTitle" value="${noticeTitle }" maxLength="64"/></p>
-                    <input type="hidden" id="query_pageNumber" name=query_pageNumber value="${pageNumber }">
+                    <p class="condition">话题类型：<input type="text" class="askInput" id="query_noticeType" name="noticeType" value="${noticeType }" maxLength="8"/></p>
+                    <p class="condition">话题标题：<input type="text" class="askInput"  id="query_noticeTitle" name="noticeTitle" value="${noticeTitle }" maxLength="64"/></p>
+                    <input type="hidden" id="queryPageNumber" name=pageNumber value="${pageNumber }">
                     <c:if test="${backer_rolePower['114001'] == 114001}">
                         <input type="text" value="查&nbsp;询" class="ask" onfocus="this.blur()" onclick="queryForm()"/>
                     </c:if>
@@ -67,10 +67,10 @@
                                 </c:if>
                             </c:if>
                             <c:if test="${backer_rolePower['114004'] == 114004}">
-                                <a href="<%=path%>/backerWeb/hotTopic/openUpdateHotTopic.htm?id=${systemHot.id }" class="change">修&nbsp;改</a>
+                                <a href="javascript:;" class="change" onclick="openUpdate(${systemHot.id });">修&nbsp;改</a>
                             </c:if>
                             <c:if test="${backer_rolePower['114005'] == 114005}">
-                                <a href="<%=path%>/backerWeb/hotTopic/hotTopicDetails.htm?id=${systemHot.id }" class="details">详&nbsp;情</a>
+                                <a href="javascript:;" class="details" onclick="openDetails(${systemHot.id });">详&nbsp;情</a>
                             </c:if>
                             <c:if test="${backer_rolePower['114006'] == 114006}">
                                 <input type="text" value="删&nbsp;除" class="delete" onfocus="this.blur()" onclick="deleteHandle(${systemHot.id });"/>
@@ -86,7 +86,19 @@
     </div>
 </div>
 
+<form id="openDetailsForm" action="<%=path %>/backerWeb/hotTopic/hotTopicDetails.htm" method="post">
+    <input type="hidden" id="open_pageNumber" name="pageNumber">
+    <input type="hidden" id="open_noticeType" name="query_noticeType">
+    <input type="hidden" id="open_noticeTitle" name="query_noticeTitle">
+    <input type="hidden" id="open_id" name="id">
+</form>
 
+<form id="openUpdateForm" action="<%=path %>/backerWeb/hotTopic/openUpdateHotTopic.htm" method="post">
+    <input type="hidden" id="update_pageNumber" name="pageNumber">
+    <input type="hidden" id="update_noticeType" name="query_noticeType">
+    <input type="hidden" id="update_noticeTitle" name="query_noticeTitle">
+    <input type="hidden" id="update_id" name="id">
+</form>
 <div id="footer"></div>
 
 
@@ -152,8 +164,16 @@
         popObj = ".delete_pop"
     }
 
+    var deleteNoticeBoo = false;
     function deleteNotice(){
         var deleteId = document.getElementById("deleteId").value;
+
+        if(deleteNoticeBoo){
+            openTips("正在删除，请稍后！");
+            return;
+        }else{
+            deleteNoticeBoo = true;
+        }
 
         $.ajax({
             url: '<%=path %>' + "/backerWeb/hotTopic/deleteHotTopic.htm",
@@ -168,6 +188,7 @@
                 var message = resultData.message;
                 if (code != 1 && message != "") {
                     openTips(message);
+                    deleteNoticeBoo = false;
                     return;
                 }
 
@@ -175,6 +196,7 @@
             },
 
             error: function () {
+                deleteNoticeBoo = false;
                 openTips("数据加载出错，请稍候重试");
             }
         });
@@ -207,6 +229,32 @@
             }
         });
 
+    }
+
+    function openDetails(id){
+        var pageNumber = $("#queryPageNumber").val();
+        var noticeType = $("#query_noticeType").val();
+        var noticeTitle = $("#query_noticeTitle").val();
+
+        $("#open_pageNumber").val(pageNumber);
+        $("#open_noticeType").val(noticeType);
+        $("#open_noticeTitle").val(noticeTitle);
+        $("#open_id").val(id);
+
+        $("#openDetailsForm").submit();
+    }
+
+    function openUpdate(id){
+        var pageNumber = $("#queryPageNumber").val();
+        var noticeType = $("#query_noticeType").val();
+        var noticeTitle = $("#query_noticeTitle").val();
+
+        $("#update_pageNumber").val(pageNumber);
+        $("#update_noticeType").val(noticeType);
+        $("#update_noticeTitle").val(noticeTitle);
+        $("#update_id").val(id);
+
+        $("#openUpdateForm").submit();
     }
 </script>
 

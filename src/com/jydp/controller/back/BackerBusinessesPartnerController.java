@@ -4,6 +4,7 @@ import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.FileWriteRemoteUtil;
 import com.iqmkj.utils.LogUtil;
 import com.iqmkj.utils.StringUtil;
+import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.system.SystemBusinessesPartnerDO;
 import com.jydp.interceptor.BackerWebInterceptor;
 import com.jydp.service.ISystemBusinessesPartnerService;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -77,13 +79,6 @@ public class BackerBusinessesPartnerController {
             pageNumber = totalPageNumber - 1;
         }
 
-        //当前页为第一页时，向页面传入已经置顶的 合作商家信息
-        if (pageNumber == 0 && systemBusinessesPartnerList != null
-                && systemBusinessesPartnerList.size() > 0) {
-            SystemBusinessesPartnerDO topBusinessesPartner = systemBusinessesPartnerList.remove(0);
-            request.setAttribute("topBusinessesPartner",topBusinessesPartner);
-        }
-
         //返回数据
         request.setAttribute("pageNumber",pageNumber);
         request.setAttribute("totalNumber",totalNumber);
@@ -96,14 +91,15 @@ public class BackerBusinessesPartnerController {
 
     /**新增合作商家*/
     @RequestMapping(value="/add.htm", method=RequestMethod.POST)
-    public String insert(HttpServletRequest request, MultipartFile businessesPartnerImageUrl){
+    public @ResponseBody
+    JsonObjectBO insert(HttpServletRequest request, MultipartFile businessesPartnerImageUrl){
+        JsonObjectBO responsJson = new JsonObjectBO();
         //业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 112002);
         if (!havePower) {
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
-            request.getSession().setAttribute("backer_pagePowerId", 0);
-            return "page/back/index";
+            responsJson.setCode(6);
+            responsJson.setMessage("您没有该权限");
+            return responsJson;
         }
 
         String businessesName = StringUtil.stringNullHandle(request.getParameter("addBusinessesName"));
@@ -111,11 +107,10 @@ public class BackerBusinessesPartnerController {
         String wapLinkUrl = StringUtil.stringNullHandle(request.getParameter("addWapLinkUrl"));
 
         //处理页面参数
-        if (!StringUtil.isNotNull(businessesName) || businessesPartnerImageUrl == null || !businessesPartnerImageUrl.isEmpty()) {
-            showList(request);
-            request.setAttribute("code", 2);
-            request.setAttribute("message", "未接受到参数");
-            return "page/back/businessesPartner";
+        if (!StringUtil.isNotNull(businessesName) || businessesPartnerImageUrl == null ) {
+            responsJson.setCode(2);
+            responsJson.setMessage("未接受到参数");
+            return responsJson;
         }
 
         //图片上传
@@ -127,10 +122,9 @@ public class BackerBusinessesPartnerController {
             LogUtil.printErrorLog(e);
         }
         if (!StringUtil.isNotNull(imgUrl)) {
-            showList(request);
-            request.setAttribute("code", -1);
-            request.setAttribute("message", "文件服务器未响应，请稍后重试");
-            return "page/back/businessesPartner";
+            responsJson.setCode(-1);
+            responsJson.setMessage("文件服务器未响应，请稍后重试");
+            return responsJson;
         }
 
         //封装参数
@@ -143,68 +137,65 @@ public class BackerBusinessesPartnerController {
 
         boolean insertResult = systemBusinessesPartnerService.insertSystemBusinessesPartner(systemBusinessesPartner);
         if (insertResult) {
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "新增成功");
+            responsJson.setCode(1);
+            responsJson.setMessage("新增成功");
         } else {
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "新增失败");
+            responsJson.setCode(5);
+            responsJson.setMessage("新增失败");
         }
 
-        showList(request);
-        return "page/back/businessesPartner";
+        return responsJson;
     }
 
     /**置顶合作商家*/
     @RequestMapping(value="/top.htm", method=RequestMethod.POST)
-    public String top(HttpServletRequest request) {
+    public @ResponseBody JsonObjectBO top(HttpServletRequest request) {
+        JsonObjectBO responsJson = new JsonObjectBO();
         //业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 112003);
         if (!havePower) {
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
-            request.getSession().setAttribute("backer_pagePowerId", 0);
-            return "page/back/index";
+            responsJson.setCode(6);
+            responsJson.setMessage("您没有该权限");
+            return responsJson;
         }
 
         String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
         //处理页面参数
         if (!StringUtil.isNotNull(idStr)) {
-            request.setAttribute("code", 2);
-            request.setAttribute("message", "未接收到参数");
-            return "page/back/businessesPartner";
+            responsJson.setCode(2);
+            responsJson.setMessage("未接收到参数");
+            return responsJson;
         }
 
         int id = Integer.parseInt(idStr);
         if (id <= 0) {
-            showList(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误");
-            return "page/back/businessesPartner";
+            responsJson.setCode(3);
+            responsJson.setMessage("参数错误");
+            return responsJson;
         }
 
         boolean topResult = systemBusinessesPartnerService.topTheBusinessesPartner(id);
         if (topResult) {
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "置顶成功");
+            responsJson.setCode(1);
+            responsJson.setMessage("置顶成功");
         } else {
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "置顶失败");
+            responsJson.setCode(5);
+            responsJson.setMessage("置顶失败");
         }
 
-        showList(request);
-        return "page/back/businessesPartner";
+        return responsJson;
     }
 
     /**修改合作商家*/
     @RequestMapping(value="/update.htm", method=RequestMethod.POST)
-    public String update(HttpServletRequest request, MultipartFile businessesPartnerImageUrl) {
+    public @ResponseBody JsonObjectBO update(HttpServletRequest request, MultipartFile businessesPartnerImageUrl) {
+        JsonObjectBO responsJson = new JsonObjectBO();
         //业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 112004);
         if (!havePower) {
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
-            request.getSession().setAttribute("backer_pagePowerId", 0);
-            return "page/back/index";
+            responsJson.setCode(6);
+            responsJson.setMessage("您没有该权限");
+            return responsJson;
         }
 
         String idStr = StringUtil.stringNullHandle(request.getParameter("updateId"));
@@ -214,18 +205,16 @@ public class BackerBusinessesPartnerController {
 
         //处理页面参数
         if (!StringUtil.isNotNull(idStr) || !StringUtil.isNotNull(businessesName)) {
-            showList(request);
-            request.setAttribute("code", 2);
-            request.setAttribute("message", "未接受到参数");
-            return "page/back/businessesPartner";
+            responsJson.setCode(2);
+            responsJson.setMessage("未接受到参数");
+            return responsJson;
         }
 
         int id = Integer.parseInt(idStr);
         if (id <= 0) {
-            showList(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误");
-            return "page/back/businessesPartner";
+            responsJson.setCode(3);
+            responsJson.setMessage("参数错误");
+            return responsJson;
         }
 
         //获取用户上传的图片
@@ -239,18 +228,16 @@ public class BackerBusinessesPartnerController {
             }
         }
         if (businessesPartnerImageUrl != null && !businessesPartnerImageUrl.isEmpty() && !StringUtil.isNotNull(imgUrl)) {
-            showList(request);
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "文件服务器未响应，请稍后重试");
-            return "page/back/businessesPartner";
+            responsJson.setCode(5);
+            responsJson.setMessage("文件服务器未响应，请稍后重试");
+            return responsJson;
         }
 
         SystemBusinessesPartnerDO systemBusinessesPartnerDO = systemBusinessesPartnerService.getSystemBusinessesPartnerById(id);
         if (systemBusinessesPartnerDO == null) {
-            showList(request);
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "合作商家信息错误");
-            return "page/back/businessesPartner";
+            responsJson.setCode(5);
+            responsJson.setMessage("合作商家信息错误");
+            return responsJson;
         }
 
         //封装参数
@@ -268,56 +255,53 @@ public class BackerBusinessesPartnerController {
                 FileWriteRemoteUtil.deleteFile(systemBusinessesPartnerDO.getBusinessesImageUrl());
             }
 
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "修改成功");
+            responsJson.setCode(1);
+            responsJson.setMessage("修改成功");
         } else {
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "修改失败");
+            responsJson.setCode(5);
+            responsJson.setMessage("修改失败");
         }
 
-        showList(request);
-        return "page/back/businessesPartner";
+        return responsJson;
     }
 
     /**删除合作商家*/
     @RequestMapping(value="/delete.htm", method=RequestMethod.POST)
-    public String delete(HttpServletRequest request) {
+    public @ResponseBody
+    JsonObjectBO delete(HttpServletRequest request) {
+        JsonObjectBO responsJson = new JsonObjectBO();
         //业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 112005);
         if (!havePower) {
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
-            request.getSession().setAttribute("backer_pagePowerId", 0);
-            return "page/back/index";
+            responsJson.setCode(6);
+            responsJson.setMessage("您没有该权限");
+            return responsJson;
         }
 
         String idStr = StringUtil.stringNullHandle(request.getParameter("deleteId"));
         //处理页面参数
         if (!StringUtil.isNotNull(idStr)) {
-            showList(request);
-            request.setAttribute("code", 2);
-            request.setAttribute("message", "未接受到参数");
-            return "page/back/businessesPartner";
+            responsJson.setCode(2);
+            responsJson.setMessage("未接受到参数");
+            return responsJson;
         }
 
         int id = Integer.parseInt(idStr);
         if (id <= 0) {
-            showList(request);
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误");
-            return "page/back/businessesPartner";
+            responsJson.setCode(3);
+            responsJson.setMessage("参数错误");
+            return responsJson;
         }
 
         boolean deleteResult = systemBusinessesPartnerService.deleteSystemBusinessesPartner(id);
         if (deleteResult) {
-            request.setAttribute("code", 1);
-            request.setAttribute("message", "删除成功");
+            responsJson.setCode(1);
+            responsJson.setMessage("删除成功");
         } else {
-            request.setAttribute("code", 5);
-            request.setAttribute("message", "删除失败");
+            responsJson.setCode(5);
+            responsJson.setMessage("删除失败");
         }
 
-        showList(request);
-        return "page/back/businessesPartner";
+        return responsJson;
     }
 }

@@ -101,5 +101,25 @@ public class UserSessionDaoImpl implements IUserSessionDao {
             return false;
         }
     }
+
+	/**
+	 * 删除用户的session
+	 * @param userId 用户Id
+	 * @return 操作成功：返回true，操作失败：返回false
+	 */
+	public boolean deleteSessionByUserId(int userId) {
+		int resultNumber = 0;
+		try {
+			resultNumber = sqlSessionTemplate.delete("UserSession_deleteSessionByUserId", userId);
+		} catch (Exception e) {
+			LogUtil.printErrorLog(e);
+		}
+
+		if(resultNumber > 0){
+			return true;
+		}else{
+			return false;
+		}
+	}
 	
 }

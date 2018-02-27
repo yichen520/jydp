@@ -3,6 +3,7 @@ package com.jydp.dao.impl.transaction;
 import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.ITransactionPendOrderDao;
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
+import com.jydp.entity.DTO.TransactionPendOrderDTO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -157,8 +158,8 @@ public class TransactionPendOrderDaoImpl implements ITransactionPendOrderDao{
      * @param num 需要查询的条数
      * @return 操作成功：返回挂单记录列表，操作失败：返回null
      */
-    public List<TransactionPendOrderDO> listLatestRecords(int paymentType, int currencyId, int num){
-        List<TransactionPendOrderDO> resultList = new ArrayList<TransactionPendOrderDO>();
+    public List<TransactionPendOrderDTO> listLatestRecords(int paymentType, int currencyId, int num){
+        List<TransactionPendOrderDTO> resultList = new ArrayList<>();
 
         Map<String, Object> map = new HashMap<>();
         map.put("paymentType", paymentType);

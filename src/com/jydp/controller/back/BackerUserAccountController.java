@@ -14,7 +14,14 @@ import com.jydp.interceptor.BackerWebInterceptor;
 import com.jydp.service.IBackerService;
 import com.jydp.service.IUserCurrencyNumService;
 import com.jydp.service.IUserService;
+import com.jydp.service.IUserSessionService;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFDataFormat;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -30,6 +37,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -53,6 +61,10 @@ public class BackerUserAccountController {
     /** 后台管理员 */
     @Autowired
     private IBackerService backerService;
+
+    /** 用户登录记录 */
+    @Autowired
+    private IUserSessionService userSessionService;
 
     /** 展示列表页面 */
     @RequestMapping(value = "/show.htm")
@@ -163,8 +175,8 @@ public class BackerUserAccountController {
         }
 
         request.setAttribute("pageNumber", pageNumber);
-        request.setAttribute("startTime", startTime);
-        request.setAttribute("endTime", endTime);
+        request.setAttribute("startTime", startTimeStr);
+        request.setAttribute("endTime", endTimeStr);
         request.setAttribute("userAccount", userAccount);
         request.setAttribute("phoneNumber", phoneNumber);
         request.setAttribute("accountStatus", accountStatus);
@@ -256,6 +268,9 @@ public class BackerUserAccountController {
         int userId = Integer.parseInt(userIdStr);
         boolean updateResult = userService.updateUserAccountStatus(userId, 2,1);
         if (updateResult) {
+            //删除用户session
+            userSessionService.deleteSessionByUserId(userId);
+
             responseJson.setCode(1);
             responseJson.setMessage("操作成功");
             return responseJson;
@@ -369,7 +384,7 @@ public class BackerUserAccountController {
         BackerDO backer = backerService.getBackerById(backerSession.getBackerId());
         if (backer == null || backer.getAccountStatus() != 1) {
             responseJson.setCode(3);
-            responseJson.setMessage("操作非法");
+            responseJson.setMessage("操作非法，您的账号不可用");
             return responseJson;
         }
 
@@ -463,9 +478,9 @@ public class BackerUserAccountController {
             sheet1.setColumnWidth(0, 5000);
             sheet1.setColumnWidth(1, 5000);
             sheet1.setColumnWidth(2, 6000);
-            sheet1.setColumnWidth(3, 5000);
-            sheet1.setColumnWidth(4, 5000);
-            sheet1.setColumnWidth(5, 5000);
+            sheet1.setColumnWidth(3, 6000);
+            sheet1.setColumnWidth(4, 6000);
+            sheet1.setColumnWidth(5, 6000);
 
             int rowNumber = 1;
             for (UserDO user : userList) {
@@ -480,7 +495,8 @@ public class BackerUserAccountController {
                 cell = row.createCell(3);
                 cell.setCellValue(user.getUserBalanceLock());
                 cell = row.createCell(4);
-                cell.setCellValue(BigDecimalUtil.add(user.getUserBalance(), user.getUserBalanceLock()));
+                double countBalance = BigDecimalUtil.add(user.getUserBalance(), user.getUserBalanceLock());
+                cell.setCellValue(countBalance);
                 cell = row.createCell(5);
                 if (user.getAccountStatus() == 1) {
                     cell.setCellValue("启用");

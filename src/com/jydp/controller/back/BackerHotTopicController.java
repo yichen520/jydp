@@ -66,7 +66,7 @@ public class BackerHotTopicController {
         }
 
         // 查询数据
-        int totalNumber = systemHotService.sumHotForBack(noticeTitle, noticeType);
+        int totalNumber = systemHotService.sumHotForBack(noticeType, noticeTitle);
 
         List<SystemHotDO> systemHotList = null;
         int pageSize = 20;
@@ -163,7 +163,7 @@ public class BackerHotTopicController {
     }
 
     /** 打开修改热门页面 */
-    @RequestMapping(value = "/openUpdateHotTopic.htm", method = RequestMethod.GET)
+    @RequestMapping(value = "/openUpdateHotTopic.htm", method = RequestMethod.POST)
     public String openUpdateHotTopic(HttpServletRequest request) {
         // 业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 114004);
@@ -176,6 +176,9 @@ public class BackerHotTopicController {
         }
 
         String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
+        String noticeType = StringUtil.stringNullHandle(request.getParameter("query_noticeType"));
+        String noticeTitle = StringUtil.stringNullHandle(request.getParameter("query_noticeTitle"));
+        String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
         if (!StringUtil.isNotNull(idStr)) {
             list(request);
             request.setAttribute("code", 3);
@@ -194,6 +197,9 @@ public class BackerHotTopicController {
 
         SystemHotDO systemHotDO = systemHotService.getSystemHotById(id);
         request.setAttribute("systemHotDO", systemHotDO);
+        request.setAttribute("noticeType", noticeType);
+        request.setAttribute("noticeTitle", noticeTitle);
+        request.setAttribute("pageNumber", pageNumberStr);
         return "page/back/updateHotTopic";
     }
 
@@ -260,7 +266,7 @@ public class BackerHotTopicController {
     }
 
     /** 打开热门话题详情页面 */
-    @RequestMapping(value = "/hotTopicDetails.htm", method = RequestMethod.GET)
+    @RequestMapping(value = "/hotTopicDetails.htm", method = RequestMethod.POST)
     public String details(HttpServletRequest request) {
         // 业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 114005);
@@ -273,6 +279,9 @@ public class BackerHotTopicController {
         }
 
         String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
+        String noticeType = StringUtil.stringNullHandle(request.getParameter("query_noticeType"));
+        String noticeTitle = StringUtil.stringNullHandle(request.getParameter("query_noticeTitle"));
+        String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
         if (!StringUtil.isNotNull(idStr)) {
             list(request);
             request.setAttribute("code", 3);
@@ -292,6 +301,9 @@ public class BackerHotTopicController {
         SystemHotDO systemHotDO  = systemHotService.getSystemHotById(id);
 
         request.setAttribute("systemHotDO", systemHotDO);
+        request.setAttribute("noticeType", noticeType);
+        request.setAttribute("noticeTitle", noticeTitle);
+        request.setAttribute("pageNumber", pageNumberStr);
         return "page/back/hotTopicDetails";
     }
 

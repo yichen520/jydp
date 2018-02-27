@@ -56,8 +56,8 @@ public interface IUserService {
     /**
      * 修改用户账号状态
      * @param userId 用户Id
-     * @param accountStatus 用户状态
-     * @param oldAccountStatus 用户原来的状态
+     * @param accountStatus 用户状态，1：启用，2：禁用，-1：删除
+     * @param oldAccountStatus 用户原来的状态，1：启用，2：禁用，-1：删除
      * @return 修改成功：返回true，修改失败：返回false
      */
     boolean updateUserAccountStatus (int userId, int accountStatus, int oldAccountStatus);
@@ -77,6 +77,15 @@ public interface IUserService {
      * @return  修改成功：返回true，修改失败：返回false
      */
     boolean forgetPayPwd(String userAccount, String password);
+
+    /**
+     * 修改绑定手机号
+     * @param userAccount 用户账户
+     * @param areaCode  手机区号
+     * @param phone  手机号
+     * @return  修改成功：返回true，修改失败：返回false
+     */
+    boolean updatePhone(String userAccount, String areaCode, String phone);
 
     /**
      * 验证用户登录

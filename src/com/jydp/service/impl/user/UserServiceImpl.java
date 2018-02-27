@@ -105,8 +105,8 @@ public class UserServiceImpl implements IUserService {
     /**
      * 修改用户账号状态
      * @param userId 用户Id
-     * @param accountStatus 用户状态
-     * @param oldAccountStatus 用户原来的状态
+     * @param accountStatus 用户状态，1：启用，2：禁用，-1：删除
+     * @param oldAccountStatus 用户原来的状态，1：启用，2：禁用，-1：删除
      * @return 修改成功：返回true，修改失败：返回false
      */
     public boolean updateUserAccountStatus (int userId, int accountStatus, int oldAccountStatus) {
@@ -143,11 +143,11 @@ public class UserServiceImpl implements IUserService {
     /**
      * 修改绑定手机号
      * @param userAccount 用户账户
-     * @param areaCode  手机号
+     * @param areaCode  手机区号
      * @param phone  手机号
      * @return  修改成功：返回true，修改失败：返回false
      */
-    public boolean forgetPayPwd(String userAccount, String areaCode, String phone){
+    public boolean updatePhone(String userAccount, String areaCode, String phone){
         UserDO user = new UserDO();
         user.setUserAccount(userAccount);
         user.setPhoneAreaCode(areaCode);
@@ -164,6 +164,16 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserDO validateUserLogin(String userAccount, String password) {
         return userDao.validateUserLogin(userAccount,password);
+    }
+
+    /**
+     * 验证用户支付密码
+     * @param userAccount 用户账号
+     * @param payPassword 支付密码（密文）
+     * @return 验证成功：返回true，验证失败：返回false
+     */
+    public boolean validateUserPay(String userAccount, String payPassword){
+        return userDao.validateUserPay(userAccount,payPassword);
     }
 
     /**

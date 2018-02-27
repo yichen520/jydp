@@ -118,8 +118,8 @@ public class UserDaoImpl implements IUserDao {
     /**
      * 修改用户账号状态
      * @param userId 用户Id
-     * @param accountStatus 用户状态
-     * @param oldAccountStatus 用户原来的状态
+     * @param accountStatus 用户状态，1：启用，2：禁用，-1：删除
+     * @param oldAccountStatus 用户原来的状态，1：启用，2：禁用，-1：删除
      * @return 修改成功：返回true，修改失败：返回false
      */
     public boolean updateUserAccountStatus (int userId, int accountStatus, int oldAccountStatus) {
@@ -183,6 +183,32 @@ public class UserDaoImpl implements IUserDao {
             LogUtil.printErrorLog(e);
         }
         return user;
+    }
+
+
+    /**
+     * 验证用户支付密码
+     * @param userAccount 用户账号
+     * @param payPassword 支付密码（密文）
+     * @return 验证成功：返回true，验证失败：返回false
+     */
+    public boolean validateUserPay(String userAccount, String payPassword){
+        int result = 0;
+        Map<String, Object> map = new HashMap<>();
+        map.put("userAccount", userAccount);
+        map.put("payPassword", payPassword);
+
+        try {
+            result = sqlSessionTemplate.selectOne("User_validateUserPay",map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

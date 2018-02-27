@@ -7,6 +7,7 @@ import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
 import com.jydp.entity.DO.user.UserBalanceDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
+import com.jydp.entity.DTO.TransactionPendOrderDTO;
 import com.jydp.service.*;
 import config.SystemCommonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,7 +150,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
      * @param num 需要查询的条数
      * @return 操作成功：返回挂单记录列表，操作失败：返回null
      */
-    public List<TransactionPendOrderDO> listLatestRecords(int paymentType, int currencyId, int num){
+    public List<TransactionPendOrderDTO> listLatestRecords(int paymentType, int currencyId, int num){
         return transactionPendOrderDao.listLatestRecords(paymentType, currencyId, num);
     }
 

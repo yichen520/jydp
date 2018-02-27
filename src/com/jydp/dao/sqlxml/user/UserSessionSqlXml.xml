@@ -29,5 +29,10 @@
  		WHERE loginTime <![CDATA[ < ]]> #{loginTime}
  		LIMIT #{pageSize}
  	</delete>
+
+	<delete id="UserSession_deleteSessionByUserId" parameterType="int">
+		DELETE FROM user_session_tab
+		WHERE userId = #{userId}
+	</delete>
 	
 </mapper>
