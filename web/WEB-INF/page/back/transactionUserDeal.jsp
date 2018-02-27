@@ -47,6 +47,7 @@
                             <option value="0">全部</option>
                             <option value="1">买入</option>
                             <option value="2">卖出</option>
+                            <option value="3">撤回</option>
                         </select>
                     </p>
                     <p class="condition">
