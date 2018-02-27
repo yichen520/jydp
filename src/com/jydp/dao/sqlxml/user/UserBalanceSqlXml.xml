@@ -6,20 +6,20 @@
 <mapper namespace="com.jydp.dao.impl.user.UserBalanceDaoImpl">
 
 	<insert id="UserBalance_insertUserBalance" parameterType="UserBalanceDO">
-		INSERT INTO user_balance_tab
-			(orderNo, userId, paymentType, fromType, balanceNumber, remark, addTime)
-		VALUES
-			(#{orderNo}, #{userId}, #{paymentType}, #{fromType}, #{balanceNumber}, #{remark}, #{addTime})
+		INSERT INTO user_balance_tab (orderNo, userId, fromType, currencyId, currencyName, balanceNumber,
+									  frozenNumber, remark, addTime)
+		VALUES (#{orderNo}, #{userId}, #{fromType}, #{currencyId}, #{currencyName}, #{balanceNumber},
+			 #{frozenNumber}, #{remark}, #{addTime})
 	</insert>
 	
 	<select id="UserBalance_getUserBalanceByOrderNo" parameterType="String" resultType="UserBalanceDO">
-		SELECT orderNo, userId, paymentType, fromType, balanceNumber, remark, addTime
+		SELECT orderNo, userId, fromType, currencyId, currencyName, balanceNumber,frozenNumber, remark, addTime
 		FROM user_balance_tab
 		WHERE orderNo = #{orderNo}
 	</select>
 
 	<select id="UserBalance_getUserBalancelistByUserId" parameterType="java.util.Map" resultType="UserBalanceDO">
-		SELECT orderNo, userId, paymentType, fromType, balanceNumber, remark, addTime
+		SELECT orderNo, userId, fromType, currencyId, currencyName, balanceNumber,frozenNumber, remark, addTime
 		FROM user_balance_tab
 		WHERE userId = #{userId}
 		ORDER BY addTime DESC

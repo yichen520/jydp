@@ -8,6 +8,8 @@ public class TransactionPendOrderDTO {
     private double pendingPrice;  //挂单单价
     private double pendingNumber;  //挂单数量
     private double dealNumber;  //成交数量
+    private double restNumber; //剩余挂单数量
+    private double sumPrice; //剩余挂单总价
 
     /**
      * 挂单单价
@@ -55,5 +57,40 @@ public class TransactionPendOrderDTO {
      */
     public void setDealNumber(double dealNumber) {
         this.dealNumber = dealNumber;
+
+        setRestNumber(this.pendingNumber - this.dealNumber);
+        setSumPrice((this.pendingNumber - this.dealNumber) * this.pendingPrice);
+    }
+
+    /**
+     * 剩余挂单数量
+     * @return the restNumber
+     */
+    public double getRestNumber() {
+        return restNumber;
+    }
+
+    /**
+     * 剩余挂单数量
+     * @param restNumber the restNumber to set
+     */
+    public void setRestNumber(double restNumber) {
+        this.restNumber = restNumber;
+    }
+
+    /**
+     * 剩余挂单总价
+     * @return the sumPrice
+     */
+    public double getSumPrice() {
+        return sumPrice;
+    }
+
+    /**
+     * 剩余挂单总价
+     * @param sumPrice the sumPrice to set
+     */
+    public void setSumPrice(double sumPrice) {
+        this.sumPrice = sumPrice;
     }
 }
