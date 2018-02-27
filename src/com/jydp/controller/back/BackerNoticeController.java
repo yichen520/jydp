@@ -117,7 +117,6 @@ public class BackerNoticeController {
         if (!havePower) {
             response.put("code", 6);
             response.put("message", "您没有该权限");
-            request.getSession().setAttribute("backer_pagePowerId", 0);
             return response;
         }
 
@@ -215,7 +214,6 @@ public class BackerNoticeController {
         if (!havePower) {
             response.put("code", 6);
             response.put("message", "您没有该权限");
-            request.getSession().setAttribute("backer_pagePowerId", 0);
             return response;
         }
 
@@ -323,7 +321,6 @@ public class BackerNoticeController {
         if (!havePower) {
             response.put("code", 6);
             response.put("message", "您没有该权限");
-            request.getSession().setAttribute("backer_pagePowerId", 0);
             return response;
         }
 
@@ -374,7 +371,6 @@ public class BackerNoticeController {
         if (!havePower) {
             response.put("code", 6);
             response.put("message", "您没有该权限");
-            request.getSession().setAttribute("backer_pagePowerId", 0);
             return response;
         }
 
