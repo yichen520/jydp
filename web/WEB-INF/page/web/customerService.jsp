@@ -112,19 +112,19 @@
 
         if (!feedbackTitle || feedbackTitle == '') {
             feedbackBoo = false;
-            openTips("反馈标题不能为空")
+            return openTips("反馈标题不能为空")
         }
         if (feedbackTitle.length < 2 || feedbackTitle.length > 16) {
             feedbackBoo = false;
-            openTips("反馈标题为2~16个字符")
+            return openTips("反馈标题为2~16个字符")
         }
         if (!feedbackContent || feedbackContent == '') {
             feedbackBoo = false;
-            openTips("反馈内容不能为空")
+            return openTips("反馈内容不能为空")
         }
         if (feedbackContent.length > 200) {
             feedbackBoo = false;
-            openTips("反馈内容不能超过200个字符")
+            return openTips("反馈内容不能超过200个字符")
         }
 
         $.ajax({
