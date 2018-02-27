@@ -216,8 +216,8 @@
         var businessesPartnerImageUrlStr = $("#changead_t1").val();
         var businessesPartnerImageUrl = document.getElementById("changead_a1").files[0];
         var businessesName = $("#addBusinessesName").val();
-        var webLinkUrl = $("#addBusinessesName").val();
-        var wapLinkUrl = $("#addBusinessesName").val();
+        var webLinkUrl = $("#addWebLinkUrl").val();
+        var wapLinkUrl = $("#addWapLinkUrl").val();
 
         if (businessesPartnerImageUrlStr == null || businessesPartnerImageUrlStr == '') {
             return openTips("请上传封面图");
