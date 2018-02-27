@@ -27,12 +27,20 @@ public interface IUserIdentificationService {
     UserIdentificationDO getUserIdentificationById(long id);
 
     /**
-     * 查询用户认证信息
+     * 验证该身份证号是否已被使用
      *
      * @param userCertNo 身份证号码
+     * @return 已被使用：返回true，未被使用：返回false
+     */
+    boolean validateIdentification(String userCertNo);
+
+    /**
+     * 查询用户最近的认证信息
+     *
+     * @param userAccount 用户账号
      * @return 操作成功：返回用户认证信息，操作失败：返回null
      */
-    UserIdentificationDO getUserIdentificationByUserCertNo(String userCertNo);
+    UserIdentificationDO getUserIdentificationByUserAccountLately(String userAccount);
 
     /**
      * 查询实名认证信息总数（后台）

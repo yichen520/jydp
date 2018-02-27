@@ -10,6 +10,7 @@ import com.jydp.interceptor.BackerWebInterceptor;
 import com.jydp.other.SendMessage;
 import com.jydp.service.IUserIdentificationImageService;
 import com.jydp.service.IUserIdentificationService;
+import com.jydp.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -38,6 +39,10 @@ public class BackerIdentificationController {
     /** 用户认证详情图 */
     @Autowired
     private IUserIdentificationImageService userIdentificationImageService;
+
+    /** 用户账户 */
+    @Autowired
+    private IUserService userService;
 
     /** 展示列表页面 */
     @RequestMapping(value = "/show.htm")
@@ -223,6 +228,16 @@ public class BackerIdentificationController {
             responseJson.setCode(5);
             responseJson.setMessage("操作失败");
             return responseJson;
+        } else {
+            responseJson.setCode(1);
+            responseJson.setMessage("操作成功");
+        }
+
+        //启用账号
+        boolean updateResult = userService.updateUserAccountStatus(userIdentification.getUserId(), 1,2);
+        if (!updateResult) {
+            responseJson.setCode(5);
+            responseJson.setMessage("账号"+ userIdentification.getUserAccount() +"启用失败");
         }
 
         String messageContent = "您在交易大盘中提交的实名认证信息审核已通过。";
@@ -233,8 +248,6 @@ public class BackerIdentificationController {
             return responseJson;
         }
 
-        responseJson.setCode(1);
-        responseJson.setMessage("操作成功");
         return responseJson;
     }
 

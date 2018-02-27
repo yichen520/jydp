@@ -18,7 +18,7 @@ import java.util.List;
  * @author hz
  *
  */
-@Service("transactionPendOrderService")
+@Service("transactionPendOrderCommonService")
 public class TransactionPendOrderCommonServiceImpl implements ITransactionPendOrderCommonService{
 
     /** redis服务 */

@@ -63,15 +63,35 @@ public class UserIdentificationDaoImpl implements IUserIdentificationDao {
     }
 
     /**
-     * 查询用户认证信息
+     * 验证该身份证号是否已被使用
      *
      * @param userCertNo 身份证号码
+     * @return 已被使用：返回true，未被使用：返回false
+     */
+    public boolean validateIdentification(String userCertNo) {
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.selectOne("UserIdentification_validateIdentification", userCertNo);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 查询用户最近的认证信息
+     *
+     * @param userAccount 用户账号
      * @return 操作成功：返回用户认证信息，操作失败：返回null
      */
-    public UserIdentificationDO getUserIdentificationByUserCertNo(String userCertNo) {
+    public UserIdentificationDO getUserIdentificationByUserAccountLately(String userAccount) {
         UserIdentificationDO result = null;
         try {
-            result = sqlSessionTemplate.selectOne("UserIdentification_getUserIdentificationByUserCertNo", userCertNo);
+            result = sqlSessionTemplate.selectOne("UserIdentification_getUserIdentificationByUserAccountLately", userAccount);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
