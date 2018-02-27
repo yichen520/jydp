@@ -167,6 +167,16 @@ public class UserServiceImpl implements IUserService {
     }
 
     /**
+     * 验证用户支付密码
+     * @param userAccount 用户账号
+     * @param payPassword 支付密码（密文）
+     * @return 验证成功：返回true，验证失败：返回false
+     */
+    public boolean validateUserPay(String userAccount, String payPassword){
+        return userDao.validateUserPay(userAccount,payPassword);
+    }
+
+    /**
      * 根据用户账号查询用户信息
      * @param userAccount 用户账号
      * @return 查询成功：返回用户信息；查询失败：返回null
