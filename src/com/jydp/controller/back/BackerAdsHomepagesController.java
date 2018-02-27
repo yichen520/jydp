@@ -74,7 +74,7 @@ public class BackerAdsHomepagesController {
 
     /** 新增首页广告 */
     @RequestMapping(value = "/addHomeAd.htm", method = RequestMethod.POST)
-    public @ResponseBody JSONObject addHomeAd(HttpServletRequest request, @RequestParam MultipartFile adsImageUrl) {
+    public @ResponseBody JSONObject addHomeAd(HttpServletRequest request, MultipartFile adsImageUrl) {
         JSONObject response = new JSONObject();
         //业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 111002);
@@ -90,8 +90,7 @@ public class BackerAdsHomepagesController {
         String adsTitle = StringUtil.stringNullHandle(request.getParameter("adsTitle"));
         String webLinkUrl = StringUtil.stringNullHandle(request.getParameter("webLinkUrl"));
         String wapLinkUrl = StringUtil.stringNullHandle(request.getParameter("wapLinkUrl"));
-
-        if (!StringUtil.isNotNull(adsTitle) || adsImageUrl == null) {
+        if (!StringUtil.isNotNull(adsTitle) || adsImageUrl == null || adsImageUrl.isEmpty()) {
             response.put("code", 3);
             response.put("message", "参数错误！");
             return response;
