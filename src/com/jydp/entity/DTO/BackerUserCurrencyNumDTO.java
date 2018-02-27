@@ -1,14 +1,33 @@
 package com.jydp.entity.DTO;
 
 /**
- * Description: 用户货币数量信息（后台）
+ * Description: 用户货币数量信息，带货币名称
  * Author: hht
  * Date: 2018-02-23 17:17
  */
 public class BackerUserCurrencyNumDTO {
+    private int currencyId;  //币种Id
     private String currencyName;  //货币名称
     private double currencyNumber;  //货币数量
     private double currencyNumberLock;  //冻结数量
+
+    /**
+     * 币种Id
+     *
+     * @return the currency id
+     */
+    public int getCurrencyId() {
+        return currencyId;
+    }
+
+    /**
+     * 币种Id
+     *
+     * @param currencyId the currency id
+     */
+    public void setCurrencyId(int currencyId) {
+        this.currencyId = currencyId;
+    }
 
     /**
      * 货币名称

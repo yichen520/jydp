@@ -20,7 +20,7 @@ public interface IUserCurrencyNumDao {
     List<UserCurrencyNumDO> getUserCurrencyNumByUserId (int userId);
 
     /**
-     * 查询用户币数量（后台）
+     * 查询用户币数量，带货币名称
      * @param userId 用户Id
      * @return 查询成功：返回用户币数量，查询失败：返回null
      */
