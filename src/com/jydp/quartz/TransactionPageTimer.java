@@ -59,7 +59,7 @@ public class TransactionPageTimer {
 				}
 			}
 
-			if(setBuyList.size() == transactionPendOrderBuyList.size()){
+			if(setBuyList.size() == transactionPendOrderBuyList.size() && setBuyList.size() > 0){
 				//删除挂单记录key
 				redisService.deleteValue(buyKey);
 				//插入最新挂单记录
@@ -87,7 +87,7 @@ public class TransactionPageTimer {
 				}
 			}
 
-			if(setBuyList.size() == transactionPendOrderBuyList.size()){
+			if(setSellList.size() == transactionPendOrderSellList.size() && setSellList.size() > 0){
 				//清空该key
 				redisService.deleteValue(sellKey);
 				//插入最新数据
