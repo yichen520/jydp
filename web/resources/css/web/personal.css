@@ -1,0 +1,262 @@
+.contentRight{
+    background-color: #f2f2f0 !important;
+    border: none !important;
+}
+.top{
+    width: 1018px;
+    background-color: #ffffff;
+    border: 1px solid #f5f5f5;
+}
+.accountInfo{
+    display: table;
+    margin: 10px;
+    width: 998px;
+    padding: 20px 0;
+    -webkit-box-shadow: 0 0 8px rgba(237,237,236,0.95);
+    box-shadow: 0 0 8px rgba(237,237,236,0.95);
+}
+.info{
+    display: table-cell;
+    text-align: center;
+    width: 332px;
+}
+.infoTitle{
+    display: inline-block;
+    margin-bottom: 13px;
+    width: 100%;
+    font-size: 15px;
+    color: #000000;
+}
+.allMoney{
+    font-size: 18px;
+    color: #e83a33;
+}
+.money{
+    color: #333333;
+    font-size: 18px;
+}
+.accountTable{
+    margin: 0 10px 10px 10px;
+    width: 998px;
+}
+.coinTitle td,.coinInfo td{
+    text-align: center;
+    cursor: default;
+}
+.coinTitle{
+    height: 40px;
+    background-color: #fafafa;
+    font-size: 15px;
+    color: #666666;
+}
+.coinInfo{
+    height: 40px;
+    font-size: 14px;
+    color: #333333;
+}
+.coinInfo:hover{
+    background-color: #f5f5f5;
+}
+.coinInfo td{
+    border-top: 1px solid #f5f5f5;
+}
+.coin{
+    width: 200px;
+}
+.amount{
+    width: 236px;
+}
+.operate{
+    width: 90px;
+}
+.link{
+    font-size: 14px;
+    color: #68adfa;
+}
+.link:hover{
+    color: #52a1f9;
+}
+.safety{
+    margin-top: 20px;
+    width: 1018px;
+    background-color: #ffffff;
+    border: 1px solid #f5f5f5;
+}
+.safetyInfo{
+    margin: 0 10px;
+    width: 998px;
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid #f5f5f5;
+}
+.pass,.error{
+    margin: 11px 10px;
+    width: 18px;
+    height: 18px;
+    vertical-align: top;
+}
+.safetyTitle{
+    display: inline-block;
+    vertical-align: top;
+    width: 100px;
+    font-size: 14px;
+    color: #333333;
+}
+.state{
+    display: inline-block;
+    margin-left: 15px;
+    width: 200px;
+    color: #666666;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.explain{
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 15px;
+    color: #999999;
+    font-size: 14px;
+}
+.changePassword,.changePhone,.changePay{
+    float: right;
+    margin: 10px 10px 10px 0;
+    width: 50px;
+    height: 20px;
+    border: none;
+    text-align: center;
+    color: #68adfa;
+    font-size: 15px;
+    cursor: pointer;
+}
+.changePassword:hover,.changePhone:hover,.changePay:hover{
+    color: #52a1f9;
+}
+.listTips{
+    padding: 10px 20px;
+    width: 978px;
+    color: #999999;
+    font-size: 12px;
+}
+
+.changePay_pop,.changePhone_pop,.changePassword_pop,.tel_pop{
+    display: none;
+}
+.popName{
+    float: left;
+    width: 100px;
+    height: 35px;
+    line-height: 35px;
+    text-align: left;
+    color: #666666;
+    font-size: 14px;
+}
+.star{
+    color: #ff0000;
+}
+.entry{
+    float: right;
+    padding-left: 5px;
+    border: 1px solid #cccccc;
+    width: 250px;
+    height: 35px;
+    font-size: 12px;
+    color: #777777;
+}
+.popTel{
+    float: right;
+    width: 257px;
+    height: 35px;
+    line-height: 35px;
+    font-size: 12px;
+    color: #333333;
+}
+.popTel span{
+    margin-right: 15px;
+}
+.popChoose{
+    display: inline-block;
+    margin:20px 85px 0 85px;
+    width: 230px;
+    text-align: center;
+}
+.password{
+    float: left;
+    padding-bottom: 5px;
+    margin-right: 35px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333333;
+}
+.tel{
+    float: left;
+    padding-bottom: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333333;
+}
+.pick{
+    color: #e83a33;
+    border-bottom: 2px solid #e83a33;
+}
+.password:hover,.tel:hover{
+    color: #e83a33;
+}
+.popCode{
+    float: right;
+    border: 1px solid #cccccc;
+    width: 255px;
+    height: 35px;
+    text-align: left;
+}
+.code{
+    float: left;
+    padding-left: 5px;
+    width: 145px;
+    height: 34px;
+    border: none;
+    font-size: 12px;
+    color: #777777;
+}
+.message{
+    float: right;
+    width: 95px;
+    text-align: center;
+    color: #000000;
+    border: none;
+    height: 35px;
+    background-color: #f2f2f2;
+    cursor: pointer;
+}
+.message:hover{
+    background-color: #ececec;
+}
+.areTel{
+    padding-left: 5px;
+    width: 85px;
+    height: 35px;
+    border-right: 1px solid #cccccc;
+    border-left:none;
+    border-bottom:none;
+    border-top:none;
+    appearance:none;
+    -moz-appearance:none;
+    -webkit-appearance:none;
+    background: url("../../image/web/area.png") no-repeat scroll 70px center transparent;
+    background-size: 10px 6px;
+    padding-right: 14px;
+    font-size: 12px;
+}
+.telNumber{
+    width: 160px;
+    height: 35px;
+    border: none;
+    background-color: transparent;
+}
+.tips{
+    margin-top: 10px;
+    padding: 0 20px;
+    width: 360px;
+    font-size: 12px;
+    color: #666666;
+}
