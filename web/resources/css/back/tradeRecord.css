@@ -1,0 +1,21 @@
+.askSelect{
+    width: 100px;
+}
+.askInput{
+    width: 150px;
+}
+.startTime,.endTime{
+    width: 160px;
+}
+.order,.time{
+    width: 160px;
+}
+.account{
+    width: 170px;
+}
+.coin,.type{
+    width: 90px;
+}
+.amount{
+    width: 136px;
+}

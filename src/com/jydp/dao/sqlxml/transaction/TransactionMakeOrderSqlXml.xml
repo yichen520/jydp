@@ -52,7 +52,7 @@
             </if>
     </select>
 
-    <select id="TransactionMakeOrder_listTransactionMakeOrderForBack" parameterType="java.util.Map" resultType="TransactionMakeOrderDO">
+    <select id="TransactionMakeOrder_listTransactionMakeOrderForBack" parameterType="java.util.Map" resultType="TransactionMakeOrderVO">
         SELECT orderNo, paymentType, currencyId, currencyName, currencyNumber, currencyTotalPrice,
         backerAccount, ipAddress, executeStatus, remark, executeTime, addTime FROM
         transaction_make_order_tab
@@ -86,4 +86,30 @@
         LIMIT #{startNumber}, #{pageSize}
     </select>
 
+    <insert id="TransactionMakeOrder_insertTransactionMakeOrderList" parameterType="java.util.List">
+        INSERT INTO transaction_make_order_tab
+        (orderNo, paymentType, currencyId, currencyName, currencyNumber, currencyTotalPrice,
+         backerAccount, ipAddress, executeStatus, remark, executeTime, addTime)
+        VALUES
+            <foreach collection="list" item="item" index="index" separator=",">
+                (#{item.orderNo}, #{item.paymentType}, #{item.currencyId}, #{item.currencyName}, #{item.currencyNumber},
+                #{item.currencyTotalPrice}, #{item.backerAccount}, #{item.ipAddress}, #{item.executeStatus},
+                #{item.remark}, #{item.executeTime}, #{item.addTime})
+            </foreach>
+    </insert>
+
+    <update id="TransactionMakeOrder_updateOrderExecuteStatusByOrderNo" parameterType="java.util.Map">
+        UPDATE transaction_make_order_tab
+        SET executeStatus = #{executeStatus}
+        WHERE orderNo = #{orderNo}
+    </update>
+
+    <update id="TransactionMakeOrder_updateMakeOrderExecuteStatusByOrderNoList" parameterType="java.util.Map">
+        UPDATE transaction_make_order_tab
+        SET executeStatus = #{executeStatus}
+        WHERE orderNo IN
+                <foreach collection="orderNoList" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+    </update>
 </mapper>

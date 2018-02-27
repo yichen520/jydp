@@ -48,7 +48,7 @@
 		WHERE pendingOrderNo = #{pendingOrderNo}
 	</update>
 
-	<select id="TransactionPendOrder_listLatestRecords" parameterType="java.util.Map" resultType="TransactionPendOrderDO">
+	<select id="TransactionPendOrder_listLatestRecords" parameterType="java.util.Map" resultType="TransactionPendOrderDTO">
 		SELECT pendingPrice, SUM(pendingNumber) AS pendingNumber, SUM(dealNumber) AS dealNumber
 		FROM transaction_pend_order_tab
 		WHERE currencyId = #{currencyId}

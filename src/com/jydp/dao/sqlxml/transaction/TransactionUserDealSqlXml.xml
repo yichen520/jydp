@@ -59,17 +59,13 @@
 			</if>
 	</select>
 
-	<select id="TransactionUserDeal_listTransactionUserDealForBack" parameterType="java.util.Map" resultType="TransactionUserDealDO">
+	<select id="TransactionUserDeal_listTransactionUserDealForBack" parameterType="java.util.Map" resultType="TransactionUserDealVO">
 		SELECT TRUDTab.orderNo, TRUDTab.pendingOrderNo, TRUDTab.userId, TRUDTab.paymentType,
 			TRUDTab.currencyId, TRUDTab.currencyName, TRUDTab.currencyNumber, TRUDTab.currencyTotalPrice,
-			TRUDTab.remark, TRUDTab.addTime
+			TRUDTab.remark, TRUDTab.addTime, UTab.userAccount, PTab.addTime AS pendTime
 		FROM transaction_user_deal_tab TRUDTab
-			<if test="startPendTime != null or endPendTime != null">
-				INNER JOIN transaction_pend_order_tab PTab ON TRUDTab.pendingOrderNo = PTab.pendingOrderNo
-			</if>
-            <if test="userAccount != null and userAccount !=''">
-                INNER JOIN user_tab UTab ON TRUDTab.userId = UTab.userId
-            </if>
+			INNER JOIN transaction_pend_order_tab PTab ON TRUDTab.pendingOrderNo = PTab.pendingOrderNo
+			INNER JOIN user_tab UTab ON TRUDTab.userId = UTab.userId
 		WHERE 1=1
 			<if test="orderNo != null and orderNo !=''">
 				AND TRUDTab.orderNo LIKE CONCAT('%', #{orderNo}, '%')

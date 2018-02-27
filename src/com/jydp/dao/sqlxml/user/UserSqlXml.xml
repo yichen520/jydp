@@ -26,6 +26,18 @@
  		  AND accountStatus = #{oldAccountStatus}
  	</update>
 
+    <update id="User_forgetPayPwd" parameterType="java.util.Map">
+        UPDATE user_tab
+        SET payPassword = #{payPassword}
+        WHERE userId = #{userId}
+    </update>
+
+    <update id="User_updatePhone" parameterType="java.util.Map">
+        UPDATE user_tab
+        SET areaCode = #{areaCode},phoneNumber = #{phone}
+        WHERE userId = #{userId}
+    </update>
+
 	<update id="User_updateUser" parameterType="UserDO">
 		UPDATE user_tab
 		<set>
@@ -59,6 +71,14 @@
 		WHERE userAccount = #{userAccount}
 		 	  AND password = #{password}
 		 	  AND accountStatus <![CDATA[ > ]]> 0
+	</select>
+
+	<select id="User_validateUserPay" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(userId)
+		FROM user_tab
+		WHERE userAccount = #{userAccount}
+		AND password = #{payPassword}
+		AND accountStatus <![CDATA[ > ]]> 0
 	</select>
 
 	<select id="User_getUserByUserAccount" parameterType="String" resultType="UserDO">

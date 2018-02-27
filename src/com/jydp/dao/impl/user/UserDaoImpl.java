@@ -166,6 +166,59 @@ public class UserDaoImpl implements IUserDao {
     }
 
     /**
+     * 忘记支付密码
+     * @param userId 用户id
+     * @param payPassword 新密码（密文）
+     * @return  修改成功：返回true，修改失败：返回false
+     */
+    public boolean forgetPayPwd(int userId, String payPassword){
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("payPassword", payPassword);
+
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.update("User_forgetPayPwd", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 修改绑定手机号
+     * @param userId 用户id
+     * @param areaCode  手机区号
+     * @param phone  手机号
+     * @return  修改成功：返回true，修改失败：返回false
+     */
+    public boolean updatePhone(int userId, String areaCode, String phone){
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("areaCode", areaCode);
+        map.put("phone", phone);
+
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.update("User_updatePhone", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
      * 验证用户登录
      * @param userAccount 用户账号
      * @param password 账号密码（密文）
@@ -184,6 +237,32 @@ public class UserDaoImpl implements IUserDao {
             LogUtil.printErrorLog(e);
         }
         return user;
+    }
+
+
+    /**
+     * 验证用户支付密码
+     * @param userAccount 用户账号
+     * @param payPassword 支付密码（密文）
+     * @return 验证成功：返回true，验证失败：返回false
+     */
+    public boolean validateUserPay(String userAccount, String payPassword){
+        int result = 0;
+        Map<String, Object> map = new HashMap<>();
+        map.put("userAccount", userAccount);
+        map.put("payPassword", payPassword);
+
+        try {
+            result = sqlSessionTemplate.selectOne("User_validateUserPay",map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

@@ -1,7 +1,7 @@
 package com.jydp.quartz;
 
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
-import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
+import com.jydp.entity.DTO.TransactionPendOrderDTO;
 import com.jydp.service.IRedisService;
 import com.jydp.service.ITransactionCurrencyService;
 import com.jydp.service.ITransactionPendOrderService;
@@ -43,7 +43,7 @@ public class TransactionPageTimer {
 
 		for (TransactionCurrencyDO transactionCurrency: transactionCurrencyList) {
 			//买入记录
-			List<TransactionPendOrderDO> transactionPendOrderBuyList =
+			List<TransactionPendOrderDTO> transactionPendOrderBuyList =
 					transactionPendOrderService.listLatestRecords(1,transactionCurrency.getCurrencyId(),15);
 
 			//设置买入挂单记录key
@@ -53,7 +53,7 @@ public class TransactionPageTimer {
 
 			List<Object> setBuyList = new ArrayList<>();
 			if(transactionPendOrderBuyList.size() > 0){
-				for (TransactionPendOrderDO transactionPendOrder: transactionPendOrderBuyList
+				for (TransactionPendOrderDTO transactionPendOrder: transactionPendOrderBuyList
 						) {
 					setBuyList.add(transactionPendOrder);
 				}
@@ -71,7 +71,7 @@ public class TransactionPageTimer {
 			}
 
 			//卖出记录
-			List<TransactionPendOrderDO> transactionPendOrderSellList =
+			List<TransactionPendOrderDTO> transactionPendOrderSellList =
 					transactionPendOrderService.listLatestRecords(2,transactionCurrency.getCurrencyId(),15);
 
 			//设置卖出挂单记录key
@@ -81,7 +81,7 @@ public class TransactionPageTimer {
 
 			List<Object> setSellList = new ArrayList<>();
 			if(transactionPendOrderSellList.size() > 0){
-				for (TransactionPendOrderDO transactionPendOrder: transactionPendOrderSellList
+				for (TransactionPendOrderDTO transactionPendOrder: transactionPendOrderSellList
 						) {
 					setSellList.add(transactionPendOrder);
 				}

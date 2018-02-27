@@ -74,7 +74,7 @@ public class RedisServiceImpl implements IRedisService {
      * @return 操作成功：返回键对应的值，操作失败：返回null（redisKey为空则返回null）
      */
     public Object getValue(String redisKey) {
-        return redisDao.getMap(redisKey);
+        return redisDao.getValue(redisKey);
     }
 
     /**
