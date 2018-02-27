@@ -9,6 +9,7 @@ import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.user.UserBalanceDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
+import com.jydp.entity.DTO.UserDTO;
 import com.jydp.service.IBackerHandleUserRecordBalanceService;
 import com.jydp.service.ITransactionCurrencyService;
 import com.jydp.service.IUserBalanceService;
@@ -121,7 +122,7 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public boolean forgetPwd(String userAccount, String password) {
-        UserDO user = new UserDO();
+        UserDTO user = new UserDTO();
         user.setUserAccount(userAccount);
         user.setPassword(password);
         return userDao.updateUser(user);
@@ -284,16 +285,17 @@ public class UserServiceImpl implements IUserService {
     public boolean addBalanceNumberForBack(int userId, String userAccount, double balanceNumber,
                                              int backerId, String backerAccount, String remarks, String ipAddress) {
         Timestamp currentTime = DateUtil.getCurrentTime();
-        //业务类型（2）+日期（6）+随机位（10）
         String orderNo = SystemCommonConfig.AMOUNT_BALANCE_USER + DateUtil.longToTimeStr(currentTime.getTime(), DateUtil.dateFormat10) + NumberUtil.createNumberStr(10);
         UserBalanceDO userBalanceDO = new UserBalanceDO();
+        userBalanceDO.setOrderNo(orderNo);  //记录号：业务类型（2）+日期（6）+随机位（10）
         userBalanceDO.setUserId(userId);
-        userBalanceDO.setAddTime(currentTime);
-        userBalanceDO.setBalanceNumber(balanceNumber);  //交易金额：单位(美刀$)
         userBalanceDO.setFromType("系统操作");
-        userBalanceDO.setPaymentType(1);  //收支类型：1：买入，2：卖出
-        userBalanceDO.setOrderNo(orderNo);
+        userBalanceDO.setCurrencyId(999);  //币种Id,美元id=999
+        userBalanceDO.setCurrencyName("美金");  //货币名称
+        userBalanceDO.setBalanceNumber(balanceNumber);  //交易数量
+        userBalanceDO.setFrozenNumber(0);  //冻结数量
         userBalanceDO.setRemark(remarks);
+        userBalanceDO.setAddTime(currentTime);
 
         //业务执行状态
         boolean executeSuccess = true;
@@ -347,13 +349,15 @@ public class UserServiceImpl implements IUserService {
         //业务类型（2）+日期（6）+随机位（10）
         String orderNo = SystemCommonConfig.AMOUNT_BALANCE_USER + DateUtil.longToTimeStr(currentTime.getTime(), DateUtil.dateFormat10) + NumberUtil.createNumberStr(10);
         UserBalanceDO userBalanceDO = new UserBalanceDO();
+        userBalanceDO.setOrderNo(orderNo);  //记录号：业务类型（2）+日期（6）+随机位（10）
         userBalanceDO.setUserId(userId);
-        userBalanceDO.setAddTime(currentTime);
-        userBalanceDO.setBalanceNumber(balanceNumber);  //交易金额：单位(美刀$)
         userBalanceDO.setFromType("系统操作");
-        userBalanceDO.setPaymentType(2);  //收支类型：1：买入，2：卖出
-        userBalanceDO.setOrderNo(orderNo);
+        userBalanceDO.setCurrencyId(999);  //币种Id,美元id=999
+        userBalanceDO.setCurrencyName("美金");  //货币名称
+        userBalanceDO.setBalanceNumber(-balanceNumber);  //交易数量
+        userBalanceDO.setFrozenNumber(0);  //冻结数量
         userBalanceDO.setRemark(remarks);
+        userBalanceDO.setAddTime(currentTime);
 
         //业务执行状态
         boolean executeSuccess = true;

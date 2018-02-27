@@ -3,6 +3,7 @@ package com.jydp.dao.impl.user;
 import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.IUserFeedbackDao;
 import com.jydp.entity.DO.user.UserFeedbackDO;
+import org.apache.commons.collections4.map.HashedMap;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -105,6 +106,65 @@ public class UserFeedbackDaoImpl implements IUserFeedbackDao {
         try {
             result = sqlSessionTemplate.update("UserFeedback_updateUserFeedbackById", map);
         } catch(Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 查询意见反馈总数 (web端)
+     * @return 查询成功:返回意见反馈总数, 查询失败:返回0
+     */
+    public int countUserFeedbackForUser() {
+        int result = 0;
+
+        try {
+            result = sqlSessionTemplate.selectOne("UserFeedback_countUserFeedbackForUser");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return result;
+    }
+
+    /**
+     * 分页查询意见反馈 (web端)
+     * @param pageNumber 当前页数
+     * @param pageSize 每页大小
+     * @return 查询成功:返回当前页的意见反馈列表, 查询失败:返回null
+     */
+    public List<UserFeedbackDO> listUserFeedbackForUser(int pageNumber, int pageSize) {
+        List<UserFeedbackDO> resultList = null;
+
+        Map<String, Object> map = new HashedMap<String, Object>();
+        map.put("startNumber", pageNumber * pageSize);
+        map.put("pageSize", pageSize);
+
+        try {
+            resultList = sqlSessionTemplate.selectList("UserFeedback_listUserFeedbackForUser", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return resultList;
+    }
+
+    /**
+     * 新增意见反馈
+     * @param userFeedbackDO 待新增的意见反馈
+     * @return 操作成功:返回true, 操作失败:返回false
+     */
+    public boolean insertUserFeedback(UserFeedbackDO userFeedbackDO) {
+        int result = 0;
+
+        try {
+            result = sqlSessionTemplate.insert("UserFeedback_insertUserFeedback", userFeedbackDO);
+        } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
 

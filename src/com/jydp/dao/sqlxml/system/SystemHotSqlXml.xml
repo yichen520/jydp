@@ -72,4 +72,16 @@
         SET topTime = #{topTime}
         WHERE id = #{id}
     </update>
+
+    <select id="SystemHot_countSystemHotForUser" resultType="int">
+        SELECT COUNT(id)
+		FROM system_hot_tab
+    </select>
+
+    <select id="SystemHot_listSystemHotForUser" parameterType="java.util.Map" resultType="SystemHotDO">
+        SELECT id, noticeTitle, noticeUrl, content, addTime, topTime, noticeType
+        FROM system_hot_tab
+        ORDER BY topTime DESC, addTime DESC
+        LIMIT #{startNumber}, #{pageSize}
+    </select>
 </mapper>

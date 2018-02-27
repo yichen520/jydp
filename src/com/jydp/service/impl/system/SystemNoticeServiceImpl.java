@@ -62,6 +62,24 @@ public class SystemNoticeServiceImpl implements ISystemNoticeService {
     }
 
     /**
+     *  查询系统公告总数（web端）
+     * @return 查询成功:返回记录总数, 查询失败:返回0
+     */
+    public int countSystemNoticeForUser() {
+        return systemNoticeDao.countSystemNoticeForUser();
+    }
+
+    /**
+     *  查询系统公告列表（web端）
+     * @param pageNumber 当前页数
+     * @param pageSize 每页大小
+     * @return 查询成功:返回公告列表, 查询失败:返回null
+     */
+    public List<SystemNoticeDO> listSystemNoticeForUser(int pageNumber, int pageSize) {
+        return systemNoticeDao.listSystemNoticeForUser(pageNumber, pageSize);
+    }
+
+    /**
      * 查询用户公告总数
      * @param noticeType 公告类型，没有填null
      * @param noticeTitle 公告标题，没有填null

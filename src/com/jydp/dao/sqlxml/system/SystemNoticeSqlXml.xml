@@ -79,4 +79,16 @@
 		DELETE FROM system_notice_tab
 		WHERE id = #{id}
 	</delete>
+
+	<select id="SystemNotice_countSystemNoticeForUser" resultType="int">
+		SELECT COUNT(id)
+		FROM system_notice_tab
+	</select>
+
+	<select id="SystemNotice_listSystemNoticeForUser" parameterType="java.util.Map" resultType="SystemNoticeDO">
+		SELECT id, noticeType, noticeTitle, noticeUrl, content, topTime, addTime
+		FROM system_notice_tab
+		ORDER BY topTime DESC, addTime DESC
+		LIMIT #{startNumber}, #{pageSize}
+	</select>
 </mapper>

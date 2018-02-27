@@ -15,13 +15,7 @@ import com.jydp.service.IBackerService;
 import com.jydp.service.IUserCurrencyNumService;
 import com.jydp.service.IUserService;
 import com.jydp.service.IUserSessionService;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFDataFormat;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFDataFormat;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -37,7 +31,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Timestamp;
-import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -480,7 +473,7 @@ public class BackerUserAccountController {
             sheet1.setColumnWidth(2, 6000);
             sheet1.setColumnWidth(3, 6000);
             sheet1.setColumnWidth(4, 6000);
-            sheet1.setColumnWidth(5, 6000);
+            sheet1.setColumnWidth(5, 3000);
 
             int rowNumber = 1;
             for (UserDO user : userList) {
