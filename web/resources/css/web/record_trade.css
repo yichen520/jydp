@@ -1,0 +1,24 @@
+.order{
+    width: 170px;
+}
+.coin{
+    width: 100px;
+}
+.type{
+    width: 70px;
+}
+.amount{
+    width: 220px;
+}
+.in{
+    color: #e83a33;
+}
+.pay{
+    color: #4dac7b;
+}
+.back{
+    color: #68adfa;
+}
+.time{
+    width: 160px;
+}

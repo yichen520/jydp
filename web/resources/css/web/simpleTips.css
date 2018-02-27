@@ -1,0 +1,46 @@
+.tipsMask{
+    display:none;
+    position:fixed;
+    width:100%;
+    height:100%;
+    background-color:rgba(0,0,0,0.6);
+    z-index:10;
+    top:0;
+}
+.tips_content{
+    width:350px;
+    border:none;
+    margin:0 auto;
+    background-color:white;
+    margin-top:100px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+.tipsMaskText{
+    padding: 30px 15px;
+    text-align: center;
+    color: #333333;
+    font-size: 18px;
+}
+.Button{
+    display: inline-block;
+    width: 100%;
+    margin: 20px 0;
+    text-align: center;
+}
+.ButtonTwo{
+    text-align: center;
+}
+.tipsYes{
+    width: 65px;
+    height: 30px;
+    border: 1px solid #e83a33;
+    background-color: #e83a33;
+    text-align: center;
+    font-size: 14px;
+    color: #ffffff;
+    cursor: pointer;
+}
+.tipsYes:hover{
+   background-color: #d0342e;
+}
