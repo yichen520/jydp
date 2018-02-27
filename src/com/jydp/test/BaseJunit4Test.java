@@ -1,10 +1,6 @@
 package com.jydp.test;
 
-import com.jydp.entity.DO.user.UserDO;
-import com.jydp.service.IRedisService;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -27,9 +23,6 @@ public class BaseJunit4Test {
     /*@Autowired
     private IUserSessionService userSessionService;*/
 
-    @Autowired
-    private IRedisService redisService;
-
     /**
      * 测试示例
      */
@@ -48,74 +41,5 @@ public class BaseJunit4Test {
 
         userSessionService.insertUserSession(userSessionDO);
     }*/
-
-/*    @Autowired
-    private ITransactionPendOrderService transactionPendOrderService;
-
-    @Test
-    public void testInsertPendOrder() {
-        Timestamp curTime = DateUtil.getCurrentTime();
-
-        transactionPendOrderService.insertPendOrder("12201802081234567890",1, 1, 1,
-        "btc", 8288.36, 12.35,
-        0, 1, "挂单", curTime);
-    }
-
-    @Test
-    public void testUpdatePendOrder() {
-        Timestamp curTime = DateUtil.getCurrentTime();
-
-        transactionPendOrderService.updatePendOrder("12201802081234567890",1, 1, "修改", curTime);
-    }
-
-    @Test
-    public void testGetPendOrderByPendingOrderNo() {
-        transactionPendOrderService.getPendOrderByPendingOrderNo("12201802081234567890");
-    }
-
-    @Test
-    public void testCountPendOrderByUserId() {
-        transactionPendOrderService.countPendOrderByUserId(1);
-    }
-
-    @Test
-    public void testListPendOrderByUserId() {
-        transactionPendOrderService.listPendOrderByUserId(1, 1,20);
-    }
-
-    @Test
-    public void testUpdatePendingStatus() {
-        transactionPendOrderService.updatePendingStatus("12201802081234567890", 1);
-    }
-
-    @Test
-    public void testListLatestRecords() {
-        transactionPendOrderService.listLatestRecords(1,1,6);
-    }
-
-    @Test
-    public void testCountPendOrderForBack() {
-        Timestamp curTime = DateUtil.getCurrentTime();
-
-        transactionPendOrderService.countPendOrderForBack("hz",1,1,1, curTime,
-                curTime, curTime, curTime);
-    }
-
-    @Test
-    public void testListPendOrderForBack() {
-        Timestamp curTime = DateUtil.getCurrentTime();
-
-        transactionPendOrderService.listPendOrderForBack("hz",1,1,1, curTime,
-                curTime, curTime, curTime,1,20);
-    }*/
-
-    @Test
-    public void testRedis() {
-        UserDO user = new UserDO();
-        user.setUserAccount("mmp");
-        redisService.addValue("123",user);
-        UserDO u = (UserDO) redisService.getValue("cnm");
-        System.out.println(u.getUserAccount());
-    }
 
 }
