@@ -141,6 +141,47 @@ public class TransactionUserDealDaoImpl implements ITransactionUserDealDao{
     }
 
     /**
+     * 根据挂单记录号查询成交记录条数
+     * @param pendNo  挂单记录号
+     * @return  操作成功：返回成交记录条数，操作失败:返回0
+     */
+    public int countTransactionUserDealByPendNo(String pendNo){
+        int result = 0;
+
+        try {
+            result = sqlSessionTemplate.selectOne("TransactionUserDeal_countTransactionUserDealByPendNo", pendNo);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return  result;
+    }
+
+    /**
+     * 根据挂单记录号查询成交记录
+     * @param pendNo  挂单记录号
+     * @param pageNumber  当前页数
+     * @param pageSize  每页条数
+     * @return  操作成功：返回成交记录集合，操作失败:返回null
+     */
+    public List<TransactionUserDealDO> listTransactionUserDealByPendNo(String pendNo, int pageNumber, int pageSize){
+        List<TransactionUserDealDO> resultList = null;
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("pendNo", pendNo);
+        map.put("startNumber", pageNumber * pageSize);
+        map.put("pageSize", pageSize);
+
+        try {
+            resultList = sqlSessionTemplate.selectList("TransactionUserDeal_listTransactionUserDealByPendNo", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return resultList;
+    }
+
+    /**
      * 查询用户成交记录总数
      * @param userId 用户Id
      * @return 查询成功：返回记录总数，查询失败：返回0

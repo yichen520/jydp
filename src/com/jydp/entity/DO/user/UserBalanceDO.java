@@ -11,15 +11,15 @@ public class UserBalanceDO {
 
     private String orderNo;  //记录号：业务类型（2）+日期（6）+随机位（10）
     private int userId;  //用户Id
-    private int paymentType;  //收支类型：1：买入，2：卖出
     private String fromType;  //账户来源
-    private double balanceNumber;  //交易金额：单位(美刀$)
+    private int currencyId;  //币种Id,美元id=999
+    private double balanceNumber;  //交易数量
+    private double frozenNumber;  //冻结数量
     private String remark;  //备注：手续费
     private Timestamp addTime;  //添加时间
 
     /**
      * 记录号：业务类型（2）+日期（6）+随机位（10）
-     *
      * @return the order no
      */
     public String getOrderNo() {
@@ -28,7 +28,6 @@ public class UserBalanceDO {
 
     /**
      * 记录号：业务类型（2）+日期（6）+随机位（10）
-     *
      * @param orderNo the order no
      */
     public void setOrderNo(String orderNo) {
@@ -37,7 +36,6 @@ public class UserBalanceDO {
 
     /**
      * 用户Id
-     *
      * @return the user id
      */
     public int getUserId() {
@@ -46,7 +44,6 @@ public class UserBalanceDO {
 
     /**
      * 用户Id
-     *
      * @param userId the user id
      */
     public void setUserId(int userId) {
@@ -54,26 +51,7 @@ public class UserBalanceDO {
     }
 
     /**
-     * 收支类型：1：买入，2：卖出
-     *
-     * @return the payment type
-     */
-    public int getPaymentType() {
-        return paymentType;
-    }
-
-    /**
-     * 收支类型：1：买入，2：卖出
-     *
-     * @param paymentType the payment type
-     */
-    public void setPaymentType(int paymentType) {
-        this.paymentType = paymentType;
-    }
-
-    /**
      * 账户来源
-     *
      * @return the from type
      */
     public String getFromType() {
@@ -82,7 +60,6 @@ public class UserBalanceDO {
 
     /**
      * 账户来源
-     *
      * @param fromType the from type
      */
     public void setFromType(String fromType) {
@@ -90,8 +67,7 @@ public class UserBalanceDO {
     }
 
     /**
-     * 交易金额：单位(美刀$)
-     *
+     * 交易数量
      * @return the balance number
      */
     public double getBalanceNumber() {
@@ -99,8 +75,7 @@ public class UserBalanceDO {
     }
 
     /**
-     * 交易金额：单位(美刀$)
-     *
+     * 交易数量
      * @param balanceNumber the balance number
      */
     public void setBalanceNumber(double balanceNumber) {
@@ -108,8 +83,7 @@ public class UserBalanceDO {
     }
 
     /**
-     * Gets remark.
-     *
+     * 备注：手续费
      * @return the remark
      */
     public String getRemark() {
@@ -118,7 +92,6 @@ public class UserBalanceDO {
 
     /**
      * 备注：手续费
-     *
      * @param remark the remark
      */
     public void setRemark(String remark) {
@@ -126,9 +99,8 @@ public class UserBalanceDO {
     }
 
     /**
-     * 备注：手续费
-     *
-     * @return the add time
+     * 添加时间
+     * @return the addTime
      */
     public Timestamp getAddTime() {
         return addTime;
@@ -136,10 +108,41 @@ public class UserBalanceDO {
 
     /**
      * 添加时间
-     *
-     * @param addTime the add time
+     * @param addTime the addTime
      */
     public void setAddTime(Timestamp addTime) {
         this.addTime = addTime;
+    }
+
+    /**
+     * 币种Id,美元id=999
+     * @return the currencyId
+     */
+    public int getCurrencyId() {
+        return currencyId;
+    }
+
+    /**
+     * 币种Id,美元id=999
+     * @param currencyId the currencyId
+     */
+    public void setCurrencyId(int currencyId) {
+        this.currencyId = currencyId;
+    }
+
+    /**
+     * 冻结数量
+     * @return the frozenNumber
+     */
+    public double getFrozenNumber() {
+        return frozenNumber;
+    }
+
+    /**
+     * 冻结数量
+     * @param frozenNumber the frozenNumber
+     */
+    public void setFrozenNumber(double frozenNumber) {
+        this.frozenNumber = frozenNumber;
     }
 }
