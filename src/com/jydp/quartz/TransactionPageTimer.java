@@ -5,6 +5,7 @@ import com.jydp.entity.DTO.TransactionPendOrderDTO;
 import com.jydp.service.IRedisService;
 import com.jydp.service.ITransactionCurrencyService;
 import com.jydp.service.ITransactionPendOrderService;
+import config.RedisKeyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -47,9 +48,9 @@ public class TransactionPageTimer {
 					transactionPendOrderService.listLatestRecords(1,transactionCurrency.getCurrencyId(),15);
 
 			//设置买入挂单记录key
-			String buyKey = "transactionPendOrderBuyList" + transactionCurrency.getCurrencyId();
+			String buyKey = RedisKeyConfig.BUYKEY + transactionCurrency.getCurrencyId();
 			//设置买一价key
-			String buyOneKey = "buyOne" + transactionCurrency.getCurrencyId();
+			String buyOneKey = RedisKeyConfig.BUYONEKEY + transactionCurrency.getCurrencyId();
 
 			List<Object> setBuyList = new ArrayList<>();
 			if(transactionPendOrderBuyList.size() > 0){
@@ -75,9 +76,9 @@ public class TransactionPageTimer {
 					transactionPendOrderService.listLatestRecords(2,transactionCurrency.getCurrencyId(),15);
 
 			//设置卖出挂单记录key
-			String sellKey = "transactionPendOrderSellList" + transactionCurrency.getCurrencyId();
+			String sellKey = RedisKeyConfig.SELLKEY + transactionCurrency.getCurrencyId();
 			//设置卖一价key
-			String sellOneKey = "sellOne" + transactionCurrency.getCurrencyId();
+			String sellOneKey = RedisKeyConfig.SELLONEKEY + transactionCurrency.getCurrencyId();
 
 			List<Object> setSellList = new ArrayList<>();
 			if(transactionPendOrderSellList.size() > 0){

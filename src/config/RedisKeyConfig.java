@@ -7,12 +7,12 @@ package config;
 public class RedisKeyConfig {
 
     /** 买一价key */
-    public static final String buyOneKey = "buyOne";
+    public static final String BUYONEKEY = "buyOne";
     /** 卖一价key */
-    public static final String sellOneKey = "sellOne";
-    /** 买入挂单记录key */
-    public static final String buyKey = "transactionPendOrderBuyList";
-    /** 卖出挂单记录key */
-    public static final String sellKey = "transactionPendOrderSellList";
+    public static final String SELLONEKEY = "sellOne";
+    /** 买入挂单记录key（后面需跟上币种id） */
+    public static final String BUYKEY = "transactionPendOrderBuyList";
+    /** 卖出挂单记录key（后面需跟上币种id） */
+    public static final String SELLKEY = "transactionPendOrderSellList";
 
 }
