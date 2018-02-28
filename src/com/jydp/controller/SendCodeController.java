@@ -39,16 +39,7 @@ public class SendCodeController {
     JSONObject sendPhoneCode(HttpServletRequest request, @RequestBody String requestJsonString){
 		JSONObject resultJson = new JSONObject();
 
-		JSONObject requestJson = null;
-		try {
-			requestJson = JSONObject.parseObject(requestJsonString);
-		} catch (Exception e) {
-			resultJson.put("code", 3);
-			resultJson.put("message", "JSON格式错误");
-			return resultJson;
-		}
-
-		String phoneNumber = StringUtil.stringNullHandle(requestJson.getString("phoneNumber"));
+		String phoneNumber = StringUtil.stringNullHandle(request.getParameter("phoneNumber"));
 		String ipAddress = IpAddressUtil.getIpAddress(request);
 		if(!StringUtil.isNotNull(phoneNumber) || !StringUtil.isNotNull(ipAddress)){
 			resultJson.put("code", 3);

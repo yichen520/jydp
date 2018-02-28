@@ -115,7 +115,7 @@
             <p class="popTips"><img src="<%=path%>/resources/image/back/tips.png" class="tipsImg" />确定认证通过？</p>
             <p class="popInput">
                 <label class="popName" style="line-height: 20px">备注：</label>
-                <textarea class="txt" id="passRemark" placeholder="备注，非必填，最多100个字符"></textarea>
+                <textarea class="txt" id="passRemark" placeholder="备注，非必填，最多100个字符" maxlength="100"></textarea>
             </p>
 
             <div class="buttons">
@@ -129,7 +129,7 @@
             <p class="popTips"><img src="<%=path%>/resources/image/back/tips.png" class="tipsImg" />确定认证拒绝？</p>
             <p class="popInput">
                 <label class="popName" style="line-height: 20px">备注：</label>
-                <textarea class="txt" id="refuseRemark" placeholder="备注，非必填，最多100个字符"></textarea>
+                <textarea class="txt" id="refuseRemark" placeholder="备注，非必填，最多100个字符" maxlength="100"></textarea>
             </p>
 
             <div class="buttons">
@@ -169,6 +169,9 @@
         }
 
         var passRemark = $("#passRemark").val();
+        if (passRemark.length > 100) {
+            return openTips("审核备注过长！")
+        }
         $.ajax({
             url: '<%=path %>' + "/backerWeb/backerIdentification/pass.htm",
             type:'post',
@@ -201,6 +204,9 @@
         }
 
         var refuseRemark = $("#refuseRemark").val();
+        if (refuseRemark.length > 100) {
+            return openTips("审核备注过长！")
+        }
         $.ajax({
             url: '<%=path %>' + "/backerWeb/backerIdentification/refuse.htm",
             type:'post',

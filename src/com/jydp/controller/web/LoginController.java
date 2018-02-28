@@ -23,13 +23,19 @@ import javax.servlet.http.HttpServletRequest;
  * @author yk
  */
 @Controller
-@RequestMapping("/web/user")
+@RequestMapping("/userWeb/userLogin")
 @Scope(value = "prototype")
 public class LoginController {
 
     /** 用户账号 */
     @Autowired
     private IUserService userService;
+
+    /**  跳转至登录页面 */
+    @RequestMapping(value = "/show")
+    public String show() {
+        return "page/web/login";
+    }
 
     /** 登录 */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -40,7 +46,7 @@ public class LoginController {
         if(!StringUtil.isNotNull(userAccount) || !StringUtil.isNotNull(password)){
             request.setAttribute("code", 2);
             request.setAttribute("message", "参数错误");
-            return "page/login";
+            return "page/web/login";
         }
 
         password = MD5Util.toMd5(password);
@@ -48,20 +54,20 @@ public class LoginController {
         if (user == null) {
             request.setAttribute("code", 2);
             request.setAttribute("message", "账号或密码错误");
-            return "page/login";
+            return "page/web/login";
         }
 
         if (user.getAccountStatus() != 1) {
             request.setAttribute("code", 2);
             request.setAttribute("message", "用户被禁用");
-            return "page/login";
+            return "page/web/login";
         }
 
         UserSessionBO userSessionBO = new UserSessionBO();
         userSessionBO.setUserId(user.getUserId());
         userSessionBO.setUserAccount(user.getUserAccount());
         UserWebInterceptor.loginSuccess(request, userSessionBO);
-        return "redirect:/backerWeb/backerIndex/index.htm";
+        return "redirect:/userWeb/homePage/show";
     }
 
     /** 退出登录 */
@@ -70,12 +76,12 @@ public class LoginController {
         UserSessionBO userSession =(UserSessionBO)request.getSession().getAttribute("userSession");
         if (userSession == null) {
             request.getSession().invalidate();
-            return "page/login";
+            return "page/web/login";
         }
 
         UserWebInterceptor.loginOut(request);
         request.setAttribute("code", 1);
         request.setAttribute("message", "退出登录成功");
-        return "page/login";
+        return "page/web/login";
     }
 }

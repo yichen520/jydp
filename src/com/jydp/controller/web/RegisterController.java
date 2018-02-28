@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author yk
  */
 @Controller
-@RequestMapping("/web/user")
+@RequestMapping("/userWeb/userRegister")
 @Scope(value = "prototype")
 public class RegisterController {
 
@@ -33,8 +34,16 @@ public class RegisterController {
     @Autowired
     private ISystemValidatePhoneService systemValidatePhoneService;
 
+    /**
+     * 跳转至注册页面
+     */
+    @RequestMapping(value = "/show")
+    public String show() {
+        return "page/web/register";
+    }
+
     /** 校验用户名 */
-    @RequestMapping(value = "/validateAccount")
+    @RequestMapping(value = "/validateAccount",method = RequestMethod.POST)
     public @ResponseBody JsonObjectBO validateAccount(HttpServletRequest request){
         JsonObjectBO responseJson = new JsonObjectBO();
 
@@ -58,7 +67,7 @@ public class RegisterController {
     }
 
     /** 用户注册 */
-    @RequestMapping(value = "/register")
+    @RequestMapping(value = "/register",method = RequestMethod.POST)
     public @ResponseBody JsonObjectBO register(HttpServletRequest request) {
         JsonObjectBO responseJson = new JsonObjectBO();
 
@@ -66,9 +75,9 @@ public class RegisterController {
         String password = StringUtil.stringNullHandle(request.getParameter("password"));
         String validateCode = StringUtil.stringNullHandle(request.getParameter("validateCode"));
         String phoneAreaCode = StringUtil.stringNullHandle(request.getParameter("phoneAreaCode"));
-        String userPhone = StringUtil.stringNullHandle(request.getParameter("userPhone"));
+        String phoneNumber = StringUtil.stringNullHandle(request.getParameter("phoneNumber"));
         if (!StringUtil.isNotNull(userAccount) || !StringUtil.isNotNull(password) || !StringUtil.isNotNull(phoneAreaCode) ||
-                !StringUtil.isNotNull(validateCode) || !StringUtil.isNotNull(userPhone)) {
+                !StringUtil.isNotNull(validateCode) || !StringUtil.isNotNull(phoneNumber)) {
             responseJson.setCode(2);
             responseJson.setMessage("用户注册信息不能为空");
             return responseJson;
@@ -81,7 +90,7 @@ public class RegisterController {
             return responseJson;
         }
 
-        UserDO user = userService.getUserByPhone(userPhone);
+        UserDO user = userService.getUserByPhone(phoneNumber);
         if (user != null) {
             responseJson.setCode(2);
             responseJson.setMessage("该手机号已被注册");
@@ -89,13 +98,13 @@ public class RegisterController {
         }
 
         //校验用户注册信息合法性
-        responseJson = userService.validateUserInfo(userAccount,password,userPhone);
+        responseJson = userService.validateUserInfo(userAccount,password,phoneNumber);
 
         if (responseJson.getCode() != 1) {
             return responseJson;
         }
 
-        responseJson = systemValidatePhoneService.validatePhone(userPhone, validateCode);
+        responseJson = systemValidatePhoneService.validatePhone(phoneNumber, validateCode);
         if (responseJson.getCode() != 1) {
             return responseJson;
         }
@@ -104,7 +113,7 @@ public class RegisterController {
         userDO.setUserAccount(userAccount);
         userDO.setPassword(MD5Util.toMd5(password));
         userDO.setPhoneAreaCode(phoneAreaCode);
-        userDO.setPhoneNumber(userPhone);
+        userDO.setPhoneNumber(phoneNumber);
         userDO.setPayPassword(MD5Util.toMd5("123456"));
         userDO.setAccountStatus(1);
         userDO.setAddTime(DateUtil.getCurrentTime());
@@ -120,5 +129,4 @@ public class RegisterController {
         }
         return responseJson;
     }
-
 }

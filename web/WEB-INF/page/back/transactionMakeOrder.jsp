@@ -56,7 +56,7 @@
                                       onClick="laydate({istime: true,format: 'YYYY-MM-DD hh:mm:ss'})" />
                     </p>
                     <p class="condition">币种：
-                        <select class="askSelect" id="currencyId" name="currencyId">
+                        <select class="askSelect" id="currencyId" name="currencyName">
                             <option value="">全部</option>
                             <c:forEach items="${transactionCurrencyList}" var="item">
                                 <option value="${item.currencyName}">${item.currencyName}</option>
@@ -80,7 +80,7 @@
                             <option value="5">已撤回</option>
                         </select>
                     </p>
-                    <p class="condition">管理员账号：<input type="text" class="askInput" id="backAccount" name="backAccount" value="${backAccount}"/></p>
+                    <p class="condition">管理员账号：<input type="text" class="askInput" id="backAccount" name="backAccount" maxlength="16" onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" value="${backAccount}"/></p>
                     <p class="condition">
                         执行时间：
                         从&nbsp;<input placeholder="请选择起始时间" class="startTime" id="start"  name="startExecuteTime"
@@ -214,12 +214,14 @@
             <p class="popInput">
                 <label class="popName">成交数量<span class="star">*</span></label>
                 <input type="text" class="entry" placeholder="成交币种的数量"
-                       id="addCurrencyNumber" name="addCurrencyNumber" onkeyup="mul()"/>
+                       onkeyup="matchUtil(this, 'double')" onblur="matchUtil(this, 'double')"
+                       id="addCurrencyNumber" name="addCurrencyNumber"/>
             </p>
             <p class="popInput">
                 <label class="popName">成交单价<span class="star">*</span></label>
                 <input type="text" class="entry" placeholder="成交币种的单价，单位：美元"
-                       id="addCurrencyPrice" name="addCurrencyPrice" onkeyup="mul()"/>
+                       onkeyup="matchUtil(this, 'double')" onblur="matchUtil(this, 'double')"
+                       id="addCurrencyPrice" name="addCurrencyPrice"/>
             </p>
             <p class="popInput">
                 <label class="popName">成交总价</label>
@@ -373,6 +375,23 @@
             openTips(message);
             return ;
         }
+
+        $("#currencyId option").each(function(){
+            if($(this).val()=='${currencyName}'){
+                $(this).attr('selected',true);
+            }
+        });
+        $("#paymentType option").each(function(){
+            if($(this).val()=='${paymentType}'){
+                $(this).attr('selected',true);
+            }
+        });
+        $("#executeStatus option").each(function(){
+            if($(this).val()=='${executeStatus}'){
+                $(this).attr('selected',true);
+            }
+        });
+
     }
 
     //查询
@@ -387,7 +406,8 @@
         var price = parseFloat($("#addCurrencyPrice").val());
         if (number > 0) {
             if (price > 0) {
-                $("#addTotalPrice").html(number * price);
+                var total = Math.floor(number * price * 1000000) / 1000000;
+                $("#addTotalPrice").html(total);
                 return;
             }
         }
@@ -745,6 +765,31 @@
             }
         });
 
+    }
+
+    var mapMatch = {};
+    mapMatch['number'] = /[^\d]/g;
+    mapMatch['ENumber'] = /[^\a-\z\A-\Z\d]/g;
+    mapMatch['double'] = true;
+    mapMatch['phone'] = /[^\d]/g;
+    mapMatch['email'] = /([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+    function matchUtil(o, str) {
+        mapMatch[str] === true ? matchDouble(o, 6) : o.value = o.value.replace(mapMatch[str], '');
+    }
+    function matchDouble(o, num){
+        var matchStr = /^-?\d+\.?\d{0,num}$/;
+        if(!matchStr.test(o.value)){
+            if(isNaN(o.value)){
+                o.value = '';
+            }else{
+                var n = o.value.indexOf('.');
+                var m = n + num + 1;
+                if(n > -1 && o.value.length > m){
+                    o.value = o.value.substring(0, m);
+                }
+            }
+        }
+        mul();
     }
 
 </script>

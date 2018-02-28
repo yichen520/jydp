@@ -10,6 +10,7 @@ import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DTO.TransactionPendOrderDTO;
 import com.jydp.service.*;
 import config.SystemCommonConfig;
+import config.UserBalanceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -240,9 +241,9 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
                 UserBalanceDO userBalance = new UserBalanceDO();
                 userBalance.setOrderNo(orderNo);
                 userBalance.setUserId(userId);
-                userBalance.setCurrencyId(999);
-                userBalance.setCurrencyName("美金");
-                userBalance.setFromType("撤销挂单返还冻结美金");
+                userBalance.setCurrencyId(UserBalanceConfig.DOLLAR_ID);
+                userBalance.setCurrencyName(UserBalanceConfig.DOLLAR);
+                userBalance.setFromType(UserBalanceConfig.REVOKE_BUY_ORDER);
                 userBalance.setBalanceNumber(balanceRevoke);
                 userBalance.setFrozenNumber(-balanceRevoke);
                 userBalance.setRemark("返还冻结的手续费");
@@ -279,7 +280,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
                 userBalance.setUserId(userId);
                 userBalance.setCurrencyId(currencyId);
                 userBalance.setCurrencyName(transactionPendOrder.getCurrencyName());
-                userBalance.setFromType("撤销挂单返还冻结币");
+                userBalance.setFromType(UserBalanceConfig.REVOKE_SELL_ORDER);
                 userBalance.setBalanceNumber(num);
                 userBalance.setFrozenNumber(-num);
                 userBalance.setRemark("无手续费");
@@ -306,7 +307,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
                     DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
                     NumberUtil.createNumberStr(10);
 
-            excuteSuccess = transactionUserDealService.insertTransactionUserDeal(orderNo, "0", userId,
+            excuteSuccess = transactionUserDealService.insertTransactionUserDeal(orderNo, transactionPendOrder.getPendingOrderNo(), userId,
                     3, currencyId, transactionPendOrder.getCurrencyName(), 0, num,
                     0,"撤销挂单", curTime);
         }
