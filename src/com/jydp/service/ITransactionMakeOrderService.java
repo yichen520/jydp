@@ -91,13 +91,6 @@ public interface ITransactionMakeOrderService {
     boolean updateOrderExecuteStatusByOrderNo(String orderNo, int executeStatus);
 
     /**
-     * 执行做单
-     * @param orderNo 记录号
-     * @return  操作成功，返回true，操作失败，返回false
-     */
-    boolean executeMakeOrder(String orderNo);
-
-    /**
      * 执行多条做单
      * @param orderNoList 记录号集合
      * @return  操作成功，返回true，操作失败，返回false

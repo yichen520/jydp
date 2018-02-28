@@ -213,13 +213,13 @@
             </p>
             <p class="popInput">
                 <label class="popName">成交数量<span class="star">*</span></label>
-                <input type="text" class="entry" placeholder="成交币种的数量"
+                <input type="text" class="entry" placeholder="成交币种的数量" maxlength="18"
                        onkeyup="matchUtil(this, 'double')" onblur="matchUtil(this, 'double')"
                        id="addCurrencyNumber" name="addCurrencyNumber"/>
             </p>
             <p class="popInput">
                 <label class="popName">成交单价<span class="star">*</span></label>
-                <input type="text" class="entry" placeholder="成交币种的单价，单位：美元"
+                <input type="text" class="entry" placeholder="成交币种的单价，单位：美元" maxlength="18"
                        onkeyup="matchUtil(this, 'double')" onblur="matchUtil(this, 'double')"
                        id="addCurrencyPrice" name="addCurrencyPrice"/>
             </p>
@@ -238,10 +238,9 @@
             <p class="popTitle">立即执行</p>
             <p class="popTips"><img src="<%=path %>/resources/image/back/tips.png" class="tipsImg" />确定立即执行多笔成交？</p>
 
-            <input type="hidden" id="excOrderNoList" name="excOrderNoList">
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="executeMore()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="execute()" />
             </div>
         </div>
 
@@ -249,10 +248,9 @@
             <p class="popTitle">撤回操作</p>
             <p class="popTips"><img src="<%=path %>/resources/image/back/tips.png" class="tipsImg" />确定撤回多笔成交？</p>
 
-            <input type="hidden" id="calOrderNoList" name="calOrderNoList">
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="cancleMore()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="cancle()" />
             </div>
         </div>
 
@@ -528,7 +526,25 @@
         $(".tRecall_pop").fadeIn();
         popObj = ".tRecall_pop"
     }
-    
+
+    //打开多个执行页面
+    function goExcMore(){
+        document.getElementById("excOrderNo").value = selectMore();
+
+        $(".mask").fadeIn();
+        $(".implement_pop").fadeIn();
+        popObj = ".implement_pop"
+    }
+
+    //打开多个撤回页面
+    function goCalMore() {
+        document.getElementById("calOrderNo").value = selectMore();
+
+        $(".mask").fadeIn();
+        $(".recall_pop").fadeIn();
+        popObj = ".recall_pop"
+    }
+
     //立即执行
     var excBoo = false;
     function execute() {
@@ -624,108 +640,6 @@
             }
         }
         return takeNoListStr;
-    }
-
-    //打开多个执行页面
-    function goExcMore(){
-        document.getElementById("excOrderNoList").value = selectMore();
-
-        $(".mask").fadeIn();
-        $(".implement_pop").fadeIn();
-        popObj = ".implement_pop"
-    }
-
-    //打开多个撤回页面
-    function goCalMore() {
-        document.getElementById("calOrderNoList").value = selectMore();
-
-        $(".mask").fadeIn();
-        $(".recall_pop").fadeIn();
-        popObj = ".recall_pop"
-    }
-
-    //立即执行多个
-    var excMoreBoo = false;
-    function executeMore() {
-        if (excMoreBoo) {
-            return;
-        } else {
-            excMoreBoo = true;
-        }
-
-        var excOrderNoList = $("#excOrderNoList").val();
-        if (excOrderNoList == "" || excOrderNoList == null) {
-            excBoo =false;
-            openTips("订单号不能为空");
-            return;
-        }
-
-        $.ajax({
-            url: '<%=path %>' + "/backerWeb/transactionMakeOrder/executeMore.htm",
-            data: {
-                orderNoList : excOrderNoList
-            },//参数
-            dataType: "json",
-            type: 'POST',
-            async: true, //默认异步调用 (false：同步)
-            success: function (resultData) {
-                var code = resultData.code;
-                var message = resultData.message;
-                if (code != 1 && message != "") {
-                    excMoreBoo = false;
-                    openTips(message);
-                    return;
-                }
-
-                $("#queryForm").submit();
-            },
-
-            error: function () {
-                openTips("数据加载出错，请稍候重试");
-            }
-        });
-    }
-
-    //撤回
-    var calMoreBoo = false;
-    function cancleMore() {
-        if (calMoreBoo) {
-            return;
-        } else {
-            calMoreBoo = true;
-        }
-
-        var calOrderNoList = $("#calOrderNoList").val();
-        if (calOrderNoList == "" || calOrderNoList == null) {
-            calMoreBoo =false;
-            openTips("订单号不能为空");
-            return;
-        }
-
-        $.ajax({
-            url: '<%=path %>' + "/backerWeb/transactionMakeOrder/cancleMore.htm",
-            data: {
-                orderNoList : calOrderNoList
-            },//参数
-            dataType: "json",
-            type: 'POST',
-            async: true, //默认异步调用 (false：同步)
-            success: function (resultData) {
-                var code = resultData.code;
-                var message = resultData.message;
-                if (code != 1 && message != "") {
-                    calMoreBoo = false;
-                    openTips(message);
-                    return;
-                }
-
-                $("#queryForm").submit();
-            },
-
-            error: function () {
-                openTips("数据加载出错，请稍候重试");
-            }
-        });
     }
 
     //导入

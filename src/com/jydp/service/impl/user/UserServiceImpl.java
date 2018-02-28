@@ -16,6 +16,7 @@ import com.jydp.service.IUserBalanceService;
 import com.jydp.service.IUserCurrencyNumService;
 import com.jydp.service.IUserService;
 import config.SystemCommonConfig;
+import config.UserBalanceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -290,8 +291,8 @@ public class UserServiceImpl implements IUserService {
         userBalanceDO.setOrderNo(orderNo);  //记录号：业务类型（2）+日期（6）+随机位（10）
         userBalanceDO.setUserId(userId);
         userBalanceDO.setFromType("系统操作");
-        userBalanceDO.setCurrencyId(999);  //币种Id,美元id=999
-        userBalanceDO.setCurrencyName("美金");  //货币名称
+        userBalanceDO.setCurrencyId(UserBalanceConfig.DOLLAR_ID);  //币种Id,美元id=999
+        userBalanceDO.setCurrencyName(UserBalanceConfig.DOLLAR);  //货币名称
         userBalanceDO.setBalanceNumber(balanceNumber);  //交易数量
         userBalanceDO.setFrozenNumber(0);  //冻结数量
         userBalanceDO.setRemark(remarks);
@@ -352,8 +353,8 @@ public class UserServiceImpl implements IUserService {
         userBalanceDO.setOrderNo(orderNo);  //记录号：业务类型（2）+日期（6）+随机位（10）
         userBalanceDO.setUserId(userId);
         userBalanceDO.setFromType("系统操作");
-        userBalanceDO.setCurrencyId(999);  //币种Id,美元id=999
-        userBalanceDO.setCurrencyName("美金");  //货币名称
+        userBalanceDO.setCurrencyId(UserBalanceConfig.DOLLAR_ID);  //币种Id,美元id=999
+        userBalanceDO.setCurrencyName(UserBalanceConfig.DOLLAR);  //货币名称
         userBalanceDO.setBalanceNumber(-balanceNumber);  //交易数量
         userBalanceDO.setFrozenNumber(0);  //冻结数量
         userBalanceDO.setRemark(remarks);
