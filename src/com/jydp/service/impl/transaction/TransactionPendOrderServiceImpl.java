@@ -212,14 +212,18 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
         if(pendingStatus != 1 && pendingStatus != 2){
             return false;
         }
+
         //计算撤销的币数量
         double num = transactionPendOrder.getPendingNumber() - dealNumber;
         //业务执行状态
         boolean excuteSuccess = true;
+        UserDO user = userService.getUserByUserId(userId);
+        if (user == null) {
+            return false;
+        }
 
         if(paymentType == 1){ //如果是买入
             //查询用户美金金额
-            UserDO user = userService.getUserByUserId(userId);
             //计算撤销的美金数量
             double balanceRevoke = num * transactionPendOrder.getPendingPrice() * (1+0.002);
             //判断冻结金额是否大于等于balanceRevoke
@@ -312,9 +316,9 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
                     DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
                     NumberUtil.createNumberStr(10);
 
-            excuteSuccess = transactionUserDealService.insertTransactionUserDeal(orderNo, transactionPendOrder.getPendingOrderNo(), userId,
+            excuteSuccess = transactionUserDealService.insertTransactionUserDeal(orderNo, transactionPendOrder.getPendingOrderNo(), userId, user.getUserAccount(),
                     3, currencyId, transactionPendOrder.getCurrencyName(), 0, num,
-                    0,"撤销挂单", curTime);
+                    0,"撤销挂单", transactionPendOrder.getAddTime(), curTime);
         }
 
         if(!excuteSuccess){

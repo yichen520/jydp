@@ -27,6 +27,7 @@ public interface ITransactionUserDealService {
      * @param orderNo  记录号,业务类型（2）+日期（6）+随机位（10）
      * @param pendingOrderNo  挂单记录号
      * @param userId  用户Id
+     * @param userAccount  用户账户
      * @param paymentType  收支类型,1：买入，2：卖出
      * @param currencyId  币种Id
      * @param currencyName  货币名称
@@ -34,12 +35,13 @@ public interface ITransactionUserDealService {
      * @param currencyNumber  成交数量
      * @param currencyTotalPrice  成交总价
      * @param remark  备注
+     * @param pendTime  挂单时间
      * @param addTime  添加时间
      * @return  操作成功：返回true，操作失败：返回false
      */
-    boolean insertTransactionUserDeal(String orderNo, String pendingOrderNo, int userId, int paymentType,
-                                      int currencyId, String currencyName, double transactionPrice, double currencyNumber, double currencyTotalPrice,
-                                      String remark, Timestamp addTime);
+    boolean insertTransactionUserDeal(String orderNo, String pendingOrderNo, int userId, String userAccount, int paymentType,
+                                             int currencyId, String currencyName, double transactionPrice, double currencyNumber, double currencyTotalPrice,
+                                             String remark, Timestamp pendTime, Timestamp addTime);
 
     /**
      * 查询成交记录条数(后台)

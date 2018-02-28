@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/js/need/laydate.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/js/skins/danlan/laydate.css" />
 
-    <title>交易完成记录</title>
+    <title>成交记录</title>
 </head>
 <body>
 <div id="header"></div>
@@ -26,7 +26,7 @@
 
     <div class="contentRight">
         <div class="caption">
-            <span class="title">交易完成记录</span>
+            <span class="title">成交记录</span>
         </div>
 
         <div class="top">
