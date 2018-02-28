@@ -104,11 +104,11 @@
             </p>
             <p class="popInput">
                 <label class="popName">web链接地址</label>
-                <input type="text" class="entry" placeholder="链接地址，非必填" id="addWebLinkUrl"/>
+                <input type="text" class="entry" placeholder="链接地址，非必填" id="addWebLinkUrl" maxlength="500"/>
             </p>
             <p class="popInput">
                 <label class="popName">wap链接地址</label>
-                <input type="text" class="entry" placeholder="链接地址，非必填" id="addWapLinkUrl"/>
+                <input type="text" class="entry" placeholder="链接地址，非必填" id="addWapLinkUrl" maxlength="500"/>
             </p>
 
             <div class="buttons">
@@ -134,11 +134,11 @@
             </p>
             <p class="popInput">
                 <label class="popName">web链接地址</label>
-                <input type="text" class="entry" placeholder="链接地址，非必填" id="modifyWebLinkUrl"/>
+                <input type="text" class="entry" placeholder="链接地址，非必填" id="modifyWebLinkUrl" maxlength="500"/>
             </p>
             <p class="popInput">
                 <label class="popName">wap链接地址</label>
-                <input type="text" class="entry" placeholder="链接地址，非必填" id="modifyWapLinkUrl"/>
+                <input type="text" class="entry" placeholder="链接地址，非必填" id="modifyWapLinkUrl" maxlength="500"/>
             </p>
 
             <input type="hidden" name="modifyId" id="modifyId" />
@@ -228,6 +228,12 @@
         if (businessesName.length < 2 || businessesName.length > 16) {
             return openTips("企业名称为2~16个字符");
         }
+        if (webLinkUrl.length > 500) {
+            return openTips("web链接地址不能超过500个字符");
+        }
+        if (wapLinkUrl.length > 500) {
+            return openTips("wap链接地址不能超过500个字符");
+        }
 
         var formData = new FormData();
         formData.append("businessesPartnerImageUrl", businessesPartnerImageUrl);
@@ -278,17 +284,25 @@
         }
 
         var businessesName = $("#modifyBusinessesName").val();
+        var webLinkUrl = $("#modifyWebLinkUrl").val();
+        var wapLinkUrl = $("#modifyWapLinkUrl").val();
+
         if(businessesName == null || businessesName == ""){
             return openTips("企业名称不能为空");
         }
         if(businessesName.length < 2 || businessesName.length > 16){
             return openTips("企业名称为2~16个字符");
+
+        }
+        if (webLinkUrl.length > 500) {
+            return openTips("web链接地址不能超过500个字符");
+        }
+        if (wapLinkUrl.length > 500) {
+            return openTips("wap链接地址不能超过500个字符");
         }
 
         var updateId = $("#modifyId").val();
         var businessesPartnerImageUrl = document.getElementById("changead_a2").files[0];
-        var webLinkUrl = $("#modifyWebLinkUrl").val();
-        var wapLinkUrl = $("#modifyWapLinkUrl").val();
 
         var formData = new FormData();
         formData.append("businessesPartnerImageUrl", businessesPartnerImageUrl);
