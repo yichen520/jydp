@@ -4,6 +4,7 @@ import com.jydp.entity.DO.system.SystemAdsHomepagesDO;
 import com.jydp.entity.DO.system.SystemBusinessesPartnerDO;
 import com.jydp.entity.DO.system.SystemHotDO;
 import com.jydp.entity.DO.system.SystemNoticeDO;
+import com.jydp.entity.DTO.TransactionUserDealDTO;
 import com.jydp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,10 @@ import java.util.List;
  */
 @Service("homePageService")
 public class HomePageServiceImpl implements IHomePageService{
+
+    /** 交易币种 */
+    @Autowired
+    private ITransactionCurrencyService transactionCurrencyService;
 
     /** 系统公告 */
     @Autowired
@@ -72,4 +77,16 @@ public class HomePageServiceImpl implements IHomePageService{
         List<SystemBusinessesPartnerDO> systemBusinessesPartnerDOList = systemBusinessesPartnerService.getSystemBusinessesPartnerForWeb();
         return systemBusinessesPartnerDOList;
     }
+
+    /**
+     * 获取所有币种行情信息
+     * @return 查询成功：返回所有币种行情信息；查询失败：返回null
+     */
+    @Override
+    public List<TransactionUserDealDTO> getTransactionCurrencyMarketList() {
+        List<TransactionUserDealDTO> transactionUserDealDTOList = transactionCurrencyService.getTransactionCurrencyMarketForWeb();
+        return transactionUserDealDTOList;
+    }
+
+
 }

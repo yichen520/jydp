@@ -202,7 +202,6 @@ public class UserServiceImpl implements IUserService {
     @Override
     public JsonObjectBO validateUserInfo(String userAccount, String password, String userPhone) {
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
-        String phoneReg = "^[1][3,4,5,7,8][0-9]{9}$";
         String accountReg ="^[A-Za-z0-9]{6,16}$";
         String passwordReg = "^[A-Za-z0-9]{6,16}$";
 
@@ -215,12 +214,6 @@ public class UserServiceImpl implements IUserService {
         if (!Pattern.matches(passwordReg,password)) {
             jsonObjectBO.setCode(2);
             jsonObjectBO.setMessage("密码必须是字母或者数字,长度6~16位");
-            return jsonObjectBO;
-        }
-
-        if (!Pattern.matches(phoneReg,userPhone)) {
-            jsonObjectBO.setCode(2);
-            jsonObjectBO.setMessage("请填写正确的手机号");
             return jsonObjectBO;
         }
 
