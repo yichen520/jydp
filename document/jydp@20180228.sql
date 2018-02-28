@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : test.oksheng.com.cn
+Source Server         : 测试服
 Source Server Version : 50635
-Source Host           : test.oksheng.com.cn:3306
+Source Host           : 139.224.196.2:3306
 Source Database       : jydp
 
 Target Server Type    : MYSQL
 Target Server Version : 50635
 File Encoding         : 65001
 
-Date: 2018-02-27 16:39:14
+Date: 2018-02-28 11:19:38
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -32,7 +32,7 @@ CREATE TABLE `backer_handle_user_balance_tab` (
   `addTime` datetime NOT NULL COMMENT '记录时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8 COMMENT='后台管理员增减用户余额记录';
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8 COMMENT='后台管理员增减用户余额记录';
 
 -- ----------------------------
 -- Table structure for backer_role_power_map_tab
@@ -112,7 +112,7 @@ CREATE TABLE `system_ads_homepages_tab` (
   `addTime` datetime NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='首页广告';
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='首页广告';
 
 -- ----------------------------
 -- Table structure for system_businesses_partner_tab
@@ -128,7 +128,7 @@ CREATE TABLE `system_businesses_partner_tab` (
   `topTime` datetime DEFAULT NULL COMMENT '置顶时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='合作商家';
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COMMENT='合作商家';
 
 -- ----------------------------
 -- Table structure for system_help_tab
@@ -158,7 +158,7 @@ CREATE TABLE `system_hot_tab` (
   `topTime` datetime DEFAULT NULL COMMENT '置顶时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 COMMENT='热门话题';
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COMMENT='热门话题';
 
 -- ----------------------------
 -- Table structure for system_notice_tab
@@ -174,7 +174,7 @@ CREATE TABLE `system_notice_tab` (
   `topTime` datetime DEFAULT NULL COMMENT '置顶时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8 COMMENT='用户公告管理';
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8 COMMENT='用户公告管理';
 
 -- ----------------------------
 -- Table structure for system_validate_phone_tab
@@ -182,7 +182,7 @@ CREATE TABLE `system_notice_tab` (
 DROP TABLE IF EXISTS `system_validate_phone_tab`;
 CREATE TABLE `system_validate_phone_tab` (
   `id` bigint(18) NOT NULL AUTO_INCREMENT COMMENT '记录Id',
-  `phoneNo` varchar(11) NOT NULL COMMENT '手机号',
+  `phoneNo` varchar(30) NOT NULL COMMENT '手机号',
   `validateCode` varchar(6) NOT NULL COMMENT '验证码',
   `ipAddress` varchar(30) NOT NULL COMMENT '操作时的ip地址',
   `addTime` datetime NOT NULL COMMENT '添加时间',
@@ -190,7 +190,7 @@ CREATE TABLE `system_validate_phone_tab` (
   `validateTime` datetime DEFAULT NULL COMMENT '验证时间',
   PRIMARY KEY (`id`),
   KEY `phoneNo` (`phoneNo`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=42078 DEFAULT CHARSET=utf8 COMMENT='系统手机验证';
+) ENGINE=InnoDB AUTO_INCREMENT=42080 DEFAULT CHARSET=utf8 COMMENT='系统手机验证';
 
 -- ----------------------------
 -- Table structure for transaction_currency_tab
@@ -277,6 +277,7 @@ CREATE TABLE `transaction_user_deal_tab` (
   `orderNo` varchar(18) NOT NULL COMMENT '记录号,业务类型（2）+日期（6）+随机位（10）',
   `pendingOrderNo` varchar(18) NOT NULL COMMENT '挂单记录号',
   `userId` int(11) NOT NULL COMMENT '用户Id',
+  `userAccount` varchar(16) NOT NULL COMMENT '用户账号',
   `paymentType` tinyint(1) NOT NULL COMMENT '收支类型,1：买入，2：卖出，3：撤销',
   `currencyId` int(11) NOT NULL COMMENT '币种Id',
   `currencyName` varchar(32) NOT NULL COMMENT '货币名称',
@@ -284,13 +285,15 @@ CREATE TABLE `transaction_user_deal_tab` (
   `currencyNumber` decimal(18,8) NOT NULL COMMENT '成交数量',
   `currencyTotalPrice` decimal(18,8) NOT NULL COMMENT '成交总价',
   `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  `pendTime` datetime NOT NULL COMMENT '挂单时间',
   `addTime` datetime NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`orderNo`),
   UNIQUE KEY `orderNo` (`orderNo`) USING BTREE,
   KEY `pendingOrderNo` (`pendingOrderNo`) USING BTREE,
   KEY `userId` (`userId`) USING BTREE,
   KEY `paymentType` (`paymentType`) USING BTREE,
-  KEY `currencyName` (`currencyName`) USING BTREE
+  KEY `currencyName` (`currencyName`) USING BTREE,
+  KEY `userAccount` (`userAccount`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='成交记录';
 
 -- ----------------------------
@@ -322,6 +325,7 @@ CREATE TABLE `user_currency_num_tab` (
   `currencyNumber` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '货币数量',
   `currencyNumberLock` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '冻结数量',
   `addTime` datetime NOT NULL COMMENT '添加时间',
+  UNIQUE KEY `userId_2` (`userId`,`currencyId`),
   KEY `userId` (`userId`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户币数量';
 
@@ -343,7 +347,7 @@ CREATE TABLE `user_feedback_tab` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `userId` (`userId`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='意见反馈';
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='意见反馈';
 
 -- ----------------------------
 -- Table structure for user_identification_image_tab
