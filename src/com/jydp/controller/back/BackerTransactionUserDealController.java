@@ -115,10 +115,10 @@ public class BackerTransactionUserDealController {
         List<TransactionCurrencyDO> transactionCurrencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
 
         request.setAttribute("pageNumber", pageNumber);
-        request.setAttribute("startAddTime", startAddTime);
-        request.setAttribute("endAddTime", endAddTime);
-        request.setAttribute("startPendTime", startPendTime);
-        request.setAttribute("endPendTime", endPendTime);
+        request.setAttribute("startAddTime", startAddTimeStr);
+        request.setAttribute("endAddTime", endAddTimeStr);
+        request.setAttribute("startPendTime", startPendTimeStr);
+        request.setAttribute("endPendTime", endPendTimeStr);
         request.setAttribute("userAccount", userAccount);
         request.setAttribute("paymentType", paymentType);
         request.setAttribute("currencyName", currencyName);
