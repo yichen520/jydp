@@ -152,17 +152,19 @@ public class BackerTransactionPendOrderController {
         int pageSize = 20;
         int totalNumber = transactionPendOrderService.countPendOrderForBack(userAccount, currencyId, paymentType,
                 pendingStatus, startAddTime, endAddTime, startFinishTime, endFinishTime);
+        int totalPageNumber = (int) Math.ceil(totalNumber/(pageSize*1.0));
+        if (totalPageNumber <= 0) {
+            totalPageNumber = 1;
+        }
+        if (totalPageNumber <= pageNumber) {
+            pageNumber = totalPageNumber - 1;
+        }
 
         List<TransactionPendOrderDO> transactionPendOrderRecord = null;
         if (totalNumber > 0) {
             transactionPendOrderRecord = transactionPendOrderService.listPendOrderForBack(userAccount, currencyId,
                     paymentType, pendingStatus, startAddTime, endAddTime, startFinishTime, endFinishTime, pageNumber,
                     pageSize);
-        }
-
-        int totalPageNumber = (int) Math.ceil(totalNumber/(pageSize*1.0));
-        if (totalPageNumber <= 0) {
-            totalPageNumber = 1;
         }
 
         //返回数据
