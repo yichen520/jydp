@@ -65,65 +65,65 @@
 	</select>
 
 	<select id="TransactionPendOrder_countPendOrderForBack" parameterType="java.util.Map" resultType="int">
-		SELECT COUNT(tpot.pendingOrderNo)
-		FROM transaction_pend_order_tab AS tpot, user_tab AS ut
-		WHERE tpot.userId = ut.userId
+		SELECT COUNT(pendingOrderNo)
+		FROM transaction_pend_order_tab
+		WHERE 1 = 1
 		<if test="userAccount != null and userAccount !=''">
-			AND ut.userAccount LIKE CONCAT('%', #{userAccount}, '%')
+			AND userAccount LIKE CONCAT('%', #{userAccount}, '%')
 		</if>
 		<if test="currencyId != 0">
-			AND tpot.currencyId = #{currencyId}
+			AND currencyId = #{currencyId}
 		</if>
 		<if test="paymentType != 0">
-			AND tpot.paymentType = #{paymentType}
+			AND paymentType = #{paymentType}
 		</if>
 		<if test="pendingStatus != 0">
-			AND tpot.pendingStatus = #{pendingStatus}
+			AND pendingStatus = #{pendingStatus}
 		</if>
 		<if test="startAddTime != null">
-			AND tpot.addTime <![CDATA[ >= ]]> #{startAddTime}
+			AND addTime <![CDATA[ >= ]]> #{startAddTime}
 		</if>
 		<if test="endAddTime != null">
-			AND tpot.addTime <![CDATA[ <= ]]> #{endAddTime}
+			AND addTime <![CDATA[ <= ]]> #{endAddTime}
 		</if>
 		<if test="startFinishTime != null">
-			AND tpot.endTime <![CDATA[ >= ]]> #{startFinishTime}
+			AND endTime <![CDATA[ >= ]]> #{startFinishTime}
 		</if>
 		<if test="endFinishTime != null">
-			AND tpot.endTime <![CDATA[ <= ]]> #{endFinishTime}
+			AND endTime <![CDATA[ <= ]]> #{endFinishTime}
 		</if>
 	</select>
 
 	<select id="TransactionPendOrder_listPendOrderForBack" parameterType="java.util.Map" resultType="TransactionPendOrderDO">
-		SELECT tpot.pendingOrderNo, tpot.userId, tpot.paymentType, tpot.currencyId, tpot.currencyName, tpot.pendingPrice,
-		tpot.pendingNumber, tpot.dealNumber, tpot.pendingStatus, tpot.remark, tpot.addTime, tpot.endTime, ut.userAccount
-		FROM transaction_pend_order_tab AS tpot, user_tab AS ut
-		WHERE tpot.userId = ut.userId
+		SELECT pendingOrderNo, userId, paymentType, currencyId, currencyName, pendingPrice,
+		pendingNumber, dealNumber, pendingStatus, remark, addTime, endTime, userAccount
+		FROM transaction_pend_order_tab
+		WHERE 1 = 1
 		<if test="userAccount != null and userAccount !=''">
-			AND ut.userAccount LIKE CONCAT('%', #{userAccount}, '%')
+			AND userAccount LIKE CONCAT('%', #{userAccount}, '%')
 		</if>
 		<if test="currencyId != 0">
-			AND tpot.currencyId = #{currencyId}
+			AND currencyId = #{currencyId}
 		</if>
 		<if test="paymentType != 0">
-			AND tpot.paymentType = #{paymentType}
+			AND paymentType = #{paymentType}
 		</if>
 		<if test="pendingStatus != 0">
-			AND tpot.pendingStatus = #{pendingStatus}
+			AND pendingStatus = #{pendingStatus}
 		</if>
 		<if test="startAddTime != null">
-			AND tpot.addTime <![CDATA[ >= ]]> #{startAddTime}
+			AND addTime <![CDATA[ >= ]]> #{startAddTime}
 		</if>
 		<if test="endAddTime != null">
-			AND tpot.addTime <![CDATA[ <= ]]> #{endAddTime}
+			AND addTime <![CDATA[ <= ]]> #{endAddTime}
 		</if>
 		<if test="startFinishTime != null">
-			AND tpot.endTime <![CDATA[ >= ]]> #{startFinishTime}
+			AND endTime <![CDATA[ >= ]]> #{startFinishTime}
 		</if>
 		<if test="endFinishTime != null">
-			AND tpot.endTime <![CDATA[ <= ]]> #{endFinishTime}
+			AND endTime <![CDATA[ <= ]]> #{endFinishTime}
 		</if>
-		ORDER BY tpot.addTime DESC
+		ORDER BY addTime DESC
 		LIMIT #{startNumber}, #{pageSize}
 	</select>
 

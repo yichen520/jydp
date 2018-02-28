@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50635
 File Encoding         : 65001
 
-Date: 2018-02-28 16:28:16
+Date: 2018-02-28 18:53:22
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -32,7 +32,7 @@ CREATE TABLE `backer_handle_user_balance_tab` (
   `addTime` datetime NOT NULL COMMENT '记录时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8 COMMENT='后台管理员增减用户余额记录';
+) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8 COMMENT='后台管理员增减用户余额记录';
 
 -- ----------------------------
 -- Table structure for backer_role_power_map_tab
@@ -124,7 +124,7 @@ CREATE TABLE `system_ads_homepages_tab` (
   `addTime` datetime NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8 COMMENT='首页广告';
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 COMMENT='首页广告';
 
 -- ----------------------------
 -- Table structure for system_businesses_partner_tab
@@ -202,7 +202,7 @@ CREATE TABLE `system_validate_phone_tab` (
   `validateTime` datetime DEFAULT NULL COMMENT '验证时间',
   PRIMARY KEY (`id`),
   KEY `phoneNo` (`phoneNo`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=42106 DEFAULT CHARSET=utf8 COMMENT='系统手机验证';
+) ENGINE=InnoDB AUTO_INCREMENT=42133 DEFAULT CHARSET=utf8 COMMENT='系统手机验证';
 
 -- ----------------------------
 -- Table structure for transaction_currency_tab
@@ -264,6 +264,7 @@ DROP TABLE IF EXISTS `transaction_pend_order_tab`;
 CREATE TABLE `transaction_pend_order_tab` (
   `pendingOrderNo` varchar(18) NOT NULL COMMENT '记录号，业务类型（2）+日期（6）+随机位（10）',
   `userId` int(11) NOT NULL COMMENT '用户Id',
+  `userAccount` varchar(16) NOT NULL COMMENT '用户账号',
   `paymentType` tinyint(1) NOT NULL COMMENT '收支类型，1：买入，2：卖出',
   `currencyId` int(11) NOT NULL COMMENT '币种Id',
   `currencyName` varchar(32) NOT NULL COMMENT '货币名称',
@@ -278,7 +279,8 @@ CREATE TABLE `transaction_pend_order_tab` (
   UNIQUE KEY `pendingOrderNo` (`pendingOrderNo`) USING BTREE,
   KEY `userId` (`userId`) USING BTREE,
   KEY `paymentType` (`paymentType`) USING BTREE,
-  KEY `currencyName` (`currencyName`) USING BTREE
+  KEY `currencyName` (`currencyName`) USING BTREE,
+  KEY `userAccount` (`userAccount`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='挂单记录';
 
 -- ----------------------------
