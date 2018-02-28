@@ -141,10 +141,10 @@ public class BackerTransactionMakeOrderController {
         List<TransactionCurrencyDO> transactionCurrencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
 
         request.setAttribute("pageNumber", pageNumber);
-        request.setAttribute("startAddTime", startAddTime);
-        request.setAttribute("endAddTime", endAddTime);
-        request.setAttribute("startExecuteTime", startExecuteTime);
-        request.setAttribute("endExecuteTime", endExecuteTime);
+        request.setAttribute("startAddTime", startAddTimeStr);
+        request.setAttribute("endAddTime", endAddTimeStr);
+        request.setAttribute("startExecuteTime", startExecuteTimeStr);
+        request.setAttribute("endExecuteTime", endExecuteTimeStr);
         request.setAttribute("backAccount", backAccount);
         request.setAttribute("paymentType", paymentType);
         request.setAttribute("executeStatus", executeStatus);

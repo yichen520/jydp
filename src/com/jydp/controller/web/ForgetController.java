@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author yk
  */
 @Controller
-@RequestMapping("/web/user")
+@RequestMapping("/userWeb/forgetPassword")
 @Scope(value = "prototype")
 public class ForgetController {
 
@@ -32,6 +32,12 @@ public class ForgetController {
     /** 系统手机验证码 */
     @Autowired
     private ISystemValidatePhoneService systemValidatePhoneService;
+
+    /** 跳转至忘记密码页面 */
+    @RequestMapping(value = "/show")
+    public String show(){
+        return "page/web/forget";
+    }
 
     /** 忘记密码 */
     @RequestMapping(value = "/forgetPassword")

@@ -32,9 +32,10 @@
         <div class="top">
             <form id="queryForm" action="<%=path %>/backerWeb/transactionUserDeal/show.htm" method="post">
                 <div class="askArea">
-                    <p class="condition">用户账号：<input type="text" class="askInput" id="userAccount" name="userAccount" value="${userAccount}" /></p>
+                    <p class="condition">用户账号：<input type="text" class="askInput" id="userAccount" name="userAccount"
+                                                     maxlength="16" onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" value="${userAccount}" /></p>
                     <p class="condition">币种：
-                        <select class="askSelect" id="currencyId" name="currencyId">
+                        <select class="askSelect" id="currencyId" name="currencyName">
                             <option value="">全部</option>
                             <c:forEach items="${transactionCurrencyList}" var="item">
                                 <option value="${item.currencyName}">${item.currencyName}</option>
@@ -46,6 +47,7 @@
                             <option value="0">全部</option>
                             <option value="1">买入</option>
                             <option value="2">卖出</option>
+                            <option value="3">撤回</option>
                         </select>
                     </p>
                     <p class="condition">
@@ -175,6 +177,18 @@
             openTips(message);
             return ;
         }
+
+        $("#currencyId option").each(function(){
+            if($(this).val()=='${currencyName}'){
+                $(this).attr('selected',true);
+            }
+        });
+        $("#paymentType option").each(function(){
+            if($(this).val()=='${paymentType}'){
+                $(this).attr('selected',true);
+            }
+        });
+
     }
 
     //查询

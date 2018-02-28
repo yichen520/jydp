@@ -203,6 +203,7 @@
     });
 
     //删除
+    var openDeleteBoo = false;
     function openDelete(id) {
         document.getElementById("deleteId").value = id;
 
@@ -214,6 +215,12 @@
     function deleteCheck(){
         var deleteId = document.getElementById("deleteId").value;
 
+        if(openDeleteBoo){
+            openTips("正在删除，请稍后！");
+            return;
+        }else{
+            openDeleteBoo = true;
+        }
         $.ajax({
             url: '<%=path %>' + "/backerWeb/backerAdsHomepages/deleteHomeAd.htm",
             data: {
@@ -227,6 +234,7 @@
                 var message = resultData.message;
                 if (code != 1 && message != "") {
                     openTips(message);
+                    openDeleteBoo = false;
                     return;
                 }
 
@@ -234,11 +242,13 @@
             },
 
             error: function () {
+                openDeleteBoo = false;
                 openTips("数据加载出错，请稍候重试");
             }
         });
     }
     //新增
+    var addCheckBoo = false;
     function addCheck() {
         var adsTitle = document.getElementById("addAdsTitle").value;
         var webLinkUrl = document.getElementById("addWebLinkUrl").value;
@@ -264,6 +274,13 @@
         formData.append("webLinkUrl", webLinkUrl);
         formData.append("wapLinkUrl", wapLinkUrl);
 
+        if(addCheckBoo){
+            openTips("正在保存，请稍后！");
+            return;
+        }else{
+            addCheckBoo = true;
+        }
+
         $.ajax({
             url: '<%=path %>' + "/backerWeb/backerAdsHomepages/addHomeAd.htm",
             data:formData,//参数
@@ -276,6 +293,7 @@
                 var code = resultData.code;
                 var message = resultData.message;
                 if (code != 1 && message != "") {
+                    addCheckBoo = false;
                     openTips(message);
                     return;
                 }
@@ -284,12 +302,14 @@
             },
 
             error: function () {
+                addCheckBoo = false;
                 openTips("数据加载出错，请稍候重试");
             }
         });
     }
 
         //修改
+        var openModifyBoo = false;
         function openModify(id, adsTitle, webLinkUrl, wapLinkUrl) {
             document.getElementById("modifyId").value = id;
             document.getElementById("modifyAdsTitle").value = adsTitle;
@@ -324,6 +344,13 @@
             formData.append("modifyWebLinkUrl", modifyWebLinkUrl);
             formData.append("modifyWapLinkUrl", modifyWapLinkUrl);
 
+            if(openModifyBoo){
+                openTips("正在修改，请稍后！");
+                return;
+            }else{
+                openModifyBoo = true;
+            }
+
             $.ajax({
                 url: '<%=path %>' + "/backerWeb/backerAdsHomepages/modifyHomeAd.htm",
                 data:formData,//参数
@@ -336,6 +363,7 @@
                     var code = resultData.code;
                     var message = resultData.message;
                     if (code != 1 && message != "") {
+                        openModifyBoo = false;
                         openTips(message);
                         return;
                     }
@@ -344,6 +372,7 @@
                 },
 
                 error: function () {
+                    openModifyBoo = false;
                     openTips("数据加载出错，请稍候重试");
                 }
             });
@@ -352,7 +381,16 @@
 
 
     //上移
+    var upMoveBoo = false;
     function upMove(id) {
+
+        if(upMoveBoo){
+            openTips("正在上移，请稍后！");
+            return;
+        }else{
+            upMoveBoo = true;
+        }
+
         $.ajax({
             url: '<%=path %>' + "/backerWeb/backerAdsHomepages/upMoveHomeAd.htm",
             data: {
@@ -365,6 +403,7 @@
                 var code = resultData.code;
                 var message = resultData.message;
                 if (code != 1 && message != "") {
+                    upMoveBoo = false;
                     openTips(message);
                     return;
                 }
@@ -373,6 +412,7 @@
             },
 
             error: function () {
+                upMoveBoo = false;
                 openTips("数据加载出错，请稍候重试");
             }
         });
@@ -380,7 +420,15 @@
     }
 
     //下移
+    var downMoveBoo = false;
     function downMove(id) {
+
+        if(downMoveBoo){
+            openTips("正在上移，请稍后！");
+            return;
+        }else{
+            downMoveBoo = true;
+        }
 
         $.ajax({
             url: '<%=path %>' + "/backerWeb/backerAdsHomepages/downMoveHomeAd.htm",
@@ -394,6 +442,7 @@
                 var code = resultData.code;
                 var message = resultData.message;
                 if (code != 1 && message != "") {
+                    downMoveBoo = false;
                     openTips(message);
                     return;
                 }
@@ -402,6 +451,7 @@
             },
 
             error: function () {
+                downMoveBoo = false;
                 openTips("数据加载出错，请稍候重试");
             }
         });
