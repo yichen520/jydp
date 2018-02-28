@@ -113,11 +113,11 @@
                 </p>
                 <p class="popInput">
                     <label class="popName">web链接地址</label>
-                    <input type="text" class="entry" placeholder="链接地址，非必填" name="webLinkUrl" id="addWebLinkUrl"/>
+                    <input type="text" class="entry" placeholder="链接地址，非必填" name="webLinkUrl" id="addWebLinkUrl" maxlength="500"/>
                 </p>
                 <p class="popInput">
                     <label class="popName">wap链接地址</label>
-                    <input type="text" class="entry" placeholder="链接地址，非必填" name="wapLinkUrl" id="addWapLinkUrl"/>
+                    <input type="text" class="entry" placeholder="链接地址，非必填" name="wapLinkUrl" id="addWapLinkUrl" maxlength="500"/>
                 </p>
 
                 <div class="buttons">
@@ -145,11 +145,11 @@
                 </p>
                 <p class="popInput">
                     <label class="popName">web链接地址</label>
-                    <input type="text" class="entry" placeholder="链接地址，非必填" name="modifyWebLinkUrl" id="modifyWebLinkUrl"/>
+                    <input type="text" class="entry" placeholder="链接地址，非必填" name="modifyWebLinkUrl" id="modifyWebLinkUrl" maxlength="500"/>
                 </p>
                 <p class="popInput">
                     <label class="popName">wap链接地址</label>
-                    <input type="text" class="entry" placeholder="链接地址，非必填" name="modifyWapLinkUrl" id="modifyWapLinkUrl"/>
+                    <input type="text" class="entry" placeholder="链接地址，非必填" name="modifyWapLinkUrl" id="modifyWapLinkUrl" maxlength="500"/>
                 </p>
                 <input type="hidden" name="modifyId" id="modifyId" />
                 <div class="buttons">
@@ -268,6 +268,14 @@
             return openTips("广告标题为2~16个字符");
         }
 
+        if (webLinkUrl.length > 500) {
+            return openTips("web链接地址不能超过500个字符");
+        }
+
+        if (wapLinkUrl.length > 500) {
+            return openTips("wap链接地址不能超过500个字符");
+        }
+
         var formData = new FormData();
         formData.append("adsImageUrl", adsImageUrl);
         formData.append("adsTitle", adsTitle);
@@ -322,22 +330,29 @@
         }
 
         function modifyCheck() {
-            var adsTitle = document.getElementById("modifyAdsTitle").value;
-
-            if(adsTitle == null || adsTitle == ""){
-                return openTips("标题不能为空");
-            }
-
-            if(adsTitle.length < 2 || adsTitle.length > 16){
-                return openTips("广告标题为2~16个字符");
-            }
-            var formData = new FormData();
-            var modifyId = document.getElementById("modifyId").value;
             var modifyAdsTitle = document.getElementById("modifyAdsTitle").value;
             var modifyWebLinkUrl = document.getElementById("modifyWebLinkUrl").value;
             var modifyWapLinkUrl = document.getElementById("modifyWapLinkUrl").value;
+            var modifyId = document.getElementById("modifyId").value;
             var adsImageUrl = document.getElementById("changead_a2").files[0];
 
+            if(modifyAdsTitle == null || modifyAdsTitle == ""){
+                return openTips("标题不能为空");
+            }
+
+            if(modifyAdsTitle.length < 2 || modifyAdsTitle.length > 16){
+                return openTips("广告标题为2~16个字符");
+            }
+
+            if (modifyWebLinkUrl.length > 500) {
+                return openTips("web链接地址不能超过500个字符");
+            }
+
+            if (modifyWapLinkUrl.length > 500) {
+                return openTips("wap链接地址不能超过500个字符");
+            }
+
+            var formData = new FormData();
             formData.append("adsImageUrl", adsImageUrl);
             formData.append("modifyAdsTitle", modifyAdsTitle);
             formData.append("modifyId", modifyId);
