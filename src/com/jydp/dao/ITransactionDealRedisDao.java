@@ -26,4 +26,11 @@ public interface ITransactionDealRedisDao {
      */
     boolean insertTransactionDealRedis(TransactionDealRedisDO transactionDealRedis);
 
+    /**
+     * 批量新增成交记录
+     * @param redisDealList  成交记录集合
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    boolean insertTransactionDealRedisList(List<TransactionDealRedisDO> redisDealList);
+
 }

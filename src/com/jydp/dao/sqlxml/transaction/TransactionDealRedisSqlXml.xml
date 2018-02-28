@@ -22,4 +22,14 @@
 			 #{currencyNumber}, #{currencyNumber}, #{addTime})
 	</insert>
 
+	<insert id="TransactionDealRedis_insertTransactionDealRedisList" parameterType="java.util.List">
+		INSERT INTO transaction_deal_redis_tab
+		(orderNo, paymentType, currencyId, transactionPrice,
+		 currencyNumber, currencyTotalPrice, addTime)
+		VALUES
+			<foreach collection="list" item="item" separator=",">
+				(#{item.orderNo}, #{item.paymentType}, #{item.currencyId}, #{item.transactionPrice},
+				#{item.currencyNumber}, #{item.currencyNumber}, #{item.addTime})
+			</foreach>
+	</insert>
 </mapper>

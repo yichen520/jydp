@@ -55,4 +55,13 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
         dealRedisDO.setAddTime(addTime);
         return transactionDealRedisDao.insertTransactionDealRedis(dealRedisDO);
     }
+
+    /**
+     * 批量新增成交记录
+     * @param redisDealList  成交记录集合
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    public boolean insertTransactionDealRedisList(List<TransactionDealRedisDO> redisDealList){
+        return transactionDealRedisDao.insertTransactionDealRedisList(redisDealList);
+    }
 }

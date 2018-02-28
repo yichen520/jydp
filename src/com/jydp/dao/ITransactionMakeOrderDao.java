@@ -84,4 +84,11 @@ public interface ITransactionMakeOrderDao {
      * @return  操作成功：true，操作失败：返回false
      */
     boolean updateMakeOrderExecuteStatusByOrderNoList(List<String> orderNoList, int executeStatus);
+
+    /**
+     * 批量根据记录号查询做单记录
+     * @param orderNoList  记录号集合
+     * @return  操作成功：返回做单记录集合，操作失败：返回null
+     */
+    List<TransactionMakeOrderDO> listTransactionMakeOrderByOrderNoList(List<String> orderNoList);
 }
