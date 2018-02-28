@@ -374,6 +374,9 @@
                         payError.style.display = "none";
                         $(".mask").fadeOut("fast");
                         $(".changePay_pop").fadeOut("fast");
+                        $("#newPasswordTel").val("");
+                        $("#repPasswordTel").val("");
+                        $("#validateCodeTel").val("");
                     } else {
                         openTips(result.message);
                     }
