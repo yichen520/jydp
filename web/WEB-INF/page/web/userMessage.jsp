@@ -191,8 +191,9 @@
                 <label class="popName">手机号<span class="star">*</span>：</label>
                 <span class="popCode">
                     <select class="areTel" id="areaCode" id="">
-                        <option selected value="+86">中国&nbsp;+86</option>
-                        <option value="+001">美国&nbsp;+001</option>
+                        <c:forEach items="${phoneAreaMap}" var="phoneArea">
+                            <option value="${phoneArea.key }">${phoneArea.value }&nbsp;${phoneArea.key }</option>
+                        </c:forEach>
                     </select>
                     <input type="text" class="telNumber" placeholder="您的11位手机号" maxlength="11" id="bindingMobile"
                            onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
@@ -243,7 +244,7 @@
         }
     }
 
-
+    var updatePayPasswordBoo = false;
     //更新支付密码
     function updatePayPassword() {
         var tel_pop =$('.tel_pop').css('display');
@@ -277,6 +278,14 @@
                 openTips("两次密码不一致");
                 return;
             }
+
+            if(updatePayPasswordBoo){
+                openTips("系统正在更新支付密码，请稍后");
+                return;
+            } else {
+                updatePayPasswordBoo = true;
+            }
+
             $.ajax({
                 url: '<%=path %>' + "/userWeb/userMessage/updatePayPasswordByPassword.htm",
                 type:'post',
@@ -288,6 +297,7 @@
                     repetitionPassword : repPasswordPop
                 },
                 success:function(result){
+                    updatePayPasswordBoo = false;
                     if(result.code == 1) {
                         var payPass = document.getElementById("payPass");
                         var payError = document.getElementById("payError");
@@ -303,6 +313,7 @@
                         openTips(result.message);
                     }
                 }, error:function(){
+                    updatePayPasswordBoo = false;
                     openTips("系统错误！");
                 }
             });
@@ -336,6 +347,13 @@
                 openTips("两次密码不一致");
                 return;
             }
+
+            if(updatePayPasswordBoo){
+                openTips("系统正在更新支付密码，请稍后");
+                return;
+            } else {
+                updatePayPasswordBoo = true;
+            }
             $.ajax({
                 url: '<%=path %>' + "/userWeb/userMessage/updatePhoneByPassword.htm",
                 type:'post',
@@ -347,6 +365,7 @@
                     repetitionPassword : repPasswordTel
                 },
                 success:function(result){
+                    updatePayPasswordBoo = false;
                     if(result.code == 1) {
                         openTips(result.message);
                         var payPass = document.getElementById("payPass");
@@ -355,16 +374,21 @@
                         payError.style.display = "none";
                         $(".mask").fadeOut("fast");
                         $(".changePay_pop").fadeOut("fast");
+                        $("#newPasswordTel").val("");
+                        $("#repPasswordTel").val("");
+                        $("#validateCodeTel").val("");
                     } else {
                         openTips(result.message);
                     }
                 }, error:function(){
+                    updatePayPasswordBoo = false;
                     openTips("系统错误！");
                 }
             });
         }
     }
 
+    var updateLogPasswordBoo = false;
     //修改登陆密码
     function updateLogPassword() {
         var password = $("#password").val();
@@ -390,6 +414,14 @@
             openTips("两次密码不一致");
             return;
         }
+
+        if(updateLogPasswordBoo){
+            openTips("系统正在更新登录密码，请稍后");
+            return;
+        } else {
+            updateLogPasswordBoo = true;
+        }
+
         $.ajax({
             url: '<%=path %>' + "/userWeb/userMessage/updateLogPassword.htm",
             type:'post',
@@ -401,6 +433,7 @@
                 repetitionPassword : repPassword
             },
             success:function(result){
+                updateLogPasswordBoo = false;
                 if(result.code == 1) {
                     $(".mask").fadeOut("fast");
                     $(".changePassword_pop").fadeOut("fast");
@@ -412,12 +445,14 @@
                     openTips(result.message);
                 }
             }, error:function(){
+                updateLogPasswordBoo = false;
                 openTips("系统错误！");
             }
         });
 
     }
 
+    var updatePhoneNumberBoo = false;
     //修改绑定手机号
     function updatePhoneNumber() {
         var regPos = /^\d+(\.\d+)?$/; //非负浮点数
@@ -445,6 +480,13 @@
             return;
         }
 
+        if(updatePhoneNumberBoo){
+            openTips("系统正在更新绑定手机号，请稍后");
+            return;
+        } else {
+            updatePhoneNumberBoo = true;
+        }
+
         $.ajax({
             url: '<%=path %>' + "/userWeb/userMessage/updatePasswordByPhone.htm",
             type:'post',
@@ -457,6 +499,7 @@
                 password : phonePassword
             },
             success:function(result){
+                updatePhoneNumberBoo = false;
                 if(result.code == 1) {
                     openTips(result.message);
                     var phone = bindingMobile.substring(0,3) + "***" + bindingMobile.substring(bindingMobile.length - 3);
@@ -473,6 +516,7 @@
                     openTips(result.message);
                 }
             }, error:function(){
+                updatePhoneNumberBoo = false;
                 openTips("系统错误！");
             }
         });
