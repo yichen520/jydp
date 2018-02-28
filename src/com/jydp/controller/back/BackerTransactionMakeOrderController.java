@@ -126,8 +126,8 @@ public class BackerTransactionMakeOrderController {
         if (totalPageNumber <= 0) {
             totalPageNumber = 1;
         }
-        if (totalPageNumber < pageNumber) {
-            pageNumber = totalPageNumber;
+        if (totalPageNumber <= pageNumber) {
+            pageNumber = totalPageNumber - 1;
         }
 
         List<TransactionMakeOrderVO> transactionMakeOrderList = null;
