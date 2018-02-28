@@ -201,6 +201,9 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
     public boolean revokePendOrder(String pendingOrderNo){
         //获取挂单记录
         TransactionPendOrderDO transactionPendOrder = getPendOrderByPendingOrderNo(pendingOrderNo);
+        if(transactionPendOrder == null){
+            return false;
+        }
         int paymentType = transactionPendOrder.getPaymentType();
         int pendingStatus = transactionPendOrder.getPendingStatus();
         int currencyId = transactionPendOrder.getCurrencyId();
@@ -294,8 +297,10 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
         if(excuteSuccess) {
             Timestamp curTime = DateUtil.getCurrentTime();
             if (dealNumber > 0) {
+                //部分撤单
                 excuteSuccess = transactionPendOrderDao.updatePartRevoke(pendingOrderNo, num, curTime);
             } else if (dealNumber == 0) {
+                //全部撤单
                 excuteSuccess = transactionPendOrderDao.updateAllRevoke(pendingOrderNo, num, curTime);
             }
         }
