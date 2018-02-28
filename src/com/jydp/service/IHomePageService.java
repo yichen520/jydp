@@ -4,6 +4,8 @@ import com.jydp.entity.DO.system.SystemAdsHomepagesDO;
 import com.jydp.entity.DO.system.SystemBusinessesPartnerDO;
 import com.jydp.entity.DO.system.SystemHotDO;
 import com.jydp.entity.DO.system.SystemNoticeDO;
+import com.jydp.entity.DTO.TransactionUserDealDTO;
+
 import java.util.List;
 
 /**
@@ -35,4 +37,10 @@ public interface IHomePageService {
      * @return 查询成功：返回合作商家列表；查询失败：返回null
      */
     List<SystemBusinessesPartnerDO> getSystemBusinessesPartnerList();
+
+    /**
+     * 获取所有币种行情信息
+     * @return 查询成功：返回所有币种行情信息；查询失败：返回null
+     */
+    List<TransactionUserDealDTO> getTransactionCurrencyMarketList();
 }

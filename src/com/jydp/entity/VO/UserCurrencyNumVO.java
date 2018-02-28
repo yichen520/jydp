@@ -1,13 +1,13 @@
 package com.jydp.entity.VO;
 
-import com.jydp.entity.DO.user.UserCurrencyNumDO;
+import com.jydp.entity.DTO.BackerUserCurrencyNumDTO;
 
 /**
  * 用户币数量
  *
  * @author sy
  */
-public class UserCurrencyNumVO extends UserCurrencyNumDO {
+public class UserCurrencyNumVO extends BackerUserCurrencyNumDTO {
     private double currencyNumberSum;  //用户币总金额
 
     /**

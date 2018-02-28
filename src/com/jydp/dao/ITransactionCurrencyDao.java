@@ -1,6 +1,7 @@
 package com.jydp.dao;
 
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
+import com.jydp.entity.DTO.TransactionUserDealDTO;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -52,4 +53,10 @@ public interface ITransactionCurrencyDao {
      * @return  操作成功：返回交易币种，操作失败：返回null
      */
     TransactionCurrencyDO getTransactionCurrencyByCurrencyName(String currencyName);
+
+    /**
+     * 获取所有币种行情信息(web端)
+     * @return 查询成功：返回所有币种行情信息；查询失败：返回null
+     */
+    List<TransactionUserDealDTO> getTransactionCurrencyMarketForWeb();
 }

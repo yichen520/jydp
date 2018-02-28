@@ -34,7 +34,7 @@
 
     <update id="User_updatePhone" parameterType="java.util.Map">
         UPDATE user_tab
-        SET areaCode = #{areaCode},phoneNumber = #{phone}
+        SET phoneAreaCode = #{areaCode},phoneNumber = #{phone}
         WHERE userId = #{userId}
     </update>
 
@@ -77,7 +77,7 @@
 		SELECT COUNT(userId)
 		FROM user_tab
 		WHERE userAccount = #{userAccount}
-		AND password = #{payPassword}
+		AND payPassword = #{payPassword}
 		AND accountStatus <![CDATA[ > ]]> 0
 	</select>
 
