@@ -17,7 +17,7 @@ import java.util.List;
  * @author yk
  */
 @Controller
-@RequestMapping("/web/myrecord")
+@RequestMapping("/userWeb/accountRecord")
 @Scope(value = "prototype")
 public class AccountRecordController {
 
@@ -26,20 +26,15 @@ public class AccountRecordController {
     private IUserBalanceService userBalanceService;
 
     /** 查询用户账户记录 */
-    @RequestMapping("/accountRecord")
+    @RequestMapping("/show.htm")
     public String getAccountRecord(HttpServletRequest request) {
 
         UserSessionBO userSession = UserWebInterceptor.getUser(request);
         if (userSession == null) {
-            return "page/login";
+            return "page/web/login";
         }
 
         String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
-        if (!StringUtil.isNotNull(pageNumberStr)) {
-            request.setAttribute("code",2);
-            request.setAttribute("message","请求参数错误");
-            return "page/myrecord";
-        }
 
         int pageNumber = 0;
         if (StringUtil.isNotNull(pageNumberStr)) {
@@ -47,11 +42,29 @@ public class AccountRecordController {
         }
 
         int userId = userSession.getUserId();
+        int totalNumber = userBalanceService.countUserBalanceForWeb(userId);
+
         int pageSize = 20;
-        List<UserBalanceDO> userBalanceList = userBalanceService.getUserBalancelist(userId,pageNumber,pageSize);
+        int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
+        if (totalPageNumber <= 0) {
+            totalPageNumber = 1;
+        }
+
+        if (totalPageNumber <= pageNumber) {
+            pageNumber = totalPageNumber -1;
+        }
+        List<UserBalanceDO> userBalanceList = null;
+
+        if (totalNumber > 0) {
+            userBalanceList = userBalanceService.getUserBalancelistForWeb(userId, pageNumber, pageSize);
+        }
+
         request.setAttribute("code",1);
         request.setAttribute("message","查询成功");
+        request.setAttribute("pageNumber", pageNumber);
+        request.setAttribute("totalNumber", totalNumber);
+        request.setAttribute("totalPageNumber", totalPageNumber);
         request.setAttribute("accountRecordList",userBalanceList);
-        return "page/accountRecord";
+        return "page/web/recordAccount";
     }
 }

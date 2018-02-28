@@ -18,12 +18,17 @@
 		WHERE orderNo = #{orderNo}
 	</select>
 
-	<select id="UserBalance_getUserBalancelistByUserId" parameterType="java.util.Map" resultType="UserBalanceDO">
+	<select id="UserBalance_getUserBalancelistForWeb" parameterType="java.util.Map" resultType="UserBalanceDO">
 		SELECT orderNo, userId, fromType, currencyId, currencyName, balanceNumber,frozenNumber, remark, addTime
 		FROM user_balance_tab
 		WHERE userId = #{userId}
 		ORDER BY addTime DESC
 		LIMIT #{startNumber}, #{pageSize}
 	</select>
-	
+
+	<select id="UserBalance_countUserBalanceForWeb" parameterType="int" resultType="int">
+		SELECT COUNT(orderNo)
+		FROM user_balance_tab
+		WHERE userId = #{userId}
+	</select>
 </mapper>

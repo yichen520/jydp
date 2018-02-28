@@ -58,14 +58,14 @@ public class UserBalanceDaoImpl implements IUserBalanceDao {
     }
 
     /**
-     * 查询用户账户记录列表
+     * 查询用户账户记录列表(web端)
      * @param userId 用户Id
      * @param pageNumber  当前页数
      * @param pageSize  每页条数
      * @return 查询成功：返回用户账户记录列表；查询失败：返回null
      */
     @Override
-    public List<UserBalanceDO> getUserBalancelist(int userId, int pageNumber, int pageSize) {
+    public List<UserBalanceDO> getUserBalancelistForWeb(int userId, int pageNumber, int pageSize) {
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
         map.put("startNumber", pageNumber * pageSize);
@@ -73,10 +73,28 @@ public class UserBalanceDaoImpl implements IUserBalanceDao {
 
         List<UserBalanceDO> userBalanceDOList = null;
         try {
-            userBalanceDOList = sqlSessionTemplate.selectList("UserBalance_getUserBalancelistByUserId",map);
+            userBalanceDOList = sqlSessionTemplate.selectList("UserBalance_getUserBalancelistForWeb",map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
         return userBalanceDOList;
+    }
+
+    /**
+     * 根据userId查询用户记录总数(web端)
+     * @param userId 用户Id
+     * @return 查询成功：返回用户账户记录总数；查询失败：返回0
+     */
+    @Override
+    public int countUserBalanceForWeb(int userId) {
+
+        int result = 0;
+
+        try {
+            result = sqlSessionTemplate.selectOne("UserBalance_countUserBalanceForWeb",userId);
+        }catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return result;
     }
 }

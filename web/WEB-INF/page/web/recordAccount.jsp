@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@include file="/resources/page/common/path.jsp"%>
 <script type="text/javascript" src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" src="<%=path %>/resources/js/loadPageWeb.js"></script>
@@ -38,32 +39,22 @@
                 </tr>
 
                 <c:forEach items="${accountRecordList}" var="accountRecord">
-                <tr class="tableInfo">
-                    <td class="time"><fmt:formatDate type="time" value="${accountRecord.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-                    <td class="coin">盛源链</td>
-                    <td class="source">挂单卖出</td>
-                    <td class="amount pay">-10.0000</td>
-                    <td class="amount in">+10.0000</td>
-                    <td class="mark">备注备注备注备注备注备注备注</td>
-                </tr>
-                <tr class="tableInfo">
-                    <td class="time">2016-06-06&nbsp;06:06:06</td>
-                    <td class="coin">盛源链</td>
-                    <td class="source">成交卖出</td>
-                    <td class="amount pay">-10.0000</td>
-                    <td class="amount"></td>
-                    <td class="mark">备注备注备注备注备注备注备注</td>
-                </tr>
-                <tr class="tableInfo">
-                    <td class="time">2016-06-06&nbsp;06:06:06</td>
-                    <td class="coin">盛源链</td>
-                    <td class="source">成交买入</td>
-                    <td class="amount in">+10.0000</td>
-                    <td class="amount"></td>
-                    <td class="mark">备注备注备注备注备注备注备注</td>
-                </tr>
+                    <tr class="tableInfo">
+                        <td class="time"><fmt:formatDate type="time" value="${accountRecord.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+                        <td class="coin">${accountRecord.currencyName}</td>
+                        <td class="source">${accountRecord.fromType}</td>
+                        <td class="amount pay">
+                            <c:if test="${accountRecord.balanceNumber > 0}">+</c:if>${accountRecord.balanceNumber}</td>
+                        <td class="amount in">
+                            <c:if test="${accountRecord.frozenNumber > 0}">+</c:if>${accountRecord.frozenNumber}</td>
+                        <td class="mark">${accountRecord.remark}</td>
+                    </tr>
                 </c:forEach>
             </table>
+
+            <form id="queryForm" action="<%=path %>/userWeb/accountRecord/show.htm" method="post">
+                <input type="hidden" id="queryPageNumber" name="pageNumber">
+            </form>
 
             <jsp:include page="/resources/page/common/paging.jsp"></jsp:include>
         </div>

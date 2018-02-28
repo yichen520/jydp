@@ -64,4 +64,23 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
         }
     }
 
+    /**
+     * 批量新增成交记录
+     * @param redisDealList  成交记录集合
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    public boolean insertTransactionDealRedisList(List<TransactionDealRedisDO> redisDealList){
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.insert("TransactionDealRedis_insertTransactionDealRedisList", redisDealList);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result == redisDealList.size()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
