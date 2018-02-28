@@ -7,10 +7,10 @@
 
 	<insert id="TransactionPendOrder_insertPendOrder" parameterType="TransactionPendOrderDO">
 		INSERT INTO transaction_pend_order_tab
-		(pendingOrderNo, userId, paymentType, currencyId, currencyName, pendingPrice,
+		(pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingPrice,
 		pendingNumber, dealNumber, pendingStatus, remark, addTime)
 		VALUES
-		(#{pendingOrderNo}, #{userId}, #{paymentType}, #{currencyId}, #{currencyName}, #{pendingPrice},
+		(#{pendingOrderNo}, #{userId}, #{userAccount}, #{paymentType}, #{currencyId}, #{currencyName}, #{pendingPrice},
 		#{pendingNumber}, #{dealNumber}, #{pendingStatus}, #{remark}, #{addTime})
 	</insert>
 
@@ -21,7 +21,7 @@
 	</update>
 
 	<select id="TransactionPendOrder_getPendOrderByPendingOrderNo" parameterType="java.lang.String" resultType="TransactionPendOrderDO">
-		SELECT pendingOrderNo, userId, paymentType, currencyId, currencyName, pendingPrice,
+		SELECT pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingPrice,
 		pendingNumber, dealNumber, pendingStatus, remark, addTime, endTime
 		FROM transaction_pend_order_tab
 		WHERE pendingOrderNo = #{pendingOrderNo}
@@ -34,7 +34,7 @@
 	</select>
 
 	<select id="TransactionPendOrder_listPendOrderByUserId" parameterType="java.util.Map" resultType="TransactionPendOrderDO">
-		SELECT pendingOrderNo, userId, paymentType, currencyId, currencyName, pendingPrice,
+		SELECT pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingPrice,
 		pendingNumber, dealNumber, pendingStatus, remark, addTime, endTime
 		FROM transaction_pend_order_tab
 		WHERE userId = #{userId}
@@ -95,7 +95,7 @@
 	</select>
 
 	<select id="TransactionPendOrder_listPendOrderForBack" parameterType="java.util.Map" resultType="TransactionPendOrderDO">
-		SELECT pendingOrderNo, userId, paymentType, currencyId, currencyName, pendingPrice,
+		SELECT pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingPrice,
 		pendingNumber, dealNumber, pendingStatus, remark, addTime, endTime, userAccount
 		FROM transaction_pend_order_tab
 		WHERE 1 = 1
@@ -142,7 +142,7 @@
 	</update>
 
 	<select id="TransactionPendOrder_getLastTransactionPendOrder" parameterType="java.util.Map" resultType="TransactionPendOrderDO">
-		SELECT pendingOrderNo, userId, paymentType, currencyId, currencyName, pendingPrice,
+		SELECT pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingPrice,
 		pendingNumber, dealNumber, pendingStatus, remark, addTime, endTime
 		FROM transaction_pend_order_tab
 		WHERE currencyId = #{currencyId}

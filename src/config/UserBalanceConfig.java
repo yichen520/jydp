@@ -21,5 +21,8 @@ public class UserBalanceConfig {
     public static final String REVOKE_SELL_ORDER = "撤销挂单返还冻结币";
     /** 系统操作 */
     public static final String SYSTEM_OPERATE = "系统操作";
+    /** 挂单成交 */
+    public static final String PEND_SUCCESS = "挂单成交";
+
 
 }

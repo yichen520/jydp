@@ -132,7 +132,7 @@
                         </td>
                         <td class="operate">
                             <c:if test="${pend.pendingStatus == 1 || pend.pendingStatus == 2}">
-                                <input type="text" class="revoke" value="撤销挂单" onfocus="this.blur()" onclick="revokeHandle(${pend.pendingOrderNo});"/>
+                                <input type="text" class="revoke" value="撤销挂单" onfocus="this.blur()" onclick="revokeHandle('${pend.pendingOrderNo}');"/>
                             </c:if>
                         </td>
                     </tr>
