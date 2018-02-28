@@ -213,13 +213,13 @@
             </p>
             <p class="popInput">
                 <label class="popName">成交数量<span class="star">*</span></label>
-                <input type="text" class="entry" placeholder="成交币种的数量"
+                <input type="text" class="entry" placeholder="成交币种的数量" maxlength="18"
                        onkeyup="matchUtil(this, 'double')" onblur="matchUtil(this, 'double')"
                        id="addCurrencyNumber" name="addCurrencyNumber"/>
             </p>
             <p class="popInput">
                 <label class="popName">成交单价<span class="star">*</span></label>
-                <input type="text" class="entry" placeholder="成交币种的单价，单位：美元"
+                <input type="text" class="entry" placeholder="成交币种的单价，单位：美元" maxlength="18"
                        onkeyup="matchUtil(this, 'double')" onblur="matchUtil(this, 'double')"
                        id="addCurrencyPrice" name="addCurrencyPrice"/>
             </p>
