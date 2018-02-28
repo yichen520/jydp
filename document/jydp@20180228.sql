@@ -371,7 +371,7 @@ CREATE TABLE `user_identification_tab` (
   `userId` int(11) NOT NULL COMMENT '用户Id',
   `userAccount` varchar(16) NOT NULL COMMENT '用户账号',
   `userName` varchar(16) NOT NULL COMMENT '用户姓名',
-  `userPhone` varchar(11) NOT NULL COMMENT '手机号',
+  `userPhone` varchar(20) NOT NULL COMMENT '手机号',
   `userCertNo` varchar(18) NOT NULL COMMENT '身份证号码',
   `identificationStatus` tinyint(1) NOT NULL COMMENT '实名认证状态',
   `remark` varchar(200) DEFAULT NULL COMMENT '备注',
