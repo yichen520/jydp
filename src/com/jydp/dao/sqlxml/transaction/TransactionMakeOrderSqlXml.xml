@@ -54,8 +54,8 @@
 
     <select id="TransactionMakeOrder_listTransactionMakeOrderForBack" parameterType="java.util.Map" resultType="TransactionMakeOrderVO">
         SELECT orderNo, paymentType, currencyId, currencyName, currencyNumber, currencyTotalPrice,
-        backerAccount, ipAddress, executeStatus, remark, executeTime, addTime FROM
-        transaction_make_order_tab
+        backerAccount, ipAddress, executeStatus, remark, executeTime, addTime
+        FROM transaction_make_order_tab
         WHERE
             1 = 1
             <if test="currencyName != null and currencyName !=''">
@@ -112,4 +112,14 @@
                     #{item}
                 </foreach>
     </update>
+
+    <select id="TransactionMakeOrder_listTransactionMakeOrderByOrderNoList" parameterType="java.util.List" resultType="TransactionMakeOrderDO">
+        SELECT orderNo, paymentType, currencyId, currencyName, currencyNumber, currencyTotalPrice,
+            backerAccount, ipAddress, executeStatus, remark, executeTime, addTime
+        FROM transaction_make_order_tab
+        WHERE orderNo IN
+            <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+    </select>
 </mapper>

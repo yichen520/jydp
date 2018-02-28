@@ -101,6 +101,9 @@
                         <c:if test="${item.paymentType == 2}">
                             <td class="type">卖出</td>
                         </c:if>
+                        <c:if test="${item.paymentType == 3}">
+                            <td class="type">撤回</td>
+                        </c:if>
                         <td class="time"><fmt:formatDate type="time" value="${item.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                     </tr>
                 </c:forEach>

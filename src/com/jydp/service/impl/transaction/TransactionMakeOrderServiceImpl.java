@@ -5,6 +5,7 @@ import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.NumberUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.dao.ITransactionMakeOrderDao;
+import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.DO.transaction.TransactionMakeOrderDO;
 import com.jydp.entity.VO.TransactionMakeOrderVO;
 import com.jydp.service.ITransactionDealRedisService;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,10 +35,6 @@ public class TransactionMakeOrderServiceImpl implements ITransactionMakeOrderSer
     /** 做单记录 */
     @Autowired
     private ITransactionMakeOrderDao transactionMakeOrderDao;
-
-    /** 用户成交记录 */
-    @Autowired
-    private ITransactionUserDealService transactionUserDealService;
 
     /** redis成交记录 */
     @Autowired
@@ -148,64 +146,6 @@ public class TransactionMakeOrderServiceImpl implements ITransactionMakeOrderSer
     }
 
     /**
-     * 执行做单
-     * @param orderNo 记录号
-     * @return  操作成功，返回true，操作失败，返回false
-     */
-    @Transactional
-    public boolean executeMakeOrder(String orderNo){
-        boolean executeBoo = false;
-
-        TransactionMakeOrderDO order = transactionMakeOrderDao.getTransactionMakeOrderByOrderNo(orderNo);
-        if (order == null || order.getExecuteStatus() != 1) {
-            return false;
-        }
-
-        //计算成交单价
-        String transactionPriceStr = BigDecimalUtil.div(order.getCurrencyTotalPrice(), order.getCurrencyNumber(), 8);
-        if (!StringUtil.isNotNull(transactionPriceStr)) {
-            executeBoo = false;
-        }
-        double transactionPrice = Double.parseDouble(transactionPriceStr);
-        if (transactionPrice <= 0) {
-            executeBoo = false;
-        }
-
-        Timestamp curTime = DateUtil.getCurrentTime();
-        executeBoo = transactionMakeOrderDao.updateOrderExecuteStatusByOrderNo(orderNo, 2);
-        //添加成交记录
-        /*if (executeBoo) {
-            String orderDealNo = SystemCommonConfig.TRANSACTION_USER_DEAL
-                    + DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10)
-                    + NumberUtil.createNumberStr(10);
-
-            executeBoo = transactionUserDealService.insertTransactionUserDeal(orderDealNo, orderNo, 0, order.getPaymentType(),
-                    order.getCurrencyId(), order.getCurrencyName(), transactionPrice, order.getCurrencyNumber(),
-                    order.getCurrencyTotalPrice(), "做单记录", curTime);
-        }*/
-
-        //添加redis成交记录
-        if (executeBoo) {
-            String orderDealNo = SystemCommonConfig.TRANSACTION_MAKE_ORDER_PENDNO
-                    + DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10)
-                    + NumberUtil.createNumberStr(10);
-
-            executeBoo = transactionDealRedisService.insertTransactionDealRedis(orderNo, order.getPaymentType(),
-                    order.getCurrencyId(), transactionPrice, order.getCurrencyNumber(), order.getCurrencyTotalPrice(), curTime);
-        }
-        //修改做单记录执行状态
-        if (executeBoo) {
-            executeBoo = transactionMakeOrderDao.updateOrderExecuteStatusByOrderNo(orderNo, 3);
-        }
-
-        //数据回滚
-        if(!executeBoo){
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-        }
-        return executeBoo;
-    }
-
-    /**
      * 执行多条做单
      * @param orderNoList 记录号集合
      * @return  操作成功，返回true，操作失败，返回false
@@ -214,54 +154,53 @@ public class TransactionMakeOrderServiceImpl implements ITransactionMakeOrderSer
     public boolean executeMakeOrderMore(List<String> orderNoList){
         boolean executeBoo = false;
 
-        for (String orderNo: orderNoList) {
-            TransactionMakeOrderDO order = transactionMakeOrderDao.getTransactionMakeOrderByOrderNo(orderNo);
-            if (order == null || order.getExecuteStatus() != 1) {
-                continue;
-            }
+        List<TransactionMakeOrderDO> resultList = transactionMakeOrderDao.listTransactionMakeOrderByOrderNoList(orderNoList);
+        if (resultList.isEmpty() || resultList.size() != orderNoList.size()) {
+            return false;
+        }
 
-            //计算成交单价
+        executeBoo = transactionMakeOrderDao.updateMakeOrderExecuteStatusByOrderNoList(orderNoList, 2);
+        //计算成交单价
+        List<TransactionDealRedisDO> redisDealList = new ArrayList<TransactionDealRedisDO>();
+        for (TransactionMakeOrderDO order: resultList) {
+            Timestamp curTime = DateUtil.getCurrentTime();
             String transactionPriceStr = BigDecimalUtil.div(order.getCurrencyTotalPrice(), order.getCurrencyNumber(), 8);
             if (!StringUtil.isNotNull(transactionPriceStr)) {
-                executeBoo = false;
+                return false;
             }
             double transactionPrice = Double.parseDouble(transactionPriceStr);
             if (transactionPrice <= 0) {
-                executeBoo = false;
+                return false;
             }
 
-            Timestamp curTime = DateUtil.getCurrentTime();
-            executeBoo = transactionMakeOrderDao.updateOrderExecuteStatusByOrderNo(orderNo, 2);
-            //添加成交记录
-            /*if (executeBoo) {
-                String orderDealNo = SystemCommonConfig.TRANSACTION_USER_DEAL
-                        + DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10)
-                        + NumberUtil.createNumberStr(10);
+            String orderDealNo = SystemCommonConfig.TRANSACTION_MAKE_ORDER_PENDNO
+                    + DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10)
+                    + NumberUtil.createNumberStr(10);
 
-                executeBoo = transactionUserDealService.insertTransactionUserDeal(orderDealNo, orderNo, 0, order.getPaymentType(),
-                        order.getCurrencyId(), order.getCurrencyName(), transactionPrice, order.getCurrencyNumber(),
-                        order.getCurrencyTotalPrice(), "做单记录", curTime);
-            }*/
+            TransactionDealRedisDO transactionDealRedis = new TransactionDealRedisDO();
+            transactionDealRedis.setOrderNo(orderDealNo);
+            transactionDealRedis.setPaymentType(order.getPaymentType());
+            transactionDealRedis.setCurrencyId(order.getCurrencyId());
+            transactionDealRedis.setCurrencyNumber(order.getCurrencyNumber());
+            transactionDealRedis.setCurrencyTotalPrice(order.getCurrencyTotalPrice());
+            transactionDealRedis.setTransactionPrice(transactionPrice);
+            transactionDealRedis.setAddTime(curTime);
 
-            //添加redis成交记录
-            if (executeBoo) {
-                String orderDealNo = SystemCommonConfig.TRANSACTION_MAKE_ORDER_PENDNO
-                        + DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10)
-                        + NumberUtil.createNumberStr(10);
+            redisDealList.add(transactionDealRedis);
+        }
 
-                executeBoo = transactionDealRedisService.insertTransactionDealRedis(orderNo, order.getPaymentType(),
-                        order.getCurrencyId(), transactionPrice, order.getCurrencyNumber(), order.getCurrencyTotalPrice(), curTime);
-            }
-            //修改做单记录执行状态
-            if (executeBoo) {
-                executeBoo = transactionMakeOrderDao.updateOrderExecuteStatusByOrderNo(orderNo, 3);
-            }
+        //添加redis成交记录
+        if (executeBoo) {
+            executeBoo = transactionDealRedisService.insertTransactionDealRedisList(redisDealList);
+        }
 
-            //数据回滚
-            if(!executeBoo){
-                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                break;
-            }
+        //修改做单记录执行状态
+        if (executeBoo) {
+            executeBoo = transactionMakeOrderDao.updateMakeOrderExecuteStatusByOrderNoList(orderNoList, 3);
+        }
+        //数据回滚
+        if(!executeBoo){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
 
         return executeBoo;

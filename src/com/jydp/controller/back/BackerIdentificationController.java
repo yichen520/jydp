@@ -4,6 +4,7 @@ import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.BackerSessionBO;
 import com.jydp.entity.BO.JsonObjectBO;
+import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DO.user.UserIdentificationDO;
 import com.jydp.entity.DO.user.UserIdentificationImageDO;
 import com.jydp.interceptor.BackerWebInterceptor;
@@ -233,11 +234,20 @@ public class BackerIdentificationController {
             responseJson.setMessage("操作成功");
         }
 
-        //启用账号
-        boolean updateResult = userService.updateUserAccountStatus(userIdentification.getUserId(), 1,2);
-        if (!updateResult) {
+        UserDO userDO = userService.getUserByUserId(userIdentification.getUserId());
+        if (userDO == null) {
             responseJson.setCode(5);
-            responseJson.setMessage("账号"+ userIdentification.getUserAccount() +"启用失败");
+            responseJson.setMessage("账户不存在");
+            return responseJson;
+        }
+
+        //启用账号
+        if (userDO.getAccountStatus() == 2) {
+            boolean updateResult = userService.updateUserAccountStatus(userIdentification.getUserId(), 1,2);
+            if (!updateResult) {
+                responseJson.setCode(5);
+                responseJson.setMessage("账号"+ userIdentification.getUserAccount() +"启用失败");
+            }
         }
 
         String messageContent = "您在交易大盘中提交的实名认证信息审核已通过。";

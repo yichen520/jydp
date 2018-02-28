@@ -61,15 +61,15 @@ public class TransactionPendOrderCommonServiceImpl implements ITransactionPendOr
                 }
             }
 
-            if(setBuyList.size() == transactionPendOrderBuyList.size() && setBuyList.size() > 0){
-                //删除挂单记录key
-                redisService.deleteValue(buyKey);
+            if(setBuyList.size() == transactionPendOrderBuyList.size() && transactionPendOrderBuyList.size() > 0){
                 //插入最新挂单记录
-                redisService.addList(buyKey,setBuyList);
-                //删除买一价key
-                redisService.deleteValue(buyOneKey);
+                redisService.addValue(buyKey,setBuyList);
                 //插入最新买一价
                 redisService.addValue(buyOneKey,transactionPendOrderBuyList.get(0).getPendingPrice());
+            }else if(transactionPendOrderBuyList.size() == 0){
+                //查无数据都存null
+                redisService.addValue(buyKey,null);
+                redisService.addValue(buyOneKey,null);
             }
 
             //卖出记录
@@ -89,15 +89,14 @@ public class TransactionPendOrderCommonServiceImpl implements ITransactionPendOr
                 }
             }
 
-            if(setSellList.size() == transactionPendOrderSellList.size() && setSellList.size() > 0){
-                //清空该key
-                redisService.deleteValue(sellKey);
+            if(setSellList.size() == transactionPendOrderSellList.size() && transactionPendOrderSellList.size() > 0){
                 //插入最新数据
-                redisService.addList(sellKey,setSellList);
-                //删除卖一价key
-                redisService.deleteValue(sellOneKey);
+                redisService.addValue(sellKey,setSellList);
                 //插入最新卖一价
                 redisService.addValue(sellOneKey,transactionPendOrderSellList.get(0).getPendingPrice());
+                }else if(transactionPendOrderSellList.size() == 0){
+                    redisService.addValue(sellKey,null);
+                    redisService.addValue(sellOneKey,null);
             }
         }
     }

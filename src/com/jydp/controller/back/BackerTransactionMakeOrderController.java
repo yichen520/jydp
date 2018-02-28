@@ -422,16 +422,24 @@ public class BackerTransactionMakeOrderController {
             return response;
         }
 
-        String orderNo = StringUtil.stringNullHandle(request.getParameter("orderNo"));
+        String orderNoStr = StringUtil.stringNullHandle(request.getParameter("orderNo"));
 
-        if (!StringUtil.isNotNull(orderNo)) {
+        if (!StringUtil.isNotNull(orderNoStr)) {
             response.setCode(3);
             response.setMessage("参数不能为空");
             return response;
         }
 
-        //执行添加记录
-        boolean result = transactionMakeOrderService.executeMakeOrder(orderNo);
+        List<String> orderNoList = new ArrayList<String>();
+        String[] orderNoArray = orderNoStr.split(",");
+        for (String orderNo : orderNoArray) {
+            if (StringUtil.isNotNull(orderNo)) {
+                orderNoList.add(orderNo);
+            }
+        }
+
+        //执行记录
+        boolean result = transactionMakeOrderService.executeMakeOrderMore(orderNoList);
         if (result) {
             response.setCode(1);
             response.setMessage("执行成功");
@@ -461,127 +469,30 @@ public class BackerTransactionMakeOrderController {
             return response;
         }
 
-        String orderNo = StringUtil.stringNullHandle(request.getParameter("orderNo"));
+        String orderNoStr = StringUtil.stringNullHandle(request.getParameter("orderNo"));
 
-        if (!StringUtil.isNotNull(orderNo)) {
+        if (!StringUtil.isNotNull(orderNoStr)) {
             response.setCode(3);
             response.setMessage("参数不能为空");
             return response;
         }
 
-        TransactionMakeOrderDO order = transactionMakeOrderService.getTransactionMakeOrderByOrderNo(orderNo);
-        if (order == null) {
-            response.setCode(5);
-            response.setMessage("该记录不存在");
-            return response;
-        }
-
-        if (order.getExecuteStatus() != 1) {
-            response.setCode(5);
-            response.setMessage("该记录已被操作");
-            return response;
+        List<String> orderNoList = new ArrayList<String>();
+        String[] orderNoArray = orderNoStr.split(",");
+        for (String orderNo : orderNoArray) {
+            if (StringUtil.isNotNull(orderNo)) {
+                orderNoList.add(orderNo);
+            }
         }
 
         //修改状态
-        boolean result = transactionMakeOrderService.updateOrderExecuteStatusByOrderNo(orderNo, 5);
+        boolean result = transactionMakeOrderService.updateMakeOrderExecuteStatusByOrderNoList(orderNoList, 5);
         if (result) {
             response.setCode(1);
             response.setMessage("撤销成功");
         } else {
             response.setCode(2);
             response.setMessage("撤销失败");
-        }
-        return response;
-    }
-
-    /** 立即执行 多条*/
-    @RequestMapping(value = "/executeMore.htm", method = RequestMethod.POST)
-    public @ResponseBody JsonObjectBO executeMore(HttpServletRequest request) {
-        JsonObjectBO response = new JsonObjectBO();
-        BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
-        if (backerSession == null) {
-            response.setCode(4);
-            response.setMessage("登录时间过期");
-            return response;
-        }
-        //业务功能权限
-        boolean havePower = BackerWebInterceptor.validatePower(request, 103005);
-        if (!havePower) {
-            response.setCode(5);
-            response.setMessage("您没有该权限");
-            return response;
-        }
-
-        String orderNoListStr = StringUtil.stringNullHandle(request.getParameter("orderNoList"));
-
-        if (!StringUtil.isNotNull(orderNoListStr)) {
-            response.setCode(3);
-            response.setMessage("参数不能为空");
-            return response;
-        }
-
-        List<String> orderNoList = new ArrayList<String>();
-        String[] orderNoArray = orderNoListStr.split(",");
-        for (String orderNo : orderNoArray) {
-            if (StringUtil.isNotNull(orderNo)) {
-                orderNoList.add(orderNo);
-            }
-        }
-
-        //执行多条添加记录
-        boolean result = transactionMakeOrderService.executeMakeOrderMore(orderNoList);
-        if (result) {
-            response.setCode(1);
-            response.setMessage("执行多条成功");
-        } else {
-            response.setCode(2);
-            response.setMessage("执行多条失败");
-        }
-        return response;
-    }
-
-    /** 撤回 */
-    @RequestMapping(value = "/cancleMore.htm", method = RequestMethod.POST)
-    public @ResponseBody JsonObjectBO cancleMore(HttpServletRequest request) {
-        JsonObjectBO response = new JsonObjectBO();
-
-        BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
-        if (backerSession == null) {
-            response.setCode(4);
-            response.setMessage("登录时间过期");
-            return response;
-        }
-        //业务功能权限
-        boolean havePower = BackerWebInterceptor.validatePower(request, 103006);
-        if (!havePower) {
-            response.setCode(5);
-            response.setMessage("您没有该权限");
-            return response;
-        }
-
-        String orderNoListStr = StringUtil.stringNullHandle(request.getParameter("orderNoList"));
-
-        if (!StringUtil.isNotNull(orderNoListStr)) {
-            response.setCode(3);
-            response.setMessage("参数不能为空");
-            return response;
-        }
-
-        List<String> orderNoList = new ArrayList<String>();
-        String[] orderNoArray = orderNoListStr.split(",");
-        for (String orderNo : orderNoArray) {
-            if (StringUtil.isNotNull(orderNo)) {
-                orderNoList.add(orderNo);
-            }
-        }
-
-        boolean result = transactionMakeOrderService.updateMakeOrderExecuteStatusByOrderNoList(orderNoList, 5);
-        if (result) {
-            response.setCode(1);
-            response.setMessage("撤销多条成功");
-        } else {
-            response.setCode(2);
-            response.setMessage("撤销多条失败");
         }
         return response;
     }

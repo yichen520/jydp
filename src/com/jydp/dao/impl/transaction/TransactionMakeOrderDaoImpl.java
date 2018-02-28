@@ -211,4 +211,21 @@ public class TransactionMakeOrderDaoImpl implements ITransactionMakeOrderDao{
             return false;
         }
     }
+
+    /**
+     * 批量根据记录号查询做单记录
+     * @param orderNoList  记录号集合
+     * @return  操作成功：返回做单记录集合，操作失败：返回null
+     */
+    public List<TransactionMakeOrderDO> listTransactionMakeOrderByOrderNoList(List<String> orderNoList){
+        List<TransactionMakeOrderDO> resultList = null;
+
+        try {
+            resultList = sqlSessionTemplate.selectList("TransactionMakeOrder_listTransactionMakeOrderByOrderNoList", orderNoList);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return resultList;
+    }
 }
