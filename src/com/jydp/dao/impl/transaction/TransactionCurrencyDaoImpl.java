@@ -3,6 +3,7 @@ package com.jydp.dao.impl.transaction;
 import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.ITransactionCurrencyDao;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
+import com.jydp.entity.DTO.TransactionUserDealDTO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -131,5 +132,22 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
         }
 
         return  transactionCurrency;
+    }
+
+    /**
+     * 获取所有币种行情信息(web端)
+     * @return 查询成功：返回所有币种行情信息；查询失败：返回null
+     */
+    @Override
+    public List<TransactionUserDealDTO> getTransactionCurrencyMarketForWeb() {
+
+        List<TransactionUserDealDTO> transactionUserDealDTOList = null;
+
+        try {
+            transactionUserDealDTOList = sqlSessionTemplate.selectList("TransactionCurrency_getTransactionCurrencyMarketForWeb");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return transactionUserDealDTOList;
     }
 }

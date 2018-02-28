@@ -7,6 +7,7 @@ import com.jydp.entity.DO.system.SystemAdsHomepagesDO;
 import com.jydp.entity.DO.system.SystemBusinessesPartnerDO;
 import com.jydp.entity.DO.system.SystemHotDO;
 import com.jydp.entity.DO.system.SystemNoticeDO;
+import com.jydp.entity.DTO.TransactionUserDealDTO;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.IHomePageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,9 @@ public class HomePageController {
         //查询首页广告列表
         List<SystemAdsHomepagesDO> systemAdsHomepagesDOList = homePageService.getSystemAdsHomepageList();
 
+        //查询所有币行情信息
+        List<TransactionUserDealDTO> transactionUserDealDTOList = homePageService.getTransactionCurrencyMarketList();
+
         //查询系统公告列表
         List<SystemNoticeDO> systemNoticeDOList = homePageService.getSystemNoticeList();
 
@@ -62,6 +66,7 @@ public class HomePageController {
         request.setAttribute("systemNoticeDOList",systemNoticeDOList);
         request.setAttribute("systemHotDOList",systemHotDOList);
         request.setAttribute("systemBusinessesPartnerDOList",systemBusinessesPartnerDOList);
+        request.setAttribute("transactionUserDealDTOList",transactionUserDealDTOList);
 
         return "web/homePage";
     }

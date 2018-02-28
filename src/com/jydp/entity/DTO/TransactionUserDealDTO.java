@@ -12,7 +12,8 @@ public class TransactionUserDealDTO {
     private double buyOnePrice; //买一价
     private double sellOnePrice; //卖一价
     private double volume; //24小时成交量
-    private double Change; //24小时涨跌
+    private double change; //24小时涨跌
+    private double yesterdayLastPrice; //昨日最后一笔交易价
 
     /**
      * 获取 币种Id
@@ -131,7 +132,7 @@ public class TransactionUserDealDTO {
      * @return 24小时涨跌
      */
     public double getChange() {
-        return Change;
+        return change;
     }
 
     /**
@@ -139,6 +140,22 @@ public class TransactionUserDealDTO {
      * @param change 24小时涨跌
      */
     public void setChange(double change) {
-        Change = change;
+        this.change = change;
+    }
+
+    /**
+     * 获取 昨日最后成交价
+     * @return yesterdayLastPrice 昨日最后成交价
+     */
+    public double getYesterdayLastPrice() {
+        return yesterdayLastPrice;
+    }
+
+    /**
+     * 设置  昨日最后成交价
+     * @param yesterdayLastPrice 昨日最后成交价
+     */
+    public void setYesterdayLastPrice(double yesterdayLastPrice) {
+        this.yesterdayLastPrice = yesterdayLastPrice;
     }
 }

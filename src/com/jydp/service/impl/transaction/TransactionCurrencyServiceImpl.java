@@ -1,7 +1,9 @@
 package com.jydp.service.impl.transaction;
 
+import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.ITransactionCurrencyDao;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
+import com.jydp.entity.DTO.TransactionUserDealDTO;
 import com.jydp.service.ITransactionCurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -80,5 +82,27 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      */
     public TransactionCurrencyDO getTransactionCurrencyByCurrencyName(String currencyName){
         return transactionCurrencyDao.getTransactionCurrencyByCurrencyName(currencyName);
+    }
+
+    /**
+     * 获取所有币种行情信息(web端)
+     * @return 查询成功：返回所有币种行情信息；查询失败：返回null
+     */
+    @Override
+    public List<TransactionUserDealDTO> getTransactionCurrencyMarketForWeb() {
+
+        List<TransactionUserDealDTO> transactionUserDealDTOList = null;
+        transactionUserDealDTOList = transactionCurrencyDao.getTransactionCurrencyMarketForWeb();
+        for (TransactionUserDealDTO transactionUserDeal:transactionUserDealDTOList) {
+            double yesterdayLastPrice = transactionUserDeal.getYesterdayLastPrice();
+            double change = 0;//24小时涨幅 eg:24小时涨跌为24.31%,change = 24.31
+
+            if (yesterdayLastPrice != 0) {
+                change = NumberUtil.doubleFormat(((transactionUserDeal.getLatestPrice() - yesterdayLastPrice)/yesterdayLastPrice)*100,2);
+            }
+            transactionUserDeal.setChange(change);
+        }
+
+        return transactionUserDealDTOList;
     }
 }
