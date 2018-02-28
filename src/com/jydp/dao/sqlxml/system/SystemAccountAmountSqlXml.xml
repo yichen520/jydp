@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC
+		"-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jydp.dao.impl.system.SystemAccountAmountDaoImpl">
+
+	<insert id="SystemAccountAmount_insertSystemAccountAmount" parameterType="SystemAccountAmountDO">
+		INSERT INTO system_account_amount_tab
+		(accountCode, accountName, accountAmount, addTime)
+		VALUES
+		(#{accountCode}, #{accountName}, #{accountAmount}, #{addTime})
+	</insert>
+
+	<select id="SystemAccountAmount_getSystemAccountAmountAllForBack" resultType="SystemAccountAmountDO">
+		SELECT accountCode, accountName, accountAmount, addTime
+		FROM system_account_amount_tab
+	</select>
+
+	<select id="SystemAccountAmount_getSystemAccountAmountById" parameterType="int" resultType="SystemAccountAmountDO">
+		SELECT accountCode, accountName, accountAmount, addTime
+		FROM system_account_amount_tab
+		WHERE accountCode = #{accountCode}
+	</select>
+
+	<update id="SystemAccountAmount_addSystemAccountAmount" parameterType="java.util.Map">
+		UPDATE system_account_amount_tab
+		SET accountAmount = accountAmount + #{amount}
+		WHERE accountCode = #{accountCode}
+	</update>
+
+	<update id="SystemAccountAmount_updateSystemAccountAmount" parameterType="SystemAccountAmountDO">
+		UPDATE system_account_amount_tab
+		SET accountName = #{accountName}, accountAmount = #{accountAmount}
+		WHERE accountCode = #{accountCode}
+	</update>
+
+	<delete id="SystemAccountAmount_deleteSystemAccountAmount" parameterType="int">
+		DELETE FROM system_account_amount_tab
+		WHERE accountCode = #{accountCode}
+	</delete>
+</mapper>

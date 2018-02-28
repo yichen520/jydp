@@ -27,7 +27,7 @@
                 <p class="loginTitle">用户登录</p>
                 <p class="loginInfo">
                     <img src="<%=path %>/resources/image/web/username.png" class="loginImg" />
-                    <input type="text" class="loginInput" placeholder="登录账号" id="userAccount" name="userAccount" value="${backerAccount}"
+                    <input type="text" class="loginInput" placeholder="登录账号" id="userAccount" name="userAccount"
                            onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
                            maxLength="16" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
                 </p>

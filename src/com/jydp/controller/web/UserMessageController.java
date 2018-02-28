@@ -1,17 +1,20 @@
 package com.jydp.controller.web;
 
 import com.iqmkj.utils.BigDecimalUtil;
+import com.iqmkj.utils.IpAddressUtil;
 import com.iqmkj.utils.MD5Util;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
-import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
+import com.jydp.entity.DTO.BackerUserCurrencyNumDTO;
 import com.jydp.entity.VO.UserCurrencyNumVO;
 import com.jydp.interceptor.UserWebInterceptor;
+import com.jydp.other.SendMessage;
 import com.jydp.service.ISystemValidatePhoneService;
 import com.jydp.service.IUserCurrencyNumService;
 import com.jydp.service.IUserService;
+import config.PhoneAreaConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -23,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户信息
@@ -30,7 +34,7 @@ import java.util.List;
  *
  */
 @Controller
-@RequestMapping("/userWeb/userMessageController")
+@RequestMapping("/userWeb/userMessage")
 @Scope(value="prototype")
 public class UserMessageController {
 
@@ -46,6 +50,9 @@ public class UserMessageController {
     @Autowired
     private ISystemValidatePhoneService systemValidatePhoneService;
 
+    /** 手机验证 */
+    @Autowired
+    public ISystemValidatePhoneService validatePhoneService;
 
     /** 用户个人信息查询 */
     @RequestMapping(value = "/show.htm")
@@ -86,7 +93,7 @@ public class UserMessageController {
 
 
         //查询用户币信息
-        List<UserCurrencyNumDO> currencyList = userCurrencyNumService.getUserCurrencyNumByUserId(user.getUserId());
+        List<BackerUserCurrencyNumDTO> currencyList = userCurrencyNumService.getUserCurrencyNumByUserIdForBacker(user.getUserId());
         if(currencyList == null || currencyList.size()<=0){
             request.setAttribute("code", 2);
             request.setAttribute("message", "未查询到用户相关币种信息");
@@ -96,8 +103,9 @@ public class UserMessageController {
         }
 
         List<UserCurrencyNumVO> userCurrencyList = new ArrayList<>();
-        for(UserCurrencyNumDO userCurrency : currencyList){
+        for(BackerUserCurrencyNumDTO userCurrency : currencyList){
             UserCurrencyNumVO userCurrencyNum = new UserCurrencyNumVO();
+            userCurrencyNum.setCurrencyName(userCurrency.getCurrencyName());
             userCurrencyNum.setCurrencyNumber(userCurrency.getCurrencyNumber());
             userCurrencyNum.setCurrencyId(userCurrency.getCurrencyId());
             userCurrencyNum.setCurrencyNumberLock(userCurrency.getCurrencyNumberLock());
@@ -109,8 +117,12 @@ public class UserMessageController {
             userCurrencyList.add(userCurrencyNum);
         }
 
+        Map<String, String> phoneAreaMap = PhoneAreaConfig.phoneAreaMap;
+
+
         request.setAttribute("code", 1);
         request.setAttribute("message", "查询成功");
+        request.setAttribute("phoneAreaMap", phoneAreaMap);
         request.setAttribute("userBalanceSum", userBalanceSum);
         request.setAttribute("userMessage", userMessage);
         request.setAttribute("userCurrencyList", userCurrencyList);
@@ -193,6 +205,13 @@ public class UserMessageController {
             return responseJson;
         }
 
+        //初始密码判定
+        if(newPassword.equals("123456")){
+            responseJson.setCode(3);
+            responseJson.setMessage("不可设为初始密码！");
+            return responseJson;
+        }
+
         //两次密码对比
         if(!newPassword.equals(repetitionPassword)){
             responseJson.setCode(3);
@@ -200,15 +219,17 @@ public class UserMessageController {
             return responseJson;
         }
 
-        //TODO 原密码判定
-        UserDO userLog = userService.validateUserLogin(user.getUserAccount(), password);
-        if(userLog == null){
+        //原密码判定
+        password = MD5Util.toMd5(password);
+        boolean userLog = userService.validateUserPay(user.getUserAccount(), password);
+        if(!userLog){
             responseJson.setCode(3);
             responseJson.setMessage("原密码错误！");
             return responseJson;
         }
 
-        //TODO 新密码修改
+        //新密码修改
+        newPassword = MD5Util.toMd5(newPassword);
         boolean forgetPwd = userService.forgetPayPwd(user.getUserId(), newPassword);
         if(!forgetPwd){
             responseJson.setCode(3);
@@ -219,6 +240,55 @@ public class UserMessageController {
         responseJson.setCode(1);
         responseJson.setMessage("修改成功");
         return responseJson;
+    }
+
+    /** 修改支付密码短信发送 */
+    @RequestMapping(value = "/payNoteVerify.htm", method= RequestMethod.POST)
+    public @ResponseBody JsonObjectBO payNoteVerify(HttpServletRequest request) {
+        JsonObjectBO responseJson = new JsonObjectBO();
+
+        UserSessionBO user = UserWebInterceptor.getUser(request);
+        if (user == null) {
+            responseJson.setCode(2);
+            responseJson.setMessage("未登录");
+            return responseJson;
+        }
+
+        //获取用户信息
+        UserDO userMessage = userService.getUserByUserId(user.getUserId());
+        if(userMessage == null){
+            responseJson.setCode(3);
+            responseJson.setMessage("用户信息查询失败，请稍后重试");
+            return responseJson;
+        }
+
+        String phoneNumber = userMessage.getPhoneNumber();
+        String ipAddress = IpAddressUtil.getIpAddress(request);
+        if(!StringUtil.isNotNull(phoneNumber) || !StringUtil.isNotNull(ipAddress)){
+            responseJson.setCode(3);
+            responseJson.setMessage("参数为空！");
+            return responseJson;
+        }
+
+        String messageCode = SendMessage.createMessageCode();
+
+        JsonObjectBO addValidatePhone = validatePhoneService.addValidatePhone(phoneNumber, messageCode, ipAddress);
+        if(addValidatePhone.getCode() == 1){
+            boolean sendBoo = SendMessage.send(phoneNumber, SendMessage.getMessageCodeContent(messageCode, 1));
+            if(sendBoo){
+                responseJson.setCode(1);
+                responseJson.setMessage("短信验证码发送成功！");
+                return responseJson;
+            }else{
+                responseJson.setCode(5);
+                responseJson.setMessage("短信验证码发送失败！");
+                return responseJson;
+            }
+        }else{
+            responseJson.setCode(addValidatePhone.getCode());
+            responseJson.setMessage(addValidatePhone.getMessage());
+            return responseJson;
+        }
     }
 
     /** 根据手机号修改用户支付密码 */
@@ -267,7 +337,8 @@ public class UserMessageController {
             return responseJson;
         }
 
-        //TODO 新密码修改
+        //新密码修改
+        newPassword = MD5Util.toMd5(newPassword);
         boolean forgetPwd = userService.forgetPayPwd(user.getUserId(), newPassword);
         if(!forgetPwd){
             responseJson.setCode(3);
@@ -309,6 +380,15 @@ public class UserMessageController {
         if(validatePhone.getCode() != 1){
             responseJson.setCode(validatePhone.getCode());
             responseJson.setMessage(validatePhone.getMessage());
+            return responseJson;
+        }
+
+        //登陆密码判定
+        password = MD5Util.toMd5(password);
+        UserDO userLog = userService.validateUserLogin(user.getUserAccount(), password);
+        if(userLog == null){
+            responseJson.setCode(3);
+            responseJson.setMessage("登陆密码错误！");
             return responseJson;
         }
 

@@ -7,8 +7,11 @@ import com.jydp.entity.DO.system.SystemAdsHomepagesDO;
 import com.jydp.entity.DO.system.SystemBusinessesPartnerDO;
 import com.jydp.entity.DO.system.SystemHotDO;
 import com.jydp.entity.DO.system.SystemNoticeDO;
+import com.jydp.entity.DTO.TransactionUserDealDTO;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.IHomePageService;
+import com.jydp.service.IRedisService;
+import config.RedisKeyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -27,42 +30,35 @@ import java.util.List;
 @Scope(value = "prototype")
 public class HomePageController {
 
-    /** web端首页 */
+    /** redis服务 */
     @Autowired
-    private IHomePageService homePageService;
+    private IRedisService redisService;
 
     /** 跳转至首页 */
     @RequestMapping("/show")
-    public String show(){
-        return "page/web/home";
-    }
-
-    /** 首页 */
-    @RequestMapping("/homePage")
     public String getHomePageData(HttpServletRequest request){
-        JsonObjectBO jsonObjectBO = new JsonObjectBO();
-        JSONObject jsonObject = new JSONObject();
-
-        UserSessionBO userSession = UserWebInterceptor.getUser(request);
 
         //查询首页广告列表
-        List<SystemAdsHomepagesDO> systemAdsHomepagesDOList = homePageService.getSystemAdsHomepageList();
+        List<SystemAdsHomepagesDO> systemAdsHomepagesDOList = (List<SystemAdsHomepagesDO>)redisService.getValue(RedisKeyConfig.HOMEPAGE_ADS);
+
+        //查询所有币行情信息
+        List<TransactionUserDealDTO> transactionUserDealDTOList = (List<TransactionUserDealDTO>)redisService.getValue(RedisKeyConfig.HOMEPAGE_CURRENCYMARKET);
 
         //查询系统公告列表
-        List<SystemNoticeDO> systemNoticeDOList = homePageService.getSystemNoticeList();
+        List<SystemNoticeDO> systemNoticeDOList = (List<SystemNoticeDO>)redisService.getValue(RedisKeyConfig.HOMEPAGE_NOTICE);
 
         //查询热门话题列表
-        List<SystemHotDO> systemHotDOList = homePageService.getSystemHotList();
+        List<SystemHotDO> systemHotDOList = (List<SystemHotDO>)redisService.getValue(RedisKeyConfig.HOMEPAGE_HOTTOPIC);
 
         //查询合作商家列表
-        List<SystemBusinessesPartnerDO> systemBusinessesPartnerDOList = homePageService.getSystemBusinessesPartnerList();
+        List<SystemBusinessesPartnerDO> systemBusinessesPartnerDOList = (List<SystemBusinessesPartnerDO>)redisService.getValue(RedisKeyConfig.HOMEPAGE_PARTNER);
 
-        request.setAttribute("userAccount",userSession.getUserAccount());
         request.setAttribute("systemAdsHomepagesDOList",systemAdsHomepagesDOList);
         request.setAttribute("systemNoticeDOList",systemNoticeDOList);
         request.setAttribute("systemHotDOList",systemHotDOList);
         request.setAttribute("systemBusinessesPartnerDOList",systemBusinessesPartnerDOList);
+        request.setAttribute("transactionUserDealDTOList",transactionUserDealDTOList);
 
-        return "web/homePage";
+        return "page/web/home";
     }
 }

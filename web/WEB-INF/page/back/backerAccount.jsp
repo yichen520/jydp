@@ -242,8 +242,16 @@
         $("#enbaleBackerId").val(backerId);
     }
 
+    var enableConfirmBoo = false;
     //启用确定
     function enableConfirm() {
+        if(enableConfirmBoo){
+            openTips("系统繁忙请稍后");
+            return;
+        } else {
+            enableConfirmBoo = true;
+        }
+
         var enbaleBackerId = $("#enbaleBackerId").val();
         $.ajax({
             url: '<%=path %>' + "/backerWeb/backerAccount/startUp.htm",
@@ -254,12 +262,14 @@
                 enbaleBackerId : enbaleBackerId
             },
             success:function(result){
+                enableConfirmBoo = false;
                 if(result.code == 1) {
                     $("#queryForm").submit();
                 } else {
                     openTips(result.message);
                 }
             }, error:function(){
+                enableConfirmBoo = false;
                 openTips("系统错误！");
             }
         });
@@ -269,8 +279,15 @@
         $("#disableBackerId").val(backerId);
     }
 
+    var disableConfirmBoo = false;
     //禁用确定
     function disableConfirm() {
+        if(disableConfirmBoo){
+            openTips("系统繁忙请稍后");
+            return;
+        } else {
+            disableConfirmBoo = true;
+        }
         var disableBackerId = $("#disableBackerId").val();
         $.ajax({
             url: '<%=path %>' + "/backerWeb/backerAccount/forbidden.htm",
@@ -281,12 +298,14 @@
                 disableBackerId : disableBackerId
             },
             success:function(result){
+                disableConfirmBoo = false;
                 if(result.code == 1) {
                     $("#queryForm").submit();
                 } else {
                     openTips(result.message);
                 }
             }, error:function(){
+                disableConfirmBoo = false;
                 openTips("系统错误！");
             }
         });
@@ -296,8 +315,16 @@
         $("#resetPasswordBackerId").val(backerId);
     }
 
+    var resetConfirmBoo = false;
     //重置确定
     function resetConfirm() {
+        if(resetConfirmBoo){
+            openTips("系统繁忙请稍后");
+            return;
+        } else {
+            resetConfirmBoo = true;
+        }
+
         var resetPasswordBackerId = $("#resetPasswordBackerId").val();
         $.ajax({
             url: '<%=path %>' + "/backerWeb/backerAccount/resetPassword.htm",
@@ -308,12 +335,14 @@
                 resetPasswordBackerId : resetPasswordBackerId
             },
             success:function(result){
+                resetConfirmBoo = false;
                 if(result.code == 1) {
                     $("#queryForm").submit();
                 } else {
                     openTips(result.message);
                 }
             }, error:function(){
+                resetConfirmBoo = false;
                 openTips("系统错误！");
             }
         });
@@ -323,8 +352,16 @@
         $("#deleteBackerId").val(backerId);
     }
 
+    var deleteConfirmBoo = false;
     //删除确定
     function deleteConfirm() {
+        if(deleteConfirmBoo){
+            openTips("系统繁忙请稍后");
+            return;
+        } else {
+            deleteConfirmBoo = true;
+        }
+
         var deleteBackerId = $("#deleteBackerId").val();
         $.ajax({
             url: '<%=path %>' + "/backerWeb/backerAccount/delete.htm",
@@ -335,12 +372,14 @@
                 deleteBackerId : deleteBackerId
             },
             success:function(result){
+                deleteConfirmBoo = false;
                 if(result.code == 1) {
                     $("#queryForm").submit();
                 } else {
                     openTips(result.message);
                 }
             }, error:function(){
+                deleteConfirmBoo = false;
                 openTips("系统错误！");
             }
         });
@@ -352,6 +391,7 @@
         $("#updateRoleId").val(roleId);
     }
 
+    var updateRoleSubmitBoo = false;
     //修改角色
     function updateRoleSubmit() {
         var updateRoleId = $("#updateRoleId").val();
@@ -359,6 +399,14 @@
         if (!updateRoleId) {
             return openTips("请选择角色");
         }
+
+        if(updateRoleSubmitBoo){
+            openTips("系统繁忙请稍后");
+            return;
+        } else {
+            updateRoleSubmitBoo = true;
+        }
+
         $.ajax({
             url: '<%=path %>' + "/backerWeb/backerAccount/updateRole.htm",
             type:'post',
@@ -369,17 +417,20 @@
                 updateRoleBackerId : updateRoleBackerId
             },
             success:function(result){
+                updateRoleSubmitBoo = false;
                 if(result.code == 1) {
                     $("#queryForm").submit();
                 } else {
                     openTips(result.message);
                 }
             }, error:function(){
+                updateRoleSubmitBoo = false;
                 openTips("系统错误！");
             }
         });
     }
 
+    var updatePasswordSubmitBoo = false;
     //修改密码
     function updatePasswordSubmit() {
         var oldPassword = $("#updateBackerOldPassword").val();
@@ -398,6 +449,13 @@
             return openTips("两次密码不匹配");
         }
 
+        if(updatePasswordSubmitBoo){
+            openTips("系统繁忙请稍后");
+            return;
+        } else {
+            updatePasswordSubmitBoo = true;
+        }
+
         $.ajax({
             url: '<%=path %>' + "/backerWeb/backerAccount/updatePassword.htm",
             type:'post',
@@ -409,6 +467,7 @@
                 updateBackerRepeatPassword : newRepeatPassword
             },
             success:function(result){
+                updatePasswordSubmitBoo = false;
                 if(result.code == 1) {
                     openTips(result.message);
                     setTimeout("backLogin()",1000 );
@@ -416,6 +475,7 @@
                     openTips(result.message);
                 }
             }, error:function(){
+                updatePasswordSubmitBoo = false;
                 openTips("系统错误！");
             }
         });
@@ -425,6 +485,7 @@
         window.location.href = "<%=path%>" + "/backLogin";
     }
 
+    var addBackerSubmitBoo = false;
     //新增账号
     function addBackerSubmit() {
         var reg = /^[0-9a-zA-Z]{6,16}$/;
@@ -451,6 +512,13 @@
             return openTips("两次密码不一致");
         }
 
+        if(addBackerSubmitBoo){
+            openTips("系统繁忙请稍后");
+            return;
+        } else {
+            addBackerSubmitBoo = true;
+        }
+
         $.ajax({
             url: '<%=path %>' + "/backerWeb/backerAccount/insert.htm",
             type:'post',
@@ -463,12 +531,14 @@
                 addBackerRepeatPassword : addBackerRepeatPassword
             },
             success:function(result){
+                addBackerSubmitBoo = false;
                 if(result.code == 1) {
                     $("#queryForm").submit();
                 } else {
                     openTips(result.message);
                 }
             }, error:function(){
+                addBackerSubmitBoo = false;
                 openTips("系统错误！");
             }
         });

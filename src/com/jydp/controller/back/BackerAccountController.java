@@ -298,7 +298,12 @@ public class BackerAccountController {
         
         oldPassword = MD5Util.toMd5(oldPassword);
         newPassword = MD5Util.toMd5(newPassword);
-        
+        BackerDO backer = backerService.validateBackerLogin(backerSession.getBackerAccount(), oldPassword);
+        if (backer == null) {
+            responseJson.setCode(3);
+            responseJson.setMessage("原密码错误");
+            return responseJson;
+        }
         boolean updateResult = backerService.updatePassword(backerSession.getBackerId(), oldPassword, newPassword);
         if(updateResult){
             BackerWebInterceptor.loginOut(request);

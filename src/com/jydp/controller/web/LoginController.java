@@ -7,8 +7,10 @@ import com.jydp.entity.BO.BackerSessionBO;
 import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.back.BackerDO;
 import com.jydp.entity.DO.user.UserDO;
+import com.jydp.entity.DO.user.UserIdentificationDO;
 import com.jydp.interceptor.BackerWebInterceptor;
 import com.jydp.interceptor.UserWebInterceptor;
+import com.jydp.service.IUserIdentificationService;
 import com.jydp.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -30,6 +32,10 @@ public class LoginController {
     /** 用户账号 */
     @Autowired
     private IUserService userService;
+
+    /** 用户认证 */
+    @Autowired
+    private IUserIdentificationService userIdentificationService;
 
     /**  跳转至登录页面 */
     @RequestMapping(value = "/show")
@@ -61,6 +67,21 @@ public class LoginController {
             request.setAttribute("code", 2);
             request.setAttribute("message", "用户被禁用");
             return "page/web/login";
+        } else {
+            //查询用户最新认证信息
+            UserIdentificationDO userIdentification = userIdentificationService.getUserIdentificationByUserAccountLately(user.getUserAccount());
+            //未进行认证
+            if (userIdentification == null) {
+                request.setAttribute("userId",user.getUserId());
+                request.setAttribute("userAccount",user.getUserAccount());
+                return "page/web/identification";
+            }
+            //认证未通过
+            if (userIdentification.getIdentificationStatus() != 2) {
+                request.setAttribute("userId",user.getUserId());
+                request.setAttribute("userAccount",user.getUserAccount());
+                return "page/web/identificationAfresh";
+            }
         }
 
         UserSessionBO userSessionBO = new UserSessionBO();
