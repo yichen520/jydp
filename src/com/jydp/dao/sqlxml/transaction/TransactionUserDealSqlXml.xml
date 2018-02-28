@@ -20,7 +20,7 @@
 			 currencyNumber, currencyTotalPrice, remark, addTime)
 		VALUES
 			(#{orderNo}, #{pendingOrderNo}, #{userId}, #{paymentType}, #{currencyId}, #{currencyName}, #{transactionPrice},
-			 #{currencyNumber}, #{currencyNumber}, #{remark}, #{addTime})
+			 #{currencyNumber}, #{currencyTotalPrice}, #{remark}, #{addTime})
 	</insert>
 
 	<select id="TransactionUserDeal_countTransactionUserDealForBack" parameterType="java.util.Map" resultType="int">
