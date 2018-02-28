@@ -113,6 +113,7 @@
             <p class="popTitle">回复操作</p>
             <p class="popInput">
                 <label class="popName">处理状态<span class="star">*</span></label>
+                <input type="hidden" id="old_handleStatus"/>
                 <select class="popSelected" id="reply_handleStatus">
                     <option disabled selected>选择处理状态</option>
                     <option value="1">待处理</option>
@@ -158,6 +159,7 @@
 
     function reply(id, handleStatus) {
         $("#reply_handleStatus").val(handleStatus);
+        $("#old_handleStatus").val(handleStatus);
         $("#reply_id").val(id);
     }
 
@@ -171,6 +173,7 @@
         }
 
         var id = $("#reply_id").val();
+        var oldHandleStatus = $("#old_handleStatus").val();
         var handleStatus = $("#reply_handleStatus").val();
         var handleContent = $("#reply_handleContent").val();
 
@@ -182,6 +185,11 @@
         if (!handleStatus || handleStatus == 0) {
             replyHandleBoo = false;
             return openTips("未选择处理状态");
+        }
+
+        if (handleStatus <= oldHandleStatus) {
+            replyHandleBoo = false;
+            return openTips("请选择正确的处理状态");
         }
 
         $.ajax({

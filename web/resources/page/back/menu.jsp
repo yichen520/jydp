@@ -56,7 +56,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
     <li class="levelOne" id="li_100000">
         <p class="menuTitle">
-            交易记录
+            成交记录
             <img src="<%=path %>/resources/image/back/down.png" class="menu_down" />
             <img src="<%=path %>/resources/image/back/up.png" class="menu_up" />
         </p>

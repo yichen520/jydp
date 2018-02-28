@@ -14,7 +14,7 @@ import java.util.List;
 public interface ITransactionUserDealService {
 
     /**
-     * 查询用户成交记录
+     * 查询用户成交记录(web端)
      * @param userId 用户Id
      * @param pageNumber  当前页数
      * @param pageSize  每页条数

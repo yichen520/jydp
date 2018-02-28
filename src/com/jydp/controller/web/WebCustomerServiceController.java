@@ -60,12 +60,12 @@ public class WebCustomerServiceController {
     /**  意见反馈展示 */
     @RequestMapping("/show")
     public String show(HttpServletRequest request) {
-//        UserSessionBO userBo = UserWebInterceptor.getUser(request);
-//        if (userBo == null) {
-//            request.setAttribute("code", 4);
-//            request.setAttribute("message", "未登录！");
-//            return "page/web/login";
-//        }
+        UserSessionBO userBo = UserWebInterceptor.getUser(request);
+        if (userBo == null) {
+            request.setAttribute("code", 4);
+            request.setAttribute("message", "未登录！");
+            return "page/web/login";
+        }
 
         showList(request);
         request.setAttribute("code", 1);

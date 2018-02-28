@@ -31,7 +31,7 @@ public class DealRecordController {
 
         UserSessionBO userSession = UserWebInterceptor.getUser(request);
         if (userSession == null) {
-            return "page/login";
+            return "page/web/login";
         }
 
         String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
