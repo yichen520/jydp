@@ -60,7 +60,7 @@
 
     <update id="UserCurrencyNum_reduceCurrencyNumberLock" parameterType="UserCurrencyNumDO">
         UPDATE user_currency_num_tab
-        SET currencyNumberLock = currencyNumberLock + #{currencyNumberLock}
+        SET currencyNumberLock = currencyNumberLock - #{currencyNumberLock}
         WHERE userId = #{userId}
           AND currencyId = #{currencyId}
     </update>

@@ -23,7 +23,7 @@ import java.util.List;
  * @author yk
  */
 @Controller
-@RequestMapping("/web/user")
+@RequestMapping("/userWeb/homePage")
 @Scope(value = "prototype")
 public class HomePageController {
 
@@ -31,6 +31,13 @@ public class HomePageController {
     @Autowired
     private IHomePageService homePageService;
 
+    /** 跳转至首页 */
+    @RequestMapping("/show")
+    public String show(){
+        return "page/web/home";
+    }
+
+    /** 首页 */
     @RequestMapping("/homePage")
     public String getHomePageData(HttpServletRequest request){
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
