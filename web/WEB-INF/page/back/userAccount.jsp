@@ -65,7 +65,7 @@
             <table class="table" cellpadding="0" cellspacing="0">
                 <tr class="tableTitle">
                     <td class="time">注册时间</td>
-                    <td class="account">用户账号</td>
+                    <td class="account">用户信息</td>
                     <td class="money">账户可用余额</td>
                     <td class="money">冻结金额</td>
                     <td class="money">账户总金额</td>
@@ -75,7 +75,10 @@
                 <c:forEach items="${userList}" var="user">
                     <tr class="tableInfo">
                         <td class="time"><fmt:formatDate type="time" value="${user.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-                        <td class="account">${user.userAccount}</td>
+                        <td class="account">
+                            <p>账号：${user.userAccount}</p>
+                            <p>手机：(${user.phoneAreaCode})${user.phoneNumber}</p>
+                        </td>
                         <td class="money">$<fmt:formatNumber type="number" value="${user.userBalance }" maxFractionDigits="8"/></td>
                         <td class="money">$<fmt:formatNumber type="number" value="${user.userBalanceLock }" maxFractionDigits="8"/></td>
                         <td class="money">$<fmt:formatNumber type="number" value="${user.userBalance + user.userBalanceLock}" maxFractionDigits="8"/></td>
