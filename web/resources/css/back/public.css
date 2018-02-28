@@ -191,7 +191,7 @@ input:-webkit-autofill{
     background-color: #fd891d;
 }
 .top{
-    background: url("../../image/back/line.png") #ffffff no-repeat 15px 0;
+    background: url("../images/line.png") #ffffff no-repeat 15px 0;
 }
 .askArea{
     padding-top: 15px;
@@ -291,7 +291,8 @@ input:-webkit-autofill{
     text-align: center;
     padding: 5px ;
     display: table-cell;
-    vertical-align: middle
+    vertical-align: middle;
+    word-break: break-all;
 }
 
 /*-----changePage-----*/

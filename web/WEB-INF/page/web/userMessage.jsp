@@ -52,7 +52,7 @@
                 </tr>
                 <c:forEach items="${userCurrencyList }" var="userCurrency">
                     <tr class="coinInfo">
-                        <td class="coin">盛源链(MUC/USD)</td>
+                        <td class="coin">${userCurrency.currencyName }</td>
                         <td class="amount">${userCurrency.currencyNumber }</td>
                         <td class="amount">${userCurrency.currencyNumberLock }</td>
                         <td class="amount">${userCurrency.currencyNumberSum }</td>
@@ -86,7 +86,7 @@
                     <img src="<%=path %>/resources/image/web/pass.png" class="pass"  />
                     <img src="<%=path %>/resources/image/web/error.png" class="error" style="display: none"/>
                     <span class="safetyTitle">绑定手机</span>
-                    <span class="state">${userMessage.phoneNumber }</span>
+                    <span class="state" id="showMobilePhone">${userMessage.phoneNumber }</span>
                     <span class="explain">可以通过该手机号找回密码</span>
                     <input type="text" value="修&nbsp;改" class="changePhone" onfocus="this.blur()" />
                 </li>
@@ -113,15 +113,18 @@
             <div class="password_pop">
                 <p class="popInput">
                     <label class="popName">原密码<span class="star">*</span>：</label>
-                    <input type="password" class="entry" placeholder="原登录密码" />
+                    <input type="password" class="entry" placeholder="原登录密码" maxlength="16" id="passwordPop"
+                           onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
                 </p>
                 <p class="popInput">
                     <label class="popName">新密码<span class="star">*</span>：</label>
-                    <input type="password" class="entry" placeholder="字母、数字，6~16个字符" />
+                    <input type="password" class="entry" placeholder="字母、数字，6~16个字符" maxlength="16" id="newPasswordPop"
+                           onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')" />
                 </p>
                 <p class="popInput">
                     <label class="popName">重复密码<span class="star">*</span>：</label>
-                    <input type="password" class="entry" placeholder="再次输入新密码" />
+                    <input type="password" class="entry" placeholder="再次输入新密码" maxlength="16" id="repPasswordPop"
+                           onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')" />
                 </p>
                 <p class="tips">提示：初始支付密码为“123456”，修改初始密码后方可交易</p>
             </div>
@@ -129,21 +132,24 @@
             <div class="tel_pop">
                 <p class="popInput">
                     <label class="popName">新密码<span class="star">*</span>：</label>
-                    <input type="password" class="entry" placeholder="字母、数字，6~16个字符" />
+                    <input type="password" class="entry" placeholder="字母、数字，6~16个字符" maxlength="16" id="newPasswordTel"
+                           onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')" />
                 </p>
                 <p class="popInput">
                     <label class="popName">重复密码<span class="star">*</span>：</label>
-                    <input type="password" class="entry" placeholder="再次输入新密码" />
+                    <input type="password" class="entry" placeholder="再次输入新密码" maxlength="16" id="repPasswordTel"
+                           onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')" />
                 </p>
                 <p class="popInput">
                     <label class="popName">手机号：</label>
-                    <span class="popTel"><span>+${userMessage.phoneAreaCode }</span><span>${userMessage.phoneNumber }</span></span>
+                    <span class="popTel"><span id="showAreaCode">${userMessage.phoneAreaCode }</span><span id="showPhone">${userMessage.phoneNumber }</span></span>
                 </p>
                 <p class="popInput">
                     <label class="popName">手机验证码<span class="star">*</span>：</label>
                     <span class="popCode">
-                        <input type="text" class="code" placeholder="6位短信验证码" />
-                        <input type="text" id="passwordBtn" class="message" value="获取验证码" onfocus="this.blur()" />
+                        <input type="text" class="code" placeholder="6位短信验证码" maxlength="6" id="validateCodeTel"
+                               onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
+                        <input type="text" id="passwordBtn" class="message" value="获取验证码" onfocus="this.blur()" onclick="payNoteVerify()"  />
                     </span>
                 </p>
                 <p class="tips">提示：初始支付密码为“123456”，修改初始密码后方可交易</p>
@@ -151,7 +157,7 @@
 
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="openTip()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="updatePayPassword()" />
             </div>
         </div>
 
@@ -159,20 +165,23 @@
             <p class="popTitle">修改密码</p>
             <p class="popInput">
                 <label class="popName">原密码<span class="star">*</span>：</label>
-                <input type="password" class="entry" placeholder="原登录密码" />
+                <input type="password" class="entry" placeholder="原登录密码" maxlength="16" id="password"
+                       onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
             </p>
             <p class="popInput">
                 <label class="popName">新密码<span class="star">*</span>：</label>
-                <input type="password" class="entry" placeholder="字母、数字，6~16个字符" />
+                <input type="password" class="entry" placeholder="字母、数字，6~16个字符" maxlength="16" id="newPassword"
+                       onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
             </p>
             <p class="popInput">
                 <label class="popName">重复密码<span class="star">*</span>：</label>
-                <input type="password" class="entry" placeholder="再次输入新密码" />
+                <input type="password" class="entry" placeholder="再次输入新密码" maxlength="16" id="repPassword"
+                       onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
             </p>
 
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="openTip()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="updateLogPassword()" />
             </div>
         </div>
 
@@ -181,34 +190,38 @@
             <p class="popInput">
                 <label class="popName">手机号<span class="star">*</span>：</label>
                 <span class="popCode">
-                    <select class="areTel">
-                        <option selected>中国&nbsp;+86</option>
+                    <select class="areTel" id="areaCode" id="">
+                        <option selected value="+86">中国&nbsp;+86</option>
+                        <option value="+001">美国&nbsp;+001</option>
                     </select>
-                    <input type="text" class="telNumber" placeholder="您的11位手机号" />
+                    <input type="text" class="telNumber" placeholder="您的11位手机号" maxlength="11" id="bindingMobile"
+                           onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
                 </span>
             </p>
             <p class="popInput">
                 <label class="popName">手机验证码<span class="star">*</span>：</label>
                 <span class="popCode">
-                    <input type="text" class="code" placeholder="6位短信验证码" />
+                    <input type="text" class="code" placeholder="6位短信验证码" maxlength="6" id="verifyCode"
+                           onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
                     <input type="text" id="phoneBtn" class="message" value="获取验证码" onfocus="this.blur()" />
                 </span>
             </p>
             <p class="popInput">
                 <label class="popName">登录密码<span class="star">*</span>：</label>
-                <input type="password" class="entry" placeholder="您的登录密码" />
+                <input type="password" class="entry" placeholder="您的登录密码" maxlength="16" id="phonePassword"
+                       onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
             </p>
 
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="openTip()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="updatePhoneNumber()" />
             </div>
         </div>
     </div>
 </div>
 
 <script type="text/javascript" src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
-<script type="text/javascript" src="js/public.js"></script>
+<script type="text/javascript" src="<%=path %>/resources/js/loadPageWeb.js"></script>
 <script type="text/javascript" src="<%=path %>/resources/js/simpleTips.js"></script>
 <script type="text/javascript">
     window.onload = function() {
@@ -217,19 +230,254 @@
         var payPassword = '${userMessage.payPassword }';
         var payPass = document.getElementById("payPass");
         var payError = document.getElementById("payError");
-        if(payPassword != null){
-            payError.style.visibility ="visible";
-            payPass.style.visibility = "hidden";
+        if(payPassword == 1){
+            payError.style.display ="inline";
+            payPass.style.display = "none";
         } else {
-            payError.style.visibility ="visible";
-            payPass.style.visibility = "hidden";
-
+            payPass.style.display ="inline";
+            payError.style.display = "none";
         }
         if (code != 1 && message != "") {
             openTips(message);
             return false;
         }
     }
+
+
+    //更新支付密码
+    function updatePayPassword() {
+        var tel_pop =$('.tel_pop').css('display');
+
+        if(tel_pop == 'none'){
+            var passwordPop = $("#passwordPop").val();
+            var newPasswordPop = $("#newPasswordPop").val();
+            var repPasswordPop = $("#repPasswordPop").val();
+
+            if(passwordPop == ""){
+                openTips("请输入原密码");
+                return;
+            }
+
+            if(newPasswordPop == ""){
+                openTips("请输入新密码");
+                return;
+            }
+
+            if(newPasswordPop == "123456"){
+                openTips("不可设为初始密码");
+                return;
+            }
+
+            if(repPasswordPop == ""){
+                openTips("请您输入确认密码");
+                return;
+            }
+
+            if(newPasswordPop != repPasswordPop){
+                openTips("两次密码不一致");
+                return;
+            }
+            $.ajax({
+                url: '<%=path %>' + "/userWeb/userMessage/updatePayPasswordByPassword.htm",
+                type:'post',
+                dataType:'json',
+                async:true,
+                data:{
+                    password : passwordPop,
+                    newPassword : newPasswordPop,
+                    repetitionPassword : repPasswordPop
+                },
+                success:function(result){
+                    if(result.code == 1) {
+                        var payPass = document.getElementById("payPass");
+                        var payError = document.getElementById("payError");
+                        payPass.style.display ="inline";
+                        payError.style.display = "none";
+                        $(".mask").fadeOut("fast");
+                        $(".changePay_pop").fadeOut("fast");
+                        $("#passwordPop").val("");
+                        $("#newPasswordPop").val("");
+                        $("#repPasswordPop").val("");
+
+                    } else {
+                        openTips(result.message);
+                    }
+                }, error:function(){
+                    openTips("系统错误！");
+                }
+            });
+
+        } else {
+            var newPasswordTel = $("#newPasswordTel").val();
+            var repPasswordTel = $("#repPasswordTel").val();
+            var validateCodeTel = $("#validateCodeTel").val();
+
+            if(newPasswordTel == ""){
+                openTips("请输入新密码");
+                return;
+            }
+
+            if(newPasswordTel == "123456"){
+                openTips("不可设为初始密码");
+                return;
+            }
+
+            if(repPasswordTel == ""){
+                openTips("请您输入确认密码");
+                return;
+            }
+
+            if(validateCodeTel == ""){
+                openTips("请输入验证码");
+                return;
+            }
+
+            if(newPasswordTel != repPasswordTel){
+                openTips("两次密码不一致");
+                return;
+            }
+            $.ajax({
+                url: '<%=path %>' + "/userWeb/userMessage/updatePhoneByPassword.htm",
+                type:'post',
+                dataType:'json',
+                async:true,
+                data:{
+                    validateCode : validateCodeTel,
+                    newPassword : newPasswordTel,
+                    repetitionPassword : repPasswordTel
+                },
+                success:function(result){
+                    if(result.code == 1) {
+                        openTips(result.message);
+                        var payPass = document.getElementById("payPass");
+                        var payError = document.getElementById("payError");
+                        payPass.style.display ="inline";
+                        payError.style.display = "none";
+                        $(".mask").fadeOut("fast");
+                        $(".changePay_pop").fadeOut("fast");
+                    } else {
+                        openTips(result.message);
+                    }
+                }, error:function(){
+                    openTips("系统错误！");
+                }
+            });
+        }
+    }
+
+    //修改登陆密码
+    function updateLogPassword() {
+        var password = $("#password").val();
+        var newPassword = $("#newPassword").val();
+        var repPassword = $("#repPassword").val();
+
+        if(password == ""){
+            openTips("请输入原密码");
+            return;
+        }
+
+        if(newPassword == ""){
+            openTips("请输入新密码");
+            return;
+        }
+
+        if(repPassword == ""){
+            openTips("请您输入确认密码");
+            return;
+        }
+
+        if(newPassword != repPassword){
+            openTips("两次密码不一致");
+            return;
+        }
+        $.ajax({
+            url: '<%=path %>' + "/userWeb/userMessage/updateLogPassword.htm",
+            type:'post',
+            dataType:'json',
+            async:true,
+            data:{
+                password : password,
+                newPassword : newPassword,
+                repetitionPassword : repPassword
+            },
+            success:function(result){
+                if(result.code == 1) {
+                    $(".mask").fadeOut("fast");
+                    $(".changePassword_pop").fadeOut("fast");
+                    $("#password").val("");
+                    $("#newPassword").val("");
+                    $("#repPassword").val("");
+
+                } else {
+                    openTips(result.message);
+                }
+            }, error:function(){
+                openTips("系统错误！");
+            }
+        });
+
+    }
+
+    //修改绑定手机号
+    function updatePhoneNumber() {
+        var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+        var bindingMobile = $("#bindingMobile").val();
+        var verifyCode = $("#verifyCode").val();
+        var areaCode = $("#areaCode").val();
+        var phonePassword = $("#phonePassword").val();
+        if(bindingMobile == ""){
+            openTips("请输入手机号");
+            return;
+        }
+
+        if(!regPos.test(bindingMobile) || bindingMobile.length > 11){
+            openTips("请输入正确手机号");
+            return;
+        }
+
+        if(verifyCode == ""){
+            openTips("请输入验证码");
+            return;
+        }
+
+        if(phonePassword == ""){
+            openTips("请输入登录密码");
+            return;
+        }
+
+        $.ajax({
+            url: '<%=path %>' + "/userWeb/userMessage/updatePasswordByPhone.htm",
+            type:'post',
+            dataType:'json',
+            async:true,
+            data:{
+                phone : bindingMobile,
+                areaCode : areaCode,
+                validateCode : verifyCode,
+                password : phonePassword
+            },
+            success:function(result){
+                if(result.code == 1) {
+                    openTips(result.message);
+                    var phone = bindingMobile.substring(0,3) + "***" + bindingMobile.substring(bindingMobile.length - 3);
+                    $("#showPhone").text(phone);
+                    $("#showMobilePhone ").text(phone);
+                    $("#showAreaCode").text(areaCode);
+                    $(".mask").fadeOut("fast");
+                    $(".changePhone_pop").fadeOut("fast");
+                    $("#bindingMobile").val("");
+                    $("#verifyCode").val("");
+                    $("#areaCode").val("+86");
+                    $("#phonePassword").val("");
+                } else {
+                    openTips(result.message);
+                }
+            }, error:function(){
+                openTips("系统错误！");
+            }
+        });
+    }
+
 </script>
 <script type="text/javascript">
     var popObj;
@@ -254,8 +502,8 @@
             $(popObj).fadeOut("fast");
         });
         $(".yes").click(function(){
-            $(".mask").fadeOut("fast");
-            $(popObj).fadeOut("fast");
+            // $(".mask").fadeOut("fast");
+            // $(popObj).fadeOut("fast");
         });
     });
 
@@ -281,6 +529,35 @@
             o.value="获取验证码";
             wait = 60;
         } else {
+            if( wait == 60){
+                var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+                var bindingMobile = $("#bindingMobile").val();
+                var areaCode = $("#areaCode").val();
+                if(bindingMobile == ""){
+                    openTips("请输入手机号");
+                    return;
+                }
+
+                if(!regPos.test(bindingMobile) || bindingMobile.length > 11){
+                    openTips("请输入正确手机号");
+                    return;
+                }
+                //bindingMobile = areaCode + bindingMobile;
+                $.ajax({
+                    url: '<%=path %>' + "/sendCode/sendPhoneCode",
+                    type:'post',
+                    dataType:'json',
+                    async:true,
+                    data:{
+                        phoneNumber : bindingMobile
+                    },
+                    success:function(result){
+                        openTips(result.message);
+                    }, error:function(){
+                        openTips("系统错误！");
+                    }
+                });
+            }
             o.setAttribute("disabled", true);
             o.value="重新发送(" + wait + ")";
             wait--;
@@ -290,13 +567,40 @@
                 1000)
         }
     }
-    document.getElementById("phoneBtn").onclick=function(){time(this);};
-    document.getElementById("passwordBtn").onclick=function(){time(this);};
 
-    function openTip()
-    {
-        openTips("阿萨德芳");
+    var payWait=60;
+    function payTime(o) {
+        if (payWait == 0) {
+            o.removeAttribute("disabled");
+            o.value="获取验证码";
+            payWait = 60;
+        } else {
+            if( payWait == 60){
+                $.ajax({
+                    url: '<%=path %>' + "/userWeb/userMessage/payNoteVerify.htm",
+                    type:'post',
+                    dataType:'json',
+                    async:true,
+                    data:{
+                    },
+                    success:function(result){
+                        openTips(result.message);
+                    }, error:function(){
+                        openTips("系统错误！");
+                    }
+                });
+            }
+            o.setAttribute("disabled", true);
+            o.value="重新发送(" + payWait + ")";
+            payWait--;
+            setTimeout(function() {
+                    payTime(o)
+                },
+                1000)
+        }
     }
+    document.getElementById("phoneBtn").onclick=function(){time(this);};
+    document.getElementById("passwordBtn").onclick=function(){payTime(this);};
 </script>
 
 </body>

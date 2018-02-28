@@ -12,6 +12,7 @@ public class TransactionUserDealDO {
     private String orderNo;  //记录号,业务类型（2）+日期（6）+随机位（10）
     private String pendingOrderNo;  //挂单记录号
     private int userId;  //用户Id
+    private String userAccount;  //用户账号
     private int paymentType;  //收支类型,1：买入，2：卖出，3：撤销
     private int currencyId;  //币种Id
     private String currencyName;  //货币名称
@@ -19,6 +20,7 @@ public class TransactionUserDealDO {
     private double currencyNumber;  //成交数量
     private double currencyTotalPrice;  //成交总价
     private String remark;  //备注
+    private Timestamp pendTime;  //挂单时间
     private Timestamp addTime;  //添加时间
 
     /**
@@ -67,6 +69,24 @@ public class TransactionUserDealDO {
      */
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    /**
+     * 用户账号
+     *
+     * @return the user account
+     */
+    public String getUserAccount() {
+        return userAccount;
+    }
+
+    /**
+     * 用户账号
+     *
+     * @param userAccount the user account
+     */
+    public void setUserAccount(String userAccount) {
+        this.userAccount = userAccount;
     }
 
     /**
@@ -163,6 +183,22 @@ public class TransactionUserDealDO {
      */
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    /**
+     * 挂单时间
+     * @return the pendTime
+     */
+    public Timestamp getPendTime() {
+        return pendTime;
+    }
+
+    /**
+     * 挂单时间
+     * @param pendTime the pendTime to set
+     */
+    public void setPendTime(Timestamp pendTime) {
+        this.pendTime = pendTime;
     }
 
     /**
