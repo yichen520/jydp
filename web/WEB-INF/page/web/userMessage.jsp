@@ -191,8 +191,9 @@
                 <label class="popName">手机号<span class="star">*</span>：</label>
                 <span class="popCode">
                     <select class="areTel" id="areaCode" id="">
-                        <option selected value="+86">中国&nbsp;+86</option>
-                        <option value="+001">美国&nbsp;+001</option>
+                        <c:forEach items="${phoneAreaMap}" var="phoneArea">
+                            <option value="${phoneArea.key }">${phoneArea.value }&nbsp;${phoneArea.key }</option>
+                        </c:forEach>
                     </select>
                     <input type="text" class="telNumber" placeholder="您的11位手机号" maxlength="11" id="bindingMobile"
                            onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>

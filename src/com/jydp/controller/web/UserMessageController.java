@@ -1,14 +1,11 @@
 package com.jydp.controller.web;
 
-import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.BigDecimalUtil;
 import com.iqmkj.utils.IpAddressUtil;
 import com.iqmkj.utils.MD5Util;
 import com.iqmkj.utils.StringUtil;
-import com.jydp.controller.SendCodeController;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
-import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DTO.BackerUserCurrencyNumDTO;
 import com.jydp.entity.VO.UserCurrencyNumVO;
@@ -17,6 +14,7 @@ import com.jydp.other.SendMessage;
 import com.jydp.service.ISystemValidatePhoneService;
 import com.jydp.service.IUserCurrencyNumService;
 import com.jydp.service.IUserService;
+import config.PhoneAreaConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -28,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户信息
@@ -118,8 +117,12 @@ public class UserMessageController {
             userCurrencyList.add(userCurrencyNum);
         }
 
+        Map<String, String> phoneAreaMap = PhoneAreaConfig.phoneAreaMap;
+
+
         request.setAttribute("code", 1);
         request.setAttribute("message", "查询成功");
+        request.setAttribute("phoneAreaMap", phoneAreaMap);
         request.setAttribute("userBalanceSum", userBalanceSum);
         request.setAttribute("userMessage", userMessage);
         request.setAttribute("userCurrencyList", userCurrencyList);
