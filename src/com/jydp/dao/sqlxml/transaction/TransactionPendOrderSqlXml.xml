@@ -140,4 +140,39 @@
 		WHERE pendingOrderNo = #{pendingOrderNo}
 		AND #{revokeNumber} <![CDATA[ = ]]> pendingNumber
 	</update>
+
+	<select id="TransactionPendOrder_getLastTransactionPendOrder" parameterType="java.util.Map" resultType="TransactionPendOrderDO">
+		SELECT pendingOrderNo, userId, paymentType, currencyId, currencyName, pendingPrice,
+		pendingNumber, dealNumber, pendingStatus, remark, addTime, endTime
+		FROM transaction_pend_order_tab
+		WHERE currencyId = #{currencyId}
+		  AND paymentType = #{paymentType}
+		  AND pendingStatus IN (1,2)
+		<if test="userId > 0">
+			AND userId = #{userId}
+		</if>
+		GROUP BY pendingPrice
+		<if test="paymentType == 1 ">
+			DESC
+		</if>
+		<if test="paymentType == 2 ">
+			ASC
+		</if>
+		ORDER BY addTime DESC
+		LIMIT 1
+	</select>
+
+	<update id="TransactionPendOrder_updatePartDeal" parameterType="java.util.Map">
+		UPDATE transaction_pend_order_tab
+		SET pendingStatus = 2, endTime = #{endTime}, dealNumber = dealNumber + #{dealNumber}
+		WHERE pendingOrderNo = #{pendingOrderNo}
+		  AND #{dealNumber} + dealNumber <![CDATA[ < ]]> pendingNumber
+	</update>
+
+	<update id="TransactionPendOrder_updateAllDeal" parameterType="java.util.Map">
+		UPDATE transaction_pend_order_tab
+		SET pendingStatus = 3, endTime = #{endTime}, dealNumber = dealNumber + #{dealNumber}
+		WHERE pendingOrderNo = #{pendingOrderNo}
+		AND #{dealNumber} + dealNumber <![CDATA[ = ]]> pendingNumber
+	</update>
 </mapper>
