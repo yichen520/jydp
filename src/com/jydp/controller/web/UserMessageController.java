@@ -109,10 +109,17 @@ public class UserMessageController {
             userCurrencyNum.setCurrencyNumber(userCurrency.getCurrencyNumber());
             userCurrencyNum.setCurrencyId(userCurrency.getCurrencyId());
             userCurrencyNum.setCurrencyNumberLock(userCurrency.getCurrencyNumberLock());
-            double currencyNumberSum = BigDecimalUtil.add(userCurrency.getCurrencyNumber(), userCurrency.getCurrencyNumberLock());
+
             //保留四位小数
-            BigDecimal b = new BigDecimal(currencyNumberSum);
-            currencyNumberSum = b.setScale(4, BigDecimal.ROUND_DOWN).doubleValue();
+            BigDecimal currencyNumber = new BigDecimal(userCurrency.getCurrencyNumber());
+            double currencyNum = currencyNumber.setScale(4, BigDecimal.ROUND_DOWN).doubleValue();
+            BigDecimal currencyNumberLock = new BigDecimal(userCurrency.getCurrencyNumberLock());
+            double currencyLock = currencyNumberLock.setScale(4, BigDecimal.ROUND_DOWN).doubleValue();
+
+            //计算总金额
+            double currencyNumberSum = BigDecimalUtil.add(currencyNum, currencyLock);
+            userCurrencyNum.setCurrencyNumber(currencyNum);
+            userCurrencyNum.setCurrencyNumberLock(currencyLock);
             userCurrencyNum.setCurrencyNumberSum(currencyNumberSum);
             userCurrencyList.add(userCurrencyNum);
         }

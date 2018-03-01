@@ -4,6 +4,7 @@ import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.ITransactionCurrencyDao;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DTO.TransactionUserDealDTO;
+import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.service.ITransactionCurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      * @return  操作成功：返回true，操作失败：返回false
      */
     public boolean insertTransactionCurrency(String currencyShortName, String currencyName, Timestamp addTime){
-        TransactionCurrencyDO transactionCurrency = new TransactionCurrencyDO();
+        TransactionCurrencyVO transactionCurrency = new TransactionCurrencyVO();
         transactionCurrency.setCurrencyName(currencyName);
         transactionCurrency.setCurrencyShortName(currencyShortName);
         transactionCurrency.setAddTime(addTime);
@@ -44,7 +45,7 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      * @param currencyId  币种Id
      * @return  操作成功：返回交易币种，操作失败：返回null
      */
-    public TransactionCurrencyDO getTransactionCurrencyByCurrencyId(int currencyId){
+    public TransactionCurrencyVO getTransactionCurrencyByCurrencyId(int currencyId){
         return transactionCurrencyDao.getTransactionCurrencyByCurrencyId(currencyId);
     }
 
@@ -71,7 +72,7 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      * @return 查询成功：返回币种信息列表；查询失败：返回null
      */
     @Override
-    public List<TransactionCurrencyDO> getTransactionCurrencyListForWeb() {
+    public List<TransactionCurrencyVO> getTransactionCurrencyListForWeb() {
         return transactionCurrencyDao.getTransactionCurrencyListForWeb();
     }
 
@@ -80,7 +81,7 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      * @param currencyName  币种名称
      * @return  操作成功：返回交易币种，操作失败：返回null
      */
-    public TransactionCurrencyDO getTransactionCurrencyByCurrencyName(String currencyName){
+    public TransactionCurrencyVO getTransactionCurrencyByCurrencyName(String currencyName){
         return transactionCurrencyDao.getTransactionCurrencyByCurrencyName(currencyName);
     }
 
