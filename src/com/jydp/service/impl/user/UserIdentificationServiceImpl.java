@@ -1,12 +1,19 @@
 package com.jydp.service.impl.user;
 
+import com.iqmkj.utils.DateUtil;
+import com.iqmkj.utils.FileWriteRemoteUtil;
 import com.jydp.dao.IUserIdentificationDao;
 import com.jydp.entity.DO.user.UserIdentificationDO;
+import com.jydp.entity.DO.user.UserIdentificationImageDO;
+import com.jydp.service.IUserIdentificationImageService;
 import com.jydp.service.IUserIdentificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,13 +28,56 @@ public class UserIdentificationServiceImpl implements IUserIdentificationService
     @Autowired
     private IUserIdentificationDao userIdentificationDao;
 
+    /** 用户认证详情图 */
+    @Autowired
+    private IUserIdentificationImageService userIdentificationImageService;
+
     /**
      * 新增用户认证
      * @param userIdentificationDO 用户认证
+     * @return 操作成功：返回用户认证信息，操作失败：返回null
+     */
+    public UserIdentificationDO insertUserIdentification (UserIdentificationDO userIdentificationDO) {
+        return userIdentificationDao.insertUserIdentification(userIdentificationDO);
+    }
+
+    /**
+     * 新增用户认证和用户认证详情图记录
+     * @param userIdentificationDO 用户认证
      * @return 操作成功：返回true，操作失败：返回false
      */
-    public boolean insertUserIdentification (UserIdentificationDO userIdentificationDO) {
-        return userIdentificationDao.insertUserIdentification(userIdentificationDO);
+    @Transactional
+    public boolean insertUserIdentificationAndImage (UserIdentificationDO userIdentificationDO,
+                                                     List<String> imageUrlList) {
+        boolean executeSuccess = false;
+
+        //新增用户认证
+        UserIdentificationDO insertUserIdentification = userIdentificationDao.insertUserIdentification(userIdentificationDO);
+        if (insertUserIdentification != null) {
+            executeSuccess = true;
+        }
+
+        if (executeSuccess) {
+            List<UserIdentificationImageDO> userIdentificationImageList = new ArrayList<>();
+            Timestamp addTime = DateUtil.getCurrentTime();
+            for (String url : imageUrlList) {
+                UserIdentificationImageDO identificationImageDO = new UserIdentificationImageDO();
+                identificationImageDO.setIdentificationId(insertUserIdentification.getId());  //用户认证Id
+                identificationImageDO.setImageUrl(url);  //用户认证详情图地址
+                identificationImageDO.setAddTime(addTime);  //添加时间
+                userIdentificationImageList.add(identificationImageDO);
+            }
+            //批量新增用户认证详情图列表
+            executeSuccess = userIdentificationImageService.insertUserIdentificationImageList(userIdentificationImageList);
+        }
+
+        // 数据回滚
+        if (!executeSuccess) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            // 删除文件
+            FileWriteRemoteUtil.deleteFileList(imageUrlList);
+        }
+        return executeSuccess;
     }
 
     /**

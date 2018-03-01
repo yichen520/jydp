@@ -6,6 +6,7 @@ import com.jydp.entity.BO.BackerSessionBO;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.transaction.TransactionMakeOrderDO;
+import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.entity.VO.TransactionMakeOrderVO;
 import com.jydp.interceptor.BackerWebInterceptor;
 import com.jydp.service.ITransactionCurrencyService;
@@ -138,7 +139,7 @@ public class BackerTransactionMakeOrderController {
             }
         }
 
-        List<TransactionCurrencyDO> transactionCurrencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
+        List<TransactionCurrencyVO> transactionCurrencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
 
         request.setAttribute("pageNumber", pageNumber);
         request.setAttribute("startAddTime", startAddTimeStr);

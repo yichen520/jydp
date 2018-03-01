@@ -1,23 +1,25 @@
-package com.jydp.quartz;
+package com.jydp.service.impl.common;
 
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
+import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.service.IRedisService;
 import com.jydp.service.ITransactionCurrencyService;
 import com.jydp.service.ITransactionDealRedisService;
+import com.jydp.service.ITransactionRedisDealCommonService;
 import config.RedisKeyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
- * 交易中心成交记录 定时从数据库拉取到redis
+ * 从数据库拉取 成交记录 到redis
  * @author fk
+ *
  */
-@Component
-public class TransactionDealRedisTimer {
+@Service("transactionRedisDealCommonService")
+public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisDealCommonService{
 
     /** redis成交记录 */
     @Autowired
@@ -31,18 +33,17 @@ public class TransactionDealRedisTimer {
     @Autowired
     private IRedisService redisService;
 
-    /** 成交记录  每5秒刷新一次 */
-    @Scheduled(cron="0/5 * *  * * ? ")
-    public void refresh(){
-
-        List<TransactionCurrencyDO> currencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
+    /** 将成交记录放进redis */
+    @Override
+    public void userDealForRedis() {
+        List<TransactionCurrencyVO> currencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
         if (currencyList == null || currencyList.isEmpty()) {
             return ;
         }
-        for (TransactionCurrencyDO currency: currencyList) {
+        for (TransactionCurrencyVO currency: currencyList) {
             List<TransactionDealRedisDO> dealList = transactionDealRedisService.listTransactionDealRedis(50, currency.getCurrencyId());
             if (dealList != null && !dealList.isEmpty()) {
-                redisService.addList(RedisKeyConfig.CURRENCY_DEAL_KEY + currency.getCurrencyShortName(), dealList);
+                redisService.addValue(RedisKeyConfig.CURRENCY_DEAL_KEY + currency.getCurrencyShortName(), dealList);
             }
         }
     }

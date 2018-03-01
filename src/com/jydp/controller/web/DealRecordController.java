@@ -51,8 +51,8 @@ public class DealRecordController {
             if (totalPageNumber <= 0) {
                 totalPageNumber = 1;
             }
-            if (totalPageNumber < pageNumber) {
-                pageNumber = totalPageNumber;
+            if (totalPageNumber <= pageNumber) {
+                pageNumber = totalPageNumber - 1;
             }
 
             List<TransactionUserDealDO> dealRecordList = null;

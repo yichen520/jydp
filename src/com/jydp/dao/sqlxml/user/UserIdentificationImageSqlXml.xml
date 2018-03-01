@@ -4,6 +4,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jydp.dao.impl.user.UserIdentificationImageDaoImpl">
+
+    <insert id="UserIdentificationImage_insertUserIdentificationImageList" parameterType="java.util.List">
+        INSERT INTO user_identification_image_tab (identificationId, imageUrl, addTime)
+        VALUES
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.identificationId}, #{item.imageUrl}, #{item.addTime})
+        </foreach>
+    </insert>
+
     <select id="UserIdentificationImage_listUserIdentificationImageByIdentificationId" parameterType="java.lang.Long" resultType="UserIdentificationImageDO">
         SELECT id, identificationId, imageUrl, addTime
         FROM user_identification_image_tab

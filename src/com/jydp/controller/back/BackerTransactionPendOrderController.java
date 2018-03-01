@@ -5,6 +5,7 @@ import com.jydp.entity.BO.BackerSessionBO;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
+import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.interceptor.BackerWebInterceptor;
 import com.jydp.service.ITransactionCurrencyService;
 import com.jydp.service.ITransactionPendOrderService;
@@ -56,7 +57,7 @@ public class BackerTransactionPendOrderController {
             return "page/back/login";
         }
 
-        List<TransactionCurrencyDO> transactionCurrencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
+        List<TransactionCurrencyVO> transactionCurrencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
         if(transactionCurrencyList != null){
             request.setAttribute("transactionCurrencyList", transactionCurrencyList);
         }

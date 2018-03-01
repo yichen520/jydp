@@ -2,8 +2,8 @@ package com.jydp.dao;
 
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DTO.TransactionUserDealDTO;
+import com.jydp.entity.VO.TransactionCurrencyVO;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -25,7 +25,7 @@ public interface ITransactionCurrencyDao {
      * @param currencyId  币种Id
      * @return  操作成功：返回交易币种，操作失败：返回null
      */
-    TransactionCurrencyDO getTransactionCurrencyByCurrencyId(int currencyId);
+    TransactionCurrencyVO getTransactionCurrencyByCurrencyId(int currencyId);
 
     /**
      * 修改交易币种信息
@@ -45,14 +45,14 @@ public interface ITransactionCurrencyDao {
      * 获取所有币种信息(web端用户注册时使用)
      * @return 查询成功：返回币种信息列表；查询失败：返回null
      */
-    List<TransactionCurrencyDO> getTransactionCurrencyListForWeb();
+    List<TransactionCurrencyVO> getTransactionCurrencyListForWeb();
 
     /**
      * 根据币种名称获取交易币种
      * @param currencyName  币种名称
      * @return  操作成功：返回交易币种，操作失败：返回null
      */
-    TransactionCurrencyDO getTransactionCurrencyByCurrencyName(String currencyName);
+    TransactionCurrencyVO getTransactionCurrencyByCurrencyName(String currencyName);
 
     /**
      * 获取所有币种行情信息(web端)
