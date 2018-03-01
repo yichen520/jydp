@@ -1,5 +1,6 @@
 package com.jydp.service.impl.transaction;
 
+import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.ITransactionCurrencyDao;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
@@ -103,6 +104,10 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
                     change = NumberUtil.doubleFormat(((transactionUserDeal.getLatestPrice() - yesterdayLastPrice)/yesterdayLastPrice)*100,2);
                 }
                 transactionUserDeal.setChange(change);
+                transactionUserDeal.setBuyOnePrice(NumberUtil.doubleFormat(transactionUserDeal.getBuyOnePrice(),2));
+                transactionUserDeal.setSellOnePrice(NumberUtil.doubleFormat(transactionUserDeal.getSellOnePrice(),2));
+                transactionUserDeal.setLatestPrice(NumberUtil.doubleFormat(transactionUserDeal.getLatestPrice(),2));
+                transactionUserDeal.setVolume(NumberUtil.doubleFormat(transactionUserDeal.getVolume(),2));
             }
         }
         return transactionUserDealDTOList;

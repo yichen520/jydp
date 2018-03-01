@@ -12,8 +12,6 @@
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/manageMoney.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/public.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/simpleTips.css" />
-    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/js/need/laydate.css" />
-    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/js/skins/danlan/laydate.css" />
 
     <title>增减用户余额记录</title>
 </head>
@@ -34,10 +32,8 @@
                 <form id="queryForm" action="<%=path %>/backerWeb/backerAdministratorOperation/show.htm" method="post">
                     <p class="condition">
                         操作时间：
-                        从&nbsp;<input placeholder="请选择起始时间" name="startAddTime" class="startTime" id="startOrder"  onfocus="this.blur()" value="${startAddTime }"
-                                      onClick="laydate({istime: true,format:'YYYY-MM-DD hh:mm:ss'})" />
-                        到&nbsp;<input placeholder="请选择结束时间" name="endAddTime" class="endTime" id="endOrder"  onfocus="this.blur()" value="${endAddTime }"
-                                      onClick="laydate({istime: true,format: 'YYYY-MM-DD hh:mm:ss'})" />
+                        从&nbsp;<input placeholder="请选择起始时间" name="startAddTime" class="askTime"  onfocus="this.blur()" value="${startAddTime }"/>
+                        到&nbsp;<input placeholder="请选择结束时间" name="endAddTime" class="askTime" onfocus="this.blur()" value="${endAddTime }"/>
                     </p>
                     <p class="condition">用户账号：<input type="text" class="askInput" maxlength="16" name="userAccount" value="${userAccount }"
                                                      onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/></p>
@@ -99,25 +95,14 @@
 <script type="text/javascript" src="<%=path %>/resources/js/laydate.js"></script>
 
 <script type="text/javascript">
-    !function(){
-        laydate.skin('danlan');//切换皮肤，请查看skins下面皮肤库
-    }();
-
-    var start = {
-        elem: '#startOrder',
-        format: 'YYYY-MM-DD hh:mm:ss',
-        istime: true,
-        istoday: false
-    };
-
-    var end = {
-        elem: '#endOrder',
-        format: 'YYYY-MM-DD hh:mm:ss',
-        istime: true,
-        istoday: false
-    };
-    laydate(start);
-    laydate(end);//日期控件
+    lay('.askTime').each(function(){
+        laydate.render({
+            elem: this,
+            trigger: 'click',
+            type:'datetime',
+            theme: '#69c0ff'
+        });
+    });//日期控件
 </script>
 
 <script type="text/javascript">

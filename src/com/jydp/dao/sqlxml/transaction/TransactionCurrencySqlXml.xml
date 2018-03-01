@@ -52,12 +52,12 @@
     </select>
 
     <select id="TransactionCurrency_getTransactionCurrencyMarketForWeb" resultType="TransactionUserDealDTO">
-        SELECT t.currencyId, t.currencyName, t.currencyShortName,
-        COALESCE((SELECT d1.transactionPrice FROM transaction_user_deal_tab d1 WHERE d1.paymentType != 3 AND d1.currencyId = t.currencyId ORDER BY d1.addTime DESC LIMIT 1),0) AS latestPrice,
+        SELECT t.currencyId, t.currencyImg, t.currencyName, t.currencyShortName,
+        COALESCE(getLastDealPriceByCurrencyId(t.currencyId),0) AS latestPrice,
         COALESCE((SELECT MAX( p1.pendingPrice ) FROM transaction_pend_order_tab p1 WHERE p1.currencyId = t.currencyId AND p1.paymentType = 1 AND ( p1.pendingStatus = 1 OR p1.pendingStatus = 2) ),0) AS buyOnePrice,
         COALESCE((SELECT MIN( p2.pendingPrice ) FROM transaction_pend_order_tab p2 WHERE p2.currencyId = t.currencyId AND p2.paymentType = 2 AND ( p2.pendingStatus = 1 OR p2.pendingStatus = 2) ),0) AS sellOnePrice,
         COALESCE((SELECT sum(d2.currencyNumber) FROM transaction_user_deal_tab d2 WHERE d2.currencyId = t.currencyId AND d2.addTime > ( NOW( ) - INTERVAL 1 DAY ) AND d2.addTime <![CDATA[ < ]]> NOW() ),0) AS volume,
-        COALESCE((SELECT d3.transactionPrice FROM transaction_user_deal_tab d3 WHERE d3.paymentType != 3 AND d3.currencyId = t.currencyId  AND TO_DAYS( NOW( ) ) - TO_DAYS( addTime) = 1 ORDER BY addTime DESC	LIMIT 1),0) as yesterdayLastPrice
+        COALESCE(getYesterdayLastPriceByCurrencyId(t.currencyId),0) as yesterdayLastPrice
         FROM transaction_currency_tab t
     </select>
 </mapper>
