@@ -17,7 +17,7 @@
     </span>
 
     <ul class="nav">
-        <li class="navInfo"><a href="#" class="nav_pitch">首页</a></li>
+        <li class="navInfo"><a href="<%=path %>/userWeb/homePage/show" class="nav_pitch">首页</a></li>
         <li class="navInfo"><a href="#">交易中心</a></li>
         <li class="navInfo"><a href="#">我要充值</a></li>
         <li class="navInfo"><a href="<%=path %>/userWeb/userMessage/show.htm">个人中心</a></li>
