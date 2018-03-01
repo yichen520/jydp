@@ -19,7 +19,7 @@
 
 <div class="fHeader">
     <div class="headerInfo">
-        <a href="#">
+        <a href="<%=path%>/userWeb/homePage/show">
             <img src="<%=path %>/resources/image/web/trade_logo.png" class="logo"/>
             交易大盘
         </a>
@@ -162,6 +162,14 @@
             addBoo = false;
             return ;
         }
+        if (imageList.length < 4) {
+            addBoo = false;
+            return openTips("请至少上传三张证件照");
+        }
+        if (imageList.length > 10) {
+            addBoo = false;
+            return openTips("最多上传9张证件照");
+        }
 
         var formData = new FormData();
         formData.append("userAccount", userAccount);
@@ -172,7 +180,7 @@
             formData.append("image_"+i, imageList[i].files[0]);
         }
         $.ajax({
-            url: '<%=path %>' + "/userWeb/identificationController/add.htm",
+            url: '<%=path %>' + "/userWeb/identificationController/add",
             type:'post',
             dataType:'json',
             async:true,
@@ -254,9 +262,8 @@
             81:"香港",82:"澳门",91:"国外 "};
         var tip = "";
         var pass= true;
-
-        if(!code || !/^\d{6}(18|19|20)?\d{2}(0[1-9]|1[12])(0[1-9]|[12]\d|3[01])\d{3}(\d|X)$/i.test(code)){
-            tip = "身份证号格式错误";
+        if(!code || !/^\d{6}(19|20)?\d{2}(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])\d{3}(\d|X)$/i.test(code)){
+            tip = "身份证号码有误";
             pass = false;
         } else if (!city[code.substr(0,2)]) {
             tip = "身份证地址编码错误";
@@ -279,8 +286,11 @@
                     sum += ai * wi;
                 }
                 var last = parity[sum % 11];
+                if (code[17] == 'x') {
+                    code[17] = 'X';
+                }
                 if (last != code[17]) {
-                    tip = "身份证校验位错误";
+                    tip = "身份证号码错误";
                     pass =false;
                 }
             }
