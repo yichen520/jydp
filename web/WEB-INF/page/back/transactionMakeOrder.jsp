@@ -47,11 +47,9 @@
                     <p class="condition">
                         生成时间：
                         从&nbsp;<input placeholder="请选择起始时间" class="askTime" id="startOrder" name="startAddTime"
-                                      value="${startAddTime}" onfocus="this.blur()"
-                                      onClick="laydate({istime: true,format:'YYYY-MM-DD hh:mm:ss'})" />
+                                      value="${startAddTime}" onfocus="this.blur()"/>
                         到&nbsp;<input placeholder="请选择结束时间" class="askTime" id="endOrder" name="endAddTime"
-                                      value="${endAddTime}" onfocus="this.blur()"
-                                      onClick="laydate({istime: true,format: 'YYYY-MM-DD hh:mm:ss'})" />
+                                      value="${endAddTime}" onfocus="this.blur()"/>
                     </p>
                     <p class="condition">币种：
                         <select class="askSelect" id="currencyId" name="currencyName">
@@ -78,15 +76,15 @@
                             <option value="5">已撤回</option>
                         </select>
                     </p>
-                    <p class="condition">管理员账号：<input type="text" class="askInput" id="backAccount" name="backAccount" maxlength="16" onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" value="${backAccount}"/></p>
+                    <p class="condition">
+                        管理员账号：<input type="text" class="askInput" id="backAccount" name="backAccount"
+                                     maxlength="16" onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" value="${backAccount}"/></p>
                     <p class="condition">
                         执行时间：
                         从&nbsp;<input placeholder="请选择起始时间" class="askTime" id="start"  name="startExecuteTime"
-                                      value="${startExecuteTime}" onfocus="this.blur()"
-                                      onClick="laydate({istime: true,format:'YYYY-MM-DD hh:mm:ss'})" />
+                                      value="${startExecuteTime}" onfocus="this.blur()"/>
                         到&nbsp;<input placeholder="请选择结束时间" class="askTime" id="end" name="endExecuteTime"
-                                      value="${endExecuteTime}" onfocus="this.blur()"
-                                      onClick="laydate({istime: true,format: 'YYYY-MM-DD hh:mm:ss'})" />
+                                      value="${endExecuteTime}" onfocus="this.blur()"/>
                     </p>
 
                     <input type="hidden" id="queryPageNumber" name="pageNumber" value="${pageNumber}">
@@ -160,10 +158,12 @@
                         <td class="operate">
                             <c:if test="${item.executeStatus == 1}">
                                 <c:if test="${backer_rolePower['103005'] == 103005}">
-                                    <input type="text" value="立即执行" class="tImplement" onfocus="this.blur()" onclick="goExc('${item.orderNo}')"/>
+                                    <input type="text" value="立即执行" class="tImplement"
+                                           onfocus="this.blur()" onclick="goExc('${item.orderNo}')"/>
                                 </c:if>
                                 <c:if test="${backer_rolePower['103006'] == 103006}">
-                                    <input type="text" value="撤&nbsp;回" class="tRecall" onfocus="this.blur()" onclick="goCal('${item.orderNo}')"/>
+                                    <input type="text" value="撤&nbsp;回" class="tRecall"
+                                           onfocus="this.blur()" onclick="goCal('${item.orderNo}')"/>
                                 </c:if>
                             </c:if>
                         </td>
@@ -194,8 +194,7 @@
             <p class="popInput">
                 <label class="popName">执行时间<span class="star">*</span></label>
                 <input placeholder="请选择执行时间" class="askTime entry" id="addExecuteTime" name="addExecuteTime"
-                       onfocus="this.blur()"
-                       onClick="laydate({istime: true,format:'YYYY-MM-DD hh:mm:ss'})" />
+                       onfocus="this.blur()"/>
             </p>
             <p class="popInput">
                 <label class="popName">币种<span class="star">*</span></label>

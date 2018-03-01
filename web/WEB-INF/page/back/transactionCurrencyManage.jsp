@@ -44,37 +44,47 @@
                     </select>
                 </p>
                 <p class="condition">交易状态：
-                    <select class="askSelect">
-                        <option>全部</option>
-                        <option>正常</option>
-                        <option>涨停</option>
-                        <option>跌停</option>
-                        <option>停牌</option>
+                    <select class="askSelect" id="paymentType" name="paymentType">
+                        <option value="0">全部</option>
+                        <option value="1">正常</option>
+                        <option value="2">涨停</option>
+                        <option value="3">跌停</option>
+                        <option value="4">停牌</option>
                     </select>
                 </p>
                 <p class="condition">上线状态：
-                    <select class="askSelect">
-                        <option>全部</option>
-                        <option>待上线</option>
-                        <option>上线中</option>
-                        <option>已下线</option>
-                        <option>禁用</option>
+                    <select class="askSelect" id="upStatus" name="upStatus">
+                        <option value="0">全部</option>
+                        <option value="1">待上线</option>
+                        <option value="2">上线中</option>
+                        <option value="3">禁用</option>
+                        <option value="4">已下线</option>
                     </select>
                 </p>
-                <p class="condition">管理员账号：<input type="text" class="askInput" /></p>
+                <p class="condition">
+                    管理员账号：<input type="text" class="askInput" id="backAccount" name="backAccount"
+                                 maxlength="16" onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" value="${backAccount}"/></p>
                 <p class="condition">
                     添加时间：
-                    从&nbsp;<input placeholder="请选择起始时间" class="askTime" />
-                    到&nbsp;<input placeholder="请选择结束时间" class="askTime"/>
+                    从&nbsp;<input placeholder="请选择起始时间" class="askTime" id="startAddTime" name="startAddTime"
+                                    value="${startAddTime}" onfocus="this.blur()"/>
+                    到&nbsp;<input placeholder="请选择结束时间" class="askTime" id="endAddTime" name="endAddTime"
+                                    value="${endAddTime}" onfocus="this.blur()"/>
                 </p>
                 <p class="condition">
                     上线时间：
-                    从&nbsp;<input placeholder="请选择起始时间" class="askTime" />
-                    到&nbsp;<input placeholder="请选择结束时间" class="askTime" />
+                    从&nbsp;<input placeholder="请选择起始时间" class="askTime" id="startTime" name="startTime"
+                                    value="${startTime}" onfocus="this.blur()"/>
+                    到&nbsp;<input placeholder="请选择结束时间" class="askTime" id="endTime" name="endTime"
+                                    value="${endTime}" onfocus="this.blur()"/>
                 </p>
 
-                <input type="text" value="查&nbsp;询" class="ask" onfocus="this.blur()" />
-                <input type="text" value="导&nbsp;出" class="educe" onfocus="this.blur()" />
+                <input type="hidden" id="queryPageNumber" name="pageNumber" value="${pageNumber}">
+                <input type="text" value="查&nbsp;询" class="ask" onfocus="this.blur()" onclick="queryForm()"/>
+                <c:if test="${backer_rolePower['104004'] == 104004}">
+                    <input type="text" value="导&nbsp;出" class="educe" onfocus="this.blur()" onclick="dowland()"/>
+                </c:if>
+
             </div>
         </div>
 
@@ -273,20 +283,7 @@
                 </tr>
             </table>
 
-            <div class="changePage">
-                <p class="total">共21条</p>
-                <p class="jump">
-                    <input type="text" />
-                    <input type="text" value="跳&nbsp;转" class="jumpButton" onfocus="this.blur()" />
-                </p>
-                <p class="page">
-                    <input type="text" class="first" value="首页" onfocus="this.blur()" />
-                    <input type="text" class="upPage" value="<上一页" onfocus="this.blur()" />
-                    <span class="pageNumber"><span>1</span>/<span>3</span></span>
-                    <input type="text" class="downPage" value="下一页>" onfocus="this.blur()" />
-                    <input type="text" class="end" value="尾页" onfocus="this.blur()" />
-                </p>
-            </div>
+            <jsp:include page="/resources/page/common/paging.jsp"></jsp:include>
         </div>
     </div>
 </div>
@@ -299,7 +296,7 @@
     <div class="mask_content">
         <div class="start_pop">
             <p class="popTitle">启用操作</p>
-            <p class="popTips"><img src="images/tips.png" class="tipsImg" />确定启用该币种？</p>
+            <p class="popTips"><img src="<%=path %>/resources/image/back/tips.png" class="tipsImg" />确定启用该币种？</p>
 
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
@@ -309,7 +306,7 @@
 
         <div class="stop_pop">
             <p class="popTitle">禁用操作</p>
-            <p class="popTips"><img src="images/tips.png" class="tipsImg" />确定禁用该币种？</p>
+            <p class="popTips"><img src="<%=path %>/resources/image/back/tips.png" class="tipsImg" />确定禁用该币种？</p>
 
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
@@ -319,7 +316,7 @@
 
         <div class="online_pop">
             <p class="popTitle">上线操作</p>
-            <p class="popTips"><img src="images/tips.png" class="tipsImg" />确定立即上线该币种？</p>
+            <p class="popTips"><img src="<%=path %>/resources/image/back/tips.png" class="tipsImg" />确定立即上线该币种？</p>
 
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
@@ -329,7 +326,7 @@
 
         <div class="offLine_pop">
             <p class="popTitle">下线操作</p>
-            <p class="popTips"><img src="images/tips.png" class="tipsImg" />确定下线该币种？</p>
+            <p class="popTips"><img src="<%=path %>/resources/image/back/tips.png" class="tipsImg" />确定下线该币种？</p>
 
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
@@ -463,10 +460,10 @@
 </div>
 
 
-<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
-<script type="text/javascript" src="js/public.js"></script>
-<script type="text/javascript" src="js/simpleTips.js"></script>
-<script type="text/javascript" src="js/laydate.js"></script>
+<script type="text/javascript" src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="<%=path %>/resources/js/loadPageBack.js"></script>
+<script type="text/javascript" src="<%=path %>/resources/js/simpleTips.js"></script>
+<script type="text/javascript" src="<%=path %>/resources/js/laydate.js"></script>
 
 <script type="text/javascript">
     lay('.askTime').each(function(){

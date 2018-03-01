@@ -51,20 +51,16 @@
                     <p class="condition">
                         挂单时间：
                         从&nbsp;<input placeholder="请选择起始时间" class="askTime" id="startOrder" name="startPendTime"
-                                      value="${startPendTime}" onfocus="this.blur()"
-                                      onClick="laydate({istime: true,format:'YYYY-MM-DD hh:mm:ss'})" />
+                                      value="${startPendTime}" onfocus="this.blur()"/>
                         到&nbsp;<input placeholder="请选择结束时间" class="askTime" id="endOrder" name="endPendTime"
-                                      value="${endPendTime}" onfocus="this.blur()"
-                                      onClick="laydate({istime: true,format: 'YYYY-MM-DD hh:mm:ss'})" />
+                                      value="${endPendTime}" onfocus="this.blur()" />
                     </p>
                     <p class="condition">
                         完成时间：
                         从&nbsp;<input placeholder="请选择起始时间" class="askTime" id="start" name="startAddTime"
-                                      value="${startAddTime}" onfocus="this.blur()"
-                                      onClick="laydate({istime: true,format:'YYYY-MM-DD hh:mm:ss'})" />
+                                      value="${startAddTime}" onfocus="this.blur()"/>
                         到&nbsp;<input placeholder="请选择结束时间" class="askTime" id="end" name="endAddTime"
-                                      value="${endAddTime}" onfocus="this.blur()"
-                                      onClick="laydate({istime: true,format: 'YYYY-MM-DD hh:mm:ss'})" />
+                                      value="${endAddTime}" onfocus="this.blur()"/>
                     </p>
 
                     <input type="hidden" id="queryPageNumber" name="pageNumber" value="${pageNumber}">
