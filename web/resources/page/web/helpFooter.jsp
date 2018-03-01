@@ -16,9 +16,9 @@
         <span class="helpTitle">关于我们</span>
 
         <ul class="helpMenu">
-            <li class="helpInfo"><a href="#" onclick="showHelpDetail(this)" id="101014">公司简介</a></li>
-            <li class="helpInfo"><a href="#" onclick="showHelpDetail(this)" id="101013">联系我们</a></li>
-            <li class="helpInfo"><a href="#" onclick="showHelpDetail(this)" id="101015">充值流程</a></li>
+            <li class="helpInfo"><a href="javascript:;" onclick="showHelpDetail(this)" id="101014">公司简介</a></li>
+            <li class="helpInfo"><a href="javascript:;" onclick="showHelpDetail(this)" id="101013">联系我们</a></li>
+            <li class="helpInfo"><a href="javascript:;" onclick="showHelpDetail(this)" id="101015">充值流程</a></li>
         </ul>
     </div>
 
@@ -26,9 +26,9 @@
         <span class="helpTitle">新手指南</span>
 
         <ul class="helpMenu">
-            <li class="helpInfo"><a href="#" onclick="showHelpDetail(this)" id="101016">注册指南</a></li>
-            <li class="helpInfo"><a href="#" onclick="showHelpDetail(this)" id="101017">交易指南</a></li>
-            <li class="helpInfo"><a href="#" onclick="showHelpDetail(this)" id="101010">注册协议</a></li>
+            <li class="helpInfo"><a href="javascript:;" onclick="showHelpDetail(this)" id="101016">注册指南</a></li>
+            <li class="helpInfo"><a href="javascript:;" onclick="showHelpDetail(this)" id="101017">交易指南</a></li>
+            <li class="helpInfo"><a href="javascript:;" onclick="showHelpDetail(this)" id="101010">注册协议</a></li>
         </ul>
     </div>
 
