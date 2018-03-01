@@ -36,8 +36,8 @@
             </c:if>
             <form id="queryForm" action="<%=path %>/backerWeb/backerNotice/show.htm" method="post">
                 <div class="askArea">
-                    <p class="condition">公告类型：<input type="text" class="askInput" id="query_noticeType" name="query_noticeType" value="${noticeType }" maxLength="8"/></p>
-                    <p class="condition">公告标题：<input type="text" class="askInput" id="query_noticeTitle" name="query_noticeTitle" value="${noticeTitle }" maxLength="64"/></p>
+                    <p class="condition">公告类型：<input type="text" class="askInput" id="query_noticeType" name="query_noticeType" value="${noticeType }" maxLength="16"/></p>
+                    <p class="condition">公告标题：<input type="text" class="askInput" id="query_noticeTitle" name="query_noticeTitle" value="${noticeTitle }" maxLength="32"/></p>
 
                     <input type="hidden" id="queryPageNumber" name="pageNumber" value="${pageNumber}">
                     <c:if test="${backer_rolePower['113001'] == 113001}">

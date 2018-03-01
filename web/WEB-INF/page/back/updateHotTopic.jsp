@@ -42,7 +42,7 @@
                 <p class="condition">
                     封面图：
                     <span class="pic">
-                        <input type="text" id="changead_t1"  class="choosePic" placeholder="请选择文件" onfocus="this.blur()" />
+                        <input type="text" id="changead_t1"  class="choosePic" placeholder="该项不修改时，请勿上传" onfocus="this.blur()" />
                         <input type="text"  onclick="document.getElementById('changead_a1').click();"  value="选择文件" class="choose_button" onfocus="this.blur();" />
                         <input type="file" class="file" name="noticeUrl" id="changead_a1" onchange="document.getElementById('changead_t1').value = this.value;" />
                     </span>
@@ -97,11 +97,11 @@
         }
 
         if(noticeType.length < 2 || noticeType.length > 16){
-            return openTips("请输入公告类型，2~16个字符");
+            return openTips("请输入话题类型，2~16个字符");
         }
 
         if(noticeTitle.length < 2 || noticeTitle.length > 32){
-            return openTips("请输入公告标题，2~32个字符");
+            return openTips("请输入话题标题，2~32个字符");
         }
 
         document.getElementById("content").value = content;

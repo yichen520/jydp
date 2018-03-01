@@ -49,10 +49,10 @@
                     <p class="condition">
                         生成时间：
                         从&nbsp;<input placeholder="请选择起始时间" class="startTime" id="startOrder" name="startAddTime"
-                                      value="${startAddTime}"
+                                      value="${startAddTime}" onfocus="this.blur()"
                                       onClick="laydate({istime: true,format:'YYYY-MM-DD hh:mm:ss'})" />
                         到&nbsp;<input placeholder="请选择结束时间" class="endTime" id="endOrder" name="endAddTime"
-                                      value="${endAddTime}"
+                                      value="${endAddTime}" onfocus="this.blur()"
                                       onClick="laydate({istime: true,format: 'YYYY-MM-DD hh:mm:ss'})" />
                     </p>
                     <p class="condition">币种：
@@ -158,6 +158,7 @@
                         </c:if>
                         <td class="account">${item.backerAccount}</td>
                         <td class="ip">${item.ipAddress}</td>
+
                         <td class="operate">
                             <c:if test="${item.executeStatus == 1}">
                                 <c:if test="${backer_rolePower['103005'] == 103005}">
@@ -168,9 +169,13 @@
                                 </c:if>
                             </c:if>
                         </td>
+
                         <td class="check">
-                            <label class="choose_two"><input type="checkbox" class="checkbox"  name="selected" value="${item.orderNo}"/></label>
+                            <c:if test="${item.executeStatus == 1}">
+                                <label class="choose_two"><input type="checkbox" class="checkbox"  name="selected" value="${item.orderNo}"/></label>
+                            </c:if>
                         </td>
+
                     </tr>
                 </c:forEach>
             </table>
@@ -437,7 +442,12 @@
             openTips("请选择一个币种");
             return;
         }
-        if (payType == "") {
+        if (excTime == "") {
+            addBoo = false;
+            openTips("请选择执行时间");
+            return;
+        }
+        if (payType == null || payType == 0) {
             addBoo = false;
             openTips("请选择一个收支类型");
             return;
