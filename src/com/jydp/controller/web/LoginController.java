@@ -48,6 +48,16 @@ public class LoginController {
     public String login(HttpServletRequest request) {
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
         String password = StringUtil.stringNullHandle(request.getParameter("password"));
+        String validateCode = StringUtil.stringNullHandle(request.getParameter("validateCode"));
+        String sessionCode = (String) request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
+
+        request.setAttribute("userAccount", userAccount);
+
+        if(!StringUtil.isNotNull(validateCode) || !StringUtil.isNotNull(sessionCode) || !validateCode.equals(sessionCode)){
+            request.setAttribute("code", 2);
+            request.setAttribute("message", "验证码错误");
+            return "page/web/login";
+        }
 
         if(!StringUtil.isNotNull(userAccount) || !StringUtil.isNotNull(password)){
             request.setAttribute("code", 2);
