@@ -34,4 +34,7 @@ public class FileUrlConfig {
 	/** 实名认证，证件照目录 */
 	public static final String file_remote_identificationImage_url ="identificationImage";
 
+	/** 公告、热门默认图片标识 */
+	public static final String notice_hotTopic_defaultImage ="1";
+
 }

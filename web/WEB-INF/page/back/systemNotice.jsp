@@ -60,7 +60,14 @@
                 <c:forEach items="${systemNoticeList}" var="systemNotice" varStatus="status" >
                     <tr class="tableInfo">
                     <td class="time"><fmt:formatDate type="time" value="${systemNotice.addTime }" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
-                    <td class="pic"><img src="${systemNotice.noticeUrlFormat }" /></td>
+                    <td class="pic">
+                        <c:if test="${systemNotice.noticeUrl != '1'}">
+                            <img src="${systemNotice.noticeUrlFormat }" />
+                        </c:if>
+                        <c:if test="${systemNotice.noticeUrl == '1'}">
+                            <img src="<%=path%>/upload/image/notic_hotTopic.jpg" />
+                        </c:if>
+                    </td>
                     <td class="type">${systemNotice.noticeType }</td>
                     <td class="nTitle">${systemNotice.noticeTitle }</td>
                     <td class="operate">
