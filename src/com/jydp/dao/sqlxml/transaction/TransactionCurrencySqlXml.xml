@@ -12,8 +12,9 @@
             (#{currencyShortName}, #{currencyName}, #{addTime})
     </insert>
 
-	<select id="TransactionCurrency_getTransactionCurrencyByCurrencyId" parameterType="int" resultType="TransactionCurrencyDO">
-        SELECT currencyId, currencyShortName, currencyName, addTime
+	<select id="TransactionCurrency_getTransactionCurrencyByCurrencyId" parameterType="int" resultType="TransactionCurrencyVO">
+        SELECT currencyId, currencyShortName, currencyName, currencyImg, upPrice, minPrice, buyFee,
+                sellFee, upRange, downRange, paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         WHERE currencyId = #{currencyId}
 	</select>
