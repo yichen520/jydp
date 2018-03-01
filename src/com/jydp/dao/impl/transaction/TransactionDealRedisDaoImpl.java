@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,5 +83,40 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
         } else {
             return false;
         }
+    }
+
+
+    /**
+     * 查询24小时总成交数量
+     * @param date 当前时间戳
+     * @return 查询成功：返回总成交数量，查询失败或没有成交量：返回0
+     */
+    public double getNowTurnover(Timestamp date){
+        double result = 0;
+
+        try {
+            result = sqlSessionTemplate.selectOne("TransactionDealRedis_getNowTurnover", date);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return result;
+    }
+
+    /**
+     * 查询24小时总交易额
+     * @param date 当前时间戳
+     * @return 查询成功：返回总成交金额，查询失败或没有成交额：返回0
+     */
+    public double getNowVolumeOfTransaction(Timestamp date){
+        double result = 0;
+
+        try {
+            result = sqlSessionTemplate.selectOne("TransactionDealRedis_getNowVolumeOfTransaction", date);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return result;
     }
 }

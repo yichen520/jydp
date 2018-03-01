@@ -42,7 +42,9 @@ input,select,textarea{
 input:-webkit-autofill{
     -webkit-box-shadow: 0 0 0 1000px white inset !important;
 }
-
+p,span{
+    word-break: break-all;
+}
 
 
 /*------header------*/
@@ -192,9 +194,11 @@ input:-webkit-autofill{
 }
 .top{
     background: url("../images/line.png") #ffffff no-repeat 15px 0;
+    width: 1200px;
 }
 .askArea{
     padding-top: 15px;
+    width: 1200px;
 }
 .condition{
     display: inline-block;
@@ -203,7 +207,7 @@ input:-webkit-autofill{
     color: #666666;
     font-size: 14px;
 }
-.askInput,.endTime,.startTime{
+.askInput,.askTime{
     padding-left: 4px;
     height: 35px;
     border: 1px solid #cccccc;
@@ -263,7 +267,7 @@ input:-webkit-autofill{
 .tableTitle{
     padding: 0 10px;
     background-color: #ffffff;
-    font-size: 15px;
+    font-size: 14px;
     font-family: "Microsoft Yahei";
     height: 50px;
     text-align: center;
@@ -432,6 +436,9 @@ input:-webkit-autofill{
     padding: 0 20px;
     width: 360px;
     text-align: left;
+}
+.entry,.choosePic,.percentage,.chooseTime{
+    font-size: 13px;
 }
 .popTips{
     margin-top: 15px;

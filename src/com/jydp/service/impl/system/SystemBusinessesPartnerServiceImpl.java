@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -71,13 +72,11 @@ public class SystemBusinessesPartnerServiceImpl implements ISystemBusinessesPart
     /**
      * 置顶合作商家
      * @param id 合作商家Id
+     * @param topTime 置顶时间topTime
      * @return 置顶成功：返回true，置顶失败：返回false
      */
-    public boolean topTheBusinessesPartner(int id) {
-        SystemBusinessesPartnerDO systemBusinessesPartner = new SystemBusinessesPartnerDO();
-        systemBusinessesPartner.setId(id);
-        systemBusinessesPartner.setTopTime(DateUtil.getCurrentTime());
-        return systemBusinessesPartnerDao.updateSystemBusinessesPartner(systemBusinessesPartner);
+    public boolean topTheBusinessesPartner(int id, Timestamp topTime) {
+        return systemBusinessesPartnerDao.topTheBusinessesPartner(id, topTime);
     }
 
     /**

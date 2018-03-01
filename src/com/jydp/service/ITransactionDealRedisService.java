@@ -41,4 +41,16 @@ public interface ITransactionDealRedisService {
      * @return  操作成功：返回true，操作失败：返回false
      */
     boolean insertTransactionDealRedisList(List<TransactionDealRedisDO> redisDealList);
+
+    /**
+     * 查询24小时总成交数量
+     * @return 查询成功：返回总成交数量，查询失败或没有成交量：返回0
+     */
+    double getNowTurnover();
+
+    /**
+     * 查询24小时总交易额
+     * @return 查询成功：返回总成交金额，查询失败或没有成交额：返回0
+     */
+    double getNowVolumeOfTransaction();
 }

@@ -1,0 +1,166 @@
+.add{
+    margin-left: 15px;
+}
+.askSelect{
+    width: 120px;
+}
+.askInput,.askTime{
+    width: 150px;
+}
+.time{
+    width: 120px;
+}
+.coin{
+    width: 205px;
+}
+.coinLogo{
+    width: 60px;
+}
+.coinLogo img{
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+}
+.service,.range{
+    width: 90px;
+}
+.state{
+    width: 60px;
+}
+.account{
+    width: 140px;
+}
+.tableInfo .account,.tableInfo .coin{
+    text-align: left;
+}
+.operate{
+    width: 138px;
+}
+.stop{
+    width: 40px;
+    text-align: center;
+    border: none;
+    color: #ff0000;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 12px;
+}
+.stop:hover{
+    opacity: 0.8;
+}
+.start{
+    width: 40px;
+    text-align: center;
+    border: none;
+    color: #00CC00;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 12px;
+}
+.start:hover{
+    opacity: 0.8;
+}
+.change,.online,.offLine{
+    width: 40px;
+    text-align: center;
+    border: none;
+    color: #49a2fb;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 12px;
+}
+.change:hover,.online:hover,.offLine:hover{
+    color: #2c94fd;
+}
+
+.stop_pop,.start_pop,.add_pop,.change_pop,.online_pop,.offLine_pop{
+    display: none;
+}
+.popMain{
+    height: 240px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.popName{
+    display: inline-block;
+    width: 100px;
+    height: 35px;
+    line-height: 35px;
+    text-align: left;
+    color: #666666;
+    font-size: 14px;
+}
+.star{
+    color: #ff0000;
+}
+.entry{
+    float: right;
+    padding-left: 5px !important;
+    border: 1px solid #ececec !important;
+    width: 249px;
+    height: 35px !important;
+    border-radius: 0 !important;
+}
+.percentage{
+    margin-right: 5px;
+    padding-left: 5px;
+    border: 1px solid #ececec;
+    width: 230px;
+    height: 35px;
+}
+.popPic{
+    position: relative;
+    float: right;
+    border: 1px solid #ececec;
+    width: 254px;
+    height: 35px;
+    text-align: left;
+}
+.choosePic{
+    float: left;
+    padding-left: 5px;
+    width: 155px;
+    border: none;
+    height: 34px;
+}
+.file{
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: -1;
+    width: 70px;
+    height: 35px;
+}
+.choose_button{
+    float: right;
+    width: 85px;
+    text-align: center;
+    color: #ffffff;
+    border: none;
+    height: 35px;
+    background-color: #49a2fb;
+    cursor: pointer;
+}
+.choose_button:hover{
+    background-color: #2c94fd;
+}
+.immediately{
+    font-size: 12px;
+    color: #333333;
+}
+.radioBtn{
+    width: 13px;
+    height: 13px;
+    margin-right: 3px;
+    margin-top: -3px;
+    vertical-align: sub;
+}
+.chooseTime{
+    padding-left: 5px;
+    border: 1px solid #ececec !important;
+    width: 135px !important;
+    height: 35px !important;
+}
+.timeManage{
+    margin-left: 20px;
+}
