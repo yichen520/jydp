@@ -15,9 +15,9 @@ public interface IUserIdentificationDao {
     /**
      * 新增用户认证
      * @param userIdentificationDO 用户认证
-     * @return 操作成功：返回true，操作失败：返回false
+     * @return 操作成功：返回用户认证信息，操作失败：返回null
      */
-    boolean insertUserIdentification (UserIdentificationDO userIdentificationDO);
+    UserIdentificationDO  insertUserIdentification (UserIdentificationDO userIdentificationDO);
 
     /**
      * 查询用户认证信息

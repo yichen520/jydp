@@ -28,22 +28,20 @@ public class UserIdentificationDaoImpl implements IUserIdentificationDao {
      * 新增用户认证
      *
      * @param userIdentificationDO 用户认证
-     * @return 操作成功：返回true，操作失败：返回false
+     * @return 操作成功：返回用户认证信息，操作失败：返回null
      */
-    public boolean insertUserIdentification(UserIdentificationDO userIdentificationDO) {
+    public UserIdentificationDO insertUserIdentification(UserIdentificationDO userIdentificationDO) {
         int result = 0;
         try {
             result = sqlSessionTemplate.insert("UserIdentification_insertUserIdentification", userIdentificationDO);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
-
-        if (result > 0) {
-            return true;
+        if (result > 0 ) {
+            return userIdentificationDO;
         } else {
-            return false;
+            return null;
         }
-
     }
 
     /**
