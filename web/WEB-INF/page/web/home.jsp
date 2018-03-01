@@ -28,12 +28,10 @@
         <!-------轮播图----------->
         <div class="swiper-container">
             <div class="swiper-wrapper">
-                <a href="#" class="swiper-slide"><img src="images/test/test_heng1.jpg" /></a>
-                <a href="#" class="swiper-slide"><img src="images/test/test500.jpg" /></a>
-                <a href="#" class="swiper-slide"><img src="images/test/test_heng.jpg" /></a>
-                <a href="#" class="swiper-slide"><img src="images/test/test_shu.jpg" /></a>
+                <c:forEach items="${systemAdsHomepagesDOList}" var="homePageAds">
+                    <a href="${homePageAds.webLinkUrl}" class="swiper-slide"><img src="${homePageAds.adsImageUrlFormat}" /></a>
+                </c:forEach>
             </div>
-
             <div class="swiper-pagination"></div>
         </div>
     </div>
@@ -48,30 +46,20 @@
             <td class="uplift">24小时涨跌</td>
             <td class="operate">操作</td>
         </tr>
-        <tr class="coinInfo">
-            <td class="coin">
-                <img src="images/test/test_300.jpg" />
-                <span>盛源链(MUC/USD)</span>
-            </td>
-            <td class="new">17.024</td>
-            <td class="money">100.0000</td>
-            <td class="money">100.0000</td>
-            <td class="money">199</td>
-            <td class="uplift in">+17%</td>
-            <td class="operate"><a href="#">去交易</a></td>
-        </tr>
-        <tr class="coinInfo">
-            <td class="coin">
-                <img src="images/test/test_300.jpg" />
-                <span>盛源链(MUC/USD)</span>
-            </td>
-            <td class="new">17.024</td>
-            <td class="money">100.0000</td>
-            <td class="money">100.0000</td>
-            <td class="money">199</td>
-            <td class="uplift minus">-17%</td>
-            <td class="operate"><a href="#">去交易</a></td>
-        </tr>
+        <c:forEach items="${transactionUserDealDTOList}" var="transactionUserDeal">
+            <tr class="coinInfo">
+                <td class="coin">
+                    <%--<img src="images/test/test_300.jpg" />--%>
+                    <span>${transactionUserDeal.currencyName}(${transactionUserDeal.currencyShortName}/USD)</span>
+                </td>
+                <td class="new">${transactionUserDeal.latestPrice}</td>
+                <td class="money">${transactionUserDeal.buyOnePrice}</td>
+                <td class="money">${transactionUserDeal.sellOnePrice}</td>
+                <td class="money">${transactionUserDeal.volume}</td>
+                <td class="uplift in">${transactionUserDeal.change}%</td>
+                <td class="operate"><a href="#">去交易</a></td>
+            </tr>
+        </c:forEach>
     </table>
 
     <div class="bottom">
@@ -81,36 +69,14 @@
                 <a href="#" class="more">查看更多</a>
             </span>
             <ul class="list">
-                <li class="listInfo">
-                    <a href="#" class="link">
-                        <span class="noticeTitle">【<span>公告</span>】XXXXXXXXXXX</span>
-                        <span class="time">2016-06-06</span>
-                    </a>
-                </li>
-                <li class="listInfo">
-                    <a href="#" class="link">
-                        <span class="noticeTitle">【<span>公告</span>】XXXXXXXXXXX</span>
-                        <span class="time">2016-06-06</span>
-                    </a>
-                </li>
-                <li class="listInfo">
-                    <a href="#" class="link">
-                        <span class="noticeTitle">【<span>公告</span>】XXXXXXXXXXX</span>
-                        <span class="time">2016-06-06</span>
-                    </a>
-                </li>
-                <li class="listInfo">
-                    <a href="#" class="link">
-                        <span class="noticeTitle">【<span>公告</span>】XXXXXXXXXXX</span>
-                        <span class="time">2016-06-06</span>
-                    </a>
-                </li>
-                <li class="listInfo">
-                    <a href="#" class="link">
-                        <span class="noticeTitle">【<span>公告</span>】XXXXXXXXXXX</span>
-                        <span class="time">2016-06-06</span>
-                    </a>
-                </li>
+                <c:forEach items="${systemNoticeDOList}" var="systemNotice">
+                    <li class="listInfo">
+                        <a href="#" class="link">
+                            <span class="noticeTitle">【<span>公告</span>】${systemNotice.noticeTitle}</span>
+                            <span class="time"><fmt:formatDate type="time" value="${systemNotice.addTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></span>
+                        </a>
+                    </li>
+                </c:forEach>
             </ul>
         </div>
 
@@ -120,54 +86,31 @@
                 <a href="#" class="more">查看更多</a>
             </span>
             <ul class="list">
-                <li class="listInfo">
-                    <a href="#" class="link">
-                        <span class="noticeTitle">【<span>热门</span>】XXXXXXXXXXX</span>
-                        <span class="time">2016-06-06</span>
-                    </a>
-                </li>
-                <li class="listInfo">
-                    <a href="#" class="link">
-                        <span class="noticeTitle">【<span>热门</span>】XXXXXXXXXXX</span>
-                        <span class="time">2016-06-06</span>
-                    </a>
-                </li>
-                <li class="listInfo">
-                    <a href="#" class="link">
-                        <span class="noticeTitle">【<span>热门</span>】XXXXXXXXXXX</span>
-                        <span class="time">2016-06-06</span>
-                    </a>
-                </li>
-                <li class="listInfo">
-                    <a href="#" class="link">
-                        <span class="noticeTitle">【<span>热门</span>】XXXXXXXXXXX</span>
-                        <span class="time">2016-06-06</span>
-                    </a>
-                </li>
-                <li class="listInfo">
-                    <a href="#" class="link">
-                        <span class="noticeTitle">【<span>热门</span>】XXXXXXXXXXX</span>
-                        <span class="time">2016-06-06</span>
-                    </a>
-                </li>
+                <c:forEach items="${systemHotDOList}" var="hotTopic">
+                    <li class="listInfo">
+                        <a href="#" class="link">
+                            <span class="noticeTitle">【<span>热门</span>】${hotTopic.noticeTitle}</span>
+                            <span class="time"><fmt:formatDate type="time" value="${hotTopic.addTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></span>
+                        </a>
+                    </li>
+                </c:forEach>
             </ul>
         </div>
     </div>
 
     <div class="cooperation">
         <p class="cTitle">合作商家</p>
-        <p class="company"><img src="images/test/test_300.jpg" /><span>盛临九洲</span></p>
-        <p class="company"><img src="images/test/test_300.jpg" /><span>盛临九洲</span></p>
-        <p class="company"><img src="images/test/test_300.jpg" /><span>盛临九洲</span></p>
-        <p class="company"><img src="images/test/test_300.jpg" /><span>盛临九洲</span></p>
+        <c:forEach items="${systemBusinessesPartnerDOList}" var="partner">
+            <a href="${partner.webLinkUrl}" class="link">
+              <p class="company"><img src="${partner.businessesImageUrlFormat}" /><span>${partner.businessesName}</span></p>
+            </a>
+        </c:forEach>
     </div>
 </div>
 
 
 <div id="helpFooter"></div>
 <div id="footer"></div>
-
-
 
 <script type="text/javascript">
     var swiper = new Swiper('.top .swiper-container', {

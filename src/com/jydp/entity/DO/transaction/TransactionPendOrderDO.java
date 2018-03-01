@@ -11,6 +11,7 @@ public class TransactionPendOrderDO {
 
     private String pendingOrderNo;  //记录号,业务类型（2）+日期（6）+随机位（10）
     private int userId;  //用户Id
+    private String userAccount;  //用户账号
     private int paymentType;  //收支类型,1：买入，2：卖出
     private int currencyId;  //币种Id
     private String currencyName;  //货币名称
@@ -22,7 +23,6 @@ public class TransactionPendOrderDO {
     private Timestamp endTime;  //完成时间
     private Timestamp addTime;  //添加时间
 
-    private String userAccount;  //用户账号
 
     /**
      * 记录号,业务类型（2）+日期（6）+随机位（10）

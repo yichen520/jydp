@@ -51,6 +51,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
      * 新增挂单记录
      * @param pendingOrderNo 记录号,业务类型（2）+日期（6）+随机位（10）
      * @param userId 用户Id
+     * @param userAccount 用户账号
      * @param paymentType 收支类型,1：买入，2：卖出
      * @param currencyId 币种Id
      * @param currencyName 货币名称
@@ -62,12 +63,13 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
      * @param addTime 添加时间
      * @return 操作成功：返回true，操作失败：返回false
      */
-    public boolean insertPendOrder(String pendingOrderNo, int userId, int paymentType, int currencyId,
+    public boolean insertPendOrder(String pendingOrderNo, int userId, String userAccount, int paymentType, int currencyId,
                                    String currencyName, double pendingPrice, double pendingNumber,
                                    double dealNumber, int pendingStatus, String remark, Timestamp addTime){
         TransactionPendOrderDO transactionPendOrder = new TransactionPendOrderDO();
         transactionPendOrder.setPendingOrderNo(pendingOrderNo);
         transactionPendOrder.setUserId(userId);
+        transactionPendOrder.setUserAccount(userAccount);
         transactionPendOrder.setPaymentType(paymentType);
         transactionPendOrder.setCurrencyId(currencyId);
         transactionPendOrder.setCurrencyName(currencyName);

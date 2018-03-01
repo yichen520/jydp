@@ -15,7 +15,7 @@ import java.util.List;
  * @author hz
  *
  */
-@Service("systemAdsHomepagesService")
+@Service("systemAccountAmountService")
 public class SystemAccountAmountServiceImpl implements ISystemAccountAmountService {
 
     /**系统账户金额 */

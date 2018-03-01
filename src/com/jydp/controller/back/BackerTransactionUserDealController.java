@@ -106,6 +106,9 @@ public class BackerTransactionUserDealController {
         if (totalPageNumber <= 0) {
             totalPageNumber = 1;
         }
+        if (totalPageNumber <= pageNumber) {
+            pageNumber = totalPageNumber - 1;
+        }
 
         List<TransactionUserDealVO> transactionUserDealList = null;
         if (totalNumber > 0) {
