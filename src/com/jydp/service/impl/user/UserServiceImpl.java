@@ -10,6 +10,7 @@ import com.jydp.entity.DO.user.UserBalanceDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DTO.UserDTO;
+import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.service.IBackerHandleUserRecordBalanceService;
 import com.jydp.service.ITransactionCurrencyService;
 import com.jydp.service.IUserBalanceService;
@@ -241,7 +242,7 @@ public class UserServiceImpl implements IUserService {
                 return false;
             }
             //查询所有币种
-            List<TransactionCurrencyDO> transactionCurrencyDOList = transactionCurrencyService.getTransactionCurrencyListForWeb();
+            List<TransactionCurrencyVO> transactionCurrencyDOList = transactionCurrencyService.getTransactionCurrencyListForWeb();
 
             if (transactionCurrencyDOList != null) {
                 List<UserCurrencyNumDO> userCurrencyNumDOList = new ArrayList<UserCurrencyNumDO>();
