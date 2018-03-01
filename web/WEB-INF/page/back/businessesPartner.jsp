@@ -220,18 +220,23 @@
         var wapLinkUrl = $("#addWapLinkUrl").val();
 
         if (businessesPartnerImageUrlStr == null || businessesPartnerImageUrlStr == '') {
+            addBoo = false;
             return openTips("请上传封面图");
         }
         if (businessesName == null || businessesName == "") {
+            addBoo = false;
             return openTips("企业名称不能为空");
         }
         if (businessesName.length < 2 || businessesName.length > 16) {
+            addBoo = false;
             return openTips("企业名称为2~16个字符");
         }
         if (webLinkUrl.length > 500) {
+            addBoo = false;
             return openTips("web链接地址不能超过500个字符");
         }
         if (wapLinkUrl.length > 500) {
+            addBoo = false;
             return openTips("wap链接地址不能超过500个字符");
         }
 
@@ -288,16 +293,20 @@
         var wapLinkUrl = $("#modifyWapLinkUrl").val();
 
         if(businessesName == null || businessesName == ""){
+            modifyBoo = false;
             return openTips("企业名称不能为空");
         }
         if(businessesName.length < 2 || businessesName.length > 16){
+            modifyBoo = false;
             return openTips("企业名称为2~16个字符");
 
         }
         if (webLinkUrl.length > 500) {
+            modifyBoo = false;
             return openTips("web链接地址不能超过500个字符");
         }
         if (wapLinkUrl.length > 500) {
+            modifyBoo = false;
             return openTips("wap链接地址不能超过500个字符");
         }
 
@@ -398,10 +407,10 @@
             $(".mask").fadeOut("fast");
             $(popObj).fadeOut("fast");
         });
-        $(".yes").click(function(){
-            $(".mask").fadeOut("fast");
-            $(popObj).fadeOut("fast");
-        });
+//        $(".yes").click(function(){
+//            $(".mask").fadeOut("fast");
+//            $(popObj).fadeOut("fast");
+//        });
     });
 
     function openTip()
