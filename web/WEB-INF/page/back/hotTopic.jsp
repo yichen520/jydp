@@ -57,7 +57,14 @@
                 <c:forEach items="${systemHotList}" var="systemHot" varStatus="status">
                     <tr class="tableInfo">
                         <td class="time"><fmt:formatDate type="time" value="${systemHot.addTime }" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
-                        <td class="pic"><img src="${systemHot.noticeUrlFormat }" /></td>
+                        <td class="pic">
+                            <c:if test="${systemHot.noticeUrl != '1'}">
+                                <img src="${systemHot.noticeUrlFormat }"/>
+                            </c:if>
+                            <c:if test="${systemHot.noticeUrl == '1'}">
+                                <img src="<%=path%>/upload/image/notic_hotTopic.jpg"/>
+                            </c:if>
+                        </td>
                         <td class="type">${systemHot.noticeType }</td>
                         <td class="nTitle">${systemHot.noticeTitle }</td>
                         <td class="operate">

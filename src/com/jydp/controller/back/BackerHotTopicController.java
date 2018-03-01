@@ -127,29 +127,25 @@ public class BackerHotTopicController {
         String noticeTitle = StringUtil.stringNullHandle(request.getParameter("noticeTitle"));
         String content = StringUtil.stringNullHandle(request.getParameter("content"));
 
-        if (!StringUtil.isNotNull(noticeType) || !StringUtil.isNotNull(noticeTitle)
-                || !StringUtil.isNotNull(content) || noticeUrl == null || noticeUrl.isEmpty()) {
+        if (!StringUtil.isNotNull(noticeType) || !StringUtil.isNotNull(noticeTitle) || !StringUtil.isNotNull(content)) {
             response.put("code", 3);
             response.put("message", "参数错误！");
             return response;
         }
 
         String imageUrl = "";
-        try {
-            imageUrl = FileWriteRemoteUtil.uploadFile(noticeUrl.getOriginalFilename(),
-                    noticeUrl.getInputStream(), FileUrlConfig.file_remote_noticeImage_url);
-        } catch (IOException e) {
-            LogUtil.printErrorLog(e);
-        }
-
-        if(imageUrl == "" || imageUrl == null){
-            response.put("code", 3);
-            response.put("message", "新增失败！");
-            return response;
+        if(noticeUrl == null){
+            imageUrl = FileUrlConfig.notice_hotTopic_defaultImage;
+        }else{
+            try {
+                imageUrl = FileWriteRemoteUtil.uploadFile(noticeUrl.getOriginalFilename(),
+                        noticeUrl.getInputStream(), FileUrlConfig.file_remote_noticeImage_url);
+            } catch (IOException e) {
+                LogUtil.printErrorLog(e);
+            }
         }
 
         Timestamp addTime = DateUtil.getCurrentTime();
-
         boolean addResult = systemHotService.insertSystemHot(noticeTitle, noticeType, imageUrl, content, addTime, null);
         if (addResult) {
             response.put("code", 1);
@@ -248,7 +244,9 @@ public class BackerHotTopicController {
             }
 
             if (imageUrl != null && imageUrl != "") {
-                FileWriteRemoteUtil.deleteFile(systemHotDO.getNoticeUrl());
+                if(!systemHotDO.getNoticeUrl().equals(FileUrlConfig.notice_hotTopic_defaultImage)){
+                    FileWriteRemoteUtil.deleteFile(systemHotDO.getNoticeUrl());
+                }
             }
         }
 
@@ -342,10 +340,12 @@ public class BackerHotTopicController {
         }
 
         boolean deleteResult = systemHotService.deteleSystemHot(id);
+        String imageUrl = systemHotDO.getNoticeUrl();
         if (deleteResult) {
-            // 删除图片
-            FileWriteRemoteUtil.deleteFile(systemHotDO.getNoticeUrl());
-
+            if(!imageUrl.equals(FileUrlConfig.notice_hotTopic_defaultImage)){
+                // 删除图片
+                FileWriteRemoteUtil.deleteFile(systemHotDO.getNoticeUrl());
+            }
             response.put("code", 1);
             response.put("message", "删除成功！");
         } else {

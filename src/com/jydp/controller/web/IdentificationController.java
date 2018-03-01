@@ -6,10 +6,8 @@ import com.iqmkj.utils.FileWriteRemoteUtil;
 import com.iqmkj.utils.LogUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
-import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DO.user.UserIdentificationDO;
-import com.jydp.entity.DO.user.UserIdentificationImageDO;
 import com.jydp.interceptor.BackerWebInterceptor;
 import com.jydp.service.IUserIdentificationImageService;
 import com.jydp.service.IUserIdentificationService;
@@ -54,28 +52,6 @@ public class IdentificationController {
     @Autowired
     private IUserIdentificationImageService userIdentificationImageService;
 
-    /** 实名认证页面入口 */
-    @RequestMapping("/show")
-    public String show(HttpServletRequest request) {
-        UserSessionBO userSession = new UserSessionBO();
-        userSession.setUserAccount("test002");
-        userSession.setUserId(2);
-
-        request.setAttribute("userId", userSession.getUserId());
-        request.setAttribute("userAccount", userSession.getUserAccount());
-
-        UserIdentificationDO existIdentification = userIdentificationService.getUserIdentificationByUserAccountLately(userSession.getUserAccount());
-        if (existIdentification != null) {
-            List<UserIdentificationImageDO> userIdentificationImageList =
-                    userIdentificationImageService.listUserIdentificationImageByIdentificationId(existIdentification.getId());
-
-            request.setAttribute("identification", existIdentification);
-            request.setAttribute("identificationImageList", userIdentificationImageList);
-            return "page/web/identificationAfresh";
-        }
-        return "page/web/identification";
-    }
-
     /** 重新认证，新增实名认证 */
     @RequestMapping("/showAdd")
     public String showAdd(HttpServletRequest request) {
@@ -115,19 +91,13 @@ public class IdentificationController {
             return responseJson;
         }
 
-        //姓名，身份证 格式判断 TODO 问题1：第一张图片上传点击删除后，再上传同张图片无法触发onChange事件
-        // 姓名只允许中文
-        Pattern patternName = Pattern.compile("[\\u4e00-\\u9fa5]{2,8}");
-        // 编译正则表达式
-        Matcher matcher = patternName.matcher(userName);
-        // 字符串是否与正则表达式相匹配
-        boolean rs = matcher.matches();
-        if (!rs) {
-            responseJson.setCode(3);
-            responseJson.setMessage("参数错误！");
+        //姓名，身份证 格式判断
+        JsonObjectBO validateJson = validateNameAndCertNo(userName, userCertNo);
+        if (validateJson.getCode() != 1) {
+            responseJson.setCode(validateJson.getCode());
+            responseJson.setMessage(validateJson.getMessage());
             return responseJson;
         }
-
 
         List<MultipartFile> imageList = new ArrayList<>();
         // 转型为MultipartHttpRequest：
@@ -140,6 +110,11 @@ public class IdentificationController {
             if (file != null) {
                 imageList.add(file);
             }
+        }
+        if (imageList.size() < 3) {
+            responseJson.setCode(5);
+            responseJson.setMessage("证件照至少上传三张");
+            return responseJson;
         }
         if (imageList.size() > 9) {
             responseJson.setCode(5);
@@ -219,6 +194,59 @@ public class IdentificationController {
 
         responseJson.setCode(5);
         responseJson.setMessage("操作失败");
+        return responseJson;
+    }
+
+    /**
+     * 验证身份证姓名和身份证号码
+     * @param userName 身份证姓名
+     * @param userCertNo 身份证号码
+     * @return 验证通过：返回code=1，验证失败：返回code!=1
+     */
+    private JsonObjectBO validateNameAndCertNo(String userName, String userCertNo) {
+        JsonObjectBO responseJson = new JsonObjectBO();
+        //姓名校验
+        Pattern patternName = Pattern.compile("[\\u4e00-\\u9fa5]{2,8}");
+        Matcher matcherName = patternName.matcher(userName);
+        if (!matcherName.matches()) {
+            responseJson.setCode(3);
+            responseJson.setMessage("姓名只允许中文！");
+            return responseJson;
+        }
+
+        //身份证校验
+        Pattern pattern1 = Pattern.compile("^(\\d{6})(19|20)(\\d{2})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])(\\d{3})(\\d|X|x)?$"); //粗略的校验
+        Matcher matcher = pattern1.matcher(userCertNo);
+        if(!matcher.matches()){
+            responseJson.setCode(3);
+            responseJson.setMessage("身份证号码有误！");
+            return responseJson;
+        }
+
+        // 1-17位相乘因子数组
+        int[] factor = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2};
+        // 18位随机码数组
+        char[] random = "10X98765432".toCharArray();
+        // 计算1-17位与相应因子乘积之和
+        int total = 0;
+        char[] userCertNoArray = userCertNo.toCharArray();
+        for (int i = 0; i < 17; i++){
+            int certNoNum = Character.getNumericValue(userCertNoArray[i]);
+            total += certNoNum * factor[i];
+        }
+        if (userCertNoArray[17] == 'x') {
+            userCertNoArray[17] = 'X';
+        }
+        // 判断随机码是否相等
+        char r = random[total % 11];
+        if (r != userCertNoArray[17]) {
+            responseJson.setCode(3);
+            responseJson.setMessage("身份证号码错误");
+            return responseJson;
+        }
+
+        responseJson.setCode(1);
+        responseJson.setMessage("验证通过");
         return responseJson;
     }
 }
