@@ -1,0 +1,184 @@
+html{
+    width:100%;
+    height:100%;
+}
+body{
+    width: 100%;
+    margin:0 auto;
+    align-content: center;
+    font-family: "Microsoft Yahei";
+    background-color: #ffffff;
+    height:100%;
+}
+*{
+    padding:0;
+    margin:0;
+}
+a{
+    text-decoration: none;
+}
+a:active,a:visited,a:hover,a:link {
+    border: none;
+    outline:none;
+}
+img{
+    border:none;
+    outline:none;
+}
+ul li{
+    list-style: none;
+}
+.content{
+    clear:both;
+    position: relative;
+    width: 1200px;
+    min-height: 57.67%;
+    margin:0 auto;
+    font-family: "Microsoft YaHei";
+}
+input,select,textarea{
+    outline: none;
+    font-family: "Microsoft YaHei";
+}
+input:-webkit-autofill{
+    -webkit-box-shadow: 0 0 0 1000px white inset !important;
+}
+.fHeader{
+    width: 100%;
+    min-width: 1200px;
+    height: 80px;
+    line-height: 95px;
+}
+.headerInfo{
+    margin: 0 auto;
+    width: 1200px;
+    background-color: #ffffff;
+}
+.headerInfo a{
+    display: block;
+    font-size: 22px;
+    color: #333333;
+}
+.logo{
+    width: 50px;
+    margin: 22px 10px 10px 0;
+    float: left;
+}
+.content{
+    padding-bottom: 40px;
+    background-color: #ffffff;
+    min-height:-moz-calc(100% - 177px) !important;
+    min-height:calc(100% - 177px) !important;
+    min-height: -moz-calc(100% - 177px) !important;
+}
+.auditTitle{
+    width: 1200px;
+    height: 45px;
+    line-height: 45px;
+    border-bottom: 1px solid #ececec;
+}
+.titleR{
+    color: #333333;
+    font-size: 18px;
+}
+.audit{
+    margin: 15px auto 0 auto;
+    width: 400px;
+    position: relative;
+}
+.state{
+    position: absolute;
+    top: 0;
+    right:-80px;
+}
+.phoneInput{
+    position: relative;
+    display: inline-block;
+    margin-top: 3px;
+    width: 360px;
+    text-align: left;
+}
+.phoneInputB{
+    margin-top: 17px;
+}
+.phoneInput_mark{
+    margin-top: 0;
+}
+.popName{
+    display: inline-block;
+    width: 90px;
+    height: 28px;
+    line-height: 36px;
+    text-align: left;
+    color: #333333;
+    font-size: 14px;
+    float: left;
+}
+.star{
+    color: #e83a33;
+}
+.number{
+    float: right;
+    display: block;
+    width: 260px;
+    font-size: 14px;
+    color: #333333;
+    height: 28px;
+    line-height: 36px;
+}
+.entry{
+    float: right;
+    padding-left: 5px;
+    border: 1px solid #cccccc;
+    width: 253px;
+    height: 35px;
+    font-size: 12px;
+}
+.auditImg{
+    float: right;
+    width: 390px;
+    margin-right: -130px;
+}
+.auditImg img{
+    float: left;
+    width: 120px;
+    height: 120px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ececec;
+    box-sizing: border-box;
+}
+.mark{
+    float: right;
+    display: block;
+    width: 380px;
+    font-size: 14px;
+    color: #999999;
+    line-height: 36px;
+    margin-right: -120px;
+}
+.submit{
+    margin-top: 13px;
+    width: 360px;
+    height: 45px;
+    border: none;
+    text-align: center;
+    color: #ffffff;
+    font-size: 18px;
+    cursor: pointer;
+    background-color:#68adfa;
+    border-radius: 22px;
+    font-weight: 500;
+}
+.submit:hover{
+    background-color: #52a1f9;
+}
+.forgetFoot{
+    margin:0 auto;
+    width: 1200px;
+    height: 55px;
+    line-height: 55px;
+    font-size: 14px;
+    color: #666666;
+    text-align: center;
+}
