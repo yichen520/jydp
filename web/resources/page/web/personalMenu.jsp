@@ -20,7 +20,7 @@
         </p>
 
         <ul class="levelTwo">
-            <li class="menuInfo"><a href="<%=path %>/userWeb/userMessage/show.htm" class="personal_pitch">个人信息</a></li>
+            <li class="menuInfo"><a id="userMessage" href="<%=path %>/userWeb/userMessage/show.htm" class="personal_pitch">个人信息</a></li>
             <li class="menuInfo"><a href="#">银行卡绑定</a></li>
         </ul>
     </li>
@@ -84,6 +84,36 @@
             }
         })
     });
+</script>
+<script type="text/javascript">
+    function showPersonalMenu() {
+        //获取当前url路径
+        var curUrl = window.location.href;
+
+        //最终返回记录截取controller最开头的路径
+        var subUrl;
+        //查询userWeb字符所在位置
+        var index = curUrl.indexOf("/userWeb/");
+        //截取掉userWeb之前的所有字符
+        subUrl = curUrl.substring(index + 9);
+        //查询“/”所在位置
+        index = subUrl.indexOf("/");
+        //截取掉“/”之后的所有路径
+        subUrl = subUrl.slice(0,index);
+        //alert(subUrl);
+        var menuObj = document.getElementById(subUrl);
+        console.log(menuObj);
+        if(menuObj != null){
+            $("#" + subUrl).parent().parent().parent().find(".levelTwo").show();
+            $("#" + subUrl).parent().parent().parent().find(".menuTitle").find(".menu_up").show();
+            $("#" + subUrl).parent().parent().parent().find(".menuTitle").find(".menu_down").hide();
+            $("#" + subUrl).addClass("personal_pitch");
+            $("#" + subUrl).parent().parent().parent().find(".menuTitle").addClass("titleChoose");
+            clearInterval(showPersonalMenuId);
+            console.log('jhgfsahgdjhgdkjsg');
+        }
+    }
+    var showPersonalMenuId = setInterval(showPersonalMenu, 50);
 </script>
 </body>
 </html>

@@ -204,12 +204,14 @@
                 <span class="popCode">
                     <input type="text" class="code" placeholder="6位短信验证码" maxlength="6" id="verifyCode"
                            onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
+                    <input type="text" style="width: 0;height: 0;border: none"/>
                     <input type="text" id="phoneBtn" class="message" value="获取验证码" onfocus="this.blur()" />
                 </span>
             </p>
             <p class="popInput">
                 <label class="popName">登录密码<span class="star">*</span>：</label>
-                <input type="password" class="entry" placeholder="您的登录密码" maxlength="16" id="phonePassword"
+
+                <input type="text" class="entry" placeholder="您的登录密码" maxlength="16" id="phonePassword"
                        onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
             </p>
 
@@ -226,6 +228,7 @@
 <script type="text/javascript" src="<%=path %>/resources/js/simpleTips.js"></script>
 <script type="text/javascript">
     window.onload = function() {
+        $('#phonePassword').attr("type", "password");
         var code = '${code}';
         var message = '${message}';
         var payPassword = '${userMessage.payPassword }';
