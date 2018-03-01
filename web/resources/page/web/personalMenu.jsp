@@ -102,18 +102,16 @@
         subUrl = subUrl.slice(0,index);
         //alert(subUrl);
         var menuObj = document.getElementById(subUrl);
-        console.log(menuObj);
         if(menuObj != null){
             $("#" + subUrl).parent().parent().parent().find(".levelTwo").show();
             $("#" + subUrl).parent().parent().parent().find(".menuTitle").find(".menu_up").show();
             $("#" + subUrl).parent().parent().parent().find(".menuTitle").find(".menu_down").hide();
             $("#" + subUrl).addClass("personal_pitch");
             $("#" + subUrl).parent().parent().parent().find(".menuTitle").addClass("titleChoose");
-            clearInterval(showPersonalMenuId);
-            console.log('jhgfsahgdjhgdkjsg');
+            clearInterval(showPersonalMenu);
         }
     }
-    var showPersonalMenuId = setInterval(showPersonalMenu, 50);
+    var showPersonalMenu = setInterval(showPersonalMenu, 20);
 </script>
 </body>
 </html>
