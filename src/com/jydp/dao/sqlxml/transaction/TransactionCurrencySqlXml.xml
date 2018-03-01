@@ -7,16 +7,17 @@
 
 	<insert id="TransactionCurrency_insertTransactionCurrency" parameterType="TransactionCurrencyDO">
         INSERT INTO transaction_currency_tab
-            (currencyShortName, currencyName, currencyImg, upPrice, minPrice, buyFee,
-             sellFee, upRange, downRange, paymentType, upStatus, backerAccount, ipAddress, upTime, addTime)
+            (currencyShortName, currencyName, currencyImg, buyFee, sellFee, upRange, downRange,
+             paymentType, upStatus, backerAccount, ipAddress, startTime, endTime, upTime, addTime)
         VALUES
-            (#{currencyShortName}, #{currencyName}, #{currencyImg}, #{upPrice}, #{minPrice}, #{buyFee}, #{sellFee},
-              #{upRange}, #{downRange}, #{paymentType}, #{upStatus}, #{backerAccount}, #{ipAddress}, #{upTime}, #{addTime})
+            (#{currencyShortName}, #{currencyName}, #{currencyImg}, #{buyFee}, #{sellFee}, #{upRange},
+            #{downRange}, #{paymentType}, #{upStatus}, #{backerAccount}, #{ipAddress}, #{startTime}, #{endTime},
+             #{upTime}, #{addTime})
     </insert>
 
 	<select id="TransactionCurrency_getTransactionCurrencyByCurrencyId" parameterType="int" resultType="TransactionCurrencyVO">
-        SELECT currencyId, currencyShortName, currencyName, currencyImg, upPrice, minPrice, buyFee,
-                sellFee, upRange, downRange, paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
+        SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, upRange, downRange,
+            paymentType, upStatus, backerAccount, ipAddress, startTime, endTime, upTime, addTime
         FROM transaction_currency_tab
         WHERE currencyId = #{currencyId}
 	</select>
@@ -24,10 +25,11 @@
 	<update id="TransactionCurrency_updateTransactionCurrency" parameterType="TransactionCurrencyDO">
         UPDATE transaction_currency_tab
         SET currencyShortName = #{currencyShortName}, currencyName = #{currencyName},
-            currencyImg = #{currencyImg}, upPrice = #{upPrice}, minPrice = #{minPrice}, buyFee = #{buyFee},
-            sellFee = #{sellFee}, upRange = #{upRange}, downRange = #{downRange}, paymentType = #{paymentType},
+            currencyImg = #{currencyImg}, buyFee = #{buyFee}, sellFee = #{sellFee},
+            upRange = #{upRange}, downRange = #{downRange}, paymentType = #{paymentType},
             upStatus = #{upStatus}, backerAccount = #{backerAccount}, ipAddress = #{ipAddress},
-            upTime = #{upTime}, addTime, addTime = #{addTime}
+            startTime = #{startTime}, endTime = #{endTime},
+            upTime = #{upTime},  addTime = #{addTime}
         WHERE currencyId = #{currencyId}
     </update>
 
@@ -37,14 +39,14 @@
     </delete>
 
     <select id="TransactionCurrency_getTransactionCurrencyListForWeb" resultType="TransactionCurrencyVO">
-        SELECT  currencyId, currencyShortName, currencyName, currencyImg, upPrice, minPrice, buyFee,
-            sellFee, upRange, downRange, paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
+        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, upRange, downRange,
+            paymentType, upStatus, backerAccount, ipAddress, startTime, endTime, upTime, addTime
         FROM transaction_currency_tab
     </select>
 
     <select id="TransactionCurrency_getTransactionCurrencyByCurrencyName" parameterType="java.lang.String" resultType="TransactionCurrencyVO">
-        SELECT  currencyId, currencyShortName, currencyName, currencyImg, upPrice, minPrice, buyFee,
-            sellFee, upRange, downRange, paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
+        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, upRange, downRange,
+            paymentType, upStatus, backerAccount, ipAddress, startTime, endTime, upTime, addTime
         FROM transaction_currency_tab
         WHERE currencyName = #{currencyName}
     </select>
