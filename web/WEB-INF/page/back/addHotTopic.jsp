@@ -40,7 +40,7 @@
                         话题标题<span class="star">*</span>：<input type="text" class="askInput" placeholder="话题标题，2~32个字符" maxlength="32" id="noticeTitle" name="noticeTitle"/>
                     </p>
                     <p class="condition">
-                        封面图<span class="star">*</span>：
+                        封面图：
                         <span class="pic">
                             <input type="text" id="changead_t1"  class="choosePic" placeholder="请选择文件" onfocus="this.blur()" />
                             <input type="text"  onclick="document.getElementById('changead_a1').click();"  value="选择文件" class="choose_button" onfocus="this.blur();" />
@@ -88,11 +88,6 @@
 
         if(content == null || content == ""){
             return openTips("内容不能为空");
-        }
-
-        if(noticeUrlStr == null || noticeUrlStr == '')
-        {
-            return openTips("请上传封面图");
         }
 
         if(noticeType.length < 2 || noticeType.length > 16){
