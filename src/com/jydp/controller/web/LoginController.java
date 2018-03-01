@@ -53,8 +53,16 @@ public class LoginController {
 
         request.setAttribute("userAccount", userAccount);
 
-        if(!StringUtil.isNotNull(validateCode) || !StringUtil.isNotNull(sessionCode) || !validateCode.equals(sessionCode)){
+        if(!StringUtil.isNotNull(validateCode) || !StringUtil.isNotNull(sessionCode)){
             request.setAttribute("code", 2);
+            request.setAttribute("message", "验证码错误");
+            return "page/web/login";
+        }
+
+        validateCode = validateCode.toLowerCase();
+        sessionCode = sessionCode.toLowerCase();
+        if(!validateCode.equals(sessionCode)){
+            request.setAttribute("code", 3);
             request.setAttribute("message", "验证码错误");
             return "page/web/login";
         }
