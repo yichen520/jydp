@@ -38,23 +38,16 @@
 
 	<update id="SystemBusinessesPartner_updateSystemBusinessesPartner" parameterType="SystemBusinessesPartnerDO">
 		UPDATE system_businesses_partner_tab
-		<set>
+		SET webLinkUrl = #{webLinkUrl},wapLinkUrl = #{wapLinkUrl}
 			<if test="businessesName != null and businessesName != ''" >
-				businessesName = #{businessesName},
+				,businessesName = #{businessesName}
 			</if>
 			<if test="businessesImageUrl != null and businessesImageUrl != ''" >
-				businessesImageUrl = #{businessesImageUrl},
-			</if>
-			<if test="webLinkUrl != null and webLinkUrl != ''" >
-				webLinkUrl = #{webLinkUrl},
-			</if>
-			<if test="wapLinkUrl != null and wapLinkUrl != ''" >
-				wapLinkUrl = #{wapLinkUrl},
+				,businessesImageUrl = #{businessesImageUrl}
 			</if>
 			<if test="topTime != null" >
-				topTime = #{topTime}
+				,topTime = #{topTime}
 			</if>
-		</set>
 		WHERE id = #{id}
 	</update>
 
@@ -62,4 +55,10 @@
 		DELETE FROM system_businesses_partner_tab
 		WHERE id = #{id}
 	</delete>
+
+	<update id="SystemBusinessesPartner_topTheBusinessesPartner" parameterType="java.util.Map">
+		UPDATE system_businesses_partner_tab
+		SET topTime = #{topTime}
+		WHERE id = #{id}
+	</update>
 </mapper>

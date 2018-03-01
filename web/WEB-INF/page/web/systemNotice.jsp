@@ -29,8 +29,13 @@
         <div class="main">
             <div class="list">
                 <c:forEach items="${systemNoticeList}" var="item">
-                    <a href="#" class="notice" onclick="showDetail('${item.id}')">
-                        <img src="${item.noticeUrlFormat}" class="noticeImg" />
+                    <a href="javascript:;" class="notice" onclick="showDetail('${item.id}')">
+                        <c:if test="${item.noticeUrl != '1'}">
+                            <img src="${item.noticeUrlFormat}" class="noticeImg" />
+                        </c:if>
+                        <c:if test="${item.noticeUrl == '1'}">
+                            <img src="<%=path%>/upload/image/notic_hotTopic.jpg" class="noticeImg" />
+                        </c:if>
                         <span class="noticeInfo">
                             <span class="noticeTitle">【<span>公告</span>】${item.noticeTitle}</span>
                             <span class="time"><fmt:formatDate value="${item.addTime}" pattern="yyyy-MM-dd HH:mm:ss"/></span>

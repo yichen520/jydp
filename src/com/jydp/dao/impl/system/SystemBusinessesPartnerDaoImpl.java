@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -144,6 +145,31 @@ public class SystemBusinessesPartnerDaoImpl implements ISystemBusinessesPartnerD
 
         try {
             result = sqlSessionTemplate.delete("SystemBusinessesPartner_deleteSystemBusinessesPartner", id);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 置顶合作商家
+     * @param id 合作商家Id
+     * @param topTime 置顶时间topTime
+     * @return 置顶成功：返回true，置顶失败：返回false
+     */
+    public boolean topTheBusinessesPartner(int id, Timestamp topTime){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("id", id);
+        map.put("topTime", topTime);
+        int result = 0;
+
+        try {
+            result = sqlSessionTemplate.update("SystemBusinessesPartner_topTheBusinessesPartner", map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }

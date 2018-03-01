@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -174,7 +175,8 @@ public class BackerBusinessesPartnerController {
             return responsJson;
         }
 
-        boolean topResult = systemBusinessesPartnerService.topTheBusinessesPartner(id);
+        Timestamp topTime = DateUtil.getCurrentTime();
+        boolean topResult = systemBusinessesPartnerService.topTheBusinessesPartner(id, topTime);
         if (topResult) {
             responsJson.setCode(1);
             responsJson.setMessage("置顶成功");

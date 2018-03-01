@@ -2,6 +2,7 @@ package com.jydp.dao;
 
 import com.jydp.entity.DO.system.SystemBusinessesPartnerDO;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -57,4 +58,12 @@ public interface ISystemBusinessesPartnerDao {
      * @return 删除成功：返回true，删除失败：返回false
      */
     boolean deleteSystemBusinessesPartner(int id);
+
+    /**
+     * 置顶合作商家
+     * @param id 合作商家Id
+     * @param topTime 置顶时间topTime
+     * @return 置顶成功：返回true，置顶失败：返回false
+     */
+    boolean topTheBusinessesPartner(int id, Timestamp topTime);
 }
