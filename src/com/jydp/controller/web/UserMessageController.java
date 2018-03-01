@@ -88,9 +88,17 @@ public class UserMessageController {
             userMessage.setPhoneNumber("未绑定手机");
         }
 
-        //总金额计算
-        double userBalanceSum = BigDecimalUtil.add(userMessage.getUserBalance(), userMessage.getUserBalanceLock());
+        //资产精度截取保留两位小数
+        BigDecimal userBalance = new BigDecimal(userMessage.getUserBalance());
+        double userBalanceNum = userBalance.setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
+        userMessage.setUserBalance(userBalanceNum);
 
+        BigDecimal userBalanceLock = new BigDecimal(userMessage.getUserBalanceLock());
+        double userBalanceLockNum = userBalanceLock.setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
+        userMessage.setUserBalanceLock(userBalanceLockNum);
+
+        //总资产计算
+        double userBalanceSum = BigDecimalUtil.add(userBalanceNum, userBalanceLockNum);
 
         //查询用户币信息
         List<BackerUserCurrencyNumDTO> currencyList = userCurrencyNumService.getUserCurrencyNumByUserIdForBacker(user.getUserId());
@@ -110,7 +118,7 @@ public class UserMessageController {
             userCurrencyNum.setCurrencyId(userCurrency.getCurrencyId());
             userCurrencyNum.setCurrencyNumberLock(userCurrency.getCurrencyNumberLock());
 
-            //保留四位小数
+            //币数量精度截取保留四位小数
             BigDecimal currencyNumber = new BigDecimal(userCurrency.getCurrencyNumber());
             double currencyNum = currencyNumber.setScale(4, BigDecimal.ROUND_DOWN).doubleValue();
             BigDecimal currencyNumberLock = new BigDecimal(userCurrency.getCurrencyNumberLock());
