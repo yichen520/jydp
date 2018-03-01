@@ -93,16 +93,17 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
 
         List<TransactionUserDealDTO> transactionUserDealDTOList = null;
         transactionUserDealDTOList = transactionCurrencyDao.getTransactionCurrencyMarketForWeb();
-        for (TransactionUserDealDTO transactionUserDeal:transactionUserDealDTOList) {
-            double yesterdayLastPrice = transactionUserDeal.getYesterdayLastPrice();
-            double change = 0;//24小时涨幅 eg:24小时涨跌为24.31%,change = 24.31
+        if (transactionUserDealDTOList != null) {
+            for (TransactionUserDealDTO transactionUserDeal:transactionUserDealDTOList) {
+                double yesterdayLastPrice = transactionUserDeal.getYesterdayLastPrice();
+                double change = 0;//24小时涨幅 eg:24小时涨跌为24.31%,change = 24.31
 
-            if (yesterdayLastPrice != 0) {
-                change = NumberUtil.doubleFormat(((transactionUserDeal.getLatestPrice() - yesterdayLastPrice)/yesterdayLastPrice)*100,2);
+                if (yesterdayLastPrice != 0) {
+                    change = NumberUtil.doubleFormat(((transactionUserDeal.getLatestPrice() - yesterdayLastPrice)/yesterdayLastPrice)*100,2);
+                }
+                transactionUserDeal.setChange(change);
             }
-            transactionUserDeal.setChange(change);
         }
-
         return transactionUserDealDTOList;
     }
 }

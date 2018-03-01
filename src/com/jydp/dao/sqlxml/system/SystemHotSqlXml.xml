@@ -6,10 +6,10 @@
 <mapper namespace="com.jydp.dao.impl.system.SystemHotDaoImpl">
 
 	<select id="SystemHot_getSystemHotlistForWeb" resultType="SystemHotDO">
-		SELECT id, noticeTitle, noticeUrl, content, addTime, topTime
-		FROM system_notice_tab
+		SELECT id, noticeTitle, noticeUrl, content, addTime, topTime, noticeType
+		FROM system_hot_tab
 		ORDER BY topTime DESC
-		LIMIT 4
+		LIMIT 5
 	</select>
 
 	<select id="SystemHot_sumHotForBack" resultType="int">
