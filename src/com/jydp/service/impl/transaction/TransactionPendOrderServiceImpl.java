@@ -3,6 +3,7 @@ package com.jydp.service.impl.transaction;
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.ITransactionPendOrderDao;
+import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
 import com.jydp.entity.DO.user.UserBalanceDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
@@ -38,6 +39,10 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
     /** 用户账户记录 */
     @Autowired
     private IUserBalanceService userBalanceService;
+
+    /** 交易币种 */
+    @Autowired
+    private ITransactionCurrencyService transactionCurrencyService;
 
     /** 用户币数量 */
     @Autowired
@@ -214,6 +219,12 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
         if(pendingStatus != 1 && pendingStatus != 2){
             return false;
         }
+        TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
+        if(transactionCurrency == null){
+            return false;
+        }
+
+        double buyFee = transactionCurrency.getBuyFee()/100;
 
         //计算撤销的币数量
         double num = transactionPendOrder.getPendingNumber() - dealNumber;
@@ -226,7 +237,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
 
         if(paymentType == 1){ //如果是买入
             //计算撤销的美金数量
-            double balanceRevoke = num * transactionPendOrder.getPendingPrice() * (1+0.002);
+            double balanceRevoke = num * transactionPendOrder.getPendingPrice() * (1+buyFee);
             //判断冻结金额是否大于等于balanceRevoke
             if(user.getUserBalanceLock() < balanceRevoke){
                 return false;

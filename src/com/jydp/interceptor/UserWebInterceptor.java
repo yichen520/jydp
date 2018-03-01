@@ -43,7 +43,7 @@ public class UserWebInterceptor implements HandlerInterceptor {
         if (userSession == null) {
             request.setAttribute("code", -1);
             request.setAttribute("message", "登录过期，请重新登录");
-            request.getRequestDispatcher("/userWebLogin").forward(request, response);
+            request.getRequestDispatcher("/webLogin").forward(request, response);
             return false;
         }
         return true;

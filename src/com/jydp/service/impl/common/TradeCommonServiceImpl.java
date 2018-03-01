@@ -2,6 +2,7 @@ package com.jydp.service.impl.common;
 
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.NumberUtil;
+import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
 import com.jydp.entity.DO.user.UserBalanceDO;
 import com.jydp.service.*;
@@ -44,6 +45,10 @@ public class TradeCommonServiceImpl implements ITradeCommonService {
     @Autowired
     private IUserCurrencyNumService userCurrencyNumService;
 
+    /** 交易币种 */
+    @Autowired
+    private ITransactionCurrencyService transactionCurrencyService;
+
     /** 用户账户记录 */
     @Autowired
     private IUserBalanceService userBalanceService;
@@ -70,6 +75,14 @@ public class TradeCommonServiceImpl implements ITradeCommonService {
         if(order == null){
             return false;
         }
+        //获取币种信息
+        TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
+        if(transactionCurrency == null){
+            return false;
+        }
+        //获取买入/卖出手续费
+        double buyFee = transactionCurrency.getBuyFee()/100;
+        double sellFee = transactionCurrency.getSellFee()/100;
 
         //获取对应的最新的挂单记录
         int matchPaymentType = 0;
@@ -129,22 +142,22 @@ public class TradeCommonServiceImpl implements ITradeCommonService {
             tradePrice = matchOrder.getPendingPrice();
             buyUserId = userId;
             sellUsrId = matchOrder.getUserId();
-            returnMoney = (order.getPendingPrice() - tradePrice) * tradeNum * (1 + 0.002);
-            buyPrice = order.getPendingPrice() * tradeNum * (1+0.002);
+            returnMoney = (order.getPendingPrice() - tradePrice) * tradeNum * (1 + buyFee);
+            buyPrice = order.getPendingPrice() * tradeNum * (1 + buyFee);
         }else if(paymentType == 2){
             tradePrice = order.getPendingPrice();
             buyUserId = matchOrder.getUserId();
             sellUsrId = userId;
-            returnMoney = (matchOrder.getPendingPrice() - tradePrice) * tradeNum * (1 + 0.002);
-            buyPrice = matchOrder.getPendingPrice() * tradeNum * (1+0.002);
+            returnMoney = (matchOrder.getPendingPrice() - tradePrice) * tradeNum * (1 + buyFee);
+            buyPrice = matchOrder.getPendingPrice() * tradeNum * (1 + buyFee);
         }
 
         //成交总价
         double tradeMoney = tradePrice * tradeNum;
         //计算买方消费金额
-        double buyMoney = tradeMoney * (1 + 0.002);
+        double buyMoney = tradeMoney * (1 + buyFee);
         //计算卖方获得金额
-        double sellMoney = tradeMoney * (1 - 0.002);
+        double sellMoney = tradeMoney * (1 - sellFee);
 
         //减少买方用户锁定美金
         if(excuteSuccess){

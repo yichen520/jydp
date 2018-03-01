@@ -21,6 +21,27 @@ public class UserIdentificationImageDaoImpl implements IUserIdentificationImageD
     private SqlSessionTemplate sqlSessionTemplate;
 
     /**
+     * 批量新增用户认证详情图列表
+     * @param userIdentificationImageList 用户认证记录列表
+     * @return 查询成功：返回用户认证详情图列表，查询失败：返回null
+     */
+    public boolean insertUserIdentificationImageList(List<UserIdentificationImageDO> userIdentificationImageList) {
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.insert
+                    ("UserIdentificationImage_insertUserIdentificationImageList", userIdentificationImageList);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0 && result == userIdentificationImageList.size()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 查询用户认证详情图列表
      * @param identificationId 用户认证记录Id
      * @return 查询成功：返回用户认证详情图列表，查询失败：返回null

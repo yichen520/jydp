@@ -9,7 +9,7 @@
 		SELECT id, noticeType, noticeTitle, noticeUrl, content, addTime, topTime
 		FROM system_notice_tab
 		ORDER BY topTime DESC
-		LIMIT 4
+		LIMIT 5
 	</select>
 
 	<insert id="SystemNotice_insertSystemNotice" parameterType="SystemNoticeDO" useGeneratedKeys="true" keyColumn="id" keyProperty="id">

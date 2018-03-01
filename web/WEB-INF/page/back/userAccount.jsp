@@ -161,7 +161,7 @@
             </p>
             <p class="popInput">
                 <label class="popName" style="line-height: 20px">备注内容</label>
-                <textarea class="txt" id="addMark" placeholder="备注内容，非必填"></textarea>
+                <textarea class="txt" maxLength="100" id="addMark" placeholder="备注内容，非必填"></textarea>
             </p>
 
             <input type="hidden" id="addId" />
@@ -184,7 +184,7 @@
             </p>
             <p class="popInput">
                 <label class="popName" style="line-height: 20px">备注内容</label>
-                <textarea class="txt" id="reduceMark" placeholder="备注内容，非必填"></textarea>
+                <textarea class="txt" maxLength="100"  id="reduceMark" placeholder="备注内容，非必填"></textarea>
             </p>
 
             <input type="hidden" id="reduceId" />

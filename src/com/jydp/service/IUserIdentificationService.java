@@ -15,9 +15,16 @@ public interface IUserIdentificationService {
     /**
      * 新增用户认证
      * @param userIdentificationDO 用户认证
+     * @return 操作成功：返回用户认证信息，操作失败：返回null
+     */
+    UserIdentificationDO insertUserIdentification (UserIdentificationDO userIdentificationDO);
+
+    /**
+     * 新增用户认证和用户认证详情图记录
+     * @param userIdentificationDO 用户认证
      * @return 操作成功：返回true，操作失败：返回false
      */
-    boolean insertUserIdentification (UserIdentificationDO userIdentificationDO);
+    boolean insertUserIdentificationAndImage (UserIdentificationDO userIdentificationDO, List<String> imageUrlList);
 
     /**
      * 查询用户认证信息

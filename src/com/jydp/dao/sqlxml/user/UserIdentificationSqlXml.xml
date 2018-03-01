@@ -5,7 +5,7 @@
 
 <mapper namespace="com.jydp.dao.impl.user.UserIdentificationDaoImpl">
 	
-	<insert id="UserIdentification_insertUserIdentification" parameterType="userIdentificationDO">
+	<insert id="UserIdentification_insertUserIdentification" parameterType="userIdentificationDO" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
 		INSERT INTO user_identification_tab (userId, userAccount, userName, userPhone, userCertNo,
 			identificationStatus, remark, identiTime, addTime)
 		VALUES (#{userId}, #{userAccount}, #{userName}, #{userPhone}, #{userCertNo}, #{identificationStatus},
@@ -22,8 +22,8 @@
 	<select id="UserIdentification_validateIdentification" parameterType="String" resultType="int">
 		SELECT COUNT(id)
 		FROM user_identification_tab
-		WHERE userCertNo = #{userCertNo}
-		  AND identificationStatus = 2
+		WHERE (identificationStatus = 1 OR identificationStatus = 2)
+		  AND userCertNo = #{userCertNo}
 	</select>
 
 	<select id="UserIdentification_getUserIdentificationByUserAccountLately" parameterType="String" resultType="UserIdentificationDO">
@@ -31,6 +31,7 @@
 		FROM user_identification_tab
 		WHERE userAccount = #{userAccount}
 		ORDER BY addTime DESC
+		LIMIT 0,1
 	</select>
 
 	<select id="UserIdentification_countUserIdentificationForBacker" parameterType="java.util.Map" resultType="int">
