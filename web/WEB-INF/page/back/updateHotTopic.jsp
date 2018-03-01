@@ -97,11 +97,11 @@
         }
 
         if(noticeType.length < 2 || noticeType.length > 16){
-            return openTips("请输入公告类型，2~16个字符");
+            return openTips("请输入话题类型，2~16个字符");
         }
 
         if(noticeTitle.length < 2 || noticeTitle.length > 32){
-            return openTips("请输入公告标题，2~32个字符");
+            return openTips("请输入话题标题，2~32个字符");
         }
 
         document.getElementById("content").value = content;
