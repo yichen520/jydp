@@ -10,7 +10,6 @@ import config.RedisKeyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,17 +52,9 @@ public class TransactionPendOrderCommonServiceImpl implements ITransactionPendOr
             //设置买一价key
             String buyOneKey = RedisKeyConfig.BUY_ONE_KEY + transactionCurrency.getCurrencyId();
 
-            List<Object> setBuyList = new ArrayList<>();
             if(transactionPendOrderBuyList.size() > 0){
-                for (TransactionPendOrderDTO transactionPendOrder: transactionPendOrderBuyList
-                        ) {
-                    setBuyList.add(transactionPendOrder);
-                }
-            }
-
-            if(setBuyList.size() == transactionPendOrderBuyList.size() && transactionPendOrderBuyList.size() > 0){
                 //插入最新挂单记录
-                redisService.addValue(buyKey,setBuyList);
+                redisService.addValue(buyKey,transactionPendOrderBuyList);
                 //插入最新买一价
                 redisService.addValue(buyOneKey,transactionPendOrderBuyList.get(0).getPendingPrice());
             }else if(transactionPendOrderBuyList.size() == 0){
@@ -81,22 +72,15 @@ public class TransactionPendOrderCommonServiceImpl implements ITransactionPendOr
             //设置卖一价key
             String sellOneKey = RedisKeyConfig.SELL_ONE_KEY + transactionCurrency.getCurrencyId();
 
-            List<Object> setSellList = new ArrayList<>();
             if(transactionPendOrderSellList.size() > 0){
-                for (TransactionPendOrderDTO transactionPendOrder: transactionPendOrderSellList
-                        ) {
-                    setSellList.add(transactionPendOrder);
-                }
-            }
-
-            if(setSellList.size() == transactionPendOrderSellList.size() && transactionPendOrderSellList.size() > 0){
                 //插入最新数据
-                redisService.addValue(sellKey,setSellList);
+                redisService.addValue(sellKey,transactionPendOrderSellList);
                 //插入最新卖一价
                 redisService.addValue(sellOneKey,transactionPendOrderSellList.get(0).getPendingPrice());
-                }else if(transactionPendOrderSellList.size() == 0){
-                    redisService.addValue(sellKey,null);
-                    redisService.addValue(sellOneKey,null);
+            }else if(transactionPendOrderSellList.size() == 0){
+                //查无数据都存null
+                redisService.addValue(sellKey,null);
+                redisService.addValue(sellOneKey,null);
             }
         }
     }

@@ -17,7 +17,7 @@ import java.util.List;
  * @author fk
  *
  */
-@Service("transactionPendOrderCommonService")
+@Service("transactionRedisDealCommonService")
 public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisDealCommonService{
 
     /** redis成交记录 */
@@ -42,7 +42,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
         for (TransactionCurrencyDO currency: currencyList) {
             List<TransactionDealRedisDO> dealList = transactionDealRedisService.listTransactionDealRedis(50, currency.getCurrencyId());
             if (dealList != null && !dealList.isEmpty()) {
-                redisService.addList(RedisKeyConfig.CURRENCY_DEAL_KEY + currency.getCurrencyShortName(), dealList);
+                redisService.addValue(RedisKeyConfig.CURRENCY_DEAL_KEY + currency.getCurrencyShortName(), dealList);
             }
         }
     }

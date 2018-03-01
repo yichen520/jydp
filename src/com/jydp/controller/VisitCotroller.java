@@ -19,7 +19,7 @@ public class VisitCotroller {
 	/** 根目录访问 */
 	@RequestMapping(value = "")
 	public String visitPage(HttpServletRequest request) {
-		return "page/web/login";
+		return "redirect:/userWeb/homePage/show";
 	}
 
 	/** web端根目录访问 */
