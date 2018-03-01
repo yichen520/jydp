@@ -1,7 +1,10 @@
 package com.jydp.service.impl.common;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.NumberUtil;
+import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
 import com.jydp.entity.DO.user.UserBalanceDO;
@@ -11,7 +14,6 @@ import config.SystemCommonConfig;
 import config.UserBalanceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
@@ -62,23 +64,76 @@ public class TradeCommonServiceImpl implements ITradeCommonService {
     private ITransactionDealRedisService transactionDealRedisService;
 
     /**
-     * 匹配交易
-     * @param userId 用户Id
-     * @param currencyId 币种Id
-     * @param paymentType 收支类型,1：买入，2：卖出
-     * @return 操作成功：返回true，操作失败：返回false
+     * 交易（迭代）
+     * @param order 挂单信息
+     * @return JsonObjectBO 交易成功与否信息
      */
-    @Transactional(propagation= Propagation.SUPPORTS)
-    public boolean trade(int userId, int currencyId, int paymentType){
-        //获取该用户最新的挂单记录
-        TransactionPendOrderDO order = transactionPendOrderService.getLastTransactionPendOrder(userId, currencyId, paymentType);
-        if(order == null){
-            return false;
+    public JsonObjectBO trade(TransactionPendOrderDO order){
+        JsonObjectBO jsonObject = new JsonObjectBO();
+
+        double pendingNumber = order.getPendingNumber();
+        double dealNumber = order.getDealNumber();
+        double restNumber = pendingNumber - dealNumber;
+
+        if(restNumber < 0){
+            jsonObject.setCode(5);
+            jsonObject.setMessage("数据异常");
+            return jsonObject;
+        }else if(restNumber == 0){
+            jsonObject.setCode(1);
+            jsonObject.setMessage("该挂单已经交易完成");
+            return jsonObject;
         }
+
+        //匹配交易
+        jsonObject = tradeHandle(order);
+        int code = jsonObject.getCode();
+        JSONObject data = jsonObject.getData();
+        TransactionPendOrderDO returnOrder = null;
+        if(data != null) {
+            returnOrder = JSON.parseObject(data.toString(), TransactionPendOrderDO.class);
+        }
+
+        //如果交易成功，继续匹配
+        if(code == 1){
+            if(returnOrder != null){
+                double dealNum = returnOrder.getDealNumber();
+                if(dealNum > 0){
+                    jsonObject = trade(returnOrder);
+                }
+            }
+        }
+
+        return jsonObject;
+    }
+
+
+    /**
+     * 匹配交易（单笔）
+     * @param order 挂单信息
+     * @return JsonObjectBO 交易成功与否信息，若成功，同时返回成交后的此笔挂单信息
+     */
+    @Transactional
+    public JsonObjectBO tradeHandle(TransactionPendOrderDO order){
+        JsonObjectBO jsonObject = new JsonObjectBO();
+        //获取该挂单里信息
+        int userId = order.getUserId();
+        int currencyId = order.getCurrencyId();
+        int paymentType = order.getPaymentType();
+        int pendingStatus = order.getPendingStatus();
+
+        if(pendingStatus != 1 && pendingStatus != 2){
+            jsonObject.setCode(4);
+            jsonObject.setMessage("该挂单不在交易状态");
+            return jsonObject;
+        }
+
         //获取币种信息
         TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
         if(transactionCurrency == null){
-            return false;
+            jsonObject.setCode(3);
+            jsonObject.setMessage("没有该币种");
+            return jsonObject;
         }
         //获取买入/卖出手续费
         double buyFee = transactionCurrency.getBuyFee()/100;
@@ -93,12 +148,16 @@ public class TradeCommonServiceImpl implements ITradeCommonService {
         }
         TransactionPendOrderDO matchOrder = transactionPendOrderService.getLastTransactionPendOrder(0, currencyId, matchPaymentType);
         if(matchOrder == null){
-            return false;
+            jsonObject.setCode(1);
+            jsonObject.setMessage("没有对应的挂单");
+            return jsonObject;
         }
         //如果匹配不上，直接返回false
         if((paymentType == 1 && order.getPendingPrice() < matchOrder.getPendingPrice()) ||
                 (paymentType == 2 && order.getPendingPrice() > matchOrder.getPendingPrice())){
-            return false;
+            jsonObject.setCode(1);
+            jsonObject.setMessage("匹配不到对应的挂单");
+            return jsonObject;
         }
 
         //业务执行状态
@@ -107,6 +166,8 @@ public class TradeCommonServiceImpl implements ITradeCommonService {
         double orderNum = order.getPendingNumber() - order.getDealNumber();
         double matchOrderNum = matchOrder.getPendingNumber() - matchOrder.getDealNumber();
         double tradeNum = Math.min(orderNum, matchOrderNum);
+        //该挂单剩余可交易数量
+        double restNum = orderNum - tradeNum;
 
         //修改两个订单的交易数量和状态
         Timestamp curTime = DateUtil.getCurrentTime();
@@ -335,7 +396,19 @@ public class TradeCommonServiceImpl implements ITradeCommonService {
             //数据回滚
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
-        return excuteSuccess;
+
+        TransactionPendOrderDO restOrder = transactionPendOrderService.getPendOrderByPendingOrderNo(order.getPendingOrderNo());
+
+        if (excuteSuccess) {
+            jsonObject.setCode(1);
+            jsonObject.setMessage("交易成功");
+            jsonObject.setData(JSONObject.parseObject(JSON.toJSONString(restOrder)));
+            return jsonObject;
+        } else {
+            jsonObject.setCode(2);
+            jsonObject.setMessage("交易失败");
+            return jsonObject;
+        }
     }
 
 }
