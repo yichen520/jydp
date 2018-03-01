@@ -2,6 +2,7 @@ package com.jydp.service.impl.common;
 
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
+import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.service.IRedisService;
 import com.jydp.service.ITransactionCurrencyService;
 import com.jydp.service.ITransactionDealRedisService;
@@ -35,14 +36,14 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
     /** 将成交记录放进redis */
     @Override
     public void userDealForRedis() {
-        List<TransactionCurrencyDO> currencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
+        List<TransactionCurrencyVO> currencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
         if (currencyList == null || currencyList.isEmpty()) {
             return ;
         }
-        for (TransactionCurrencyDO currency: currencyList) {
+        for (TransactionCurrencyVO currency: currencyList) {
             List<TransactionDealRedisDO> dealList = transactionDealRedisService.listTransactionDealRedis(50, currency.getCurrencyId());
             if (dealList != null && !dealList.isEmpty()) {
-                redisService.addList(RedisKeyConfig.CURRENCY_DEAL_KEY + currency.getCurrencyShortName(), dealList);
+                redisService.addValue(RedisKeyConfig.CURRENCY_DEAL_KEY + currency.getCurrencyShortName(), dealList);
             }
         }
     }

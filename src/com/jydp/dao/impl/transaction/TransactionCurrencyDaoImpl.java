@@ -4,6 +4,7 @@ import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.ITransactionCurrencyDao;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DTO.TransactionUserDealDTO;
+import com.jydp.entity.VO.TransactionCurrencyVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -47,8 +48,8 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
      * @param currencyId  币种Id
      * @return  操作成功：返回交易币种，操作失败：返回null
      */
-    public TransactionCurrencyDO getTransactionCurrencyByCurrencyId(int currencyId){
-        TransactionCurrencyDO transactionCurrency = null;
+    public TransactionCurrencyVO getTransactionCurrencyByCurrencyId(int currencyId){
+        TransactionCurrencyVO transactionCurrency = null;
 
         try {
             transactionCurrency = sqlSessionTemplate.selectOne("TransactionCurrency_getTransactionCurrencyByCurrencyId", currencyId);
@@ -106,15 +107,15 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
      * @return 查询成功：返回币种信息列表；查询失败：返回null
      */
     @Override
-    public List<TransactionCurrencyDO> getTransactionCurrencyListForWeb() {
-        List<TransactionCurrencyDO> transactionCurrencyDOList = null;
+    public List<TransactionCurrencyVO> getTransactionCurrencyListForWeb() {
+        List<TransactionCurrencyVO> TransactionCurrencyVOList = null;
 
         try {
-            transactionCurrencyDOList = sqlSessionTemplate.selectList("TransactionCurrency_getTransactionCurrencyListForWeb");
+            TransactionCurrencyVOList = sqlSessionTemplate.selectList("TransactionCurrency_getTransactionCurrencyListForWeb");
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
-        return transactionCurrencyDOList;
+        return TransactionCurrencyVOList;
     }
 
     /**
@@ -122,8 +123,8 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
      * @param currencyName  币种名称
      * @return  操作成功：返回交易币种，操作失败：返回null
      */
-    public TransactionCurrencyDO getTransactionCurrencyByCurrencyName(String currencyName){
-        TransactionCurrencyDO transactionCurrency = null;
+    public TransactionCurrencyVO getTransactionCurrencyByCurrencyName(String currencyName){
+        TransactionCurrencyVO transactionCurrency = null;
 
         try {
             transactionCurrency = sqlSessionTemplate.selectOne("TransactionCurrency_getTransactionCurrencyByCurrencyName", currencyName);
