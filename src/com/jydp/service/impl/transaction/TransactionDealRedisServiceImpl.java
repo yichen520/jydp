@@ -1,5 +1,6 @@
 package com.jydp.service.impl.transaction;
 
+import com.iqmkj.utils.DateUtil;
 import com.jydp.dao.ITransactionDealRedisDao;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.service.ITransactionDealRedisService;
@@ -63,5 +64,29 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
      */
     public boolean insertTransactionDealRedisList(List<TransactionDealRedisDO> redisDealList){
         return transactionDealRedisDao.insertTransactionDealRedisList(redisDealList);
+    }
+
+    /**
+     * 查询24小时总成交数量
+     * @return 查询成功：返回总成交数量，查询失败或没有成交量：返回0
+     */
+    public double getNowTurnover(){
+        Timestamp date = DateUtil.getCurrentTime();
+        long newDate = 1000L * 60 * 60 * 24;
+        newDate = date.getTime() - newDate;
+        date = DateUtil.longToTimestamp(newDate);
+        return transactionDealRedisDao.getNowTurnover(date);
+    }
+
+    /**
+     * 查询24小时总交易额
+     * @return 查询成功：返回总成交金额，查询失败或没有成交额：返回0
+     */
+    public double getNowVolumeOfTransaction(){
+        Timestamp date = DateUtil.getCurrentTime();
+        long newDate = 1000L * 60 * 60 * 24;
+        newDate = date.getTime() - newDate;
+        date = DateUtil.longToTimestamp(newDate);
+        return transactionDealRedisDao.getNowVolumeOfTransaction(date);
     }
 }

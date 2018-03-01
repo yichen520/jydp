@@ -32,4 +32,16 @@
 				#{item.currencyNumber}, #{item.currencyNumber}, #{item.addTime})
 			</foreach>
 	</insert>
+
+	<select id="TransactionDealRedis_getNowTurnover" parameterType="java.sql.Timestamp" resultType="Double">
+		SELECT SUM(currencyNumber)
+		FROM transaction_deal_redis_tab
+		WHERE addTime <![CDATA[ > ]]> #{date}
+	</select>
+
+	<select id="TransactionDealRedis_getNowVolumeOfTransaction" parameterType="java.sql.Timestamp" resultType="Double">
+		SELECT SUM(currencyTotalPrice)
+		FROM transaction_deal_redis_tab
+		WHERE addTime <![CDATA[ > ]]> #{date}
+	</select>
 </mapper>
