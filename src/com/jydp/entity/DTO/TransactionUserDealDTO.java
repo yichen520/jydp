@@ -1,5 +1,7 @@
 package com.jydp.entity.DTO;
 
+import config.FileUrlConfig;
+
 /**
  * 成交记录数据传输类
  * @Author yk
@@ -14,6 +16,45 @@ public class TransactionUserDealDTO {
     private double volume; //24小时成交量
     private double change; //24小时涨跌
     private double yesterdayLastPrice; //昨日最后一笔交易价
+    private String currencyImg;  //币种徽标
+    private String currencyImgUrl;  //币种徽标图片绝对地址
+
+
+    /**
+     * 币种徽标
+     * @return the currencyImg
+     */
+    public String getCurrencyImg() {
+        return currencyImg;
+    }
+
+
+    /**
+     * 币种徽标
+     * @param currencyImg the currencyImg to set
+     */
+    public void setCurrencyImg(String currencyImg) {
+        this.currencyImg = currencyImg;
+        if (currencyImg != null) {
+            setCurrencyImgUrl(FileUrlConfig.file_visit_url + currencyImg);
+        }
+    }
+
+    /**
+     * 币种徽标图片绝对地址
+     * @return the currencyImgUrl
+     */
+    public String getCurrencyImgUrl() {
+        return currencyImgUrl;
+    }
+
+    /**
+     * 币种徽标图片绝对地址
+     * @param currencyImgUrl the currencyImgUrl to set
+     */
+    public void setCurrencyImgUrl(String currencyImgUrl) {
+        this.currencyImgUrl = currencyImgUrl;
+    }
 
     /**
      * 获取 币种Id

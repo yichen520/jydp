@@ -53,10 +53,11 @@
                 <label class="popName">手机号码<span class="star">*</span></label>
                <span class="popCode">
                     <select class="select" id="phoneAreaCode" name="phoneAreaCode">
-                        <option value="86">中国&nbsp;+86</option>
-                        <option value="010">美国&nbsp;+010</option>
+                        <option value="+86">中国&nbsp;+86</option>
+                        <option value="+001">美国&nbsp;+001</option>
+                        <option value="+0061">澳大利亚&nbsp;+0061</option>
                     </select>
-                <input type="text" class="phone" id="phone" name="phoneNumber" placeholder="11位绑定的手机号" maxLength="11"
+                <input type="text" class="phone" id="phone" name="phoneNumber" placeholder="绑定的手机号" maxLength="11"
                        onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
                </span>
             </p>
@@ -156,7 +157,7 @@
         }
 
         var phone = $("#phone").val();
-        if (!phone || phone.length!=11) {
+        if (!phone) {
             phoneBoo = false;
             return openTips("请输入您的手机号");
         }
@@ -196,6 +197,7 @@
         var repeatPassword = repeatPasswordEle.val();
         var phone = phoneEle.val();
         var validateCode = validateCodeEle.val();
+        var phoneAreaCode = $("#phoneAreaCode").val();
 
         if (!userAccount || userAccount.length<6 || userAccount.length>16) {
             changeValue(userAccountEle, "请输入账号，字母、数字，6~16个字符");
@@ -214,8 +216,8 @@
             changeValue(passwordEle, "两次密码不匹配");
             return ;
         }
-        if (!phone || phone.length!=11) {
-            changeValue(phoneEle, "请输入常用11位手机号");
+        if (!phone) {
+            changeValue(phoneEle, "请输入您的手机号");
             return ;
         }
         if (!validateCode || validateCode.length!=6) {

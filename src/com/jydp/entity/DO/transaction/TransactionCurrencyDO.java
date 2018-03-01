@@ -12,16 +12,16 @@ public class TransactionCurrencyDO {
     private String currencyShortName;  //货币简称
     private String currencyName;  //货币名称
     private String currencyImg;  //币种徽标
-    private double upPrice;  //上线价格
-    private double minPrice;  //最低价格
     private double buyFee;  //买入手续费
     private double sellFee;  //卖出手续费
     private double upRange;  //涨停幅度
     private double downRange;  //跌停幅度
-    private int paymentType;  //交易状态,1:正常，2:涨停，3:跌停
-    private int upStatus;  //上线状态,1:待上线,2:上线中,3:禁用
+    private int paymentType;  //交易状态,1:正常，2:涨停，3:跌停，4:停牌
+    private int upStatus;  //上线状态,1:待上线,2:上线中,3:禁用,4:已下线
     private String backerAccount;  //管理员账号
     private String ipAddress;  //操作时的ip地址
+    private Timestamp startTime;  //交易开始时间
+    private Timestamp endTime;  //交易结束时间
     private Timestamp upTime;  //上线时间
     private Timestamp addTime;  //添加时间
 
@@ -87,7 +87,6 @@ public class TransactionCurrencyDO {
         return currencyImg;
     }
 
-
     /**
      * 币种徽标
      * @param currencyImg the currencyImg to set
@@ -95,43 +94,6 @@ public class TransactionCurrencyDO {
     public void setCurrencyImg(String currencyImg) {
         this.currencyImg = currencyImg;
     }
-
-
-    /**
-     * 上线价格
-     * @return the upPrice
-     */
-    public double getUpPrice() {
-        return upPrice;
-    }
-
-
-    /**
-     * 上线价格
-     * @param upPrice the upPrice to set
-     */
-    public void setUpPrice(double upPrice) {
-        this.upPrice = upPrice;
-    }
-
-
-    /**
-     * 最低价格
-     * @return the minPrice
-     */
-    public double getMinPrice() {
-        return minPrice;
-    }
-
-
-    /**
-     * 最低价格
-     * @param minPrice the minPrice to set
-     */
-    public void setMinPrice(double minPrice) {
-        this.minPrice = minPrice;
-    }
-
 
     /**
      * 买入手续费
@@ -141,7 +103,6 @@ public class TransactionCurrencyDO {
         return buyFee;
     }
 
-
     /**
      * 买入手续费
      * @param buyFee the buyFee to set
@@ -149,7 +110,6 @@ public class TransactionCurrencyDO {
     public void setBuyFee(double buyFee) {
         this.buyFee = buyFee;
     }
-
 
     /**
      * 卖出手续费
@@ -159,7 +119,6 @@ public class TransactionCurrencyDO {
         return sellFee;
     }
 
-
     /**
      * 卖出手续费
      * @param sellFee the sellFee to set
@@ -167,7 +126,6 @@ public class TransactionCurrencyDO {
     public void setSellFee(double sellFee) {
         this.sellFee = sellFee;
     }
-
 
     /**
      * 涨停幅度
@@ -177,7 +135,6 @@ public class TransactionCurrencyDO {
         return upRange;
     }
 
-
     /**
      * 涨停幅度
      * @param upRange the upRange to set
@@ -185,7 +142,6 @@ public class TransactionCurrencyDO {
     public void setUpRange(double upRange) {
         this.upRange = upRange;
     }
-
 
     /**
      * 跌停幅度
@@ -195,7 +151,6 @@ public class TransactionCurrencyDO {
         return downRange;
     }
 
-
     /**
      * 跌停幅度
      * @param downRange the downRange to set
@@ -203,7 +158,6 @@ public class TransactionCurrencyDO {
     public void setDownRange(double downRange) {
         this.downRange = downRange;
     }
-
 
     /**
      * 交易状态, 1:正常，2:涨停，3:跌停
@@ -213,7 +167,6 @@ public class TransactionCurrencyDO {
         return paymentType;
     }
 
-
     /**
      * 交易状态, 1:正常，2:涨停，3:跌停
      * @param paymentType the paymentType to set
@@ -221,7 +174,6 @@ public class TransactionCurrencyDO {
     public void setPaymentType(int paymentType) {
         this.paymentType = paymentType;
     }
-
 
     /**
      * 上线状态,1:待上线,2:上线中,3:禁用
@@ -231,7 +183,6 @@ public class TransactionCurrencyDO {
         return upStatus;
     }
 
-
     /**
      * 上线状态,1:待上线,2:上线中,3:禁用
      * @param upStatus the upStatus to set
@@ -239,7 +190,6 @@ public class TransactionCurrencyDO {
     public void setUpStatus(int upStatus) {
         this.upStatus = upStatus;
     }
-
 
     /**
      * 管理员账号
@@ -249,7 +199,6 @@ public class TransactionCurrencyDO {
         return backerAccount;
     }
 
-
     /**
      * 管理员账号
      * @param backerAccount the backerAccount to set
@@ -257,7 +206,6 @@ public class TransactionCurrencyDO {
     public void setBackerAccount(String backerAccount) {
         this.backerAccount = backerAccount;
     }
-
 
     /**
      * 操作时的ip地址
@@ -267,7 +215,6 @@ public class TransactionCurrencyDO {
         return ipAddress;
     }
 
-
     /**
      * 操作时的ip地址
      * @param ipAddress the ipAddress to set
@@ -276,6 +223,37 @@ public class TransactionCurrencyDO {
         this.ipAddress = ipAddress;
     }
 
+    /**
+     * 交易开始时间
+     * @return the startTime
+     */
+    public Timestamp getStartTime() {
+        return startTime;
+    }
+
+    /**
+     * 交易开始时间
+     * @param startTime the startTime to set
+     */
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
+    }
+
+    /**
+     * 交易结束时间
+     * @return the endTime
+     */
+    public Timestamp getEndTime() {
+        return endTime;
+    }
+
+    /**
+     * 交易结束时间
+     * @param endTime the endTime to set
+     */
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
+    }
 
     /**
      * 上线时间
@@ -284,7 +262,6 @@ public class TransactionCurrencyDO {
     public Timestamp getUpTime() {
         return upTime;
     }
-
 
     /**
      * 上线时间

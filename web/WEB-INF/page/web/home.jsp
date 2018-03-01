@@ -49,7 +49,7 @@
         <c:forEach items="${transactionUserDealDTOList}" var="transactionUserDeal">
             <tr class="coinInfo">
                 <td class="coin">
-                    <%--<img src="images/test/test_300.jpg" />--%>
+                    <img src="${transactionUserDeal.currencyImgUrl}" />
                     <span>${transactionUserDeal.currencyName}(${transactionUserDeal.currencyShortName}/USD)</span>
                 </td>
                 <td class="new">${transactionUserDeal.latestPrice}</td>

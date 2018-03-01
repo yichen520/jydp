@@ -1,11 +1,11 @@
-.endTime,.startTime{
-    width: 135px;
+.askTime{
+    width: 165px;
 }
 .askInput{
-    width: 140px;
+    width: 150px;
 }
 .askSelect{
-    width: 80px;
+    width: 90px;
 }
 .time,.account{
     width: 160px;
