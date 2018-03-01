@@ -13,8 +13,6 @@
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/backForm.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/public.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/simpleTips.css" />
-    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/js/need/laydate.css" />
-    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/js/skins/danlan/laydate.css" />
 
     <title>后台做单</title>
 </head>
@@ -48,10 +46,10 @@
                 <div class="askArea">
                     <p class="condition">
                         生成时间：
-                        从&nbsp;<input placeholder="请选择起始时间" class="startTime" id="startOrder" name="startAddTime"
+                        从&nbsp;<input placeholder="请选择起始时间" class="askTime" id="startOrder" name="startAddTime"
                                       value="${startAddTime}" onfocus="this.blur()"
                                       onClick="laydate({istime: true,format:'YYYY-MM-DD hh:mm:ss'})" />
-                        到&nbsp;<input placeholder="请选择结束时间" class="endTime" id="endOrder" name="endAddTime"
+                        到&nbsp;<input placeholder="请选择结束时间" class="askTime" id="endOrder" name="endAddTime"
                                       value="${endAddTime}" onfocus="this.blur()"
                                       onClick="laydate({istime: true,format: 'YYYY-MM-DD hh:mm:ss'})" />
                     </p>
@@ -83,10 +81,10 @@
                     <p class="condition">管理员账号：<input type="text" class="askInput" id="backAccount" name="backAccount" maxlength="16" onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" value="${backAccount}"/></p>
                     <p class="condition">
                         执行时间：
-                        从&nbsp;<input placeholder="请选择起始时间" class="startTime" id="start"  name="startExecuteTime"
+                        从&nbsp;<input placeholder="请选择起始时间" class="askTime" id="start"  name="startExecuteTime"
                                       value="${startExecuteTime}" onfocus="this.blur()"
                                       onClick="laydate({istime: true,format:'YYYY-MM-DD hh:mm:ss'})" />
-                        到&nbsp;<input placeholder="请选择结束时间" class="endTime" id="end" name="endExecuteTime"
+                        到&nbsp;<input placeholder="请选择结束时间" class="askTime" id="end" name="endExecuteTime"
                                       value="${endExecuteTime}" onfocus="this.blur()"
                                       onClick="laydate({istime: true,format: 'YYYY-MM-DD hh:mm:ss'})" />
                     </p>
@@ -195,7 +193,7 @@
             <p class="popTitle">新增交易记录</p>
             <p class="popInput">
                 <label class="popName">执行时间<span class="star">*</span></label>
-                <input placeholder="请选择执行时间" class="entry" id="addExecuteTime" name="addExecuteTime"
+                <input placeholder="请选择执行时间" class="askTime entry" id="addExecuteTime" name="addExecuteTime"
                        onfocus="this.blur()"
                        onClick="laydate({istime: true,format:'YYYY-MM-DD hh:mm:ss'})" />
             </p>
@@ -289,40 +287,14 @@
 <script type="text/javascript" src="<%=path %>/resources/js/laydate.js"></script>
 
 <script type="text/javascript">
-    !function(){
-        laydate.skin('danlan');//切换皮肤，请查看skins下面皮肤库
-    }();
-
-    var start = {
-        elem: '#start',
-        format: 'YYYY-MM-DD hh:mm:ss',
-        istime: true,
-        istoday: false
-    };
-
-    var end = {
-        elem: '#end',
-        format: 'YYYY-MM-DD hh:mm:ss',
-        istime: true,
-        istoday: false
-    };
-    var startOrder = {
-        elem: '#startOrder',
-        format: 'YYYY-MM-DD hh:mm:ss',
-        istime: true,
-        istoday: false
-    };
-
-    var endOrder = {
-        elem: '#endOrder',
-        format: 'YYYY-MM-DD hh:mm:ss',
-        istime: true,
-        istoday: false
-    };
-    laydate(start);
-    laydate(end);
-    laydate(startOrder);
-    laydate(endOrder);//日期控件
+    lay('.askTime').each(function(){
+        laydate.render({
+            elem: this,
+            trigger: 'click',
+            type:'datetime',
+            theme: '#69c0ff'
+        });
+    });//日期控件
 
     function selectAll(){
         var checklist = document.getElementsByName ("selected");

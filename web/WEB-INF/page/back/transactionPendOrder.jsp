@@ -12,8 +12,6 @@
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/entrustRecord.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/public.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/simpleTips.css" />
-    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/js/need/laydate.css" />
-    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/js/skins/danlan/laydate.css" />
 
     <title>挂单记录</title>
 </head>
@@ -62,16 +60,16 @@
                     </p>
                     <p class="condition">
                         挂单时间：
-                        从&nbsp;<input placeholder="请选择起始时间" class="startTime" id="startOrder" value="${startAddTime }"
+                        从&nbsp;<input placeholder="请选择起始时间" class="askTime" id="startOrder" value="${startAddTime }"
                                       onfocus="this.blur()" name="startAddTime" onClick="laydate({istime: true,format:'YYYY-MM-DD hh:mm:ss'})" />
-                        到&nbsp;<input placeholder="请选择结束时间" class="endTime" id="endOrder" value="${endAddTime }"
+                        到&nbsp;<input placeholder="请选择结束时间" class="askTime" id="endOrder" value="${endAddTime }"
                                       onfocus="this.blur()" name="endAddTime" onClick="laydate({istime: true,format: 'YYYY-MM-DD hh:mm:ss'})" />
                     </p>
                     <p class="condition">
                         完成时间：
-                        从&nbsp;<input placeholder="请选择起始时间" class="startTime" id="start" value="${startFinishTime }"
+                        从&nbsp;<input placeholder="请选择起始时间" class="askTime" id="start" value="${startFinishTime }"
                                       onfocus="this.blur()" name="startFinishTime" onClick="laydate({istime: true,format:'YYYY-MM-DD hh:mm:ss'})" />
-                        到&nbsp;<input placeholder="请选择结束时间" class="endTime" id="end" value="${endFinishTime }"
+                        到&nbsp;<input placeholder="请选择结束时间" class="askTime" id="end" value="${endFinishTime }"
                                       onfocus="this.blur()" name="endFinishTime" onClick="laydate({istime: true,format: 'YYYY-MM-DD hh:mm:ss'})" />
                     </p>
 
@@ -255,40 +253,14 @@
 </script>
 
 <script type="text/javascript">
-    !function(){
-        laydate.skin('danlan');//切换皮肤，请查看skins下面皮肤库
-    }();
-
-    var start = {
-        elem: '#start',
-        format: 'YYYY-MM-DD hh:mm:ss',
-        istime: true,
-        istoday: false
-    };
-
-    var end = {
-        elem: '#end',
-        format: 'YYYY-MM-DD hh:mm:ss',
-        istime: true,
-        istoday: false
-    };
-    var startOrder = {
-        elem: '#startOrder',
-        format: 'YYYY-MM-DD hh:mm:ss',
-        istime: true,
-        istoday: false
-    };
-
-    var endOrder = {
-        elem: '#endOrder',
-        format: 'YYYY-MM-DD hh:mm:ss',
-        istime: true,
-        istoday: false
-    };
-    laydate(start);
-    laydate(end);
-    laydate(startOrder);
-    laydate(endOrder);//日期控件
+    lay('.askTime').each(function(){
+        laydate.render({
+            elem: this,
+            trigger: 'click',
+            type:'datetime',
+            theme: '#69c0ff'
+        });
+    });//日期控件
 
     $(function(){
         $(".revoke").click(function(){
