@@ -392,6 +392,7 @@ CREATE TABLE `user_identification_tab` (
   `remark` varchar(200) DEFAULT NULL COMMENT '备注',
   `identiTime` datetime DEFAULT NULL COMMENT '审核时间',
   `addTime` datetime NOT NULL COMMENT '提交时间',
+  `userCertType` tinyint(1) NOT NULL COMMENT '证件类型，1:身份证，2：护照',
   PRIMARY KEY (`id`),
   KEY `userId` (`userId`) USING BTREE,
   KEY `identificationStatus` (`identificationStatus`) USING BTREE
