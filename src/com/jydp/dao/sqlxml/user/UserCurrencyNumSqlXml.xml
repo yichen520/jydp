@@ -15,7 +15,7 @@
     <select id="UserCurrencyNum_getUserCurrencyNumByUserIdForBacker" parameterType="int" resultType="BackerUserCurrencyNumDTO">
         SELECT transactionCurrencyTab.currencyId, transactionCurrencyTab.currencyName, userCurrencyNumTab.currencyNumber, userCurrencyNumTab.currencyNumberLock
         FROM user_currency_num_tab AS userCurrencyNumTab
-        LEFT JOIN transaction_currency_tab AS transactionCurrencyTab ON userCurrencyNumTab.currencyId = transactionCurrencyTab.currencyId
+        INNER JOIN transaction_currency_tab AS transactionCurrencyTab ON userCurrencyNumTab.currencyId = transactionCurrencyTab.currencyId
         WHERE userCurrencyNumTab.userId = #{userId}
         ORDER BY transactionCurrencyTab.currencyId
     </select>

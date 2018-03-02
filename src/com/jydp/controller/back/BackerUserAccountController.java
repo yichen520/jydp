@@ -15,6 +15,7 @@ import com.jydp.service.IBackerService;
 import com.jydp.service.IUserCurrencyNumService;
 import com.jydp.service.IUserService;
 import com.jydp.service.IUserSessionService;
+import config.PhoneAreaConfig;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -32,6 +33,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description: 用户账户
@@ -131,6 +133,7 @@ public class BackerUserAccountController {
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
         String phoneNumber = StringUtil.stringNullHandle(request.getParameter("phoneNumber"));
         String accountStatusStr = StringUtil.stringNullHandle(request.getParameter("accountStatus"));
+        String phoneAreaCode = StringUtil.stringNullHandle(request.getParameter("phoneAreaCode"));
 
         Timestamp startTime = null;
         Timestamp endTime = null;
@@ -151,7 +154,8 @@ public class BackerUserAccountController {
         }
 
         int pageSize = 20;
-        int totalNumber = userService.countUserForBacker(userAccount, phoneNumber, accountStatus, startTime, endTime);
+        int totalNumber = userService.countUserForBacker(userAccount, phoneAreaCode, phoneNumber,
+                accountStatus, startTime, endTime);
 
         int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
         if (totalPageNumber <= 0) {
@@ -164,7 +168,8 @@ public class BackerUserAccountController {
 
         List<UserDO> userList = null;
         if (totalNumber > 0) {
-            userList = userService.listUserForBacker(userAccount, phoneNumber, accountStatus, startTime, endTime, pageNumber, pageSize);
+            userList = userService.listUserForBacker(userAccount, phoneAreaCode,
+                    phoneNumber, accountStatus, startTime, endTime, pageNumber, pageSize);
         }
 
         request.setAttribute("pageNumber", pageNumber);
@@ -172,11 +177,14 @@ public class BackerUserAccountController {
         request.setAttribute("endTime", endTimeStr);
         request.setAttribute("userAccount", userAccount);
         request.setAttribute("phoneNumber", phoneNumber);
+        request.setAttribute("phoneAreaCode", phoneAreaCode);
         request.setAttribute("accountStatus", accountStatus);
 
         request.setAttribute("totalNumber", totalNumber);
         request.setAttribute("totalPageNumber", totalPageNumber);
         request.setAttribute("userList", userList);
+        Map<String, String> phoneAreaMap = PhoneAreaConfig.phoneAreaMap;
+        request.setAttribute("phoneAreaMap", phoneAreaMap);
         //当前页面的权限标识
         request.getSession().setAttribute("backer_pagePowerId", 141100);
     }
@@ -423,6 +431,7 @@ public class BackerUserAccountController {
         String endTimeStr = StringUtil.stringNullHandle(request.getParameter("endTime"));
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
         String phoneNumber = StringUtil.stringNullHandle(request.getParameter("phoneNumber"));
+        String phoneAreaCode = StringUtil.stringNullHandle(request.getParameter("phoneAreaCode"));
         String accountStatusStr = StringUtil.stringNullHandle(request.getParameter("accountStatus"));
 
         Timestamp startTime = null;
@@ -439,7 +448,7 @@ public class BackerUserAccountController {
             accountStatus = Integer.parseInt(accountStatusStr);
         }
 
-        List<UserDO> userList = userService.listUserForBacker(userAccount, phoneNumber, accountStatus, startTime, endTime, 0, 1000000);
+        List<UserDO> userList = userService.listUserForBacker(userAccount, phoneAreaCode, phoneNumber, accountStatus, startTime, endTime, 0, 1000000);
         if(userList == null || userList.size() <= 0){
             responseJson.setCode(3);
             responseJson.setMessage("未查询到数据");
@@ -460,12 +469,14 @@ public class BackerUserAccountController {
             cell = row.createCell(1);
             cell.setCellValue("用户账号");
             cell = row.createCell(2);
-            cell.setCellValue("账号可用余额（美元$）");
+            cell.setCellValue("手机号");
             cell = row.createCell(3);
-            cell.setCellValue("冻结金额（美元$）");
+            cell.setCellValue("账号可用余额（美元$）");
             cell = row.createCell(4);
-            cell.setCellValue("账号总金额（美元$）");
+            cell.setCellValue("冻结金额（美元$）");
             cell = row.createCell(5);
+            cell.setCellValue("账号总金额（美元$）");
+            cell = row.createCell(6);
             cell.setCellValue("账号状态");
             //设置列宽
             sheet1.setColumnWidth(0, 5000);
@@ -473,7 +484,8 @@ public class BackerUserAccountController {
             sheet1.setColumnWidth(2, 6000);
             sheet1.setColumnWidth(3, 6000);
             sheet1.setColumnWidth(4, 6000);
-            sheet1.setColumnWidth(5, 3000);
+            sheet1.setColumnWidth(5, 6000);
+            sheet1.setColumnWidth(6, 3000);
 
             int rowNumber = 1;
             for (UserDO user : userList) {
@@ -484,13 +496,15 @@ public class BackerUserAccountController {
                 cell = row.createCell(1);
                 cell.setCellValue(user.getUserAccount());
                 cell = row.createCell(2);
-                cell.setCellValue(user.getUserBalance());
+                cell.setCellValue("(" + user.getPhoneAreaCode() + ")" + user.getPhoneNumber());
                 cell = row.createCell(3);
-                cell.setCellValue(user.getUserBalanceLock());
+                cell.setCellValue(user.getUserBalance());
                 cell = row.createCell(4);
+                cell.setCellValue(user.getUserBalanceLock());
+                cell = row.createCell(5);
                 double countBalance = BigDecimalUtil.add(user.getUserBalance(), user.getUserBalanceLock());
                 cell.setCellValue(countBalance);
-                cell = row.createCell(5);
+                cell = row.createCell(6);
                 if (user.getAccountStatus() == 1) {
                     cell.setCellValue("启用");
                 }
