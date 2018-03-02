@@ -61,4 +61,21 @@ public class HomePageController {
 
         return "page/web/home";
     }
+
+    /** 获取币种行情信息 */
+    @RequestMapping("/getCurrencyMarket")
+    public  @ResponseBody JsonObjectBO getCurrencyMarket(){
+
+        JsonObjectBO jsonObjectBO = new JsonObjectBO();
+        //查询所有币行情信息
+        List<TransactionUserDealDTO> transactionUserDealDTOList = (List<TransactionUserDealDTO>)redisService.getValue(RedisKeyConfig.HOMEPAGE_CURRENCYMARKET);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("transactionUserDealDTOList",transactionUserDealDTOList);
+
+        jsonObjectBO.setCode(1);
+        jsonObjectBO.setMessage("查询成功");
+        jsonObjectBO.setData(jsonObject);
+        return jsonObjectBO;
+    }
 }
