@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>  
 <configuration>
-	
-	<!-- 控制台调试信息打印  -->
+    <!-- 自定义HostName -->
+    <define name="HostName" class="com.iqmkj.config.LogbackCustomName"/>
+
+    <!-- 控制台调试信息打印  -->
 	<appender name="SYSTEM_OUT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoding>UTF-8</encoding>
         <encoder>
@@ -85,7 +87,7 @@
     <!-- 系统框架自有日志识别，必须与系统日志的配置名称一样 -->
     <root level="TRACE">
     	<!-- 控制台调试信息打印 -->
-    	<appender-ref ref="SYSTEM_OUT" />
+    	<!--<appender-ref ref="SYSTEM_OUT" />-->
     	<!-- 系统框架自有日志 -->
     	<appender-ref ref="SYSTEM_ERROR_FILE" />
     	<appender-ref ref="MY_INFO_FILE" />

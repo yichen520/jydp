@@ -3,6 +3,7 @@ package com.jydp.service.impl.user;
 import com.jydp.dao.IUserCurrencyNumDao;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DTO.BackerUserCurrencyNumDTO;
+import com.jydp.entity.DTO.UserAmountCheckDTO;
 import com.jydp.service.IUserCurrencyNumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -120,6 +121,29 @@ public class UserCurrencyNumServiceImpl implements IUserCurrencyNumService {
         userCurrencyNum.setCurrencyNumberLock(currencyNumberLock);
 
         return userCurrencyNumDao.reduceCurrencyNumberLock(userCurrencyNum);
+    }
+
+    /**
+     * 查询用户币种账户错误总数（定时器对账操作）
+     * @param checkAmount 可用资产最大差额（数字货币）
+     * @param checkAmountLock 锁定资产最大差额（数字货币）
+     * @return 查询成功：返回用户币种账户错误总数，查询失败：返回0
+     */
+    public int countCheckUserAmountForTimer(double checkAmount, double checkAmountLock) {
+        return userCurrencyNumDao.countCheckUserAmountForTimer(checkAmount, checkAmountLock);
+    }
+
+    /**
+     * 查询用户币种账户错误列表信息（定时器对账操作）
+     * @param checkAmount 可用资产最大差额（数字货币）
+     * @param checkAmountLock 锁定资产最大差额（数字货币）
+     * @param pageNumber 当前页数
+     * @param pageSize 每页大小
+     * @return 查询成功：返回用户币种账户错误列表信息，查询失败：返回null
+     */
+    public List<UserAmountCheckDTO> listCheckUserAmountForTimer(double checkAmount, double checkAmountLock,
+                                                         int pageNumber, int pageSize) {
+        return userCurrencyNumDao.listCheckUserAmountForTimer(checkAmount, checkAmountLock, pageNumber, pageSize);
     }
 
 }
