@@ -4,6 +4,7 @@ import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.IUserCurrencyNumDao;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DTO.BackerUserCurrencyNumDTO;
+import com.jydp.entity.DTO.UserAmountCheckDTO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -178,4 +179,50 @@ public class UserCurrencyNumDaoImpl implements IUserCurrencyNumDao {
             return false;
         }
     }
+
+    /**
+     * 查询用户币种账户错误总数（定时器对账操作）
+     * @param checkAmount 可用资产最大差额（数字货币）
+     * @param checkAmountLock 锁定资产最大差额（数字货币）
+     * @return 查询成功：返回用户币种账户错误总数，查询失败：返回0
+     */
+    public int countCheckUserAmountForTimer(double checkAmount, double checkAmountLock) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("checkAmount", checkAmount);
+        map.put("checkAmountLock", checkAmountLock);
+
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.selectOne("UserCurrencyNum_countCheckUserAmountForTimer", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return  result;
+    }
+
+    /**
+     * 查询用户币种账户错误列表信息（定时器对账操作）
+     * @param checkAmount 可用资产最大差额（数字货币）
+     * @param checkAmountLock 锁定资产最大差额（数字货币）
+     * @param pageNumber 当前页数
+     * @param pageSize 每页大小
+     * @return 查询成功：返回用户币种账户错误列表信息，查询失败：返回null
+     */
+    public List<UserAmountCheckDTO> listCheckUserAmountForTimer(double checkAmount, double checkAmountLock,
+                                                         int pageNumber, int pageSize) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("checkAmount", checkAmount);
+        map.put("checkAmountLock", checkAmountLock);
+        map.put("startNumber", pageNumber * pageSize);
+        map.put("pageSize", pageSize);
+
+        List<UserAmountCheckDTO> result = null;
+        try {
+            result = sqlSessionTemplate.selectList("UserCurrencyNum_listCheckUserAmountForTimer", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return result;
+    }
+
 }

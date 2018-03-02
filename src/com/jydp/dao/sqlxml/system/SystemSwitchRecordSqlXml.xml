@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC 
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jydp.dao.impl.system.SystemSwitchRecordDaoImpl">
+	
+	<insert id="SystemSwitchRecord_insertSystemSwitchRecord" parameterType="SystemSwitchRecordDO">
+		INSERT INTO system_switch_record_tab
+			(switchCode, switchName, switchStatus, ipAddress, backerId, backerAccount, addTime)
+     	VALUES
+     		(#{switchCode}, #{switchName}, #{switchStatus}, #{ipAddress}, #{backerId}, #{backerAccount}, #{addTime})
+	</insert>
+	
+	<select id="SystemSwitchRecord_getSystemSwitchRecordById" parameterType="int" resultType="SystemSwitchRecordDO">
+		SELECT id, switchCode, switchName, switchStatus, ipAddress, backerId, backerAccount, addTime
+		FROM system_switch_record_tab
+		WHERE id = #{id}
+ 	</select>
+ 	
+	<select id="SystemSwitchRecord_getNewestSendSwitchStatus" parameterType="int" resultType="java.lang.Integer">
+		SELECT switchStatus
+		FROM system_switch_record_tab
+		WHERE switchCode = #{switchCode}
+		ORDER BY id DESC
+		LIMIT 1
+ 	</select>
+ 	
+	<select id="SystemSwitchRecord_getNewestSystemSwitchRecord" parameterType="int" resultType="SystemSwitchRecordDTO">
+		SELECT id, switchCode, switchStatus
+		FROM system_switch_record_tab
+		WHERE switchCode = #{switchCode}
+		ORDER BY id DESC
+		LIMIT 1
+ 	</select>
+ 	
+</mapper>

@@ -65,4 +65,46 @@
           AND currencyId = #{currencyId}
     </update>
 
+    <select id="UserCurrencyNum_countCheckUserAmountForTimer" parameterType="java.util.Map" resultType="int">
+        SELECT COUNT(currencyTab.userId)
+        FROM user_currency_num_tab AS currencyTab
+        LEFT JOIN
+        (
+            SELECT balanceTab.userId, balanceTab.currencyId,
+                SUM(balanceTab.balanceNumber) AS balanceTotal,
+                SUM(balanceTab.frozenNumber) AS frozenTotal
+            FROM user_balance_tab AS balanceTab, transaction_currency_tab AS transactionCurrencyTab
+            WHERE balanceTab.currencyId = transactionCurrencyTab.currencyId
+            GROUP BY balanceTab.userId
+            HAVING balanceTotal != 0 OR frozenTotal != 0
+        ) AS balanceTempTab
+        ON currencyTab.userId = balanceTempTab.userId
+        AND currencyTab.currencyId = balanceTempTab.currencyId
+        WHERE (currencyTab.currencyNumber - IFNULL(balanceTempTab.balanceTotal, 0)) > #{checkAmount}
+        OR (currencyTab.currencyNumberLock - IFNULL(balanceTempTab.frozenTotal, 0)) > #{checkAmountLock}
+    </select>
+
+    <select id="UserCurrencyNum_listCheckUserAmountForTimer" parameterType="java.util.Map" resultType="UserAmountCheckDTO">
+        SELECT currencyTab.userId, currencyTab.currencyId,
+            (currencyTab.currencyNumber - IFNULL(balanceTempTab.balanceTotal, 0)) AS beyondAmount,
+            (currencyTab.currencyNumberLock - IFNULL(balanceTempTab.frozenTotal, 0)) AS beyondAmountLock
+        FROM user_currency_num_tab AS currencyTab
+        LEFT JOIN
+        (
+            SELECT balanceTab.userId, balanceTab.currencyId,
+                SUM(balanceTab.balanceNumber) AS balanceTotal,
+                SUM(balanceTab.frozenNumber) AS frozenTotal
+            FROM user_balance_tab AS balanceTab, transaction_currency_tab AS transactionCurrencyTab
+            WHERE balanceTab.currencyId = transactionCurrencyTab.currencyId
+            GROUP BY balanceTab.userId
+            HAVING balanceTotal != 0 OR frozenTotal != 0
+        ) AS balanceTempTab
+        ON currencyTab.userId = balanceTempTab.userId
+        AND currencyTab.currencyId = balanceTempTab.currencyId
+        WHERE (currencyTab.currencyNumber - IFNULL(balanceTempTab.balanceTotal, 0)) > #{checkAmount}
+        OR (currencyTab.currencyNumberLock - IFNULL(balanceTempTab.frozenTotal, 0)) > #{checkAmountLock}
+        ORDER BY currencyTab.userId
+        LIMIT #{startNumber}, #{pageSize}
+    </select>
+
 </mapper>
