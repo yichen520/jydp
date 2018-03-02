@@ -412,11 +412,6 @@
 //            $(popObj).fadeOut("fast");
 //        });
     });
-
-    function openTip()
-    {
-        openTips("阿萨德芳");
-    }
 </script>
 
 </body>

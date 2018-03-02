@@ -220,7 +220,7 @@
             },
             error:function () {
                 replyHandleBoo = false;
-                openTips("回复错误!");
+                openTips("数据加载出错，请稍候重试");
             }
         });
     }
