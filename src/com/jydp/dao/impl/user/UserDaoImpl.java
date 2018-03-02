@@ -3,6 +3,7 @@ package com.jydp.dao.impl.user;
 import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.IUserDao;
 import com.jydp.entity.DO.user.UserDO;
+import com.jydp.entity.DTO.UserAmountCheckDTO;
 import com.jydp.entity.DTO.UserDTO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,15 +63,18 @@ public class UserDaoImpl implements IUserDao {
     /**
      * 查询用户账号总数（后台）
      * @param userAccount 用户账号（可为null）
+     * @param phoneAreaCode 手机号区号（可为null）
      * @param phoneNumber 手机号（可为null）
-     * @param accountStatus 账号状态（可为null）
+     * @param accountStatus 账号状态，1：启用，2：禁用，查询全部填0
      * @param startTime   开始时间(可为null)
      * @param endTime     结束时间(可为null)
      * @return 查询成功：返回用户账户总数，查询失败：返回0
      */
-    public int countUserForBacker (String userAccount, String phoneNumber, int accountStatus, Timestamp startTime, Timestamp endTime) {
+    public int countUserForBacker (String userAccount, String phoneAreaCode, String phoneNumber,
+                                   int accountStatus, Timestamp startTime, Timestamp endTime) {
         Map<String, Object> map = new HashMap<>();
         map.put("userAccount", userAccount);
+        map.put("phoneAreaCode", phoneAreaCode);
         map.put("phoneNumber", phoneNumber);
         map.put("accountStatus", accountStatus);
         map.put("startTime", startTime);
@@ -88,18 +92,20 @@ public class UserDaoImpl implements IUserDao {
     /**
      * 查询用户账号列表（后台）
      * @param userAccount 用户账号（可为null）
+     * @param phoneAreaCode 手机号区号（可为null）
      * @param phoneNumber 手机号（可为null）
-     * @param accountStatus 账号状态（可为null）
+     * @param accountStatus 账号状态，1：启用，2：禁用，查询全部填0
      * @param startTime   开始时间(可为null)
      * @param endTime     结束时间(可为null)
      * @param pageNumber  当前页数
      * @param pageSize    查询条数
      * @return 查询成功：返回用户账户列表，查询失败：返回null
      */
-    public List<UserDO> listUserForBacker (String userAccount, String phoneNumber, int accountStatus,
+    public List<UserDO> listUserForBacker (String userAccount, String phoneAreaCode, String phoneNumber, int accountStatus,
                                            Timestamp startTime, Timestamp endTime, int pageNumber, int pageSize) {
         Map<String, Object> map = new HashMap<>();
         map.put("userAccount", userAccount);
+        map.put("phoneAreaCode", phoneAreaCode);
         map.put("phoneNumber", phoneNumber);
         map.put("accountStatus", accountStatus);
         map.put("startTime", startTime);
@@ -374,6 +380,55 @@ public class UserDaoImpl implements IUserDao {
         } else {
             return false;
         }
+    }
+
+    /**
+     * 查询用户账户错误总数（定时器对账操作）
+     * @param currencyId 币种id（美元）
+     * @param checkAmount 可用资产最大差额（美元）
+     * @param checkAmountLock 锁定资产最大差额（美元）
+     * @return 查询成功：返回用户账户错误总数，查询失败：返回0
+     */
+    public int countCheckUserAmountForTimer(int currencyId, double checkAmount, double checkAmountLock) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("currencyId", currencyId);
+        map.put("checkAmount", checkAmount);
+        map.put("checkAmountLock", checkAmountLock);
+
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.selectOne("User_countCheckUserAmountForTimer", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return result;
+    }
+
+    /**
+     * 查询用户账户错误列表信息（定时器对账操作）
+     * @param currencyId 币种id（美元）
+     * @param checkAmount 可用资产最大差额（美元）
+     * @param checkAmountLock 锁定资产最大差额（美元）
+     * @param pageNumber 当前页数
+     * @param pageSize 每页大小
+     * @return 查询成功：返回用户账户错误列表信息，查询失败：返回null
+     */
+    public List<UserAmountCheckDTO> listCheckUserAmountForTimer(int currencyId, double checkAmount, double checkAmountLock,
+                                                         int pageNumber, int pageSize) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("currencyId", currencyId);
+        map.put("checkAmount", checkAmount);
+        map.put("checkAmountLock", checkAmountLock);
+        map.put("startNumber", pageNumber * pageSize);
+        map.put("pageSize", pageSize);
+
+        List<UserAmountCheckDTO> result = null;
+        try {
+            result = sqlSessionTemplate.selectList("User_listCheckUserAmountForTimer", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return result;
     }
 
 }

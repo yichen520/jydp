@@ -68,5 +68,7 @@
 	
 	<!-- 全局异常捕获（未在项目中明确捕获的异常） -->
 	<bean class="com.iqmkj.exception.GlobalExceptionResolver"/>
-	
+	<!--系统开关初始化操作-->
+	<bean id="systemCommonInit" class="com.iqmkj.config.SystemCommonInit" init-method="executeInit"/>
+
 </beans>
