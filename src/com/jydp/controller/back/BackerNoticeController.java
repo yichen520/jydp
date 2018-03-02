@@ -7,8 +7,11 @@ import com.iqmkj.utils.LogUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.DO.system.SystemNoticeDO;
 import com.jydp.interceptor.BackerWebInterceptor;
+import com.jydp.service.IHomePageService;
+import com.jydp.service.IRedisService;
 import com.jydp.service.ISystemNoticeService;
 import config.FileUrlConfig;
+import config.RedisKeyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -34,6 +37,14 @@ public class BackerNoticeController {
     /**用户公告管理 */
     @Autowired
     private ISystemNoticeService systemNoticeService;
+
+    /** redis服务 */
+    @Autowired
+    private IRedisService redisService;
+
+    /**web端首页*/
+    @Autowired
+    private IHomePageService homePageService;
 
     /** 用户公告管理 首页 */
     @RequestMapping(value = "/show.htm")
@@ -359,6 +370,16 @@ public class BackerNoticeController {
         } else {
             response.put("code", 5);
             response.put("message", "删除失败！");
+        }
+
+        //查询系统公告列表
+        List<SystemNoticeDO> systemNoticeDOList = homePageService.getSystemNoticeList();
+        String noticeKey = RedisKeyConfig.HOMEPAGE_NOTICE;
+
+        if (systemNoticeDOList != null && systemNoticeDOList.size() > 0) {
+            redisService.addValue(noticeKey,systemNoticeDOList);
+        } else {
+            redisService.addValue(noticeKey,null);
         }
 
         return response;
