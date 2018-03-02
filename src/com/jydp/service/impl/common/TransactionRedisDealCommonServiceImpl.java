@@ -1,6 +1,7 @@
 package com.jydp.service.impl.common;
 
-import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
+import com.iqmkj.utils.BigDecimalUtil;
+import com.iqmkj.utils.DateUtil;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.service.IRedisService;
@@ -11,6 +12,7 @@ import config.RedisKeyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -48,7 +50,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
         }
     }
 
-    /** 组装基准信息参数并存入redis (今日涨跌,今日最高价,今日最低价,24小时成交量)*/
+    /** 组装基准信息参数并存入redis (当前交易价,今日涨跌,今日最高价,今日最低价,24小时成交量)*/
     public void standardMessageForRedis() {
         double nowTurnover = transactionDealRedisService.getNowTurnover();  //24小时成交量
         //double nowTurnover = transactionDealRedisService.getNowVolumeOfTransaction();  24小时成交额
@@ -64,6 +66,34 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
         double todayLowestPrice = transactionDealRedisService.getTodayLowestPrice();  //今日最低价
         if(todayLowestPrice > 0){
             redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE, todayLowestPrice);
+        }
+
+        Timestamp nowDate = DateUtil.getCurrentTime();
+        double nowLastPrice = transactionDealRedisService.getNowLastPrice(nowDate);  //当前价
+        if(todayLowestPrice > 0){
+            redisService.addValue(RedisKeyConfig.NOW_PRICE, todayLowestPrice);
+
+            //计算涨幅
+            long dateLon = DateUtil.lingchenLong();
+            Timestamp lingChenDate = DateUtil.longToTimestamp(dateLon);
+            double closingPrice = transactionDealRedisService.getNowLastPrice(lingChenDate);  //昨天收盘价
+            if(closingPrice > 0){
+                double range = BigDecimalUtil.sub(nowLastPrice, closingPrice) * 100;
+                String rangeStr = BigDecimalUtil.div(range, closingPrice, 4);
+                redisService.addValue(RedisKeyConfig.TODAY_RANGE, todayLowestPrice);
+            }
+
+        }
+
+    }
+
+    /** 每日凌晨更新最高与最低价更新 */
+    public void updateWeeHoursBasisOfPrice(){
+        Timestamp nowDate = DateUtil.getCurrentTime();
+        double nowLastPrice = transactionDealRedisService.getNowLastPrice(nowDate);  //昨日收盘价
+        if(nowLastPrice > 0){
+            redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE, nowLastPrice);
+            redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE, nowLastPrice);
         }
     }
 

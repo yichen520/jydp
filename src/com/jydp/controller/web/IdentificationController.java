@@ -63,10 +63,7 @@ public class IdentificationController {
             request.setAttribute("message", "参数为空");
             return "page/web/login";
         }
-
-        int userId = Integer.parseInt(userIdStr);
-
-        request.setAttribute("userId", userId);
+        request.setAttribute("userId", userIdStr);
         request.setAttribute("userAccount", userAccount);
 
         UserIdentificationDO existIdentification = userIdentificationService.getUserIdentificationByUserAccountLately(userAccount);
@@ -92,8 +89,7 @@ public class IdentificationController {
             return "page/web/login";
         }
 
-        int userId = Integer.parseInt(userIdStr);
-        request.setAttribute("userId", userId);
+        request.setAttribute("userId", userIdStr);
         request.setAttribute("userAccount", userAccount);
         return "page/web/identification";
     }
@@ -175,7 +171,7 @@ public class IdentificationController {
         }
 
         UserDO userDO = userService.getUserByUserId(userId);
-        if (userDO == null || userDO.getAccountStatus() != 1) {
+        if (userDO == null) {
             responseJson.setCode(5);
             responseJson.setMessage("您的账号不存在！");
             return responseJson;

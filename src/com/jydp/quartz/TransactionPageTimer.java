@@ -31,5 +31,17 @@ public class TransactionPageTimer {
 	public void transactionPendOrder(){
 		transactionPendOrderCommonService.getPendOrder();
 	}
+
+	/** 组装基准信息参数并存入redis (当前交易价,今日涨跌,今日最高价,今日最低价,24小时成交量)*/
+	@Scheduled(cron="0/5 * *  * * ? ")
+	public void standardMessageForRedis(){
+		transactionRedisDealCommonService.standardMessageForRedis();
+	}
+
+    /** 每日凌晨更新最高与最低价更新 */
+    @Scheduled(cron="0 0 0  * * ? ")
+    public void updateWeeHoursBasisOfPrice(){
+        transactionRedisDealCommonService.updateWeeHoursBasisOfPrice();
+    }
 	
 }
