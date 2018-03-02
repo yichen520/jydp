@@ -12,8 +12,6 @@
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/opinion.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/public.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/simpleTips.css" />
-    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/js/need/laydate.css" />
-    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/js/skins/danlan/laydate.css" />
 
     <title>意见反馈</title>
 </head>
@@ -48,10 +46,10 @@
                     </p>
                     <p class="condition">
                         反馈时间：
-                        从&nbsp;<input placeholder="请选择起始时间" class="startTime" id="start" name="startTime" value="${startTime}"
-                                      onClick="laydate({istime: true,format:'YYYY-MM-DD hh:mm:ss'})" onfocus="this.blur()"/>
-                        到&nbsp;<input placeholder="请选择结束时间" class="endTime" id="end" name="endTime" value="${endTime}"
-                                      onClick="laydate({istime: true,format: 'YYYY-MM-DD hh:mm:ss'})" onfocus="this.blur()"/>
+                        从&nbsp;<input placeholder="请选择起始时间" class="askTime" name="startTime" value="${startTime}"
+                                       onfocus="this.blur()"/>
+                        到&nbsp;<input placeholder="请选择结束时间" class="askTime" name="endTime" value="${endTime}"
+                                       onfocus="this.blur()"/>
                     </p>
 
                     <input type="hidden" id="queryPageNumber" name="pageNumber" value="${pageNumber}">
@@ -140,6 +138,16 @@
 <script type="text/javascript" src="<%=path %>/resources/js/simpleTips.js"></script>
 <script type="text/javascript" src="<%=path %>/resources/js/laydate.js"></script>
 
+<script type="text/javascript">
+    lay('.askTime').each(function(){
+        laydate.render({
+            elem: this,
+            trigger: 'click',
+            type:'datetime',
+            theme: '#69c0ff'
+        });
+    });//日期控件
+</script>
 <script type="text/javascript">
     window.onload = function() {
         $("#handleStatus").val('${handleStatus}');
@@ -239,26 +247,6 @@
         }
     }
 
-    !function(){
-        laydate.skin('danlan');//切换皮肤，请查看skins下面皮肤库
-    }();
-
-    var start = {
-        elem: '#start',
-        format: 'YYYY-MM-DD hh:mm:ss',
-        istime: true,
-        istoday: false
-    };
-
-    var end = {
-        elem: '#end',
-        format: 'YYYY-MM-DD hh:mm:ss',
-        istime: true,
-        istoday: false
-    };
-    laydate(start);
-    laydate(end);//日期控件
-
     $(function(){
         var popObj;
         $(function(){
@@ -278,10 +266,6 @@
         })
     });
 
-    function openTip()
-    {
-        openTips("阿萨德芳");
-    }
 </script>
 
 </body>
