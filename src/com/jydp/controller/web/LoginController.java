@@ -8,8 +8,10 @@ import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.back.BackerDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DO.user.UserIdentificationDO;
+import com.jydp.entity.DO.user.UserIdentificationImageDO;
 import com.jydp.interceptor.BackerWebInterceptor;
 import com.jydp.interceptor.UserWebInterceptor;
+import com.jydp.service.IUserIdentificationImageService;
 import com.jydp.service.IUserIdentificationService;
 import com.jydp.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * web端用户登录
@@ -36,6 +39,10 @@ public class LoginController {
     /** 用户认证 */
     @Autowired
     private IUserIdentificationService userIdentificationService;
+
+    /** 用户认证详情图 */
+    @Autowired
+    private IUserIdentificationImageService userIdentificationImageService;
 
     /**  跳转至登录页面 */
     @RequestMapping(value = "/show")
@@ -82,12 +89,11 @@ public class LoginController {
         }
 
         if (user.getAccountStatus() != 1) {
-            request.setAttribute("code", 2);
-            request.setAttribute("message", "用户被禁用");
-            return "page/web/login";
-        } else {
+
             //查询用户最新认证信息
             UserIdentificationDO userIdentification = userIdentificationService.getUserIdentificationByUserAccountLately(user.getUserAccount());
+
+
             //未进行认证
             if (userIdentification == null) {
                 request.setAttribute("userId",user.getUserId());
@@ -96,10 +102,18 @@ public class LoginController {
             }
             //认证未通过
             if (userIdentification.getIdentificationStatus() != 2) {
+                List<UserIdentificationImageDO> userIdentificationImageList =
+                        userIdentificationImageService.listUserIdentificationImageByIdentificationId(userIdentification.getId());
                 request.setAttribute("userId",user.getUserId());
                 request.setAttribute("userAccount",user.getUserAccount());
+                request.setAttribute("identification", userIdentification);
+                request.setAttribute("identificationImageList", userIdentificationImageList);
                 return "page/web/identificationAfresh";
             }
+
+            request.setAttribute("code", 2);
+            request.setAttribute("message", "用户被禁用");
+            return "page/web/login";
         }
 
         UserSessionBO userSessionBO = new UserSessionBO();
