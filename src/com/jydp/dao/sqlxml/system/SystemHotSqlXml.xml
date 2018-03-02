@@ -8,7 +8,7 @@
 	<select id="SystemHot_getSystemHotlistForWeb" resultType="SystemHotDO">
 		SELECT id, noticeTitle, noticeUrl, content, addTime, topTime, noticeType
 		FROM system_hot_tab
-		ORDER BY topTime DESC
+		ORDER BY topTime DESC, addTime DESC
 		LIMIT 5
 	</select>
 

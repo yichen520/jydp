@@ -7,8 +7,11 @@ import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.system.SystemBusinessesPartnerDO;
 import com.jydp.interceptor.BackerWebInterceptor;
+import com.jydp.service.IHomePageService;
+import com.jydp.service.IRedisService;
 import com.jydp.service.ISystemBusinessesPartnerService;
 import config.FileUrlConfig;
+import config.RedisKeyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -35,6 +38,14 @@ public class BackerBusinessesPartnerController {
     /**合作商家 */
     @Autowired
     private ISystemBusinessesPartnerService systemBusinessesPartnerService;
+
+    /** redis服务 */
+    @Autowired
+    private IRedisService redisService;
+
+    /**web端首页*/
+    @Autowired
+    private IHomePageService homePageService;
 
     /** 展示合作商家页面 */
     @RequestMapping(value = "/show.htm")
@@ -302,6 +313,16 @@ public class BackerBusinessesPartnerController {
         } else {
             responsJson.setCode(5);
             responsJson.setMessage("删除失败");
+        }
+
+        //查询合作商家列表
+        List<SystemBusinessesPartnerDO> systemBusinessesPartnerDOList = homePageService.getSystemBusinessesPartnerList();
+        String partnerKey = RedisKeyConfig.HOMEPAGE_PARTNER;
+
+        if (systemBusinessesPartnerDOList != null && systemBusinessesPartnerDOList.size() > 0) {
+            redisService.addValue(partnerKey,systemBusinessesPartnerDOList);
+        } else {
+            redisService.addValue(partnerKey,null);
         }
 
         return responsJson;

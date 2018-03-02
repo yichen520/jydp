@@ -7,8 +7,11 @@ import com.iqmkj.utils.LogUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.DO.system.SystemHotDO;
 import com.jydp.interceptor.BackerWebInterceptor;
+import com.jydp.service.IHomePageService;
+import com.jydp.service.IRedisService;
 import com.jydp.service.ISystemHotService;
 import config.FileUrlConfig;
+import config.RedisKeyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -35,6 +38,14 @@ public class BackerHotTopicController {
     /** 热门话题 */
     @Autowired
     private ISystemHotService systemHotService;
+
+    /** redis服务 */
+    @Autowired
+    private IRedisService redisService;
+
+    /**web端首页*/
+    @Autowired
+    private IHomePageService homePageService;
 
     /** 热门话题首页 */
     @RequestMapping(value = "/show.htm")
@@ -351,6 +362,15 @@ public class BackerHotTopicController {
         } else {
             response.put("code", 5);
             response.put("message", "删除失败！");
+        }
+
+        List<SystemHotDO> systemHotDOList = homePageService.getSystemHotList();
+        String hotTopicKey = RedisKeyConfig.HOMEPAGE_HOTTOPIC;
+
+        if (systemHotDOList != null && systemHotDOList.size() > 0) {
+            redisService.addValue(hotTopicKey,systemHotDOList);
+        } else {
+            redisService.addValue(hotTopicKey,null);
         }
 
         return response;

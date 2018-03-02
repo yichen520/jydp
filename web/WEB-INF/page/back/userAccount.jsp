@@ -39,7 +39,7 @@
                             </c:forEach>
                         </select>
                         <input type="text" class="askInput" id="phoneNumber" name="phoneNumber" value="${phoneNumber }"
-                               maxlength="32" onkeyup="matchUtil(this, 'number')" onblur="matchUtil(this, 'number')"/></p>
+                               maxlength="11" onkeyup="matchUtil(this, 'number')" onblur="matchUtil(this, 'number')"/></p>
                     <p class="condition">账号状态：
                         <select class="askSelect" id="accountStatus" name="accountStatus">
                             <option value="">全部</option>

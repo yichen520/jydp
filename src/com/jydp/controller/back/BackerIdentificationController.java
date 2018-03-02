@@ -259,7 +259,7 @@ public class BackerIdentificationController {
         }
 
         String messageContent = "您在交易大盘中提交的实名认证信息审核已通过。";
-        passResult = SendMessage.send(userIdentification.getUserPhone(), messageContent);
+        passResult = SendMessage.send(userDO.getPhoneNumber(), messageContent);
         if (!passResult) {
             responseJson.setCode(5);
             responseJson.setMessage("短信发送失败，请拨打电话或发送短信通知用户");
@@ -318,8 +318,15 @@ public class BackerIdentificationController {
             return responseJson;
         }
 
+        UserDO userDO = userService.getUserByUserId(userIdentification.getUserId());
+        if (userDO == null) {
+            responseJson.setCode(5);
+            responseJson.setMessage("账户不存在");
+            return responseJson;
+        }
+
         String messageContent = "您在交易大盘中提交的实名认证信息审核被拒绝。";
-        passResult = SendMessage.send(userIdentification.getUserPhone(), messageContent);
+        passResult = SendMessage.send(userDO.getPhoneNumber(), messageContent);
         if (!passResult) {
             responseJson.setCode(5);
             responseJson.setMessage("短信发送失败，请拨打电话或发送短信通知用户");

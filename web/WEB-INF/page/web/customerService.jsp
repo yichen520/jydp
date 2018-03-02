@@ -166,10 +166,10 @@
             $(".mask").fadeOut("fast");
             $(popObj).fadeOut("fast");
         });
-        $(".yes").click(function(){
-            $(".mask").fadeOut("fast");
-            $(popObj).fadeOut("fast");
-        });
+//        $(".yes").click(function(){
+//            $(".mask").fadeOut("fast");
+//            $(popObj).fadeOut("fast");
+//        });
     });
 
 </script>
