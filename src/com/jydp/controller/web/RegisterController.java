@@ -138,7 +138,7 @@ public class RegisterController {
         userDO.setPhoneAreaCode(phoneAreaCode);
         userDO.setPhoneNumber(phoneNumber);
         userDO.setPayPassword(MD5Util.toMd5("123456"));
-        userDO.setAccountStatus(1);
+        userDO.setAccountStatus(2);
         userDO.setAddTime(DateUtil.getCurrentTime());
 
         boolean result = userService.register(userDO);
