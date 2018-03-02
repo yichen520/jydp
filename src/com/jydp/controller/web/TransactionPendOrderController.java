@@ -52,7 +52,7 @@ public class TransactionPendOrderController {
 
         List<TransactionPendOrderDO> transactionPendOrderRecord = null;
         if (totalNumber > 0) {
-            transactionPendOrderRecord = transactionPendOrderService.listPendOrderByUserId(user.getUserId(),totalNumber, pageSize);
+            transactionPendOrderRecord = transactionPendOrderService.listPendOrderByUserId(user.getUserId(),pageNumber, pageSize);
         }
 
         int totalPageNumber = (int) Math.ceil(totalNumber/(pageSize*1.0));
