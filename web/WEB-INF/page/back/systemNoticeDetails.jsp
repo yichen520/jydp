@@ -32,7 +32,7 @@
         <div class="notice">
             <p class="noticeTitle">
                 <span class="nTitle">【<span>${systemNoticeDO.noticeType }</span>】${systemNoticeDO.noticeTitle }</span>
-                <span class="time"><fmt:formatDate type="time" value="${systemNotice.addTime }" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></span>
+                <span class="time"><fmt:formatDate type="time" value="${systemNoticeDO.addTime }" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></span>
             </p>
 
             <div class="editor">${systemNoticeDO.content }</div>

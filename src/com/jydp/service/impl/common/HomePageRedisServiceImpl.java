@@ -25,6 +25,7 @@ public class HomePageRedisServiceImpl implements IHomePageRedisService{
     @Autowired
     private IRedisService redisService;
 
+    /**web端首页*/
     @Autowired
     private IHomePageService homePageService;
 
