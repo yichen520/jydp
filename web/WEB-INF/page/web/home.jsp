@@ -42,8 +42,8 @@
             <td class="new">最新成交价</td>
             <td class="money">买一价</td>
             <td class="money">卖一价</td>
-            <td class="money">24小时成交量</td>
-            <td class="uplift">24小时涨跌</td>
+            <td class="money">今日成交量</td>
+            <td class="uplift">今日涨跌</td>
             <td class="operate">操作</td>
         </tr>
         <c:forEach items="${transactionUserDealDTOList}" var="transactionUserDeal">
