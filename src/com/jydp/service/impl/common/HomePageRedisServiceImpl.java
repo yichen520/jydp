@@ -32,7 +32,6 @@ public class HomePageRedisServiceImpl implements IHomePageRedisService{
     /** 从数据库查询所有首页数据存储到redis中(除币种行情外) */
     @Override
     public void getHomePageData() {
-
         //查询首页广告列表
         List<SystemAdsHomepagesDO> systemAdsHomepagesDOList = homePageService.getSystemAdsHomepageList();
         String adsKey = RedisKeyConfig.HOMEPAGE_ADS;
