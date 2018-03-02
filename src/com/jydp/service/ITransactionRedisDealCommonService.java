@@ -11,4 +11,7 @@ public interface ITransactionRedisDealCommonService {
 
     /** 将成交记录放进redis */
     void userDealForRedis();
+
+    /** 组装基准信息参数并存入redis */
+    void standardMessageForRedis();
 }

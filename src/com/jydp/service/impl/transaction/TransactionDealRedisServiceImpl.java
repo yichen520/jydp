@@ -89,4 +89,33 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
         date = DateUtil.longToTimestamp(newDate);
         return transactionDealRedisDao.getNowVolumeOfTransaction(date);
     }
+
+    /**
+     * 查询今日最高价
+     * @return 查询成功：返回今日最高价，查询失败或今日最高价为0：返回0
+     */
+    public double getTodayHighestPrice(){
+        long dateLon = DateUtil.lingchenLong();
+        Timestamp date = DateUtil.longToTimestamp(dateLon);
+        return transactionDealRedisDao.getTodayHighestPrice(date);
+    }
+
+    /**
+     * 查询今日最低价
+     * @return 查询成功：返回今日最低价，查询失败或今日最低价为0：返回0
+     */
+    public double getTodayLowestPrice(){
+        long dateLon = DateUtil.lingchenLong();
+        Timestamp date = DateUtil.longToTimestamp(dateLon);
+        return transactionDealRedisDao.getTodayLowestPrice(date);
+    }
+
+    /**
+     * 查询当前时间上一个成交价格
+     * @param date 要查询的时间节点
+     * @return 查询成功：返回上一个价格，查询失败或上一个价格为0：返回0
+     */
+    public double getNowLastPrice(Timestamp date){
+        return transactionDealRedisDao.getNowLastPrice(date);
+    }
 }

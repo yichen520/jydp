@@ -20,17 +20,14 @@ public class HomePageTimer {
     private IHomePageRedisService homePageRedisService;
 
     /** 从数据库查询所有首页数据存储到redis中(除币种行情外) (每30分钟执行一次) */
-    //todo 方便调试，暂定每分钟执行一次
-    @Scheduled(cron="0 */1 * * * ?")
+    @Scheduled(cron="0 */30 * * * ?")
     public void getHomePageData(){
-        System.out.println("首页数据查询每1分钟执行一次 "+ DateUtil.getCurrentTime());
         homePageRedisService.getHomePageData();
     }
 
     /** 从数据库查询所有币种行情信息存储到redis中 (每10秒执行一次)*/
     @Scheduled(cron="0/10 * *  * * ? ")
     public void getCurrencyMarketData(){
-        System.out.println("币种行情查询每10秒钟执行一次 "+ DateUtil.getCurrentTime());
         homePageRedisService.getCurrencyMarketData();
     }
 
