@@ -127,8 +127,6 @@
     $(document).ready(function(){
         //循环执行，每隔10秒钟执行一次 10000
         var t1=window.setInterval(refreshMarket, 10000);
-        //半小时后执行页面刷新
-        var t2=window.setTimeout(refreshPage,1800000);
     });
 
     //刷新币种行情
@@ -165,11 +163,6 @@
                 }
             }
         });
-    }
-
-    //刷新整个页面，每半小时一次
-    function refreshPage() {
-        window.location.href="<%=path %>/userWeb/homePage/show";
     }
 </script>
 
