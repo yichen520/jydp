@@ -31,26 +31,28 @@ public interface IUserDao {
     /**
      * 查询用户账号总数（后台）
      * @param userAccount 用户账号（可为null）
+     * @param phoneAreaCode 手机号区号（可为null）
      * @param phoneNumber 手机号（可为null）
-     * @param accountStatus 账号状态（可为null）
+     * @param accountStatus 账号状态，1：启用，2：禁用，查询全部填0
      * @param startTime   开始时间(可为null)
      * @param endTime     结束时间(可为null)
      * @return 查询成功：返回用户账户总数，查询失败：返回0
      */
-    int countUserForBacker (String userAccount, String phoneNumber, int accountStatus, Timestamp startTime, Timestamp endTime);
+    int countUserForBacker (String userAccount, String phoneAreaCode, String phoneNumber, int accountStatus, Timestamp startTime, Timestamp endTime);
 
     /**
      * 查询用户账号列表（后台）
      * @param userAccount 用户账号（可为null）
+     * @param phoneAreaCode 手机号区号（可为null）
      * @param phoneNumber 手机号（可为null）
-     * @param accountStatus 账号状态（可为null）
+     * @param accountStatus 账号状态，1：启用，2：禁用，查询全部填0
      * @param startTime   开始时间(可为null)
      * @param endTime     结束时间(可为null)
      * @param pageNumber  当前页数
      * @param pageSize    查询条数
      * @return 查询成功：返回用户账户列表，查询失败：返回null
      */
-    List<UserDO> listUserForBacker (String userAccount, String phoneNumber, int accountStatus,
+    List<UserDO> listUserForBacker (String userAccount, String phoneAreaCode, String phoneNumber, int accountStatus,
                                            Timestamp startTime, Timestamp endTime, int pageNumber, int pageSize);
 
     /**

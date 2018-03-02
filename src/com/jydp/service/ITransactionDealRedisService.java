@@ -53,4 +53,23 @@ public interface ITransactionDealRedisService {
      * @return 查询成功：返回总成交金额，查询失败或没有成交额：返回0
      */
     double getNowVolumeOfTransaction();
+
+    /**
+     * 查询今日最高价
+     * @return 查询成功：返回今日最高价，查询失败或今日最高价为0：返回0
+     */
+    double getTodayHighestPrice();
+
+    /**
+     * 查询今日最低价
+     * @return 查询成功：返回今日最低价，查询失败或今日最低价为0：返回0
+     */
+    double getTodayLowestPrice();
+
+    /**
+     * 查询当前时间上一个成交价格
+     * @param date 要查询的时间节点
+     * @return 查询成功：返回上一个价格，查询失败或上一个价格为0：返回0
+     */
+    double getNowLastPrice(Timestamp date);
 }

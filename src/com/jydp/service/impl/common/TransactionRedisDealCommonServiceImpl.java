@@ -48,4 +48,23 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
         }
     }
 
+    /** 组装基准信息参数并存入redis (今日涨跌,今日最高价,今日最低价,24小时成交量)*/
+    public void standardMessageForRedis() {
+        double nowTurnover = transactionDealRedisService.getNowTurnover();  //24小时成交量
+        //double nowTurnover = transactionDealRedisService.getNowVolumeOfTransaction();  24小时成交额
+        if(nowTurnover > 0){
+            redisService.addValue(RedisKeyConfig.DAY_TURNOVER, nowTurnover);
+        }
+
+        double todayHighestPrice = transactionDealRedisService.getTodayHighestPrice();  //今日最高价
+        if(todayHighestPrice > 0){
+            redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE, todayHighestPrice);
+        }
+
+        double todayLowestPrice = transactionDealRedisService.getTodayLowestPrice();  //今日最低价
+        if(todayLowestPrice > 0){
+            redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE, todayLowestPrice);
+        }
+    }
+
 }

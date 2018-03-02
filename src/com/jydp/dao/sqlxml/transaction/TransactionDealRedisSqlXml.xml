@@ -44,4 +44,24 @@
 		FROM transaction_deal_redis_tab
 		WHERE addTime <![CDATA[ > ]]> #{date}
 	</select>
+
+	<select id="TransactionDealRedis_getTodayHighestPrice" parameterType="java.sql.Timestamp" resultType="Double">
+		SELECT MAX(transactionPrice)
+		FROM transaction_deal_redis_tab
+		WHERE addTime <![CDATA[ > ]]> #{date}
+	</select>
+
+	<select id="TransactionDealRedis_getTodayLowestPrice" parameterType="java.sql.Timestamp" resultType="Double">
+		SELECT MIN(transactionPrice)
+		FROM transaction_deal_redis_tab
+		WHERE addTime <![CDATA[ > ]]> #{date}
+	</select>
+
+	<select id="TransactionDealRedis_getNowLastPrice" parameterType="java.sql.Timestamp" resultType="Double">
+		SELECT currencyTotalPrice
+		FROM transaction_deal_redis_tab
+		WHERE addTime <![CDATA[ < ]]> #{date}
+		ORDER BY addTime DESC
+		LIMIT 0,1
+	</select>
 </mapper>

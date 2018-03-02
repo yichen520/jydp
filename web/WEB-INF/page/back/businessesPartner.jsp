@@ -53,7 +53,7 @@
                         <td class="operate">
                             <c:if test="${status.count != 1 || pageNumber != 0}">
                                 <c:if test="${backer_rolePower['112003'] == 112003}">
-                                    <input type="text" value="置&nbsp; 顶" class="top" onfocus="this.blur()" onclick="topPartner('${item.id}')"/>
+                                    <input type="text" value="置&nbsp; 顶" class="toTop" onfocus="this.blur()" onclick="topPartner('${item.id}')"/>
                                 </c:if>
                             </c:if>
                             <c:if test="${backer_rolePower['112004'] == 112004}">
@@ -412,11 +412,6 @@
 //            $(popObj).fadeOut("fast");
 //        });
     });
-
-    function openTip()
-    {
-        openTips("阿萨德芳");
-    }
 </script>
 
 </body>
