@@ -161,4 +161,43 @@
 		WHERE userId = #{userId}
 		AND userBalanceLock <![CDATA[ >= ]]> #{userBalanceLock}
 	</update>
+
+	<select id="User_countCheckUserAmountForTimer" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(userTab.userId)
+		FROM user_tab AS userTab
+		LEFT JOIN
+		(
+			SELECT balanceTab.userId,
+				SUM(balanceTab.balanceNumber) AS balanceTotal,
+				SUM(balanceTab.frozenNumber) AS frozenTotal
+			FROM user_balance_tab AS balanceTab
+			WHERE balanceTab.currencyId = #{currencyId}
+			GROUP BY balanceTab.userId
+			HAVING balanceTotal != 0 OR frozenTotal != 0
+		) AS balanceTempTab ON  userTab.userId = balanceTempTab.userId
+		WHERE (userTab.userBalance - IFNULL(balanceTempTab.balanceTotal, 0)) > #{checkAmount}
+		OR (userTab.userBalanceLock - IFNULL(balanceTempTab.frozenTotal, 0)) > #{checkAmountLock}
+	</select>
+
+	<select id="User_listCheckUserAmountForTimer" parameterType="java.util.Map" resultType="UserAmountCheckDTO">
+		SELECT userTab.userId, balanceTempTab.currencyId,
+			(userTab.userBalance - IFNULL(balanceTempTab.balanceTotal, 0)) AS beyondAmount,
+			(userTab.userBalanceLock - IFNULL(balanceTempTab.frozenTotal, 0)) AS beyondAmountLock
+		FROM user_tab AS userTab
+		LEFT JOIN
+		(
+			SELECT balanceTab.userId, balanceTab.currencyId
+				SUM(balanceTab.balanceNumber) AS balanceTotal,
+				SUM(balanceTab.frozenNumber) AS frozenTotal
+			FROM user_balance_tab AS balanceTab
+			WHERE balanceTab.currencyId = #{currencyId}
+			GROUP BY balanceTab.userId
+			HAVING balanceTotal != 0 OR frozenTotal != 0
+		) AS balanceTempTab ON  userTab.userId = balanceTempTab.userId
+		WHERE (userTab.userBalance - IFNULL(balanceTempTab.balanceTotal, 0)) > #{checkAmount}
+		OR (userTab.userBalanceLock - IFNULL(balanceTempTab.frozenTotal, 0)) > #{checkAmountLock}
+		ORDER BY userTab.userId
+		LIMIT #{startNumber}, #{pageSize}
+	</select>
+
 </mapper>

@@ -9,6 +9,7 @@ import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.user.UserBalanceDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
+import com.jydp.entity.DTO.UserAmountCheckDTO;
 import com.jydp.entity.DTO.UserDTO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.service.IBackerHandleUserRecordBalanceService;
@@ -418,5 +419,31 @@ public class UserServiceImpl implements IUserService {
     public boolean updateReduceUserBalanceLock(int userId, double userBalanceLock){
         return userDao.updateReduceUserBalanceLock(userId, userBalanceLock);
     }
+
+    /**
+     * 查询用户账户错误总数（定时器对账操作）
+     * @param currencyId 币种id（美元）
+     * @param checkAmount 可用资产最大差额（美元）
+     * @param checkAmountLock 锁定资产最大差额（美元）
+     * @return 查询成功：返回用户账户错误总数，查询失败：返回0
+     */
+    public int countCheckUserAmountForTimer(int currencyId, double checkAmount, double checkAmountLock) {
+        return userDao.countCheckUserAmountForTimer(currencyId, checkAmount, checkAmountLock);
+    }
+
+    /**
+     * 查询用户账户错误列表信息（定时器对账操作）
+     * @param currencyId 币种id（美元）
+     * @param checkAmount 可用资产最大差额（美元）
+     * @param checkAmountLock 锁定资产最大差额（美元）
+     * @param pageNumber 当前页数
+     * @param pageSize 每页大小
+     * @return 查询成功：返回用户账户错误列表信息，查询失败：返回null
+     */
+    public List<UserAmountCheckDTO> listCheckUserAmountForTimer(int currencyId, double checkAmount, double checkAmountLock,
+                                                         int pageNumber, int pageSize) {
+        return userDao.listCheckUserAmountForTimer(currencyId, checkAmount, checkAmountLock, pageNumber, pageSize);
+    }
+
 
 }
