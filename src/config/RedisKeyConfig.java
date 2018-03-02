@@ -6,6 +6,8 @@ package config;
  */
 public class RedisKeyConfig {
 
+    /** 当前交易价格 */
+    public static final String NOW_PRICE = "nowPrice";
     /** 买一价key */
     public static final String BUY_ONE_KEY = "buyOne";
     /** 卖一价key */
