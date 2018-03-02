@@ -65,8 +65,8 @@
     </div>
 </div>
 <form id="queryForm" method="post" action="<%=path%>/userWeb/identificationController/show">
-    <input type="hidden" id="userId">
-    <input type="hidden" id="userAccount">
+    <input type="hidden" id="userId" name="userId" value="${userId}">
+    <input type="hidden" id="userAccount" name="userAccount" value="${userAccount}">
 </form>
 
 <div class="forgetFoot">盛临九洲版权所有</div>
@@ -190,8 +190,6 @@
             success:function(result){
                 addBoo = false;
                 if(result.code == 1) {
-                    $("#userId").val(userId);
-                    $("#userAccount").val(userAccount);
                     $("#queryForm").submit();
                 } else {
                     openTips(result.message);
