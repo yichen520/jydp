@@ -77,7 +77,7 @@
                     <img src="<%=path %>/resources/image/web/clicked.png" class="checked" style="display: none " />
                     已阅读并接受
                 </span>
-                <a href="#" class="agreement">《用户注册协议》</a>
+                <a href="<%=path %>/userWeb/userRegister/registerAgree" class="agreement">《用户注册协议》</a>
             </p>
 
             <input type="text" value="注&nbsp;册" class="submit" onfocus="this.blur()" onclick="register()"/>
