@@ -27,7 +27,7 @@ public class TransactionPageTimer {
 	public void refresh() {transactionRedisDealCommonService.userDealForRedis();}
 
 	/** 挂单记录,买一价，卖一价（每5s执行一次） */
-	@Scheduled(cron="0/5 * *  * * ? ")
+	//@Scheduled(cron="0/5 * *  * * ? ")
 	public void transactionPendOrder(){
 		transactionPendOrderCommonService.getPendOrder();
 	}
@@ -38,8 +38,8 @@ public class TransactionPageTimer {
 		transactionRedisDealCommonService.standardMessageForRedis();
 	}
 
-    /** 每日凌晨更新最高与最低价更新 */
-    @Scheduled(cron="0 0 0  * * ? ")
+    /** 每日八点更新最高与最低价更新 */
+    //@Scheduled(cron="0 0 8  * * ? ")
     public void updateWeeHoursBasisOfPrice(){
         transactionRedisDealCommonService.updateWeeHoursBasisOfPrice();
     }

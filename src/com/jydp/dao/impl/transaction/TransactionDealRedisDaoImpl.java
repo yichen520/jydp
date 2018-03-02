@@ -3,6 +3,7 @@ package com.jydp.dao.impl.transaction;
 import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.ITransactionDealRedisDao;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
+import com.jydp.entity.DTO.TransactionDealPriceDTO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -91,11 +92,11 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
      * @param date 当前时间戳
      * @return 查询成功：返回总成交数量，查询失败或没有成交量：返回0
      */
-    public double getNowTurnover(Timestamp date){
-        double result = 0;
+    public List<TransactionDealPriceDTO> getNowTurnover(Timestamp date){
+        List<TransactionDealPriceDTO> result = null;
 
         try {
-            result = sqlSessionTemplate.selectOne("TransactionDealRedis_getNowTurnover", date);
+            result = sqlSessionTemplate.selectList("TransactionDealRedis_getNowTurnover", date);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
@@ -108,11 +109,11 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
      * @param date 当前时间戳
      * @return 查询成功：返回总成交金额，查询失败或没有成交额：返回0
      */
-    public double getNowVolumeOfTransaction(Timestamp date){
-        double result = 0;
+    public List<TransactionDealPriceDTO> getNowVolumeOfTransaction(Timestamp date){
+        List<TransactionDealPriceDTO> result = null;
 
         try {
-            result = sqlSessionTemplate.selectOne("TransactionDealRedis_getNowVolumeOfTransaction", date);
+            result = sqlSessionTemplate.selectList("TransactionDealRedis_getNowVolumeOfTransaction", date);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
@@ -126,11 +127,11 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
      * @param date 今日时间戳
      * @return 查询成功：返回今日最高价，查询失败或今日最高价为0：返回0
      */
-    public double getTodayHighestPrice(Timestamp date){
-        double result = 0;
+    public List<TransactionDealPriceDTO> getTodayHighestPrice(Timestamp date){
+        List<TransactionDealPriceDTO> result = null;
 
         try {
-            result = sqlSessionTemplate.selectOne("TransactionDealRedis_getTodayHighestPrice", date);
+            result = sqlSessionTemplate.selectList("TransactionDealRedis_getTodayHighestPrice", date);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
@@ -143,11 +144,11 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
      * @param date 今日时间戳
      * @return 查询成功：返回今日最低价，查询失败或今日最低价为0：返回0
      */
-    public double getTodayLowestPrice(Timestamp date){
-        double result = 0;
+    public List<TransactionDealPriceDTO> getTodayLowestPrice(Timestamp date){
+        List<TransactionDealPriceDTO> result = null;
 
         try {
-            result = sqlSessionTemplate.selectOne("TransactionDealRedis_getTodayLowestPrice", date);
+            result = sqlSessionTemplate.selectList("TransactionDealRedis_getTodayLowestPrice", date);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
@@ -156,19 +157,24 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
     }
 
     /**
-     * 查询当前时间上一个成交价格（用于凌晨更新最高与最低价）
-     * @param date 要查询的时间节点
+     * 查询当前时间上一个成交价格
+     * @param date 需要查询的时间节点
+     * @param endDate 查询时间节点开盘时间
      * @return 查询成功：返回上一个价格，查询失败或上一个价格为0：返回0
      */
-    public double getNowLastPrice(Timestamp date){
-        double result = 0;
+    public List<TransactionDealPriceDTO> getNowLastPrice(Timestamp date, Timestamp endDate){
+        List<TransactionDealPriceDTO> result = null;
+        Map<String,Object> map = new HashMap<>();
+        map.put("date", date);
+        map.put("endDate", endDate);
 
         try {
-            result = sqlSessionTemplate.selectOne("TransactionDealRedis_getNowLastPrice", date);
+            result = sqlSessionTemplate.selectList("TransactionDealRedis_getNowLastPrice", map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
 
         return result;
     }
+
 }
