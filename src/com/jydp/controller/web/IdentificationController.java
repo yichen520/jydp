@@ -6,7 +6,6 @@ import com.iqmkj.utils.FileWriteRemoteUtil;
 import com.iqmkj.utils.LogUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
-import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DO.user.UserIdentificationDO;
 import com.jydp.entity.DO.user.UserIdentificationImageDO;
@@ -57,14 +56,20 @@ public class IdentificationController {
     /** 实名认证页面入口 */
     @RequestMapping("/show")
     public String show(HttpServletRequest request) {
-        UserSessionBO userSession = new UserSessionBO();
-        userSession.setUserAccount("test002");
-        userSession.setUserId(2);
+        String userIdStr = StringUtil.stringNullHandle(request.getParameter("userId"));
+        String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
+        if (!StringUtil.isNotNull(userIdStr) || !StringUtil.isNotNull(userAccount)) {
+            request.setAttribute("code", 2);
+            request.setAttribute("message", "参数为空");
+            return "page/web/login";
+        }
 
-        request.setAttribute("userId", userSession.getUserId());
-        request.setAttribute("userAccount", userSession.getUserAccount());
+        int userId = Integer.parseInt(userIdStr);
 
-        UserIdentificationDO existIdentification = userIdentificationService.getUserIdentificationByUserAccountLately(userSession.getUserAccount());
+        request.setAttribute("userId", userId);
+        request.setAttribute("userAccount", userAccount);
+
+        UserIdentificationDO existIdentification = userIdentificationService.getUserIdentificationByUserAccountLately(userAccount);
         if (existIdentification != null) {
             List<UserIdentificationImageDO> userIdentificationImageList =
                     userIdentificationImageService.listUserIdentificationImageByIdentificationId(existIdentification.getId());

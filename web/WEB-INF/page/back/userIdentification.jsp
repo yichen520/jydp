@@ -12,8 +12,6 @@
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/account_authentication.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/public.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/simpleTips.css" />
-    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/js/need/laydate.css" />
-    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/js/skins/danlan/laydate.css" />
 
     <title>实名认证</title>
 </head>
@@ -32,15 +30,20 @@
             <div class="askArea">
                 <form id="queryForm" action="<%=path %>/backerWeb/backerIdentification/show.htm" method="post">
                     <p class="condition">提交时间：
-                        从&nbsp;<input placeholder="请选择起始时间" class="startTime" id="start" name="startTime" value="${startTime }"
-                                      onfocus="this.blur()" onClick="laydate({istime: true,format:'YYYY-MM-DD hh:mm:ss'})" />
-                        到&nbsp;<input placeholder="请选择结束时间" class="endTime" id="end" name="endTime" value="${endTime }"
-                                      onfocus="this.blur()" onClick="laydate({istime: true,format: 'YYYY-MM-DD hh:mm:ss'})" />
+                        从&nbsp;<input placeholder="请选择起始时间" class="askTime" id="start" name="startTime" value="${startTime }" onfocus="this.blur()"/>
+                        到&nbsp;<input placeholder="请选择结束时间" class="askTime" id="end" name="endTime" value="${endTime }" onfocus="this.blur()"/>
                     </p>
                     <p class="condition">用户账号：<input type="text" class="askInput" id="userAccount" name="userAccount" value="${userAccount }"
                                                      maxlength="16" onkeyup="matchUtil(this, 'ENumber')" onblur="matchUtil(this, 'ENumber')"/></p>
-                    <p class="condition">手机号：<input type="text" class="askInput" id="userPhone" name="userPhone" value="${userPhone }"
-                                                    maxlength="11" onkeyup="matchUtil(this, 'number')" onblur="matchUtil(this, 'number')"/></p>
+                    <p class="condition">手机号：
+                        <select class="askSelect" id="phoneAreaCode" name="phoneAreaCode">
+                            <option value="">选择区号</option>
+                            <c:forEach items="${phoneAreaMap}" var="phoneArea">
+                                <option value="${phoneArea.key }">${phoneArea.key }</option>
+                            </c:forEach>
+                        </select>
+                        <input type="text" class="askInput" id="userPhone" name="userPhone" value="${userPhone }"
+                            maxlength="11" onkeyup="matchUtil(this, 'number')" onblur="matchUtil(this, 'number')"/></p>
                     <p class="condition">审核状态：
                         <select class="askSelect" id="identificationStatus" name="identificationStatus">
                             <option value="0">全部</option>
@@ -105,6 +108,7 @@
     <input type="hidden" id="endTimeDetail" name="endTime">
     <input type="hidden" id="userAccountDetail" name="userAccount">
     <input type="hidden" id="userPhoneDetail" name="userPhone">
+    <input type="hidden" id="phoneAreaCodeDetail" name="phoneAreaCode">
     <input type="hidden" id="identificationStatusDetail" name="identificationStatus">
 </form>
 
@@ -130,6 +134,11 @@
                 $(this).attr('selected',true);
             }
         });
+        $("#phoneAreaCode option").each(function(){
+            if($(this).val()=='${phoneAreaCode}'){
+                $(this).attr('selected',true);
+            }
+        });
     }
 
     function queryForm() {
@@ -143,6 +152,7 @@
         $("#endTimeDetail").val($("#end").val());
         $("#userAccountDetail").val($("#userAccount").val());
         $("#userPhoneDetail").val($("#userPhone").val());
+        $("#phoneAreaCodeDetail").val($("#phoneAreaCode").val());
         $("#identificationStatusDetail").val($("#identificationStatus").val());
 
         $("#detailId").val(id);
@@ -171,25 +181,14 @@
         }
     }
 
-    !function(){
-        laydate.skin('danlan');//切换皮肤，请查看skins下面皮肤库
-    }();
-
-    var start = {
-        elem: '#start',
-        format: 'YYYY-MM-DD hh:mm:ss',
-        istime: true,
-        istoday: false
-    };
-
-    var end = {
-        elem: '#end',
-        format: 'YYYY-MM-DD hh:mm:ss',
-        istime: true,
-        istoday: false
-    };
-    laydate(start);
-    laydate(end);//日期控件
+    lay('.askTime').each(function(){
+        laydate.render({
+            elem: this,
+            trigger: 'click',
+            type:'datetime',
+            theme: '#69c0ff'
+        });
+    });//日期控件
 </script>
 </body>
 </html>

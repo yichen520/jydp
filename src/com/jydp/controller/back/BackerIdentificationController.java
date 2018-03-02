@@ -12,6 +12,7 @@ import com.jydp.other.SendMessage;
 import com.jydp.service.IUserIdentificationImageService;
 import com.jydp.service.IUserIdentificationService;
 import com.jydp.service.IUserService;
+import config.PhoneAreaConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description: 用户实名认证
@@ -75,6 +77,7 @@ public class BackerIdentificationController {
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
         String userPhone = StringUtil.stringNullHandle(request.getParameter("userPhone"));
         String identificationStatusStr = StringUtil.stringNullHandle(request.getParameter("identificationStatus"));
+        String phoneAreaCode = StringUtil.stringNullHandle(request.getParameter("phoneAreaCode"));
 
         Timestamp startTime = null;
         Timestamp endTime = null;
@@ -95,7 +98,7 @@ public class BackerIdentificationController {
         }
 
         int pageSize = 20;
-        int totalNumber = userIdentificationService.countUserIdentificationForBacker(userAccount, userPhone, identificationStatus, startTime, endTime);
+        int totalNumber = userIdentificationService.countUserIdentificationForBacker(userAccount, phoneAreaCode + userPhone, identificationStatus, startTime, endTime);
 
         int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
         if (totalPageNumber <= 0) {
@@ -117,10 +120,13 @@ public class BackerIdentificationController {
         request.setAttribute("userAccount", userAccount);
         request.setAttribute("userPhone", userPhone);
         request.setAttribute("identificationStatus", identificationStatusStr);
+        request.setAttribute("phoneAreaCode", phoneAreaCode);
 
         request.setAttribute("totalNumber", totalNumber);
         request.setAttribute("totalPageNumber", totalPageNumber);
         request.setAttribute("userIdentificationList", userIdentificationList);
+        Map<String, String> phoneAreaMap = PhoneAreaConfig.phoneAreaMap;
+        request.setAttribute("phoneAreaMap", phoneAreaMap);
         //当前页面的权限标识
         request.getSession().setAttribute("backer_pagePowerId", 141000);
     }
@@ -149,12 +155,14 @@ public class BackerIdentificationController {
         String endTimeStr = StringUtil.stringNullHandle(request.getParameter("endTime"));
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
         String userPhone = StringUtil.stringNullHandle(request.getParameter("userPhone"));
+        String phoneAreaCode = StringUtil.stringNullHandle(request.getParameter("phoneAreaCode"));
         String identificationStatusStr = StringUtil.stringNullHandle(request.getParameter("identificationStatus"));
         request.setAttribute("pageNumber", pageNumberStr);
         request.setAttribute("startTime", startTimeStr);
         request.setAttribute("endTime", endTimeStr);
         request.setAttribute("userAccount", userAccount);
         request.setAttribute("userPhone", userPhone);
+        request.setAttribute("phoneAreaCode", phoneAreaCode);
         request.setAttribute("identificationStatus", identificationStatusStr);
 
         String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
