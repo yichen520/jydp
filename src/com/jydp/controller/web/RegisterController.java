@@ -1,10 +1,13 @@
 package com.jydp.controller.web;
 
+import com.iqmkj.config.SystemHelpConfig;
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.MD5Util;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
+import com.jydp.entity.DO.system.SystemHelpDO;
 import com.jydp.entity.DO.user.UserDO;
+import com.jydp.service.ISystemHelpService;
 import com.jydp.service.ISystemValidatePhoneService;
 import com.jydp.service.IUserCurrencyNumService;
 import com.jydp.service.IUserService;
@@ -34,12 +37,32 @@ public class RegisterController {
     @Autowired
     private ISystemValidatePhoneService systemValidatePhoneService;
 
+    /**  帮助中心 */
+    @Autowired
+    private ISystemHelpService systemHelpService;
+
     /**
      * 跳转至注册页面
      */
     @RequestMapping(value = "/show")
-    public String show() {
+    public String show(HttpServletRequest request) {
         return "page/web/register";
+    }
+
+
+    /**
+     * 跳转至注册协议页面
+     */
+    @RequestMapping(value = "/registerAgree")
+    public String registerAgree(HttpServletRequest request) {
+        int helpId = SystemHelpConfig.REGISTER_AGREEMENT;
+        SystemHelpDO systemHelpDO = systemHelpService.getSystemHelpById(helpId);
+
+        request.setAttribute("systemHelpDO", systemHelpDO);
+        request.setAttribute("helpId", helpId);
+        request.setAttribute("code", 1);
+        request.setAttribute("message", "查询成功！");
+        return "page/web/helpCenter";
     }
 
     /** 校验用户名 */
@@ -115,10 +138,11 @@ public class RegisterController {
         userDO.setPhoneAreaCode(phoneAreaCode);
         userDO.setPhoneNumber(phoneNumber);
         userDO.setPayPassword(MD5Util.toMd5("123456"));
-        userDO.setAccountStatus(1);
+        userDO.setAccountStatus(2);
         userDO.setAddTime(DateUtil.getCurrentTime());
 
         boolean result = userService.register(userDO);
+
 
         if (result) {
             responseJson.setCode(1);

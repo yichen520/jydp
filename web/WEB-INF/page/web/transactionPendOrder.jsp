@@ -133,7 +133,7 @@
 </script>
 <script type="text/javascript">
     window.onload = function() {
-        var code = ${code};
+        var code = '${code}';
         var message = '${message}';
         if (code != 1 && message != "") {
             openTips(message);

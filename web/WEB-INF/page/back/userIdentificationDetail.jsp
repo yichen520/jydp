@@ -101,6 +101,7 @@
     <input type="hidden" value="${endTime}" name="endTime">
     <input type="hidden" value="${userAccount}" name="userAccount">
     <input type="hidden" value="${userPhone}" name="userPhone">
+    <input type="hidden" value="${phoneAreaCode}" name="phoneAreaCode">
     <input type="hidden" value="${identificationStatus}" name="identificationStatus">
 </form>
 

@@ -117,7 +117,7 @@
             },
             error:function () {
                 helpBoo = false;
-                openTips("提交错误")
+                openTips("数据加载出错，请稍候重试")
             }
         });
     }
@@ -128,11 +128,6 @@
             $(this).addClass(".chooseState")
         })
     });
-
-    function openTip()
-    {
-        openTips("阿萨德芳");
-    }
 </script>
 
 <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->

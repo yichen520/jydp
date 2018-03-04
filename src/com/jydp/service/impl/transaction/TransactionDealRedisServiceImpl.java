@@ -3,7 +3,9 @@ package com.jydp.service.impl.transaction;
 import com.iqmkj.utils.DateUtil;
 import com.jydp.dao.ITransactionDealRedisDao;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
+import com.jydp.entity.DTO.TransactionDealPriceDTO;
 import com.jydp.service.ITransactionDealRedisService;
+import config.RedisKeyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,10 +72,9 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
      * 查询24小时总成交数量
      * @return 查询成功：返回总成交数量，查询失败或没有成交量：返回0
      */
-    public double getNowTurnover(){
+    public List<TransactionDealPriceDTO> getNowTurnover(){
         Timestamp date = DateUtil.getCurrentTime();
-        long newDate = 1000L * 60 * 60 * 24;
-        newDate = date.getTime() - newDate;
+        long newDate = date.getTime() - RedisKeyConfig.DAY_TIME;
         date = DateUtil.longToTimestamp(newDate);
         return transactionDealRedisDao.getNowTurnover(date);
     }
@@ -82,11 +83,75 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
      * 查询24小时总交易额
      * @return 查询成功：返回总成交金额，查询失败或没有成交额：返回0
      */
-    public double getNowVolumeOfTransaction(){
+    public List<TransactionDealPriceDTO> getNowVolumeOfTransaction(){
         Timestamp date = DateUtil.getCurrentTime();
-        long newDate = 1000L * 60 * 60 * 24;
-        newDate = date.getTime() - newDate;
+        long newDate = date.getTime() - RedisKeyConfig.DAY_TIME;
         date = DateUtil.longToTimestamp(newDate);
         return transactionDealRedisDao.getNowVolumeOfTransaction(date);
     }
+
+    /**
+     * 查询今日最高价
+     * @return 查询成功：返回今日最高价，查询失败或今日最高价为0：返回0
+     */
+    public List<TransactionDealPriceDTO> getTodayHighestPrice(){
+        long dateLon = DateUtil.lingchenLong();
+        Timestamp date;
+
+        //判断当前时间是否是凌晨至开盘之前
+        long nowDate = DateUtil.getCurrentTimeMillis() - RedisKeyConfig.OPENING_TIME;
+        if(nowDate >= dateLon){
+            dateLon = dateLon + RedisKeyConfig.OPENING_TIME;
+            date = DateUtil.longToTimestamp(dateLon);
+        } else {
+            dateLon = dateLon - RedisKeyConfig.DAY_TIME + RedisKeyConfig.OPENING_TIME;
+            date = DateUtil.longToTimestamp(dateLon);
+
+        }
+        return transactionDealRedisDao.getTodayHighestPrice(date);
+    }
+
+    /**
+     * 查询今日最低价
+     * @return 查询成功：返回今日最低价，查询失败或今日最低价为0：返回0
+     */
+    public List<TransactionDealPriceDTO> getTodayLowestPrice(){
+        long dateLon = DateUtil.lingchenLong();
+        Timestamp date;
+
+        //判断当前时间是否是凌晨至开盘之前
+        long nowDate = DateUtil.getCurrentTimeMillis() - RedisKeyConfig.OPENING_TIME;
+        if(nowDate >= dateLon){
+            dateLon = dateLon + RedisKeyConfig.OPENING_TIME;
+            date = DateUtil.longToTimestamp(dateLon);
+        } else {
+            dateLon = dateLon - RedisKeyConfig.DAY_TIME + RedisKeyConfig.OPENING_TIME;
+            date = DateUtil.longToTimestamp(dateLon);
+
+        }
+        return transactionDealRedisDao.getTodayLowestPrice(date);
+    }
+
+    /**
+     * 查询当前时间上一个成交价格
+     * @param getDate 需要查询的时间节点
+     * @return 查询成功：返回上一个价格，查询失败或上一个价格为0：返回0
+     */
+    public List<TransactionDealPriceDTO> getNowLastPrice(Timestamp getDate){
+        long dateLon = DateUtil.lingchenLong();
+        Timestamp date;
+
+        //判断当前时间是否是凌晨至开盘之前
+        long nowDate = getDate.getTime() - RedisKeyConfig.OPENING_TIME;
+        if(nowDate >= dateLon){
+            dateLon = dateLon + RedisKeyConfig.OPENING_TIME;
+            date = DateUtil.longToTimestamp(dateLon);
+        } else {
+            dateLon = dateLon - RedisKeyConfig.DAY_TIME + RedisKeyConfig.OPENING_TIME;
+            date = DateUtil.longToTimestamp(dateLon);
+
+        }
+        return transactionDealRedisDao.getNowLastPrice(getDate, date);
+    }
+
 }

@@ -33,15 +33,53 @@
 			</foreach>
 	</insert>
 
-	<select id="TransactionDealRedis_getNowTurnover" parameterType="java.sql.Timestamp" resultType="Double">
-		SELECT SUM(currencyNumber)
-		FROM transaction_deal_redis_tab
-		WHERE addTime <![CDATA[ > ]]> #{date}
+	<select id="TransactionDealRedis_getNowTurnover" parameterType="java.sql.Timestamp" resultType="TransactionDealPriceDTO">
+		SELECT SUM(TDRT.currencyNumber) transactionPrice,TCT.currencyShortName
+		FROM transaction_deal_redis_tab  TDRT
+		LEFT JOIN transaction_currency_tab TCT
+		ON TDRT.currencyId = TCT.currencyId
+		WHERE TDRT.addTime <![CDATA[ >= ]]> #{date}
+		GROUP BY TDRT.currencyId
 	</select>
 
-	<select id="TransactionDealRedis_getNowVolumeOfTransaction" parameterType="java.sql.Timestamp" resultType="Double">
-		SELECT SUM(currencyTotalPrice)
-		FROM transaction_deal_redis_tab
-		WHERE addTime <![CDATA[ > ]]> #{date}
+	<select id="TransactionDealRedis_getNowVolumeOfTransaction" parameterType="java.sql.Timestamp" resultType="TransactionDealPriceDTO">
+		SELECT SUM(TDRT.currencyTotalPrice) transactionPrice,TCT.currencyShortName
+		FROM transaction_deal_redis_tab  TDRT
+		LEFT JOIN transaction_currency_tab TCT
+		ON TDRT.currencyId = TCT.currencyId
+		WHERE TDRT.addTime <![CDATA[ >= ]]> #{date}
+		GROUP BY TDRT.currencyId
 	</select>
+
+	<select id="TransactionDealRedis_getTodayHighestPrice" parameterType="java.sql.Timestamp" resultType="TransactionDealPriceDTO">
+		SELECT MAX(TDRT.transactionPrice) transactionPrice,TCT.currencyShortName
+		FROM transaction_deal_redis_tab  TDRT
+		LEFT JOIN transaction_currency_tab TCT
+		ON TDRT.currencyId = TCT.currencyId
+		WHERE TDRT.addTime <![CDATA[ >= ]]> #{date}
+		GROUP BY TDRT.currencyId
+	</select>
+
+	<select id="TransactionDealRedis_getTodayLowestPrice" parameterType="java.sql.Timestamp" resultType="TransactionDealPriceDTO">
+		SELECT MIN(TDRT.transactionPrice) transactionPrice,TCT.currencyShortName
+		FROM transaction_deal_redis_tab  TDRT
+		LEFT JOIN transaction_currency_tab TCT
+		ON TDRT.currencyId = TCT.currencyId
+		WHERE TDRT.addTime <![CDATA[ >= ]]> #{date}
+		GROUP BY TDRT.currencyId
+	</select>
+
+	<select id="TransactionDealRedis_getNowLastPrice"  parameterType="java.util.Map" resultType="TransactionDealPriceDTO">
+		SELECT max(TDRT.transactionPrice) transactionPrice, TCT.currencyShortName, TCT.currencyId
+		FROM transaction_deal_redis_tab  TDRT
+		LEFT JOIN transaction_currency_tab TCT
+		ON TDRT.currencyId = TCT.currencyId
+		WHERE TDRT.addTime IN (SELECT max(addTime)
+									FROM transaction_deal_redis_tab
+									WHERE addTime <![CDATA[ <= ]]> #{date}
+									AND addTime <![CDATA[ >= ]]> #{endDate}
+									GROUP BY currencyId)
+		GROUP BY TDRT.addTime,TDRT.currencyId
+	</select>
+
 </mapper>

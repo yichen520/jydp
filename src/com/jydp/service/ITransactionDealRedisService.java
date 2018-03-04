@@ -1,6 +1,7 @@
 package com.jydp.service;
 
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
+import com.jydp.entity.DTO.TransactionDealPriceDTO;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -46,11 +47,31 @@ public interface ITransactionDealRedisService {
      * 查询24小时总成交数量
      * @return 查询成功：返回总成交数量，查询失败或没有成交量：返回0
      */
-    double getNowTurnover();
+    List<TransactionDealPriceDTO> getNowTurnover();
 
     /**
      * 查询24小时总交易额
      * @return 查询成功：返回总成交金额，查询失败或没有成交额：返回0
      */
-    double getNowVolumeOfTransaction();
+    List<TransactionDealPriceDTO> getNowVolumeOfTransaction();
+
+    /**
+     * 查询今日最高价
+     * @return 查询成功：返回今日最高价，查询失败或今日最高价为0：返回0
+     */
+    List<TransactionDealPriceDTO> getTodayHighestPrice();
+
+    /**
+     * 查询今日最低价
+     * @return 查询成功：返回今日最低价，查询失败或今日最低价为0：返回0
+     */
+    List<TransactionDealPriceDTO> getTodayLowestPrice();
+
+    /**
+     * 查询当前时间上一个成交价格
+     * @param getDate 需要查询的时间节点
+     * @return 查询成功：返回上一个价格，查询失败或上一个价格为0：返回0
+     */
+    List<TransactionDealPriceDTO> getNowLastPrice(Timestamp getDate);
+
 }

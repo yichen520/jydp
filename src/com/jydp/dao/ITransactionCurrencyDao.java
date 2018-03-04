@@ -4,6 +4,7 @@ import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DTO.TransactionUserDealDTO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -58,5 +59,5 @@ public interface ITransactionCurrencyDao {
      * 获取所有币种行情信息(web端)
      * @return 查询成功：返回所有币种行情信息；查询失败：返回null
      */
-    List<TransactionUserDealDTO> getTransactionCurrencyMarketForWeb();
+    List<TransactionUserDealDTO> getTransactionCurrencyMarketForWeb(Timestamp openTime, Timestamp beginTime, Timestamp endTime);
 }

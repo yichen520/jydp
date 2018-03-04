@@ -65,7 +65,7 @@
             <label class="popName">审核备注</label>
             <span class="mark">${identification.remark}</span>
         </p>
-        <c:if test="${identification.identificationStatus != 1}">
+        <c:if test="${identification.identificationStatus == 3}">
             <input type="text" value="重新认证" class="submit" onfocus="this.blur()" onclick="showAdd()"/>
         </c:if>
     </div>
