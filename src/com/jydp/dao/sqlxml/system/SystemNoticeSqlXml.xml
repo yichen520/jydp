@@ -8,7 +8,7 @@
 	<select id="SystemNotice_getSystemNoticlistForWeb" resultType="SystemNoticeDO">
 		SELECT id, noticeType, noticeTitle, noticeUrl, content, addTime, topTime
 		FROM system_notice_tab
-		ORDER BY topTime DESC
+		ORDER BY topTime DESC,addTime DESC
 		LIMIT 5
 	</select>
 

@@ -5,8 +5,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.*;
 import com.jydp.entity.DO.system.SystemAdsHomepagesDO;
 import com.jydp.interceptor.BackerWebInterceptor;
+import com.jydp.service.IHomePageService;
+import com.jydp.service.IRedisService;
 import com.jydp.service.ISystemAdsHomepagesService;
 import config.FileUrlConfig;
+import config.RedisKeyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -37,6 +40,15 @@ public class BackerAdsHomepagesController {
     /** 首页广告 */
     @Autowired
     private ISystemAdsHomepagesService systemAdsHomepagesService;
+
+    /**web端首页*/
+    @Autowired
+    private IHomePageService homePageService;
+
+    /** redis服务 */
+    @Autowired
+    private IRedisService redisService;
+
 
     /** 首页广告 首页 */
     @RequestMapping(value = "/show.htm", method = RequestMethod.GET)
@@ -250,6 +262,15 @@ public class BackerAdsHomepagesController {
         } else {
             response.put("code", 5);
             response.put("message", "删除失败！");
+        }
+
+        List<SystemAdsHomepagesDO> systemAdsHomepagesDOList = homePageService.getSystemAdsHomepageList();
+        String adsKey = RedisKeyConfig.HOMEPAGE_ADS;
+
+        if (systemAdsHomepagesDOList != null && systemAdsHomepagesDOList.size() > 0) {
+            redisService.addValue(adsKey,systemAdsHomepagesDOList);
+        } else {
+            redisService.addValue(adsKey,null);
         }
 
         return response;
