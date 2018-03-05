@@ -65,7 +65,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
      * @param currencyName 货币名称
      * @param pendingPrice 挂单单价
      * @param pendingNumber 挂单数量
-     * @param tradePriceSum 交易总价，包括手续费
+     * @param tradePriceSum 交易总价，包括手续费(卖出时可填0)
      * @return 操作成功：返回true，操作失败：返回false
      */
     @Transactional
@@ -312,8 +312,6 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
             return false;
         }
 
-        double buyFee = transactionCurrency.getBuyFee()/100;
-
         //计算撤销的币数量
         double num = transactionPendOrder.getPendingNumber() - dealNumber;
         //业务执行状态
@@ -325,7 +323,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
 
         if(paymentType == 1){ //如果是买入
             //计算撤销的美金数量
-            double balanceRevoke = num * transactionPendOrder.getPendingPrice() * (1+buyFee);
+            double balanceRevoke = num * transactionPendOrder.getPendingPrice();
             //判断冻结金额是否大于等于balanceRevoke
             if(user.getUserBalanceLock() < balanceRevoke){
                 return false;
@@ -353,7 +351,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
                 userBalance.setFromType(UserBalanceConfig.REVOKE_BUY_ORDER);
                 userBalance.setBalanceNumber(balanceRevoke);
                 userBalance.setFrozenNumber(-balanceRevoke);
-                userBalance.setRemark("返还冻结的手续费");
+                userBalance.setRemark("返还冻结美金");
                 userBalance.setAddTime(curTime);
 
                 excuteSuccess = userBalanceService.insertUserBalance(userBalance);
@@ -390,7 +388,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
                 userBalance.setFromType(UserBalanceConfig.REVOKE_SELL_ORDER);
                 userBalance.setBalanceNumber(num);
                 userBalance.setFrozenNumber(-num);
-                userBalance.setRemark("无手续费");
+                userBalance.setRemark("撤销卖出委托");
                 userBalance.setAddTime(curTime);
 
                 excuteSuccess = userBalanceService.insertUserBalance(userBalance);
