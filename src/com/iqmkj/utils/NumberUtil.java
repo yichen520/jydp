@@ -91,5 +91,17 @@ public class NumberUtil {
     	doubleValue = doubleFormat(doubleValue, 4);
     	return new DecimalFormat("#,##0.0000").format(doubleValue);
     }
+
+    /**
+     * double精度（向上取整）
+     * @param doubleValue 要处理的值
+     * @param accuracy 保留的小数点位数
+     * @return 返回精度的double
+     */
+    public static double doubleUpFormat(double doubleValue, int accuracy){
+        BigDecimal bigDecimal = new BigDecimal(doubleValue + "");
+        BigDecimal resultValue = bigDecimal.setScale(accuracy, BigDecimal.ROUND_UP);
+        return Double.valueOf(resultValue.toString());
+    }
     
 }

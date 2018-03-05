@@ -10,6 +10,7 @@ import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DTO.TransactionPendOrderDTO;
 import com.jydp.service.*;
+import config.SystemAccountAmountConfig;
 import config.SystemCommonConfig;
 import config.UserBalanceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,40 +53,127 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
     @Autowired
     private ITransactionUserDealService transactionUserDealService;
 
+    /** 系统账户金额 */
+    @Autowired
+    private ISystemAccountAmountService systemAccountAmountService;
+
     /**
      * 新增挂单记录
-     * @param pendingOrderNo 记录号,业务类型（2）+日期（6）+随机位（10）
      * @param userId 用户Id
-     * @param userAccount 用户账号
      * @param paymentType 收支类型,1：买入，2：卖出
      * @param currencyId 币种Id
      * @param currencyName 货币名称
      * @param pendingPrice 挂单单价
      * @param pendingNumber 挂单数量
-     * @param dealNumber 成交数量
-     * @param pendingStatus 挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销
-     * @param remark 备注
-     * @param addTime 添加时间
+     * @param tradePriceSum 交易总价，包括手续费
      * @return 操作成功：返回true，操作失败：返回false
      */
-    public boolean insertPendOrder(String pendingOrderNo, int userId, String userAccount, int paymentType, int currencyId,
-                                   String currencyName, double pendingPrice, double pendingNumber,
-                                   double dealNumber, int pendingStatus, String remark, Timestamp addTime){
-        TransactionPendOrderDO transactionPendOrder = new TransactionPendOrderDO();
-        transactionPendOrder.setPendingOrderNo(pendingOrderNo);
-        transactionPendOrder.setUserId(userId);
-        transactionPendOrder.setUserAccount(userAccount);
-        transactionPendOrder.setPaymentType(paymentType);
-        transactionPendOrder.setCurrencyId(currencyId);
-        transactionPendOrder.setCurrencyName(currencyName);
-        transactionPendOrder.setPendingPrice(pendingPrice);
-        transactionPendOrder.setPendingNumber(pendingNumber);
-        transactionPendOrder.setDealNumber(dealNumber);
-        transactionPendOrder.setPendingStatus(pendingStatus);
-        transactionPendOrder.setRemark(remark);
-        transactionPendOrder.setAddTime(addTime);
+    @Transactional
+    public boolean insertPendOrder(int userId, int paymentType, int currencyId, String currencyName, double pendingPrice,
+                                   double pendingNumber, double tradePriceSum){
 
-        return transactionPendOrderDao.insertPendOrder(transactionPendOrder);
+        //查询用户信息
+        UserDO user = userService.getUserByUserId(userId);
+        if(user == null){
+            return false;
+        }
+
+        Timestamp curTime = DateUtil.getCurrentTime();
+        //业务执行状态
+        boolean excuteSuccess = true;
+
+        if(paymentType == 1){
+            //减少用户美金
+            if(excuteSuccess){
+                excuteSuccess = userService.updateReduceUserBalanceLock(userId, tradePriceSum);
+            }
+            //增加用户锁定美金
+            if(excuteSuccess){
+                excuteSuccess = userService.updateAddUserAmount(userId, 0, pendingPrice * pendingNumber);
+            }
+            //增加买方账户美金记录
+            if(excuteSuccess){
+                String orderNo = SystemCommonConfig.USER_BALANCE +
+                        DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
+                        NumberUtil.createNumberStr(10);
+                String remark = "委托买入" + currencyName + "，锁定美金";
+
+                UserBalanceDO userBalance = new UserBalanceDO();
+                userBalance.setOrderNo(orderNo);
+                userBalance.setUserId(userId);
+                userBalance.setCurrencyId(UserBalanceConfig.DOLLAR_ID);
+                userBalance.setCurrencyName(UserBalanceConfig.DOLLAR);
+                userBalance.setFromType(UserBalanceConfig.BUY_ENTRUST);
+                userBalance.setBalanceNumber(-tradePriceSum);
+                userBalance.setFrozenNumber(pendingPrice * pendingNumber);
+                userBalance.setRemark(remark);
+                userBalance.setAddTime(curTime);
+
+                excuteSuccess = userBalanceService.insertUserBalance(userBalance);
+            }
+            //增加系统账户记录
+            if (excuteSuccess) {
+                excuteSuccess = systemAccountAmountService.addSystemAccountAmount(SystemAccountAmountConfig.PEND_FEE,
+                        tradePriceSum - pendingPrice * pendingNumber);
+            }
+        } else if(paymentType == 2){
+            //减少用户币数量
+            if(excuteSuccess){
+                excuteSuccess = userCurrencyNumService.reduceCurrencyNumber(userId, currencyId, pendingNumber);
+            }
+            //增加用户锁定币数量
+            if(excuteSuccess){
+                excuteSuccess = userCurrencyNumService.increaseCurrencyNumberLock(userId, currencyId, pendingNumber);
+            }
+            //增加用户币记录
+            if(excuteSuccess){
+                String orderNo = SystemCommonConfig.USER_BALANCE +
+                        DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
+                        NumberUtil.createNumberStr(10);
+                String remark = "委托成功锁定币";
+
+                UserBalanceDO userBalance = new UserBalanceDO();
+                userBalance.setOrderNo(orderNo);
+                userBalance.setUserId(userId);
+                userBalance.setCurrencyId(currencyId);
+                userBalance.setCurrencyName(currencyName);
+                userBalance.setFromType(UserBalanceConfig.SELL_ENTRUST);
+                userBalance.setBalanceNumber(-pendingNumber);
+                userBalance.setFrozenNumber(pendingNumber);
+                userBalance.setRemark(remark);
+                userBalance.setAddTime(curTime);
+
+                excuteSuccess = userBalanceService.insertUserBalance(userBalance);
+            }
+        }
+
+        //增加用户挂单记录
+        if(excuteSuccess){
+            String pendingOrderNo = SystemCommonConfig.TRANSACTION_PEND_ORDER +
+                    DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
+                    NumberUtil.createNumberStr(10);
+            TransactionPendOrderDO transactionPendOrder = new TransactionPendOrderDO();
+            transactionPendOrder.setPendingOrderNo(pendingOrderNo);
+            transactionPendOrder.setUserId(userId);
+            transactionPendOrder.setUserAccount(user.getUserAccount());
+            transactionPendOrder.setPaymentType(paymentType);
+            transactionPendOrder.setCurrencyId(currencyId);
+            transactionPendOrder.setCurrencyName(currencyName);
+            transactionPendOrder.setPendingPrice(pendingPrice);
+            transactionPendOrder.setPendingNumber(pendingNumber);
+            transactionPendOrder.setDealNumber(0);
+            transactionPendOrder.setPendingStatus(1);
+            transactionPendOrder.setRemark("");
+            transactionPendOrder.setAddTime(curTime);
+
+            excuteSuccess = transactionPendOrderDao.insertPendOrder(transactionPendOrder);
+        }
+
+        if(!excuteSuccess){
+            //数据回滚
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return excuteSuccess;
     }
 
     /**
