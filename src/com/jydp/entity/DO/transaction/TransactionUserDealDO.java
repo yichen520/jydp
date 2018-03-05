@@ -18,6 +18,7 @@ public class TransactionUserDealDO {
     private String currencyName;  //货币名称
     private double transactionPrice; //成交单价
     private double currencyNumber;  //成交数量
+    private double feeNumber; // 成交费率
     private double currencyTotalPrice;  //成交总价
     private String remark;  //备注
     private Timestamp pendTime;  //挂单时间
@@ -151,6 +152,22 @@ public class TransactionUserDealDO {
      */
     public void setCurrencyNumber(double currencyNumber) {
         this.currencyNumber = currencyNumber;
+    }
+
+    /**
+     * 交易费率
+     * @return the feeNumber
+     */
+    public double getFeeNumber() {
+        return feeNumber;
+    }
+
+    /**
+     * 交易费率
+     * @param feeNumber the feeNumber to set
+     */
+    public void setFeeNumber(double feeNumber) {
+        this.feeNumber = feeNumber;
     }
 
     /**

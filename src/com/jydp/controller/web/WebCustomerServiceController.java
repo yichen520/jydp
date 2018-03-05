@@ -74,7 +74,7 @@ public class WebCustomerServiceController {
     }
 
     /**  意见反馈 */
-    @RequestMapping("/feedback")
+    @RequestMapping("/feedback.htm")
     public @ResponseBody
     JsonObjectBO feedback(HttpServletRequest request){
         JsonObjectBO responseJson = new JsonObjectBO();

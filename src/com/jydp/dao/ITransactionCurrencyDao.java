@@ -46,7 +46,7 @@ public interface ITransactionCurrencyDao {
      * 获取所有币种信息(web端用户注册时使用)
      * @return 查询成功：返回币种信息列表；查询失败：返回null
      */
-    List<TransactionCurrencyDO> getTransactionCurrencyListForWeb();
+    List<TransactionCurrencyVO> getTransactionCurrencyListForWeb();
 
     /**
      * 根据币种名称获取交易币种
@@ -92,4 +92,26 @@ public interface ITransactionCurrencyDao {
      */
     List<TransactionCurrencyVO> listTransactionCurrencyForBack(String currencyName, int paymentType, int upStatus, String backAccount,
                                                                Timestamp startAddTime, Timestamp endAddTime, Timestamp startUpTime, Timestamp endUpTime, int pageNumber, int pageSize);
+
+    /**
+     * 停，复牌操作
+     * @param currencyId  币种Id
+     * @param paymentType  交易状态,1:正常，2:停牌
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    boolean updatePaymentType(int currencyId, int paymentType);
+
+    /**
+     * 上，下线币种操作
+     * @param currencyId  币种Id
+     * @param upStatus  上线状态,1:待上线,2:上线中,3:停牌,4:已下线
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    boolean updateUpStatus(int currencyId, int upStatus);
+
+    /**
+     * 查询全部币种信息
+     * @return  操作成功：返回币种信息集合，操作失败：返回null
+     */
+    List<TransactionCurrencyDO> listTransactionCurrencyAll();
 }

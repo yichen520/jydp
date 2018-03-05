@@ -19,18 +19,17 @@
             paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         WHERE currencyId = #{currencyId}
-        AND upStatus = 2
 	</select>
 
 	<update id="TransactionCurrency_updateTransactionCurrency" parameterType="TransactionCurrencyDO">
         UPDATE transaction_currency_tab
-        SET currencyShortName = #{currencyShortName}, currencyName = #{currencyName},
+        SET
+            currencyShortName = #{currencyShortName}, currencyName = #{currencyName},
             currencyImg = #{currencyImg}, buyFee = #{buyFee}, sellFee = #{sellFee},
             upRange = #{upRange}, downRange = #{downRange}, paymentType = #{paymentType},
             upStatus = #{upStatus}, backerAccount = #{backerAccount}, ipAddress = #{ipAddress},
             upTime = #{upTime},  addTime = #{addTime}
         WHERE currencyId = #{currencyId}
-              AND upStatus = 2
     </update>
 
     <delete id="TransactionCurrency_deleteTransactionCurrencyByCurrencyId" parameterType="int">
@@ -50,7 +49,6 @@
             paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         WHERE currencyName = #{currencyName}
-              AND upStatus = 2
     </select>
 
     <select id="TransactionCurrency_getTransactionCurrencyMarketForWeb" parameterType="java.util.Map" resultType="TransactionUserDealDTO">
@@ -126,5 +124,23 @@
         </where>
         ORDER BY addTime DESC
         LIMIT #{startNumber}, #{pageSize}
+    </select>
+
+    <update id="TransactionCurrency_updatePaymentType" parameterType="java.util.Map">
+        UPDATE transaction_currency_tab
+        SET paymentType = #{paymentType}
+        WHERE currencyId = #{currencyId}
+    </update>
+
+    <update id="TransactionCurrency_updateUpStatus" parameterType="java.util.Map">
+        UPDATE transaction_currency_tab
+        SET upStatus = #{upStatus}
+        WHERE currencyId = #{currencyId}
+    </update>
+
+    <select id="TransactionCurrency_listTransactionCurrencyAll" resultType="TransactionCurrencyDO">
+        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, upRange, downRange,
+            paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
+        FROM transaction_currency_tab
     </select>
 </mapper>
