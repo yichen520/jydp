@@ -116,7 +116,7 @@ public class BackerTransactionUserDealController {
             transactionUserDealList = transactionUserDealService.listTransactionUserDealForBack(userAccount, paymentType, currencyName, startAddTime, endAddTime, startPendTime, endPendTime, pageNumber, pageSize);
         }
         //全部币种
-        List<TransactionCurrencyVO> transactionCurrencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
+        List<TransactionCurrencyDO> transactionCurrencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
 
         request.setAttribute("pageNumber", pageNumber);
         request.setAttribute("startAddTime", startAddTimeStr);

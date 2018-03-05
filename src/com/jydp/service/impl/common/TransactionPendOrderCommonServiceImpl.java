@@ -38,12 +38,12 @@ public class TransactionPendOrderCommonServiceImpl implements ITransactionPendOr
      */
     public void getPendOrder(){
         //获取所有币种
-        List<TransactionCurrencyVO> transactionCurrencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
+        List<TransactionCurrencyDO> transactionCurrencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
         if(transactionCurrencyList.isEmpty()){
             return;
         }
 
-        for (TransactionCurrencyVO transactionCurrency: transactionCurrencyList) {
+        for (TransactionCurrencyDO transactionCurrency: transactionCurrencyList) {
             //买入记录
             List<TransactionPendOrderDTO> transactionPendOrderBuyList =
                     transactionPendOrderService.listLatestRecords(1,transactionCurrency.getCurrencyId(),15);
