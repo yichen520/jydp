@@ -24,7 +24,7 @@ public interface ITransactionPendOrderService {
      * @param tradePriceSum 交易总价，包括手续费(卖出时填0)
      * @return 操作成功：返回true，操作失败：返回false
      */
-    boolean insertPendOrder(int userId, int paymentType, int currencyId, String currencyName, double buyFee,
+    TransactionPendOrderDO insertPendOrder(int userId, int paymentType, int currencyId, String currencyName, double buyFee,
                             double pendingPrice, double pendingNumber, double tradePriceSum);
 
     /**

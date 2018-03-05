@@ -70,13 +70,13 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
      * @return 操作成功：返回true，操作失败：返回false
      */
     @Transactional
-    public boolean insertPendOrder(int userId, int paymentType, int currencyId, String currencyName, double buyFee,
+    public TransactionPendOrderDO insertPendOrder(int userId, int paymentType, int currencyId, String currencyName, double buyFee,
                                    double pendingPrice, double pendingNumber, double tradePriceSum){
 
         //查询用户信息
         UserDO user = userService.getUserByUserId(userId);
         if(user == null){
-            return false;
+            return null;
         }
 
         Timestamp curTime = DateUtil.getCurrentTime();
@@ -148,7 +148,9 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
             }
         }
 
+
         //增加用户挂单记录
+        TransactionPendOrderDO resultOrder = null;
         if(excuteSuccess){
             String pendingOrderNo = SystemCommonConfig.TRANSACTION_PEND_ORDER +
                     DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
@@ -172,14 +174,18 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
             transactionPendOrder.setFeeRemark(feeRemark);
             transactionPendOrder.setAddTime(curTime);
 
-            excuteSuccess = transactionPendOrderDao.insertPendOrder(transactionPendOrder);
+            resultOrder = transactionPendOrderDao.insertPendOrder(transactionPendOrder);
+            if(resultOrder == null){
+                excuteSuccess = false;
+            }
         }
 
         if(!excuteSuccess){
             //数据回滚
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
-        return excuteSuccess;
+
+        return resultOrder;
     }
 
     /**

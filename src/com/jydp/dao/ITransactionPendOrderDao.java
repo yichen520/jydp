@@ -18,7 +18,7 @@ public interface ITransactionPendOrderDao {
      * @param transactionPendOrderDO 待新增的挂单记录
      * @return 操作成功：返回true，操作失败：返回false
      */
-    boolean insertPendOrder(TransactionPendOrderDO transactionPendOrderDO);
+    TransactionPendOrderDO insertPendOrder(TransactionPendOrderDO transactionPendOrderDO);
 
     /**
      * 修改挂单记录
