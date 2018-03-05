@@ -59,7 +59,7 @@ public interface ITransactionCurrencyDao {
      * 获取所有币种行情信息(web端)
      * @return 查询成功：返回所有币种行情信息；查询失败：返回null
      */
-    List<TransactionUserDealDTO> getTransactionCurrencyMarketForWeb();
+    List<TransactionUserDealDTO> getTransactionCurrencyMarketForWeb(Timestamp openTime, Timestamp beginTime, Timestamp endTime);
 
     /**
      * 查询币种个数（后台）

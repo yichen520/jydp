@@ -42,8 +42,8 @@
             <td class="new">最新成交价</td>
             <td class="money">买一价</td>
             <td class="money">卖一价</td>
-            <td class="money">24小时成交量</td>
-            <td class="uplift">24小时涨跌</td>
+            <td class="money">今日成交量</td>
+            <td class="uplift">今日涨跌</td>
             <td class="operate">操作</td>
         </tr>
         <c:forEach items="${transactionUserDealDTOList}" var="transactionUserDeal">
@@ -123,6 +123,47 @@
         autoplay: 4000,
         autoplayDisableOnInteraction: false
     });
+
+    $(document).ready(function(){
+        //循环执行，每隔10秒钟执行一次 10000
+        var t1=window.setInterval(refreshMarket, 10000);
+    });
+
+    //刷新币种行情
+    function refreshMarket() {
+        $.ajax({
+            url: '<%=path %>/userWeb/homePage/getCurrencyMarket',
+            type: 'post',
+            dataType: 'json',
+            success: function (result) {
+                if (result.code == 1) {
+                    var currencyMarket = result.data;
+                    if (currencyMarket != null) {
+                        var marketList = currencyMarket.transactionUserDealDTOList;
+                        $(".coinInfo").remove();
+                        if (marketList != null) {
+                            for (var i = marketList.length-1; i >=0; i--) {
+                                var transactionUserDeal = marketList[i];
+                                $(".coinTitle").after(
+                                    '<tr class="coinInfo">' +
+                                    '<td class="coin">' +
+                                    '<img src="' + transactionUserDeal.currencyImgUrl + '"/>' +
+                                    '<span>' + transactionUserDeal.currencyName + '(' + transactionUserDeal.currencyShortName + '/USD)</span>' +
+                                    '</td>' +
+                                    '<td class="new">' + transactionUserDeal.latestPrice + '</td>' +
+                                    '<td class="money">' + transactionUserDeal.buyOnePrice + '</td>' +
+                                    '<td class="money">' + transactionUserDeal.sellOnePrice + '</td>' +
+                                    '<td class="money">' + transactionUserDeal.volume + '</td>' +
+                                    '<td class="uplift in">' + transactionUserDeal.change + '%</td>' +
+                                    '<td class="operate"><a href="#">去交易</a></td>' +
+                                    '</tr>');
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
 </script>
 
 </body>

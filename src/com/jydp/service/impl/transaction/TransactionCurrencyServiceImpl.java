@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -94,7 +97,28 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
     public List<TransactionUserDealDTO> getTransactionCurrencyMarketForWeb() {
 
         List<TransactionUserDealDTO> transactionUserDealDTOList = null;
-        transactionUserDealDTOList = transactionCurrencyDao.getTransactionCurrencyMarketForWeb();
+        //当日开盘时间
+        Timestamp openTime = DateUtil.stringToTimestamp(DateUtil.longToTimeStr(DateUtil.lingchenLong(),DateUtil.dateFormat4) + " 08:00:00");
+
+        Date todayOpenDate = openTime;
+        Calendar calendar = Calendar.getInstance();
+        Calendar oldCalendar = Calendar.getInstance();
+        calendar.setTime(todayOpenDate);
+        oldCalendar.setTime(todayOpenDate);
+        calendar.add(Calendar.DAY_OF_YEAR,-1);//昨天开盘时间
+        Date yesterdayOpenDate = calendar.getTime();
+        String time = "";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        time = sdf.format(yesterdayOpenDate);
+        //昨日开盘时间
+        Timestamp beginTime = Timestamp.valueOf(time);
+
+        //当日开盘前一秒
+        oldCalendar.add(Calendar.SECOND, -1);
+        time = sdf.format(oldCalendar.getTime());
+        Timestamp endTime = Timestamp.valueOf(time);
+
+        transactionUserDealDTOList = transactionCurrencyDao.getTransactionCurrencyMarketForWeb(openTime,beginTime,endTime);
         if (transactionUserDealDTOList != null) {
             for (TransactionUserDealDTO transactionUserDeal:transactionUserDealDTOList) {
                 double yesterdayLastPrice = transactionUserDeal.getYesterdayLastPrice();

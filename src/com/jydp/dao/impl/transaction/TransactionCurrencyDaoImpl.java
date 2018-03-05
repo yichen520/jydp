@@ -143,12 +143,17 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
      * @return 查询成功：返回所有币种行情信息；查询失败：返回null
      */
     @Override
-    public List<TransactionUserDealDTO> getTransactionCurrencyMarketForWeb() {
+    public List<TransactionUserDealDTO> getTransactionCurrencyMarketForWeb(Timestamp openTime, Timestamp beginTime, Timestamp endTime) {
 
         List<TransactionUserDealDTO> transactionUserDealDTOList = null;
 
+        Map<String,Object> map = new HashMap<>();
+        map.put("openTime", openTime);
+        map.put("beginTime", beginTime);
+        map.put("endTime", endTime);
+
         try {
-            transactionUserDealDTOList = sqlSessionTemplate.selectList("TransactionCurrency_getTransactionCurrencyMarketForWeb");
+            transactionUserDealDTOList = sqlSessionTemplate.selectList("TransactionCurrency_getTransactionCurrencyMarketForWeb",map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }

@@ -8,6 +8,7 @@ import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DO.user.UserIdentificationDO;
+import com.jydp.entity.DO.user.UserIdentificationImageDO;
 import com.jydp.interceptor.BackerWebInterceptor;
 import com.jydp.service.IUserIdentificationImageService;
 import com.jydp.service.IUserIdentificationService;
@@ -52,6 +53,31 @@ public class IdentificationController {
     @Autowired
     private IUserIdentificationImageService userIdentificationImageService;
 
+    /** 实名认证页面入口 */
+    @RequestMapping("/show")
+    public String show(HttpServletRequest request) {
+        String userIdStr = StringUtil.stringNullHandle(request.getParameter("userId"));
+        String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
+        if (!StringUtil.isNotNull(userIdStr) || !StringUtil.isNotNull(userAccount)) {
+            request.setAttribute("code", 2);
+            request.setAttribute("message", "参数为空");
+            return "page/web/login";
+        }
+        request.setAttribute("userId", userIdStr);
+        request.setAttribute("userAccount", userAccount);
+
+        UserIdentificationDO existIdentification = userIdentificationService.getUserIdentificationByUserAccountLately(userAccount);
+        if (existIdentification != null) {
+            List<UserIdentificationImageDO> userIdentificationImageList =
+                    userIdentificationImageService.listUserIdentificationImageByIdentificationId(existIdentification.getId());
+
+            request.setAttribute("identification", existIdentification);
+            request.setAttribute("identificationImageList", userIdentificationImageList);
+            return "page/web/identificationAfresh";
+        }
+        return "page/web/identification";
+    }
+
     /** 重新认证，新增实名认证 */
     @RequestMapping("/showAdd")
     public String showAdd(HttpServletRequest request) {
@@ -63,8 +89,7 @@ public class IdentificationController {
             return "page/web/login";
         }
 
-        int userId = Integer.parseInt(userIdStr);
-        request.setAttribute("userId", userId);
+        request.setAttribute("userId", userIdStr);
         request.setAttribute("userAccount", userAccount);
         return "page/web/identification";
     }
@@ -146,7 +171,7 @@ public class IdentificationController {
         }
 
         UserDO userDO = userService.getUserByUserId(userId);
-        if (userDO == null || userDO.getAccountStatus() != 1) {
+        if (userDO == null) {
             responseJson.setCode(5);
             responseJson.setMessage("您的账号不存在！");
             return responseJson;

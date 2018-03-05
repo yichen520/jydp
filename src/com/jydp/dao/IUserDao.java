@@ -1,6 +1,7 @@
 package com.jydp.dao;
 
 import com.jydp.entity.DO.user.UserDO;
+import com.jydp.entity.DTO.UserAmountCheckDTO;
 import com.jydp.entity.DTO.UserDTO;
 
 import java.sql.Timestamp;
@@ -30,26 +31,28 @@ public interface IUserDao {
     /**
      * 查询用户账号总数（后台）
      * @param userAccount 用户账号（可为null）
+     * @param phoneAreaCode 手机号区号（可为null）
      * @param phoneNumber 手机号（可为null）
-     * @param accountStatus 账号状态（可为null）
+     * @param accountStatus 账号状态，1：启用，2：禁用，查询全部填0
      * @param startTime   开始时间(可为null)
      * @param endTime     结束时间(可为null)
      * @return 查询成功：返回用户账户总数，查询失败：返回0
      */
-    int countUserForBacker (String userAccount, String phoneNumber, int accountStatus, Timestamp startTime, Timestamp endTime);
+    int countUserForBacker (String userAccount, String phoneAreaCode, String phoneNumber, int accountStatus, Timestamp startTime, Timestamp endTime);
 
     /**
      * 查询用户账号列表（后台）
      * @param userAccount 用户账号（可为null）
+     * @param phoneAreaCode 手机号区号（可为null）
      * @param phoneNumber 手机号（可为null）
-     * @param accountStatus 账号状态（可为null）
+     * @param accountStatus 账号状态，1：启用，2：禁用，查询全部填0
      * @param startTime   开始时间(可为null)
      * @param endTime     结束时间(可为null)
      * @param pageNumber  当前页数
      * @param pageSize    查询条数
      * @return 查询成功：返回用户账户列表，查询失败：返回null
      */
-    List<UserDO> listUserForBacker (String userAccount, String phoneNumber, int accountStatus,
+    List<UserDO> listUserForBacker (String userAccount, String phoneAreaCode, String phoneNumber, int accountStatus,
                                            Timestamp startTime, Timestamp endTime, int pageNumber, int pageSize);
 
     /**
@@ -139,5 +142,26 @@ public interface IUserDao {
      * @return 操作成功：返回true，操作失败：返回false
      */
     boolean updateReduceUserBalanceLock(int userId, double userBalanceLock);
+
+    /**
+     * 查询用户账户错误总数（定时器对账操作）
+     * @param currencyId 币种id（美元）
+     * @param checkAmount 可用资产最大差额（美元）
+     * @param checkAmountLock 锁定资产最大差额（美元）
+     * @return 查询成功：返回用户账户错误总数，查询失败：返回0
+     */
+    int countCheckUserAmountForTimer(int currencyId, double checkAmount, double checkAmountLock);
+
+    /**
+     * 查询用户账户错误列表信息（定时器对账操作）
+     * @param currencyId 币种id（美元）
+     * @param checkAmount 可用资产最大差额（美元）
+     * @param checkAmountLock 锁定资产最大差额（美元）
+     * @param pageNumber 当前页数
+     * @param pageSize 每页大小
+     * @return 查询成功：返回用户账户错误列表信息，查询失败：返回null
+     */
+    List<UserAmountCheckDTO> listCheckUserAmountForTimer(int currencyId, double checkAmount, double checkAmountLock,
+                                                         int pageNumber, int pageSize);
 
 }

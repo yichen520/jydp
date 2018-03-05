@@ -6,10 +6,26 @@ package config;
  */
 public class RedisKeyConfig {
 
+    /** 凌晨至开盘时间 */
+    public static final long OPENING_TIME  = 1L * 8 * 60 * 60 * 1000;
+    /** 一天的总毫秒数 */
+    public static final long DAY_TIME  = 1L * 24 * 60 * 60 * 1000;
+    /** 当前交易价格 */
+    public static final String NOW_PRICE = "nowPrice_";
     /** 买一价key */
     public static final String BUY_ONE_KEY = "buyOne";
     /** 卖一价key */
     public static final String SELL_ONE_KEY = "sellOne";
+    /** 今日最高价 */
+    public static final String TODAY_MAX_PRICE = "todayMax_";
+    /** 今日最低价 */
+    public static final String TODAY_MIN_PRICE = "todayMin_";
+    /** 今日涨幅 */
+    public static final String TODAY_RANGE = "todayRange_";
+    /** 24小时成交量 */
+    public static final String DAY_TURNOVER = "dayTurnove_";
+    /** 24小时成交额 */
+    public static final String DAY_VOLUME_OF_TRANSACTION = "dayTransaction_";
     /** 买入挂单记录key（后面需跟上币种id） */
     public static final String BUY_KEY = "transactionPendOrderBuyList";
     /** 卖出挂单记录key（后面需跟上币种id） */
