@@ -8,18 +8,18 @@
 	<insert id="TransactionCurrency_insertTransactionCurrency" parameterType="TransactionCurrencyDO">
         INSERT INTO transaction_currency_tab
             (currencyShortName, currencyName, currencyImg, buyFee, sellFee, upRange, downRange,
-             paymentType, upStatus, backerAccount, ipAddress, startTime, endTime, upTime, addTime)
+             paymentType, upStatus, backerAccount, ipAddress, upTime, addTime)
         VALUES
             (#{currencyShortName}, #{currencyName}, #{currencyImg}, #{buyFee}, #{sellFee}, #{upRange},
-            #{downRange}, #{paymentType}, #{upStatus}, #{backerAccount}, #{ipAddress}, #{startTime}, #{endTime},
-             #{upTime}, #{addTime})
+            #{downRange}, #{paymentType}, #{upStatus}, #{backerAccount}, #{ipAddress}, #{upTime}, #{addTime})
     </insert>
 
 	<select id="TransactionCurrency_getTransactionCurrencyByCurrencyId" parameterType="int" resultType="TransactionCurrencyVO">
         SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, upRange, downRange,
-            paymentType, upStatus, backerAccount, ipAddress, startTime, endTime, upTime, addTime
+        paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         WHERE currencyId = #{currencyId}
+        AND upStatus = 2
 	</select>
 
 	<update id="TransactionCurrency_updateTransactionCurrency" parameterType="TransactionCurrencyDO">
@@ -28,9 +28,9 @@
             currencyImg = #{currencyImg}, buyFee = #{buyFee}, sellFee = #{sellFee},
             upRange = #{upRange}, downRange = #{downRange}, paymentType = #{paymentType},
             upStatus = #{upStatus}, backerAccount = #{backerAccount}, ipAddress = #{ipAddress},
-            startTime = #{startTime}, endTime = #{endTime},
             upTime = #{upTime},  addTime = #{addTime}
         WHERE currencyId = #{currencyId}
+              AND upStatus = 2
     </update>
 
     <delete id="TransactionCurrency_deleteTransactionCurrencyByCurrencyId" parameterType="int">
@@ -40,15 +40,17 @@
 
     <select id="TransactionCurrency_getTransactionCurrencyListForWeb" resultType="TransactionCurrencyVO">
         SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, upRange, downRange,
-            paymentType, upStatus, backerAccount, ipAddress, startTime, endTime, upTime, addTime
+            paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
+        WHERE upStatus = 2
     </select>
 
     <select id="TransactionCurrency_getTransactionCurrencyByCurrencyName" parameterType="java.lang.String" resultType="TransactionCurrencyVO">
         SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, upRange, downRange,
-            paymentType, upStatus, backerAccount, ipAddress, startTime, endTime, upTime, addTime
+            paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         WHERE currencyName = #{currencyName}
+              AND upStatus = 2
     </select>
 
     <select id="TransactionCurrency_getTransactionCurrencyMarketForWeb" resultType="TransactionUserDealDTO">
@@ -59,5 +61,70 @@
         COALESCE((SELECT sum(d2.currencyNumber) FROM transaction_user_deal_tab d2 WHERE d2.currencyId = t.currencyId AND d2.addTime > ( NOW( ) - INTERVAL 1 DAY ) AND d2.addTime <![CDATA[ < ]]> NOW() ),0) AS volume,
         COALESCE(getYesterdayLastPriceByCurrencyId(t.currencyId),0) as yesterdayLastPrice
         FROM transaction_currency_tab t
+    </select>
+
+    <select id="TransactionCurrency_countTransactionCurrencyForBack" parameterType="java.util.Map" resultType="int">
+        SELECT  COUNT(currencyId)
+        FROM transaction_currency_tab
+        <where>
+            <if test="currencyName != null and currencyName !=''">
+                AND currencyName LIKE CONCAT('%', #{currencyName}, '%')
+            </if>
+            <if test="backerAccount != null and backerAccount !=''">
+                AND backerAccount LIKE CONCAT('%', #{backerAccount}, '%')
+            </if>
+            <if test="upStatus != 0">
+                AND upStatus = #{upStatus}
+            </if>
+            <if test="paymentType != 0">
+                AND paymentType = #{paymentType}
+            </if>
+            <if test="startAddTime != null">
+                AND addTime <![CDATA[ >= ]]> #{startAddTime}
+            </if>
+            <if test="endAddTime != null">
+                AND addTime <![CDATA[ <= ]]> #{endAddTime}
+            </if>
+            <if test="startUpTime != null">
+                AND startUpTime <![CDATA[ >= ]]> #{startUpTime}
+            </if>
+            <if test="endUpTime != null">
+                AND endUpTime <![CDATA[ <= ]]> #{endUpTime}
+            </if>
+        </where>
+    </select>
+
+    <select id="TransactionCurrency_listTransactionCurrencyForBack" parameterType="java.util.Map" resultType="TransactionCurrencyVO">
+        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, upRange, downRange,
+                 paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
+        FROM transaction_currency_tab
+        <where>
+            <if test="currencyName != null and currencyName !=''">
+                AND currencyName LIKE CONCAT('%', #{currencyName}, '%')
+            </if>
+            <if test="backerAccount != null and backerAccount !=''">
+                AND backerAccount LIKE CONCAT('%', #{backerAccount}, '%')
+            </if>
+            <if test="upStatus != 0">
+                AND upStatus = #{upStatus}
+            </if>
+            <if test="paymentType != 0">
+                AND paymentType = #{paymentType}
+            </if>
+            <if test="startAddTime != null">
+                AND addTime <![CDATA[ >= ]]> #{startAddTime}
+            </if>
+            <if test="endAddTime != null">
+                AND addTime <![CDATA[ <= ]]> #{endAddTime}
+            </if>
+            <if test="startUpTime != null">
+                AND startUpTime <![CDATA[ >= ]]> #{startUpTime}
+            </if>
+            <if test="endUpTime != null">
+                AND endUpTime <![CDATA[ <= ]]> #{endUpTime}
+            </if>
+        </where>
+        ORDER BY addTime DESC
+        LIMIT #{startNumber}, #{pageSize}
     </select>
 </mapper>

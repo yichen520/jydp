@@ -216,13 +216,13 @@
             <p class="popInput">
                 <label class="popName">成交数量<span class="star">*</span></label>
                 <input type="text" class="entry" placeholder="成交币种的数量" maxlength="18"
-                       onkeyup="matchUtil(this, 'double')" onblur="matchUtil(this, 'double')"
+                       onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)"
                        id="addCurrencyNumber" name="addCurrencyNumber"/>
             </p>
             <p class="popInput">
                 <label class="popName">成交单价<span class="star">*</span></label>
                 <input type="text" class="entry" placeholder="成交币种的单价，单位：美元" maxlength="18"
-                       onkeyup="matchUtil(this, 'double')" onblur="matchUtil(this, 'double')"
+                       onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)"
                        id="addCurrencyPrice" name="addCurrencyPrice"/>
             </p>
             <p class="popInput">
@@ -335,8 +335,7 @@
             $(popObj).fadeOut("fast");
         });
         $(".yes").click(function(){
-            $(".mask").fadeOut("fast");
-            $(popObj).fadeOut("fast");
+
         });
     });
 
@@ -376,11 +375,12 @@
 
     //动态计算总价
     function mul() {
-        var number = parseFloat($("#addCurrencyNumber").val());
-        var price = parseFloat($("#addCurrencyPrice").val());
+        var number = parseFloat($("#addCurrencyNumber").val()) * 1000000;
+        var price = parseFloat($("#addCurrencyPrice").val()) * 1000000;
         if (number > 0) {
             if (price > 0) {
-                var total = Math.floor(number * price * 1000000) / 1000000;
+                var total = Math.floor(number * price / 1000000 / 1000000);
+                /*var tota = mulMaxNumber(total);*/
                 $("#addTotalPrice").html(total);
                 return;
             }
@@ -402,25 +402,24 @@
         var payType = $("#addPaymentType").val();
         var excTime = $("#addExecuteTime").val();
 
-        if (!number > 0 || !price > 0) {
-            addBoo = false;
-            openTips("请验证数量和单价是否合理");
-            return;
-        }
-
-        if (curName == "") {
-            addBoo = false;
-            openTips("请选择一个币种");
-            return;
-        }
         if (excTime == "") {
             addBoo = false;
             openTips("请选择执行时间");
             return;
         }
+        if (curName == "" || curName == null) {
+            addBoo = false;
+            openTips("请选择一个币种");
+            return;
+        }
         if (payType == null || payType == 0) {
             addBoo = false;
             openTips("请选择一个收支类型");
+            return;
+        }
+        if (!number > 0 || !price > 0) {
+            addBoo = false;
+            openTips("请验证数量和单价是否合理");
             return;
         }
 
@@ -648,6 +647,8 @@
                 var message = resultData.message;
                 if (code != 1 && message != "") {
                     addMoreBoo = false;
+                    var file = document.getElementById('file');
+                    file.value = ''; //虽然file的value不能设为有字符的值，但是可以设置为空值
                     openTips(message);
                     return;
                 }
@@ -668,8 +669,8 @@
     mapMatch['double'] = true;
     mapMatch['phone'] = /[^\d]/g;
     mapMatch['email'] = /([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
-    function matchUtil(o, str) {
-        mapMatch[str] === true ? matchDouble(o, 6) : o.value = o.value.replace(mapMatch[str], '');
+    function matchUtil(o, str, nu) {
+        mapMatch[str] === true ? matchDouble(o, nu) : o.value = o.value.replace(mapMatch[str], '');
     }
     function matchDouble(o, num){
         var matchStr = /^-?\d+\.?\d{0,num}$/;
@@ -685,6 +686,39 @@
             }
         }
         mul();
+    }
+    //超大位数显示   返回字符串
+    function mulMaxNumber(value) {
+        value = "" + value;
+        var mulArray = value.split("e+");
+        if (mulArray == null) {
+            return 0;
+        }
+        if (mulArray.length == 1) {
+            return mulArray[0];
+        }
+
+        var decimal = new Number(mulArray[1]);
+        var suffix = "";
+        for (var i = 0; i < decimal; i++) {
+            suffix += "0";
+        }
+
+        var pointArray = mulArray[0].split(".");
+        if (pointArray == null) {
+            return 0;
+        }
+
+        var prefix = "";
+        var pointLength = pointArray.length;
+        if (pointLength == 1) {
+            prefix = "" + pointArray[0]
+        }
+        if (pointLength == 2) {
+            prefix = "" + pointArray[0] + pointArray[1];
+        }
+
+        return prefix + suffix;
     }
 
 </script>
