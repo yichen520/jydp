@@ -9,6 +9,8 @@ import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.service.ITransactionCurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -67,6 +69,57 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
     }
 
     /**
+     * 新增交易币种(后台)
+     * @param currencyShortName 货币简称
+     * @param currencyName 货币名称
+     * @param currencyImg  币种徽标
+     * @param buyFee  买入手续费
+     * @param sellFee  卖出手续费
+     * @param upRange  涨停幅度
+     * @param downRange  跌停幅度
+     * @param paymentType  交易状态,1:正常，2:停牌
+     * @param upStatus  上线状态,1:待上线,2:上线中,3:停牌,4:已下线
+     * @param backerAccount  管理员账号
+     * @param ipAddresse  操作时的ip地址
+     * @param upTime  上线时间
+     * @param addTime 添加时间
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    @Transactional
+    public boolean addTransactionCurrency(String currencyShortName, String currencyName, String currencyImg,
+                                   double buyFee, double sellFee, double upRange, double downRange,
+                                   int paymentType, int upStatus, String backerAccount, String ipAddresse,
+                                          Timestamp upTime,Timestamp addTime){
+        TransactionCurrencyDO transactionCurrency = new TransactionCurrencyDO();
+        transactionCurrency.setCurrencyName(currencyName);
+        transactionCurrency.setCurrencyShortName(currencyShortName);
+        transactionCurrency.setCurrencyImg(currencyImg);
+        transactionCurrency.setBuyFee(buyFee);
+        transactionCurrency.setSellFee(sellFee);
+        transactionCurrency.setUpRange(upRange);
+        transactionCurrency.setDownRange(downRange);
+        transactionCurrency.setPaymentType(paymentType);
+        transactionCurrency.setUpStatus(upStatus);
+        transactionCurrency.setBackerAccount(backerAccount);
+        transactionCurrency.setIpAddress(ipAddresse);
+        transactionCurrency.setAddTime(addTime);
+
+        boolean addBoo = false;
+
+        if (upTime == null) {
+            transactionCurrency.setUpTime(DateUtil.getCurrentTime());
+            transactionCurrency.setPaymentType(1);
+            transactionCurrency.setUpStatus(2);
+            addBoo = transactionCurrencyDao.insertTransactionCurrency(transactionCurrency);
+        } else {
+            transactionCurrency.setUpTime(upTime);
+            addBoo = transactionCurrencyDao.insertTransactionCurrency(transactionCurrency);
+        }
+
+        return addBoo;
+    }
+
+    /**
      * 根据币种Id获取交易币种
      * @param currencyId  币种Id
      * @return  操作成功：返回交易币种，操作失败：返回null
@@ -98,7 +151,7 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      * @return 查询成功：返回币种信息列表；查询失败：返回null
      */
     @Override
-    public List<TransactionCurrencyDO> getTransactionCurrencyListForWeb() {
+    public List<TransactionCurrencyVO> getTransactionCurrencyListForWeb() {
         return transactionCurrencyDao.getTransactionCurrencyListForWeb();
     }
 
@@ -190,5 +243,64 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
                                                                Timestamp startAddTime, Timestamp endAddTime, Timestamp startUpTime, Timestamp endUpTime, int pageNumber, int pageSize){
         return transactionCurrencyDao.listTransactionCurrencyForBack(currencyName, paymentType, upStatus, backAccount,
                                         startAddTime, endAddTime, startUpTime, endUpTime, pageNumber, pageSize);
+    }
+
+    /**
+     * 停，复牌操作
+     * @param currencyId  币种Id
+     * @param paymentType  交易状态,1:正常，2:停牌
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    @Transactional
+    public boolean updatePaymentType(int currencyId, int paymentType){
+        boolean excBoo = transactionCurrencyDao.updatePaymentType(currencyId, paymentType);
+
+        //停牌同时修改上线状态
+        if (excBoo && paymentType == 2) {
+            excBoo = transactionCurrencyDao.updateUpStatus(currencyId, 3);
+        }
+        if (excBoo && paymentType == 1) {
+            excBoo = transactionCurrencyDao.updateUpStatus(currencyId, 2);
+        }
+
+        //数据回滚
+        if(!excBoo){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+
+        return excBoo;
+    }
+
+    /**
+     * 上，下线币种操作
+     * @param currencyId  币种Id
+     * @param upStatus  上线状态,,2:上线中,4:已下线
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    @Transactional
+    public boolean updateUpStatus(int currencyId, int upStatus){
+
+        boolean upBoo = transactionCurrencyDao.updateUpStatus(currencyId, upStatus);
+
+        if (upStatus == 2) {
+            upBoo = transactionCurrencyDao.updatePaymentType(currencyId, 1);
+        }
+        if (upStatus == 4) {
+            upBoo = transactionCurrencyDao.updatePaymentType(currencyId, 2);
+        }
+
+        //数据回滚
+        if(!upBoo){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return upBoo;
+    }
+
+    /**
+     * 查询全部币种信息
+     * @return  操作成功：返回币种信息集合，操作失败：返回null
+     */
+    public List<TransactionCurrencyDO> listTransactionCurrencyAll(){
+        return transactionCurrencyDao.listTransactionCurrencyAll();
     }
 }

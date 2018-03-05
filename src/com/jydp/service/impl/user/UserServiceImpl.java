@@ -250,7 +250,7 @@ public class UserServiceImpl implements IUserService {
                 return false;
             }
             //查询所有币种
-            List<TransactionCurrencyDO> transactionCurrencyDOList = transactionCurrencyService.getTransactionCurrencyListForWeb();
+            List<TransactionCurrencyVO> transactionCurrencyDOList = transactionCurrencyService.getTransactionCurrencyListForWeb();
 
             if (transactionCurrencyDOList != null) {
                 List<UserCurrencyNumDO> userCurrencyNumDOList = new ArrayList<UserCurrencyNumDO>();

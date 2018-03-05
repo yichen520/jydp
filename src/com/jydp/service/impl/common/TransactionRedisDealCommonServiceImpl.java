@@ -5,6 +5,7 @@ import com.iqmkj.utils.DateUtil;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.DTO.TransactionDealPriceDTO;
+import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.service.IRedisService;
 import com.jydp.service.ITransactionCurrencyService;
 import com.jydp.service.ITransactionDealRedisService;
@@ -39,7 +40,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
     /** 将成交记录放进redis */
     @Override
     public void userDealForRedis() {
-        List<TransactionCurrencyDO> currencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
+        List<TransactionCurrencyVO> currencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
         if (currencyList == null || currencyList.isEmpty()) {
             return ;
         }
@@ -119,7 +120,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
         }*/
 
         //获取币种信息
-        List<TransactionCurrencyDO> transactionUserDeal= transactionCurrencyService.getTransactionCurrencyListForWeb();
+        List<TransactionCurrencyVO> transactionUserDeal= transactionCurrencyService.getTransactionCurrencyListForWeb();
         for(TransactionCurrencyDO transactionUser : transactionUserDeal){
             redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE + transactionUser.getCurrencyId(), 0);
             redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE + transactionUser.getCurrencyId(), 0);

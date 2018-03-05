@@ -20,6 +20,7 @@ public class TransactionPendOrderDO {
     private double dealNumber;  //成交数量
     private int pendingStatus;  //挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销
     private String remark;  //备注
+    private String feeRemark;  //费率备注，手续费
     private Timestamp endTime;  //完成时间
     private Timestamp addTime;  //添加时间
 
@@ -182,6 +183,22 @@ public class TransactionPendOrderDO {
      */
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    /**
+     * 费率备注，手续费
+     * @return the feeRemark
+     */
+    public String getFeeRemark() {
+        return feeRemark;
+    }
+
+    /**
+     * 费率备注，手续费
+     * @param feeRemark the feeRemark to set
+     */
+    public void setFeeRemark(String feeRemark) {
+        this.feeRemark = feeRemark;
     }
 
     /**
