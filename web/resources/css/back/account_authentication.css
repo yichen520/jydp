@@ -8,22 +8,25 @@
     width: 90px;
 }
 .time{
-    width: 180px;
+    width: 150px;
 }
 .account{
-    width: 200px;
+    width: 160px;
 }
 .tel{
     width: 130px;
 }
+.type{
+    width: 70px;
+}
 .identity{
-    width: 170px;
+    width: 220px;
 }
 .state{
     width: 110px;
 }
 .mark{
-    width: 210px;
+    width: 160px;
 }
 .operate{
     width: 110px;

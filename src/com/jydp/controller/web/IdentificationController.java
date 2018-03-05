@@ -26,7 +26,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -108,44 +107,47 @@ public class IdentificationController {
         String userIdStr = StringUtil.stringNullHandle(request.getParameter("userId"));
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
         String userName = StringUtil.stringNullHandle(request.getParameter("userName"));
+        String userCertTypeStr = StringUtil.stringNullHandle(request.getParameter("userCertType"));
         String userCertNo = StringUtil.stringNullHandle(request.getParameter("userCertNo"));
-        if (!StringUtil.isNotNull(userIdStr) || !StringUtil.isNotNull(userAccount)
+        if (!StringUtil.isNotNull(userIdStr) || !StringUtil.isNotNull(userAccount) || !StringUtil.isNotNull(userCertTypeStr)
                 ||!StringUtil.isNotNull(userName) || !StringUtil.isNotNull(userCertNo)) {
             responseJson.setCode(2);
             responseJson.setMessage("参数为空！");
             return responseJson;
         }
 
-        //姓名，身份证 格式判断
-        JsonObjectBO validateJson = validateNameAndCertNo(userName, userCertNo);
-        if (validateJson.getCode() != 1) {
-            responseJson.setCode(validateJson.getCode());
-            responseJson.setMessage(validateJson.getMessage());
-            return responseJson;
-        }
-
-        List<MultipartFile> imageList = new ArrayList<>();
-        // 转型为MultipartHttpRequest：
-        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        //获取文件名
-        Iterator<String> iter = multipartRequest.getFileNames();
-        while (iter.hasNext()) {
-            // 获得文件：
-            MultipartFile file = multipartRequest.getFile(iter.next().toString());
-            if (file != null) {
-                imageList.add(file);
+        int userCertType = Integer.parseInt(userCertTypeStr);
+        if (userCertType == 1) {
+            //姓名，身份证 格式判断
+            JsonObjectBO validateJson = validateNameAndCertNo(userName, userCertNo);
+            if (validateJson.getCode() != 1) {
+                responseJson.setCode(validateJson.getCode());
+                responseJson.setMessage(validateJson.getMessage());
+                return responseJson;
             }
         }
-        if (imageList.size() < 3) {
-            responseJson.setCode(5);
-            responseJson.setMessage("证件照至少上传三张");
+
+        // 转型为MultipartHttpRequest：
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        MultipartFile frontImg = multipartRequest.getFile("frontImg");
+        MultipartFile backImg = multipartRequest.getFile("backImg");
+        if (frontImg == null || frontImg.isEmpty() || frontImg.getSize() <= 0) {
+            responseJson.setCode(2);
+            responseJson.setMessage("请上传您的证件正面照");
             return responseJson;
         }
-        if (imageList.size() > 9) {
-            responseJson.setCode(5);
-            responseJson.setMessage("证件照不能超过9张");
+        if (backImg == null || backImg.isEmpty() || backImg.getSize() <= 0) {
+            responseJson.setCode(2);
+            responseJson.setMessage("请上传您的证件背面照");
             return responseJson;
         }
+        if (frontImg.getSize() >= 10*1024*1024 || backImg.getSize() >= 10*1024*1024) {
+            responseJson.setCode(3);
+            responseJson.setMessage("您的证件照太大了");
+            return responseJson;
+        }
+        //判断图片格式
+        //对于大于200K的图片 进行压缩，压缩到200K到400K之间
 
         int userId = Integer.parseInt(userIdStr);
         UserIdentificationDO existIdentification = userIdentificationService.getUserIdentificationByUserAccountLately(userAccount);
@@ -162,13 +164,13 @@ public class IdentificationController {
             }
         }
 
-        //一张身份证只能审核通过一次
+        /*//一张身份证只能审核通过一次
         boolean identificationBoo = userIdentificationService.validateIdentification(userCertNo);
         if (identificationBoo) {
             responseJson.setCode(5);
             responseJson.setMessage("此身份证已被使用！");
             return responseJson;
-        }
+        }*/
 
         UserDO userDO = userService.getUserByUserId(userId);
         if (userDO == null) {
@@ -181,13 +183,10 @@ public class IdentificationController {
         List<String> imageUrlList = new ArrayList<>();
         List<FileDataEntity> imageEntityList = new ArrayList<>();
         try {
-            for(MultipartFile images : imageList){
-                if (images == null || images.getSize() <= 0) {
-                    continue;
-                }
-                FileDataEntity fileData = new FileDataEntity(images.getOriginalFilename(), images.getInputStream());
-                imageEntityList.add(fileData);
-            }
+            FileDataEntity frontImgFileData = new FileDataEntity(frontImg.getOriginalFilename(), frontImg.getInputStream());
+            FileDataEntity backImgFileData = new FileDataEntity(backImg.getOriginalFilename(), backImg.getInputStream());
+            imageEntityList.add(frontImgFileData);
+            imageEntityList.add(backImgFileData);
         } catch (IOException e) {
             LogUtil.printErrorLog(e);
         }
@@ -206,7 +205,8 @@ public class IdentificationController {
         userIdentificationDO.setUserAccount(userDO.getUserAccount());  //用户账号
         userIdentificationDO.setUserName(userName);  //用户姓名
         userIdentificationDO.setUserPhone(userDO.getPhoneAreaCode() + userDO.getPhoneNumber());  //手机号
-        userIdentificationDO.setUserCertNo(userCertNo);  //身份证号
+        userIdentificationDO.setUserCertType(userCertType);  //证件类型
+        userIdentificationDO.setUserCertNo(userCertNo);  //证件号
         userIdentificationDO.setIdentificationStatus(1);
         userIdentificationDO.setAddTime(DateUtil.getCurrentTime());
 
