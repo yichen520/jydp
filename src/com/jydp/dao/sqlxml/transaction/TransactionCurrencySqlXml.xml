@@ -23,13 +23,12 @@
 
 	<update id="TransactionCurrency_updateTransactionCurrency" parameterType="TransactionCurrencyDO">
         UPDATE transaction_currency_tab
-        <set>
+        SET
             currencyShortName = #{currencyShortName}, currencyName = #{currencyName},
             currencyImg = #{currencyImg}, buyFee = #{buyFee}, sellFee = #{sellFee},
             upRange = #{upRange}, downRange = #{downRange}, paymentType = #{paymentType},
             upStatus = #{upStatus}, backerAccount = #{backerAccount}, ipAddress = #{ipAddress},
             upTime = #{upTime},  addTime = #{addTime}
-        </set>
         WHERE currencyId = #{currencyId}
     </update>
 
