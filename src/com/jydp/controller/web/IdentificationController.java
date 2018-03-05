@@ -191,7 +191,7 @@ public class IdentificationController {
 
         //本地缓存目录
         String path = request.getServletContext().getRealPath("/upload") + "/tempReduceImage/";
-        //压缩图片到本地缓存目录，再上传至图片服务器，删除缓存文件
+        //图片大于400k，压缩图片到本地缓存目录，再上传至图片服务器，最后删除缓存文件
         String frontImgSrc = "";
         if (frontImg.getSize() > 400*1024 ) {
             frontImgSrc = reduceImage(frontImg, path);
@@ -269,19 +269,17 @@ public class IdentificationController {
      * @return 压缩成功：返回图片路径，压缩失败：返回null
      */
     private String reduceImage(MultipartFile img, String path) {
-        StringBuffer url = new StringBuffer();
-        long size = img.getSize()/1024; //单位KB
-        if (size < 400 || size > 10000) {
-            return null;
-        }
+        StringBuffer url = null;
+        long size = img.getSize();
 
         try {
+            url = new StringBuffer();
             url.append(path);
             url.append(NumberUtil.createNumberStr(6));
             url.append(".jpg");
 
             //400K-1M 0.4
-            if (400 >= size || size < 1000) {
+            if (400*1024 <= size && size <= 1024*1024) {
                 Thumbnails.of(img.getInputStream())
                         .scale(1)
                         .outputQuality(0.5)
@@ -289,7 +287,7 @@ public class IdentificationController {
                         .toFile(url.toString());
             }
             //1M-5M  0.2
-            if (1000 >= size || size < 5000) {
+            if (1024*1024 < size && size <= 5*1024*1024) {
                 Thumbnails.of(img.getInputStream())
                         .scale(1)
                         .outputQuality(0.2)
@@ -297,7 +295,7 @@ public class IdentificationController {
                         .toFile(url.toString());
             }
             //5M-10M  0.1
-            if (5000 >= size || size < 10000) {
+            if (5*1024*1024 < size && size <= 10*1024*1024) {
                 Thumbnails.of(img.getInputStream())
                         .scale(1)
                         .outputQuality(0.1)
