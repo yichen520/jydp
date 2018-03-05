@@ -88,6 +88,27 @@ public class FileWriteLocalUtil {
 		}
 		return false;
 	}
+
+	/**
+	 * 删除文件
+	 * @param filePath  文件绝对路径
+	 * @return  删除成功：返回true，删除失败：返回false
+	 */
+	public static boolean deleteFileRealPath(String filePath){
+		if(!StringUtil.isNotNull(filePath)){
+			return false;
+		}
+
+		try{
+			File targetFile = new File(filePath);
+			if(targetFile != null && targetFile.exists()){
+				return targetFile.delete();
+			}
+		}catch(Exception e){
+			LogUtil.printErrorLog(e);
+		}
+		return false;
+	}
 	
 	/**
 	 * 删除过期文件（定时删除）
