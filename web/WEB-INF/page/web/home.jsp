@@ -142,7 +142,6 @@
                         var marketList = currencyMarket.transactionUserDealDTOList;
                         $(".coinInfo").remove();
                         if (marketList != null) {
-                            console.log(marketList);
                             for (var i = marketList.length-1; i >=0; i--) {
                                 var transactionUserDeal = marketList[i];
                                 $(".coinTitle").after(
