@@ -139,7 +139,7 @@ public class BackerTransactionMakeOrderController {
             }
         }
 
-        List<TransactionCurrencyVO> transactionCurrencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
+        List<TransactionCurrencyDO> transactionCurrencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
 
         request.setAttribute("pageNumber", pageNumber);
         request.setAttribute("startAddTime", startAddTimeStr);

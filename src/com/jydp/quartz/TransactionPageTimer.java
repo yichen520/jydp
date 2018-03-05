@@ -39,7 +39,7 @@ public class TransactionPageTimer {
 	}
 
     /** 每日八点更新最高与最低价更新 */
-    //@Scheduled(cron="0 0 8  * * ? ")  （功能待定）
+    @Scheduled(cron="0 0 8  * * ? ")  //（功能待定）
     public void updateWeeHoursBasisOfPrice(){
         transactionRedisDealCommonService.updateWeeHoursBasisOfPrice();
     }

@@ -364,7 +364,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
             UserCurrencyNumDO userCurrencyNum = userCurrencyNumService.getUserCurrencyNumByUserIdAndCurrencyId(
                     userId, currencyId);
             //判断冻结数量是否大于等于num
-            if(userCurrencyNum.getCurrencyNumberLock() < num){
+            if(userCurrencyNum == null || userCurrencyNum.getCurrencyNumberLock() < num){
                 return false;
             }
             //减少冻结数量
