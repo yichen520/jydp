@@ -4,12 +4,9 @@ import com.jydp.dao.ITransactionUserDealDao;
 import com.jydp.entity.DO.transaction.TransactionUserDealDO;
 import com.jydp.entity.VO.TransactionUserDealVO;
 import com.jydp.service.ITransactionUserDealService;
-import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -48,6 +45,7 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
      * @param currencyName  货币名称
      * @param transactionPrice 成交单价
      * @param currencyNumber  成交数量
+     * @param feeNumber  成交费率
      * @param currencyTotalPrice  成交总价
      * @param remark  备注
      * @param pendTime  挂单时间
@@ -55,8 +53,8 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
      * @return  操作成功：返回true，操作失败：返回false
      */
     public boolean insertTransactionUserDeal(String orderNo, String pendingOrderNo, int userId, String userAccount, int paymentType,
-                                             int currencyId, String currencyName, double transactionPrice, double currencyNumber, double currencyTotalPrice,
-                                             String remark, Timestamp pendTime, Timestamp addTime){
+                                             int currencyId, String currencyName, double transactionPrice, double currencyNumber, double feeNumber,
+                                             double currencyTotalPrice, String remark, Timestamp pendTime, Timestamp addTime){
         TransactionUserDealDO transactionUserDealDO = new TransactionUserDealDO();
         transactionUserDealDO.setOrderNo(orderNo);
         transactionUserDealDO.setPendingOrderNo(pendingOrderNo);
@@ -67,6 +65,7 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
         transactionUserDealDO.setCurrencyName(currencyName);
         transactionUserDealDO.setTransactionPrice(transactionPrice);
         transactionUserDealDO.setCurrencyNumber(currencyNumber);
+        transactionUserDealDO.setFeeNumber(feeNumber);
         transactionUserDealDO.setCurrencyTotalPrice(currencyTotalPrice);
         transactionUserDealDO.setRemark(remark);
         transactionUserDealDO.setPendTime(pendTime);

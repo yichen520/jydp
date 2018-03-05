@@ -1,0 +1,432 @@
+body{
+    background-color: #ffffff !important;
+}
+.top{
+    float: left;
+    width: 1200px;
+    height: 105px;
+}
+.coin{
+    float: left;
+    padding: 15px 15px 15px 0;
+    text-align: center;
+    font-size: 16px;
+    color: #666666;
+}
+.coinLogo{
+    margin-bottom: 10px;
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.coinInfo{
+    float: right;
+    display: table;
+    height: 105px;
+}
+.priceNow{
+    float: left;
+    vertical-align: middle;
+    margin-top: 40px;
+    margin-right: 10px;
+    font-size: 28px;
+    color: #68adfa;
+}
+.increase{
+    float: left;
+    padding: 0 5px;
+    width: 85px;
+    height: 105px;
+    text-align: center;
+}
+.info{
+    float: left;
+    padding: 0 5px;
+    width: 130px;
+    height: 105px;
+    text-align: center;
+}
+.number{
+    display: inline-block;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    width: 100%;
+    font-size: 18px;
+}
+.rise{
+    color: #e83a33;
+}
+.fall{
+    color: #4dac7b;
+}
+.price{
+    color: #555555;
+}
+.infoName{
+    display: inline-block;
+    width: 100%;
+    color: #999999;
+    font-size: 12px;
+}
+.left{
+    float: left;
+    width: 765px;
+}
+.charts{
+    width: 765px;
+    height: 370px;
+    border: 1px solid #ececec;
+}
+.right{
+    float: right;
+    width: 405px;
+}
+.account{
+    width: 405px;
+    -webkit-box-shadow:  0 0 16px 2px rgba(237,237,237,0.9);
+    box-shadow:  0 0 16px 2px rgba(237,237,237,0.9);
+    background-color: #ffffff;
+}
+.accountList{
+    width: 405px;
+    height: 40px;
+    line-height: 40px;
+}
+.accountList:nth-child(even){
+    background-color: #fafafa;
+}
+.listName{
+    float: left;
+    padding-left: 15px;
+    width: 100px;
+    height: 40px;
+    border-right: 1px solid #ececec;
+    font-size: 14px;
+    color: #333333;
+}
+.listMoney{
+    float: left;
+    margin-left: 15px;
+    width: 235px;
+    overflow: hidden;
+}
+.tradeArea{
+    float: left;
+    margin-top: 15px;
+    width: 765px;
+    height: 367px;
+    -webkit-box-shadow: 0 0  16px 2px rgba(237,237,237,0.9);
+    box-shadow: 0 0 16px 2px rgba(237,237,237,0.9);
+    background-color: #ffffff;
+}
+.buy{
+    float: left;
+    margin: 20px 0;
+    padding: 0 20px;
+    width: 342px;
+    border-right: 1px solid #ececec;
+}
+.buyTitle{
+    color: #e83a33;
+    font-size: 18px;
+}
+.buyAmount{
+    font-size: 16px;
+}
+.buyInput{
+    float: left;
+    margin-top: 10px;
+    width: 342px;
+}
+.serviceInput{
+    float: left;
+    margin-top: 5px;
+    width: 342px;
+}
+.tradeName{
+    display: inline-block;
+    width: 80px;
+    font-size: 14px;
+    color: #333333;
+}
+.entry{
+    vertical-align: middle;
+    padding-left: 5px;
+    width: 245px;
+    height: 35px;
+    border: 1px solid #cccccc;
+    font-size: 14px;
+    color: #bbbbbb;
+}
+.max{
+    display: inline-block;
+    margin-left: 85px;
+    margin-bottom: 10px;
+    width: 245px;
+    font-size: 13px;
+    color: #999999;
+}
+.all{
+    font-size: 16px;
+    color: #333333;
+}
+.service{
+    font-size: 13px;
+    color: #999999;
+}
+.buyBtn{
+    margin: 15px 40px 0 80px;
+    width: 202px;
+    height: 40px;
+    border-radius: 20px;
+    border: none;
+    background-color: #e83a33;
+    text-align: center;
+    font-size: 18px;
+    color: #ffffff;
+    cursor: pointer;
+}
+.buyBtn:hover{
+    background-color: #d0342e;
+}
+.sell{
+    float: right;
+    margin: 20px 0;
+    padding: 0 20px;
+    width: 342px;
+}
+.sellBtn{
+    margin: 15px 40px 0 80px;
+    width: 202px;
+    height: 40px;
+    border-radius: 20px;
+    border: none;
+    background-color: #4dac7b;
+    text-align: center;
+    font-size: 18px;
+    color: #ffffff;
+    cursor: pointer;
+}
+.sellBtn:hover{
+    opacity: 0.8;
+}
+.entrust{
+    float: left;
+    margin-top: 15px;
+    width: 405px;
+    background-color: #ffffff;
+    -webkit-box-shadow: 0 0  16px 2px rgba(237,237,237,0.9);
+    box-shadow: 0 0 16px 2px rgba(237,237,237,0.9);
+}
+.entrustTop{
+    width: 405px;
+    height: 35px;
+    line-height: 35px;
+}
+.dealPrice{
+    float: left;
+    margin-left: 10px;
+    color: #e83a33;
+    font-size: 14px;
+}
+.count{
+    float: right;
+    margin-right: 10px;
+    color: #999999;
+    font-size: 14px;
+}
+.record{
+    float: left;
+    width: 405px;
+}
+.recordChoose{
+    float: left;
+    width: 395px;
+}
+.allRecord,.onlyBuy,.onlySell{
+    float: left;
+    margin-bottom: 5px;
+    width: 70px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 13px;
+    color: #999999;
+    text-align: center;
+    cursor: pointer;
+    border-bottom: 2px solid #ffffff;
+}
+.allRecord:hover,.onlyBuy:hover,.onlySell:hover{
+    color: #333333;
+}
+.chooseStyle{
+    color: #333333;
+    border-bottom: 2px solid #e83a33;
+}
+.entrustRange{
+    float: left;
+    width: 405px;
+}
+.scroll{
+    max-height: 442px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.entrustRange ::-webkit-scrollbar
+{
+    width: 7px;
+    height: 7px;
+    background-color: #F5F5F5;
+}
+/*定义滚动条轨道 内阴影+圆角*/
+.entrustRange ::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
+    border-radius: 7px;
+    background-color: #F5F5F5;
+}
+/*定义滑块 内阴影+圆角*/
+.entrustRange ::-webkit-scrollbar-thumb
+{
+    border-radius: 7px;
+    background-image: -webkit-gradient(linear, left bottom, left top,
+    color-stop(0.44, rgb(209, 232, 254)),
+    color-stop(0.72, rgb(209, 232, 254)));
+}
+.rangeName{
+    width: 405px;
+    height: 25px;
+    line-height: 25px;
+    background-color: #f7fbfe;
+    font-size: 13px;
+    color: #333333;
+}
+.rangeType{
+    float: left;
+    width: 36px;
+    margin-left: 10px;
+    text-align: left;
+}
+.rangePrice,.rangeNum{
+    float: left;
+    width: 100px;
+    margin-left: 10px;
+    text-align: left;
+}
+.rangeAmount{
+    float: left;
+    width: 119px;
+    margin-left: 10px;
+    text-align: left;
+}
+.sellRecord,.buyRecord{
+    padding-bottom: 5px;
+    float: left;
+    width: 405px;
+    border-top: 1px solid #ececec;
+}
+.recordInfo{
+    float: left;
+    margin-top: 5px;
+    width: 405px;
+    font-size: 13px;
+}
+.recordInfo span{
+    white-space: nowrap;
+    overflow: hidden;
+}
+.myEntrust,.myDeal{
+    margin-top: 15px;
+    display: inline-block;
+    width: 1200px;
+    background-color: #ffffff;
+    -webkit-box-shadow: 0 0  16px 2px rgba(237,237,237,0.9);
+    box-shadow: 0 0 16px 2px rgba(237,237,237,0.9);
+}
+.table{
+    margin: 0!important;
+    width: 1200px !important;
+}
+.myTitle{
+    padding: 0 20px;
+    width: 1160px;
+    height: 50px;
+    line-height: 50px;
+    color: #333333;
+    font-size: 18px;
+}
+.myTitle img{
+    width: 25px;
+    margin-left: 10px;
+    vertical-align:middle;
+}
+.more{
+    float: right;
+    color: #999999;
+    font-size: 14px;
+    cursor: pointer;
+}
+.more:hover{
+    opacity: 0.8;
+}
+.time{
+    width: 250px;
+}
+.type{
+    width: 130px;
+}
+.amount{
+    width: 220px;
+}
+.operate{
+    width: 100px;
+}
+.revoke{
+    width: 55px;
+    text-align: center;
+    font-size: 14px;
+    color: #68adfa;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+}
+.revoke:hover{
+    color: #52a1f9;
+}
+.dealTime{
+    width: 250px;
+}
+.dealAmount{
+    width: 256px;
+}
+.tableScroll{
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.myDeal ::-webkit-scrollbar
+{
+    width: 7px;
+    height: 7px;
+    background-color: #F5F5F5;
+}
+/*定义滚动条轨道 内阴影+圆角*/
+.myDeal ::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
+    border-radius: 7px;
+    background-color: #F5F5F5;
+}
+/*定义滑块 内阴影+圆角*/
+.myDeal ::-webkit-scrollbar-thumb
+{
+    border-radius: 7px;
+    background-image: -webkit-gradient(linear, left bottom, left top,
+    color-stop(0.44, rgb(209, 232, 254)),
+    color-stop(0.72, rgb(209, 232, 254)));
+}
+.tableTitle span{
+    padding: 0 5px;
+    float: left;
+    text-align: center;
+}

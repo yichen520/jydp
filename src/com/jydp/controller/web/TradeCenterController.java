@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  */
 @Controller
-@RequestMapping("/userWeb/tradeCenterController")
+@RequestMapping("/userWeb/tradeCenter")
 @Scope(value="prototype")
 public class TradeCenterController {
 
@@ -63,6 +63,8 @@ public class TradeCenterController {
     /** 展示 交易中心页面 */
     @RequestMapping(value = "/show")
     public String show(HttpServletRequest request) {
+
+
 
         return "page/web/tradeCenter";
     }
@@ -193,7 +195,7 @@ public class TradeCenterController {
 
         //挂单
         TransactionPendOrderDO transactionPendOrder = transactionPendOrderService.insertPendOrder(user.getUserId(), 1, currencyId,
-                transactionCurrency.getCurrencyName(), buyPrice, buyFee, buyNum, sumPrice);
+                transactionCurrency.getCurrencyName(), buyFee, buyPrice, buyNum, sumPrice);
 
         if(transactionPendOrder == null){
             resultJson.setCode(2);
@@ -230,11 +232,11 @@ public class TradeCenterController {
 
         //获取参数
         String sellPriceStr = StringUtil.stringNullHandle(request.getParameter("sellPrice"));
-        String buyNumStr = StringUtil.stringNullHandle(request.getParameter("buyNum"));
-        String buyPwd = StringUtil.stringNullHandle(request.getParameter("buyPwd"));
+        String sellNumStr = StringUtil.stringNullHandle(request.getParameter("sellNum"));
+        String sellPwd = StringUtil.stringNullHandle(request.getParameter("sellPwd"));
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
 
-        if (!StringUtil.isNotNull(buyPwd)) {
+        if (!StringUtil.isNotNull(sellPwd)) {
             resultJson.setCode(3);
             resultJson.setMessage("参数错误");
             return resultJson;
@@ -245,9 +247,9 @@ public class TradeCenterController {
             sellPrice = Double.parseDouble(sellPriceStr);
         }
 
-        double buyNum = 0;
-        if (StringUtil.isNotNull(buyNumStr)) {
-            buyNum = Double.parseDouble(buyNumStr);
+        double sellNum = 0;
+        if (StringUtil.isNotNull(sellNumStr)) {
+            sellNum = Double.parseDouble(sellNumStr);
         }
 
         int currencyId = 0;
@@ -290,7 +292,7 @@ public class TradeCenterController {
 
 
         //交易数量限制
-        if(buyNum <= 0){
+        if(sellNum <= 0){
             resultJson.setCode(3);
             resultJson.setMessage("交易数量不能小于等于0");
             return resultJson;
@@ -317,21 +319,21 @@ public class TradeCenterController {
             }
         }
 
-        if(buyPwd == "123456"){
+        if(sellPwd == "123456"){
             resultJson.setCode(3);
             resultJson.setMessage("支付密码不能为原始密码");
             return resultJson;
         }
 
-        buyPwd = MD5Util.toMd5(buyPwd);
-        boolean checkResult = userService.validateUserPay(user.getUserAccount(), buyPwd);
+        sellPwd = MD5Util.toMd5(sellPwd);
+        boolean checkResult = userService.validateUserPay(user.getUserAccount(), sellPwd);
         if(!checkResult){
             resultJson.setCode(4);
             resultJson.setMessage("支付密码错误");
             return resultJson;
         }
 
-        if(userCurrencyNum.getCurrencyNumber() < buyNum){
+        if(userCurrencyNum.getCurrencyNumber() < sellNum){
             resultJson.setCode(5);
             resultJson.setMessage("用户币不足");
             return resultJson;
@@ -339,7 +341,7 @@ public class TradeCenterController {
 
         //挂单
         TransactionPendOrderDO transactionPendOrder = transactionPendOrderService.insertPendOrder(user.getUserId(), 2, currencyId,
-                transactionCurrency.getCurrencyName(), sellPrice, 0, buyNum, 0);
+                transactionCurrency.getCurrencyName(), 0, sellPrice, sellNum, 0);
 
         if(transactionPendOrder == null){
             resultJson.setCode(2);

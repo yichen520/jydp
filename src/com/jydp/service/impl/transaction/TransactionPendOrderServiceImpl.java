@@ -86,7 +86,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
         if(paymentType == 1){
             //减少用户美金
             if(excuteSuccess){
-                excuteSuccess = userService.updateReduceUserBalanceLock(userId, tradePriceSum);
+                excuteSuccess = userService.updateReduceUserBalance(userId, tradePriceSum);
             }
             //增加用户锁定美金
             if(excuteSuccess){
@@ -115,7 +115,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
             //增加系统账户记录
             if (excuteSuccess) {
                 excuteSuccess = systemAccountAmountService.addSystemAccountAmount(SystemAccountAmountConfig.PEND_FEE,
-                        tradePriceSum - pendingPrice * pendingNumber);
+                        NumberUtil.doubleUpFormat(tradePriceSum - pendingPrice * pendingNumber,8));
             }
         } else if(paymentType == 2){
             //减少用户币数量
@@ -157,7 +157,8 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
                     NumberUtil.createNumberStr(10);
             String feeRemark = "";
             if(paymentType == 1){
-                feeRemark = "费率" + buyFee + "%，手续费$" + (tradePriceSum - pendingPrice * pendingNumber);
+                feeRemark = "费率" + buyFee * 100 + "%，手续费$" +
+                        NumberUtil.doubleUpFormat(tradePriceSum - pendingPrice * pendingNumber,8);
             }
             TransactionPendOrderDO transactionPendOrder = new TransactionPendOrderDO();
             transactionPendOrder.setPendingOrderNo(pendingOrderNo);
@@ -428,7 +429,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
 
             excuteSuccess = transactionUserDealService.insertTransactionUserDeal(orderNo,
                     transactionPendOrder.getPendingOrderNo(), userId, user.getUserAccount(),
-                    3, currencyId, transactionPendOrder.getCurrencyName(), 0, num,
+                    3, currencyId, transactionPendOrder.getCurrencyName(), 0, num,0,
                     0,"撤销挂单", transactionPendOrder.getAddTime(), curTime);
         }
 

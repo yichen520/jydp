@@ -33,6 +33,7 @@ public interface ITransactionUserDealService {
      * @param currencyName  货币名称
      * @param transactionPrice 成交单价
      * @param currencyNumber  成交数量
+     * @param feeNumber  成交费率
      * @param currencyTotalPrice  成交总价
      * @param remark  备注
      * @param pendTime  挂单时间
@@ -40,8 +41,8 @@ public interface ITransactionUserDealService {
      * @return  操作成功：返回true，操作失败：返回false
      */
     boolean insertTransactionUserDeal(String orderNo, String pendingOrderNo, int userId, String userAccount, int paymentType,
-                                             int currencyId, String currencyName, double transactionPrice, double currencyNumber, double currencyTotalPrice,
-                                             String remark, Timestamp pendTime, Timestamp addTime);
+                                      int currencyId, String currencyName, double transactionPrice, double currencyNumber,
+                                      double feeNumber, double currencyTotalPrice, String remark, Timestamp pendTime, Timestamp addTime);
 
     /**
      * 查询成交记录条数(后台)
