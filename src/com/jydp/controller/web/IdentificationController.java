@@ -23,8 +23,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import java.awt.*;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -104,6 +107,7 @@ public class IdentificationController {
             return responseJson;
         }
 
+        //参数处理
         String userIdStr = StringUtil.stringNullHandle(request.getParameter("userId"));
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
         String userName = StringUtil.stringNullHandle(request.getParameter("userName"));
@@ -127,7 +131,7 @@ public class IdentificationController {
             }
         }
 
-        // 转型为MultipartHttpRequest：
+        // 转型为MultipartHttpRequest：图片处理
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         MultipartFile frontImg = multipartRequest.getFile("frontImg");
         MultipartFile backImg = multipartRequest.getFile("backImg");
@@ -141,13 +145,38 @@ public class IdentificationController {
             responseJson.setMessage("请上传您的证件背面照");
             return responseJson;
         }
-        if (frontImg.getSize() >= 10*1024*1024 || backImg.getSize() >= 10*1024*1024) {
-            responseJson.setCode(3);
-            responseJson.setMessage("您的证件照太大了");
+        //判断图片格式和大小
+        JsonObjectBO frontImgJson = checkImageFile(frontImg);
+        if (frontImgJson.getCode() != 1) {
+            responseJson.setCode(frontImgJson.getCode());
+            responseJson.setMessage(frontImgJson.getMessage());
             return responseJson;
         }
-        //判断图片格式
-        //对于大于200K的图片 进行压缩，压缩到200K到400K之间
+        JsonObjectBO backImgJson = checkImageFile(backImg);
+        if (backImgJson.getCode() != 1) {
+            responseJson.setCode(backImgJson.getCode());
+            responseJson.setMessage(backImgJson.getMessage());
+            return responseJson;
+        }
+        /*//对于大于200K的图片 进行压缩，压缩到200K到400K之间
+        生成输出流到本地缓存目录，再上传至图片服务器，删除缓存文件
+        try {
+            File file = new File();
+            Thumbnails.of(frontImg.getInputStream())
+                    .scale(1)
+                    .outputQuality(0.4)
+                    .toFile(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+
+        /*//一张身份证只能审核通过一次
+        boolean identificationBoo = userIdentificationService.validateIdentification(userCertNo);
+        if (identificationBoo) {
+            responseJson.setCode(5);
+            responseJson.setMessage("此身份证已被使用！");
+            return responseJson;
+        }*/
 
         int userId = Integer.parseInt(userIdStr);
         UserIdentificationDO existIdentification = userIdentificationService.getUserIdentificationByUserAccountLately(userAccount);
@@ -163,15 +192,6 @@ public class IdentificationController {
                 return responseJson;
             }
         }
-
-        /*//一张身份证只能审核通过一次
-        boolean identificationBoo = userIdentificationService.validateIdentification(userCertNo);
-        if (identificationBoo) {
-            responseJson.setCode(5);
-            responseJson.setMessage("此身份证已被使用！");
-            return responseJson;
-        }*/
-
         UserDO userDO = userService.getUserByUserId(userId);
         if (userDO == null) {
             responseJson.setCode(5);
@@ -191,7 +211,7 @@ public class IdentificationController {
             LogUtil.printErrorLog(e);
         }
 
-        if (imageEntityList.size() > 0) {
+        if (imageEntityList.size() == 2) {
             imageUrlList = FileWriteRemoteUtil.uploadFileList(imageEntityList, FileUrlConfig.file_remote_identificationImage_url);
         }
         if (imageUrlList == null || imageUrlList.size() <= 0) {
@@ -219,6 +239,48 @@ public class IdentificationController {
 
         responseJson.setCode(5);
         responseJson.setMessage("操作失败");
+        return responseJson;
+    }
+
+    /**
+     * 验证图片格式 和限制图片大小
+     * @param uploadImg 上传的文件
+     * @return 验证通过：返回code=1，验证失败：返回code!=1
+     */
+    private JsonObjectBO checkImageFile(MultipartFile uploadImg) {
+        JsonObjectBO responseJson = new JsonObjectBO();
+
+        String fileName = uploadImg.getOriginalFilename();
+        String extUpp = fileName.substring(fileName.lastIndexOf(".") + 1);
+
+        //根据扩展名判断是否为要求的图片
+        if (!extUpp.matches("^[(jpg)|(jpeg)|(png)|(JPG)|(JPEG)|(PNG)]+$")) {
+            responseJson.setCode(3);
+            responseJson.setMessage("请上传jpg、jpeg、png格式的图片");
+            return responseJson;
+        }
+        //根据图片内容、长宽判断是否为图片文件
+        InputStream inputStream = null;
+        try {
+            inputStream = uploadImg.getInputStream();
+            Image img = ImageIO.read(inputStream);
+            if(img == null || img.getWidth(null) <= 0 || img.getHeight(null) <= 0){
+                responseJson.setCode(3);
+                responseJson.setMessage("请上传图片文件");
+                return responseJson;
+            }
+        } catch (IOException e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (uploadImg.getSize() >= 10*1024*1024) {
+            responseJson.setCode(3);
+            responseJson.setMessage("您的证件照太大了");
+            return responseJson;
+        }
+
+        responseJson.setCode(1);
+        responseJson.setMessage("验证通过");
         return responseJson;
     }
 
