@@ -63,14 +63,15 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
      * @param paymentType 收支类型,1：买入，2：卖出
      * @param currencyId 币种Id
      * @param currencyName 货币名称
+     * @param buyFee 买入手续费
      * @param pendingPrice 挂单单价
      * @param pendingNumber 挂单数量
      * @param tradePriceSum 交易总价，包括手续费(卖出时可填0)
      * @return 操作成功：返回true，操作失败：返回false
      */
     @Transactional
-    public boolean insertPendOrder(int userId, int paymentType, int currencyId, String currencyName, double pendingPrice,
-                                   double pendingNumber, double tradePriceSum){
+    public boolean insertPendOrder(int userId, int paymentType, int currencyId, String currencyName, double buyFee,
+                                   double pendingPrice, double pendingNumber, double tradePriceSum){
 
         //查询用户信息
         UserDO user = userService.getUserByUserId(userId);
@@ -152,6 +153,10 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
             String pendingOrderNo = SystemCommonConfig.TRANSACTION_PEND_ORDER +
                     DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
                     NumberUtil.createNumberStr(10);
+            String feeRemark = "";
+            if(paymentType == 1){
+                feeRemark = "费率" + buyFee + "%，手续费$" + (tradePriceSum - pendingPrice * pendingNumber);
+            }
             TransactionPendOrderDO transactionPendOrder = new TransactionPendOrderDO();
             transactionPendOrder.setPendingOrderNo(pendingOrderNo);
             transactionPendOrder.setUserId(userId);
@@ -164,6 +169,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
             transactionPendOrder.setDealNumber(0);
             transactionPendOrder.setPendingStatus(1);
             transactionPendOrder.setRemark("");
+            transactionPendOrder.setFeeRemark(feeRemark);
             transactionPendOrder.setAddTime(curTime);
 
             excuteSuccess = transactionPendOrderDao.insertPendOrder(transactionPendOrder);
