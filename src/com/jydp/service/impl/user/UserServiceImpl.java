@@ -1,5 +1,6 @@
 package com.jydp.service.impl.user;
 
+import com.iqmkj.utils.BigDecimalUtil;
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.IUserDao;
@@ -11,12 +12,14 @@ import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DTO.UserAmountCheckDTO;
 import com.jydp.entity.DTO.UserDTO;
-import com.jydp.entity.VO.TransactionCurrencyVO;
+import com.jydp.entity.VO.UserDealCapitalMessageVO;
 import com.jydp.service.IBackerHandleUserRecordBalanceService;
+import com.jydp.service.IRedisService;
 import com.jydp.service.ITransactionCurrencyService;
 import com.jydp.service.IUserBalanceService;
 import com.jydp.service.IUserCurrencyNumService;
 import com.jydp.service.IUserService;
+import config.RedisKeyConfig;
 import config.SystemCommonConfig;
 import config.UserBalanceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +59,10 @@ public class UserServiceImpl implements IUserService {
     /**  后台管理员增减用户余额记录 */
     @Autowired
     private IBackerHandleUserRecordBalanceService backerHandleUserRecordBalanceService;
+
+    /** redis服务 */
+    @Autowired
+    private IRedisService redisService;
 
     /**
      * 新增用户账号
@@ -445,5 +452,50 @@ public class UserServiceImpl implements IUserService {
         return userDao.listCheckUserAmountForTimer(currencyId, checkAmount, checkAmountLock, pageNumber, pageSize);
     }
 
+    /**
+     * 查询用户交易中心相关资产信息
+     * @param userId 用户id
+     * @param currencyId 币种id
+     * @return 查询成功：返回用户账户错误总数，查询失败：返回0
+     */
+    public UserDealCapitalMessageVO countCheckUserAmountForTimer(int userId, int currencyId){
+        UserDealCapitalMessageVO userDealCapitalMessage = new UserDealCapitalMessageVO();
+        UserDO user = userDao.getUserByUserId(userId);
+        if(user != null){
+            double userBalance = NumberUtil.doubleFormat(user.getUserBalance(), 6);
+            userDealCapitalMessage.setUserBalance(userBalance);
+            double userBalanceLock = NumberUtil.doubleFormat(user.getUserBalanceLock(), 6);
+            userDealCapitalMessage.setUserBalanceLock(userBalanceLock);
+            double currencyNumberSum = BigDecimalUtil.add(userBalance, userBalanceLock);
+            userDealCapitalMessage.setCurrencyNumberSum(currencyNumberSum);
+        }
 
+        //查询用户币数量
+        List<UserCurrencyNumDO> userCurrencyNumList = userCurrencyNumService.getUserCurrencyNumByUserId(userId);
+        if(userCurrencyNumList != null && userCurrencyNumList.size()>0){
+            //根据币种id查询币种当前交易价格
+            double nowPrice = 0;
+            if(redisService.getValue(RedisKeyConfig.NOW_PRICE + currencyId) != null){
+                nowPrice = (double) redisService.getValue(RedisKeyConfig.NOW_PRICE + currencyId);
+            }
+
+            for(UserCurrencyNumDO userCurrencyNum : userCurrencyNumList){
+                if(userCurrencyNum.getCurrencyId() == currencyId){
+                    //账户总资产计算
+                    double currencyNumberSum = BigDecimalUtil.add(userCurrencyNum.getCurrencyNumber() , userCurrencyNum.getCurrencyNumberLock());
+                    currencyNumberSum = BigDecimalUtil.mul(currencyNumberSum, nowPrice);
+                    currencyNumberSum = NumberUtil.doubleFormat(currencyNumberSum, 6);
+                    currencyNumberSum = BigDecimalUtil.add(currencyNumberSum, userDealCapitalMessage.getCurrencyNumberSum());
+                    userDealCapitalMessage.setCurrencyNumberSum(currencyNumberSum);
+
+                    userDealCapitalMessage.setCurrencyNumber(userCurrencyNum.getCurrencyNumber());
+                    userDealCapitalMessage.setCurrencyNumberLock(userCurrencyNum.getCurrencyNumberLock());
+                    userDealCapitalMessage.setCurrencyNumberSum(currencyNumberSum);
+                }
+            }
+        }
+
+
+        return userDealCapitalMessage;
+    }
 }
