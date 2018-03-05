@@ -190,7 +190,7 @@
             <p class="popInput">
                 <label class="popName">手机号<span class="star">*</span>：</label>
                 <span class="popCode">
-                    <select class="areTel" id="areaCode" id="">
+                    <select class="areTel" id="areaCode" >
                         <c:forEach items="${phoneAreaMap}" var="phoneArea">
                             <option value="${phoneArea.key }">${phoneArea.value }&nbsp;${phoneArea.key }</option>
                         </c:forEach>
