@@ -69,26 +69,26 @@ public class TradeCommonServiceImpl implements ITradeCommonService {
      * @return JsonObjectBO 交易成功与否信息
      */
     public JsonObjectBO trade(TransactionPendOrderDO order){
-        JsonObjectBO jsonObject = new JsonObjectBO();
+        JsonObjectBO resultJson = new JsonObjectBO();
 
         double pendingNumber = order.getPendingNumber();
         double dealNumber = order.getDealNumber();
         double restNumber = pendingNumber - dealNumber;
 
         if(restNumber < 0){
-            jsonObject.setCode(5);
-            jsonObject.setMessage("数据异常");
-            return jsonObject;
+            resultJson.setCode(5);
+            resultJson.setMessage("数据异常");
+            return resultJson;
         }else if(restNumber == 0){
-            jsonObject.setCode(1);
-            jsonObject.setMessage("该挂单已经交易完成");
-            return jsonObject;
+            resultJson.setCode(1);
+            resultJson.setMessage("该挂单已经交易完成");
+            return resultJson;
         }
 
         //匹配交易
-        jsonObject = tradeHandle(order);
-        int code = jsonObject.getCode();
-        JSONObject data = jsonObject.getData();
+        resultJson = tradeHandle(order);
+        int code = resultJson.getCode();
+        JSONObject data = resultJson.getData();
         TransactionPendOrderDO returnOrder = null;
         if(data != null) {
             returnOrder = JSON.parseObject(data.toString(), TransactionPendOrderDO.class);
@@ -99,12 +99,12 @@ public class TradeCommonServiceImpl implements ITradeCommonService {
             if(returnOrder != null){
                 double dealNum = returnOrder.getDealNumber();
                 if(dealNum > 0){
-                    jsonObject = trade(returnOrder);
+                    resultJson = trade(returnOrder);
                 }
             }
         }
 
-        return jsonObject;
+        return resultJson;
     }
 
 
@@ -115,7 +115,7 @@ public class TradeCommonServiceImpl implements ITradeCommonService {
      */
     @Transactional
     public JsonObjectBO tradeHandle(TransactionPendOrderDO order){
-        JsonObjectBO jsonObject = new JsonObjectBO();
+        JsonObjectBO resultJson = new JsonObjectBO();
         //获取该挂单里信息
         int userId = order.getUserId();
         int currencyId = order.getCurrencyId();
@@ -123,20 +123,19 @@ public class TradeCommonServiceImpl implements ITradeCommonService {
         int pendingStatus = order.getPendingStatus();
 
         if(pendingStatus != 1 && pendingStatus != 2){
-            jsonObject.setCode(4);
-            jsonObject.setMessage("该挂单不在交易状态");
-            return jsonObject;
+            resultJson.setCode(4);
+            resultJson.setMessage("该挂单不在交易状态");
+            return resultJson;
         }
 
         //获取币种信息
         TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
         if(transactionCurrency == null){
-            jsonObject.setCode(3);
-            jsonObject.setMessage("没有该币种");
-            return jsonObject;
+            resultJson.setCode(3);
+            resultJson.setMessage("没有该币种");
+            return resultJson;
         }
-        //获取买入/卖出手续费
-        double buyFee = transactionCurrency.getBuyFee()/100;
+        //获取卖出手续费
         double sellFee = transactionCurrency.getSellFee()/100;
 
         //获取对应的最新的挂单记录
@@ -148,16 +147,16 @@ public class TradeCommonServiceImpl implements ITradeCommonService {
         }
         TransactionPendOrderDO matchOrder = transactionPendOrderService.getLastTransactionPendOrder(0, currencyId, matchPaymentType);
         if(matchOrder == null){
-            jsonObject.setCode(1);
-            jsonObject.setMessage("没有对应的挂单");
-            return jsonObject;
+            resultJson.setCode(1);
+            resultJson.setMessage("没有对应的挂单");
+            return resultJson;
         }
         //如果匹配不上，直接返回false
         if((paymentType == 1 && order.getPendingPrice() < matchOrder.getPendingPrice()) ||
                 (paymentType == 2 && order.getPendingPrice() > matchOrder.getPendingPrice())){
-            jsonObject.setCode(1);
-            jsonObject.setMessage("匹配不到对应的挂单");
-            return jsonObject;
+            resultJson.setCode(1);
+            resultJson.setMessage("匹配不到对应的挂单");
+            return resultJson;
         }
 
         //业务执行状态
@@ -198,31 +197,29 @@ public class TradeCommonServiceImpl implements ITradeCommonService {
         int buyUserId = 0; //买方id
         int sellUsrId = 0; //卖方id
         double returnMoney = 0; //差价返还金额
-        double buyPrice = 0; //买方挂单总价（买方出价单价*交易数量*1.0002）
+        double buyPrice = 0; //买方挂单总价（买方出价单价*交易数量）
         if(paymentType == 1){
             tradePrice = matchOrder.getPendingPrice();
             buyUserId = userId;
             sellUsrId = matchOrder.getUserId();
-            returnMoney = (order.getPendingPrice() - tradePrice) * tradeNum * (1 + buyFee);
-            buyPrice = order.getPendingPrice() * tradeNum * (1 + buyFee);
+            returnMoney = (order.getPendingPrice() - tradePrice) * tradeNum;
+            buyPrice = order.getPendingPrice() * tradeNum;
         }else if(paymentType == 2){
             tradePrice = order.getPendingPrice();
             buyUserId = matchOrder.getUserId();
             sellUsrId = userId;
-            returnMoney = (matchOrder.getPendingPrice() - tradePrice) * tradeNum * (1 + buyFee);
-            buyPrice = matchOrder.getPendingPrice() * tradeNum * (1 + buyFee);
+            returnMoney = (matchOrder.getPendingPrice() - tradePrice) * tradeNum;
+            buyPrice = matchOrder.getPendingPrice() * tradeNum;
         }
 
         //成交总价
         double tradeMoney = tradePrice * tradeNum;
-        //计算买方消费金额
-        double buyMoney = tradeMoney * (1 + buyFee);
         //计算卖方获得金额
-        double sellMoney = tradeMoney * (1 - sellFee);
+        double sellMoney = NumberUtil.doubleFormat(tradeMoney * (1 - sellFee),8);
 
         //减少买方用户锁定美金
         if(excuteSuccess){
-            excuteSuccess = userService.updateReduceUserBalanceLock(buyUserId, returnMoney + buyMoney);
+            excuteSuccess = userService.updateReduceUserBalanceLock(buyUserId, buyPrice);
         }
         //增加买方用户美金
         if(excuteSuccess){
@@ -304,9 +301,9 @@ public class TradeCommonServiceImpl implements ITradeCommonService {
             String orderNo = SystemCommonConfig.USER_BALANCE +
                     DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
                     NumberUtil.createNumberStr(10);
-            remark = "买入" + order.getCurrencyName() + "，扣除锁定美金及手续费";
+            remark = "买入" + order.getCurrencyName() + "，扣除锁定美金";
             if(returnMoney > 0){
-                remark = "买入" + order.getCurrencyName() + "，扣除锁定美金及手续费,返还差价金额";
+                remark = "买入" + order.getCurrencyName() + "，扣除锁定美金,返还差价金额";
             }
 
             UserBalanceDO userBalance = new UserBalanceDO();
@@ -316,7 +313,7 @@ public class TradeCommonServiceImpl implements ITradeCommonService {
             userBalance.setCurrencyName(UserBalanceConfig.DOLLAR);
             userBalance.setFromType(UserBalanceConfig.PEND_SUCCESS);
             userBalance.setBalanceNumber(returnMoney);
-            userBalance.setFrozenNumber(-buyPrice);
+            userBalance.setFrozenNumber(-tradeMoney);
             userBalance.setRemark(remark);
             userBalance.setAddTime(curTime);
 
@@ -348,7 +345,7 @@ public class TradeCommonServiceImpl implements ITradeCommonService {
             String orderNo = SystemCommonConfig.USER_BALANCE +
                     DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
                     NumberUtil.createNumberStr(10);
-            remark = "卖出" + order.getCurrencyName() + "所得美金，扣除手续费";
+            remark = "卖出" + order.getCurrencyName() + "所得美金";
 
             UserBalanceDO userBalance = new UserBalanceDO();
             userBalance.setOrderNo(orderNo);
@@ -386,10 +383,8 @@ public class TradeCommonServiceImpl implements ITradeCommonService {
 
         //增加系统账户记录
         if (excuteSuccess) {
-            excuteSuccess = systemAccountAmountService.addSystemAccountAmount(SystemAccountAmountConfig.TRADE_BUY_FEE, tradeMoney*0.002);
-        }
-        if (excuteSuccess) {
-            excuteSuccess = systemAccountAmountService.addSystemAccountAmount(SystemAccountAmountConfig.TRADE_SELL_FEE,tradeMoney*0.002);
+            excuteSuccess = systemAccountAmountService.addSystemAccountAmount(SystemAccountAmountConfig.TRADE_SELL_FEE,
+                    NumberUtil.doubleUpFormat(tradeMoney*sellFee,8));
         }
 
         if(!excuteSuccess){
@@ -400,14 +395,14 @@ public class TradeCommonServiceImpl implements ITradeCommonService {
         TransactionPendOrderDO restOrder = transactionPendOrderService.getPendOrderByPendingOrderNo(order.getPendingOrderNo());
 
         if (excuteSuccess) {
-            jsonObject.setCode(1);
-            jsonObject.setMessage("交易成功");
-            jsonObject.setData(JSONObject.parseObject(JSON.toJSONString(restOrder)));
-            return jsonObject;
+            resultJson.setCode(1);
+            resultJson.setMessage("交易成功");
+            resultJson.setData(JSONObject.parseObject(JSON.toJSONString(restOrder)));
+            return resultJson;
         } else {
-            jsonObject.setCode(2);
-            jsonObject.setMessage("交易失败");
-            return jsonObject;
+            resultJson.setCode(2);
+            resultJson.setMessage("交易失败");
+            return resultJson;
         }
     }
 

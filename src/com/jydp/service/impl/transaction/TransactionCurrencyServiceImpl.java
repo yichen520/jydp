@@ -98,7 +98,7 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      * @return 查询成功：返回币种信息列表；查询失败：返回null
      */
     @Override
-    public List<TransactionCurrencyVO> getTransactionCurrencyListForWeb() {
+    public List<TransactionCurrencyDO> getTransactionCurrencyListForWeb() {
         return transactionCurrencyDao.getTransactionCurrencyListForWeb();
     }
 

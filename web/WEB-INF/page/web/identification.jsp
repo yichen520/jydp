@@ -37,29 +37,38 @@
             <span class="number">${userAccount}</span>
         </p>
 
-        <p class="phoneInput">
+        <p class="phoneInput phoneInputName">
             <label class="popName">姓名<span class="star">*</span></label>
-            <input type="text" id="userName" class="entry" placeholder="您的身份证姓名" maxlength="8"
-                   onkeyup="value=value.replace(/[^\u4E00-\u9FA5]/g,'')" onblur="value=value.replace(/[^\u4E00-\u9FA5]/g,'')"/>
+            <input type="text" id="userName" class="entry" placeholder="您的证件姓名" maxlength="16"/>
         </p>
 
         <p class="phoneInput">
             <label class="popName">证件号<span class="star">*</span></label>
-            <input type="text" id="userCertNo" class="entry" placeholder="您的身份证号码" maxlength="18"/>
+            <span class="popCode">
+                <select class="select" id="userCertType">
+                    <option value="1">身份证</option>
+                    <option value="2">护照</option>
+                </select>
+                <input type="text" id="userCertNo" class="phone" placeholder="您的证件号码" maxlength="18"/>
+            </span>
         </p>
 
         <p class="phoneInput">
             <label class="popName" style="line-height: 14px">证件照<span class="star">*</span></label>
             <span class="img">
-                 <span class="picBox" id="imageAdd">
-                     <img src="<%=path %>/resources/image/web/real.png" class="picMin"/>
-                     <input type="file" name="imageList" value="" class="file" onchange="fileOnchange(this)"/>
-                 </span>
+                <span class="picBox">
+                    <input type="file" id="frontImg" value="" class="file"/><img src="<%=path %>/resources/image/web/real.png" class="pic"/>
+                    <span>证件正面照</span>
+                </span>
+                <span class="picBox">
+                    <input type="file" id="backImg" value="" class="file"/><img src="<%=path %>/resources/image/web/real.png" class="pic"/>
+                    <span>证件反面照</span>
+                </span>
             </span>
         </p>
 
         <p class="phoneInput phoneInput_mark">
-            <span class="mark">提示：请上传您的证件正反面及手持证件照，否则可能会影响您的账号审核通过率</span>
+            <span class="mark">提示：请上传您的证件正反面，否则可能会影响您的账号审核通过率</span>
         </p>
         <input type="text" value="提&nbsp;交" class="submit" onfocus="this.blur()" onclick="add();"/>
     </div>
@@ -86,42 +95,17 @@
 
     }
 
-    //多图片上传
-    function fileOnchange(target) {
-        var check = checkFileImage(target);
+    $(".file").change(function () {
+        var check = checkFileImage(this);
         if(!check){
             return;
         }
 
-        var fileNum = $('.pic').length;
-
-        var objUrl = getObjectURL(target.files[0]);
-        console.log(objUrl);
+        var objUrl = getObjectURL(this.files[0]) ;
         if (objUrl) {
-            var dele = '<span class="picBox_max" id="imageDel_'+ fileNum +'">' +
-                            '<img src=' + objUrl + ' class="pic"/>' +
-                            '<span class="delete">' +
-                                '<img src="<%=path %>/resources/image/web/delete.png"/>' +
-                            '</span>' +
-                        '</span>';
-            $(target).parent().before(dele);
+            $(this).parent().find("img").attr("src", objUrl)
         }
-
-        $("#imageAdd").append("<input type='file' id='imageAdd_"+ fileNum +"' class='file' name='imageList' onchange='fileOnchange(this)'/>");
-
-        //删除图片
-        $(function () {
-            $(".picBox_max .delete").click(function () {
-                var id=$(this).parent().attr("id");
-                var idNum = id.substr(9, id.length)
-                $("#imageAdd_"+idNum).remove();
-
-                $(this).parent().remove();
-                limit(id);
-            });
-        });
-        limit(fileNum);
-    }
+    });
 
     function limit(num) {
         if (num == 8) {
@@ -145,40 +129,53 @@
         var userAccount = '${userAccount}';
         var userId = '${userId}';
         var userName = $("#userName").val();
+        var userCertType = $("#userCertType").val();
         var userCertNo = $("#userCertNo").val();
-        var imageList = document.getElementsByName("imageList");
+        var frontImg = $("#frontImg").val();
+        var backImg = $("#backImg").val();
 
         //$("#userName").val("");
         //$("#userCertNo").val("");
-        if (userName == null || userName == "") {
+        if (userName == null || userName == "" || userName.length > 16) {
             addBoo = false;
             return openTips("请输入您的姓名");
         }
-        if (userCertNo == null || userCertNo == "") {
+        if (userCertNo == null || userCertNo == "" || userCertNo.length > 18) {
             addBoo = false;
-            return openTips("请输入您的身份证号码");
+            return openTips("请输入您的证件号");
         }
-        if (!IdentityCodeValid(userCertNo)) {
-            addBoo = false;
-            return ;
+        //证件类型是身份证
+        if (userCertType == 1) {
+            if (userName.length > 8) {
+                addBoo = false;
+                return openTips("您的身份证姓名过长");
+            }
+            if(!userName || /[^\u4E00-\u9FA5]/g.test(userName)){
+                addBoo = false;
+                return openTips("身份证的姓名必须是中文");
+            }
+            if (!IdentityCodeValid(userCertNo)) {
+                addBoo = false;
+                return ;
+            }
         }
-        if (imageList.length < 4) {
+        if (frontImg == null || frontImg == "") {
             addBoo = false;
-            return openTips("请至少上传三张证件照");
+            return openTips("请上传您的证件正面照");
         }
-        if (imageList.length > 10) {
+        if (backImg == null || backImg == "") {
             addBoo = false;
-            return openTips("最多上传9张证件照");
+            return openTips("请上传您的证件反面照");
         }
 
         var formData = new FormData();
         formData.append("userAccount", userAccount);
         formData.append("userId", userId);
         formData.append("userName", userName);
+        formData.append("userCertType", userCertType);
         formData.append("userCertNo", userCertNo);
-        for (var i=0; i<imageList.length-1;i++) {
-            formData.append("image_"+i, imageList[i].files[0]);
-        }
+        formData.append("frontImg", $('#frontImg')[0].files[0]);
+        formData.append("backImg", $('#backImg')[0].files[0]);
         $.ajax({
             url: '<%=path %>' + "/userWeb/identificationController/add",
             type:'post',

@@ -110,8 +110,8 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
      * @return 查询成功：返回币种信息列表；查询失败：返回null
      */
     @Override
-    public List<TransactionCurrencyVO> getTransactionCurrencyListForWeb() {
-        List<TransactionCurrencyVO> TransactionCurrencyVOList = null;
+    public List<TransactionCurrencyDO> getTransactionCurrencyListForWeb() {
+        List<TransactionCurrencyDO> TransactionCurrencyVOList = null;
 
         try {
             TransactionCurrencyVOList = sqlSessionTemplate.selectList("TransactionCurrency_getTransactionCurrencyListForWeb");
