@@ -52,7 +52,7 @@
 
             <jsp:include page="/resources/page/common/paging.jsp"></jsp:include>
 
-            <form id="queryForm" action="<%=path %>/userWeb/webCustomerService/show" method="post">
+            <form id="queryForm" action="<%=path %>/userWeb/webCustomerService/show.htm" method="post">
                 <input type="hidden" id="queryPageNumber" name="pageNumber">
             </form>
         </div>
@@ -128,7 +128,7 @@
         }
 
         $.ajax({
-            url: '<%=path %>' + "/userWeb/webCustomerService/feedback",
+            url: '<%=path %>' + "/userWeb/webCustomerService/feedback.htm",
             type:'post',
             dataType:'json',
             async:true,
