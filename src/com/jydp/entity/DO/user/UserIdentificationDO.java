@@ -16,7 +16,7 @@ public class UserIdentificationDO {
     private String userName;  //用户姓名
     private String userPhone;  //手机号
     private int userCertType;  //证件类型，1:身份证，2：护照
-    private String userCertNo;  //身份证号码
+    private String userCertNo;  //证件号码
     private int identificationStatus;  //实名认证状态，1：待审核，2：审核通过，3：审核拒绝
     private String remark;  //备注
     private Timestamp identiTime;  //审核时间
@@ -137,7 +137,7 @@ public class UserIdentificationDO {
 
 
     /**
-     * 身份证号码
+     * 证件号码
      *
      * @return the user cert no
      */
@@ -146,7 +146,7 @@ public class UserIdentificationDO {
     }
 
     /**
-     * 身份证号码
+     * 证件号码
      *
      * @param userCertNo the user cert no
      */

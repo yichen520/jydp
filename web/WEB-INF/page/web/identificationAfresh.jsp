@@ -50,6 +50,15 @@
             <span class="number">${identification.userName}</span>
         </p>
         <p class="phoneInput">
+            <label class="popName">证件类型</label>
+            <c:if test="${identification.userCertType == 1}">
+                <span class="number">身份证</span>
+            </c:if>
+            <c:if test="${identification.userCertType == 2}">
+                <span class="number">护照</span>
+            </c:if>
+        </p>
+        <p class="phoneInput">
             <label class="popName">证件号</label>
             <span class="number">${identification.userCertNo}</span>
         </p>
