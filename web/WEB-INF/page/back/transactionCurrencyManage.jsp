@@ -153,7 +153,9 @@
                             <c:if test="${item.paymentType == 2 && item.upStatus == 3}">
                                 <input type="text" value="复&nbsp;牌" class="start" onfocus="this.blur()" onclick="goPayType('${item.currencyId}', 1)"/>
                             </c:if>
-                            <input type="text" value="修&nbsp;改" class="change" onfocus="this.blur()" onclick="goUpdate('${item}')"/>
+                            <input type="text" value="修&nbsp;改" class="change" onfocus="this.blur()"
+                                   onclick="goUpdate('${item.currencyId}', '${item.currencyName}','${item.currencyShortName}', '${item.buyFee}', '${item.sellFee}'
+                                           ,'${item.upRange}', '${item.downRange}', '${item.upTimeStr}')"/>
                         </td>
                     </tr>
                 </c:forEach>
@@ -357,25 +359,10 @@
 
     var popObj;
     $(function(){
-        $(".stop").click(function(){
-
-        });
-        $(".start").click(function(){
-
-        });
-        $(".online").click(function(){
-
-        });
-        $(".offLine").click(function(){
-
-        });
         $(".add").click(function(){
             $(".mask").fadeIn();
             $(".add_pop").fadeIn();
             popObj = ".add_pop"
-        });
-        $(".change").click(function(){
-
         });
         $(".cancel").click(function(){
             $(".mask").fadeOut("fast");
@@ -661,12 +648,20 @@
     }
 
     //去修改页面
-    function goUpdate(item){
-        currencyId = item.curId;
+    function goUpdate(currencId, currencyName, currencyShortName, buyFee, sellFee, upRange, downRange, upTime){
+
+        currencyId = currencId;
+
+        document.getElementById("currencyNameUp").value = currencyName;
+        document.getElementById("currencyShortNameUp").value = currencyShortName;
+        document.getElementById("buyFeeUp").value = buyFee * 100;
+        document.getElementById("sellFeeUp").value = sellFee * 100;
+        document.getElementById("upRangeUp").value = upRange * 100;
+        document.getElementById("downRangeUp").value = downRange * 100;
+        document.getElementById("c_onlineTime").value = upTime;
 
         $(".mask").fadeIn();
         $(".change_pop").fadeIn();
-        popObj = ".change_pop"
     }
 
     //修改
