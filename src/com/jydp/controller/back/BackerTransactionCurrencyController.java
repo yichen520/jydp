@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.*;
 import com.jydp.entity.BO.BackerSessionBO;
 import com.jydp.entity.BO.JsonObjectBO;
+import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.interceptor.BackerWebInterceptor;
 import com.jydp.service.ITransactionCurrencyService;
@@ -129,7 +130,7 @@ public class BackerTransactionCurrencyController {
                     upStatus, backAccount, startAddTime, endAddTime,  startUpTime, endUpTime, pageNumber, pageSize);
         }
 
-        List<TransactionCurrencyVO> transactionCurrencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
+        List<TransactionCurrencyDO> transactionCurrencyList = transactionCurrencyService.listTransactionCurrencyAll();
 
         request.setAttribute("pageNumber", pageNumber);
         request.setAttribute("startAddTime", startAddTimeStr);

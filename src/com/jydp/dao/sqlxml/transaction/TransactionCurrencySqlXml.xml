@@ -138,4 +138,10 @@
         SET upStatus = #{upStatus}
         WHERE currencyId = #{currencyId}
     </update>
+
+    <select id="TransactionCurrency_listTransactionCurrencyAll" resultType="TransactionCurrencyDO">
+        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, upRange, downRange,
+            paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
+        FROM transaction_currency_tab
+    </select>
 </mapper>
