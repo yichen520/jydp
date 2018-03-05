@@ -19,7 +19,7 @@
 				currencyNumber, currencyTotalPrice, addTime)
 		VALUES
 			(#{orderNo}, #{paymentType}, #{currencyId}, #{transactionPrice},
-			 #{currencyNumber}, #{currencyNumber}, #{addTime})
+			 #{currencyNumber}, #{currencyTotalPrice}, #{addTime})
 	</insert>
 
 	<insert id="TransactionDealRedis_insertTransactionDealRedisList" parameterType="java.util.List">
@@ -29,7 +29,7 @@
 		VALUES
 			<foreach collection="list" item="item" separator=",">
 				(#{item.orderNo}, #{item.paymentType}, #{item.currencyId}, #{item.transactionPrice},
-				#{item.currencyNumber}, #{item.currencyNumber}, #{item.addTime})
+				#{item.currencyNumber}, #{item.currencyTotalPrice}, #{item.addTime})
 			</foreach>
 	</insert>
 

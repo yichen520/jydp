@@ -13,7 +13,7 @@
 <body>
 <div class="menu">
     <span class="logo">
-        <a href="#" class="m_logo"><img src="<%=path %>/resources/image/web/trade_logo.png" /></a>交易大盘
+        <a href="<%=path %>/userWeb/homePage/show" class="m_logo"><img src="<%=path %>/resources/image/web/trade_logo.png" /></a>交易大盘
     </span>
 
     <ul class="nav">

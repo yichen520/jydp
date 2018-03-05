@@ -138,29 +138,44 @@
             success: function (result) {
                 if (result.code == 1) {
                     var currencyMarket = result.data;
-                    if (currencyMarket != null){
+                    if (currencyMarket != null) {
                         var marketList = currencyMarket.transactionUserDealDTOList;
                         $(".coinInfo").remove();
-                        for (var i = marketList.length-1; i >=0; i--) {
-                            var transactionUserDeal = marketList[i];
-                            $(".coinTitle").after(
-                                '<tr class="coinInfo">' +
-                                '<td class="coin">' +
-                                '<img src="' + transactionUserDeal.currencyImgUrl + '"/>' +
-                                '<span>' + transactionUserDeal.currencyName + '(' + transactionUserDeal.currencyShortName + '/USD)</span>' +
-                                '</td>' +
-                                '<td class="new">' + transactionUserDeal.latestPrice + '</td>' +
-                                '<td class="money">' + transactionUserDeal.buyOnePrice + '</td>' +
-                                '<td class="money">' + transactionUserDeal.sellOnePrice + '</td>' +
-                                '<td class="money">' + transactionUserDeal.volume + '</td>' +
-                                '<td class="uplift in">' + transactionUserDeal.change + '%</td>' +
-                                '<td class="operate"><a href="#">去交易</a></td>' +
-                                '</tr>');
+                        if (marketList != null) {
+                            for (var i = marketList.length-1; i >=0; i--) {
+                                var transactionUserDeal = marketList[i];
+                                $(".coinTitle").after(
+                                    '<tr class="coinInfo">' +
+                                    '<td class="coin">' +
+                                    '<img src="' + transactionUserDeal.currencyImgUrl + '"/>' +
+                                    '<span>' + transactionUserDeal.currencyName + '(' + transactionUserDeal.currencyShortName + '/USD)</span>' +
+                                    '</td>' +
+                                    '<td class="new">' + returnFloat(transactionUserDeal.latestPrice) + '</td>' +
+                                    '<td class="money">' + returnFloat(transactionUserDeal.buyOnePrice) + '</td>' +
+                                    '<td class="money">' + returnFloat(transactionUserDeal.sellOnePrice) + '</td>' +
+                                    '<td class="money">' + returnFloat(transactionUserDeal.volume) + '</td>' +
+                                    '<td class="uplift in">' + returnFloat(transactionUserDeal.change) + '%</td>' +
+                                    '<td class="operate"><a href="#">去交易</a></td>' +
+                                    '</tr>');
+                            }
                         }
                     }
                 }
             }
         });
+    }
+
+    //小数位补0
+    function returnFloat(value){
+        var value=Math.round(parseFloat(value)*100)/100;
+        var xsd=value.toString().split(".");
+        if(xsd.length==1){
+            //整数小数位只补一个零
+            value=value.toString()+".0";
+            return value;
+        } else {
+            return value;
+        }
     }
 </script>
 

@@ -224,7 +224,7 @@
                 resultBoo = false;
             }, error: function () {
                 resultBoo = false;
-                alert("导出失败,请重新刷新页面后重试");
+                alert("撤销失败,请重新刷新页面后重试");
             }
         });
     }
