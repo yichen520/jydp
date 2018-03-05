@@ -23,13 +23,12 @@
 
 	<update id="TransactionCurrency_updateTransactionCurrency" parameterType="TransactionCurrencyDO">
         UPDATE transaction_currency_tab
-        <set>
+        SET
             currencyShortName = #{currencyShortName}, currencyName = #{currencyName},
             currencyImg = #{currencyImg}, buyFee = #{buyFee}, sellFee = #{sellFee},
             upRange = #{upRange}, downRange = #{downRange}, paymentType = #{paymentType},
             upStatus = #{upStatus}, backerAccount = #{backerAccount}, ipAddress = #{ipAddress},
             upTime = #{upTime},  addTime = #{addTime}
-        </set>
         WHERE currencyId = #{currencyId}
     </update>
 
@@ -138,4 +137,10 @@
         SET upStatus = #{upStatus}
         WHERE currencyId = #{currencyId}
     </update>
+
+    <select id="TransactionCurrency_listTransactionCurrencyAll" resultType="TransactionCurrencyDO">
+        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, upRange, downRange,
+            paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
+        FROM transaction_currency_tab
+    </select>
 </mapper>

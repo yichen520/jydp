@@ -3,6 +3,7 @@ package com.jydp.service;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DTO.UserAmountCheckDTO;
+import com.jydp.entity.VO.UserDealCapitalMessageVO;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -207,5 +208,13 @@ public interface IUserService {
      */
     List<UserAmountCheckDTO> listCheckUserAmountForTimer(int currencyId, double checkAmount, double checkAmountLock,
                                                          int pageNumber, int pageSize);
+
+    /**
+     * 查询用户交易中心相关资产信息
+     * @param userId 用户id
+     * @param currencyId 币种id
+     * @return 查询成功：返回用户账户错误总数，查询失败：返回0
+     */
+    UserDealCapitalMessageVO countCheckUserAmountForTimer(int userId, int currencyId);
 
 }

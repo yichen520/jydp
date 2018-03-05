@@ -108,4 +108,10 @@ public interface ITransactionCurrencyDao {
      * @return  操作成功：返回true，操作失败：返回false
      */
     boolean updateUpStatus(int currencyId, int upStatus);
+
+    /**
+     * 查询全部币种信息
+     * @return  操作成功：返回币种信息集合，操作失败：返回null
+     */
+    List<TransactionCurrencyDO> listTransactionCurrencyAll();
 }

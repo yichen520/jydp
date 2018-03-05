@@ -295,4 +295,12 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
         }
         return upBoo;
     }
+
+    /**
+     * 查询全部币种信息
+     * @return  操作成功：返回币种信息集合，操作失败：返回null
+     */
+    public List<TransactionCurrencyDO> listTransactionCurrencyAll(){
+        return transactionCurrencyDao.listTransactionCurrencyAll();
+    }
 }

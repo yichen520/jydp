@@ -90,36 +90,17 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                         transactionDealPrice.getTransactionPrice());
             }
 
-            //计算涨幅
-            long dateLon = DateUtil.lingchenLong();
-            Timestamp date;
-            //判断当前时间是八点之前
-            long nowDateLong = nowDate.getTime() - RedisKeyConfig.OPENING_TIME;
-            if(nowDateLong >= dateLon){
-                dateLon = dateLon + RedisKeyConfig.OPENING_TIME - 1;
-                date = DateUtil.longToTimestamp(dateLon);
-            } else {
-                dateLon = dateLon - RedisKeyConfig.DAY_TIME + RedisKeyConfig.OPENING_TIME - 1;
-                date = DateUtil.longToTimestamp(dateLon);
-
-            }
-
-            List<TransactionDealPriceDTO> closingPrice = transactionDealRedisService.getNowLastPrice(date);  //昨天收盘价
-            if(closingPrice != null && closingPrice.size() > 0){
-                for(TransactionDealPriceDTO transaction : closingPrice){
-                    redisService.addValue(RedisKeyConfig.YESTERDAY_PRICE + transaction.getCurrencyId(),
-                            transaction.getTransactionPrice());
-                    //涨跌幅度计算
-                    for(TransactionDealPriceDTO transactionDealPrice : nowLastPrice){
-                        if(transactionDealPrice.getCurrencyId() == transaction.getCurrencyId()){
-                            double range = BigDecimalUtil.sub(transactionDealPrice.getTransactionPrice(), transaction.getTransactionPrice()) * 100;
-                            String rangeStr = BigDecimalUtil.div(range, transaction.getTransactionPrice(), 4);
-                            redisService.addValue(RedisKeyConfig.TODAY_RANGE + transaction.getCurrencyId(), rangeStr);
-                        }
-                    }
+            //涨跌幅度计算
+            for(TransactionDealPriceDTO transactionDealPrice : nowLastPrice){
+                if(redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + transactionDealPrice.getCurrencyId()) != null){
+                    double transactionPrice = (double) redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + transactionDealPrice.getCurrencyId());
+                    double range = BigDecimalUtil.sub(transactionDealPrice.getTransactionPrice(), transactionPrice * 100);
+                    String rangeStr = BigDecimalUtil.div(range, transactionPrice, 4);
+                    redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionPrice, rangeStr);
                 }
             }
         }
+
     }
 
     /** 每日开盘基准信息重置(今日涨跌,今日最高价,今日最低价)*/
@@ -146,6 +127,17 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
             redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionUser.getCurrencyId(), "0");
         }
 
+        Timestamp nowDate = DateUtil.getCurrentTime();
+        long dateLon = DateUtil.lingchenLong() + RedisKeyConfig.OPENING_TIME - 1;
+        Timestamp date;
+        date = DateUtil.longToTimestamp(dateLon);
+        List<TransactionDealPriceDTO> closingPrice = transactionDealRedisService.getNowLastPrice(date);  //昨天收盘价
+        if(closingPrice != null && closingPrice.size() > 0) {
+            for (TransactionDealPriceDTO transaction : closingPrice) {
+                redisService.addValue(RedisKeyConfig.YESTERDAY_PRICE + transaction.getCurrencyId(),
+                        transaction.getTransactionPrice());
+            }
+        }
     }
 
 }

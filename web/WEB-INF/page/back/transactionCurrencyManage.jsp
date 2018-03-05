@@ -153,7 +153,7 @@
                             <c:if test="${item.paymentType == 2 && item.upStatus == 3}">
                                 <input type="text" value="复&nbsp;牌" class="start" onfocus="this.blur()" onclick="goPayType('${item.currencyId}', 1)"/>
                             </c:if>
-                            <input type="text" value="修&nbsp;改" class="change" onfocus="this.blur()" onclick="goUpdate('${item.currencyId}')"/>
+                            <input type="text" value="修&nbsp;改" class="change" onfocus="this.blur()" onclick="goUpdate('${item}')"/>
                         </td>
                     </tr>
                 </c:forEach>
@@ -280,7 +280,8 @@
             <div class="popMain">
                 <p class="popInput">
                     <label class="popName">币种名称<span class="star">*</span></label>
-                    <input type="text" class="entry" placeholder="币种名称" id="currencyNameUp" name="currencyNameUp"/>
+                    <input type="text" class="entry" placeholder="币种名称" id="currencyNameUp" name="currencyNameUp"
+                           maxlength="32"/>
                 </p>
                 <p class="popInput">
                     <label class="popName">英文标识<span class="star">*</span></label>
@@ -660,8 +661,8 @@
     }
 
     //去修改页面
-    function goUpdate(curId){
-        currencyId = curId;
+    function goUpdate(item){
+        currencyId = item.curId;
 
         $(".mask").fadeIn();
         $(".change_pop").fadeIn();
@@ -770,8 +771,14 @@
     }
     
     //导出
-    extBoo == false;
+    var extBoo = false;
     function dowland(){
+        if (extBoo) {
+            return ;
+        } else {
+            extBoo = true;
+        }
+
         var currencyName = $("#currencyId").val();
         var pageNumber = $("#pageNumber").val();
         var paymentType = $("#paymentType").val();
@@ -802,18 +809,16 @@
                 var code = resultData.code;
                 var message = resultData.message;
                 if (code != 1 && message != "") {
-                    updateBoo = false;
+                    extBoo = false;
                     openTips(message);
                     return;
                 }
 
-                $(".mask").fadeOut("fast");
-                $(popObj).fadeOut("fast");
                 window.location.href = '<%=path%>' + message;
             },
 
             error: function () {
-                updateBoo = false;
+                extBoo = false;
                 openTips("数据加载出错，请稍候重试");
             }
         });

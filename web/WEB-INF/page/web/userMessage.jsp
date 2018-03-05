@@ -444,6 +444,7 @@
                     $("#newPassword").val("");
                     $("#repPassword").val("");
 
+                    window.location.href = "<%=path%>" + "/userWeb/userLogin/show";
                 } else {
                     openTips(result.message);
                 }
