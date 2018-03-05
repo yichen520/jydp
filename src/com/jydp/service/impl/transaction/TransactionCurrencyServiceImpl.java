@@ -113,12 +113,7 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
         //昨日开盘时间
         Timestamp beginTime = Timestamp.valueOf(time);
 
-        //当日开盘前一秒
-        oldCalendar.add(Calendar.SECOND, -1);
-        time = sdf.format(oldCalendar.getTime());
-        Timestamp endTime = Timestamp.valueOf(time);
-
-        transactionUserDealDTOList = transactionCurrencyDao.getTransactionCurrencyMarketForWeb(openTime,beginTime,endTime);
+        transactionUserDealDTOList = transactionCurrencyDao.getTransactionCurrencyMarketForWeb(openTime,beginTime,openTime);
         if (transactionUserDealDTOList != null) {
             for (TransactionUserDealDTO transactionUserDeal:transactionUserDealDTOList) {
                 double yesterdayLastPrice = transactionUserDeal.getYesterdayLastPrice();
