@@ -103,17 +103,17 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
 
             }
 
-            //涨跌幅度计算
             List<TransactionDealPriceDTO> closingPrice = transactionDealRedisService.getNowLastPrice(date);  //昨天收盘价
             if(closingPrice != null && closingPrice.size() > 0){
                 for(TransactionDealPriceDTO transaction : closingPrice){
-                    if(transaction.getTransactionPrice() > 0){
-                        for(TransactionDealPriceDTO transactionDealPrice : nowLastPrice){
-                            if(transactionDealPrice.getCurrencyId() == transaction.getCurrencyId()){
-                                double range = BigDecimalUtil.sub(transactionDealPrice.getTransactionPrice(), transaction.getTransactionPrice()) * 100;
-                                String rangeStr = BigDecimalUtil.div(range, transaction.getTransactionPrice(), 4);
-                                redisService.addValue(RedisKeyConfig.TODAY_RANGE + transaction.getCurrencyId(), rangeStr);
-                            }
+                    redisService.addValue(RedisKeyConfig.YESTERDAY_PRICE + transaction.getCurrencyId(),
+                            transaction.getTransactionPrice());
+                    //涨跌幅度计算
+                    for(TransactionDealPriceDTO transactionDealPrice : nowLastPrice){
+                        if(transactionDealPrice.getCurrencyId() == transaction.getCurrencyId()){
+                            double range = BigDecimalUtil.sub(transactionDealPrice.getTransactionPrice(), transaction.getTransactionPrice()) * 100;
+                            String rangeStr = BigDecimalUtil.div(range, transaction.getTransactionPrice(), 4);
+                            redisService.addValue(RedisKeyConfig.TODAY_RANGE + transaction.getCurrencyId(), rangeStr);
                         }
                     }
                 }
