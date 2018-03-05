@@ -2,6 +2,7 @@ package com.jydp.quartz;
 
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
+import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.service.ITradeCommonService;
 import com.jydp.service.ITransactionCurrencyService;
 import com.jydp.service.ITransactionPendOrderService;
@@ -35,12 +36,12 @@ public class TradeRemedyTimer {
 	@Scheduled(cron="0/5 * *  * * ? ")
 	public void transactionPendOrder(){
 		//获取所有币种
-		List<TransactionCurrencyDO> transactionCurrencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
+		List<TransactionCurrencyVO> transactionCurrencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
 		if(transactionCurrencyList == null){
 			return;
 		}
 
-		for (TransactionCurrencyDO transactionCurrency: transactionCurrencyList) {
+		for (TransactionCurrencyVO transactionCurrency: transactionCurrencyList) {
 			TransactionPendOrderDO order = null;
 			//最高买入委托
 			TransactionPendOrderDO buyOrder = transactionPendOrderService.getLastTransactionPendOrder(

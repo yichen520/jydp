@@ -8,10 +8,10 @@
 	<insert id="TransactionPendOrder_insertPendOrder" parameterType="TransactionPendOrderDO">
 		INSERT INTO transaction_pend_order_tab
 		(pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingPrice,
-		pendingNumber, dealNumber, pendingStatus, remark, addTime)
+		pendingNumber, dealNumber, pendingStatus, remark, feeRemark, addTime)
 		VALUES
 		(#{pendingOrderNo}, #{userId}, #{userAccount}, #{paymentType}, #{currencyId}, #{currencyName}, #{pendingPrice},
-		#{pendingNumber}, #{dealNumber}, #{pendingStatus}, #{remark}, #{addTime})
+		#{pendingNumber}, #{dealNumber}, #{pendingStatus}, #{remark}, #{feeRemark}, #{addTime})
 	</insert>
 
 	<update id="TransactionPendOrder_updatePendOrder" parameterType="TransactionPendOrderDO">

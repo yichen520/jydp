@@ -412,7 +412,7 @@
             openTips("请选择一个币种");
             return;
         }
-        if (payType == null || payType == 0) {
+        if (payType == null || parseInt(payType) == 0) {
             addBoo = false;
             openTips("请选择一个收支类型");
             return;
@@ -478,6 +478,8 @@
                     openTips(message);
                     return;
                 }
+                $(".mask").fadeOut("fast");
+                $(popObj).fadeOut("fast");
                 window.location.href = '<%=path%>' + data.downLoadUrl;
             },
 

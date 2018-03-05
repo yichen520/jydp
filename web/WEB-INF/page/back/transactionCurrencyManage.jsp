@@ -61,7 +61,7 @@
                         </select>
                     </p>
                     <p class="condition">
-                        管理员账号：<input type="text" class="askInput" id="backAccount" name="backAccount"
+                        管理员账号：<input type="text" class="askInput" id="backerAccount" name="backerAccount"
                                      maxlength="16" onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" value="${backAccount}"/></p>
                     <p class="condition">
                         添加时间：
@@ -141,11 +141,19 @@
                             <p>IP:${item.ipAddress}</p>
                         </td>
                         <td class="operate">
-                            <input type="text" value="停&nbsp;牌" class="stop" onfocus="this.blur()" />
-                            <input type="text" value="上&nbsp;线" class="online" onfocus="this.blur()" />
-                            <input type="text" value="下&nbsp;线" class="offLine" onfocus="this.blur()" />
-                            <input type="text" value="修&nbsp;改" class="change" onfocus="this.blur()" />
-                            <input type="text" value="复&nbsp;牌" class="start" onfocus="this.blur()" />
+                            <c:if test="${item.paymentType != 2}">
+                                <input type="text" value="停&nbsp;牌" class="stop" onfocus="this.blur()" onclick="goPayType('${item.currencyId}', 2)"/>
+                            </c:if>
+                            <c:if test="${item.upStatus == 1 || item.upStatus == 4}">
+                                <input type="text" value="上&nbsp;线" class="online" onfocus="this.blur()" onclick="goEditUpStatus('${item.currencyId}', 2)"/>
+                            </c:if>
+                            <c:if test="${item.upStatus == 2}">
+                                <input type="text" value="下&nbsp;线" class="offLine" onfocus="this.blur()" onclick="goEditUpStatus('${item.currencyId}', 4)"/>
+                            </c:if>
+                            <c:if test="${item.paymentType == 2 && item.upStatus == 3}">
+                                <input type="text" value="复&nbsp;牌" class="start" onfocus="this.blur()" onclick="goPayType('${item.currencyId}', 1)"/>
+                            </c:if>
+                            <input type="text" value="修&nbsp;改" class="change" onfocus="this.blur()" onclick="goUpdate('${item.currencyId}')"/>
                         </td>
                     </tr>
                 </c:forEach>
@@ -163,22 +171,22 @@
 <div class="mask">
     <div class="mask_content">
         <div class="start_pop">
-            <p class="popTitle">启用操作</p>
-            <p class="popTips"><img src="<%=path %>/resources/image/back/tips.png" class="tipsImg" />确定启用该币种？</p>
+            <p class="popTitle">复牌操作</p>
+            <p class="popTips"><img src="<%=path %>/resources/image/back/tips.png" class="tipsImg" />确定复牌该币种？</p>
 
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="openTip()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="editPayType()" />
             </div>
         </div>
 
         <div class="stop_pop">
-            <p class="popTitle">禁用操作</p>
-            <p class="popTips"><img src="<%=path %>/resources/image/back/tips.png" class="tipsImg" />确定禁用该币种？</p>
+            <p class="popTitle">停牌操作</p>
+            <p class="popTips"><img src="<%=path %>/resources/image/back/tips.png" class="tipsImg" />确定停牌该币种？</p>
 
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="openTip()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="editPayType()" />
             </div>
         </div>
 
@@ -188,7 +196,7 @@
 
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="openTip()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="editUpStatus()" />
             </div>
         </div>
 
@@ -198,7 +206,7 @@
 
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="openTip()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="editUpStatus()" />
             </div>
         </div>
 
@@ -207,11 +215,13 @@
             <div class="popMain">
                 <p class="popInput">
                     <label class="popName">币种名称<span class="star">*</span></label>
-                    <input type="text" class="entry" placeholder="币种名称" />
+                    <input type="text" class="entry" placeholder="币种名称" id="currencyNameAd" name="currencyNameAd"
+                           maxlength="32"/>
                 </p>
                 <p class="popInput">
                     <label class="popName">英文标识<span class="star">*</span></label>
-                    <input type="text" class="entry" placeholder="币种的英文缩写标识" />
+                    <input type="text" class="entry" placeholder="币种的英文缩写标识" id="currencyShortNameAd" name="currencyShortNameAd"
+                           maxlength="10" onkeyup="matchUtil(this, 'ENumber', 6)" onblur="matchUtil(this, 'ENumber', 6)"/>
                 </p>
                 <p class="popInput">
                     <label class="popName">币种徽标<span class="star">*</span></label>
@@ -224,28 +234,36 @@
                 </p>
                 <p class="popInput">
                     <label class="popName">买入手续费<span class="star">*</span></label>
-                    <input type="text" class=" percentage" placeholder="买入手续费，无手续费则填“0”" />%
+                    <input type="text" class=" percentage" placeholder="买入手续费，无手续费则填“0”"
+                           id="buyFeeAd" name="buyFeeAd" maxlength="18"
+                           onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)"/>%
                 </p>
                 <p class="popInput">
                     <label class="popName">卖出手续费<span class="star">*</span></label>
-                    <input type="text" class="percentage" placeholder="卖出手续费，无手续费则填“0”" />%
+                    <input type="text" class="percentage" placeholder="卖出手续费，无手续费则填“0”"
+                           id="sellFeeAd" name="sellFeeAd"maxlength="18"
+                           onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)"/>%
                 </p>
                 <p class="popInput">
                     <label class="popName">涨停幅度<span class="star">*</span></label>
-                    <input type="text" class="percentage" placeholder="涨停幅度，无限制则填“0”" />%
+                    <input type="text" class="percentage" placeholder="涨停幅度，无限制则填“0”"
+                           id="upRangeAd" name="upRangeAd" maxlength="18"
+                           onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)" />%
                 </p>
                 <p class="popInput">
                     <label class="popName">跌停幅度<span class="star">*</span></label>
-                    <input type="text" class="percentage" placeholder="跌停幅度，无限制则填“0”" />%
+                    <input type="text" class="percentage" placeholder="跌停幅度，无限制则填“0”"
+                           id="downRangeAd" name="downRangeAd" maxlength="18"
+                           onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)" />%
                 </p>
                 <p class="popInput">
                     <label class="popName">上线时间<span class="star">*</span></label>
                     <label class="immediately">
-                        <input type="radio" name="radioBtn" class="radioBtn" />立即上线
+                        <input type="radio" name="radioBtn" class="radioBtn" value="1"/>立即上线
                     </label>
                     <label class="timeManage">
-                        <input type="radio" name="radioBtn" class="radioBtn" />
-                        <input placeholder="请选择上线时间" class="askTime chooseTime" />
+                        <input type="radio" name="radioBtn" class="radioBtn" value="2"/>
+                        <input placeholder="请选择上线时间" class="askTime chooseTime" id="upTimeAd" name="upTimeAd"/>
                     </label>
 
                 </p>
@@ -253,7 +271,7 @@
 
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="openTip()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="add()" />
             </div>
         </div>
 
@@ -262,11 +280,12 @@
             <div class="popMain">
                 <p class="popInput">
                     <label class="popName">币种名称<span class="star">*</span></label>
-                    <input type="text" class="entry" placeholder="币种名称" />
+                    <input type="text" class="entry" placeholder="币种名称" id="currencyNameUp" name="currencyNameUp"/>
                 </p>
                 <p class="popInput">
                     <label class="popName">英文标识<span class="star">*</span></label>
-                    <input type="text" class="entry" placeholder="币种的英文缩写标识" />
+                    <input type="text" class="entry" placeholder="币种的英文缩写标识" id="currencyShortNameUp" name="currencyShortNameUp"
+                           maxlength="10" onkeyup="matchUtil(this, 'ENumber', 6)" onblur="matchUtil(this, 'ENumber', 6)"/>
                 </p>
                 <p class="popInput">
                     <label class="popName">币种徽标</label>
@@ -279,29 +298,33 @@
                 </p>
                 <p class="popInput">
                     <label class="popName">买入手续费<span class="star">*</span></label>
-                    <input type="text" class=" percentage" placeholder="买入手续费，无手续费则填“0”" />%
+                    <input type="text" class=" percentage" placeholder="买入手续费，无手续费则填“0”" id="buyFeeUp" name="buyFeeUp"
+                           maxlength="18" onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)"/>%
                 </p>
                 <p class="popInput">
                     <label class="popName">卖出手续费<span class="star">*</span></label>
-                    <input type="text" class="percentage" placeholder="卖出手续费，无手续费则填“0”" />%
+                    <input type="text" class="percentage" placeholder="卖出手续费，无手续费则填“0”" id="sellFeeUp" name="sellFeeUp"
+                           maxlength="18" onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)"/>%
                 </p>
                 <p class="popInput">
                     <label class="popName">涨停幅度<span class="star">*</span></label>
-                    <input type="text" class="percentage" placeholder="涨停幅度，无限制则填“0”" />%
+                    <input type="text" class="percentage" placeholder="涨停幅度，无限制则填“0”" id="upRangeUp" name="upRangeUp"
+                           maxlength="18" onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)"/>%
                 </p>
                 <p class="popInput">
                     <label class="popName">跌停幅度<span class="star">*</span></label>
-                    <input type="text" class="percentage" placeholder="跌停幅度，无限制则填“0”" />%
+                    <input type="text" class="percentage" placeholder="跌停幅度，无限制则填“0”" id="downRangeUp" name="downRangeUp"
+                           maxlength="18" onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)"/>%
                 </p>
                 <p class="popInput">
                     <label class="popName">上线时间<span class="star">*</span></label>
-                    <input placeholder="请选择上线时间" class="askTime entry" id="c_onlineTime" />
+                    <input placeholder="请选择上线时间" class="askTime entry" id="c_onlineTime"/>
                 </p>
             </div>
 
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="openTip()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="update()" />
             </div>
         </div>
     </div>
@@ -334,24 +357,16 @@
     var popObj;
     $(function(){
         $(".stop").click(function(){
-            $(".mask").fadeIn();
-            $(".stop_pop").fadeIn();
-            popObj = ".stop_pop"
+
         });
         $(".start").click(function(){
-            $(".mask").fadeIn();
-            $(".start_pop").fadeIn();
-            popObj = ".start_pop"
+
         });
         $(".online").click(function(){
-            $(".mask").fadeIn();
-            $(".online_pop").fadeIn();
-            popObj = ".online_pop"
+
         });
         $(".offLine").click(function(){
-            $(".mask").fadeIn();
-            $(".offLine_pop").fadeIn();
-            popObj = ".offLine_pop"
+
         });
         $(".add").click(function(){
             $(".mask").fadeIn();
@@ -359,17 +374,14 @@
             popObj = ".add_pop"
         });
         $(".change").click(function(){
-            $(".mask").fadeIn();
-            $(".change_pop").fadeIn();
-            popObj = ".change_pop"
+
         });
         $(".cancel").click(function(){
             $(".mask").fadeOut("fast");
             $(popObj).fadeOut("fast");
         });
         $(".yes").click(function(){
-            $(".mask").fadeOut("fast");
-            $(popObj).fadeOut("fast");
+
         });
     });
 
@@ -406,6 +418,437 @@
         $("#queryPageNumber").val("0");
         $("#queryForm").submit();
     }
+</script>
+
+<script type="text/javascript">
+    var statusS = 0;
+    var typeS = 0;
+    var currencyId = 0;
+
+    //去修改上线状态
+    function goEditUpStatus(currId, status) {
+        statusS = status;
+        currencyId = currId;
+
+        if (status == 2) {
+            $(".mask").fadeIn();
+            $(".online_pop").fadeIn();
+            popObj = ".online_pop"
+        } else if (status == 4) {
+            $(".mask").fadeIn();
+            $(".offLine_pop").fadeIn();
+            popObj = ".offLine_pop"
+        }
+    }
+
+    //修改上线状态
+    edUpBoo = false;
+    function editUpStatus() {
+       if (edUpBoo) {
+           return ;
+       } else {
+           edUpBoo = true;
+       }
+
+        currencyId = parseInt(currencyId);
+        statusS = parseInt(statusS);
+
+       if (currencyId == 0 || statusS == 0) {
+           edUpBoo = false;
+           $(".mask").fadeOut("fast");
+           $(popObj).fadeOut("fast");
+
+           openTips("币种信息获取错误");
+           return;
+       }
+
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/transactionCurrency/editUpType.htm",
+            data: {
+                currencyId : currencyId,
+                upStatus : statusS
+            },//参数
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (resultData) {
+                var code = resultData.code;
+                var message = resultData.message;
+                if (code != 1 && message != "") {
+                    edUpBoo = false;
+                    openTips(message);
+                    return;
+                }
+
+                $("#queryForm").submit();
+            },
+
+            error: function () {
+                edUpBoo = false;
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+    }
+
+    //去停复牌页面
+    function goPayType(currency, type){
+        typeS = type;
+        currencyId = currency;
+
+        if (type == 2) {
+            $(".mask").fadeIn();
+            $(".stop_pop").fadeIn();
+            popObj = ".stop_pop"
+        } else if (type == 1) {
+            $(".mask").fadeIn();
+            $(".start_pop").fadeIn();
+            popObj = ".start_pop"
+        }
+    }
+
+    //停复牌
+    edPayBoo = false;
+    function editPayType() {
+        if (edPayBoo) {
+            return ;
+        } else {
+            edPayBoo = true;
+        }
+
+        currencyId = parseInt(currencyId);
+        typeS = parseInt(typeS);
+
+        if (currencyId == null || typeS == null || currencyId == 0 || typeS == 0) {
+            edPayBoo = false;
+            $(".mask").fadeOut("fast");
+            $(popObj).fadeOut("fast");
+            openTips("币种信息获取错误");
+            return;
+        }
+
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/transactionCurrency/editPayType.htm",
+            data: {
+                currencyId : currencyId
+            },//参数
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (resultData) {
+                var code = resultData.code;
+                var message = resultData.message;
+                if (code != 1 && message != "") {
+                    edPayBoo = false;
+                    openTips(message);
+                    return;
+                }
+
+                $("#queryForm").submit();
+            },
+
+            error: function () {
+                edPayBoo = false;
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+    }
+
+    //新增
+    var addBoo = false
+    function add() {
+        if (addBoo) {
+            return ;
+        } else {
+            addBoo = true;
+        }
+
+        var currencyNameAd = document.getElementById("currencyNameAd").value;
+        var currencyShortNameAd = document.getElementById("currencyShortNameAd").value;
+        var buyFeeAd = document.getElementById("buyFeeAd").value;
+        var sellFeeAd = document.getElementById("sellFeeAd").value;
+        var upRangeAd = document.getElementById("upRangeAd").value;
+        var downRangeAd = document.getElementById("downRangeAd").value;
+        var changead_t1 = document.getElementById("changead_t1").value;
+        var adsImageUrl = document.getElementById("changead_a1").files[0];
+
+        var status = $('input:radio:checked').val();
+        var staNum = parseInt(status);
+        if (staNum == 1) {
+            var upTimeAd = null;
+        }
+        if (staNum == 2) {
+            var upTimeAd = document.getElementById("upTimeAd").value;
+            if (upTimeAd == null || upTimeAd == "") {
+                addBoo = false;
+                openTips("请选择正确的时间");
+                return;
+            }
+        }
+
+        if (currencyNameAd == null || currencyNameAd == "") {
+            addBoo = false;
+            openTips("请输入币种名称");
+            return;
+        }
+        if (currencyShortNameAd == null || currencyShortNameAd == "") {
+            addBoo = false;
+            openTips("请输入币种简称");
+            return;
+        }
+        if (buyFeeAd == null || buyFeeAd == "") {
+            addBoo = false;
+            openTips("请输入买入手续费");
+            return;
+        }
+        if (sellFeeAd == null || sellFeeAd == "") {
+            addBoo = false;
+            openTips("请输入卖出手续费");
+            return;
+        }
+        if (upRangeAd == null || upRangeAd == "") {
+            addBoo = false;
+            openTips("请输入涨停幅度");
+            return;
+        }
+        if (downRangeAd == null || downRangeAd == "") {
+            addBoo = false;
+            openTips("请输入跌停幅度");
+            return;
+        }
+        if (changead_t1 == null || changead_t1 == '') {
+            addBoo = false;
+            openTips("请上传徽标");
+            return;
+        }
+
+        var formData = new FormData();
+        formData.append("currencyNameAd", currencyNameAd);
+        formData.append("currencyShortNameAd", currencyShortNameAd);
+        formData.append("buyFeeAd", buyFeeAd);
+        formData.append("sellFeeAd", sellFeeAd);
+        formData.append("upRangeAd", upRangeAd);
+        formData.append("downRangeAd", downRangeAd);
+        formData.append("adsImageUrl", adsImageUrl);
+        formData.append("status", staNum);
+        if (staNum == 2) {
+            formData.append("upTimeAd", upTimeAd);
+        }
+
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/transactionCurrency/add.htm",
+            data:formData,//参数
+            dataType: "json",
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            processData : false,
+            contentType : false,
+            success: function (resultData) {
+                var code = resultData.code;
+                var message = resultData.message;
+                if (code != 1 && message != "") {
+                    addBoo = false;
+                    openTips(message);
+                    return;
+                }
+
+                $("#queryForm").submit();
+            },
+
+            error: function () {
+                addBoo = false;
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+    }
+
+    //去修改页面
+    function goUpdate(curId){
+        currencyId = curId;
+
+        $(".mask").fadeIn();
+        $(".change_pop").fadeIn();
+        popObj = ".change_pop"
+    }
+
+    //修改
+    var updateBoo = false
+    function update() {
+        if (updateBoo) {
+            return ;
+        } else {
+            updateBoo = true;
+        }
+
+        var currencyNameUp = document.getElementById("currencyNameUp").value;
+        var currencyShortNameUp = document.getElementById("currencyShortNameUp").value;
+        var buyFeeUp = document.getElementById("buyFeeUp").value;
+        var sellFeeUp = document.getElementById("sellFeeUp").value;
+        var upRangeUp = document.getElementById("upRangeUp").value;
+        var downRangeUp = document.getElementById("downRangeUp").value;
+        var changead_t2 = document.getElementById("changead_t2").value;
+
+        var upTimeUp = document.getElementById("c_onlineTime").value;
+
+        if (currencyId == 0 || currencyId == null || currencyId == "") {
+            updateBoo = false;
+            openTips("币种参数获取错误");
+            return;
+        }
+        if (upTimeUp == null || upTimeUp == "") {
+            updateBoo = false;
+            openTips("请选择正确的时间");
+            return;
+        }
+        if (currencyNameUp == null || currencyNameUp == "") {
+            updateBoo = false;
+            openTips("请输入币种名称");
+            return;
+        }
+        if (currencyShortNameUp == null || currencyShortNameUp == "") {
+            updateBoo = false;
+            openTips("请输入币种简称");
+            return;
+        }
+        if (buyFeeUp == null || buyFeeUp == "") {
+            updateBoo = false;
+            openTips("请输入买入手续费");
+            return;
+        }
+        if (sellFeeUp == null || sellFeeUp == "") {
+            updateBoo = false;
+            openTips("请输入卖出手续费");
+            return;
+        }
+        if (upRangeUp == null || upRangeUp == "") {
+            updateBoo = false;
+            openTips("请输入涨停幅度");
+            return;
+        }
+        if (downRangeUp == null || downRangeUp == "") {
+            updateBoo = false;
+            openTips("请输入跌停幅度");
+            return;
+        }
+
+        var formData = new FormData();
+        if (changead_t2 != null && changead_t2 != '') {
+            var adsImageUrl = document.getElementById("changead_a2").files[0];
+        }
+        formData.append("currencyNameUp", currencyNameUp);
+        formData.append("currencyId", currencyId);
+        formData.append("currencyShortNameUp", currencyShortNameUp);
+        formData.append("buyFeeUp", buyFeeUp);
+        formData.append("sellFeeUp", sellFeeUp);
+        formData.append("upRangeUp", upRangeUp);
+        formData.append("downRangeUp", downRangeUp);
+        formData.append("imgUrl", adsImageUrl);
+        formData.append("upTimeUp", upTimeUp);
+
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/transactionCurrency/update.htm",
+            data:formData,//参数
+            dataType: "json",
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            processData : false,
+            contentType : false,
+            success: function (resultData) {
+                var code = resultData.code;
+                var message = resultData.message;
+                if (code != 1 && message != "") {
+                    updateBoo = false;
+                    openTips(message);
+                    return;
+                }
+
+                $("#queryForm").submit();
+            },
+
+            error: function () {
+                updateBoo = false;
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+    }
+    
+    //导出
+    var extBoo == false;
+    function dowland(){
+        if (extBoo) {
+            return ;
+        } else {
+            extBoo = true;
+        }
+
+        var currencyName = $("#currencyId").val();
+        var pageNumber = $("#pageNumber").val();
+        var paymentType = $("#paymentType").val();
+        var backerAccount = $("#backerAccount").val();
+        var upStatus = $("#upStatus").val();
+        var startAddTime = $("#startAddTime").val();
+        var endAddTime = $("#endAddTime").val();
+        var startUpTime = $("#startUpTime").val();
+        var endUpTime = $("#endUpTime").val();
+
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/transactionCurrency/export.htm",
+            data:{
+                currencyName : currencyName,
+                pageNumber : pageNumber,
+                paymentType : paymentType,
+                backerAccount : backerAccount,
+                upStatus : upStatus,
+                startAddTime : startAddTime,
+                endAddTime : endAddTime,
+                startUpTime : startUpTime,
+                endUpTime : endUpTime
+            },//参数
+            dataType: "json",
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (resultData) {
+                var code = resultData.code;
+                var message = resultData.message;
+                if (code != 1 && message != "") {
+                    extBoo = false;
+                    openTips(message);
+                    return;
+                }
+
+                window.location.href = '<%=path%>' + message;
+            },
+
+            error: function () {
+                extBoo = false;
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+    }
+    
+    
+
+    var mapMatch = {};
+    mapMatch['number'] = /[^\d]/g;
+    mapMatch['ENumber'] = /[^\a-\z\A-\Z\d]/g;
+    mapMatch['double'] = true;
+    mapMatch['phone'] = /[^\d]/g;
+    mapMatch['email'] = /([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+    function matchUtil(o, str, nu) {
+        mapMatch[str] === true ? matchDouble(o, nu) : o.value = o.value.replace(mapMatch[str], '');
+    }
+    function matchDouble(o, num){
+        var matchStr = /^-?\d+\.?\d{0,num}$/;
+        if(!matchStr.test(o.value)){
+            if(isNaN(o.value)){
+                o.value = '';
+            }else{
+                var n = o.value.indexOf('.');
+                var m = n + num + 1;
+                if(n > -1 && o.value.length > m){
+                    o.value = o.value.substring(0, m);
+                }
+            }
+        }
+    }
+
 </script>
 </body>
 </html>
