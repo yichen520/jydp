@@ -46,7 +46,7 @@ public interface ITransactionCurrencyDao {
      * 获取所有币种信息(web端用户注册时使用)
      * @return 查询成功：返回币种信息列表；查询失败：返回null
      */
-    List<TransactionCurrencyVO> getTransactionCurrencyListForWeb();
+    List<TransactionCurrencyDO> getTransactionCurrencyListForWeb();
 
     /**
      * 根据币种名称获取交易币种

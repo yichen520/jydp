@@ -2,9 +2,9 @@ package com.jydp.service.impl.common;
 
 import com.iqmkj.utils.BigDecimalUtil;
 import com.iqmkj.utils.DateUtil;
+import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.DTO.TransactionDealPriceDTO;
-import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.service.IRedisService;
 import com.jydp.service.ITransactionCurrencyService;
 import com.jydp.service.ITransactionDealRedisService;
@@ -39,11 +39,11 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
     /** 将成交记录放进redis */
     @Override
     public void userDealForRedis() {
-        List<TransactionCurrencyVO> currencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
+        List<TransactionCurrencyDO> currencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
         if (currencyList == null || currencyList.isEmpty()) {
             return ;
         }
-        for (TransactionCurrencyVO currency: currencyList) {
+        for (TransactionCurrencyDO currency: currencyList) {
             List<TransactionDealRedisDO> dealList = transactionDealRedisService.listTransactionDealRedis(50, currency.getCurrencyId());
             if (dealList != null && !dealList.isEmpty()) {
                 redisService.addValue(RedisKeyConfig.CURRENCY_DEAL_KEY + currency.getCurrencyShortName(), dealList);
@@ -57,7 +57,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
         //double nowTurnover = transactionDealRedisService.getNowVolumeOfTransaction();  24小时成交额
         if(nowTurnover != null && nowTurnover.size() > 0){
             for(TransactionDealPriceDTO transactionDealPrice : nowTurnover){
-                redisService.addValue(RedisKeyConfig.DAY_TURNOVER + transactionDealPrice.getCurrencyShortName(),
+                redisService.addValue(RedisKeyConfig.DAY_TURNOVER + transactionDealPrice.getCurrencyId(),
                         transactionDealPrice.getTransactionPrice());
             }
 
@@ -66,7 +66,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
         List<TransactionDealPriceDTO> todayHighestPrice = transactionDealRedisService.getTodayHighestPrice();  //今日最高价
         if(todayHighestPrice != null && todayHighestPrice.size() > 0){
             for(TransactionDealPriceDTO transactionDealPrice : todayHighestPrice){
-                redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE + transactionDealPrice.getCurrencyShortName(),
+                redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE + transactionDealPrice.getCurrencyId(),
                         transactionDealPrice.getTransactionPrice());
             }
 
@@ -75,7 +75,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
         List<TransactionDealPriceDTO> todayLowestPrice = transactionDealRedisService.getTodayLowestPrice();  //今日最低价
         if(todayLowestPrice != null && todayLowestPrice.size() > 0){
             for(TransactionDealPriceDTO transactionDealPrice : todayLowestPrice){
-                redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE + transactionDealPrice.getCurrencyShortName(),
+                redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE + transactionDealPrice.getCurrencyId(),
                         transactionDealPrice.getTransactionPrice());
             }
 
@@ -85,7 +85,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
         List<TransactionDealPriceDTO> nowLastPrice = transactionDealRedisService.getNowLastPrice(nowDate);  //当前价
         if(nowLastPrice != null && nowLastPrice.size() > 0){
             for(TransactionDealPriceDTO transactionDealPrice : nowLastPrice){
-                redisService.addValue(RedisKeyConfig.NOW_PRICE + transactionDealPrice.getCurrencyShortName(),
+                redisService.addValue(RedisKeyConfig.NOW_PRICE + transactionDealPrice.getCurrencyId(),
                         transactionDealPrice.getTransactionPrice());
             }
 
@@ -103,6 +103,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
 
             }
 
+            //涨跌幅度计算
             List<TransactionDealPriceDTO> closingPrice = transactionDealRedisService.getNowLastPrice(date);  //昨天收盘价
             if(closingPrice != null && closingPrice.size() > 0){
                 for(TransactionDealPriceDTO transaction : closingPrice){
@@ -111,18 +112,25 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                             if(transactionDealPrice.getCurrencyId() == transaction.getCurrencyId()){
                                 double range = BigDecimalUtil.sub(transactionDealPrice.getTransactionPrice(), transaction.getTransactionPrice()) * 100;
                                 String rangeStr = BigDecimalUtil.div(range, transaction.getTransactionPrice(), 4);
-                                redisService.addValue(RedisKeyConfig.TODAY_RANGE + transaction.getCurrencyShortName(), todayLowestPrice);
+                                redisService.addValue(RedisKeyConfig.TODAY_RANGE + transaction.getCurrencyId(), rangeStr);
                             }
                         }
                     }
                 }
             }
         }
+        System.out.println(redisService.getValue(RedisKeyConfig.DAY_TURNOVER + "1"));
+        System.out.println(redisService.getValue(RedisKeyConfig.TODAY_MAX_PRICE + "1"));
+        System.out.println(redisService.getValue(RedisKeyConfig.TODAY_MIN_PRICE + "1"));
+        System.out.println(redisService.getValue(RedisKeyConfig.NOW_PRICE + "1"));
+        System.out.println(redisService.getValue(RedisKeyConfig.TODAY_RANGE + "1"));
     }
 
-    /** 每日开盘更新最高与最低价更新 */
+    /** 每日开盘基准信息重置(今日涨跌,今日最高价,今日最低价)*/
     public void updateWeeHoursBasisOfPrice(){
-        Timestamp nowDate = DateUtil.getCurrentTime();
+
+        //最高最低价取昨日收盘价
+/*        Timestamp nowDate = DateUtil.getCurrentTime();
         List<TransactionDealPriceDTO> nowLastPrice = transactionDealRedisService.getNowLastPrice(nowDate);  //昨日收盘价
         if(nowLastPrice != null && nowLastPrice.size() > 0){
             for(TransactionDealPriceDTO transactionDealPrice : nowLastPrice){
@@ -132,7 +140,16 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                         transactionDealPrice.getTransactionPrice());
             }
 
+        }*/
+
+        //获取币种信息
+        List<TransactionCurrencyDO> transactionUserDeal= transactionCurrencyService.getTransactionCurrencyListForWeb();
+        for(TransactionCurrencyDO transactionUser : transactionUserDeal){
+            redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE + transactionUser.getCurrencyId(), 0);
+            redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE + transactionUser.getCurrencyId(), 0);
+            redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionUser.getCurrencyId(), "0");
         }
+
     }
 
 }
