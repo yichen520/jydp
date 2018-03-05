@@ -187,7 +187,7 @@ public class TradeCenterController {
         }
 
         boolean resultBoo = transactionPendOrderService.insertPendOrder(user.getUserId(), 1, currencyId,
-                transactionCurrency.getCurrencyName(), buyPrice, buyNum, sumPrice);
+                transactionCurrency.getCurrencyName(), buyPrice, buyFee, buyNum, sumPrice);
 
 
         if(resultBoo){
@@ -323,7 +323,7 @@ public class TradeCenterController {
         }
 
         boolean resultBoo = transactionPendOrderService.insertPendOrder(user.getUserId(), 2, currencyId,
-                transactionCurrency.getCurrencyName(), buyPrice, buyNum, 0);
+                transactionCurrency.getCurrencyName(), 0, buyPrice,  buyNum, 0);
 
 
         if(resultBoo){
