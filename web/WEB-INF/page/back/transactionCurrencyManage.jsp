@@ -770,8 +770,14 @@
     }
     
     //导出
-    extBoo == false;
+    var extBoo == false;
     function dowland(){
+        if (extBoo) {
+            return ;
+        } else {
+            extBoo = true;
+        }
+
         var currencyName = $("#currencyId").val();
         var pageNumber = $("#pageNumber").val();
         var paymentType = $("#paymentType").val();
@@ -802,18 +808,16 @@
                 var code = resultData.code;
                 var message = resultData.message;
                 if (code != 1 && message != "") {
-                    updateBoo = false;
+                    extBoo = false;
                     openTips(message);
                     return;
                 }
 
-                $(".mask").fadeOut("fast");
-                $(popObj).fadeOut("fast");
                 window.location.href = '<%=path%>' + message;
             },
 
             error: function () {
-                updateBoo = false;
+                extBoo = false;
                 openTips("数据加载出错，请稍候重试");
             }
         });
