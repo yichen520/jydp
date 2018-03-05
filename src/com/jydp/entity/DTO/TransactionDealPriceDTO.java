@@ -8,7 +8,6 @@ package com.jydp.entity.DTO;
 public class TransactionDealPriceDTO {
     private int currencyId; //币种id
     private double transactionPrice; //基准价格 （当前交易价，总价，最高价，最低价，成交量，成交额）
-    private String currencyShortName; //货币简称
 
     /**
      * 币种id
@@ -46,21 +45,4 @@ public class TransactionDealPriceDTO {
         this.transactionPrice = transactionPrice;
     }
 
-    /**
-     * 货币简称
-     *
-     * @return the currency short name
-     */
-    public String getCurrencyShortName() {
-        return currencyShortName;
-    }
-
-    /**
-     * 货币简称
-     *
-     * @param currencyShortName the currency short name
-     */
-    public void setCurrencyShortName(String currencyShortName) {
-        this.currencyShortName = currencyShortName;
-    }
 }
