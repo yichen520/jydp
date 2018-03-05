@@ -71,7 +71,7 @@
             <ul class="list">
                 <c:forEach items="${systemNoticeDOList}" var="systemNotice">
                     <li class="listInfo">
-                        <a href="<%=path %>/userWeb/webSystemNotice/showNoticeDetail?noticeId=${systemNotice.id}" class="link">
+                        <a href="javascript:void(0)" onclick="noticeSubmit(${systemNotice.id})" class="link">
                             <span class="noticeTitle">【<span>公告</span>】${systemNotice.noticeTitle}</span>
                             <span class="time"><fmt:formatDate type="time" value="${systemNotice.addTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></span>
                         </a>
@@ -88,7 +88,7 @@
             <ul class="list">
                 <c:forEach items="${systemHotDOList}" var="hotTopic">
                     <li class="listInfo">
-                        <a href="<%=path %>/userWeb/webSystemHot/showHotDetail?hotId=${hotTopic.id}" class="link">
+                        <a href="javascript:void(0)" onclick="hotTopicSubmit(${hotTopic.id})" class="link">
                             <span class="noticeTitle">【<span>热门</span>】${hotTopic.noticeTitle}</span>
                             <span class="time"><fmt:formatDate type="time" value="${hotTopic.addTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></span>
                         </a>
@@ -107,7 +107,13 @@
         </c:forEach>
     </div>
 </div>
+<form id="noticeForm" action="<%=path %>/userWeb/webSystemNotice/showNoticeDetail" method="post">
+    <input type="hidden" name="noticeId" id="noticeId">
+</form>
 
+<form id="hotTopicForm" action="<%=path %>/userWeb/webSystemHot/showHotDetail" method="post">
+    <input type="hidden" name="hotId" id="hotId">
+</form>
 
 <div id="helpFooter"></div>
 <div id="footer"></div>
@@ -176,6 +182,16 @@
         } else {
             return value;
         }
+    }
+
+    function noticeSubmit(noticeId){
+        $("#noticeId").val(noticeId);
+        $("#noticeForm").submit();
+    }
+
+    function hotTopicSubmit(hotId) {
+        $("#hotId").val(hotId);
+        $("#hotTopicForm").submit();
     }
 </script>
 
