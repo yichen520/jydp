@@ -119,11 +119,6 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                 }
             }
         }
-        System.out.println(redisService.getValue(RedisKeyConfig.DAY_TURNOVER + "1"));
-        System.out.println(redisService.getValue(RedisKeyConfig.TODAY_MAX_PRICE + "1"));
-        System.out.println(redisService.getValue(RedisKeyConfig.TODAY_MIN_PRICE + "1"));
-        System.out.println(redisService.getValue(RedisKeyConfig.NOW_PRICE + "1"));
-        System.out.println(redisService.getValue(RedisKeyConfig.TODAY_RANGE + "1"));
     }
 
     /** 每日开盘基准信息重置(今日涨跌,今日最高价,今日最低价)*/
