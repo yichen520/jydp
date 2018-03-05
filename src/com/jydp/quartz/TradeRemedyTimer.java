@@ -36,7 +36,7 @@ public class TradeRemedyTimer {
 	public void transactionPendOrder(){
 		//获取所有币种
 		List<TransactionCurrencyDO> transactionCurrencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
-		if(transactionCurrencyList.isEmpty()){
+		if(transactionCurrencyList == null){
 			return;
 		}
 
