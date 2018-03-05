@@ -84,7 +84,7 @@ public class BackerUserAccountController {
     }
 
     /** 展示账户明细页面 */
-    @RequestMapping(value = "/showDetail.htm")
+    @RequestMapping(value = "/showDetail.htm", method = RequestMethod.POST)
     public String showDetail(HttpServletRequest request) {
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
         if (backerSession == null) {
