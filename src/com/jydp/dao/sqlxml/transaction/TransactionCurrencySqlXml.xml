@@ -60,7 +60,7 @@
         COALESCE((SELECT MIN( p2.pendingPrice ) FROM transaction_pend_order_tab p2 WHERE p2.currencyId = t.currencyId AND p2.paymentType = 2 AND ( p2.pendingStatus = 1 OR p2.pendingStatus = 2) ),0) AS sellOnePrice,
         COALESCE((SELECT sum(d2.currencyNumber) FROM transaction_user_deal_tab d2 WHERE d2.currencyId = t.currencyId AND d2.addTime > #{openTime} ),0) AS volume,
         COALESCE(getYesterdayLastPriceByCurrencyId(t.currencyId,#{beginTime},#{endTime}),0) as yesterdayLastPrice
-        FROM transaction_currency_tab t
+        FROM transaction_currency_tab t WHERE t.upStatus = 2
     </select>
 
     <select id="TransactionCurrency_countTransactionCurrencyForBack" parameterType="java.util.Map" resultType="int">
