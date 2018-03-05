@@ -18,10 +18,23 @@ public interface ITransactionCurrencyService {
      * 新增交易币种
      * @param currencyShortName 货币简称
      * @param currencyName 货币名称
+     * @param currencyImg  币种徽标
+     * @param buyFee  买入手续费
+     * @param sellFee  卖出手续费
+     * @param upRange  涨停幅度
+     * @param downRange  跌停幅度
+     * @param paymentType  交易状态,1:正常，2:停牌
+     * @param upStatus  上线状态,1:待上线,2:上线中,3:停牌,4:已下线
+     * @param backerAccount  管理员账号
+     * @param ipAddresse  操作时的ip地址
+     * @param upTime  上线时间
      * @param addTime 添加时间
      * @return  操作成功：返回true，操作失败：返回false
      */
-    boolean insertTransactionCurrency(String currencyShortName, String currencyName, Timestamp addTime);
+    boolean insertTransactionCurrency(String currencyShortName, String currencyName, String currencyImg,
+                                      double buyFee, double sellFee, double upRange, double downRange,
+                                      int paymentType, int upStatus, String backerAccount, String ipAddresse,
+                                      Timestamp upTime,Timestamp addTime);
 
     /**
      * 根据币种Id获取交易币种

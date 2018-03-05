@@ -657,6 +657,9 @@
             },
 
             error: function () {
+                addMoreBoo = false;
+                var file = document.getElementById('file');
+                file.value = ''; //虽然file的value不能设为有字符的值，但是可以设置为空值
                 openTips("数据加载出错，请稍候重试");
             }
         });
