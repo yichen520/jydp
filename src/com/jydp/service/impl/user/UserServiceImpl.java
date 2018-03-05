@@ -12,6 +12,7 @@ import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DTO.UserAmountCheckDTO;
 import com.jydp.entity.DTO.UserDTO;
+import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.entity.VO.UserDealCapitalMessageVO;
 import com.jydp.service.IBackerHandleUserRecordBalanceService;
 import com.jydp.service.IRedisService;
