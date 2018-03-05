@@ -13,7 +13,6 @@ public class TransactionCurrencyVO extends TransactionCurrencyDO {
     private String currencyImg;  //币种徽标
     private String currencyImgUrl;  //币种徽标图片绝对地址
 
-
     /**
      * 币种徽标
      * @return the currencyImg
@@ -49,4 +48,5 @@ public class TransactionCurrencyVO extends TransactionCurrencyDO {
     public void setCurrencyImgUrl(String currencyImgUrl) {
         this.currencyImgUrl = currencyImgUrl;
     }
+
 }

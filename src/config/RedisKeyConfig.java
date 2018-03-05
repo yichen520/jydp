@@ -22,6 +22,8 @@ public class RedisKeyConfig {
     public static final String TODAY_MIN_PRICE = "todayMin_";
     /** 今日涨幅 */
     public static final String TODAY_RANGE = "todayRange_";
+    /** 昨日收盘价 */
+    public static final String YESTERDAY_PRICE  = "yesterdayPrice_";
     /** 24小时成交量 */
     public static final String DAY_TURNOVER = "dayTurnove_";
     /** 24小时成交额 */

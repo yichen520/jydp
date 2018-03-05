@@ -77,10 +77,12 @@ public class BackerIdentificationController {
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
         String userPhone = StringUtil.stringNullHandle(request.getParameter("userPhone"));
         String identificationStatusStr = StringUtil.stringNullHandle(request.getParameter("identificationStatus"));
+        String userCertTypeStr = StringUtil.stringNullHandle(request.getParameter("userCertType"));
         String phoneAreaCode = StringUtil.stringNullHandle(request.getParameter("phoneAreaCode"));
 
         Timestamp startTime = null;
         Timestamp endTime = null;
+        int userCertType = 0;
         int identificationStatus = 0;
         int pageNumber = 0;
 
@@ -90,6 +92,9 @@ public class BackerIdentificationController {
         if (StringUtil.isNotNull(endTimeStr)) {
             endTime = DateUtil.stringToTimestamp(endTimeStr);
         }
+        if (StringUtil.isNotNull(userCertTypeStr)) {
+            userCertType = Integer.parseInt(userCertTypeStr);
+        }
         if (StringUtil.isNotNull(identificationStatusStr)) {
             identificationStatus = Integer.parseInt(identificationStatusStr);
         }
@@ -98,7 +103,8 @@ public class BackerIdentificationController {
         }
 
         int pageSize = 20;
-        int totalNumber = userIdentificationService.countUserIdentificationForBacker(userAccount, phoneAreaCode + userPhone, identificationStatus, startTime, endTime);
+        int totalNumber = userIdentificationService.countUserIdentificationForBacker(userAccount, phoneAreaCode + userPhone,
+                userCertType, identificationStatus, startTime, endTime);
 
         int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
         if (totalPageNumber <= 0) {
@@ -111,7 +117,8 @@ public class BackerIdentificationController {
 
         List<UserIdentificationDO> userIdentificationList = null;
         if (totalNumber > 0) {
-            userIdentificationList = userIdentificationService.listUserIdentificationForBacker(userAccount, userPhone, identificationStatus, startTime, endTime, pageNumber, pageSize);
+            userIdentificationList = userIdentificationService.listUserIdentificationForBacker(userAccount,
+                    phoneAreaCode + userPhone, userCertType, identificationStatus, startTime, endTime, pageNumber, pageSize);
         }
 
         request.setAttribute("pageNumber", pageNumber);
@@ -120,6 +127,7 @@ public class BackerIdentificationController {
         request.setAttribute("userAccount", userAccount);
         request.setAttribute("userPhone", userPhone);
         request.setAttribute("identificationStatus", identificationStatusStr);
+        request.setAttribute("userCertType", userCertTypeStr);
         request.setAttribute("phoneAreaCode", phoneAreaCode);
 
         request.setAttribute("totalNumber", totalNumber);
@@ -157,6 +165,7 @@ public class BackerIdentificationController {
         String userPhone = StringUtil.stringNullHandle(request.getParameter("userPhone"));
         String phoneAreaCode = StringUtil.stringNullHandle(request.getParameter("phoneAreaCode"));
         String identificationStatusStr = StringUtil.stringNullHandle(request.getParameter("identificationStatus"));
+        String userCertTypeStr = StringUtil.stringNullHandle(request.getParameter("userCertType"));
         request.setAttribute("pageNumber", pageNumberStr);
         request.setAttribute("startTime", startTimeStr);
         request.setAttribute("endTime", endTimeStr);
@@ -164,6 +173,7 @@ public class BackerIdentificationController {
         request.setAttribute("userPhone", userPhone);
         request.setAttribute("phoneAreaCode", phoneAreaCode);
         request.setAttribute("identificationStatus", identificationStatusStr);
+        request.setAttribute("userCertType", userCertTypeStr);
 
         String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
         if (!StringUtil.isNotNull(idStr)) {

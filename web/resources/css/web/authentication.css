@@ -83,7 +83,7 @@ input:-webkit-autofill{
     font-size: 18px;
 }
 .audit{
-    margin: 15px auto 0 auto;
+    margin: 18px auto 0 auto;
     width: 400px;
     position: relative;
 }
@@ -95,14 +95,53 @@ input:-webkit-autofill{
 .phoneInput{
     position: relative;
     display: inline-block;
-    margin-top: 16px;
+    margin-top: 13px;
     width: 360px;
     text-align: left;
 }
+.phoneInputName{
+    margin-top: 1px;
+}
+.select{
+    float: left;
+    padding-left: 18px;
+    border: none;
+    border-right: 1px solid #cccccc;
+    width: 90px;
+    height: 33px;
+    font-size: 12px;
+    margin-left: -1px;
+    appearance:none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    background:url("../../image/web/arrow.png") no-repeat scroll 70px 15px transparent;
+    padding-right:14px;
+}
+select::-ms-expand{
+    display: none;
+}
+.phone{
+    float: right;
+    padding-left: 5px;
+    width: 164px;
+    height: 32px;
+    font-size: 12px;
+    border: none;
+    padding-bottom: 1px;
+}
+.popCode{
+    float: right;
+    border: 1px solid #cccccc;
+    width: 258px;
+    height: 32px;
+    text-align: left;
+    font-size: 12px;
+    padding-bottom: 1px;
+}
+
 .img{
     float: right;
-    width: 390px;
-    margin-right: -130px;
+    width: 260px;
     position: relative;
 }
 .file{
@@ -115,15 +154,20 @@ input:-webkit-autofill{
     opacity: 0;
     cursor: pointer;
 }
-.picBox,.picBox_max{
+.picBox{
     display: inline-block;
     float: left;
     width: 120px;
-    height: 120px;
-    background-color: #eeeeee;
-    margin-right: 10px;
-    margin-bottom: 10px;
+    height: 146px;
+    margin-right: 20px;
     position: relative;
+    text-align: center;
+    font-size: 12px;
+    color: #999999;
+    line-height: 32px;
+}
+.picBox:nth-child(2){
+    margin-right: 0;
 }
 .picMin{
     width: 34px;
@@ -133,41 +177,11 @@ input:-webkit-autofill{
     border: 1px dashed transparent;
 }
 .pic{
-    width: 118px;
-    height:118px;
-    margin-right: 10px;
+    width: 120px;
+    height:120px;
     float: left;
     position: relative;
     overflow: hidden;
-}
-.picBox_max{
-    border: 1px solid #ececec;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    background-color: #ffffff;
-}
-.picBox_max:hover .delete{
-    display: block;
-}
-.delete{
-    display: none;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 120px;
-    height: 120px;
-    z-index: 2;
-    background-color: rgba(0,0,0,0.7);
-    color: #ffffff;
-    cursor: pointer;
-}
-.delete img{
-    margin: 46px;
-}
-.delete span{
-    display: block;
-    transform: rotate(45deg);
 }
 .phoneInput_mark{
     margin-top: 0;
@@ -217,14 +231,14 @@ input:-webkit-autofill{
 .mark{
     float: right;
     display: block;
-    width: 440px;
+    width: 370px;
     font-size: 12px;
     color: #e83a33;
     line-height: 36px;
-    margin-right: -180px;
+    margin-right: -110px;
 }
 .submit{
-    margin-top: 13px;
+    margin-top: 15px;
     width: 360px;
     height: 45px;
     border: none;

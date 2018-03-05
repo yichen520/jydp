@@ -43,7 +43,15 @@
                             </c:forEach>
                         </select>
                         <input type="text" class="askInput" id="userPhone" name="userPhone" value="${userPhone }"
-                            maxlength="11" onkeyup="matchUtil(this, 'number')" onblur="matchUtil(this, 'number')"/></p>
+                            maxlength="11" onkeyup="matchUtil(this, 'number')" onblur="matchUtil(this, 'number')"/>
+                    </p>
+                    <p class="condition">证件类型：
+                        <select class="askSelect" id="userCertType" name="userCertType">
+                            <option value="0">全部</option>
+                            <option value="1">身份证</option>
+                            <option value="2">护照</option>
+                        </select>
+                    </p>
                     <p class="condition">审核状态：
                         <select class="askSelect" id="identificationStatus" name="identificationStatus">
                             <option value="0">全部</option>
@@ -67,6 +75,7 @@
                     <td class="time">提交时间</td>
                     <td class="account">用户账号</td>
                     <td class="tel">手机号</td>
+                    <td class="type">证件类型</td>
                     <td class="identity">证件号</td>
                     <td class="state">审核状态</td>
                     <td class="mark">审核备注</td>
@@ -77,6 +86,12 @@
                         <td class="time"><fmt:formatDate type="time" value="${item.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                         <td class="account">${item.userAccount}</td>
                         <td class="tel">${item.userPhone}</td>
+                        <c:if test="${item.userCertType == 1}">
+                            <td class="type">身份证</td>
+                        </c:if>
+                        <c:if test="${item.userCertType == 2}">
+                            <td class="type">护照</td>
+                        </c:if>
                         <td class="identity">${item.userCertNo}</td>
                         <c:if test="${item.identificationStatus == 1}">
                             <td class="state">待审核</td>
@@ -110,6 +125,7 @@
     <input type="hidden" id="userPhoneDetail" name="userPhone">
     <input type="hidden" id="phoneAreaCodeDetail" name="phoneAreaCode">
     <input type="hidden" id="identificationStatusDetail" name="identificationStatus">
+    <input type="hidden" id="userCertTypeDetail" name="userCertType">
 </form>
 
 
@@ -139,6 +155,11 @@
                 $(this).attr('selected',true);
             }
         });
+        $("#userCertType option").each(function(){
+            if($(this).val()=='${userCertType}'){
+                $(this).attr('selected',true);
+            }
+        });
     }
 
     function queryForm() {
@@ -154,6 +175,7 @@
         $("#userPhoneDetail").val($("#userPhone").val());
         $("#phoneAreaCodeDetail").val($("#phoneAreaCode").val());
         $("#identificationStatusDetail").val($("#identificationStatus").val());
+        $("#userCertTypeDetail").val($("#userCertType").val());
 
         $("#detailId").val(id);
         $("#detailForm").submit();

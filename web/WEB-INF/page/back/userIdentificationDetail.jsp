@@ -39,6 +39,15 @@
                     <span class="info">${userIdentification.userName}</span>
                 </p>
                 <p class="role">
+                    <label class="name">证件类型：</label>
+                    <c:if test="${userIdentification.userCertType == 1}">
+                        <span class="info">身份证</span>
+                    </c:if>
+                    <c:if test="${userIdentification.userCertType == 2}">
+                        <span class="info">护照</span>
+                    </c:if>
+                </p>
+                <p class="role">
                     <label class="name">证件号：</label>
                     <span class="info">${userIdentification.userCertNo}</span>
                 </p>
@@ -103,6 +112,7 @@
     <input type="hidden" value="${userPhone}" name="userPhone">
     <input type="hidden" value="${phoneAreaCode}" name="phoneAreaCode">
     <input type="hidden" value="${identificationStatus}" name="identificationStatus">
+    <input type="hidden" value="${userCertType}" name="userCertType">
 </form>
 
 

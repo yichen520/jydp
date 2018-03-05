@@ -6,14 +6,14 @@
 <mapper namespace="com.jydp.dao.impl.user.UserIdentificationDaoImpl">
 	
 	<insert id="UserIdentification_insertUserIdentification" parameterType="userIdentificationDO" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-		INSERT INTO user_identification_tab (userId, userAccount, userName, userPhone, userCertNo,
+		INSERT INTO user_identification_tab (userId, userAccount, userName, userPhone, userCertType, userCertNo,
 			identificationStatus, remark, identiTime, addTime)
-		VALUES (#{userId}, #{userAccount}, #{userName}, #{userPhone}, #{userCertNo}, #{identificationStatus},
+		VALUES (#{userId}, #{userAccount}, #{userName}, #{userPhone}, #{userCertType}, #{userCertNo}, #{identificationStatus},
 			#{remark}, #{identiTime}, #{addTime})
 	</insert>
 	
 	<select id="UserIdentification_getUserIdentificationById" parameterType="java.lang.Long" resultType="UserIdentificationDO">
-		SELECT id, userId, userAccount, userName, userPhone, userCertNo,
+		SELECT id, userId, userAccount, userName, userPhone, userCertType, userCertNo,
 			identificationStatus, remark, identiTime, addTime
 		FROM user_identification_tab
 		WHERE id = #{id}
@@ -27,7 +27,7 @@
 	</select>
 
 	<select id="UserIdentification_getUserIdentificationByUserAccountLately" parameterType="String" resultType="UserIdentificationDO">
-		SELECT id, userId, userAccount, userName, userPhone, userCertNo, identificationStatus, remark, identiTime, addTime
+		SELECT id, userId, userAccount, userName, userPhone, userCertType, userCertNo, identificationStatus, remark, identiTime, addTime
 		FROM user_identification_tab
 		WHERE userAccount = #{userAccount}
 		ORDER BY addTime DESC
@@ -44,7 +44,10 @@
 			<if test="userPhone != null and userPhone != '' ">
 				AND userPhone LIKE CONCAT('%', #{userPhone}, '%')
 			</if>
-			<if test="identificationStatus != null and identificationStatus != '' ">
+			<if test="userCertType > 0 ">
+				AND userCertType = #{userCertType}
+			</if>
+			<if test="identificationStatus > 0 ">
 				AND identificationStatus = #{identificationStatus}
 			</if>
 			<if test="startTime != null">
@@ -57,7 +60,7 @@
 	</select>
 
 	<select id="UserIdentification_listUserIdentificationForBacker" parameterType="java.util.Map" resultType="UserIdentificationDO">
-		SELECT id, userId, userAccount, userName, userPhone, userCertNo,
+		SELECT id, userId, userAccount, userName, userPhone, userCertType, userCertNo,
 			identificationStatus, remark, identiTime, addTime
 		FROM user_identification_tab
 		<where>
@@ -67,7 +70,10 @@
 			<if test="userPhone != null and userPhone != '' ">
 				AND userPhone LIKE CONCAT('%', #{userPhone}, '%')
 			</if>
-			<if test="identificationStatus != null and identificationStatus != '' ">
+			<if test="userCertType > 0 ">
+				AND userCertType = #{userCertType}
+			</if>
+			<if test="identificationStatus > 0 ">
 				AND identificationStatus = #{identificationStatus}
 			</if>
 			<if test="startTime != null">

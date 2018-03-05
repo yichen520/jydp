@@ -16,12 +16,10 @@ public class TransactionCurrencyDO {
     private double sellFee;  //卖出手续费
     private double upRange;  //涨停幅度
     private double downRange;  //跌停幅度
-    private int paymentType;  //交易状态,1:正常，2:涨停，3:跌停，4:停牌
-    private int upStatus;  //上线状态,1:待上线,2:上线中,3:禁用,4:已下线
+    private int paymentType;  //交易状态,1:正常，2:停牌
+    private int upStatus;  //上线状态,1:待上线,2:上线中,3:停牌,4:已下线
     private String backerAccount;  //管理员账号
     private String ipAddress;  //操作时的ip地址
-    private Timestamp startTime;  //交易开始时间
-    private Timestamp endTime;  //交易结束时间
     private Timestamp upTime;  //上线时间
     private Timestamp addTime;  //添加时间
 
@@ -160,7 +158,7 @@ public class TransactionCurrencyDO {
     }
 
     /**
-     * 交易状态, 1:正常，2:涨停，3:跌停
+     * 交易状态,1:正常，2:停牌
      * @return the paymentType
      */
     public int getPaymentType() {
@@ -168,7 +166,7 @@ public class TransactionCurrencyDO {
     }
 
     /**
-     * 交易状态, 1:正常，2:涨停，3:跌停
+     * 交易状态,1:正常，2:停牌
      * @param paymentType the paymentType to set
      */
     public void setPaymentType(int paymentType) {
@@ -176,7 +174,7 @@ public class TransactionCurrencyDO {
     }
 
     /**
-     * 上线状态,1:待上线,2:上线中,3:禁用
+     * 上线状态,1:待上线,2:上线中,3:停牌,4:已下线
      * @return the upStatus
      */
     public int getUpStatus() {
@@ -184,7 +182,7 @@ public class TransactionCurrencyDO {
     }
 
     /**
-     * 上线状态,1:待上线,2:上线中,3:禁用
+     * 上线状态,1:待上线,2:上线中,3:停牌,4:已下线
      * @param upStatus the upStatus to set
      */
     public void setUpStatus(int upStatus) {
@@ -221,38 +219,6 @@ public class TransactionCurrencyDO {
      */
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
-    }
-
-    /**
-     * 交易开始时间
-     * @return the startTime
-     */
-    public Timestamp getStartTime() {
-        return startTime;
-    }
-
-    /**
-     * 交易开始时间
-     * @param startTime the startTime to set
-     */
-    public void setStartTime(Timestamp startTime) {
-        this.startTime = startTime;
-    }
-
-    /**
-     * 交易结束时间
-     * @return the endTime
-     */
-    public Timestamp getEndTime() {
-        return endTime;
-    }
-
-    /**
-     * 交易结束时间
-     * @param endTime the endTime to set
-     */
-    public void setEndTime(Timestamp endTime) {
-        this.endTime = endTime;
     }
 
     /**

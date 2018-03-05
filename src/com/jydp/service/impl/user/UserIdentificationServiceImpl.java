@@ -114,13 +114,15 @@ public class UserIdentificationServiceImpl implements IUserIdentificationService
      *
      * @param userAccount 用户账号(可为null)
      * @param userPhone   手机号(可为null)
+     * @param userCertType   证件类型，1:身份证，2：护照
      * @param identificationStatus   实名认证状态，1：待审核，2：审核通过，3：审核拒绝（查全部为0）
      * @param startTime   开始时间(可为null)
      * @param endTime     结束时间(可为null)
      * @return 操作成功：返回用户信息总数，操作失败：返回0
      */
-    public int countUserIdentificationForBacker(String userAccount, String userPhone, int identificationStatus, Timestamp startTime, Timestamp endTime) {
-        return userIdentificationDao.countUserIdentificationForBacker(userAccount, userPhone, identificationStatus, startTime, endTime);
+    public int countUserIdentificationForBacker(String userAccount, String userPhone,  int userCertType,
+                                                int identificationStatus, Timestamp startTime, Timestamp endTime) {
+        return userIdentificationDao.countUserIdentificationForBacker(userAccount, userPhone, userCertType, identificationStatus, startTime, endTime);
     }
 
     /**
@@ -128,6 +130,7 @@ public class UserIdentificationServiceImpl implements IUserIdentificationService
      *
      * @param userAccount 用户账号(可为null)
      * @param userPhone   手机号(可为null)
+     * @param userCertType   证件类型，1:身份证，2：护照
      * @param identificationStatus   实名认证状态，1：待审核，2：审核通过，3：审核拒绝（查全部为0）
      * @param startTime   开始时间(可为null)
      * @param endTime     结束时间(可为null)
@@ -135,9 +138,10 @@ public class UserIdentificationServiceImpl implements IUserIdentificationService
      * @param pageSize    查询条数
      * @return 操作成功 ：返回用户认证信息，操作失败：返回null
      */
-    public List<UserIdentificationDO> listUserIdentificationForBacker(String userAccount, String userPhone, int identificationStatus,
-                                                                      Timestamp startTime, Timestamp endTime, int pageNumber, int pageSize) {
-        return userIdentificationDao.listUserIdentificationForBacker(userAccount, userPhone, identificationStatus, startTime, endTime, pageNumber, pageSize);
+    public List<UserIdentificationDO> listUserIdentificationForBacker(String userAccount, String userPhone, int userCertType,
+                                                                      int identificationStatus, Timestamp startTime,
+                                                                      Timestamp endTime, int pageNumber, int pageSize) {
+        return userIdentificationDao.listUserIdentificationForBacker(userAccount, userPhone, userCertType, identificationStatus, startTime, endTime, pageNumber, pageSize);
     }
 
     /**
