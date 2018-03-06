@@ -93,7 +93,7 @@
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">合计：</label>
-                    <span class="all" id="buyTotal">0$</span>
+                    <span class="all" id="buyTotal">$0</span>
                 </p>
                 <p class="serviceInput">
                     <label class="tradeName">手续费：</label>
@@ -128,7 +128,7 @@
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">合计：</label>
-                    <span class="all" id="sellTotal">0$</span>
+                    <span class="all" id="sellTotal">$0</span>
                 </p>
                 <p class="serviceInput">
                     <label class="tradeName">手续费：</label>
@@ -471,7 +471,7 @@
                 try{m+=buyNum.split(".")[1].length}catch(e){}
                 var number = parseFloat((Number(buyPrice.replace(".",""))*Number(buyNum.replace(".",""))/Math.pow(10,m)).toFixed(8));
                 number = mulMaxNumber(number);
-                $("#buyTotal").html(number + "$");
+                $("#buyTotal").html("$" + number);
             }
 
             var userBalance = parseFloat($("#userBalance").val());
@@ -480,7 +480,7 @@
             $("#buyMax").html(tota);
         } else {
             $("#buyMax").html("0" );
-            $("#buyTotal").html("0$");
+            $("#buyTotal").html("$0");
         }
 
 
@@ -498,7 +498,7 @@
                 try{s+=sellNum.split(".")[1].length}catch(e){}
                 var number = parseFloat((Number(sellPrice.replace(".",""))*Number(sellNum.replace(".",""))/Math.pow(10,s)).toFixed(8));
                 number = mulMaxNumber(number);
-                $("#sellTotal").html(number + "$");
+                $("#sellTotal").html("$" + number);
             }
 
             var currencyNumber = $("#currencyNumber").val();
@@ -510,8 +510,8 @@
                 $("#sellMax").html(number);
             }
         } else {
-            $("#sellMax").html("当前最大可卖：0");
-            $("#sellTotal").html("0$");
+            $("#sellMax").html("0");
+            $("#sellTotal").html("$0");
         }
 
     }
@@ -738,7 +738,7 @@
                                         "<td class='type " + type + "'>" + paymentType + "</td>" +
                                         "<td class='dealAmount'>" + "$"+ transactionPrice + "</td>" +
                                         "<td class='dealAmount'>" + currencyNumber +"</td>" +
-                                        "<td class='dealAmount rise'>" + currencyTotalPrice + "</td>" +
+                                        "<td class='dealAmount rise'>$" + currencyTotalPrice + "</td>" +
                                     "</tr>";
 
                     }
@@ -946,13 +946,15 @@
                 }
                 if(standardParameter != null){
                     $("#nowPrice").html(standardParameter.nowPrice);
-                    $("#nowPriceShow").html(standardParameter.nowPrice);
+                    $("#nowPriceShow").html("最新成交价：" + standardParameter.nowPrice);
                     if(standardParameter.todayRange >= 0){
                         $("#todayRangeRise").html("+" + standardParameter.todayRange + "%");
-                        $("#todayRangeRise").css("number rise");
+                        $("#todayRangeRise").removeClass("number fall");
+                        $("#todayRangeRise").addClass("number rise");
                     } else{
                         $("#todayRangeRise").html(standardParameter.todayRange  + "%");
-                        $("#todayRangeRise").css("number fall");
+                        $("#todayRangeRise").removeClass("number rise");
+                        $("#todayRangeRise").addClass("number fall");
                     }
                     $("#todayMax").html(standardParameter.todayMax);
                     $("#todayMin").html(standardParameter.todayMin);
