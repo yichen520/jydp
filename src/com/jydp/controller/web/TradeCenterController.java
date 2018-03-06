@@ -438,7 +438,7 @@ public class TradeCenterController {
 
 
     /** 获取成交记录 */
-    @RequestMapping(value = "/deal.htm", method = RequestMethod.POST)
+    @RequestMapping(value = "/deal", method = RequestMethod.POST)
     public @ResponseBody  JsonObjectBO deal(HttpServletRequest request) {
         JsonObjectBO resultJson = new JsonObjectBO();
 
@@ -491,7 +491,7 @@ public class TradeCenterController {
     }
 
     /** 获取挂单记录 */
-    @RequestMapping(value = "/pend.htm", method = RequestMethod.POST)
+    @RequestMapping(value = "/pend", method = RequestMethod.POST)
     public @ResponseBody JsonObjectBO pend(HttpServletRequest request) {
         JsonObjectBO resultJson = new JsonObjectBO();
 
@@ -582,7 +582,7 @@ public class TradeCenterController {
     }
 
     /** 获取交易相关价格（基准信息） */
-    @RequestMapping(value = "/gainDealPrice.htm", method = RequestMethod.POST)
+    @RequestMapping(value = "/gainDealPrice", method = RequestMethod.POST)
     public @ResponseBody JsonObjectBO gainDealPrice(HttpServletRequest request) {
         JsonObjectBO resultJson = new JsonObjectBO();
         //获取参数
@@ -635,11 +635,6 @@ public class TradeCenterController {
         resultJson.setCode(1);
         resultJson.setMessage("查询成功");
         resultJson.setData(jsonObject);
-
         return resultJson;
-
     }
-
-
-
 }
