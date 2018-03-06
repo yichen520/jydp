@@ -181,6 +181,7 @@
 		pendingNumber, dealNumber, pendingStatus, remark, addTime, endTime, userAccount
 		FROM transaction_pend_order_tab
 		WHERE userId = #{userId}
+		AND  currencyId = #{currencyId}
 		AND  pendingStatus = 1 OR pendingStatus = 2
 		ORDER BY addTime DESC
 		LIMIT #{startNumber}, #{pageSize}

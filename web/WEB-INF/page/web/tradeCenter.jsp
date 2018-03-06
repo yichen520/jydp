@@ -215,62 +215,39 @@
         </div>
     </div>
 
-    <div class="myEntrust">
-        <p class="myTitle">
-            我的委托记录<img src="<%=path %>/resources/image/web/entrust.png" />
-            <a href="#" class="more">查看更多</a>
-        </p>
-        <table class="table" cellspacing="0 " cellpadding="0">
-            <tr class="tableTitle">
-                <td class="time">委托时间</td>
-                <td class="type">类型</td>
-                <td class="amount">委托价格</td>
-                <td class="amount">委托数量</td>
-                <td class="amount">委托总价</td>
-                <td class="operate">操作</td>
-            </tr>
-            <tr class="tableInfo">
-                <td class="time">2016-06-06&nbsp;06:06:05</td>
-                <td class="type rise">买入</td>
-                <td class="amount">$12.0000</td>
-                <td class="amount">0.95</td>
-                <td class="amount rise">$11.40000000</td>
-                <td class="operate"><input type="text" value="撤&nbsp;销" class="revoke" onfocus="this.blur()" /></td>
-            </tr>
-            <tr class="tableInfo">
-                <td class="time">2016-06-06&nbsp;06:06:05</td>
-                <td class="type fall">卖出</td>
-                <td class="amount">$12.0000</td>
-                <td class="amount">0.95</td>
-                <td class="amount fall">$11.40000000</td>
-                <td class="operate"><input type="text" value="撤&nbsp;销" class="revoke" onfocus="this.blur()" /></td>
-            </tr>
-            <tr class="tableInfo">
-                <td class="time">2016-06-06&nbsp;06:06:05</td>
-                <td class="type rise">买入</td>
-                <td class="amount">$12.0000</td>
-                <td class="amount">0.95</td>
-                <td class="amount rise">$11.40000000</td>
-                <td class="operate"><input type="text" value="撤&nbsp;销" class="revoke" onfocus="this.blur()" /></td>
-            </tr>
-            <tr class="tableInfo">
-                <td class="time">2016-06-06&nbsp;06:06:05</td>
-                <td class="type rise">买入</td>
-                <td class="amount">$12.0000</td>
-                <td class="amount">0.95</td>
-                <td class="amount rise">$11.40000000</td>
-                <td class="operate"><input type="text" value="撤&nbsp;销" class="revoke" onfocus="this.blur()" /></td>
-            </tr>
-            <tr class="tableInfo">
-                <td class="time">2016-06-06&nbsp;06:06:05</td>
-                <td class="type fall">卖出</td>
-                <td class="amount">$12.0000</td>
-                <td class="amount">0.95</td>
-                <td class="amount fall">$11.40000000</td>
-                <td class="operate"><input type="text" value="撤&nbsp;销" class="revoke" onfocus="this.blur()" /></td>
-            </tr>
-        </table>
-    </div>
+    <c:if test="${userSession != null}">
+        <div class="myEntrust">
+            <p class="myTitle">
+                我的委托记录<img src="<%=path %>/resources/image/web/entrust.png" />
+                <a href="<%=path%>/userWeb/transactionPendOrderController/show.htm" class="more">查看更多</a>
+            </p>
+            <table class="table" cellspacing="0 " cellpadding="0" id="entrustRecord">
+                <tr class="tableTitle">
+                    <td class="time">委托时间</td>
+                    <td class="type">类型</td>
+                    <td class="amount">委托价格</td>
+                    <td class="amount">委托数量</td>
+                    <td class="amount">委托总价</td>
+                    <td class="operate">操作</td>
+                </tr>
+                <c:forEach items="${transactionPendOrderList}" var="item">
+                    <tr class="tableInfo">
+                        <td class="time"><fmt:formatDate type="time" value="${item.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+                        <c:if test="${item.paymentType == 1}">
+                            <td class="type rise">买入</td>
+                        </c:if>
+                        <c:if test="${item.paymentType == 2}">
+                            <td class="type fall">卖出</td>
+                        </c:if>
+                        <td class="amount">$<fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="4"/></td>
+                        <td class="amount"><fmt:formatNumber type="number" value="${item.pendingNumber}" maxFractionDigits="2"/></td>
+                        <td class="amount rise">$<fmt:formatNumber type="number" value="${item.pendingPrice * item.pendingNumber}" maxFractionDigits="6"/></td>
+                        <td class="operate"><input type="text" value="撤&nbsp;销" class="revoke" onclick="goCancle('${item.pendingOrderNo}')" /></td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </div>
+    </c:if>
 
     <div class="myDeal">
         <p class="myTitle">
@@ -593,6 +570,8 @@
         if (start <= 0) {
             //刷新成交记录
             reDeal();
+            //刷新委托记录
+            entrust();
         }
 
         start += step;
@@ -703,6 +682,130 @@
         second = second < 10 ? ('0' + second) : second;
         return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
     };
+</script>
+
+<script type="text/javascript">
+
+    var calMoreBoo = false;
+    function goCancle(pendOrderNo){
+        if (calMoreBoo) {
+            return;
+        } else {
+            calMoreBoo = true;
+        }
+
+        if (pendOrderNo == "" || pendOrderNo == null) {
+            calMoreBoo =false;
+            openTips("单号错误");
+            return;
+        }
+
+        $.ajax({
+            url: '<%=path %>' + "/userWeb/transactionPendOrderController/revoke.htm",
+            data: {
+                pendingOrderNo : pendOrderNo
+            },//参数
+            dataType: "json",
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (resultData) {
+                var code = resultData.code;
+                var message = resultData.message;
+                if (code != 1 && message != "") {
+                    calMoreBoo = false;
+                    openTips(message);
+                    return;
+                }
+                calMoreBoo = false
+                entrust();
+
+            },
+
+            error: function () {
+                calMoreBoo = false;
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+
+    }
+
+    /** 刷新委托记录 */
+    var entrustBoo = false;
+    function entrust() {
+        if (entrustBoo) {
+            return;
+        } else {
+            entrustBoo = true;
+        }
+
+        var currencyId = $("#cucyId").val();
+        if (currencyId == null || currencyId == "") {
+            entrustBoo = false;
+            openTips("参数获取错误，请刷新页面重试")
+            return;
+        }
+
+        $.ajax({
+            url: '<%=path%>' + "/userWeb/tradeCenter/entrust.htm", //方法路径URL
+            data: {
+                currencyId: currencyId
+
+            },//参数
+            dataType: 'json',
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (result) {
+                if (result.code != 1 && result.message != null) {
+                    entrustBoo = false;
+                    openTips(result.message);
+                    return;
+                }
+                var data = result.data;
+                var dealList = data.transactionPendOrderList;
+                if (dealList != null && dealList.length > 0) {
+                    var newChild = "";
+
+                    for (var i = 0; i <= dealList.length - 1; i++) {
+                        var deal = dealList[i];
+                        var addTime = formatDateTime(deal.addTime);
+                        var paymentType = "";
+                        var type = ""
+                        if (deal.paymentType == 1) {
+                            paymentType = "买入";
+                            type = "rise";
+                        }
+                        if (deal.paymentType == 2) {
+                            paymentType = "卖出";
+                            type = "fall";
+                        }
+                        var pendingPrice = Math.floor(deal.pendingPrice * 10000) / 10000;
+                        var pendingNumber = Math.floor(deal.pendingNumber * 100) / 100;
+                        var currencyTotalPrice = Math.floor((pendingPrice * pendingNumber )* 1000000) / 1000000;
+
+                        newChild += "<tr class='tableInfo'>" +
+                            "<td class='time'>" + addTime + "</td>" +
+                            "<td class='type " + type + "'>" + paymentType + "</td>" +
+                            "<td class='amount'>" + pendingPrice + "</td>" +
+                            "<td class='amount'>" + pendingNumber + "</td>" +
+                            "<td class='amount rise'>" + currencyTotalPrice+ "</td>" +
+                            "<td class='operate'><input type='text' value='撤&nbsp;销' class='revoke' onclick='goCancle('"+ ${deal.pendingOrderNo} + "')'/></td>" +
+                            "</tr>";
+                    }
+
+                    document.getElementById("entrustRecord").innerHTML = newChild;
+                    entrustBoo = false;
+                }
+
+
+            }, error: function () {
+                entrustBoo = false;
+                openTips("获取失败,请重新刷新页面后重试");
+            }
+        });
+    }
+
+
+
 </script>
 </body>
 </html>
