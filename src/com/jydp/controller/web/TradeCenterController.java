@@ -9,6 +9,9 @@ import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
+import com.jydp.entity.VO.StandardParameterVO;
+import com.jydp.entity.VO.TransactionCurrencyVO;
+import com.jydp.entity.VO.UserDealCapitalMessageVO;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.*;
 import config.RedisKeyConfig;
@@ -63,9 +66,31 @@ public class TradeCenterController {
     /** 展示 交易中心页面 */
     @RequestMapping(value = "/show")
     public String show(HttpServletRequest request) {
+        UserDealCapitalMessageVO userDealCapitalMessage = new UserDealCapitalMessageVO();
 
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+        if (!StringUtil.isNotNull(currencyIdStr)) {
+            request.setAttribute("code", 3);
+            request.setAttribute("message", "参数错误");
+            return "page/web/tradeCenter";
+        }
 
+        int currencyId = Integer.parseInt(currencyIdStr);
 
+        //获取用户交易中心相关资产信息
+        UserSessionBO user = UserWebInterceptor.getUser(request);
+        if (user != null) {
+            userDealCapitalMessage = userService.countCheckUserAmountForTimer(user.getUserId(), currencyId);
+        }
+
+        //获取币种名称
+        TransactionCurrencyVO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
+        //获取币种基准信息
+        StandardParameterVO standardParameter = transactionCurrencyService.listTransactionCurrencyAll(currencyId);
+
+        request.setAttribute("transactionCurrency", transactionCurrency);
+        request.setAttribute("standardParameter", standardParameter);
+        request.setAttribute("userDealCapitalMessage", userDealCapitalMessage);
         return "page/web/tradeCenter";
     }
 
@@ -212,7 +237,7 @@ public class TradeCenterController {
             sellOne = (double)sellOneOb;
         }
 
-        if(sellOne > buyPrice){
+        if(sellOne > buyPrice || sellOne == 0){
             resultJson.setCode(1);
             resultJson.setMessage("没有可匹配的挂单");
             return resultJson;

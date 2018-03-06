@@ -73,8 +73,8 @@
                             <c:if test="${item.pendingStatus < 3}">
                                 <input type="text" value="撤销委托" class="revoke" onfocus="this.blur()" onclick="goCancle('${item.pendingOrderNo}')"/>&nbsp;
                             </c:if>
-                            <c:if test="${item.pendingStatus == 1}">
-                                <a href="<%=path %>/userWeb/dealRecord/show.htm?pendingOrderNo=${item.pendingOrderNo}" class="details" >查看详情</a>
+                            <c:if test="${item.pendingStatus != 1}">
+                                <a class="details" onclick="detailsHandle('${item.pendingOrderNo}')">查看详情</a>
                             </c:if>
                         </td>
                     </tr>
@@ -83,8 +83,12 @@
 
             <jsp:include page="/resources/page/common/paging.jsp"></jsp:include>
 
-            <form id="queryForm" action="<%=path %>/userWeb/webCustomerService/show" method="post">
-                <input type="hidden" id="queryPageNumber" name="pageNumber">
+            <form id="queryForm" action="<%=path %>/userWeb/transactionPendOrderController/show.htm" method="post">
+                <input type="hidden" id="cancleOrderNo" name="cancleOrderNo">
+            </form>
+
+            <form id="detailsForm" action="<%=path %>/userWeb/dealRecord/show.htm" method="post">
+                <input type="hidden" id="detailsOrderNo" name="pendingOrderNo">
             </form>
         </div>
     </div>
@@ -101,7 +105,7 @@
             <p class="popTitle">撤销委托</p>
             <p class="popTips"><img src="<%=path %>/resources/image/web/tips.png" class="tipsImg" />确定撤销该委托内容？</p>
 
-            <input type="hidden" id="cancleOrderNo" name="cancleOrderNo">
+            <input type="hidden" id="pendingOrderNo" name="cancleOrderNo">
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
                 <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="cancleOrder()" />
@@ -142,6 +146,12 @@
     }
 
     //查看详情
+    function detailsHandle(pendOrderNo) {
+        document.getElementById("detailsOrderNo").value = pendOrderNo;
+        $("#detailsForm").submit();
+    }
+
+    //撤回
     function goCancle(pendOrderNo) {
         document.getElementById("cancleOrderNo").value = pendOrderNo;
 
@@ -182,7 +192,8 @@
                     openTips(message);
                     return;
                 }
-                window.onload();
+                document.getElementById("queryPageNumber").value = ${pageNumber };
+                $("#queryForm").submit();
             },
 
             error: function () {
