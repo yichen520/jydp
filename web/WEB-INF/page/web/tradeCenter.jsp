@@ -940,7 +940,7 @@
                 var standardParameter = data.standardParameter;
                 if(standardParameter != null){
                     $("#nowPrice").html(standardParameter.nowPrice);
-                    $("#nowPriceShow").html("最新成交价：" + standardParameter.nowPrice);
+                    $("#nowPriceShow").html("最新成交价：" + standardParameter.nowPrice + "$");
                     if(standardParameter.todayRange >= 0){
                         $("#todayRangeRise").html("+" + standardParameter.todayRange + "%");
                         $("#todayRangeRise").removeClass("number fall");
