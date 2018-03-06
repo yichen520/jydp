@@ -477,9 +477,9 @@
             var userBalance = parseFloat($("#userBalance").val());
             var total = userBalance / buyPrice;
             var tota = mulMaxNumber(total);
-            $("#buyMax").html("当前最大可买：" + tota);
+            $("#buyMax").html(tota);
         } else {
-            $("#buyMax").html("当前最大可买：0" );
+            $("#buyMax").html("0" );
             $("#buyTotal").html("0$");
         }
 
@@ -507,7 +507,7 @@
                 try{z+=currencyNumber.split(".")[1].length}catch(e){}
                 var number = parseFloat((Number(sellPrice.replace(".",""))*Number(currencyNumber.replace(".",""))/Math.pow(10,z)).toFixed(8));
                 number = mulMaxNumber(number);
-                $("#sellMax").html("当前最大可买：" + number);
+                $("#sellMax").html(number);
             }
         } else {
             $("#sellMax").html("当前最大可卖：0");
@@ -937,8 +937,6 @@
                     $("#currencyNumberShow").html(userDealCapitalMessage.currencyNumber);
                     $("#currencyNumber").html(userDealCapitalMessage.currencyNumber);
                     $("#usableCurrencyNumber").html(userDealCapitalMessage.currencyNumber);
-
-
                     $("#currencyNumberLockShow").html(userDealCapitalMessage.currencyNumberLock);
                     $("#userBalanceShow").html("$" + userDealCapitalMessage.userBalance);
                     $("#userBalance").html("$" + userDealCapitalMessage.userBalance);
@@ -951,10 +949,11 @@
                     $("#nowPriceShow").html(standardParameter.nowPrice);
                     if(standardParameter.todayRange >= 0){
                         $("#todayRangeRise").html("+" + standardParameter.todayRange + "%");
+                        $("#todayRangeRise").css("number rise");
                     } else{
                         $("#todayRangeRise").html(standardParameter.todayRange  + "%");
+                        $("#todayRangeRise").css("number fall");
                     }
-
                     $("#todayMax").html(standardParameter.todayMax);
                     $("#todayMin").html(standardParameter.todayMin);
                     $("#buyOne").html(standardParameter.buyOne);
