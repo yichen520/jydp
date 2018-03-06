@@ -1,9 +1,9 @@
 package com.jydp.entity.VO;
 
 /**
- * 盘基准信息
+ * 交易大盘基准信息
  *
- * @author fk
+ * @author sy
  */
 public class StandardParameterVO {
     private double nowPrice; //当前成交单价

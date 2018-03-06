@@ -93,7 +93,7 @@
                 </p>
                 <p class="serviceInput">
                     <label class="tradeName">手续费：</label>
-                    <span class="service">${userDealCapitalMessage.buyFee }</span>
+                    <span class="service">${transactionCurrency.buyFee }</span>
                 </p>
 
                 <input type="text" class="buyBtn" value="买&nbsp;入" onfocus="this.blur()" onclick="buyHandle();"/>
