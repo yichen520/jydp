@@ -54,13 +54,7 @@
 		WHERE currencyId = #{currencyId}
 			AND paymentType = #{paymentType}
 			AND pendingStatus IN (1,2)
-		GROUP BY pendingPrice
-		<if test="paymentType == 1 ">
-			DESC
-		</if>
-		<if test="paymentType == 2 ">
-			ASC
-		</if>
+		GROUP BY pendingPrice DESC
 		LIMIT #{num}
 	</select>
 
