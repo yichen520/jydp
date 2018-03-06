@@ -225,8 +225,12 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
             for (TransactionUserDealDTO transactionUserDeal:transactionUserDealDTOList) {
                 int currencyId = transactionUserDeal.getCurrencyId();
                 double latestPrice = 0.0, buyOnePrice = 0.0, sellOnePrice = 0.0, volume = 0.0, yesterdayLastPrice = 0.0;
-                if (redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE+transactionUserDeal.getCurrencyId()) != null) {
-                    yesterdayLastPrice = NumberUtil.doubleFormat((double)redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE+transactionUserDeal.getCurrencyId()),2);
+
+                if (redisService.getValue(RedisKeyConfig.NOW_PRICE + currencyId) != null) {
+                    latestPrice = (double) redisService.getValue(RedisKeyConfig.NOW_PRICE + currencyId);
+                }
+                if (redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE+currencyId) != null) {
+                    yesterdayLastPrice = (double)redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE+currencyId);
                 }
 
                 if (newPriceMap != null && newPriceMap.get(currencyId) != null) {
