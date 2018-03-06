@@ -1,5 +1,7 @@
 package com.jydp.entity.DTO;
 
+import java.sql.Timestamp;
+
 /**
  * 查询基准货币价格信息
  *
@@ -8,6 +10,7 @@ package com.jydp.entity.DTO;
 public class TransactionDealPriceDTO {
     private int currencyId; //币种id
     private double transactionPrice; //基准价格 （当前交易价，总价，最高价，最低价，成交量，成交额）
+    private Timestamp addTime; //添加时间
 
     /**
      * 币种id
@@ -45,4 +48,21 @@ public class TransactionDealPriceDTO {
         this.transactionPrice = transactionPrice;
     }
 
+    /**
+     * 添加时间
+     *
+     * @return the add time
+     */
+    public Timestamp getAddTime() {
+        return addTime;
+    }
+
+    /**
+     * 添加时间
+     *
+     * @param addTime the add time
+     */
+    public void setAddTime(Timestamp addTime) {
+        this.addTime = addTime;
+    }
 }

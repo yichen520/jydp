@@ -149,7 +149,6 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
         } else {
             dateLon = dateLon - RedisKeyConfig.DAY_TIME + RedisKeyConfig.OPENING_TIME;
             date = DateUtil.longToTimestamp(dateLon);
-
         }
         return transactionDealRedisDao.getNowLastPrice(getDate, date);
     }

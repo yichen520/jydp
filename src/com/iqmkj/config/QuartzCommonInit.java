@@ -37,6 +37,7 @@ public class QuartzCommonInit {
     /** 执行初始化 */
     public void executeInit() {
         transactionRedisDealCommonService.userDealForRedis();
+        transactionRedisDealCommonService.updateWeeHoursBasisOfPrice();
     }
 
 }
