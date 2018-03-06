@@ -139,28 +139,6 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
     }
 
     /**
-     * 获取所有币种行情信息(web端)
-     * @return 查询成功：返回所有币种行情信息；查询失败：返回null
-     */
-    @Override
-    public List<TransactionUserDealDTO> getTransactionCurrencyMarketForWeb(Timestamp openTime, Timestamp beginTime, Timestamp endTime) {
-
-        List<TransactionUserDealDTO> transactionUserDealDTOList = null;
-
-        Map<String,Object> map = new HashMap<>();
-        map.put("openTime", openTime);
-        map.put("beginTime", beginTime);
-        map.put("endTime", endTime);
-
-        try {
-            transactionUserDealDTOList = sqlSessionTemplate.selectList("TransactionCurrency_getTransactionCurrencyMarketForWeb",map);
-        } catch (Exception e) {
-            LogUtil.printErrorLog(e);
-        }
-        return transactionUserDealDTOList;
-    }
-
-    /**
      * 查询币种个数（后台）
      * @param currencyName  货币名称(币种)
      * @param paymentType  交易状态,1:正常，2:涨停，3:跌停，4:停牌
@@ -301,4 +279,109 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
 
         return resultList;
     }
+
+    /**
+     * 为币种行情查询所有币种信息
+     * @return 操作成功：返回币种信息；操作失败：返回null
+     */
+    @Override
+    public List<TransactionUserDealDTO> getTransactionCurrencyMarketForWeb() {
+        List<TransactionUserDealDTO> transactionUserDealDTOList = null;
+
+        try {
+            transactionUserDealDTOList = sqlSessionTemplate.selectList("TransactionCurrency_getTransactionCurrencyMarketForWeb");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return transactionUserDealDTOList;
+    }
+
+    /**
+     * 获取各币种最新价
+     * @param openTime 当日开盘时间
+     * @return 查询成功：返回币种信息；查询失败：返回null
+     */
+    @Override
+    public Map<Integer,TransactionUserDealDTO> getNewPriceForWeb(Timestamp openTime) {
+        Map<Integer,TransactionUserDealDTO> newPriceMap = null;
+
+        try {
+            newPriceMap = sqlSessionTemplate.selectMap("TransactionCurrency_getNewPriceForWeb",openTime,"currencyId");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return newPriceMap;
+    }
+
+    /**
+     * 查询各币种买一价信息
+     * @return 查询成功：返回各币种买一价信息；查询失败：返回null
+     */
+    @Override
+    public Map<Integer,TransactionUserDealDTO> getBuyOneForWeb() {
+        Map<Integer,TransactionUserDealDTO> buyOneMap = null;
+
+        try {
+            buyOneMap = sqlSessionTemplate.selectMap("TransactionCurrency_getBuyOneForWeb","currencyId");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return buyOneMap;
+    }
+
+    /**
+     * 查询各币种卖一价信息
+     * @return 查询成功：返回各币种信息；查询失败：返回null
+     */
+    @Override
+    public Map<Integer,TransactionUserDealDTO> getSellOneForWeb() {
+        Map<Integer,TransactionUserDealDTO> sellOneMap = null;
+
+        try {
+            sellOneMap = sqlSessionTemplate.selectMap("TransactionCurrency_getSellOneForWeb","currencyId");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return sellOneMap;
+    }
+
+    /**
+     * 查询各币种今日成交量
+     * @param openTime 今日开盘时间
+     * @return 查询成功：返回各币种信息；查询失败：返回null
+     */
+    @Override
+    public Map<Integer,TransactionUserDealDTO> getTransactionVolumeForWeb(Timestamp openTime) {
+        Map<Integer,TransactionUserDealDTO> volumeMap = null;
+
+        try {
+            volumeMap = sqlSessionTemplate.selectMap("TransactionCurrency_getTransactionVolumeForWeb",openTime,"currencyId");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return volumeMap;
+    }
+
+    /**
+     * 获取昨日最新成交价
+     * @param openTime 今日开盘时间
+     * @param startTime 昨日开盘时间
+     * @return 查询成功：返回各币种信息；查询失败：返回null
+     */
+    @Override
+    public Map<Integer,TransactionUserDealDTO> getYesterdayLastPriceForWeb(Timestamp openTime, Timestamp startTime) {
+        Map<Integer,TransactionUserDealDTO> yesterdayPriceMap = null;
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("openTime", openTime);
+        map.put("startTime", startTime);
+
+        try {
+            yesterdayPriceMap = sqlSessionTemplate.selectMap("TransactionCurrency_getYesterdayLastPriceForWeb",map,"currencyId");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return yesterdayPriceMap;
+    }
+
 }
