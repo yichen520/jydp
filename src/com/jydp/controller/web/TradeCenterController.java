@@ -149,27 +149,29 @@ public class TradeCenterController {
         }
 
         //交易价格限制
-        double yesterdayLastPrice = (double)redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + currencyId);
+        Object yesterdayPrice = redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + currencyId);
+        if(yesterdayPrice != "" && yesterdayPrice != null){
+            double yesterdayLastPrice = (double)yesterdayPrice;
+            if(transactionCurrency.getUpRange() > 0){
+                double highPrice = yesterdayLastPrice * (1 + transactionCurrency.getUpRange());
+                if(buyPrice > highPrice){
+                    resultJson.setCode(3);
+                    resultJson.setMessage("交易单价不符合涨幅要求");
+                    return resultJson;
+                }
+            }
 
-        if(transactionCurrency.getUpRange() > 0){
-            double highPrice = yesterdayLastPrice * (1 + transactionCurrency.getUpRange());
-            if(buyPrice > highPrice){
-                resultJson.setCode(3);
-                resultJson.setMessage("交易单价不符合涨幅要求");
-                return resultJson;
+            if(transactionCurrency.getDownRange() > 0){
+                double lowPrice = yesterdayLastPrice * (1 - transactionCurrency.getDownRange());
+                if(buyPrice < lowPrice){
+                    resultJson.setCode(3);
+                    resultJson.setMessage("交易单价不符合跌幅要求");
+                    return resultJson;
+                }
             }
         }
 
-        if(transactionCurrency.getDownRange() > 0){
-            double lowPrice = yesterdayLastPrice * (1 - transactionCurrency.getDownRange());
-            if(buyPrice < lowPrice){
-                resultJson.setCode(3);
-                resultJson.setMessage("交易单价不符合跌幅要求");
-                return resultJson;
-            }
-        }
-
-        if(buyPwd == "123456"){
+        if(buyPwd.equals("123456")){
             resultJson.setCode(3);
             resultJson.setMessage("支付密码不能为原始密码");
             return resultJson;
@@ -204,7 +206,12 @@ public class TradeCenterController {
         }
 
         //从redis判断是否可以匹配交易
-        double sellOne = (double)redisService.getValue(RedisKeyConfig.SELL_ONE_KEY + currencyId);
+        Object sellOneOb = redisService.getValue(RedisKeyConfig.SELL_ONE_KEY + currencyId);
+        double sellOne = 0;
+        if(sellOneOb != null && sellOneOb != ""){
+            sellOne = (double)sellOneOb;
+        }
+
         if(sellOne > buyPrice){
             resultJson.setCode(1);
             resultJson.setMessage("没有可匹配的挂单");
@@ -299,27 +306,29 @@ public class TradeCenterController {
         }
 
         //交易价格限制
-        double yesterdayLastPrice = (double)redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + currencyId);
+        Object yesterdayPrice = redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + currencyId);
+        if(yesterdayPrice != "" && yesterdayPrice != null){
+            double yesterdayLastPrice = (double)yesterdayPrice;
+            if(transactionCurrency.getUpRange() > 0){
+                double highPrice = yesterdayLastPrice * (1 + transactionCurrency.getUpRange());
+                if(sellPrice > highPrice){
+                    resultJson.setCode(3);
+                    resultJson.setMessage("交易单价不符合涨幅要求");
+                    return resultJson;
+                }
+            }
 
-        if(transactionCurrency.getUpRange() > 0){
-            double highPrice = yesterdayLastPrice * (1 + transactionCurrency.getUpRange());
-            if(sellPrice > highPrice){
-                resultJson.setCode(3);
-                resultJson.setMessage("交易单价不符合涨幅要求");
-                return resultJson;
+            if(transactionCurrency.getDownRange() > 0){
+                double lowPrice = yesterdayLastPrice * (1 - transactionCurrency.getDownRange());
+                if(sellPrice < lowPrice){
+                    resultJson.setCode(3);
+                    resultJson.setMessage("交易单价不符合跌幅要求");
+                    return resultJson;
+                }
             }
         }
 
-        if(transactionCurrency.getDownRange() > 0){
-            double lowPrice = yesterdayLastPrice * (1 - transactionCurrency.getDownRange());
-            if(sellPrice < lowPrice){
-                resultJson.setCode(3);
-                resultJson.setMessage("交易单价不符合跌幅要求");
-                return resultJson;
-            }
-        }
-
-        if(sellPwd == "123456"){
+        if(sellPwd.equals("123456")){
             resultJson.setCode(3);
             resultJson.setMessage("支付密码不能为原始密码");
             return resultJson;
@@ -350,7 +359,12 @@ public class TradeCenterController {
         }
 
         //从redis判断是否可以匹配交易
-        double buyOne = (double)redisService.getValue(RedisKeyConfig.BUY_ONE_KEY + currencyId);
+        Object buyOneOb = redisService.getValue(RedisKeyConfig.BUY_ONE_KEY + currencyId);
+        double buyOne = 0;
+        if(buyOneOb != null && buyOneOb != ""){
+            buyOne = (double)buyOneOb;
+        }
+
         if(buyOne < sellPrice){
             resultJson.setCode(1);
             resultJson.setMessage("没有可匹配的挂单");

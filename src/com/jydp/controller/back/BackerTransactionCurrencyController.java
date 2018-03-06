@@ -289,8 +289,15 @@ public class BackerTransactionCurrencyController {
             return response;
         }
 
+        TransactionCurrencyVO currency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
+        if (currency == null) {
+            response.setCode(3);
+            response.setMessage("币种不存在");
+            return response;
+        }
+
         String imageUrl = "";
-        if (imgUrl != null || imgUrl.isEmpty()) {
+        if (imgUrl != null && !imgUrl.isEmpty()) {
             try {
                 imageUrl = FileWriteRemoteUtil.uploadFile(imgUrl.getOriginalFilename(),
                         imgUrl.getInputStream(), FileUrlConfig.file_remote_adImage_url);
@@ -302,14 +309,9 @@ public class BackerTransactionCurrencyController {
                 response.setMessage("图片新增失败！");
                 return response;
             }
+            FileWriteRemoteUtil.deleteFile(currency.getCurrencyImg());
         }
 
-        TransactionCurrencyVO currency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
-        if (currency == null) {
-            response.setCode(3);
-            response.setMessage("币种不存在");
-            return response;
-        }
         if (StringUtil.isNotNull(imageUrl)) {
             currency.setCurrencyImg(imageUrl);
         }
