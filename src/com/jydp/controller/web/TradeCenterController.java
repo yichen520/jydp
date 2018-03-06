@@ -87,8 +87,12 @@ public class TradeCenterController {
             userDealCapitalMessage = userService.countCheckUserAmountForTimer(user.getUserId(), currencyId);
         }
 
-        //获取币种名称
+        //获取币种信息
         TransactionCurrencyVO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
+        if(transactionCurrency != null){
+            transactionCurrency.setBuyFee(transactionCurrency.getBuyFee() * 100);
+            transactionCurrency.setSellFee(transactionCurrency.getSellFee() * 100);
+        }
         //获取币种基准信息
         StandardParameterVO standardParameter = transactionCurrencyService.listTransactionCurrencyAll(currencyId);
         //获取成交记录
@@ -263,7 +267,7 @@ public class TradeCenterController {
             sellOne = (double)sellOneOb;
         }
 
-        if(sellOne > buyPrice){
+        if(sellOne > buyPrice || sellOne == 0){
             resultJson.setCode(1);
             resultJson.setMessage("没有可匹配的挂单");
             return resultJson;

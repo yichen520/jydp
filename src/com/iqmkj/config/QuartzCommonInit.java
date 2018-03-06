@@ -1,17 +1,11 @@
 package com.iqmkj.config;
 
-import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
-import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
-import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.service.IRedisService;
 import com.jydp.service.ITransactionCurrencyService;
 import com.jydp.service.ITransactionDealRedisService;
 import com.jydp.service.ITransactionRedisDealCommonService;
-import config.RedisKeyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-
+import com.jydp.service.*;
 /**
  * 定时器初始化
  * @author fk
@@ -34,10 +28,25 @@ public class QuartzCommonInit {
     @Autowired
     private ITransactionRedisDealCommonService transactionRedisDealCommonService;
 
+    /** 从数据库拉取 挂单记录 到redis */
+    @Autowired
+    private ITransactionPendOrderCommonService ITransactionPendOrderCommonService;
+
+    /** web端首页 */
+    @Autowired
+    private IHomePageRedisService homePageRedisService;
+
     /** 执行初始化 */
     public void executeInit() {
+        //将成交记录放进redis
         transactionRedisDealCommonService.userDealForRedis();
+        //每日凌晨更新最高与最低价更新
         transactionRedisDealCommonService.updateWeeHoursBasisOfPrice();
+        //从数据库拉取 挂单记录 到redis
+        ITransactionPendOrderCommonService.getPendOrder();
+        //从数据库拉取首页数据到redis
+        homePageRedisService.getHomePageData();
+
     }
 
 }

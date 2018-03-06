@@ -73,28 +73,31 @@
 
                 <p class="buyInput">
                     <label class="tradeName">可用美金：</label>
-                    <span class="buyAmount rise">$123.00000</span>
+                    <span class="buyAmount rise">$${userDealCapitalMessage.userBalance }</span>
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">买入价格：</label>
-                    <input type="text" class="entry" placeholder="请输入单个币买入价" id="buyPrice" name="buyPrice"/>
+                    <input type="text" class="entry" placeholder="请输入单个币买入价" id="buyPrice" name="buyPrice"
+                           onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)" maxlength="18"/>
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">买入数量：</label>
-                    <input type="text" class="entry" placeholder="请输入您要买入的数量" id="buyNum" name="buyNum"/>
-                    <span class="max">当前最大可买：<span>123.000</span></span>
+                    <input type="text" class="entry" placeholder="请输入您要买入的数量" id="buyNum" name="buyNum"
+                           onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)" maxlength="18"/>
+                    <span class="max">当前最大可买：<span id="buyMax">0</span></span>
                 </p>
                 <p class="phoneInput">
                     <label class="tradeName">支付密码：</label>
-                    <input type="password" class="entry" placeholder="您的支付密码" id="buyPwd" name="buyPwd"/>
+                    <input type="password" class="entry" placeholder="您的支付密码" id="buyPwd" name="buyPwd" maxlength="16"
+                           onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">合计：</label>
-                    <span class="all">$123.00000</span>
+                    <span class="all" id="buyTotal">0$</span>
                 </p>
                 <p class="serviceInput">
                     <label class="tradeName">手续费：</label>
-                    <span class="service">$123.00000</span>
+                    <span class="service">${transactionCurrency.buyFee }%</span>
                 </p>
 
                 <input type="text" class="buyBtn" value="买&nbsp;入" onfocus="this.blur()" onclick="buyHandle();"/>
@@ -105,28 +108,31 @@
 
                 <p class="buyInput">
                     <label class="tradeName">可用数量：</label>
-                    <span class="sellAmount fall">123.00000</span>
+                    <span class="sellAmount fall">${userDealCapitalMessage.currencyNumber }</span>
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">卖出价格：</label>
-                    <input type="text" class="entry" placeholder="请输入单个盛源链买入价" id="sellPrice" name="sellPrice" />
+                    <input type="text" class="entry" placeholder="请输入单个币的买入价" id="sellPrice" name="sellPrice"
+                           onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)" maxlength="18"/>
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">卖出数量：</label>
-                    <input type="text" class="entry" placeholder="请输入您要买入的该币种数量" id="sellNum" name="sellNum"/>
-                    <span class="max">当前最大可买：<span>123.000</span></span>
+                    <input type="text" class="entry" placeholder="请输入您要买入的该币种数量" id="sellNum" name="sellNum"
+                           onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)" maxlength="18"/>
+                    <span class="max">当前最大可买：<span id="sellMax">0</span></span>
                 </p>
                 <p class="phoneInput">
                     <label class="tradeName">支付密码：</label>
-                    <input type="password" class="entry" placeholder="您的支付密码" id="sellPwd" name="sellPwd"/>
+                    <input type="password" class="entry" placeholder="您的支付密码" id="sellPwd" name="sellPwd" maxlength="16"
+                           onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">合计：</label>
-                    <span class="all">$123.00000</span>
+                    <span class="all" id="sellTotal">0$</span>
                 </p>
                 <p class="serviceInput">
                     <label class="tradeName">手续费：</label>
-                    <span class="service">$123.00000</span>
+                    <span class="service">${transactionCurrency.sellFee }%</span>
                 </p>
 
                 <input type="text" class="sellBtn" value="卖&nbsp;出" onfocus="this.blur()" onclick="sellHandle();"/>
@@ -139,6 +145,7 @@
             <li class="accountList">
                 <span class="listName">可用${transactionCurrency.currencyName }</span>
                 <span class="listMoney rise">${userDealCapitalMessage.currencyNumber }</span>
+                <input type="hidden" id="currencyNumber" value="${userDealCapitalMessage.currencyNumber }">
             </li>
             <li class="accountList">
                 <span class="listName">冻结${transactionCurrency.currencyName }</span>
@@ -147,6 +154,7 @@
             <li class="accountList">
                 <span class="listName">可用美金</span>
                 <span class="listMoney rise">$${userDealCapitalMessage.userBalance }</span>
+                <input type="hidden" id="userBalance" value="${userDealCapitalMessage.userBalance }">
             </li>
             <li class="accountList">
                 <span class="listName">冻结美金</span>
@@ -391,6 +399,111 @@
                 openTips("挂单失败,请重新刷新页面后重试");
             }
         });
+    }
+
+    var mapMatch = {};
+    mapMatch['number'] = /[^\d]/g;
+    mapMatch['ENumber'] = /[^\a-\z\A-\Z\d]/g;
+    mapMatch['double'] = true;
+    mapMatch['phone'] = /[^\d]/g;
+    mapMatch['email'] = /([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+    function matchUtil(o, str, nu) {
+        mapMatch[str] === true ? matchDouble(o, nu) : o.value = o.value.replace(mapMatch[str], '');
+    }
+
+    function matchDouble(o, num){
+        var matchStr = /^-?\d+\.?\d{0,num}$/;
+        if(!matchStr.test(o.value)){
+            if(isNaN(o.value)){
+                o.value = '';
+            }else{
+                var n = o.value.indexOf('.');
+                var m = n + num + 1;
+                if(n > -1 && o.value.length > m){
+                    o.value = o.value.substring(0, m);
+                }
+            }
+        }
+        mul();
+    }
+
+    //动态计算总价
+    function mul() {
+
+        //买入
+        var buyPrice = parseFloat($("#buyPrice").val()) * 1000;
+        var buyNum = parseFloat($("#buyNum").val()) * 1000000;
+        if (buyPrice > 0) {
+            if (buyNum > 0) {
+                var total = Math.floor(buyPrice * buyNum ) / 1000 / 1000000;
+                var tota = mulMaxNumber(total);
+                $("#buyTotal").html(tota);
+            }
+            var userBalance = parseFloat($("#userBalance").val()) * 1000;
+            if (userBalance > 0) {
+                var total = userBalance / buyPrice;
+                var tota = mulMaxNumber(total);
+                $("#buyMax").html(tota);
+            }
+        } else {
+            $("#buyTotal").html("");
+        }
+
+
+        //卖出
+        var buyPrice = parseFloat($("#sellPrice").val()) * 1000;
+        var buyNum = parseFloat($("#sellNum").val()) * 1000000;
+        if (buyPrice > 0) {
+            if (buyNum > 0) {
+                var total = Math.floor(buyPrice * buyNum )/ 1000 / 1000000;
+                var tota = mulMaxNumber(total);
+                $("#sellTotal").html(tota);
+            }
+
+            var currencyNumber = parseFloat($("#currencyNumber").val()) * 1000000;
+            if (currencyNumber > 0) {
+                var total = Math.floor(currencyNumber * buyPrice) / 1000 / 1000000;
+                var tota = mulMaxNumber(total);
+                $("#sellMax").html(tota);
+            }
+        } else {
+            $("#sellTotal").html("");
+        }
+
+    }
+
+    //超大位数显示   返回字符串
+    function mulMaxNumber(value) {
+        value = "" + value;
+        var mulArray = value.split("e+");
+        if (mulArray == null) {
+            return 0;
+        }
+        if (mulArray.length == 1) {
+            return mulArray[0];
+        }
+
+        var decimal = new Number(mulArray[1]);
+        var suffix = "";
+        for (var i = 0; i < decimal; i++) {
+            suffix += "0";
+        }
+
+        var pointArray = mulArray[0].split(".");
+        if (pointArray == null) {
+            return 0;
+        }
+
+        var prefix = "";
+        var pointLength = pointArray.length;
+        if (pointLength == 1) {
+            prefix = "" + pointArray[0]
+        }
+        if (pointLength == 2) {
+            prefix = "" + pointArray[0] + pointArray[1];
+        }
+
+        return prefix + suffix;
     }
 </script>
 <script type="text/javascript">

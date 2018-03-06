@@ -381,7 +381,7 @@
             if (price > 0) {
                 var total = Math.floor(number * price / 1000000 / 1000000);
                 var tota = mulMaxNumber(total);
-                $("#addTotalPrice").html(total);
+                $("#addTotalPrice").html(tota);
                 return;
             }
         }

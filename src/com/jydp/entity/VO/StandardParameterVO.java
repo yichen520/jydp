@@ -1,9 +1,9 @@
 package com.jydp.entity.VO;
 
 /**
- * 盘基准信息
+ * 交易大盘基准信息
  *
- * @author fk
+ * @author sy
  */
 public class StandardParameterVO {
     private double nowPrice; //当前成交单价
@@ -14,6 +14,24 @@ public class StandardParameterVO {
     private double todayRange; //今日涨幅
     private double yesterdayPrice; //昨日收盘价
     private double dayTurnove; //24小时成交量
+
+    /**
+     * 今日涨幅
+     *
+     * @return the today range
+     */
+    public double getTodayRange() {
+        return todayRange;
+    }
+
+    /**
+     * 今日涨幅
+     *
+     * @param todayRange the today range
+     */
+    public void setTodayRange(double todayRange) {
+        this.todayRange = todayRange;
+    }
 
     /**
      * 当前成交单价
@@ -103,24 +121,6 @@ public class StandardParameterVO {
      */
     public void setTodayMin(double todayMin) {
         this.todayMin = todayMin;
-    }
-
-    /**
-     * 今日涨幅
-     *
-     * @return the today range
-     */
-    public double getTodayRange() {
-        return todayRange;
-    }
-
-    /**
-     * 今日涨幅
-     *
-     * @param todayRange the today range
-     */
-    public void setTodayRange(double todayRange) {
-        this.todayRange = todayRange;
     }
 
     /**

@@ -57,7 +57,7 @@
                 <td class="money">${transactionUserDeal.sellOnePrice}</td>
                 <td class="money">${transactionUserDeal.volume}</td>
                 <td class="uplift in">${transactionUserDeal.change}%</td>
-                <td class="operate"><a href="#">去交易</a></td>
+                <td class="operate"><a href="javascript:void(0)" onclick="toTradeCenter(${transactionUserDeal.currencyId})">去交易</a></td>
             </tr>
         </c:forEach>
     </table>
@@ -115,6 +115,9 @@
     <input type="hidden" name="hotId" id="hotId">
 </form>
 
+<form id="tradeCenterForm" action="<%=path %>/userWeb/tradeCenter/show" method="post">
+    <input id="currencyId" name="currencyId" type="hidden"/>
+</form>
 <div id="helpFooter"></div>
 <div id="footer"></div>
 
@@ -161,7 +164,7 @@
                                     '<td class="money">' + returnFloat(transactionUserDeal.sellOnePrice) + '</td>' +
                                     '<td class="money">' + returnFloat(transactionUserDeal.volume) + '</td>' +
                                     '<td class="uplift in">' + returnFloat(transactionUserDeal.change) + '%</td>' +
-                                    '<td class="operate"><a href="#">去交易</a></td>' +
+                                    '<td class="operate"><a href="javascript:void(0)" onclick="toTradeCenter('+transactionUserDeal.currencyId+')">去交易</a></td>' +
                                     '</tr>');
                             }
                         }
@@ -192,6 +195,11 @@
     function hotTopicSubmit(hotId) {
         $("#hotId").val(hotId);
         $("#hotTopicForm").submit();
+    }
+
+    function toTradeCenter(currencyId) {
+        $("#currencyId").val(currencyId);
+        $("#tradeCenterForm").submit();
     }
 </script>
 

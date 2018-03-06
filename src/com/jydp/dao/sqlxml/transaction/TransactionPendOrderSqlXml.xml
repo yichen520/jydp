@@ -151,14 +151,14 @@
 		<if test="userId > 0">
 			AND userId = #{userId}
 		</if>
-		GROUP BY pendingPrice
+		ORDER BY pendingPrice
 		<if test="paymentType == 1 ">
 			DESC
 		</if>
 		<if test="paymentType == 2 ">
 			ASC
 		</if>
-		ORDER BY addTime DESC
+		,  addTime DESC
 		LIMIT 1
 	</select>
 
