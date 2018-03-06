@@ -254,7 +254,7 @@
     <div class="myDeal">
         <p class="myTitle">
             最近成交记录<img src="<%=path %>/resources/image/web/deal.png" />
-            <a href="#" class="more">我的成交记录</a>
+            <a href="<%=path %>/userWeb/dealRecord/show.htm" class="more">我的成交记录</a>
         </p>
 
         <p class="tableTitle">
@@ -340,7 +340,7 @@
         }
 
         if(currencyId == null || currencyId == ""){
-            openTips("币种标识不存在");
+            openTips("参数获取错误，请刷新页面重试");
             resultBoo = false;
             return;
         }
@@ -401,7 +401,7 @@
         }
 
         if(currencyId == null || currencyId == ""){
-            openTips("币种标识不存在");
+            openTips("参数获取错误，请刷新页面重试");
             resultBoo = false;
             return;
         }
@@ -606,7 +606,7 @@
         var currencyId = $("#cucyId").val();
         if (currencyId == null || currencyId == "") {
             dealBoo = false;
-            //openTips("参数获取错误，请刷新页面重试")
+            openTips("参数获取错误，请刷新页面重试")
             return;
         }
 
