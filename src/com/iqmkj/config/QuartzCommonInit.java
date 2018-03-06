@@ -3,10 +3,7 @@ package com.iqmkj.config;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
-import com.jydp.service.IRedisService;
-import com.jydp.service.ITransactionCurrencyService;
-import com.jydp.service.ITransactionDealRedisService;
-import com.jydp.service.ITransactionRedisDealCommonService;
+import com.jydp.service.*;
 import config.RedisKeyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -34,10 +31,15 @@ public class QuartzCommonInit {
     @Autowired
     private ITransactionRedisDealCommonService transactionRedisDealCommonService;
 
+    /** web端首页 */
+    @Autowired
+    private IHomePageRedisService homePageRedisService;
+
     /** 执行初始化 */
     public void executeInit() {
         transactionRedisDealCommonService.userDealForRedis();
         transactionRedisDealCommonService.updateWeeHoursBasisOfPrice();
+        homePageRedisService.getHomePageData();
     }
 
 }

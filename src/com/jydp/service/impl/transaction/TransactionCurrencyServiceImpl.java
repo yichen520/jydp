@@ -7,7 +7,9 @@ import com.jydp.dao.ITransactionCurrencyDao;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DTO.TransactionUserDealDTO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
+import com.jydp.service.IRedisService;
 import com.jydp.service.ITransactionCurrencyService;
+import config.RedisKeyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,10 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
     /** 交易币种 */
     @Autowired
     private ITransactionCurrencyDao transactionCurrencyDao;
+
+    /** redis服务 */
+    @Autowired
+    private IRedisService redisService;
 
     /** 日期格式 **/
     private SimpleDateFormat sdf = new SimpleDateFormat(DateUtil.dateFormat2);
@@ -218,6 +224,10 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
             for (TransactionUserDealDTO transactionUserDeal:transactionUserDealDTOList) {
                 int currencyId = transactionUserDeal.getCurrencyId();
                 double latestPrice = 0.0, buyOnePrice = 0.0, sellOnePrice = 0.0, volume = 0.0, yesterdayLastPrice = 0.0;
+                if (redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE+transactionUserDeal.getCurrencyId()) != null) {
+                    yesterdayLastPrice = NumberUtil.doubleFormat((double)redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE+transactionUserDeal.getCurrencyId()),2);
+                }
+
                 if (newPriceMap != null && newPriceMap.get(currencyId) != null) {
                     latestPrice = newPriceMap.get(currencyId).getLatestPrice();
                 }
