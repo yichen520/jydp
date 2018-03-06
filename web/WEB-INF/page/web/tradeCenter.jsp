@@ -584,11 +584,14 @@
                 //登录后进行的操作
                 //刷新委托记录
                 entrust();
+                //获取交易相关价格（用户资金信息）
+                userMessage();
             }
             //刷新成交记录
             reDeal();
             //获取交易相关价格（基准信息、用户资金信息）
             gainDealPrice();
+
             //刷新挂单记录
             rePend();
         }
@@ -672,10 +675,9 @@
                                         '</li>';
                     }
                     $("#orderBuyReId").html(newChildBuy);
-                    pendBoo = false;
+
                 }
-
-
+                pendBoo = false;
             }, error: function () {
                 pendBoo = false;
                 openTips("获取失败,请重新刷新页面后重试");
@@ -747,10 +749,8 @@
 
                     }
                     document.getElementById("dealOrder").innerHTML = newChild;
-                    dealBoo = false;
                 }
-
-
+                dealBoo = false;
             }, error: function () {
                 dealBoo = false;
                 openTips("获取失败,请重新刷新页面后重试");
@@ -878,9 +878,9 @@
                             paymentType = "卖出";
                             type = "fall";
                         }
-                        var pendingPrice = Math.floor(deal.pendingPrice * 10000) / 10000;
-                        var pendingNumber = Math.floor(deal.pendingNumber * 100) / 100;
-                        var currencyTotalPrice = Math.floor(deal.countPrice * 1000000) / 1000000;
+                        var pendingPrice = deal.pendingPrice;
+                        var pendingNumber = deal.pendingNumber ;
+                        var currencyTotalPrice = deal.countPrice;
                         var pendingOrderNo = deal.pendingOrderNo;
                         var goCancle = "goCancle('"+ pendingOrderNo + "')";
                         newChild += "<tr class='tableInfo'>" +
@@ -888,16 +888,13 @@
                             "<td class='type " + type + "'>" + paymentType + "</td>" +
                             "<td class='amount'>" + "$" + pendingPrice + "</td>" +
                             "<td class='amount'>" + pendingNumber + "</td>" +
-                            "<td class='amount rise'>" + currencyTotalPrice+ "</td>" +
+                            "<td class='amount rise'>" + "$" + currencyTotalPrice+ "</td>" +
                             "<td class='operate'><input type='text' value='撤&nbsp;销' class='revoke' onclick="+ goCancle + "></td>" +
                             "</tr>";
                     }
-
                     document.getElementById("entrustRecord").innerHTML = newChild;
-                    entrustBoo = false;
                 }
-
-
+                entrustBoo = false;
             }, error: function () {
                 entrustBoo = false;
                 openTips("获取失败,请重新刷新页面后重试");
@@ -905,7 +902,7 @@
         });
     }
 
-    /**获取交易相关价格（基准信息、用户资金信息）*/
+    /**获取交易相关价格（基准信息）*/
     var gainDealPriceBoo = false;
     function gainDealPrice(){
         if (gainDealPriceBoo) {
@@ -925,7 +922,7 @@
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (resultData) {
-                gainDealPriceBoo = false
+                gainDealPriceBoo = false;
                 var code = resultData.code;
                 var message = resultData.message;
                 if (code != 1 && message != "") {
@@ -933,24 +930,11 @@
                     return;
                 }
 
-
                 var data = resultData.data;
-                var userDealCapitalMessage = data.userDealCapitalMessage;
                 var standardParameter = data.standardParameter;
-                if(userDealCapitalMessage != null){
-                    $("#currencyNumberShow").html(userDealCapitalMessage.currencyNumber);
-                    $("#currencyNumber").html(userDealCapitalMessage.currencyNumber);
-                    $("#usableCurrencyNumber").html(userDealCapitalMessage.currencyNumber);
-                    $("#currencyNumberLockShow").html(userDealCapitalMessage.currencyNumberLock);
-                    $("#userBalanceShow").html("$" + userDealCapitalMessage.userBalance);
-                    $("#userBalance").html("$" + userDealCapitalMessage.userBalance);
-                    $("#usableUserBalance").html("$" + userDealCapitalMessage.userBalance);
-                    $("#userBalanceLockShow").html("$" + userDealCapitalMessage.userBalanceLock);
-                    $("#currencyNumberSumShow").html("$" + userDealCapitalMessage.currencyNumberSum);
-                }
                 if(standardParameter != null){
                     $("#nowPrice").html(standardParameter.nowPrice);
-                    $("#nowPriceShow").html("最新成交价：" + standardParameter.nowPrice);
+                    $("#nowPriceShow").html("最新成交价：" + standardParameter.nowPrice + "$");
                     if(standardParameter.todayRange >= 0){
                         $("#todayRangeRise").html("+" + standardParameter.todayRange + "%");
                         $("#todayRangeRise").removeClass("number fall");
@@ -965,9 +949,7 @@
                     $("#buyOne").html(standardParameter.buyOne);
                     $("#sellOne").html(standardParameter.sellOne);
                     $("#dayTurnove").html(standardParameter.dayTurnove);
-
                 }
-
             },
 
             error: function () {
@@ -978,6 +960,54 @@
 
     }
 
+    /**获取交易相关价格（用户资金信息）*/
+    var userMessageBoo = false;
+    function userMessage(){
+        if (userMessageBoo) {
+            return;
+        } else {
+            userMessageBoo = true;
+        }
+
+        var currencyId = $("#cucyId").val();
+        $.ajax({
+            url: '<%=path %>' + "/userWeb/tradeCenter/userMessage",
+            data: {
+                currencyId : currencyId
+            },//参数
+            dataType: "json",
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (resultData) {
+                userMessageBoo = false;
+                var code = resultData.code;
+                var message = resultData.message;
+                if (code != 1 && message != "") {
+                    openTips(message);
+                    return;
+                }
+
+                var data = resultData.data;
+                var userDealCapitalMessage = data.userDealCapitalMessage;
+                if(userDealCapitalMessage != null){
+                    $("#currencyNumberShow").html(userDealCapitalMessage.currencyNumber);
+                    $("#currencyNumber").html(userDealCapitalMessage.currencyNumber);
+                    $("#usableCurrencyNumber").html(userDealCapitalMessage.currencyNumber);
+                    $("#currencyNumberLockShow").html(userDealCapitalMessage.currencyNumberLock);
+                    $("#userBalanceShow").html("$" + userDealCapitalMessage.userBalance);
+                    $("#userBalance").html("$" + userDealCapitalMessage.userBalance);
+                    $("#usableUserBalance").html("$" + userDealCapitalMessage.userBalance);
+                    $("#userBalanceLockShow").html("$" + userDealCapitalMessage.userBalanceLock);
+                    $("#currencyNumberSumShow").html("$" + userDealCapitalMessage.currencyNumberSum);
+                }
+            },
+
+            error: function () {
+                userMessageBoo = false;
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+    }
 
 </script>
 </body>
