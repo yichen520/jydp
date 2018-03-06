@@ -72,7 +72,7 @@
 
                 <p class="buyInput">
                     <label class="tradeName">可用美金：</label>
-                    <span class="buyAmount rise">$123.00000</span>
+                    <span class="buyAmount rise">$${userDealCapitalMessage.userBalance }</span>
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">买入价格：</label>
@@ -93,7 +93,7 @@
                 </p>
                 <p class="serviceInput">
                     <label class="tradeName">手续费：</label>
-                    <span class="service">$123.00000</span>
+                    <span class="service">${userDealCapitalMessage.buyFee }</span>
                 </p>
 
                 <input type="text" class="buyBtn" value="买&nbsp;入" onfocus="this.blur()" onclick="buyHandle();"/>
@@ -104,7 +104,7 @@
 
                 <p class="buyInput">
                     <label class="tradeName">可用数量：</label>
-                    <span class="sellAmount fall">123.00000</span>
+                    <span class="sellAmount fall">${userDealCapitalMessage.currencyNumber }</span>
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">买入价格：</label>
@@ -125,7 +125,7 @@
                 </p>
                 <p class="serviceInput">
                     <label class="tradeName">手续费：</label>
-                    <span class="service">$123.00000</span>
+                    <span class="service">${userDealCapitalMessage.sellFee }</span>
                 </p>
 
                 <input type="text" class="sellBtn" value="卖&nbsp;出" onfocus="this.blur()" onclick="sellHandle();"/>
