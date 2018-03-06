@@ -476,4 +476,15 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
         return transactionPendOrderDao.updateAllDeal(pendingOrderNo, dealNumber, endTime);
     }
 
+    /**
+     * 分页查询委托记录列表（交易中心）
+     * @param userId 用户id
+     * @param pageNumber 起始页数
+     * @param pageSize 每页条数
+     * @return 操作成功：返回挂单记录列表，操作失败：返回null
+     */
+    public List<TransactionPendOrderDO> listPendOrderForWeb(int userId, int pageNumber, int pageSize){
+        return transactionPendOrderDao.listPendOrderForWeb(userId, pageNumber, pageSize);
+    };
+
 }
