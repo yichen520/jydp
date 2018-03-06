@@ -8,9 +8,11 @@ import com.jydp.entity.DO.system.SystemBusinessesPartnerDO;
 import com.jydp.entity.DO.system.SystemHotDO;
 import com.jydp.entity.DO.system.SystemNoticeDO;
 import com.jydp.entity.DTO.TransactionUserDealDTO;
+import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.IHomePageService;
 import com.jydp.service.IRedisService;
+import com.jydp.service.ITransactionCurrencyService;
 import config.RedisKeyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -33,6 +35,10 @@ public class HomePageController {
     /** redis服务 */
     @Autowired
     private IRedisService redisService;
+
+    /** 交易币种 */
+    @Autowired
+    private ITransactionCurrencyService transactionCurrencyService;
 
     /** 跳转至首页 */
     @RequestMapping("/show")
@@ -72,6 +78,22 @@ public class HomePageController {
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("transactionUserDealDTOList",transactionUserDealDTOList);
+
+        jsonObjectBO.setCode(1);
+        jsonObjectBO.setMessage("查询成功");
+        jsonObjectBO.setData(jsonObject);
+        return jsonObjectBO;
+    }
+
+    /** 获取所有币种信息 */
+    @RequestMapping("/getAllCurrency")
+    public @ResponseBody JsonObjectBO getAllCurrency(){
+
+        JsonObjectBO jsonObjectBO = new JsonObjectBO();
+
+        List<TransactionCurrencyVO> transactionCurrencyVOList = transactionCurrencyService.getTransactionCurrencyListForWeb();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("transactionCurrencyList",transactionCurrencyVOList);
 
         jsonObjectBO.setCode(1);
         jsonObjectBO.setMessage("查询成功");
