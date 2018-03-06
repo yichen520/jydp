@@ -192,8 +192,8 @@
                             <c:forEach items="${transactionPendOrderSellList}" var="item" varStatus="status">
                                 <li class="recordInfo">
                                     <span class="rangeType">卖${fn:length(transactionPendOrderSellList) - status.index}</span>
-                                    <span class="rangePrice"><fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="4"/></span>
-                                    <span class="rangeNum"><fmt:formatNumber type="number" value="${item.restNumber}" maxFractionDigits="2"/></span>
+                                    <span class="rangePrice"><fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2"/></span>
+                                    <span class="rangeNum"><fmt:formatNumber type="number" value="${item.restNumber}" maxFractionDigits="4"/></span>
                                     <span class="rangeAmount"><fmt:formatNumber type="number" value="${item.sumPrice}" maxFractionDigits="6"/></span>
                                 </li>
                             </c:forEach>
@@ -203,8 +203,8 @@
                             <c:forEach items="${transactionPendOrderBuyList}" var="item" varStatus="status">
                                 <li class="recordInfo">
                                     <span class="rangeType">买${status.count}</span>
-                                    <span class="rangePrice"><fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="4"/></span>
-                                    <span class="rangeNum"><fmt:formatNumber type="number" value="${item.restNumber}" maxFractionDigits="2"/></span>
+                                    <span class="rangePrice"><fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2"/></span>
+                                    <span class="rangeNum"><fmt:formatNumber type="number" value="${item.restNumber}" maxFractionDigits="4"/></span>
                                     <span class="rangeAmount"><fmt:formatNumber type="number" value="${item.sumPrice}" maxFractionDigits="6"/></span>
                                 </li>
                             </c:forEach>
@@ -221,7 +221,7 @@
                 我的委托记录<img src="<%=path %>/resources/image/web/entrust.png" />
                 <a href="<%=path%>/userWeb/transactionPendOrderController/show.htm" class="more">查看更多</a>
             </p>
-            <table class="table" cellspacing="0 " cellpadding="0" id="entrustRecord">
+            <table class="table" cellspacing="0 " cellpadding="0" >
                 <tr class="tableTitle">
                     <td class="time">委托时间</td>
                     <td class="type">类型</td>
@@ -230,6 +230,7 @@
                     <td class="amount">委托总价</td>
                     <td class="operate">操作</td>
                 </tr>
+                <tbody id="entrustRecord">
                 <c:forEach items="${transactionPendOrderList}" var="item">
                     <tr class="tableInfo">
                         <td class="time"><fmt:formatDate type="time" value="${item.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
@@ -239,12 +240,13 @@
                         <c:if test="${item.paymentType == 2}">
                             <td class="type fall">卖出</td>
                         </c:if>
-                        <td class="amount">$<fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="4"/></td>
-                        <td class="amount"><fmt:formatNumber type="number" value="${item.pendingNumber}" maxFractionDigits="2"/></td>
+                        <td class="amount">$<fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2"/></td>
+                        <td class="amount"><fmt:formatNumber type="number" value="${item.pendingNumber}" maxFractionDigits="4"/></td>
                         <td class="amount rise">$<fmt:formatNumber type="number" value="${item.pendingPrice * item.pendingNumber}" maxFractionDigits="6"/></td>
                         <td class="operate"><input type="text" value="撤&nbsp;销" class="revoke" onclick="goCancle('${item.pendingOrderNo}')" /></td>
                     </tr>
                 </c:forEach>
+                </tbody>
             </table>
         </div>
     </c:if>
@@ -274,8 +276,8 @@
                         <c:if test="${item.paymentType == 2}">
                             <td class="type fall">卖出</td>
                         </c:if>
-                        <td class="dealAmount">$<fmt:formatNumber type="number" value="${item.transactionPrice}" maxFractionDigits="4"/></td>
-                        <td class="dealAmount"><fmt:formatNumber type="number" value="${item.currencyNumber}" maxFractionDigits="2"/></td>
+                        <td class="dealAmount">$<fmt:formatNumber type="number" value="${item.transactionPrice}" maxFractionDigits="2"/></td>
+                        <td class="dealAmount"><fmt:formatNumber type="number" value="${item.currencyNumber}" maxFractionDigits="4"/></td>
                         <td class="dealAmount rise">$<fmt:formatNumber type="number" value="${item.currencyTotalPrice}" maxFractionDigits="6"/></td>
                     </tr>
                 </c:forEach>
@@ -358,6 +360,7 @@
                 if(result.code != 1) {
                     openTips(result.message);
                 }
+                entrust();
                 resultBoo = false;
             }, error: function () {
                 resultBoo = false;
@@ -411,6 +414,7 @@
                 if(result.code != 1) {
                     openTips(result.message);
                 }
+                entrust();
                 resultBoo = false;
             }, error: function () {
                 resultBoo = false;
@@ -685,7 +689,7 @@
 <script type="text/javascript">
 
     var calMoreBoo = false;
-    function goCancle(pendOrderNo){
+    function goCancle(pendOrderNo) {
         if (calMoreBoo) {
             return;
         } else {
@@ -693,7 +697,7 @@
         }
 
         if (pendOrderNo == "" || pendOrderNo == null) {
-            calMoreBoo =false;
+            calMoreBoo = false;
             openTips("单号错误");
             return;
         }
@@ -701,7 +705,7 @@
         $.ajax({
             url: '<%=path %>' + "/userWeb/transactionPendOrderController/revoke.htm",
             data: {
-                pendingOrderNo : pendOrderNo
+                pendingOrderNo: pendOrderNo
             },//参数
             dataType: "json",
             type: 'POST',
@@ -718,7 +722,6 @@
                 entrust();
 
             },
-
             error: function () {
                 calMoreBoo = false;
                 openTips("数据加载出错，请稍候重试");
@@ -726,6 +729,7 @@
         });
 
     }
+
 
     /** 刷新委托记录 */
     var entrustBoo = false;
@@ -736,8 +740,8 @@
             entrustBoo = true;
         }
 
-        var currencyId = $("#cucyId").val();
-        if (currencyId == null || currencyId == "") {
+        var cucyId = $("#cucyId").val();
+        if (cucyId == null || cucyId == "") {
             entrustBoo = false;
             openTips("参数获取错误，请刷新页面重试")
             return;
@@ -746,7 +750,7 @@
         $.ajax({
             url: '<%=path%>' + "/userWeb/tradeCenter/entrust.htm", //方法路径URL
             data: {
-                currencyId: currencyId
+                currencyId: cucyId
 
             },//参数
             dataType: 'json',
@@ -767,7 +771,7 @@
                         var deal = dealList[i];
                         var addTime = formatDateTime(deal.addTime);
                         var paymentType = "";
-                        var type = ""
+                        var type = "";
                         if (deal.paymentType == 1) {
                             paymentType = "买入";
                             type = "rise";
@@ -779,14 +783,15 @@
                         var pendingPrice = Math.floor(deal.pendingPrice * 10000) / 10000;
                         var pendingNumber = Math.floor(deal.pendingNumber * 100) / 100;
                         var currencyTotalPrice = Math.floor((pendingPrice * pendingNumber )* 1000000) / 1000000;
-
+                        var pendingOrderNo = deal.pendingOrderNo;
+                        var goCancle = "goCancle('"+ pendingOrderNo + "')";
                         newChild += "<tr class='tableInfo'>" +
                             "<td class='time'>" + addTime + "</td>" +
                             "<td class='type " + type + "'>" + paymentType + "</td>" +
                             "<td class='amount'>" + pendingPrice + "</td>" +
                             "<td class='amount'>" + pendingNumber + "</td>" +
                             "<td class='amount rise'>" + currencyTotalPrice+ "</td>" +
-                            "<td class='operate'><input type='text' value='撤&nbsp;销' class='revoke' onclick='goCancle('"+ ${deal.pendingOrderNo} + "')'/></td>" +
+                            "<td class='operate'><input type='text' value='撤&nbsp;销' class='revoke' onclick='"+ goCancle + "'/></td>" +
                             "</tr>";
                     }
 
@@ -801,8 +806,6 @@
             }
         });
     }
-
-
 
 </script>
 </body>

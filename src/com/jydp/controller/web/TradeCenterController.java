@@ -86,7 +86,7 @@ public class TradeCenterController {
         UserSessionBO user = UserWebInterceptor.getUser(request);
         if (user != null) {
             userDealCapitalMessage = userService.countCheckUserAmountForTimer(user.getUserId(), currencyId);
-            transactionPendOrderList = transactionPendOrderService.listPendOrderForWeb(user.getUserId(),currencyId,0, 20);
+            transactionPendOrderList = transactionPendOrderService.listPendOrderForWeb(user.getUserId(),currencyId,0, 10);
         }
 
         //获取币种信息
@@ -566,7 +566,7 @@ public class TradeCenterController {
         currencyId = Integer.parseInt(currencyIdStr);
         UserSessionBO user = UserWebInterceptor.getUser(request);
         if (user != null) {
-            transactionPendOrderList = transactionPendOrderService.listPendOrderForWeb(user.getUserId(),currencyId,0, 20);
+            transactionPendOrderList = transactionPendOrderService.listPendOrderForWeb(user.getUserId(),currencyId,0, 10);
         }
 
         JSONObject jsonObject = new JSONObject();
