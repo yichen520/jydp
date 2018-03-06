@@ -1,5 +1,6 @@
 package com.jydp.service.impl.user;
 
+import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.IUserBalanceDao;
 import com.jydp.entity.DO.user.UserBalanceDO;
 import com.jydp.service.IUserBalanceService;
@@ -47,7 +48,21 @@ public class UserBalanceServiceImpl implements IUserBalanceService {
      */
     @Override
     public List<UserBalanceDO> getUserBalancelistForWeb(int userId, int pageNumber, int pageSize) {
-        return userBalanceDao.getUserBalancelistForWeb(userId, pageNumber, pageSize);
+
+        List<UserBalanceDO> userBalanceList = userBalanceDao.getUserBalancelistForWeb(userId, pageNumber, pageSize);
+
+        if (userBalanceList != null) {
+            for (UserBalanceDO userBalance:userBalanceList) {
+                int currencyId = userBalance.getCurrencyId();
+                int accuracy = 4;
+                if (currencyId == 999) {
+                    accuracy = 2;
+                }
+                userBalance.setBalanceNumber(NumberUtil.doubleFormat(userBalance.getBalanceNumber(),accuracy));
+                userBalance.setFrozenNumber(NumberUtil.doubleFormat(userBalance.getFrozenNumber(),accuracy));
+            }
+        }
+        return userBalanceList;
     }
 
     /**

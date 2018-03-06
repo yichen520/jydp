@@ -1,7 +1,9 @@
 package com.jydp.service.impl.transaction;
 
+import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.ITransactionUserDealDao;
 import com.jydp.entity.DO.transaction.TransactionUserDealDO;
+import com.jydp.entity.DO.user.UserBalanceDO;
 import com.jydp.entity.VO.TransactionUserDealVO;
 import com.jydp.service.ITransactionUserDealService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +33,18 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
      */
     @Override
     public List<TransactionUserDealDO> getTransactionUserDeallist(int userId, int pageNumber, int pageSize) {
-        return transactionUserDealDao.getTransactionUserDeallist(userId, pageNumber, pageSize);
+
+        List<TransactionUserDealDO> transactionUserDealDOList = transactionUserDealDao.getTransactionUserDeallist(userId, pageNumber, pageSize);
+
+        if (transactionUserDealDOList != null) {
+            for (TransactionUserDealDO transactionUserDeal:transactionUserDealDOList) {
+                int accuracy = 4;
+                transactionUserDeal.setCurrencyNumber(NumberUtil.doubleFormat(transactionUserDeal.getCurrencyNumber(),accuracy));
+                transactionUserDeal.setCurrencyTotalPrice(NumberUtil.doubleFormat(transactionUserDeal.getCurrencyTotalPrice(),accuracy));
+            }
+        }
+
+        return transactionUserDealDOList;
     }
 
     /**
