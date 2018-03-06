@@ -2,6 +2,7 @@
 <%@include file="/resources/page/common/path.jsp"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 
 <!DOCTYPE html>
@@ -110,12 +111,12 @@
                     <span class="sellAmount fall">${userDealCapitalMessage.currencyNumber }</span>
                 </p>
                 <p class="buyInput">
-                    <label class="tradeName">买入价格：</label>
+                    <label class="tradeName">卖出价格：</label>
                     <input type="text" class="entry" placeholder="请输入单个币的买入价" id="sellPrice" name="sellPrice"
                            onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)" maxlength="18"/>
                 </p>
                 <p class="buyInput">
-                    <label class="tradeName">买入数量：</label>
+                    <label class="tradeName">卖出数量：</label>
                     <input type="text" class="entry" placeholder="请输入您要买入的该币种数量" id="sellNum" name="sellNum"
                            onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)" maxlength="18"/>
                     <span class="max">当前最大可买：<span id="sellMax">0</span></span>
@@ -188,66 +189,25 @@
 
                     <div class="scroll">
                         <ul class="sellRecord fall">
-                            <li class="recordInfo">
-                                <span class="rangeType">卖3</span>
-                                <span class="rangePrice">90.0000</span>
-                                <span class="rangeNum">0.98</span>
-                                <span class="rangeAmount">123.000000</span>
-                            </li>
-                            <li class="recordInfo">
-                                <span class="rangeType">卖3</span>
-                                <span class="rangePrice">90.0000</span>
-                                <span class="rangeNum">0.98</span>
-                                <span class="rangeAmount">123.000000</span>
-                            </li> <li class="recordInfo">
-                            <span class="rangeType">卖3</span>
-                            <span class="rangePrice">90.0000</span>
-                            <span class="rangeNum">0.98</span>
-                            <span class="rangeAmount">123.000000</span>
-                        </li> <li class="recordInfo">
-                            <span class="rangeType">卖3</span>
-                            <span class="rangePrice">90.0000</span>
-                            <span class="rangeNum">0.98</span>
-                            <span class="rangeAmount">123.000000</span>
-                        </li> <li class="recordInfo">
-                            <span class="rangeType">卖3</span>
-                            <span class="rangePrice">90.0000</span>
-                            <span class="rangeNum">0.98</span>
-                            <span class="rangeAmount">123.000000</span>
-                        </li>
-                            <li class="recordInfo">
-                                <span class="rangeType">卖2</span>
-                                <span class="rangePrice">90.0000</span>
-                                <span class="rangeNum">0.98</span>
-                                <span class="rangeAmount">123.000000</span>
-                            </li>
-                            <li class="recordInfo">
-                                <span class="rangeType">卖1</span>
-                                <span class="rangePrice">90.0000</span>
-                                <span class="rangeNum">0.98</span>
-                                <span class="rangeAmount">123.000000</span>
-                            </li>
+                            <c:forEach items="${transactionPendOrderSellList}" var="item" varStatus="status">
+                                <li class="recordInfo">
+                                    <span class="rangeType">卖${fn:length(transactionPendOrderSellList) - status.index}</span>
+                                    <span class="rangePrice"><fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="4"/></span>
+                                    <span class="rangeNum"><fmt:formatNumber type="number" value="${item.restNumber}" maxFractionDigits="2"/></span>
+                                    <span class="rangeAmount"><fmt:formatNumber type="number" value="${item.sumPrice}" maxFractionDigits="6"/></span>
+                                </li>
+                            </c:forEach>
                         </ul>
 
                         <ul class="buyRecord rise">
-                            <li class="recordInfo">
-                                <span class="rangeType">买1</span>
-                                <span class="rangePrice">90.0000</span>
-                                <span class="rangeNum">0.98</span>
-                                <span class="rangeAmount">123.000000</span>
-                            </li>
-                            <li class="recordInfo">
-                                <span class="rangeType">买2</span>
-                                <span class="rangePrice">90.0000</span>
-                                <span class="rangeNum">0.98</span>
-                                <span class="rangeAmount">123.000000</span>
-                            </li>
-                            <li class="recordInfo">
-                                <span class="rangeType">买3</span>
-                                <span class="rangePrice">90.0000</span>
-                                <span class="rangeNum">0.98</span>
-                                <span class="rangeAmount">123.000000</span>
-                            </li>
+                            <c:forEach items="${transactionPendOrderBuyList}" var="item" varStatus="status">
+                                <li class="recordInfo">
+                                    <span class="rangeType">买${status.count}</span>
+                                    <span class="rangePrice"><fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="4"/></span>
+                                    <span class="rangeNum"><fmt:formatNumber type="number" value="${item.restNumber}" maxFractionDigits="2"/></span>
+                                    <span class="rangeAmount"><fmt:formatNumber type="number" value="${item.sumPrice}" maxFractionDigits="6"/></span>
+                                </li>
+                            </c:forEach>
                         </ul>
                     </div>
                 </div>
@@ -327,79 +287,26 @@
         </p>
 
         <div class="tableScroll">
-            <table class="table" cellspacing="0 " cellpadding="0">
-                <tr class="tableInfo">
-                    <td class="dealTime">2016-06-06&nbsp;06:06:05</td>
-                    <td class="type rise">买入</td>
-                    <td class="dealAmount">$12.0000</td>
-                    <td class="dealAmount">0.95</td>
-                    <td class="dealAmount rise">$11.40000000</td>
-                </tr>
-                <tr class="tableInfo">
-                    <td class="dealTime">2016-06-06&nbsp;06:06:05</td>
-                    <td class="type fall">卖出</td>
-                    <td class="dealAmount">$12.0000</td>
-                    <td class="dealAmount">0.95</td>
-                    <td class="dealAmount fall">$11.40000000</td>
-                </tr>
-                <tr class="tableInfo">
-                    <td class="dealTime">2016-06-06&nbsp;06:06:05</td>
-                    <td class="type rise">买入</td>
-                    <td class="dealAmount">$12.0000</td>
-                    <td class="dealAmount">0.95</td>
-                    <td class="dealAmount rise">$11.40000000</td>
-                </tr>
-                <tr class="tableInfo">
-                    <td class="dealTime">2016-06-06&nbsp;06:06:05</td>
-                    <td class="type rise">买入</td>
-                    <td class="dealAmount">$12.0000</td>
-                    <td class="dealAmount">0.95</td>
-                    <td class="dealAmount rise">$11.40000000</td>
-                </tr>
-                <tr class="tableInfo">
-                    <td class="dealTime">2016-06-06&nbsp;06:06:05</td>
-                    <td class="type fall">卖出</td>
-                    <td class="dealAmount">$12.0000</td>
-                    <td class="dealAmount">0.95</td>
-                    <td class="dealAmount fall">$11.40000000</td>
-                </tr>
-                <tr class="tableInfo">
-                    <td class="dealTime">2016-06-06&nbsp;06:06:05</td>
-                    <td class="type fall">卖出</td>
-                    <td class="dealAmount">$12.0000</td>
-                    <td class="dealAmount">0.95</td>
-                    <td class="dealAmount fall">$11.40000000</td>
-                </tr>
-                <tr class="tableInfo">
-                    <td class="dealTime">2016-06-06&nbsp;06:06:05</td>
-                    <td class="type fall">卖出</td>
-                    <td class="dealAmount">$12.0000</td>
-                    <td class="dealAmount">0.95</td>
-                    <td class="dealAmount fall">$11.40000000</td>
-                </tr>
-                <tr class="tableInfo">
-                    <td class="dealTime">2016-06-06&nbsp;06:06:05</td>
-                    <td class="type fall">卖出</td>
-                    <td class="dealAmount">$12.0000</td>
-                    <td class="dealAmount">0.95</td>
-                    <td class="dealAmount fall">$11.40000000</td>
-                </tr>
-                <tr class="tableInfo">
-                    <td class="dealTime">2016-06-06&nbsp;06:06:05</td>
-                    <td class="type fall">卖出</td>
-                    <td class="dealAmount">$12.0000</td>
-                    <td class="dealAmount">0.95</td>
-                    <td class="dealAmount fall">$11.40000000</td>
-                </tr>
-                <tr class="tableInfo">
-                    <td class="dealTime">2016-06-06&nbsp;06:06:05</td>
-                    <td class="type fall">卖出</td>
-                    <td class="dealAmount">$12.0000</td>
-                    <td class="dealAmount">0.95</td>
-                    <td class="dealAmount fall">$11.40000000</td>
-                </tr>
+            <table class="table" cellspacing="0 " cellpadding="0" id="dealOrder">
+                <c:forEach items="${dealList}" var="item">
+                    <tr class="tableInfo">
+                        <td class="dealTime"><fmt:formatDate type="time" value="${item.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+                        <c:if test="${item.paymentType == 1}">
+                            <td class="type rise">买入</td>
+                        </c:if>
+                        <c:if test="${item.paymentType == 2}">
+                            <td class="type fall">卖出</td>
+                        </c:if>
+                        <td class="dealAmount">$<fmt:formatNumber type="number" value="${item.transactionPrice}" maxFractionDigits="4"/></td>
+                        <td class="dealAmount"><fmt:formatNumber type="number" value="${item.currencyNumber}" maxFractionDigits="2"/></td>
+                        <td class="dealAmount rise">$<fmt:formatNumber type="number" value="${item.currencyTotalPrice}" maxFractionDigits="6"/></td>
+                    </tr>
+                </c:forEach>
             </table>
         </div>
+
+
+        <input type="hidden" id="currencyId" name="currencyId" value="${transactionCurrency.currencyId}">
     </div>
 </div>
 
@@ -627,13 +534,119 @@
     function count()
     {
         document.getElementById("countNum").innerHTML = start;
+        if (start <= 0) {
+            //刷新成交记录
+            reDeal();
+        }
+
         start += step;
         if(start < 0)
-            start = 5;
+        start = 5;
         setTimeout("count()",1000);
+
+
+
     }
     window.onload = count;
-</script>
 
+
+    /** 刷新成交记录 */
+    var dealBoo = false;
+    function reDeal() {
+        if (dealBoo) {
+            return;
+        } else {
+            dealBoo = true;
+        }
+
+        var currencyId = $("#currencyId").val();
+        if (currencyId == null || currencyId == "") {
+            dealBoo = false;
+            openTips("参数获取错误，请刷新页面重试")
+            return;
+        }
+
+        $.ajax({
+            url: '<%=path%>' + "/userWeb/tradeCenter/deal.htm", //方法路径URL
+            data:{
+                currencyId : currencyId
+            },//参数
+            dataType: 'json',
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (result) {
+                if(result.code != 1 && result.message != null) {
+                    dealBoo = false;
+                    openTips(result.message);
+                    return;
+                }
+                var data = result.data;
+                var dealList = data.dealList;
+                if (dealList != null && dealList.length > 0) {
+                    var newChild= "";
+
+                    for (var i=0;i<=dealList.length-1;i++) {
+                        var deal = dealList[i];
+                        var addTime = formatDateTime(deal.addTime);
+                        var paymentType = "";
+                        var type = ""
+                        if (deal.paymentType == 1) {
+                            paymentType = "买入";
+                            type = "rise";
+                        }
+                        if (deal.paymentType == 2) {
+                            paymentType = "卖出";
+                            type = "fall";
+                        }
+                        var transactionPrice = Math.floor(deal.transactionPrice * 10000) / 10000;
+                        var currencyNumber = Math.floor(deal.currencyNumber * 100) / 100;
+                        var currencyTotalPrice = Math.floor(deal.currencyTotalPrice * 1000000) / 1000000;
+
+                        newChild += "<tr class='tableInfo'>" +
+                                        "<td class='dealTime'>"+ addTime +"</td>" +
+                                        "<td class='type " + type + "'>" + paymentType + "</td>" +
+                                        "<td class='dealAmount'>$" + transactionPrice + "</td>" +
+                                        "<td class='dealAmount'>" + currencyNumber +"</td>" +
+                                        "<td class='dealAmount rise'>" + currencyTotalPrice + "</td>" +
+                                    "</tr>";
+
+                    }
+                    document.getElementById("dealOrder").innerHTML = newChild;
+                    dealBoo = false;
+                }
+
+
+            }, error: function () {
+                dealBoo = false;
+                openTips("获取失败,请重新刷新页面后重试");
+            }
+        });
+
+    }
+
+
+
+
+
+
+</script>
+<script type="text/javascript">
+    //处理时间
+    function formatDateTime(inputTime) {
+        var date = new Date(inputTime);
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        m = m < 10 ? ('0' + m) : m;
+        var d = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        var h = date.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+        minute = minute < 10 ? ('0' + minute) : minute;
+        second = second < 10 ? ('0' + second) : second;
+        return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
+    };
+</script>
 </body>
 </html>
