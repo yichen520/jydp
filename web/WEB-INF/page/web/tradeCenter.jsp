@@ -188,7 +188,7 @@
                     </p>
 
                     <div class="scroll">
-                        <ul class="sellRecord fall">
+                        <ul class="sellRecord fall" id="orderSellReId">
                             <c:forEach items="${transactionPendOrderSellList}" var="item" varStatus="status">
                                 <li class="recordInfo">
                                     <span class="rangeType">卖${fn:length(transactionPendOrderSellList) - status.index}</span>
@@ -199,7 +199,7 @@
                             </c:forEach>
                         </ul>
 
-                        <ul class="buyRecord rise">
+                        <ul class="buyRecord rise" id="orderBuyReId">
                             <c:forEach items="${transactionPendOrderBuyList}" var="item" varStatus="status">
                                 <li class="recordInfo">
                                     <span class="rangeType">买${status.count}</span>
@@ -581,6 +581,8 @@
             reDeal();
             //刷新委托记录
             entrust();
+            //刷新挂单记录
+            rePend();
         }
 
         start += step;
@@ -592,6 +594,87 @@
 
     }
     window.onload = count;
+
+    /** 挂单记录 */
+    var pendBoo = false;
+    function rePend() {
+        if (pendBoo) {
+            return;
+        } else {
+            pendBoo = true;
+        }
+
+        var currencyId = $("#cucyId").val();
+        if (currencyId == null || currencyId == "") {
+            pendBoo = false;
+            openTips("参数获取错误，请刷新页面重试")
+            return;
+        }
+
+        $.ajax({
+            url: '<%=path%>' + "/userWeb/tradeCenter/pend.htm", //方法路径URL
+            data:{
+                currencyId : currencyId
+            },//参数
+            dataType: 'json',
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (result) {
+                if(result.code != 1 && result.message != null) {
+                    pendBoo = false;
+                    openTips(result.message);
+                    return;
+                }
+                var data = result.data;
+                var orderSellList = data.transactionPendOrderSellList; //卖出
+                var orderBuyList = data.transactionPendOrderBuyList;  //买入
+                if (orderBuyList != null && orderBuyList.length > 0 && orderSellList != null && orderSellList.length > 0) {
+                    //卖出挂单
+                    var newChildSell= "";
+                    for (var i=0;i<=orderSellList.length-1;i++) {
+                        var orderSell = orderSellList[i];
+
+                        var pendingPrice = Math.floor(orderSell.pendingPrice * 100) / 100;  //单价
+                        var pendingNumber = Math.floor(orderSell.restNumber * 10000) / 10000;  //数量
+                        var sumPrice = Math.floor(orderSell.sumPrice * 1000000) / 1000000;  //总额
+
+                        newChildSell += '<li class="recordInfo">' +
+                                            '<span class="rangeType">卖' + (orderSellList.length-i) + '</span>' +
+                                            '<span class="rangePrice">' + pendingPrice + '</span>' +
+                                            '<span class="rangeNum">' + pendingNumber + '</span>' +
+                                            '<span class="rangeAmount">' + sumPrice + '</span>' +
+                                        '</li>';
+                    }
+                    $("#orderSellReId").html(newChildSell);
+
+                    //买入挂单
+                    var newChildBuy= "";
+                    for (var i=0;i<=orderBuyList.length-1;i++) {
+                        var orderBuy = orderBuyList[i];
+
+                        var pendingPrice = Math.floor(orderBuy.pendingPrice * 100) / 100;  //单价
+                        var pendingNumber = Math.floor(orderBuy.restNumber * 10000) / 10000;  //数量
+                        var sumPrice = Math.floor(orderBuy.sumPrice * 1000000) / 1000000;  //总额
+
+                        newChildBuy += '<li class="recordInfo">' +
+                                            '<span class="rangeType">买' + (i+1) + '</span>' +
+                                            '<span class="rangePrice">' + pendingPrice + '</span>' +
+                                            '<span class="rangeNum">' + pendingNumber + '</span>' +
+                                            '<span class="rangeAmount">' + sumPrice + '</span>' +
+                                        '</li>';
+                    }
+                    $("#orderBuyReId").html(newChildBuy);
+                    pendBoo = false;
+                }
+
+
+            }, error: function () {
+                pendBoo = false;
+                openTips("获取失败,请重新刷新页面后重试");
+            }
+        });
+
+    }
 
 
     /** 刷新成交记录 */
@@ -606,7 +689,7 @@
         var currencyId = $("#cucyId").val();
         if (currencyId == null || currencyId == "") {
             dealBoo = false;
-            //openTips("参数获取错误，请刷新页面重试")
+            openTips("参数获取错误，请刷新页面重试")
             return;
         }
 
