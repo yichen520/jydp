@@ -84,7 +84,7 @@
             <jsp:include page="/resources/page/common/paging.jsp"></jsp:include>
 
             <form id="queryForm" action="<%=path %>/userWeb/transactionPendOrderController/show.htm" method="post">
-                <input type="hidden" id="cancleOrderNo" name="cancleOrderNo">
+                <input type="hidden" id="queryPageNumber" name="queryPageNumber">
             </form>
 
             <form id="detailsForm" action="<%=path %>/userWeb/dealRecord/show.htm" method="post">
