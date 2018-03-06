@@ -227,10 +227,10 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
                 double latestPrice = 0.0, buyOnePrice = 0.0, sellOnePrice = 0.0, volume = 0.0, yesterdayLastPrice = 0.0;
 
                 if (redisService.getValue(RedisKeyConfig.NOW_PRICE + currencyId) != null) {
-                    latestPrice = (double) redisService.getValue(RedisKeyConfig.NOW_PRICE + currencyId);
+                    latestPrice = Double.parseDouble(redisService.getValue(RedisKeyConfig.NOW_PRICE + currencyId).toString());
                 }
                 if (redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE+currencyId) != null) {
-                    yesterdayLastPrice = (double)redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE+currencyId);
+                    yesterdayLastPrice = Double.parseDouble(redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE+currencyId).toString());
                 }
 
                 if (newPriceMap != null && newPriceMap.get(currencyId) != null) {

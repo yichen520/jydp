@@ -71,6 +71,7 @@ public class TradeCenterController {
     @RequestMapping(value = "/show")
     public String show(HttpServletRequest request) {
         UserDealCapitalMessageVO userDealCapitalMessage = new UserDealCapitalMessageVO();
+        List<TransactionPendOrderDO> transactionPendOrderList = null;
 
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
         if (!StringUtil.isNotNull(currencyIdStr)) {
@@ -85,6 +86,7 @@ public class TradeCenterController {
         UserSessionBO user = UserWebInterceptor.getUser(request);
         if (user != null) {
             userDealCapitalMessage = userService.countCheckUserAmountForTimer(user.getUserId(), currencyId);
+            transactionPendOrderList = transactionPendOrderService.listPendOrderForWeb(user.getUserId(),0, 20);
         }
 
         //获取币种信息
@@ -118,6 +120,7 @@ public class TradeCenterController {
         request.setAttribute("transactionPendOrderSellList", transactionPendOrderSellList);
         request.setAttribute("dealList", dealList);
 
+        request.setAttribute("transactionPendOrderList", transactionPendOrderList);
         request.setAttribute("transactionCurrency", transactionCurrency);
         request.setAttribute("standardParameter", standardParameter);
         request.setAttribute("userDealCapitalMessage", userDealCapitalMessage);

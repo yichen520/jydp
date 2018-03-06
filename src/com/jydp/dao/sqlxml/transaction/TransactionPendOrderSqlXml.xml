@@ -175,4 +175,14 @@
 		WHERE pendingOrderNo = #{pendingOrderNo}
 		AND #{dealNumber} + dealNumber <![CDATA[ = ]]> pendingNumber
 	</update>
+
+	<select id="TransactionPendOrder_listPendOrderForWeb" parameterType="java.util.Map" resultType="TransactionPendOrderDO">
+		SELECT pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingPrice,
+		pendingNumber, dealNumber, pendingStatus, remark, addTime, endTime, userAccount
+		FROM transaction_pend_order_tab
+		WHERE userId = #{userId}
+		AND  pendingStatus = 1 OR pendingStatus = 2
+		ORDER BY addTime DESC
+		LIMIT #{startNumber}, #{pageSize}
+	</select>
 </mapper>
