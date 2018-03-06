@@ -53,9 +53,9 @@
                 <label class="popName">手机号码<span class="star">*</span></label>
                <span class="popCode">
                     <select class="select" id="phoneAreaCode" name="phoneAreaCode">
-                        <option value="+86">中国&nbsp;+86</option>
-                        <option value="+001">美国&nbsp;+001</option>
-                        <option value="+0061">澳大利亚&nbsp;+0061</option>
+                        <c:forEach items="${phoneAreaMap}" var="phoneArea">
+                            <option value="${phoneArea.key }">${phoneArea.value }&nbsp;${phoneArea.key }</option>
+                        </c:forEach>
                     </select>
                 <input type="text" class="phone" id="phone" name="phoneNumber" placeholder="绑定的手机号" maxLength="11"
                        onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
