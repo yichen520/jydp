@@ -96,14 +96,14 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                     double transactionPrice = (double) redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + transactionDealPrice.getCurrencyId());
                     double range = BigDecimalUtil.sub(transactionDealPrice.getTransactionPrice(), transactionPrice * 100);
                     String rangeStr = BigDecimalUtil.div(range, transactionPrice, 4);
-                    redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionPrice, rangeStr);
+                    redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionDealPrice.getCurrencyId(), rangeStr);
                 }
             }
         }
 
     }
 
-    /** 每日开盘基准信息重置(今日涨跌,今日最高价,今日最低价)*/
+    /** 每日开盘基准信息重置(今日涨跌,今日最高价,今日最低价,昨日收盘价)*/
     public void updateWeeHoursBasisOfPrice(){
 
         //最高最低价取昨日收盘价
