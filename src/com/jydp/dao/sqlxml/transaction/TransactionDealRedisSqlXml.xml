@@ -62,7 +62,7 @@
 	</select>
 
 	<select id="TransactionDealRedis_getNowLastPrice"  parameterType="java.util.Map" resultType="TransactionDealPriceDTO">
-		SELECT max(TDRT.transactionPrice) transactionPrice,TDRT.currencyId
+		SELECT max(TDRT.transactionPrice) transactionPrice, TDRT.currencyId,  TDRT.addTime
 		FROM transaction_deal_redis_tab  TDRT
 		WHERE TDRT.addTime IN (SELECT max(addTime)
 									FROM transaction_deal_redis_tab

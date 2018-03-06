@@ -100,12 +100,11 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                 }
             }
         }
-
     }
 
     /** 每日开盘基准信息重置(今日涨跌,今日最高价,今日最低价,昨日收盘价)*/
     public void updateWeeHoursBasisOfPrice(){
-
+        Timestamp date;
         //最高最低价取昨日收盘价
 /*        Timestamp nowDate = DateUtil.getCurrentTime();
         List<TransactionDealPriceDTO> nowLastPrice = transactionDealRedisService.getNowLastPrice(nowDate);  //昨日收盘价
@@ -119,17 +118,21 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
 
         }*/
 
-        //获取币种信息
-        List<TransactionCurrencyVO> transactionUserDeal= transactionCurrencyService.getTransactionCurrencyListForWeb();
-        for(TransactionCurrencyDO transactionUser : transactionUserDeal){
-            redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE + transactionUser.getCurrencyId(), 0);
-            redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE + transactionUser.getCurrencyId(), 0);
-            redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionUser.getCurrencyId(), "0");
+        Timestamp getDate = DateUtil.getCurrentTime();
+        List<TransactionDealPriceDTO> closing = transactionDealRedisService.getNowLastPrice(getDate);
+        //判断当前时间是否是凌晨至开盘之前
+        long dateLon = DateUtil.lingchenLong();
+        long nowDate = getDate.getTime() - RedisKeyConfig.OPENING_TIME;
+        if(nowDate >= dateLon){
+            //八点至凌晨
+            dateLon = dateLon + RedisKeyConfig.OPENING_TIME;
+        } else {
+            //凌晨至八点
+            dateLon = dateLon - RedisKeyConfig.DAY_TIME + RedisKeyConfig.OPENING_TIME;
         }
 
-        Timestamp nowDate = DateUtil.getCurrentTime();
-        long dateLon = DateUtil.lingchenLong() + RedisKeyConfig.OPENING_TIME - 1;
-        Timestamp date;
+        //昨日收盘价计算
+        dateLon = dateLon - 1;
         date = DateUtil.longToTimestamp(dateLon);
         List<TransactionDealPriceDTO> closingPrice = transactionDealRedisService.getNowLastPrice(date);  //昨天收盘价
         if(closingPrice != null && closingPrice.size() > 0) {
@@ -138,6 +141,27 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                         transaction.getTransactionPrice());
             }
         }
-    }
 
+        //获取币种信息
+        List<TransactionCurrencyVO> transactionUserDeal= transactionCurrencyService.getTransactionCurrencyListForWeb();
+        if(transactionUserDeal != null && transactionUserDeal.size() > 0) {
+            if(closing == null || closing.size() <= 0){
+                for(TransactionCurrencyDO transactionUser : transactionUserDeal){
+                    redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE + transactionUser.getCurrencyId(), 0);
+                    redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE + transactionUser.getCurrencyId(), 0);
+                    redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionUser.getCurrencyId(), "0");
+                }
+            } else {
+                for (TransactionCurrencyDO transactionUser : transactionUserDeal) {
+                    for(TransactionDealPriceDTO transactionDealPrice : closing){
+                        if (transactionUser.getCurrencyId() != transactionDealPrice.getCurrencyId()) {
+                            redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE + transactionUser.getCurrencyId(), 0);
+                            redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE + transactionUser.getCurrencyId(), 0);
+                            redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionUser.getCurrencyId(), "0");
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
