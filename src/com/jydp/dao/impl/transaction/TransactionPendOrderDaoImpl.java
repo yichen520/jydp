@@ -389,4 +389,28 @@ public class TransactionPendOrderDaoImpl implements ITransactionPendOrderDao{
         }
     }
 
+    /**
+     * 分页查询委托记录列表（交易中心）
+     * @param userId 用户id
+     * @param pageNumber 起始页数
+     * @param pageSize 每页条数
+     * @return 操作成功：返回挂单记录列表，操作失败：返回null
+     */
+    public List<TransactionPendOrderDO> listPendOrderForWeb(int userId, int pageNumber, int pageSize){
+        List<TransactionPendOrderDO> resultList = new ArrayList<TransactionPendOrderDO>();
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("pageNumber", pageNumber);
+        map.put("pageSize", pageSize);
+
+        try {
+            resultList = sqlSessionTemplate.selectList("TransactionPendOrder_listPendOrderForWeb", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+       return resultList;
+    }
+
 }
