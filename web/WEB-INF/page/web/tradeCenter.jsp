@@ -242,7 +242,7 @@
                         </c:if>
                         <td class="amount">$<fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2"/></td>
                         <td class="amount"><fmt:formatNumber type="number" value="${item.pendingNumber}" maxFractionDigits="4"/></td>
-                        <td class="amount rise">$<fmt:formatNumber type="number" value="${item.pendingPrice * item.pendingNumber}" maxFractionDigits="6"/></td>
+                        <td class="amount rise">$<fmt:formatNumber type="number" value="${item.countPrice}" maxFractionDigits="6"/></td>
                         <td class="operate"><input type="text" value="撤&nbsp;销" class="revoke" onclick="goCancle('${item.pendingOrderNo}')" /></td>
                     </tr>
                 </c:forEach>
@@ -789,7 +789,7 @@
                         }
                         var pendingPrice = Math.floor(deal.pendingPrice * 10000) / 10000;
                         var pendingNumber = Math.floor(deal.pendingNumber * 100) / 100;
-                        var currencyTotalPrice = Math.floor((pendingPrice * pendingNumber )* 1000000) / 1000000;
+                        var currencyTotalPrice = Math.floor(deal.countPrice * 1000000) / 1000000;
                         var pendingOrderNo = deal.pendingOrderNo;
                         var goCancle = "goCancle('"+ pendingOrderNo + "')";
                         newChild += "<tr class='tableInfo'>" +
@@ -798,7 +798,7 @@
                             "<td class='amount'>" + pendingPrice + "</td>" +
                             "<td class='amount'>" + pendingNumber + "</td>" +
                             "<td class='amount rise'>" + currencyTotalPrice+ "</td>" +
-                            "<td class='operate'><input type='text' value='撤&nbsp;销' class='revoke' onclick='"+ goCancle + "'/></td>" +
+                            "<td class='operate'><input type='text' value='撤&nbsp;销' class='revoke' onclick="+ goCancle + "></td>" +
                             "</tr>";
                     }
 
