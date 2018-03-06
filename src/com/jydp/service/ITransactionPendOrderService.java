@@ -2,6 +2,7 @@ package com.jydp.service;
 
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
 import com.jydp.entity.DTO.TransactionPendOrderDTO;
+import com.jydp.entity.VO.TransactionPendOrderVO;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -156,5 +157,5 @@ public interface ITransactionPendOrderService {
      * @param pageSize 每页条数
      * @return 操作成功：返回挂单记录列表，操作失败：返回null
      */
-    List<TransactionPendOrderDO> listPendOrderForWeb(int userId, int currencyId, int pageNumber, int pageSize);
+    List<TransactionPendOrderVO> listPendOrderForWeb(int userId, int currencyId, int pageNumber, int pageSize);
 }
