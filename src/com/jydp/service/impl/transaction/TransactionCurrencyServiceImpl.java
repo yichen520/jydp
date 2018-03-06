@@ -1,6 +1,7 @@
 package com.jydp.service.impl.transaction;
 
 import com.iqmkj.utils.DateUtil;
+import com.iqmkj.utils.LogUtil;
 import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.ITransactionCurrencyDao;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
@@ -11,10 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 交易币种
@@ -27,6 +27,10 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
     /** 交易币种 */
     @Autowired
     private ITransactionCurrencyDao transactionCurrencyDao;
+
+    /** 日期格式 **/
+    private SimpleDateFormat sdf = new SimpleDateFormat(DateUtil.dateFormat2);
+    private SimpleDateFormat sdf2 = new SimpleDateFormat(DateUtil.dateFormat4);
 
     /**
      * 新增交易币种
@@ -46,9 +50,9 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      * @return  操作成功：返回true，操作失败：返回false
      */
     public boolean insertTransactionCurrency(String currencyShortName, String currencyName, String currencyImg,
-                                      double buyFee, double sellFee, double upRange, double downRange,
-                                      int paymentType, int upStatus, String backerAccount, String ipAddresse,
-                                      Timestamp upTime,Timestamp addTime){
+                                             double buyFee, double sellFee, double upRange, double downRange,
+                                             int paymentType, int upStatus, String backerAccount, String ipAddresse,
+                                             Timestamp upTime,Timestamp addTime){
         TransactionCurrencyDO transactionCurrency = new TransactionCurrencyDO();
         transactionCurrency.setCurrencyName(currencyName);
         transactionCurrency.setCurrencyShortName(currencyShortName);
@@ -118,39 +122,84 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
     @Override
     public List<TransactionUserDealDTO> getTransactionCurrencyMarketForWeb() {
 
-        List<TransactionUserDealDTO> transactionUserDealDTOList = null;
         //当日开盘时间
-        Timestamp openTime = DateUtil.stringToTimestamp(DateUtil.longToTimeStr(DateUtil.lingchenLong(),DateUtil.dateFormat4) + " 08:00:00");
+        Timestamp openTime = null;
+        try {
+            Date date = sdf.parse(sdf2.format(new Date()) +" 08:00:00");
+            openTime = new Timestamp(date.getTime());
+        } catch (ParseException e) {
+            LogUtil.printErrorLog(e);
+        }
 
         Date todayOpenDate = openTime;
         Calendar calendar = Calendar.getInstance();
-        Calendar oldCalendar = Calendar.getInstance();
         calendar.setTime(todayOpenDate);
-        oldCalendar.setTime(todayOpenDate);
-        calendar.add(Calendar.DAY_OF_YEAR,-1);//昨天开盘时间
+        //减一天求得昨日日期
+        calendar.add(Calendar.DAY_OF_YEAR,-1);
         Date yesterdayOpenDate = calendar.getTime();
-        String time = "";
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        time = sdf.format(yesterdayOpenDate);
+        String time = sdf.format(yesterdayOpenDate);
         //昨日开盘时间
-        Timestamp beginTime = Timestamp.valueOf(time);
+        Timestamp startTime = null;
+        try {
+            startTime = new Timestamp(sdf.parse(time).getTime());
+        } catch (ParseException e) {
+            LogUtil.printErrorLog(e);
+        }
 
-        transactionUserDealDTOList = transactionCurrencyDao.getTransactionCurrencyMarketForWeb(openTime,beginTime,openTime);
+        long beginTime = System.currentTimeMillis();
+        //查询所有币种
+        List<TransactionUserDealDTO> transactionUserDealDTOList = transactionCurrencyDao.getTransactionCurrencyMarketForWeb();
+
         if (transactionUserDealDTOList != null) {
-            for (TransactionUserDealDTO transactionUserDeal:transactionUserDealDTOList) {
-                double yesterdayLastPrice = transactionUserDeal.getYesterdayLastPrice();
-                double change = 0;//24小时涨幅 eg:24小时涨跌为24.31%,change = 24.31
+            //查询各币种最新价信息
+            Map<Integer,TransactionUserDealDTO> newPriceMap = transactionCurrencyDao.getNewPriceForWeb(openTime);
+            //查询各币种买一价信息
+            Map<Integer,TransactionUserDealDTO> buyOneMap = transactionCurrencyDao.getBuyOneForWeb();
+            //查询各币种卖一价信息
+            Map<Integer,TransactionUserDealDTO> sellOneMap = transactionCurrencyDao.getSellOneForWeb();
+            //查询各币种今日成交量信息
+            Map<Integer,TransactionUserDealDTO> volumeMap = transactionCurrencyDao.getTransactionVolumeForWeb(openTime);
+            //查询各币种昨日收盘价信息
+            Map<Integer,TransactionUserDealDTO> yesterdayPriceMap = transactionCurrencyDao.getYesterdayLastPriceForWeb(openTime,startTime);
 
+            for (TransactionUserDealDTO transactionUserDeal:transactionUserDealDTOList) {
+                int currencyId = transactionUserDeal.getCurrencyId();
+                double latestPrice = 0.0, buyOnePrice = 0.0, sellOnePrice = 0.0, volume = 0.0, yesterdayLastPrice = 0.0;
+                if (newPriceMap != null && newPriceMap.get(currencyId) != null) {
+                    latestPrice = newPriceMap.get(currencyId).getLatestPrice();
+                }
+
+                if (buyOneMap != null && buyOneMap.get(currencyId) != null) {
+                    buyOnePrice = buyOneMap.get(currencyId).getBuyOnePrice();
+                }
+
+                if (sellOneMap != null && sellOneMap.get(currencyId) != null) {
+                    sellOnePrice = sellOneMap.get(currencyId).getSellOnePrice();
+                }
+
+                if (volumeMap != null && volumeMap.get(currencyId) != null) {
+                    volume = volumeMap.get(currencyId).getVolume();
+                }
+
+                if (yesterdayPriceMap != null && yesterdayPriceMap.get(currencyId) != null) {
+                    yesterdayLastPrice = yesterdayPriceMap.get(currencyId).getYesterdayLastPrice();
+                }
+
+                transactionUserDeal.setLatestPrice(NumberUtil.doubleFormat(latestPrice,2));
+                transactionUserDeal.setBuyOnePrice(NumberUtil.doubleFormat(buyOnePrice,2));
+                transactionUserDeal.setSellOnePrice(NumberUtil.doubleFormat(sellOnePrice,2));
+                transactionUserDeal.setVolume(NumberUtil.doubleFormat(volume,2));
+                transactionUserDeal.setYesterdayLastPrice(NumberUtil.doubleFormat(yesterdayLastPrice,2));
+
+                //24小时涨幅 eg:24小时涨跌为24.31%,change = 24.31
+                double change = 0;
                 if (yesterdayLastPrice != 0) {
                     change = NumberUtil.doubleFormat(((transactionUserDeal.getLatestPrice() - yesterdayLastPrice)/yesterdayLastPrice)*100,2);
                 }
                 transactionUserDeal.setChange(change);
-                transactionUserDeal.setBuyOnePrice(NumberUtil.doubleFormat(transactionUserDeal.getBuyOnePrice(),2));
-                transactionUserDeal.setSellOnePrice(NumberUtil.doubleFormat(transactionUserDeal.getSellOnePrice(),2));
-                transactionUserDeal.setLatestPrice(NumberUtil.doubleFormat(transactionUserDeal.getLatestPrice(),2));
-                transactionUserDeal.setVolume(NumberUtil.doubleFormat(transactionUserDeal.getVolume(),2));
             }
         }
+        long endTime = System.currentTimeMillis();
         return transactionUserDealDTOList;
     }
 
@@ -167,9 +216,9 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      * @return  操作成功：返回交易币种条数，操作失败：返回0
      */
     public int countTransactionCurrencyForBack(String currencyName, int paymentType, int upStatus, String backAccount,
-                                        Timestamp startAddTime, Timestamp endAddTime, Timestamp startUpTime, Timestamp endUpTime){
+                                               Timestamp startAddTime, Timestamp endAddTime, Timestamp startUpTime, Timestamp endUpTime){
         return transactionCurrencyDao.countTransactionCurrencyForBack(currencyName, paymentType, upStatus,
-                                        backAccount, startAddTime, endAddTime, startUpTime, endUpTime);
+                backAccount, startAddTime, endAddTime, startUpTime, endUpTime);
     }
 
     /**
@@ -187,8 +236,8 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      * @return  操作成功：返回交易币种条数，操作失败：返回0
      */
     public List<TransactionCurrencyVO> listTransactionCurrencyForBack(String currencyName, int paymentType, int upStatus, String backAccount,
-                                                               Timestamp startAddTime, Timestamp endAddTime, Timestamp startUpTime, Timestamp endUpTime, int pageNumber, int pageSize){
+                                                                      Timestamp startAddTime, Timestamp endAddTime, Timestamp startUpTime, Timestamp endUpTime, int pageNumber, int pageSize){
         return transactionCurrencyDao.listTransactionCurrencyForBack(currencyName, paymentType, upStatus, backAccount,
-                                        startAddTime, endAddTime, startUpTime, endUpTime, pageNumber, pageSize);
+                startAddTime, endAddTime, startUpTime, endUpTime, pageNumber, pageSize);
     }
 }
