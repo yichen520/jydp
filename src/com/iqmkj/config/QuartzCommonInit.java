@@ -1,8 +1,11 @@
 package com.iqmkj.config;
 
-import com.jydp.service.*;
+import com.jydp.service.IRedisService;
+import com.jydp.service.ITransactionCurrencyService;
+import com.jydp.service.ITransactionDealRedisService;
+import com.jydp.service.ITransactionRedisDealCommonService;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import com.jydp.service.*;
 /**
  * 定时器初始化
  * @author fk
@@ -33,6 +36,7 @@ public class QuartzCommonInit {
     public void executeInit() {
         //将成交记录放进redis
         transactionRedisDealCommonService.userDealForRedis();
+        transactionRedisDealCommonService.updateWeeHoursBasisOfPrice();
         //从数据库拉取 挂单记录 到redis
         ITransactionPendOrderCommonService.getPendOrder();
 
