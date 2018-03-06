@@ -9,7 +9,6 @@ import com.jydp.entity.DO.system.SystemHelpDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.service.ISystemHelpService;
 import com.jydp.service.ISystemValidatePhoneService;
-import com.jydp.service.IUserCurrencyNumService;
 import com.jydp.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -121,7 +120,7 @@ public class RegisterController {
         }
 
         //校验用户注册信息合法性
-        responseJson = userService.validateUserInfo(userAccount,password,phoneNumber);
+        responseJson = userService.validateUserInfo(userAccount,password);
 
         if (responseJson.getCode() != 1) {
             return responseJson;

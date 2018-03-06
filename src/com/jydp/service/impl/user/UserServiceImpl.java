@@ -206,11 +206,10 @@ public class UserServiceImpl implements IUserService {
      *  验证用户信息合法性
      * @param userAccount 用户名
      * @param password 密码
-     * @param userPhone 用户手机号
      * @return 查询成功：返回验证结果; 查询失败：返回null
      */
     @Override
-    public JsonObjectBO validateUserInfo(String userAccount, String password, String userPhone) {
+    public JsonObjectBO validateUserInfo(String userAccount, String password) {
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         String accountReg ="^[A-Za-z0-9]{6,16}$";
         String passwordReg = "^[A-Za-z0-9]{6,16}$";
