@@ -90,6 +90,7 @@
     }
     var showPersonalMenuId = setInterval(showPersonalMenu, 20);
 
+    //跳转至交易中心
     function toTradeCenter(currencyId) {
         console.log(currencyId);
         $("#currencyId").val(currencyId);
