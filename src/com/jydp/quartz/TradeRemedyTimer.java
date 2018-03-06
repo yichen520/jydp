@@ -32,7 +32,7 @@ public class TradeRemedyTimer {
 	private ITransactionCurrencyService transactionCurrencyService;
 
 	/** 交易补救（每5s执行一次） */
-	@Scheduled(cron="0/30 * *  * * ? ")
+	@Scheduled(cron="0/5 * *  * * ? ")
 	public void transactionPendOrder(){
 		//获取所有币种
 		List<TransactionCurrencyVO> transactionCurrencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
