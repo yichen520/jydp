@@ -70,13 +70,13 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
      * @return 操作成功：返回true，操作失败：返回false
      */
     @Transactional
-    public boolean insertPendOrder(int userId, int paymentType, int currencyId, String currencyName, double buyFee,
+    public TransactionPendOrderDO insertPendOrder(int userId, int paymentType, int currencyId, String currencyName, double buyFee,
                                    double pendingPrice, double pendingNumber, double tradePriceSum){
 
         //查询用户信息
         UserDO user = userService.getUserByUserId(userId);
         if(user == null){
-            return false;
+            return null;
         }
 
         Timestamp curTime = DateUtil.getCurrentTime();
@@ -86,7 +86,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
         if(paymentType == 1){
             //减少用户美金
             if(excuteSuccess){
-                excuteSuccess = userService.updateReduceUserBalanceLock(userId, tradePriceSum);
+                excuteSuccess = userService.updateReduceUserBalance(userId, tradePriceSum);
             }
             //增加用户锁定美金
             if(excuteSuccess){
@@ -115,7 +115,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
             //增加系统账户记录
             if (excuteSuccess) {
                 excuteSuccess = systemAccountAmountService.addSystemAccountAmount(SystemAccountAmountConfig.PEND_FEE,
-                        tradePriceSum - pendingPrice * pendingNumber);
+                        NumberUtil.doubleUpFormat(tradePriceSum - pendingPrice * pendingNumber,8));
             }
         } else if(paymentType == 2){
             //减少用户币数量
@@ -148,14 +148,17 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
             }
         }
 
+
         //增加用户挂单记录
+        TransactionPendOrderDO resultOrder = null;
         if(excuteSuccess){
             String pendingOrderNo = SystemCommonConfig.TRANSACTION_PEND_ORDER +
                     DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
                     NumberUtil.createNumberStr(10);
             String feeRemark = "";
             if(paymentType == 1){
-                feeRemark = "费率" + buyFee + "%，手续费$" + (tradePriceSum - pendingPrice * pendingNumber);
+                feeRemark = "费率" + buyFee * 100 + "%，手续费$" +
+                        NumberUtil.doubleUpFormat(tradePriceSum - pendingPrice * pendingNumber,8);
             }
             TransactionPendOrderDO transactionPendOrder = new TransactionPendOrderDO();
             transactionPendOrder.setPendingOrderNo(pendingOrderNo);
@@ -172,14 +175,18 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
             transactionPendOrder.setFeeRemark(feeRemark);
             transactionPendOrder.setAddTime(curTime);
 
-            excuteSuccess = transactionPendOrderDao.insertPendOrder(transactionPendOrder);
+            resultOrder = transactionPendOrderDao.insertPendOrder(transactionPendOrder);
+            if(resultOrder == null){
+                excuteSuccess = false;
+            }
         }
 
         if(!excuteSuccess){
             //数据回滚
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
-        return excuteSuccess;
+
+        return resultOrder;
     }
 
     /**
@@ -422,7 +429,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
 
             excuteSuccess = transactionUserDealService.insertTransactionUserDeal(orderNo,
                     transactionPendOrder.getPendingOrderNo(), userId, user.getUserAccount(),
-                    3, currencyId, transactionPendOrder.getCurrencyName(), 0, num,
+                    3, currencyId, transactionPendOrder.getCurrencyName(), 0, num,0,
                     0,"撤销挂单", transactionPendOrder.getAddTime(), curTime);
         }
 

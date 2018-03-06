@@ -6,6 +6,7 @@ import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
+import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.interceptor.UserWebInterceptor;
@@ -26,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  */
 @Controller
-@RequestMapping("/userWeb/tradeCenterController")
+@RequestMapping("/userWeb/tradeCenter")
 @Scope(value="prototype")
 public class TradeCenterController {
 
@@ -54,10 +55,16 @@ public class TradeCenterController {
     @Autowired
     private IUserCurrencyNumService userCurrencyNumService;
 
+    /** 匹配交易 */
+    @Autowired
+    private ITradeCommonService tradeCommonService;
+
 
     /** 展示 交易中心页面 */
-    @RequestMapping(value = "/show.htm")
+    @RequestMapping(value = "/show")
     public String show(HttpServletRequest request) {
+
+
 
         return "page/web/tradeCenter";
     }
@@ -186,19 +193,29 @@ public class TradeCenterController {
             return resultJson;
         }
 
-        boolean resultBoo = transactionPendOrderService.insertPendOrder(user.getUserId(), 1, currencyId,
-                transactionCurrency.getCurrencyName(), buyPrice, buyFee, buyNum, sumPrice);
+        //挂单
+        TransactionPendOrderDO transactionPendOrder = transactionPendOrderService.insertPendOrder(user.getUserId(), 1, currencyId,
+                transactionCurrency.getCurrencyName(), buyFee, buyPrice, buyNum, sumPrice);
 
-
-        if(resultBoo){
-            resultJson.setCode(1);
-            resultJson.setMessage("挂单成功");
-            return resultJson;
-        }else {
+        if(transactionPendOrder == null){
             resultJson.setCode(2);
             resultJson.setMessage("挂单失败");
             return resultJson;
         }
+
+        //从redis判断是否可以匹配交易
+        double sellOne = (double)redisService.getValue(RedisKeyConfig.SELL_ONE_KEY + currencyId);
+        if(sellOne > buyPrice){
+            resultJson.setCode(1);
+            resultJson.setMessage("没有可匹配的挂单");
+            return resultJson;
+        }
+
+        //匹配交易
+        resultJson = tradeCommonService.trade(transactionPendOrder);
+
+        return resultJson;
+
     }
 
     /** 卖出 */
@@ -214,25 +231,25 @@ public class TradeCenterController {
         }
 
         //获取参数
-        String buyPriceStr = StringUtil.stringNullHandle(request.getParameter("buyPrice"));
-        String buyNumStr = StringUtil.stringNullHandle(request.getParameter("buyNum"));
-        String buyPwd = StringUtil.stringNullHandle(request.getParameter("buyPwd"));
+        String sellPriceStr = StringUtil.stringNullHandle(request.getParameter("sellPrice"));
+        String sellNumStr = StringUtil.stringNullHandle(request.getParameter("sellNum"));
+        String sellPwd = StringUtil.stringNullHandle(request.getParameter("sellPwd"));
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
 
-        if (!StringUtil.isNotNull(buyPwd)) {
+        if (!StringUtil.isNotNull(sellPwd)) {
             resultJson.setCode(3);
             resultJson.setMessage("参数错误");
             return resultJson;
         }
 
-        double buyPrice = 0;
-        if (StringUtil.isNotNull(buyPriceStr)) {
-            buyPrice = Double.parseDouble(buyPriceStr);
+        double sellPrice = 0;
+        if (StringUtil.isNotNull(sellPriceStr)) {
+            sellPrice = Double.parseDouble(sellPriceStr);
         }
 
-        double buyNum = 0;
-        if (StringUtil.isNotNull(buyNumStr)) {
-            buyNum = Double.parseDouble(buyNumStr);
+        double sellNum = 0;
+        if (StringUtil.isNotNull(sellNumStr)) {
+            sellNum = Double.parseDouble(sellNumStr);
         }
 
         int currencyId = 0;
@@ -275,7 +292,7 @@ public class TradeCenterController {
 
 
         //交易数量限制
-        if(buyNum <= 0){
+        if(sellNum <= 0){
             resultJson.setCode(3);
             resultJson.setMessage("交易数量不能小于等于0");
             return resultJson;
@@ -286,7 +303,7 @@ public class TradeCenterController {
 
         if(transactionCurrency.getUpRange() > 0){
             double highPrice = yesterdayLastPrice * (1 + transactionCurrency.getUpRange());
-            if(buyPrice > highPrice){
+            if(sellPrice > highPrice){
                 resultJson.setCode(3);
                 resultJson.setMessage("交易单价不符合涨幅要求");
                 return resultJson;
@@ -295,46 +312,55 @@ public class TradeCenterController {
 
         if(transactionCurrency.getDownRange() > 0){
             double lowPrice = yesterdayLastPrice * (1 - transactionCurrency.getDownRange());
-            if(buyPrice < lowPrice){
+            if(sellPrice < lowPrice){
                 resultJson.setCode(3);
                 resultJson.setMessage("交易单价不符合跌幅要求");
                 return resultJson;
             }
         }
 
-        if(buyPwd == "123456"){
+        if(sellPwd == "123456"){
             resultJson.setCode(3);
             resultJson.setMessage("支付密码不能为原始密码");
             return resultJson;
         }
 
-        buyPwd = MD5Util.toMd5(buyPwd);
-        boolean checkResult = userService.validateUserPay(user.getUserAccount(), buyPwd);
+        sellPwd = MD5Util.toMd5(sellPwd);
+        boolean checkResult = userService.validateUserPay(user.getUserAccount(), sellPwd);
         if(!checkResult){
             resultJson.setCode(4);
             resultJson.setMessage("支付密码错误");
             return resultJson;
         }
 
-        if(userCurrencyNum.getCurrencyNumber() < buyNum){
+        if(userCurrencyNum.getCurrencyNumber() < sellNum){
             resultJson.setCode(5);
             resultJson.setMessage("用户币不足");
             return resultJson;
         }
 
-        boolean resultBoo = transactionPendOrderService.insertPendOrder(user.getUserId(), 2, currencyId,
-                transactionCurrency.getCurrencyName(), 0, buyPrice,  buyNum, 0);
+        //挂单
+        TransactionPendOrderDO transactionPendOrder = transactionPendOrderService.insertPendOrder(user.getUserId(), 2, currencyId,
+                transactionCurrency.getCurrencyName(), 0, sellPrice, sellNum, 0);
 
-
-        if(resultBoo){
-            resultJson.setCode(1);
-            resultJson.setMessage("挂单成功");
-            return resultJson;
-        }else {
+        if(transactionPendOrder == null){
             resultJson.setCode(2);
             resultJson.setMessage("挂单失败");
             return resultJson;
         }
+
+        //从redis判断是否可以匹配交易
+        double buyOne = (double)redisService.getValue(RedisKeyConfig.BUY_ONE_KEY + currencyId);
+        if(buyOne < sellPrice){
+            resultJson.setCode(1);
+            resultJson.setMessage("没有可匹配的挂单");
+            return resultJson;
+        }
+
+        //匹配交易
+        resultJson = tradeCommonService.trade(transactionPendOrder);
+
+        return resultJson;
     }
 
 }

@@ -39,7 +39,7 @@ public class TransactionPendOrderCommonServiceImpl implements ITransactionPendOr
     public void getPendOrder(){
         //获取所有币种
         List<TransactionCurrencyVO> transactionCurrencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
-        if(transactionCurrencyList.isEmpty()){
+        if(transactionCurrencyList == null){
             return;
         }
 

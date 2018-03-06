@@ -27,7 +27,7 @@ public class TransactionPageTimer {
 	public void refresh() {transactionRedisDealCommonService.userDealForRedis();}
 
 	/** 挂单记录,买一价，卖一价（每5s执行一次） */
-	//@Scheduled(cron="0/5 * *  * * ? ")
+	@Scheduled(cron="0/5 * *  * * ? ")
 	public void transactionPendOrder(){
 		transactionPendOrderCommonService.getPendOrder();
 	}

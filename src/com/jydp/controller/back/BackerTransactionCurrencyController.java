@@ -277,11 +277,17 @@ public class BackerTransactionCurrencyController {
         Timestamp upTime = null;
 
         currencyId = Integer.parseInt(currencyIdStr);
-        buyFee = Double.parseDouble(buyFeeStr);
-        sellFee = Double.parseDouble(sellFeeStr);
-        upRange = Double.parseDouble(upRangeStr);
-        downRange = Double.parseDouble(downRangeStr);
+        buyFee = NumberUtil.doubleFormat(Double.parseDouble(buyFeeStr) / 100, 8);
+        sellFee = NumberUtil.doubleFormat(Double.parseDouble(sellFeeStr) / 100, 8);
+        upRange = NumberUtil.doubleFormat(Double.parseDouble(upRangeStr) / 100, 8);
+        downRange = NumberUtil.doubleFormat(Double.parseDouble(downRangeStr) / 100, 8);
         upTime = DateUtil.stringToTimestamp(upTimeStr);
+
+        if (upTime.getTime() <= DateUtil.getCurrentTime().getTime()) {
+            response.setCode(3);
+            response.setMessage("执行时间应大于当前时间");
+            return response;
+        }
 
         String imageUrl = "";
         if (imgUrl != null || imgUrl.isEmpty()) {
@@ -304,7 +310,7 @@ public class BackerTransactionCurrencyController {
             response.setMessage("币种不存在");
             return response;
         }
-        if (!StringUtil.isNotNull(imageUrl)) {
+        if (StringUtil.isNotNull(imageUrl)) {
             currency.setCurrencyImg(imageUrl);
         }
 

@@ -48,7 +48,8 @@
                     <option value="1">身份证</option>
                     <option value="2">护照</option>
                 </select>
-                <input type="text" id="userCertNo" class="phone" placeholder="您的证件号码" maxlength="18"/>
+                <input type="text" id="userCertNo" class="phone" placeholder="您的证件号码" maxlength="18"
+                       onkeyup="matchUtil(this, 'ENumber')" onblur="matchUtil(this, 'ENumber')"/>
             </span>
         </p>
 
@@ -106,16 +107,6 @@
         }
     });
 
-    function limit(num) {
-        if (num == 8) {
-            $('.file').hide();
-            $('.picBox').hide();
-        } else {
-            $('.file').show();
-            $('.picBox').show();
-        }
-    }
-
     //新增实名认证
     var addBoo = false;
     function add() {
@@ -139,6 +130,10 @@
             addBoo = false;
             return openTips("请输入您的姓名");
         }
+        if (userName.length <= 1) {
+            addBoo = false;
+            return openTips("您的姓名过短");
+        }
         if (userCertNo == null || userCertNo == "" || userCertNo.length > 18) {
             addBoo = false;
             return openTips("请输入您的证件号");
@@ -149,7 +144,7 @@
                 addBoo = false;
                 return openTips("您的身份证姓名过长");
             }
-            if(!userName || /[^\u4E00-\u9FA5]/g.test(userName)){
+            if(!userName || /[^\u4E00-\u9FA5]1/g.test(userName)){
                 addBoo = false;
                 return openTips("身份证的姓名必须是中文");
             }
@@ -205,7 +200,7 @@
         var filemaxsize = 1024 * 10;//10M
         if (filepath) {
             var isnext = false;
-            var fileend = filepath.substring(filepath.indexOf("."));
+            var fileend = filepath.substring(filepath.lastIndexOf("."));
             if (filetypes && filetypes.length > 0) {
                 for (var i = 0; i < filetypes.length; i++) {
                     if (filetypes[i] == fileend) {
@@ -215,7 +210,7 @@
                 }
             }
             if (!isnext) {
-                openTips("图片格式必须是,jpeg,jpg,png中的一种！");
+                openTips("图片格式必须是jpeg,jpg,png中的一种！");
                 target.value = "";
                 return false;
             }
@@ -293,6 +288,26 @@
         }
         if(!pass) openTips(tip);
         return pass;
+    }
+
+    var mapMatch = {};
+    mapMatch['ENumber'] = /[^\a-\z\A-\Z\d]/g;
+    function matchUtil(o, str) {
+        mapMatch[str] === true ? matchDouble(o, 2) : o.value = o.value.replace(mapMatch[str], '');
+    }
+    function matchDouble(o, num){
+        var matchStr = /^-?\d+\.?\d{0,num}$/;
+        if(!matchStr.test(o.value)){
+            if(isNaN(o.value)){
+                o.value = '';
+            }else{
+                var n = o.value.indexOf('.');
+                var m = n + num + 1;
+                if(n > -1 && o.value.length > m){
+                    o.value = o.value.substring(0, m);
+                }
+            }
+        }
     }
 </script>
 <script type="text/javascript">
