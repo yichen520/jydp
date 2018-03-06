@@ -675,10 +675,9 @@
                                         '</li>';
                     }
                     $("#orderBuyReId").html(newChildBuy);
-                    pendBoo = false;
+
                 }
-
-
+                pendBoo = false;
             }, error: function () {
                 pendBoo = false;
                 openTips("获取失败,请重新刷新页面后重试");
@@ -750,10 +749,8 @@
 
                     }
                     document.getElementById("dealOrder").innerHTML = newChild;
-                    dealBoo = false;
                 }
-
-
+                dealBoo = false;
             }, error: function () {
                 dealBoo = false;
                 openTips("获取失败,请重新刷新页面后重试");
@@ -895,12 +892,9 @@
                             "<td class='operate'><input type='text' value='撤&nbsp;销' class='revoke' onclick="+ goCancle + "></td>" +
                             "</tr>";
                     }
-
                     document.getElementById("entrustRecord").innerHTML = newChild;
-                    entrustBoo = false;
                 }
-
-
+                entrustBoo = false;
             }, error: function () {
                 entrustBoo = false;
                 openTips("获取失败,请重新刷新页面后重试");
@@ -928,7 +922,7 @@
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (resultData) {
-                gainDealPriceBoo = false
+                gainDealPriceBoo = false;
                 var code = resultData.code;
                 var message = resultData.message;
                 if (code != 1 && message != "") {
@@ -985,7 +979,7 @@
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (resultData) {
-                userMessageBoo = false
+                userMessageBoo = false;
                 var code = resultData.code;
                 var message = resultData.message;
                 if (code != 1 && message != "") {
