@@ -215,37 +215,39 @@
         </div>
     </div>
 
-    <div class="myEntrust">
-        <p class="myTitle">
-            我的委托记录<img src="<%=path %>/resources/image/web/entrust.png" />
-            <a href="#" class="more">查看更多</a>
-        </p>
-        <table class="table" cellspacing="0 " cellpadding="0" id="entrustRecord">
-            <tr class="tableTitle">
-                <td class="time">委托时间</td>
-                <td class="type">类型</td>
-                <td class="amount">委托价格</td>
-                <td class="amount">委托数量</td>
-                <td class="amount">委托总价</td>
-                <td class="operate">操作</td>
-            </tr>
-            <c:forEach items="${transactionPendOrderList}" var="item">
-                <tr class="tableInfo">
-                    <td class="time"><fmt:formatDate type="time" value="${item.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-                    <c:if test="${item.paymentType == 1}">
-                        <td class="type rise">买入</td>
-                    </c:if>
-                    <c:if test="${item.paymentType == 2}">
-                        <td class="type fall">卖出</td>
-                    </c:if>
-                    <td class="amount">$<fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="4"/></td>
-                    <td class="amount"><fmt:formatNumber type="number" value="${item.pendingNumber}" maxFractionDigits="2"/></td>
-                    <td class="amount rise">$<fmt:formatNumber type="number" value="${item.pendingPrice * item.pendingNumber}" maxFractionDigits="6"/></td>
-                    <td class="operate"><input type="text" value="撤&nbsp;销" class="revoke" onclick="goCancle('${item.pendingOrderNo}')" /></td>
+    <c:if test="${userSession != null}">
+        <div class="myEntrust">
+            <p class="myTitle">
+                我的委托记录<img src="<%=path %>/resources/image/web/entrust.png" />
+                <a href="<%=path%>/userWeb/transactionPendOrderController/show.htm" class="more">查看更多</a>
+            </p>
+            <table class="table" cellspacing="0 " cellpadding="0" id="entrustRecord">
+                <tr class="tableTitle">
+                    <td class="time">委托时间</td>
+                    <td class="type">类型</td>
+                    <td class="amount">委托价格</td>
+                    <td class="amount">委托数量</td>
+                    <td class="amount">委托总价</td>
+                    <td class="operate">操作</td>
                 </tr>
-            </c:forEach>
-        </table>
-    </div>
+                <c:forEach items="${transactionPendOrderList}" var="item">
+                    <tr class="tableInfo">
+                        <td class="time"><fmt:formatDate type="time" value="${item.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+                        <c:if test="${item.paymentType == 1}">
+                            <td class="type rise">买入</td>
+                        </c:if>
+                        <c:if test="${item.paymentType == 2}">
+                            <td class="type fall">卖出</td>
+                        </c:if>
+                        <td class="amount">$<fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="4"/></td>
+                        <td class="amount"><fmt:formatNumber type="number" value="${item.pendingNumber}" maxFractionDigits="2"/></td>
+                        <td class="amount rise">$<fmt:formatNumber type="number" value="${item.pendingPrice * item.pendingNumber}" maxFractionDigits="6"/></td>
+                        <td class="operate"><input type="text" value="撤&nbsp;销" class="revoke" onclick="goCancle('${item.pendingOrderNo}')" /></td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </div>
+    </c:if>
 
     <div class="myDeal">
         <p class="myTitle">
@@ -525,6 +527,8 @@
         if (start <= 0) {
             //刷新成交记录
             reDeal();
+            //刷新委托记录
+            entrust();
         }
 
         start += step;
@@ -669,12 +673,13 @@
                     openTips(message);
                     return;
                 }
-
+                calMoreBoo = false
                 entrust();
 
             },
 
             error: function () {
+                calMoreBoo = false;
                 openTips("数据加载出错，请稍候重试");
             }
         });
@@ -682,17 +687,17 @@
     }
 
     /** 刷新委托记录 */
-    var dealBoo = false;
+    var entrustBoo = false;
     function entrust() {
-        if (dealBoo) {
+        if (entrustBoo) {
             return;
         } else {
-            dealBoo = true;
+            entrustBoo = true;
         }
 
-        var currencyId = $("#currencyId").val();
+        var currencyId = $("#cucyId").val();
         if (currencyId == null || currencyId == "") {
-            dealBoo = false;
+            entrustBoo = false;
             openTips("参数获取错误，请刷新页面重试")
             return;
         }
@@ -708,7 +713,7 @@
             async: true, //默认异步调用 (false：同步)
             success: function (result) {
                 if (result.code != 1 && result.message != null) {
-                    dealBoo = false;
+                    entrustBoo = false;
                     openTips(result.message);
                     return;
                 }
@@ -734,24 +739,23 @@
                         var pendingNumber = Math.floor(deal.pendingNumber * 100) / 100;
                         var currencyTotalPrice = Math.floor((pendingPrice * pendingNumber )* 1000000) / 1000000;
 
+                        newChild += "<tr class='tableInfo'>" +
+                            "<td class='time'>" + addTime + "</td>" +
+                            "<td class='type " + type + "'>" + paymentType + "</td>" +
+                            "<td class='amount'>" + pendingPrice + "</td>" +
+                            "<td class='amount'>" + pendingNumber + "</td>" +
+                            "<td class='amount rise'>" + currencyTotalPrice+ "</td>" +
+                            "<td class='operate'><input type='text' value='撤&nbsp;销' class='revoke' onclick='goCancle('"+ ${deal.pendingOrderNo} + "')'/></td>" +
+                            "</tr>";
                     }
 
-                    newChild += "<tr class='tableInfo'>" +
-                        "<td class='time'>" + addTime + "</td>" +
-                        "<td class='type " + type + "'>" + paymentType + "</td>" +
-                        "<td class='amount'>" + pendingPrice + "</td>" +
-                        "<td class='amount'>" + pendingNumber + "</td>" +
-                        "<td class='amount rise'>" + currencyTotalPrice+ "</td>" +
-                        "<td class='operate'><input type='text' value='撤&nbsp;销' class='revoke' onclick='goCancle('"+ ${deal.pendingOrderNo} + "') /></td>" +
-                        "</tr>";
-
                     document.getElementById("entrustRecord").innerHTML = newChild;
-                    dealBoo = false;
+                    entrustBoo = false;
                 }
 
 
             }, error: function () {
-                dealBoo = false;
+                entrustBoo = false;
                 openTips("获取失败,请重新刷新页面后重试");
             }
         });
