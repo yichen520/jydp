@@ -32,6 +32,10 @@ public class QuartzCommonInit {
     @Autowired
     private ITransactionPendOrderCommonService ITransactionPendOrderCommonService;
 
+    /** web端首页 */
+    @Autowired
+    private IHomePageRedisService homePageRedisService;
+
     /** 执行初始化 */
     public void executeInit() {
         //将成交记录放进redis
@@ -40,6 +44,8 @@ public class QuartzCommonInit {
         transactionRedisDealCommonService.updateWeeHoursBasisOfPrice();
         //从数据库拉取 挂单记录 到redis
         ITransactionPendOrderCommonService.getPendOrder();
+        //从数据库拉取首页数据到redis
+        homePageRedisService.getHomePageData();
 
     }
 
