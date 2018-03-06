@@ -14,6 +14,7 @@ import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DTO.TransactionPendOrderDTO;
 import com.jydp.entity.VO.StandardParameterVO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
+import com.jydp.entity.VO.TransactionPendOrderVO;
 import com.jydp.entity.VO.UserDealCapitalMessageVO;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.*;
@@ -71,7 +72,7 @@ public class TradeCenterController {
     @RequestMapping(value = "/show")
     public String show(HttpServletRequest request) {
         UserDealCapitalMessageVO userDealCapitalMessage = new UserDealCapitalMessageVO();
-        List<TransactionPendOrderDO> transactionPendOrderList = null;
+        List<TransactionPendOrderVO> transactionPendOrderList = null;
 
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
         if (!StringUtil.isNotNull(currencyIdStr)) {
@@ -553,7 +554,7 @@ public class TradeCenterController {
     @RequestMapping(value = "/entrust.htm", method = RequestMethod.POST)
     public @ResponseBody JsonObjectBO entrust(HttpServletRequest request) {
         JsonObjectBO resultJson = new JsonObjectBO();
-        List<TransactionPendOrderDO> transactionPendOrderList = null;
+        List<TransactionPendOrderVO> transactionPendOrderList = null;
         //获取参数
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
         if (!StringUtil.isNotNull(currencyIdStr)) {
@@ -580,5 +581,40 @@ public class TradeCenterController {
 
     }
 
+    /** 获取交易相关价格（基准信息、用户资金信息） */
+    @RequestMapping(value = "/gainDealPrice.htm", method = RequestMethod.POST)
+    public @ResponseBody JsonObjectBO gainDealPrice(HttpServletRequest request) {
+        JsonObjectBO resultJson = new JsonObjectBO();
+        UserDealCapitalMessageVO userDealCapitalMessage = new UserDealCapitalMessageVO();
+        //获取参数
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+        if (!StringUtil.isNotNull(currencyIdStr)) {
+            resultJson.setCode(3);
+            resultJson.setMessage("参数获取错误");
+            return resultJson;
+        }
+
+        int currencyId;
+        currencyId = Integer.parseInt(currencyIdStr);
+        UserSessionBO user = UserWebInterceptor.getUser(request);
+
+        if (user != null) {
+            userDealCapitalMessage = userService.countCheckUserAmountForTimer(user.getUserId(), currencyId);
+        }
+
+        //获取币种基准信息
+        StandardParameterVO standardParameter = transactionCurrencyService.listTransactionCurrencyAll(currencyId);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("userDealCapitalMessage", userDealCapitalMessage);
+        jsonObject.put("standardParameter", standardParameter);
+
+        resultJson.setCode(1);
+        resultJson.setMessage("查询成功");
+        resultJson.setData(jsonObject);
+
+        return resultJson;
+
+    }
 
 }
