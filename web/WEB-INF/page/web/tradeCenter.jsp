@@ -510,7 +510,7 @@
                 $("#sellMax").html(number);
             }
         } else {
-            $("#sellMax").html("当前最大可卖：0");
+            $("#sellMax").html("0");
             $("#sellTotal").html("$0");
         }
 
@@ -946,7 +946,7 @@
                 }
                 if(standardParameter != null){
                     $("#nowPrice").html(standardParameter.nowPrice);
-                    $("#nowPriceShow").html(standardParameter.nowPrice);
+                    $("#nowPriceShow").html("最新成交价：" + standardParameter.nowPrice);
                     if(standardParameter.todayRange >= 0){
                         $("#todayRangeRise").html("+" + standardParameter.todayRange + "%");
                         $("#todayRangeRise").removeClass("number fall");
