@@ -2,6 +2,7 @@ package com.jydp.service;
 
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DTO.TransactionUserDealDTO;
+import com.jydp.entity.VO.StandardParameterVO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
 
 import java.sql.Timestamp;
@@ -151,4 +152,11 @@ public interface ITransactionCurrencyService {
      * @return  操作成功：返回币种信息集合，操作失败：返回null
      */
     List<TransactionCurrencyDO> listTransactionCurrencyAll();
+
+    /**
+     * 根据币种id获取redis中相关币种基准参数
+     * @param currencyId  币种Id
+     * @return  操作成功：返回基准信息，操作失败：返回null
+     */
+    StandardParameterVO listTransactionCurrencyAll(int currencyId);
 }

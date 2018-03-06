@@ -56,7 +56,7 @@
                         <td class="amount">${userCurrency.currencyNumber }</td>
                         <td class="amount">${userCurrency.currencyNumberLock }</td>
                         <td class="amount">${userCurrency.currencyNumberSum }</td>
-                        <td><a href="#" class="link">去交易</a></td>
+                        <td><a href="javascript:;" class="link" onclick="dealSkip(${userCurrency.currencyId } )" >去交易</a></td>
                     </tr>
                 </c:forEach>
             </table>
@@ -100,6 +100,9 @@
 <div id="helpFooter"></div>
 <div id="footer"></div>
 
+<form id="tradeCenter" action="<%=path %>/userWeb/tradeCenter/show" method="post">
+    <input type="hidden" id="currencyId" name="currencyId">
+</form>
 
 <div class="mask">
     <div class="mask_content">
@@ -526,6 +529,12 @@
         });
     }
 
+
+    //去交易
+    function dealSkip (currencyId){
+        $("#currencyId").val(currencyId);
+        $("#tradeCenter").submit();
+    }
 </script>
 <script type="text/javascript">
     var popObj;
