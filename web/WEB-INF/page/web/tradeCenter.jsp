@@ -579,10 +579,14 @@
     {
         document.getElementById("countNum").innerHTML = start;
         if (start <= 0) {
+            var user = '${userSession}';
+            if (user != null && user != "") {
+                //登录后进行的操作
+                //刷新委托记录
+                entrust();
+            }
             //刷新成交记录
             reDeal();
-            //刷新委托记录
-            entrust();
             //获取交易相关价格（基准信息、用户资金信息）
             gainDealPrice();
             //刷新挂单记录
@@ -616,7 +620,7 @@
         }
 
         $.ajax({
-            url: '<%=path%>' + "/userWeb/tradeCenter/pend.htm", //方法路径URL
+            url: '<%=path%>' + "/userWeb/tradeCenter/pend", //方法路径URL
             data:{
                 currencyId : currencyId
             },//参数
@@ -698,7 +702,7 @@
         }
 
         $.ajax({
-            url: '<%=path%>' + "/userWeb/tradeCenter/deal.htm", //方法路径URL
+            url: '<%=path%>' + "/userWeb/tradeCenter/deal", //方法路径URL
             data:{
                 currencyId : currencyId
             },//参数
@@ -913,7 +917,7 @@
         var currencyId = $("#cucyId").val();
 
         $.ajax({
-            url: '<%=path %>' + "/userWeb/tradeCenter/gainDealPrice.htm",
+            url: '<%=path %>' + "/userWeb/tradeCenter/gainDealPrice",
             data: {
                 currencyId : currencyId
             },//参数
