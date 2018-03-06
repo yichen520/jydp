@@ -1,5 +1,6 @@
 package com.jydp.service.impl.transaction;
 
+import com.iqmkj.utils.BigDecimalUtil;
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.ITransactionPendOrderDao;
@@ -80,6 +81,8 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
         }
 
         Timestamp curTime = DateUtil.getCurrentTime();
+        //手续费
+        double fee = BigDecimalUtil.sub(tradePriceSum, BigDecimalUtil.mul(pendingPrice, pendingNumber));
         //业务执行状态
         boolean excuteSuccess = true;
 
@@ -115,7 +118,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
             //增加系统账户记录
             if (excuteSuccess) {
                 excuteSuccess = systemAccountAmountService.addSystemAccountAmount(SystemAccountAmountConfig.PEND_FEE,
-                        NumberUtil.doubleUpFormat(tradePriceSum - pendingPrice * pendingNumber,8));
+                        NumberUtil.doubleUpFormat(fee,8));
             }
         } else if(paymentType == 2){
             //减少用户币数量
@@ -158,7 +161,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
             String feeRemark = "";
             if(paymentType == 1){
                 feeRemark = "费率" + buyFee * 100 + "%，手续费$" +
-                        NumberUtil.doubleUpFormat(tradePriceSum - pendingPrice * pendingNumber,8);
+                        NumberUtil.doubleUpFormat(fee,8);
             }
             TransactionPendOrderDO transactionPendOrder = new TransactionPendOrderDO();
             transactionPendOrder.setPendingOrderNo(pendingOrderNo);

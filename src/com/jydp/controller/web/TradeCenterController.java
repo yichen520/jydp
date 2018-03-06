@@ -206,7 +206,12 @@ public class TradeCenterController {
         }
 
         //从redis判断是否可以匹配交易
-        double sellOne = (double)redisService.getValue(RedisKeyConfig.SELL_ONE_KEY + currencyId);
+        Object sellOneOb = redisService.getValue(RedisKeyConfig.SELL_ONE_KEY + currencyId);
+        double sellOne = 0;
+        if(sellOneOb != null && sellOneOb != ""){
+            sellOne = (double)sellOneOb;
+        }
+
         if(sellOne > buyPrice){
             resultJson.setCode(1);
             resultJson.setMessage("没有可匹配的挂单");
@@ -354,7 +359,12 @@ public class TradeCenterController {
         }
 
         //从redis判断是否可以匹配交易
-        double buyOne = (double)redisService.getValue(RedisKeyConfig.BUY_ONE_KEY + currencyId);
+        Object buyOneOb = redisService.getValue(RedisKeyConfig.BUY_ONE_KEY + currencyId);
+        double buyOne = 0;
+        if(buyOneOb != null && buyOneOb != ""){
+            buyOne = (double)buyOneOb;
+        }
+
         if(buyOne < sellPrice){
             resultJson.setCode(1);
             resultJson.setMessage("没有可匹配的挂单");
