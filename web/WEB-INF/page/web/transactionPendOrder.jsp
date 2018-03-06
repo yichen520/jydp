@@ -105,7 +105,7 @@
             <p class="popTitle">撤销委托</p>
             <p class="popTips"><img src="<%=path %>/resources/image/web/tips.png" class="tipsImg" />确定撤销该委托内容？</p>
 
-            <input type="hidden" id="pendingOrderNo" name="cancleOrderNo">
+            <input type="hidden" id="cancleOrderNo" name="cancleOrderNo">
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
                 <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="cancleOrder()" />
