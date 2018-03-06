@@ -583,8 +583,10 @@
             reDeal();
             //刷新委托记录
             entrust();
-            //获取交易相关价格（基准信息、用户资金信息）
+            //获取交易相关价格（基准信息）
             gainDealPrice();
+            //获取交易相关价格（用户资金信息）
+            userMessage();
             //刷新挂单记录
             rePend();
         }
@@ -901,7 +903,7 @@
         });
     }
 
-    /**获取交易相关价格（基准信息、用户资金信息）*/
+    /**获取交易相关价格（基准信息）*/
     var gainDealPriceBoo = false;
     function gainDealPrice(){
         if (gainDealPriceBoo) {
@@ -929,21 +931,8 @@
                     return;
                 }
 
-
                 var data = resultData.data;
-                var userDealCapitalMessage = data.userDealCapitalMessage;
                 var standardParameter = data.standardParameter;
-                if(userDealCapitalMessage != null){
-                    $("#currencyNumberShow").html(userDealCapitalMessage.currencyNumber);
-                    $("#currencyNumber").html(userDealCapitalMessage.currencyNumber);
-                    $("#usableCurrencyNumber").html(userDealCapitalMessage.currencyNumber);
-                    $("#currencyNumberLockShow").html(userDealCapitalMessage.currencyNumberLock);
-                    $("#userBalanceShow").html("$" + userDealCapitalMessage.userBalance);
-                    $("#userBalance").html("$" + userDealCapitalMessage.userBalance);
-                    $("#usableUserBalance").html("$" + userDealCapitalMessage.userBalance);
-                    $("#userBalanceLockShow").html("$" + userDealCapitalMessage.userBalanceLock);
-                    $("#currencyNumberSumShow").html("$" + userDealCapitalMessage.currencyNumberSum);
-                }
                 if(standardParameter != null){
                     $("#nowPrice").html(standardParameter.nowPrice);
                     $("#nowPriceShow").html("最新成交价：" + standardParameter.nowPrice);
@@ -961,9 +950,7 @@
                     $("#buyOne").html(standardParameter.buyOne);
                     $("#sellOne").html(standardParameter.sellOne);
                     $("#dayTurnove").html(standardParameter.dayTurnove);
-
                 }
-
             },
 
             error: function () {
@@ -974,6 +961,54 @@
 
     }
 
+    /**获取交易相关价格（用户资金信息）*/
+    var userMessageBoo = false;
+    function userMessage(){
+        if (userMessageBoo) {
+            return;
+        } else {
+            userMessageBoo = true;
+        }
+
+        var currencyId = $("#cucyId").val();
+        $.ajax({
+            url: '<%=path %>' + "/userWeb/tradeCenter/userMessage",
+            data: {
+                currencyId : currencyId
+            },//参数
+            dataType: "json",
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (resultData) {
+                userMessageBoo = false
+                var code = resultData.code;
+                var message = resultData.message;
+                if (code != 1 && message != "") {
+                    openTips(message);
+                    return;
+                }
+
+                var data = resultData.data;
+                var userDealCapitalMessage = data.userDealCapitalMessage;
+                if(userDealCapitalMessage != null){
+                    $("#currencyNumberShow").html(userDealCapitalMessage.currencyNumber);
+                    $("#currencyNumber").html(userDealCapitalMessage.currencyNumber);
+                    $("#usableCurrencyNumber").html(userDealCapitalMessage.currencyNumber);
+                    $("#currencyNumberLockShow").html(userDealCapitalMessage.currencyNumberLock);
+                    $("#userBalanceShow").html("$" + userDealCapitalMessage.userBalance);
+                    $("#userBalance").html("$" + userDealCapitalMessage.userBalance);
+                    $("#usableUserBalance").html("$" + userDealCapitalMessage.userBalance);
+                    $("#userBalanceLockShow").html("$" + userDealCapitalMessage.userBalanceLock);
+                    $("#currencyNumberSumShow").html("$" + userDealCapitalMessage.currencyNumberSum);
+                }
+            },
+
+            error: function () {
+                userMessageBoo = false;
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+    }
 
 </script>
 </body>

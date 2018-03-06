@@ -93,7 +93,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
             //涨跌幅度计算
             for(TransactionDealPriceDTO transactionDealPrice : nowLastPrice){
                 if(redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + transactionDealPrice.getCurrencyId()) != null){
-                    double transactionPrice = (double) redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + transactionDealPrice.getCurrencyId());
+                    double transactionPrice = Double.parseDouble(redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + transactionDealPrice.getCurrencyId()).toString());
                     double range = BigDecimalUtil.sub(transactionDealPrice.getTransactionPrice(), transactionPrice) * 100;
                     String rangeStr = BigDecimalUtil.div(range, transactionPrice, 2);
                     redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionDealPrice.getCurrencyId(), Double.parseDouble(rangeStr));
@@ -105,6 +105,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
     /** 每日开盘基准信息重置(今日涨跌,今日最高价,今日最低价,昨日收盘价)*/
     public void updateWeeHoursBasisOfPrice(){
         Timestamp date;
+        double quantity = 0;
         //最高最低价取昨日收盘价
 /*        Timestamp nowDate = DateUtil.getCurrentTime();
         List<TransactionDealPriceDTO> nowLastPrice = transactionDealRedisService.getNowLastPrice(nowDate);  //昨日收盘价
@@ -147,17 +148,17 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
         if(transactionUserDeal != null && transactionUserDeal.size() > 0) {
             if(closing == null || closing.size() <= 0){
                 for(TransactionCurrencyDO transactionUser : transactionUserDeal){
-                    redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE + transactionUser.getCurrencyId(), 0);
-                    redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE + transactionUser.getCurrencyId(), 0);
-                    redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionUser.getCurrencyId(), 0);
+                    redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE + transactionUser.getCurrencyId(), quantity);
+                    redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE + transactionUser.getCurrencyId(), quantity);
+                    redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionUser.getCurrencyId(), quantity);
                 }
             } else {
                 for (TransactionCurrencyDO transactionUser : transactionUserDeal) {
                     for(TransactionDealPriceDTO transactionDealPrice : closing){
                         if (transactionUser.getCurrencyId() != transactionDealPrice.getCurrencyId()) {
-                            redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE + transactionUser.getCurrencyId(), 0);
-                            redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE + transactionUser.getCurrencyId(), 0);
-                            redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionUser.getCurrencyId(), 0);
+                            redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE + transactionUser.getCurrencyId(), quantity);
+                            redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE + transactionUser.getCurrencyId(), quantity);
+                            redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionUser.getCurrencyId(), quantity);
                         }
                     }
                 }
