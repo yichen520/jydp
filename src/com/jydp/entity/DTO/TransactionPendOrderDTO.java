@@ -1,5 +1,7 @@
 package com.jydp.entity.DTO;
 
+import com.iqmkj.utils.BigDecimalUtil;
+
 /**
  * 交易中心 挂单记录合并显示
  * @Author hz
@@ -58,8 +60,8 @@ public class TransactionPendOrderDTO {
     public void setDealNumber(double dealNumber) {
         this.dealNumber = dealNumber;
 
-        setRestNumber(this.pendingNumber - this.dealNumber);
-        setSumPrice((this.pendingNumber - this.dealNumber) * this.pendingPrice);
+        setRestNumber(BigDecimalUtil.sub(this.pendingNumber, this.dealNumber));
+        setSumPrice(BigDecimalUtil.mul(BigDecimalUtil.sub(this.pendingNumber, this.dealNumber), this.pendingPrice));
     }
 
     /**
