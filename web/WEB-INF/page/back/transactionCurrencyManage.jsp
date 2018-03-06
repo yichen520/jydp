@@ -72,10 +72,10 @@
                     </p>
                     <p class="condition">
                         上线时间：
-                        从&nbsp;<input placeholder="请选择起始时间" class="askTime" id="startTime" name="startTime"
-                                      value="${startTime}" onfocus="this.blur()"/>
-                        到&nbsp;<input placeholder="请选择结束时间" class="askTime" id="endTime" name="endTime"
-                                      value="${endTime}" onfocus="this.blur()"/>
+                        从&nbsp;<input placeholder="请选择起始时间" class="askTime" id="startUpTime" name="startUpTime"
+                                      value="${startUpTime}" onfocus="this.blur()"/>
+                        到&nbsp;<input placeholder="请选择结束时间" class="askTime" id="endUpTime" name="endUpTime"
+                                      value="${endUpTime}" onfocus="this.blur()"/>
                     </p>
 
                     <input type="hidden" id="queryPageNumber" name="pageNumber" value="${pageNumber}">
@@ -558,6 +558,11 @@
         var adsImageUrl = document.getElementById("changead_a1").files[0];
 
         var status = $('input:radio:checked').val();
+        if (status == null || status == "") {
+            addBoo = false;
+            openTips("请选择执行方式");
+            return;
+        }
         var staNum = parseInt(status);
         if (staNum == 1) {
             var upTimeAd = null;
@@ -662,6 +667,7 @@
 
         $(".mask").fadeIn();
         $(".change_pop").fadeIn();
+        popObj = ".change_pop"
     }
 
     //修改

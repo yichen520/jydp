@@ -47,7 +47,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
         for (TransactionCurrencyDO currency: currencyList) {
             List<TransactionDealRedisDO> dealList = transactionDealRedisService.listTransactionDealRedis(50, currency.getCurrencyId());
             if (dealList != null && !dealList.isEmpty()) {
-                redisService.addValue(RedisKeyConfig.CURRENCY_DEAL_KEY + currency.getCurrencyShortName(), dealList);
+                redisService.addValue(RedisKeyConfig.CURRENCY_DEAL_KEY + currency.getCurrencyId(), dealList);
             }
         }
     }
@@ -94,9 +94,9 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
             for(TransactionDealPriceDTO transactionDealPrice : nowLastPrice){
                 if(redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + transactionDealPrice.getCurrencyId()) != null){
                     double transactionPrice = (double) redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + transactionDealPrice.getCurrencyId());
-                    double range = BigDecimalUtil.sub(transactionDealPrice.getTransactionPrice(), transactionPrice * 100);
+                    double range = BigDecimalUtil.sub(transactionDealPrice.getTransactionPrice(), transactionPrice) * 100;
                     String rangeStr = BigDecimalUtil.div(range, transactionPrice, 4);
-                    redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionDealPrice.getCurrencyId(), rangeStr);
+                    redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionDealPrice.getCurrencyId(), Double.parseDouble(rangeStr));
                 }
             }
         }
@@ -149,7 +149,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                 for(TransactionCurrencyDO transactionUser : transactionUserDeal){
                     redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE + transactionUser.getCurrencyId(), 0);
                     redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE + transactionUser.getCurrencyId(), 0);
-                    redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionUser.getCurrencyId(), "0");
+                    redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionUser.getCurrencyId(), 0);
                 }
             } else {
                 for (TransactionCurrencyDO transactionUser : transactionUserDeal) {
@@ -157,7 +157,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                         if (transactionUser.getCurrencyId() != transactionDealPrice.getCurrencyId()) {
                             redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE + transactionUser.getCurrencyId(), 0);
                             redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE + transactionUser.getCurrencyId(), 0);
-                            redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionUser.getCurrencyId(), "0");
+                            redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionUser.getCurrencyId(), 0);
                         }
                     }
                 }
