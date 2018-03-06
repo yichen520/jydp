@@ -328,6 +328,7 @@
 
     }
 
+    //买入
     var resultBoo = false;
     function buyHandle() {
         if(resultBoo){
@@ -339,6 +340,31 @@
         var buyPrice = $("#buyPrice").val();
         var buyNum = $("#buyNum").val();
         var buyPwd = $("#buyPwd").val();
+        var currencyId = $("#cucyId").val();
+
+        if(buyPrice == null || buyPrice == ""){
+            openTips("价格不能为空");
+            resultBoo = false;
+            return;
+        }
+
+        if(buyNum == null || buyNum == ""){
+            openTips("数量不能为空");
+            resultBoo = false;
+            return;
+        }
+
+        if(buyPwd == null || buyPwd == ""){
+            openTips("交易密码不能为空");
+            resultBoo = false;
+            return;
+        }
+
+        if(currencyId == null || currencyId == ""){
+            openTips("币种标识不存在");
+            resultBoo = false;
+            return;
+        }
 
         $.ajax({
             url: '<%=path%>' + "/userWeb/tradeCenter/buy.htm", //方法路径URL
@@ -346,7 +372,7 @@
                 buyPrice : buyPrice,
                 buyNum : buyNum,
                 buyPwd : buyPwd,
-                currencyId : 1
+                currencyId : currencyId
             },//参数
             dataType: 'json',
             type: 'POST',
@@ -365,6 +391,7 @@
         });
     }
 
+    //卖出
     function sellHandle() {
         if(resultBoo){
             return false;
@@ -376,21 +403,37 @@
         var sellNum = $("#sellNum").val();
         var sellPwd = $("#sellPwd").val();
 
+        if(sellPrice == null || sellPrice == ""){
+            openTips("价格不能为空");
+            resultBoo = false;
+            return;
+        }
+
+        if(sellNum == null || sellNum == ""){
+            openTips("数量不能为空");
+            resultBoo = false;
+            return;
+        }
+
+        if(sellPwd == null || sellPwd == ""){
+            openTips("交易密码不能为空");
+            resultBoo = false;
+            return;
+        }
+
         $.ajax({
             url: '<%=path%>' + "/userWeb/tradeCenter/sell.htm", //方法路径URL
             data:{
                 sellPrice : sellPrice,
                 sellNum : sellNum,
                 sellPwd : sellPwd,
-                currencyId : 1
+                currencyId : currencyId
             },//参数
             dataType: 'json',
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (result) {
-                if(result.code == 1) {
-                    openTips(result.message);
-                } else {
+                if(result.code != 1) {
                     openTips(result.message);
                 }
                 resultBoo = false;
