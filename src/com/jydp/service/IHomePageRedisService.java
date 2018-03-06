@@ -1,8 +1,5 @@
 package com.jydp.service;
 
-
-import org.springframework.scheduling.annotation.Scheduled;
-
 /**
  *  web端首页Redis服务
  *  @author yk

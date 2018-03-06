@@ -119,7 +119,7 @@
                     <label class="tradeName">卖出数量：</label>
                     <input type="text" class="entry" placeholder="请输入您要买入的该币种数量" id="sellNum" name="sellNum"
                            onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)" maxlength="18"/>
-                    <span class="max">当前最大可买：<span id="sellMax">0</span></span>
+                    <span class="max">当前最大可卖：<span id="sellMax">0</span></span>
                 </p>
                 <p class="phoneInput">
                     <label class="tradeName">支付密码：</label>
@@ -281,7 +281,7 @@
         </div>
 
 
-        <input type="hidden" id="currencyId" name="currencyId" value="${transactionCurrency.currencyId}">
+        <input type="hidden" id="cucyId" name="cucyId" value="${transactionCurrency.currencyId}">
     </div>
 </div>
 
@@ -404,44 +404,57 @@
 
     //动态计算总价
     function mul() {
+        var m = 0;
+        var buyPrice = $("#buyPrice").val();
+        var buyNum = $("#buyNum").val();
 
         //买入
-        var buyPrice = parseFloat($("#buyPrice").val()) * 1000;
-        var buyNum = parseFloat($("#buyNum").val()) * 1000000;
-        if (buyPrice > 0) {
-            if (buyNum > 0) {
-                var total = Math.floor(buyPrice * buyNum ) / 1000 / 1000000;
-                var tota = mulMaxNumber(total);
-                $("#buyTotal").html(tota);
+        if (buyPrice != null && buyPrice != "") {
+            buyPrice = buyPrice.toString();
+            try{m+=buyPrice.split(".")[1].length}catch(e){}
+            if (buyNum != null && buyNum != "") {
+                buyNum = buyNum.toString();
+                try{m+=buyNum.split(".")[1].length}catch(e){}
+                var number = parseFloat((Number(buyPrice.replace(".",""))*Number(buyNum.replace(".",""))/Math.pow(10,m)).toFixed(8));
+                number = mulMaxNumber(number);
+                $("#buyTotal").html("$" + number);
             }
-            var userBalance = parseFloat($("#userBalance").val()) * 1000;
-            if (userBalance > 0) {
-                var total = userBalance / buyPrice;
-                var tota = mulMaxNumber(total);
-                $("#buyMax").html(tota);
-            }
+
+            var userBalance = parseFloat($("#userBalance").val());
+            var total = userBalance / buyPrice;
+            var tota = mulMaxNumber(total);
+            $("#buyMax").html(tota);
         } else {
+        $("#buyMax").html("");
             $("#buyTotal").html("");
         }
 
 
         //卖出
-        var buyPrice = parseFloat($("#sellPrice").val()) * 1000;
-        var buyNum = parseFloat($("#sellNum").val()) * 1000000;
-        if (buyPrice > 0) {
-            if (buyNum > 0) {
-                var total = Math.floor(buyPrice * buyNum )/ 1000 / 1000000;
-                var tota = mulMaxNumber(total);
-                $("#sellTotal").html(tota);
+        var s = 0;
+        var sellPrice = $("#sellPrice").val();
+        var sellNum = $("#sellNum").val();
+        if (sellPrice != null && sellPrice != "") {
+            sellPrice = sellPrice.toString();
+            try{s+=sellPrice.split(".")[1].length}catch(e){}
+            if (sellNum != null && sellNum != "") {
+                sellNum = sellNum.toString();
+                try{s+=sellNum.split(".")[1].length}catch(e){}
+                var number = parseFloat((Number(sellPrice.replace(".",""))*Number(sellNum.replace(".",""))/Math.pow(10,s)).toFixed(8));
+                number = mulMaxNumber(number);
+                $("#sellTotal").html(number);
             }
 
-            var currencyNumber = parseFloat($("#currencyNumber").val()) * 1000000;
-            if (currencyNumber > 0) {
-                var total = Math.floor(currencyNumber * buyPrice) / 1000 / 1000000;
-                var tota = mulMaxNumber(total);
-                $("#sellMax").html(tota);
+            var currencyNumber = $("#currencyNumber").val();
+            if(currencyNumber != null && currencyNumber != ""){
+                currencyNumber = currencyNumber.toString();
+                try{s+=currencyNumber.split(".")[1].length}catch(e){}
+                var number = parseFloat((Number(sellPrice.replace(".",""))*Number(currencyNumber.replace(".",""))/Math.pow(10,s)).toFixed(8));
+                number = mulMaxNumber(number);
+                $("#sellMax").html(number);
             }
         } else {
+            $("#sellMax").html("");
             $("#sellTotal").html("");
         }
 
@@ -534,10 +547,10 @@
             dealBoo = true;
         }
 
-        var currencyId = $("#currencyId").val();
+        var currencyId = $("#cucyId").val();
         if (currencyId == null || currencyId == "") {
             dealBoo = false;
-            openTips("参数获取错误，请刷新页面重试")
+            //openTips("参数获取错误，请刷新页面重试")
             return;
         }
 

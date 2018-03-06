@@ -36,6 +36,10 @@ public class HomePageController {
     @Autowired
     private IRedisService redisService;
 
+    /**web端首页*/
+    @Autowired
+    private IHomePageService homePageService;
+
     /** 交易币种 */
     @Autowired
     private ITransactionCurrencyService transactionCurrencyService;
@@ -75,6 +79,11 @@ public class HomePageController {
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         //查询所有币行情信息
         List<TransactionUserDealDTO> transactionUserDealDTOList = (List<TransactionUserDealDTO>)redisService.getValue(RedisKeyConfig.HOMEPAGE_CURRENCYMARKET);
+
+        if (transactionUserDealDTOList == null) {
+            //查询所有币行情信息
+            transactionUserDealDTOList = homePageService.getTransactionCurrencyMarketList();
+        }
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("transactionUserDealDTOList",transactionUserDealDTOList);

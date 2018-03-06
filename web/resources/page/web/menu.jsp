@@ -28,7 +28,7 @@
     <ul class="coinLink">
     </ul>
     <form id="tradeCenterForm" action="<%=path %>/userWeb/tradeCenter/show" method="post">
-        <input id="currencyId" name="currencyId" type="hidden"/>
+        <input id="menuCurrencyId" name="currencyId" type="hidden"/>
     </form>
 </div>
 <script type="text/javascript">
@@ -92,8 +92,7 @@
 
     //跳转至交易中心
     function toTradeCenter(currencyId) {
-        console.log(currencyId);
-        $("#currencyId").val(currencyId);
+        $("#menuCurrencyId").val(currencyId);
         $("#tradeCenterForm").submit();
     }
 </script>
