@@ -40,7 +40,7 @@ public class TransactionPendOrderController {
             return "page/web/login";
         }
         //获取参数
-        String pageNumberStr  = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
+        String pageNumberStr  = StringUtil.stringNullHandle(request.getParameter("queryPageNumber"));
 
         int pageNumber = 0;
         if (StringUtil.isNotNull(pageNumberStr)) {
