@@ -1,14 +1,17 @@
 package com.jydp.controller.web;
 
+import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.MD5Util;
 import com.iqmkj.utils.NumberUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
+import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
+import com.jydp.entity.DTO.TransactionPendOrderDTO;
 import com.jydp.entity.VO.StandardParameterVO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.entity.VO.UserDealCapitalMessageVO;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * 交易中心
@@ -87,6 +91,28 @@ public class TradeCenterController {
         TransactionCurrencyVO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
         //获取币种基准信息
         StandardParameterVO standardParameter = transactionCurrencyService.listTransactionCurrencyAll(currencyId);
+        //获取成交记录
+        List<TransactionDealRedisDO> dealList = null;
+        dealList = (List<TransactionDealRedisDO>) redisService.getValue(RedisKeyConfig.CURRENCY_DEAL_KEY + transactionCurrency.getCurrencyId());
+        if (dealList == null || dealList.isEmpty()) {
+            dealList = transactionDealRedisService.listTransactionDealRedis(50, transactionCurrency.getCurrencyId());
+        }
+        //获取挂单记录
+        List<TransactionPendOrderDTO> transactionPendOrderBuyList = null;
+        transactionPendOrderBuyList = (List<TransactionPendOrderDTO>) redisService.getValue(RedisKeyConfig.BUY_KEY + transactionCurrency.getCurrencyId());
+        if (transactionPendOrderBuyList == null || transactionPendOrderBuyList.isEmpty()) {
+            transactionPendOrderBuyList = transactionPendOrderService.listLatestRecords(1,transactionCurrency.getCurrencyId(),15);
+        }
+
+        List<TransactionPendOrderDTO> transactionPendOrderSellList = null;
+        transactionPendOrderSellList = (List<TransactionPendOrderDTO>) redisService.getValue(RedisKeyConfig.SELL_KEY + transactionCurrency.getCurrencyId());
+        if (transactionPendOrderSellList == null || transactionPendOrderSellList.isEmpty()) {
+            transactionPendOrderSellList = transactionPendOrderService.listLatestRecords(2,transactionCurrency.getCurrencyId(),15);
+        }
+
+        request.setAttribute("transactionPendOrderBuyList", transactionPendOrderBuyList);
+        request.setAttribute("transactionPendOrderSellList", transactionPendOrderSellList);
+        request.setAttribute("dealList", dealList);
 
         request.setAttribute("transactionCurrency", transactionCurrency);
         request.setAttribute("standardParameter", standardParameter);
@@ -401,5 +427,124 @@ public class TradeCenterController {
 
         return resultJson;
     }
+
+
+    /** 获取成交记录 */
+    @RequestMapping(value = "/deal.htm", method = RequestMethod.POST)
+    public @ResponseBody  JsonObjectBO deal(HttpServletRequest request) {
+        JsonObjectBO resultJson = new JsonObjectBO();
+
+        //获取参数
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+
+        if (!StringUtil.isNotNull(currencyIdStr)) {
+            resultJson.setCode(3);
+            resultJson.setMessage("参数错误");
+            return resultJson;
+        }
+
+        int currencyId = 0;
+        currencyId = Integer.parseInt(currencyIdStr);
+
+        //获取币种信息
+        TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
+        if(transactionCurrency == null){
+            resultJson.setCode(3);
+            resultJson.setMessage("没有该币种");
+            return resultJson;
+        }
+
+        if(transactionCurrency.getPaymentType() != 1){
+            resultJson.setCode(5);
+            resultJson.setMessage("该币种不在交易状态");
+            return resultJson;
+        }
+
+        if(transactionCurrency.getUpStatus() != 2){
+            resultJson.setCode(5);
+            resultJson.setMessage("该币种不在上线状态");
+            return resultJson;
+        }
+
+        List<TransactionDealRedisDO> dealList = null;
+        dealList = (List<TransactionDealRedisDO>) redisService.getValue(RedisKeyConfig.CURRENCY_DEAL_KEY + transactionCurrency.getCurrencyId());
+        if (dealList == null || dealList.isEmpty()) {
+            dealList = transactionDealRedisService.listTransactionDealRedis(50, transactionCurrency.getCurrencyId());
+        }
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("dealList", dealList);
+
+        resultJson.setCode(1);
+        resultJson.setMessage("查询成功");
+        resultJson.setData(jsonObject);
+
+        return resultJson;
+    }
+
+    /** 获取挂单记录 */
+    @RequestMapping(value = "/pend.htm", method = RequestMethod.POST)
+    public @ResponseBody JsonObjectBO pend(HttpServletRequest request) {
+        JsonObjectBO resultJson = new JsonObjectBO();
+
+        //获取参数
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+
+        if (!StringUtil.isNotNull(currencyIdStr)) {
+            resultJson.setCode(3);
+            resultJson.setMessage("参数获取错误");
+            return resultJson;
+        }
+
+        int currencyId = 0;
+        currencyId = Integer.parseInt(currencyIdStr);
+
+        //获取币种信息
+        TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
+        if(transactionCurrency == null){
+            resultJson.setCode(3);
+            resultJson.setMessage("没有该币种");
+            return resultJson;
+        }
+
+        if(transactionCurrency.getPaymentType() != 1){
+            resultJson.setCode(5);
+            resultJson.setMessage("该币种不在交易状态");
+            return resultJson;
+        }
+
+        if(transactionCurrency.getUpStatus() != 2){
+            resultJson.setCode(5);
+            resultJson.setMessage("该币种不在上线状态");
+            return resultJson;
+        }
+
+        List<TransactionPendOrderDTO> transactionPendOrderBuyList = null;
+        transactionPendOrderBuyList = (List<TransactionPendOrderDTO>) redisService.getValue(RedisKeyConfig.BUY_KEY + transactionCurrency.getCurrencyId());
+        if (transactionPendOrderBuyList == null || transactionPendOrderBuyList.isEmpty()) {
+            transactionPendOrderBuyList = transactionPendOrderService.listLatestRecords(1,transactionCurrency.getCurrencyId(),15);
+        }
+
+        List<TransactionPendOrderDTO> transactionPendOrderSellList = null;
+        transactionPendOrderSellList = (List<TransactionPendOrderDTO>) redisService.getValue(RedisKeyConfig.SELL_KEY + transactionCurrency.getCurrencyId());
+        if (transactionPendOrderSellList == null || transactionPendOrderSellList.isEmpty()) {
+            transactionPendOrderSellList = transactionPendOrderService.listLatestRecords(2,transactionCurrency.getCurrencyId(),15);
+        }
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("transactionPendOrderBuyList", transactionPendOrderBuyList);
+        jsonObject.put("transactionPendOrderSellList", transactionPendOrderSellList);
+
+        resultJson.setCode(1);
+        resultJson.setMessage("查询成功");
+        resultJson.setData(jsonObject);
+
+        return resultJson;
+    }
+
+
+
+
+
 
 }
