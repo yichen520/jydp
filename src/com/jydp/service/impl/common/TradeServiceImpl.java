@@ -2,6 +2,7 @@ package com.jydp.service.impl.common;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.iqmkj.utils.BigDecimalUtil;
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.NumberUtil;
 import com.jydp.entity.BO.JsonObjectBO;
@@ -118,11 +119,11 @@ public class TradeServiceImpl implements ITradeService {
         //业务执行状态
         boolean excuteSuccess = true;
         //获取两挂单交易数量和最终交易数量
-        double orderNum = order.getPendingNumber() - order.getDealNumber();
-        double matchOrderNum = matchOrder.getPendingNumber() - matchOrder.getDealNumber();
+        double orderNum = BigDecimalUtil.sub(order.getPendingNumber(), order.getDealNumber());
+        double matchOrderNum = BigDecimalUtil.sub(matchOrder.getPendingNumber(), matchOrder.getDealNumber());
         double tradeNum = Math.min(orderNum, matchOrderNum);
         //该挂单剩余可交易数量
-        double restNum = orderNum - tradeNum;
+        double restNum = BigDecimalUtil.sub(orderNum, tradeNum);
 
         //修改两个订单的交易数量和状态
         Timestamp curTime = DateUtil.getCurrentTime();
@@ -158,20 +159,20 @@ public class TradeServiceImpl implements ITradeService {
             tradePrice = matchOrder.getPendingPrice();
             buyUserId = userId;
             sellUsrId = matchOrder.getUserId();
-            returnMoney = (order.getPendingPrice() - tradePrice) * tradeNum;
-            buyPrice = order.getPendingPrice() * tradeNum;
+            returnMoney = BigDecimalUtil.mul(BigDecimalUtil.sub(order.getPendingPrice(), tradePrice), tradeNum);
+            buyPrice = BigDecimalUtil.mul(order.getPendingPrice(), tradeNum);
         }else if(paymentType == 2){
             tradePrice = order.getPendingPrice();
             buyUserId = matchOrder.getUserId();
             sellUsrId = userId;
-            returnMoney = (matchOrder.getPendingPrice() - tradePrice) * tradeNum;
-            buyPrice = matchOrder.getPendingPrice() * tradeNum;
+            returnMoney = BigDecimalUtil.mul(BigDecimalUtil.sub(matchOrder.getPendingPrice(), tradePrice), tradeNum);
+            buyPrice = BigDecimalUtil.mul(matchOrder.getPendingPrice(), tradeNum);
         }
 
         //成交总价
-        double tradeMoney = tradePrice * tradeNum;
+        double tradeMoney = BigDecimalUtil.mul(tradePrice, tradeNum);
         //计算卖方获得金额
-        double sellMoney = NumberUtil.doubleFormat(tradeMoney * (1 - sellFee),8);
+        double sellMoney = NumberUtil.doubleFormat(BigDecimalUtil.mul(tradeMoney, BigDecimalUtil.sub(1, sellFee)),8);
 
         //减少买方用户锁定美金
         if(excuteSuccess){

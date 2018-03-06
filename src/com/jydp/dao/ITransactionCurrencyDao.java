@@ -3,9 +3,9 @@ package com.jydp.dao;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DTO.TransactionUserDealDTO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
-
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 交易币种
@@ -54,12 +54,6 @@ public interface ITransactionCurrencyDao {
      * @return  操作成功：返回交易币种，操作失败：返回null
      */
     TransactionCurrencyVO getTransactionCurrencyByCurrencyName(String currencyName);
-
-    /**
-     * 获取所有币种行情信息(web端)
-     * @return 查询成功：返回所有币种行情信息；查询失败：返回null
-     */
-    List<TransactionUserDealDTO> getTransactionCurrencyMarketForWeb(Timestamp openTime, Timestamp beginTime, Timestamp endTime);
 
     /**
      * 查询币种个数（后台）
@@ -114,4 +108,44 @@ public interface ITransactionCurrencyDao {
      * @return  操作成功：返回币种信息集合，操作失败：返回null
      */
     List<TransactionCurrencyDO> listTransactionCurrencyAll();
+
+    /**
+     * 为币种行情获取所有币种信息
+     * @return 查询成功：返回各币种信息；查询失败：返回null
+     */
+    List<TransactionUserDealDTO> getTransactionCurrencyMarketForWeb();
+
+    /**
+     * 获取所有币种最新价信息(web端)
+     * @return 查询成功：返回各币种信息；查询失败：返回null
+     */
+    Map<Integer,TransactionUserDealDTO> getNewPriceForWeb();
+
+    /**
+     * 获取所有币种买一价信息(web端)
+     * @return  查询成功：返回各币种信息；查询失败：返回null
+     */
+    Map<Integer,TransactionUserDealDTO> getBuyOneForWeb();
+
+    /**
+     * 获取所有币种卖一价信息(web端)
+     * @return 查询成功：返回各币种信息；查询失败：返回null
+     */
+    Map<Integer,TransactionUserDealDTO> getSellOneForWeb();
+
+    /**
+     * 获取所有币种今日成交量信息(web端)
+     * @param openTime 今日开盘时间
+     * @return 查询成功：返回各币种信息；查询失败：返回null
+     */
+    Map<Integer,TransactionUserDealDTO> getTransactionVolumeForWeb(Timestamp openTime);
+
+    /**
+     * 获取所有币种昨日最后一笔交易价格信息(web端)
+     * @param openTime 今日开盘时间
+     * @param startTime 昨日开盘时间
+     * @return 查询成功：返回各币种信息；查询失败：返回null
+     */
+    Map<Integer,TransactionUserDealDTO> getYesterdayLastPriceForWeb(Timestamp openTime, Timestamp startTime);
+
 }
