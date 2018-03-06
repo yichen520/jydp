@@ -19,3 +19,7 @@
 .amount{
     width: 136px;
 }
+.amount p{
+    text-align: left;
+    word-break: break-all;
+}
