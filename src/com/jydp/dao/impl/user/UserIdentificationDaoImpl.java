@@ -83,6 +83,22 @@ public class UserIdentificationDaoImpl implements IUserIdentificationDao {
     /**
      * 查询用户最近的认证信息
      *
+     * @param userId 用户Id
+     * @return 操作成功：返回用户认证信息，操作失败：返回null
+     */
+    public UserIdentificationDO getUserIdentificationByUserIdLately(int userId) {
+        UserIdentificationDO result = null;
+        try {
+            result = sqlSessionTemplate.selectOne("UserIdentification_getUserIdentificationByUserIdLately", userId);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return result;
+    }
+
+    /**
+     * 查询用户最近的认证信息
+     *
      * @param userAccount 用户账号
      * @return 操作成功：返回用户认证信息，操作失败：返回null
      */
