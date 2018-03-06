@@ -36,6 +36,7 @@ public class QuartzCommonInit {
     public void executeInit() {
         //将成交记录放进redis
         transactionRedisDealCommonService.userDealForRedis();
+        //每日凌晨更新最高与最低价更新
         transactionRedisDealCommonService.updateWeeHoursBasisOfPrice();
         //从数据库拉取 挂单记录 到redis
         ITransactionPendOrderCommonService.getPendOrder();
