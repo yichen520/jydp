@@ -145,13 +145,12 @@
         <result property="latestPrice" column="transactionPrice" />
     </resultMap>
 
-    <select id="TransactionCurrency_getNewPriceForWeb" parameterType="java.sql.Timestamp" resultMap="CurrencyMarketMap">
+    <select id="TransactionCurrency_getNewPriceForWeb" resultMap="CurrencyMarketMap">
         SELECT t.currencyId, t.transactionPrice AS latestPrice
         FROM  transaction_user_deal_tab t,
         (SELECT currencyId, max(addTime) as lastTime
         FROM transaction_user_deal_tab
         WHERE paymentType != 3
-        AND addTime >= #{openTime}
         GROUP BY currencyId) t2
         WHERE
         t.currencyId = t2.currencyId

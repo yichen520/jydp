@@ -119,7 +119,7 @@ public interface ITransactionCurrencyDao {
      * 获取所有币种最新价信息(web端)
      * @return 查询成功：返回各币种信息；查询失败：返回null
      */
-    Map<Integer,TransactionUserDealDTO> getNewPriceForWeb(Timestamp openTime);
+    Map<Integer,TransactionUserDealDTO> getNewPriceForWeb();
 
     /**
      * 获取所有币种买一价信息(web端)
@@ -135,12 +135,15 @@ public interface ITransactionCurrencyDao {
 
     /**
      * 获取所有币种今日成交量信息(web端)
+     * @param openTime 今日开盘时间
      * @return 查询成功：返回各币种信息；查询失败：返回null
      */
     Map<Integer,TransactionUserDealDTO> getTransactionVolumeForWeb(Timestamp openTime);
 
     /**
      * 获取所有币种昨日最后一笔交易价格信息(web端)
+     * @param openTime 今日开盘时间
+     * @param startTime 昨日开盘时间
      * @return 查询成功：返回各币种信息；查询失败：返回null
      */
     Map<Integer,TransactionUserDealDTO> getYesterdayLastPriceForWeb(Timestamp openTime, Timestamp startTime);
