@@ -10,6 +10,7 @@ import com.jydp.entity.DO.user.UserBalanceDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DTO.TransactionPendOrderDTO;
+import com.jydp.entity.VO.TransactionPendOrderVO;
 import com.jydp.service.*;
 import config.SystemAccountAmountConfig;
 import config.SystemCommonConfig;
@@ -484,8 +485,18 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
      * @param pageSize 每页条数
      * @return 操作成功：返回挂单记录列表，操作失败：返回null
      */
-    public List<TransactionPendOrderDO> listPendOrderForWeb(int userId, int currencyId,int pageNumber, int pageSize){
-        return transactionPendOrderDao.listPendOrderForWeb(userId, currencyId, pageNumber, pageSize);
+    public List<TransactionPendOrderVO> listPendOrderForWeb(int userId, int currencyId, int pageNumber, int pageSize){
+
+        List<TransactionPendOrderVO> transactionPendOrderList = transactionPendOrderDao.listPendOrderForWeb(userId, currencyId, pageNumber, pageSize);
+        if(transactionPendOrderList == null){
+            return transactionPendOrderList;
+        }
+        for (TransactionPendOrderVO result : transactionPendOrderList) {
+            double countPrice = BigDecimalUtil.mul(result.getPendingPrice(), result.getPendingNumber());
+            result.setCountPrice(countPrice);
+        }
+
+        return transactionPendOrderList;
     };
 
 }
