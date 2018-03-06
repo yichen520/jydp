@@ -317,9 +317,10 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      */
     @Transactional
     public boolean updatePaymentType(int currencyId, int paymentType){
+        //修改交易状态
         boolean excBoo = transactionCurrencyDao.updatePaymentType(currencyId, paymentType);
 
-        //停牌同时修改上线状态
+        //修改上线状态
         if (excBoo && paymentType == 2) {
             excBoo = transactionCurrencyDao.updateUpStatus(currencyId, 3);
         }
@@ -343,9 +344,10 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      */
     @Transactional
     public boolean updateUpStatus(int currencyId, int upStatus){
-
+        //修改上线状态
         boolean upBoo = transactionCurrencyDao.updateUpStatus(currencyId, upStatus);
 
+        //修改交易状态
         if (upStatus == 2) {
             upBoo = transactionCurrencyDao.updatePaymentType(currencyId, 1);
         }
