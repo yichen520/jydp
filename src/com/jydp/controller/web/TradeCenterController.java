@@ -237,7 +237,7 @@ public class TradeCenterController {
             sellOne = (double)sellOneOb;
         }
 
-        if(sellOne > buyPrice){
+        if(sellOne > buyPrice || sellOne == 0){
             resultJson.setCode(1);
             resultJson.setMessage("没有可匹配的挂单");
             return resultJson;
