@@ -476,7 +476,7 @@ public class UserServiceImpl implements IUserService {
             //根据币种id查询币种当前交易价格
             double nowPrice = 0;
             if(redisService.getValue(RedisKeyConfig.NOW_PRICE + currencyId) != null){
-                nowPrice = (double) redisService.getValue(RedisKeyConfig.NOW_PRICE + currencyId);
+                nowPrice = Double.parseDouble(redisService.getValue(RedisKeyConfig.NOW_PRICE + currencyId).toString());
             }
 
             for(UserCurrencyNumDO userCurrencyNum : userCurrencyNumList){

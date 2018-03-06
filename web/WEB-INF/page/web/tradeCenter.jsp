@@ -93,7 +93,7 @@
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">合计：</label>
-                    <span class="all" id="buyTotal">0$</span>
+                    <span class="all" id="buyTotal">$0</span>
                 </p>
                 <p class="serviceInput">
                     <label class="tradeName">手续费：</label>
@@ -128,7 +128,7 @@
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">合计：</label>
-                    <span class="all" id="sellTotal">0$</span>
+                    <span class="all" id="sellTotal">$0</span>
                 </p>
                 <p class="serviceInput">
                     <label class="tradeName">手续费：</label>
@@ -471,7 +471,7 @@
                 try{m+=buyNum.split(".")[1].length}catch(e){}
                 var number = parseFloat((Number(buyPrice.replace(".",""))*Number(buyNum.replace(".",""))/Math.pow(10,m)).toFixed(8));
                 number = mulMaxNumber(number);
-                $("#buyTotal").html(number + "$");
+                $("#buyTotal").html("$" + number);
             }
 
             var userBalance = parseFloat($("#userBalance").val());
@@ -480,7 +480,7 @@
             $("#buyMax").html(tota);
         } else {
             $("#buyMax").html("0" );
-            $("#buyTotal").html("0$");
+            $("#buyTotal").html("$0");
         }
 
 
@@ -498,7 +498,7 @@
                 try{s+=sellNum.split(".")[1].length}catch(e){}
                 var number = parseFloat((Number(sellPrice.replace(".",""))*Number(sellNum.replace(".",""))/Math.pow(10,s)).toFixed(8));
                 number = mulMaxNumber(number);
-                $("#sellTotal").html(number + "$");
+                $("#sellTotal").html("$" + number);
             }
 
             var currencyNumber = $("#currencyNumber").val();
@@ -510,8 +510,8 @@
                 $("#sellMax").html(number);
             }
         } else {
-            $("#sellMax").html("当前最大可卖：0");
-            $("#sellTotal").html("0$");
+            $("#sellMax").html("0");
+            $("#sellTotal").html("$0");
         }
 
     }
@@ -579,12 +579,19 @@
     {
         document.getElementById("countNum").innerHTML = start;
         if (start <= 0) {
+            var user = '${userSession}';
+            if (user != null && user != "") {
+                //登录后进行的操作
+                //刷新委托记录
+                entrust();
+                //获取交易相关价格（用户资金信息）
+                userMessage();
+            }
             //刷新成交记录
             reDeal();
-            //刷新委托记录
-            entrust();
             //获取交易相关价格（基准信息、用户资金信息）
             gainDealPrice();
+
             //刷新挂单记录
             rePend();
         }
@@ -616,7 +623,7 @@
         }
 
         $.ajax({
-            url: '<%=path%>' + "/userWeb/tradeCenter/pend.htm", //方法路径URL
+            url: '<%=path%>' + "/userWeb/tradeCenter/pend", //方法路径URL
             data:{
                 currencyId : currencyId
             },//参数
@@ -668,10 +675,9 @@
                                         '</li>';
                     }
                     $("#orderBuyReId").html(newChildBuy);
-                    pendBoo = false;
+
                 }
-
-
+                pendBoo = false;
             }, error: function () {
                 pendBoo = false;
                 openTips("获取失败,请重新刷新页面后重试");
@@ -698,7 +704,7 @@
         }
 
         $.ajax({
-            url: '<%=path%>' + "/userWeb/tradeCenter/deal.htm", //方法路径URL
+            url: '<%=path%>' + "/userWeb/tradeCenter/deal", //方法路径URL
             data:{
                 currencyId : currencyId
             },//参数
@@ -729,8 +735,8 @@
                             paymentType = "卖出";
                             type = "fall";
                         }
-                        var transactionPrice = Math.floor(deal.transactionPrice * 10000) / 10000;
-                        var currencyNumber = Math.floor(deal.currencyNumber * 100) / 100;
+                        var transactionPrice = Math.floor(deal.transactionPrice * 100) / 100;
+                        var currencyNumber = Math.floor(deal.currencyNumber * 10000) / 10000;
                         var currencyTotalPrice = Math.floor(deal.currencyTotalPrice * 1000000) / 1000000;
 
                         newChild += "<tr class='tableInfo'>" +
@@ -738,15 +744,13 @@
                                         "<td class='type " + type + "'>" + paymentType + "</td>" +
                                         "<td class='dealAmount'>" + "$"+ transactionPrice + "</td>" +
                                         "<td class='dealAmount'>" + currencyNumber +"</td>" +
-                                        "<td class='dealAmount rise'>" + currencyTotalPrice + "</td>" +
+                                        "<td class='dealAmount rise'>$" + currencyTotalPrice + "</td>" +
                                     "</tr>";
 
                     }
                     document.getElementById("dealOrder").innerHTML = newChild;
-                    dealBoo = false;
                 }
-
-
+                dealBoo = false;
             }, error: function () {
                 dealBoo = false;
                 openTips("获取失败,请重新刷新页面后重试");
@@ -888,12 +892,9 @@
                             "<td class='operate'><input type='text' value='撤&nbsp;销' class='revoke' onclick="+ goCancle + "></td>" +
                             "</tr>";
                     }
-
                     document.getElementById("entrustRecord").innerHTML = newChild;
-                    entrustBoo = false;
                 }
-
-
+                entrustBoo = false;
             }, error: function () {
                 entrustBoo = false;
                 openTips("获取失败,请重新刷新页面后重试");
@@ -901,7 +902,7 @@
         });
     }
 
-    /**获取交易相关价格（基准信息、用户资金信息）*/
+    /**获取交易相关价格（基准信息）*/
     var gainDealPriceBoo = false;
     function gainDealPrice(){
         if (gainDealPriceBoo) {
@@ -913,7 +914,7 @@
         var currencyId = $("#cucyId").val();
 
         $.ajax({
-            url: '<%=path %>' + "/userWeb/tradeCenter/gainDealPrice.htm",
+            url: '<%=path %>' + "/userWeb/tradeCenter/gainDealPrice",
             data: {
                 currencyId : currencyId
             },//参数
@@ -921,7 +922,7 @@
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (resultData) {
-                gainDealPriceBoo = false
+                gainDealPriceBoo = false;
                 var code = resultData.code;
                 var message = resultData.message;
                 if (code != 1 && message != "") {
@@ -929,10 +930,65 @@
                     return;
                 }
 
+                var data = resultData.data;
+                var standardParameter = data.standardParameter;
+                if(standardParameter != null){
+                    $("#nowPrice").html(standardParameter.nowPrice);
+                    $("#nowPriceShow").html("最新成交价：" + standardParameter.nowPrice + "$");
+                    if(standardParameter.todayRange >= 0){
+                        $("#todayRangeRise").html("+" + standardParameter.todayRange + "%");
+                        $("#todayRangeRise").removeClass("number fall");
+                        $("#todayRangeRise").addClass("number rise");
+                    } else{
+                        $("#todayRangeRise").html(standardParameter.todayRange  + "%");
+                        $("#todayRangeRise").removeClass("number rise");
+                        $("#todayRangeRise").addClass("number fall");
+                    }
+                    $("#todayMax").html(standardParameter.todayMax);
+                    $("#todayMin").html(standardParameter.todayMin);
+                    $("#buyOne").html(standardParameter.buyOne);
+                    $("#sellOne").html(standardParameter.sellOne);
+                    $("#dayTurnove").html(standardParameter.dayTurnove);
+                }
+            },
+
+            error: function () {
+                gainDealPriceBoo = false;
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+
+    }
+
+    /**获取交易相关价格（用户资金信息）*/
+    var userMessageBoo = false;
+    function userMessage(){
+        if (userMessageBoo) {
+            return;
+        } else {
+            userMessageBoo = true;
+        }
+
+        var currencyId = $("#cucyId").val();
+        $.ajax({
+            url: '<%=path %>' + "/userWeb/tradeCenter/userMessage",
+            data: {
+                currencyId : currencyId
+            },//参数
+            dataType: "json",
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (resultData) {
+                userMessageBoo = false;
+                var code = resultData.code;
+                var message = resultData.message;
+                if (code != 1 && message != "") {
+                    openTips(message);
+                    return;
+                }
 
                 var data = resultData.data;
                 var userDealCapitalMessage = data.userDealCapitalMessage;
-                var standardParameter = data.standardParameter;
                 if(userDealCapitalMessage != null){
                     $("#currencyNumberShow").html(userDealCapitalMessage.currencyNumber);
                     $("#currencyNumber").html(userDealCapitalMessage.currencyNumber);
@@ -944,34 +1000,14 @@
                     $("#userBalanceLockShow").html("$" + userDealCapitalMessage.userBalanceLock);
                     $("#currencyNumberSumShow").html("$" + userDealCapitalMessage.currencyNumberSum);
                 }
-                if(standardParameter != null){
-                    $("#nowPrice").html(standardParameter.nowPrice);
-                    $("#nowPriceShow").html(standardParameter.nowPrice);
-                    if(standardParameter.todayRange >= 0){
-                        $("#todayRangeRise").html("+" + standardParameter.todayRange + "%");
-                        $("#todayRangeRise").css("number rise");
-                    } else{
-                        $("#todayRangeRise").html(standardParameter.todayRange  + "%");
-                        $("#todayRangeRise").css("number fall");
-                    }
-                    $("#todayMax").html(standardParameter.todayMax);
-                    $("#todayMin").html(standardParameter.todayMin);
-                    $("#buyOne").html(standardParameter.buyOne);
-                    $("#sellOne").html(standardParameter.sellOne);
-                    $("#dayTurnove").html(standardParameter.dayTurnove);
-
-                }
-
             },
 
             error: function () {
-                gainDealPriceBoo = false;
+                userMessageBoo = false;
                 openTips("数据加载出错，请稍候重试");
             }
         });
-
     }
-
 
 </script>
 </body>

@@ -6,6 +6,7 @@ import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.service.ISystemValidatePhoneService;
 import com.jydp.service.IUserService;
+import config.PhoneAreaConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * 忘记密码
@@ -33,7 +35,9 @@ public class ForgetController {
 
     /** 跳转至忘记密码页面 */
     @RequestMapping(value = "/show")
-    public String show(){
+    public String show(HttpServletRequest request){
+        Map<String, String> phoneAreaMap = PhoneAreaConfig.phoneAreaMap;
+        request.setAttribute("phoneAreaMap", phoneAreaMap);
         return "page/web/forget";
     }
 
