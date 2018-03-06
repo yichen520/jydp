@@ -70,7 +70,8 @@ public class IdentificationController {
         request.setAttribute("userId", userIdStr);
         request.setAttribute("userAccount", userAccount);
 
-        UserIdentificationDO existIdentification = userIdentificationService.getUserIdentificationByUserAccountLately(userAccount);
+        int userId = Integer.parseInt(userIdStr);
+        UserIdentificationDO existIdentification = userIdentificationService.getUserIdentificationByUserIdLately(userId);
         if (existIdentification != null) {
             List<UserIdentificationImageDO> userIdentificationImageList =
                     userIdentificationImageService.listUserIdentificationImageByIdentificationId(existIdentification.getId());
