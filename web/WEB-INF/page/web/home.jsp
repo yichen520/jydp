@@ -164,7 +164,7 @@
                                     '<td class="money">' + returnFloat(transactionUserDeal.sellOnePrice) + '</td>' +
                                     '<td class="money">' + returnFloat(transactionUserDeal.volume) + '</td>' +
                                     '<td class="uplift in">' + returnFloat(transactionUserDeal.change) + '%</td>' +
-                                    '<td class="operate"><a href="#">去交易</a></td>' +
+                                    '<td class="operate"><a href="javascript:void(0)" onclick="toTradeCenter(${transactionUserDeal.currencyId})">去交易</a></td>' +
                                     '</tr>');
                             }
                         }
