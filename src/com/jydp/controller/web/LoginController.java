@@ -84,29 +84,27 @@ public class LoginController {
             return "page/web/login";
         }
 
+        //查询用户最新认证信息
+        UserIdentificationDO userIdentification = userIdentificationService.getUserIdentificationByUserAccountLately(user.getUserAccount());
+
+        //未进行认证
+        if (userIdentification == null) {
+            request.setAttribute("userId",user.getUserId());
+            request.setAttribute("userAccount",user.getUserAccount());
+            return "page/web/identification";
+        }
+        //认证未通过
+        if (userIdentification.getIdentificationStatus() != 2) {
+            List<UserIdentificationImageDO> userIdentificationImageList =
+                    userIdentificationImageService.listUserIdentificationImageByIdentificationId(userIdentification.getId());
+            request.setAttribute("userId",user.getUserId());
+            request.setAttribute("userAccount",user.getUserAccount());
+            request.setAttribute("identification", userIdentification);
+            request.setAttribute("identificationImageList", userIdentificationImageList);
+            return "page/web/identificationAfresh";
+        }
+
         if (user.getAccountStatus() != 1) {
-
-            //查询用户最新认证信息
-            UserIdentificationDO userIdentification = userIdentificationService.getUserIdentificationByUserAccountLately(user.getUserAccount());
-
-
-            //未进行认证
-            if (userIdentification == null) {
-                request.setAttribute("userId",user.getUserId());
-                request.setAttribute("userAccount",user.getUserAccount());
-                return "page/web/identification";
-            }
-            //认证未通过
-            if (userIdentification.getIdentificationStatus() != 2) {
-                List<UserIdentificationImageDO> userIdentificationImageList =
-                        userIdentificationImageService.listUserIdentificationImageByIdentificationId(userIdentification.getId());
-                request.setAttribute("userId",user.getUserId());
-                request.setAttribute("userAccount",user.getUserAccount());
-                request.setAttribute("identification", userIdentification);
-                request.setAttribute("identificationImageList", userIdentificationImageList);
-                return "page/web/identificationAfresh";
-            }
-
             request.setAttribute("code", 2);
             request.setAttribute("message", "用户被禁用");
             return "page/web/login";

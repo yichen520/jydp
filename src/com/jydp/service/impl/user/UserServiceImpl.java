@@ -476,7 +476,7 @@ public class UserServiceImpl implements IUserService {
             //根据币种id查询币种当前交易价格
             double nowPrice = 0;
             if(redisService.getValue(RedisKeyConfig.NOW_PRICE + currencyId) != null){
-                nowPrice = (double) redisService.getValue(RedisKeyConfig.NOW_PRICE + currencyId);
+                nowPrice = Double.parseDouble(redisService.getValue(RedisKeyConfig.NOW_PRICE + currencyId).toString());
             }
 
             for(UserCurrencyNumDO userCurrencyNum : userCurrencyNumList){
@@ -486,16 +486,13 @@ public class UserServiceImpl implements IUserService {
                     currencyNumberSum = BigDecimalUtil.mul(currencyNumberSum, nowPrice);
                     currencyNumberSum = NumberUtil.doubleFormat(currencyNumberSum, 6);
                     currencyNumberSum = BigDecimalUtil.add(currencyNumberSum, userDealCapitalMessage.getCurrencyNumberSum());
-                    userDealCapitalMessage.setCurrencyNumberSum(currencyNumberSum);
 
-                    userDealCapitalMessage.setCurrencyNumber(userCurrencyNum.getCurrencyNumber());
-                    userDealCapitalMessage.setCurrencyNumberLock(userCurrencyNum.getCurrencyNumberLock());
+                    userDealCapitalMessage.setCurrencyNumber(NumberUtil.doubleFormat(userCurrencyNum.getCurrencyNumber(), 4));
+                    userDealCapitalMessage.setCurrencyNumberLock(NumberUtil.doubleFormat(userCurrencyNum.getCurrencyNumberLock(), 4));
                     userDealCapitalMessage.setCurrencyNumberSum(currencyNumberSum);
                 }
             }
         }
-
-
         return userDealCapitalMessage;
     }
 }

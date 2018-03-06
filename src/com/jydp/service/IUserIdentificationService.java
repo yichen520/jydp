@@ -44,6 +44,14 @@ public interface IUserIdentificationService {
     /**
      * 查询用户最近的认证信息
      *
+     * @param userId 用户Id
+     * @return 操作成功：返回用户认证信息，操作失败：返回null
+     */
+    UserIdentificationDO getUserIdentificationByUserIdLately(int userId);
+
+    /**
+     * 查询用户最近的认证信息
+     *
      * @param userAccount 用户账号
      * @return 操作成功：返回用户认证信息，操作失败：返回null
      */

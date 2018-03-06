@@ -170,9 +170,6 @@
                         }
                     }
                 }
-            }, error: function () {
-                dealBoo = false;
-                openTips("行情信息获取失败,请重新刷新页面");
             }
         });
     }

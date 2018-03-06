@@ -30,35 +30,35 @@
         </p>
 
         <div class="coinInfo">
-            <span class="priceNow" id="nowPrice">${standardParameter.nowPrice}</span>
+            <span class="priceNow" id="nowPrice"><fmt:formatNumber type="number" value="${standardParameter.nowPrice}" maxFractionDigits="8"/></span>
 
             <p class="increase">
                 <c:if test="${standardParameter.todayRange >= 0}">
-                    <span class="number rise" id="todayRangeRise">+${standardParameter.todayRange }%</span>
+                    <span class="number rise" id="todayRangeRise">+<fmt:formatNumber type="number" value="${standardParameter.todayRange }" groupingUsed="FALSE" maxFractionDigits="8"/>%</span>
                 </c:if>
                 <c:if test="${standardParameter.todayRange < 0}">
-                    <span class="number fall" id="todayRangeRise">${standardParameter.todayRange }%</span>
+                    <span class="number fall" id="todayRangeRise"><fmt:formatNumber type="number" value="${standardParameter.todayRange }" groupingUsed="FALSE" maxFractionDigits="8"/>%</span>
                 </c:if>
                 <span class="infoName">今日涨跌</span>
             </p>
             <p class="info">
-                <span class="number rise" id="todayMax">${standardParameter.todayMax }</span>
+                <span class="number rise" id="todayMax"><fmt:formatNumber type="number" value="${standardParameter.todayMax }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
                 <span class="infoName" >今日最高价</span>
             </p>
             <p class="info">
-                <span class="number fall" id="todayMin">${standardParameter.todayMin }</span>
+                <span class="number fall" id="todayMin"><fmt:formatNumber type="number" value="${standardParameter.todayMin }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
                 <span class="infoName">今日最低价</span>
             </p>
             <p class="info">
-                <span class="number price" id="buyOne">${standardParameter.buyOne }</span>
+                <span class="number price" id="buyOne"><fmt:formatNumber type="number" value="${standardParameter.buyOne }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
                 <span class="infoName">买一价</span>
             </p>
             <p class="info">
-                <span class="number price" id="sellOne">${standardParameter.sellOne }</span>
+                <span class="number price" id="sellOne"><fmt:formatNumber type="number" value="${standardParameter.sellOne }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
                 <span class="infoName">卖一价</span>
             </p>
             <p class="info">
-                <span class="number price" id="dayTurnove">${standardParameter.dayTurnove }</span>
+                <span class="number price" id="dayTurnove"><fmt:formatNumber type="number" value="${standardParameter.dayTurnove }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
                 <span class="infoName">24小时成交量</span>
             </p>
         </div>
@@ -73,7 +73,7 @@
 
                 <p class="buyInput">
                     <label class="tradeName">可用美金：</label>
-                    <span class="buyAmount rise" id="usableUserBalance">$${userDealCapitalMessage.userBalance }</span>
+                    <span class="buyAmount rise" id="usableUserBalance">$<fmt:formatNumber type="number" value="${userDealCapitalMessage.userBalance }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">买入价格：</label>
@@ -83,7 +83,7 @@
                 <p class="buyInput">
                     <label class="tradeName">买入数量：</label>
                     <input type="text" class="entry" placeholder="请输入您要买入的数量" id="buyNum" name="buyNum"
-                           onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)" maxlength="11"/>
+                           onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 4)" maxlength="11"/>
                     <span class="max">当前最大可买：<span id="buyMax">0</span></span>
                 </p>
                 <p class="phoneInput">
@@ -108,7 +108,8 @@
 
                 <p class="buyInput">
                     <label class="tradeName">可用数量：</label>
-                    <span class="sellAmount fall" id="usableCurrencyNumber">${userDealCapitalMessage.currencyNumber }</span>
+                    <span class="sellAmount fall" id="usableCurrencyNumber">$<fmt:formatNumber type="number"
+                           value="${userDealCapitalMessage.currencyNumber }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">卖出价格：</label>
@@ -118,7 +119,7 @@
                 <p class="buyInput">
                     <label class="tradeName">卖出数量：</label>
                     <input type="text" class="entry" placeholder="请输入您要买入的该币种数量" id="sellNum" name="sellNum"
-                           onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)" maxlength="11"/>
+                           onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 4)" maxlength="11"/>
                     <span class="max">当前最大可卖：<span id="sellMax">0</span></span>
                 </p>
                 <p class="phoneInput">
@@ -144,31 +145,31 @@
         <ul class="account">
             <li class="accountList">
                 <span class="listName">可用${transactionCurrency.currencyName }</span>
-                <span class="listMoney rise" id="currencyNumberShow">${userDealCapitalMessage.currencyNumber }</span>
-                <input type="hidden" id="currencyNumber" value="${userDealCapitalMessage.currencyNumber }">
+                <span class="listMoney rise" id="currencyNumberShow"><fmt:formatNumber type="number" value="${userDealCapitalMessage.currencyNumber }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
+                <input type="hidden" id="currencyNumber" value="<fmt:formatNumber type="number" value="${userDealCapitalMessage.currencyNumber }" groupingUsed="FALSE" maxFractionDigits="8"/>">
             </li>
             <li class="accountList">
                 <span class="listName" >冻结${transactionCurrency.currencyName }</span>
-                <span class="listMoney fall" id="currencyNumberLockShow">${userDealCapitalMessage.currencyNumberLock }</span>
+                <span class="listMoney fall" id="currencyNumberLockShow"><fmt:formatNumber type="number" value="${userDealCapitalMessage.currencyNumberLock }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
             </li>
             <li class="accountList">
                 <span class="listName">可用美金</span>
-                <span class="listMoney rise" id="userBalanceShow">$${userDealCapitalMessage.userBalance }</span>
-                <input type="hidden" id="userBalance" value="${userDealCapitalMessage.userBalance }">
+                <span class="listMoney rise" id="userBalanceShow">$<fmt:formatNumber type="number" value="${userDealCapitalMessage.userBalance }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
+                <input type="hidden" id="userBalance" value="<fmt:formatNumber type="number" value="${userDealCapitalMessage.userBalance }" groupingUsed="FALSE" maxFractionDigits="8"/>">
             </li>
             <li class="accountList">
                 <span class="listName">冻结美金</span>
-                <span class="listMoney fall" id="userBalanceLockShow">$${userDealCapitalMessage.userBalanceLock }</span>
+                <span class="listMoney fall" id="userBalanceLockShow">$<fmt:formatNumber type="number" value="${userDealCapitalMessage.userBalanceLock }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
             </li>
             <li class="accountList">
                 <span class="listName">账户总资产</span>
-                <span class="listMoney fall" id="currencyNumberSumShow">$${userDealCapitalMessage.currencyNumberSum }</span>
+                <span class="listMoney fall" id="currencyNumberSumShow">$<fmt:formatNumber type="number" value="${userDealCapitalMessage.currencyNumberSum }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
             </li>
         </ul>
 
         <div class="entrust">
             <p class="entrustTop">
-                <span class="dealPrice" id="nowPriceShow">最新成交价：$${standardParameter.nowPrice}</span>
+                <span class="dealPrice" id="nowPriceShow">最新成交价：$<fmt:formatNumber type="number" value="${standardParameter.nowPrice}" groupingUsed="FALSE" maxFractionDigits="8"/></span>
                 <span class="count"><span id="countNum"></span>s后刷新</span>
             </p>
 
@@ -583,12 +584,19 @@
     {
         document.getElementById("countNum").innerHTML = start;
         if (start <= 0) {
+            var user = '${userSession}';
+            if (user != null && user != "") {
+                //登录后进行的操作
+                //刷新委托记录
+                entrust();
+                //获取交易相关价格（用户资金信息）
+                userMessage();
+            }
             //刷新成交记录
             reDeal();
-            //刷新委托记录
-            entrust();
             //获取交易相关价格（基准信息、用户资金信息）
             gainDealPrice();
+
             //刷新挂单记录
             rePend();
         }
@@ -672,10 +680,9 @@
                                         '</li>';
                     }
                     $("#orderBuyReId").html(newChildBuy);
-                    pendBoo = false;
+
                 }
-
-
+                pendBoo = false;
             }, error: function () {
                 pendBoo = false;
                 openTips("获取失败,请重新刷新页面后重试");
@@ -747,10 +754,8 @@
 
                     }
                     document.getElementById("dealOrder").innerHTML = newChild;
-                    dealBoo = false;
                 }
-
-
+                dealBoo = false;
             }, error: function () {
                 dealBoo = false;
                 openTips("获取失败,请重新刷新页面后重试");
@@ -878,9 +883,9 @@
                             paymentType = "卖出";
                             type = "fall";
                         }
-                        var pendingPrice = Math.floor(deal.pendingPrice * 10000) / 10000;
-                        var pendingNumber = Math.floor(deal.pendingNumber * 100) / 100;
-                        var currencyTotalPrice = Math.floor(deal.countPrice * 1000000) / 1000000;
+                        var pendingPrice = deal.pendingPrice;
+                        var pendingNumber = deal.pendingNumber ;
+                        var currencyTotalPrice = deal.countPrice;
                         var pendingOrderNo = deal.pendingOrderNo;
                         var goCancle = "goCancle('"+ pendingOrderNo + "')";
                         newChild += "<tr class='tableInfo'>" +
@@ -888,16 +893,13 @@
                             "<td class='type " + type + "'>" + paymentType + "</td>" +
                             "<td class='amount'>" + "$" + pendingPrice + "</td>" +
                             "<td class='amount'>" + pendingNumber + "</td>" +
-                            "<td class='amount rise'>" + currencyTotalPrice+ "</td>" +
+                            "<td class='amount rise'>" + "$" + currencyTotalPrice+ "</td>" +
                             "<td class='operate'><input type='text' value='撤&nbsp;销' class='revoke' onclick="+ goCancle + "></td>" +
                             "</tr>";
                     }
-
                     document.getElementById("entrustRecord").innerHTML = newChild;
-                    entrustBoo = false;
                 }
-
-
+                entrustBoo = false;
             }, error: function () {
                 entrustBoo = false;
                 openTips("获取失败,请重新刷新页面后重试");
@@ -905,7 +907,7 @@
         });
     }
 
-    /**获取交易相关价格（基准信息、用户资金信息）*/
+    /**获取交易相关价格（基准信息）*/
     var gainDealPriceBoo = false;
     function gainDealPrice(){
         if (gainDealPriceBoo) {
@@ -917,7 +919,7 @@
         var currencyId = $("#cucyId").val();
 
         $.ajax({
-            url: '<%=path %>' + "/userWeb/tradeCenter/gainDealPrice.htm",
+            url: '<%=path %>' + "/userWeb/tradeCenter/gainDealPrice",
             data: {
                 currencyId : currencyId
             },//参数
@@ -925,7 +927,7 @@
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (resultData) {
-                gainDealPriceBoo = false
+                gainDealPriceBoo = false;
                 var code = resultData.code;
                 var message = resultData.message;
                 if (code != 1 && message != "") {
@@ -933,24 +935,11 @@
                     return;
                 }
 
-
                 var data = resultData.data;
-                var userDealCapitalMessage = data.userDealCapitalMessage;
                 var standardParameter = data.standardParameter;
-                if(userDealCapitalMessage != null){
-                    $("#currencyNumberShow").html(userDealCapitalMessage.currencyNumber);
-                    $("#currencyNumber").html(userDealCapitalMessage.currencyNumber);
-                    $("#usableCurrencyNumber").html(userDealCapitalMessage.currencyNumber);
-                    $("#currencyNumberLockShow").html(userDealCapitalMessage.currencyNumberLock);
-                    $("#userBalanceShow").html("$" + userDealCapitalMessage.userBalance);
-                    $("#userBalance").html("$" + userDealCapitalMessage.userBalance);
-                    $("#usableUserBalance").html("$" + userDealCapitalMessage.userBalance);
-                    $("#userBalanceLockShow").html("$" + userDealCapitalMessage.userBalanceLock);
-                    $("#currencyNumberSumShow").html("$" + userDealCapitalMessage.currencyNumberSum);
-                }
                 if(standardParameter != null){
                     $("#nowPrice").html(standardParameter.nowPrice);
-                    $("#nowPriceShow").html("最新成交价：" + standardParameter.nowPrice);
+                    $("#nowPriceShow").html("最新成交价：$" + standardParameter.nowPrice);
                     if(standardParameter.todayRange >= 0){
                         $("#todayRangeRise").html("+" + standardParameter.todayRange + "%");
                         $("#todayRangeRise").removeClass("number fall");
@@ -965,9 +954,7 @@
                     $("#buyOne").html(standardParameter.buyOne);
                     $("#sellOne").html(standardParameter.sellOne);
                     $("#dayTurnove").html(standardParameter.dayTurnove);
-
                 }
-
             },
 
             error: function () {
@@ -978,6 +965,54 @@
 
     }
 
+    /**获取交易相关价格（用户资金信息）*/
+    var userMessageBoo = false;
+    function userMessage(){
+        if (userMessageBoo) {
+            return;
+        } else {
+            userMessageBoo = true;
+        }
+
+        var currencyId = $("#cucyId").val();
+        $.ajax({
+            url: '<%=path %>' + "/userWeb/tradeCenter/userMessage",
+            data: {
+                currencyId : currencyId
+            },//参数
+            dataType: "json",
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (resultData) {
+                userMessageBoo = false;
+                var code = resultData.code;
+                var message = resultData.message;
+                if (code != 1 && message != "") {
+                    openTips(message);
+                    return;
+                }
+
+                var data = resultData.data;
+                var userDealCapitalMessage = data.userDealCapitalMessage;
+                if(userDealCapitalMessage != null){
+                    $("#currencyNumberShow").html(userDealCapitalMessage.currencyNumber);
+                    $("#currencyNumber").html(userDealCapitalMessage.currencyNumber);
+                    $("#usableCurrencyNumber").html(userDealCapitalMessage.currencyNumber);
+                    $("#currencyNumberLockShow").html(userDealCapitalMessage.currencyNumberLock);
+                    $("#userBalanceShow").html("$" + userDealCapitalMessage.userBalance);
+                    $("#userBalance").html("$" + userDealCapitalMessage.userBalance);
+                    $("#usableUserBalance").html("$" + userDealCapitalMessage.userBalance);
+                    $("#userBalanceLockShow").html("$" + userDealCapitalMessage.userBalanceLock);
+                    $("#currencyNumberSumShow").html("$" + userDealCapitalMessage.currencyNumberSum);
+                }
+            },
+
+            error: function () {
+                userMessageBoo = false;
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+    }
 
 </script>
 </body>
