@@ -874,9 +874,9 @@
                             paymentType = "卖出";
                             type = "fall";
                         }
-                        var pendingPrice = Math.floor(deal.pendingPrice * 10000) / 10000;
-                        var pendingNumber = Math.floor(deal.pendingNumber * 100) / 100;
-                        var currencyTotalPrice = Math.floor(deal.countPrice * 1000000) / 1000000;
+                        var pendingPrice = deal.pendingPrice;
+                        var pendingNumber = deal.pendingNumber ;
+                        var currencyTotalPrice = deal.countPrice;
                         var pendingOrderNo = deal.pendingOrderNo;
                         var goCancle = "goCancle('"+ pendingOrderNo + "')";
                         newChild += "<tr class='tableInfo'>" +
@@ -884,7 +884,7 @@
                             "<td class='type " + type + "'>" + paymentType + "</td>" +
                             "<td class='amount'>" + "$" + pendingPrice + "</td>" +
                             "<td class='amount'>" + pendingNumber + "</td>" +
-                            "<td class='amount rise'>" + currencyTotalPrice+ "</td>" +
+                            "<td class='amount rise'>" + "$" + currencyTotalPrice+ "</td>" +
                             "<td class='operate'><input type='text' value='撤&nbsp;销' class='revoke' onclick="+ goCancle + "></td>" +
                             "</tr>";
                     }
