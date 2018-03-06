@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -120,6 +121,12 @@ public class IdentificationController {
             responseJson.setMessage("参数为空！");
             return responseJson;
         }
+        if (userName.length() > 16 || userCertNo.length() > 18) {
+            responseJson.setCode(3);
+            responseJson.setMessage("参数错误！");
+            return responseJson;
+        }
+
 
         int userCertType = Integer.parseInt(userCertTypeStr);
         if (userCertType == 1) {
@@ -204,21 +211,25 @@ public class IdentificationController {
         //上传图片到图片服务器
         List<String> imageUrlList = new ArrayList<>();
         List<FileDataEntity> imageEntityList = new ArrayList<>();
+        InputStream frontInputStream = null;
+        InputStream backInputStream = null;
         try {
             FileDataEntity frontImgFileData = null;  //正面照
             if (StringUtil.isNotNull(frontImgSrc)) {
-                frontImgFileData = new FileDataEntity(frontImg.getOriginalFilename(), new FileInputStream(frontImgSrc));
+                frontInputStream = new FileInputStream(frontImgSrc);
             } else {
-                frontImgFileData = new FileDataEntity(frontImg.getOriginalFilename(), frontImg.getInputStream());
+                frontInputStream = frontImg.getInputStream();
             }
+            frontImgFileData = new FileDataEntity(frontImg.getOriginalFilename(), frontInputStream);
             imageEntityList.add(frontImgFileData);
 
             FileDataEntity backImgFileData = null;  //背面照
             if (StringUtil.isNotNull(backImgSrc)) {
-                backImgFileData = new FileDataEntity(frontImg.getOriginalFilename(), new FileInputStream(backImgSrc));
+                backInputStream = new FileInputStream(backImgSrc);
             } else {
-                backImgFileData = new FileDataEntity(backImg.getOriginalFilename(), backImg.getInputStream());
+                backInputStream = backImg.getInputStream();
             }
+            backImgFileData = new FileDataEntity(frontImg.getOriginalFilename(), backInputStream);
             imageEntityList.add(backImgFileData);
         } catch (IOException e) {
             LogUtil.printErrorLog(e);
@@ -228,6 +239,12 @@ public class IdentificationController {
             imageUrlList = FileWriteRemoteUtil.uploadFileList(imageEntityList, FileUrlConfig.file_remote_identificationImage_url);
         }
 
+        try {
+            frontInputStream.close();
+            backInputStream.close();
+        } catch (IOException e) {
+            LogUtil.printErrorLog(e);
+        }
         //删除本地缓存文件
         if (StringUtil.isNotNull(frontImgSrc)) {
             FileWriteLocalUtil.deleteFileRealPath(frontImgSrc);
@@ -270,7 +287,7 @@ public class IdentificationController {
      */
     private String reduceImage(MultipartFile img, String path) {
         StringBuffer url = null;
-        long size = img.getSize();
+        long size = img.getSize()/1024;
 
         try {
             url = new StringBuffer();
@@ -279,15 +296,15 @@ public class IdentificationController {
             url.append(".jpg");
 
             //400K-1M 0.4
-            if (400*1024 <= size && size <= 1024*1024) {
+            if (400 <= size && size <= 1024) {
                 Thumbnails.of(img.getInputStream())
                         .scale(1)
-                        .outputQuality(0.5)
+                        .outputQuality(0.4)
                         .outputFormat("jpg")
                         .toFile(url.toString());
             }
             //1M-5M  0.2
-            if (1024*1024 < size && size <= 5*1024*1024) {
+            if (1024 < size && size <= 5*1024) {
                 Thumbnails.of(img.getInputStream())
                         .scale(1)
                         .outputQuality(0.2)
@@ -295,10 +312,10 @@ public class IdentificationController {
                         .toFile(url.toString());
             }
             //5M-10M  0.1
-            if (5*1024*1024 < size && size <= 10*1024*1024) {
+            if (5*1024 < size && size <= 10*1024) {
                 Thumbnails.of(img.getInputStream())
                         .scale(1)
-                        .outputQuality(0.1)
+                        .outputQuality(0.05)
                         .outputFormat("jpg")
                         .toFile(url.toString());
             }
@@ -327,11 +344,11 @@ public class IdentificationController {
             responseJson.setMessage("请上传jpg、jpeg、png格式的图片");
             return responseJson;
         }
-        /*//根据图片内容、长宽判断是否为图片文件,ps:影响性能
+        /*//根据图片内容、长宽判断是否为图片文件
         InputStream inputStream = null;
         try {
             inputStream = uploadImg.getInputStream();
-            Image img = ImageIO.read(inputStream);
+            BufferedImage img = ImageIO.read(inputStream);
             if(img == null || img.getWidth(null) <= 0 || img.getHeight(null) <= 0){
                 responseJson.setCode(3);
                 responseJson.setMessage("请上传图片文件");
@@ -361,11 +378,11 @@ public class IdentificationController {
     private JsonObjectBO validateNameAndCertNo(String userName, String userCertNo) {
         JsonObjectBO responseJson = new JsonObjectBO();
         //姓名校验
-        Pattern patternName = Pattern.compile("[\\u4e00-\\u9fa5]{2,8}");
+        Pattern patternName = Pattern.compile("[\\u4e00-\\u9fa5]{2,16}");
         Matcher matcherName = patternName.matcher(userName);
         if (!matcherName.matches()) {
             responseJson.setCode(3);
-            responseJson.setMessage("姓名只允许中文！");
+            responseJson.setMessage("姓名只允许中文，长度为2到16");
             return responseJson;
         }
 
