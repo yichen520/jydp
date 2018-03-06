@@ -14,23 +14,18 @@ import java.util.List;
 public interface ITransactionPendOrderService {
     /**
      * 新增挂单记录
-     * @param pendingOrderNo 记录号,业务类型（2）+日期（6）+随机位（10）
      * @param userId 用户Id
-     * @param userAccount 用户账号
      * @param paymentType 收支类型,1：买入，2：卖出
      * @param currencyId 币种Id
      * @param currencyName 货币名称
+     * @param buyFee 买入手续费(卖出时填0)
      * @param pendingPrice 挂单单价
      * @param pendingNumber 挂单数量
-     * @param dealNumber 成交数量
-     * @param pendingStatus 挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销
-     * @param remark 备注
-     * @param addTime 添加时间
+     * @param tradePriceSum 交易总价，包括手续费(卖出时填0)
      * @return 操作成功：返回true，操作失败：返回false
      */
-    boolean insertPendOrder(String pendingOrderNo, int userId, String userAccount, int paymentType, int currencyId,
-                                   String currencyName, double pendingPrice, double pendingNumber,
-                                   double dealNumber, int pendingStatus, String remark, Timestamp addTime);
+    TransactionPendOrderDO insertPendOrder(int userId, int paymentType, int currencyId, String currencyName, double buyFee,
+                            double pendingPrice, double pendingNumber, double tradePriceSum);
 
     /**
      * 修改挂单记录

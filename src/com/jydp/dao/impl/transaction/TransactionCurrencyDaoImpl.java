@@ -110,8 +110,8 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
      * @return 查询成功：返回币种信息列表；查询失败：返回null
      */
     @Override
-    public List<TransactionCurrencyDO> getTransactionCurrencyListForWeb() {
-        List<TransactionCurrencyDO> TransactionCurrencyVOList = null;
+    public List<TransactionCurrencyVO> getTransactionCurrencyListForWeb() {
+        List<TransactionCurrencyVO> TransactionCurrencyVOList = null;
 
         try {
             TransactionCurrencyVOList = sqlSessionTemplate.selectList("TransactionCurrency_getTransactionCurrencyListForWeb");
@@ -158,7 +158,7 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
         map.put("currencyName", currencyName);
         map.put("paymentType", paymentType);
         map.put("upStatus", upStatus);
-        map.put("backAccount", backAccount);
+        map.put("backerAccount", backAccount);
         map.put("startAddTime", startAddTime);
         map.put("endAddTime", endAddTime);
         map.put("startUpTime", startUpTime);
@@ -195,7 +195,7 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
         map.put("currencyName", currencyName);
         map.put("paymentType", paymentType);
         map.put("upStatus", upStatus);
-        map.put("backAccount", backAccount);
+        map.put("backerAccount", backAccount);
         map.put("startAddTime", startAddTime);
         map.put("endAddTime", endAddTime);
         map.put("startUpTime", startUpTime);
@@ -206,6 +206,74 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
         try {
             resultList = sqlSessionTemplate.selectList("TransactionCurrency_listTransactionCurrencyForBack", map);
         } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return resultList;
+    }
+
+    /**
+     * 停，复牌操作
+     * @param currencyId  币种Id
+     * @param paymentType  交易状态,1:正常，2:停牌
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    public boolean updatePaymentType(int currencyId, int paymentType){
+        int result = 0;
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("currencyId", currencyId);
+        map.put("paymentType", paymentType);
+
+        try {
+            result = sqlSessionTemplate.update("TransactionCurrency_updatePaymentType", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 上，下线币种操作
+     * @param currencyId  币种Id
+     * @param upStatus  上线状态,1:待上线,2:上线中,3:停牌,4:已下线
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    public boolean updateUpStatus(int currencyId, int upStatus){
+        int result = 0;
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("currencyId", currencyId);
+        map.put("upStatus", upStatus);
+
+        try {
+            result = sqlSessionTemplate.update("TransactionCurrency_updateUpStatus", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 查询全部币种信息
+     * @return  操作成功：返回币种信息集合，操作失败：返回null
+     */
+    public List<TransactionCurrencyDO> listTransactionCurrencyAll(){
+        List<TransactionCurrencyDO> resultList= null;
+
+        try {
+            resultList = sqlSessionTemplate.selectList("TransactionCurrency_listTransactionCurrencyAll");
+        } catch (Exception e){
             LogUtil.printErrorLog(e);
         }
 

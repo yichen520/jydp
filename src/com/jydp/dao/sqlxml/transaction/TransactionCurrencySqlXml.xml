@@ -19,18 +19,17 @@
             paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         WHERE currencyId = #{currencyId}
-        AND upStatus = 2
 	</select>
 
 	<update id="TransactionCurrency_updateTransactionCurrency" parameterType="TransactionCurrencyDO">
         UPDATE transaction_currency_tab
-        SET currencyShortName = #{currencyShortName}, currencyName = #{currencyName},
+        SET
+            currencyShortName = #{currencyShortName}, currencyName = #{currencyName},
             currencyImg = #{currencyImg}, buyFee = #{buyFee}, sellFee = #{sellFee},
             upRange = #{upRange}, downRange = #{downRange}, paymentType = #{paymentType},
             upStatus = #{upStatus}, backerAccount = #{backerAccount}, ipAddress = #{ipAddress},
             upTime = #{upTime},  addTime = #{addTime}
         WHERE currencyId = #{currencyId}
-              AND upStatus = 2
     </update>
 
     <delete id="TransactionCurrency_deleteTransactionCurrencyByCurrencyId" parameterType="int">
@@ -50,7 +49,6 @@
             paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         WHERE currencyName = #{currencyName}
-              AND upStatus = 2
     </select>
 
     <select id="TransactionCurrency_countTransactionCurrencyForBack" parameterType="java.util.Map" resultType="int">
@@ -118,6 +116,24 @@
         LIMIT #{startNumber}, #{pageSize}
     </select>
 
+    <update id="TransactionCurrency_updatePaymentType" parameterType="java.util.Map">
+        UPDATE transaction_currency_tab
+        SET paymentType = #{paymentType}
+        WHERE currencyId = #{currencyId}
+    </update>
+
+    <update id="TransactionCurrency_updateUpStatus" parameterType="java.util.Map">
+        UPDATE transaction_currency_tab
+        SET upStatus = #{upStatus}
+        WHERE currencyId = #{currencyId}
+    </update>
+
+    <select id="TransactionCurrency_listTransactionCurrencyAll" resultType="TransactionCurrencyDO">
+        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, upRange, downRange,
+            paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
+        FROM transaction_currency_tab
+    </select>
+
     <select id="TransactionCurrency_getTransactionCurrencyMarketForWeb" resultType="TransactionUserDealDTO">
         SELECT currencyId, currencyShortName, currencyName, currencyImg
         FROM transaction_currency_tab
@@ -132,13 +148,13 @@
     <select id="TransactionCurrency_getNewPriceForWeb" parameterType="java.sql.Timestamp" resultMap="CurrencyMarketMap">
         SELECT t.currencyId, t.transactionPrice AS latestPrice
         FROM  transaction_user_deal_tab t,
-             (SELECT currencyId, max(addTime) as lastTime
-              FROM transaction_user_deal_tab
-              WHERE paymentType != 3
-                 AND addTime >= #{openTime}
-              GROUP BY currencyId) t2
+        (SELECT currencyId, max(addTime) as lastTime
+        FROM transaction_user_deal_tab
+        WHERE paymentType != 3
+        AND addTime >= #{openTime}
+        GROUP BY currencyId) t2
         WHERE
-            t.currencyId = t2.currencyId
+        t.currencyId = t2.currencyId
         AND t.addTime = t2.lastTime
         GROUP BY currencyId
     </select>
@@ -147,7 +163,7 @@
         SELECT currencyId, MAX(pendingPrice) AS buyOnePrice
         FROM transaction_pend_order_tab
         WHERE paymentType = 1
-              AND (pendingStatus = 1 OR pendingStatus = 2)
+        AND (pendingStatus = 1 OR pendingStatus = 2)
         GROUP BY currencyId
     </select>
 
@@ -155,7 +171,7 @@
         SELECT currencyId, MIN( pendingPrice ) AS sellOnePrice
         FROM transaction_pend_order_tab
         WHERE paymentType = 2
-              AND ( pendingStatus = 1 OR pendingStatus = 2 )
+        AND ( pendingStatus = 1 OR pendingStatus = 2 )
         GROUP BY currencyId
     </select>
 

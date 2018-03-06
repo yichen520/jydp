@@ -104,7 +104,7 @@
                             </c:if>
 
                             <c:if test="${backer_rolePower['141103'] == 141103}">
-                                <a href="<%=path %>/backerWeb/backerUserAccount/showDetail.htm?userId=${user.userId }" target="_blank" class="details">账户明细</a>
+                                <a href="#" onclick="showDetail('${user.userId}')" class="details">账户明细</a>
                             </c:if>
                             <c:if test="${backer_rolePower['141106'] == 141106}">
                                 <input type="text" class="addMoney" value="增加账户余额" onfocus="this.blur()" onclick="addAmount('${user.userId }', '${user.userAccount }')"/>
@@ -122,6 +122,9 @@
     </div>
 </div>
 
+<form id="detailForm" action="<%=path %>/backerWeb/backerUserAccount/showDetail.htm" target="_blank" method="post">
+    <input type="hidden" id="detailUserId" name="userId">
+</form>
 
 <div id="footer"></div>
 
@@ -227,6 +230,11 @@
     function queryForm() {
         $("#queryPageNumber").val("0");
         $("#queryForm").submit();
+    }
+
+    function showDetail(userId) {
+        $("#detailUserId").val(userId);
+        $("#detailForm").submit();
     }
 
     //启用

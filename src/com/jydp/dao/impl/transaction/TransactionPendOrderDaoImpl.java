@@ -30,7 +30,7 @@ public class TransactionPendOrderDaoImpl implements ITransactionPendOrderDao{
      * @param transactionPendOrderDO 待新增的挂单记录
      * @return 操作成功：返回true，操作失败：返回false
      */
-    public boolean insertPendOrder(TransactionPendOrderDO transactionPendOrderDO){
+    public TransactionPendOrderDO insertPendOrder(TransactionPendOrderDO transactionPendOrderDO){
         int result = 0;
 
         try {
@@ -40,9 +40,9 @@ public class TransactionPendOrderDaoImpl implements ITransactionPendOrderDao{
         }
 
         if (result > 0) {
-            return true;
+            return transactionPendOrderDO;
         } else {
-            return false;
+            return null;
         }
     }
 

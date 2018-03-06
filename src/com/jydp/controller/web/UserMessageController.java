@@ -3,6 +3,7 @@ package com.jydp.controller.web;
 import com.iqmkj.utils.BigDecimalUtil;
 import com.iqmkj.utils.IpAddressUtil;
 import com.iqmkj.utils.MD5Util;
+import com.iqmkj.utils.NumberUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
@@ -89,12 +90,10 @@ public class UserMessageController {
         }
 
         //资产精度截取保留两位小数
-        BigDecimal userBalance = new BigDecimal(userMessage.getUserBalance());
-        double userBalanceNum = userBalance.setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
+        double userBalanceNum = NumberUtil.doubleFormat(userMessage.getUserBalance(), 2);
         userMessage.setUserBalance(userBalanceNum);
 
-        BigDecimal userBalanceLock = new BigDecimal(userMessage.getUserBalanceLock());
-        double userBalanceLockNum = userBalanceLock.setScale(2, BigDecimal.ROUND_DOWN).doubleValue();
+        double userBalanceLockNum = NumberUtil.doubleFormat(userMessage.getUserBalanceLock(), 2);
         userMessage.setUserBalanceLock(userBalanceLockNum);
 
         //总资产计算
@@ -119,10 +118,8 @@ public class UserMessageController {
             userCurrencyNum.setCurrencyNumberLock(userCurrency.getCurrencyNumberLock());
 
             //币数量精度截取保留四位小数
-            BigDecimal currencyNumber = new BigDecimal(userCurrency.getCurrencyNumber());
-            double currencyNum = currencyNumber.setScale(4, BigDecimal.ROUND_DOWN).doubleValue();
-            BigDecimal currencyNumberLock = new BigDecimal(userCurrency.getCurrencyNumberLock());
-            double currencyLock = currencyNumberLock.setScale(4, BigDecimal.ROUND_DOWN).doubleValue();
+            double currencyNum = NumberUtil.doubleFormat(userCurrency.getCurrencyNumber(), 4);
+            double currencyLock = NumberUtil.doubleFormat(userCurrency.getCurrencyNumberLock(), 4);
 
             //计算总金额
             double currencyNumberSum = BigDecimalUtil.add(currencyNum, currencyLock);
@@ -134,7 +131,7 @@ public class UserMessageController {
 
         Map<String, String> phoneAreaMap = PhoneAreaConfig.phoneAreaMap;
 
-
+        userService.countCheckUserAmountForTimer(user.getUserId(), 1);
         request.setAttribute("code", 1);
         request.setAttribute("message", "查询成功");
         request.setAttribute("phoneAreaMap", phoneAreaMap);

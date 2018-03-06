@@ -2,8 +2,10 @@ package com.jydp.controller.web;
 
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.FileDataEntity;
+import com.iqmkj.utils.FileWriteLocalUtil;
 import com.iqmkj.utils.FileWriteRemoteUtil;
 import com.iqmkj.utils.LogUtil;
+import com.iqmkj.utils.NumberUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.user.UserDO;
@@ -14,6 +16,7 @@ import com.jydp.service.IUserIdentificationImageService;
 import com.jydp.service.IUserIdentificationService;
 import com.jydp.service.IUserService;
 import config.FileUrlConfig;
+import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -24,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -104,6 +108,7 @@ public class IdentificationController {
             return responseJson;
         }
 
+        //参数处理
         String userIdStr = StringUtil.stringNullHandle(request.getParameter("userId"));
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
         String userName = StringUtil.stringNullHandle(request.getParameter("userName"));
@@ -127,7 +132,7 @@ public class IdentificationController {
             }
         }
 
-        // 转型为MultipartHttpRequest：
+        // 转型为MultipartHttpRequest：图片处理
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         MultipartFile frontImg = multipartRequest.getFile("frontImg");
         MultipartFile backImg = multipartRequest.getFile("backImg");
@@ -141,13 +146,27 @@ public class IdentificationController {
             responseJson.setMessage("请上传您的证件背面照");
             return responseJson;
         }
-        if (frontImg.getSize() >= 10*1024*1024 || backImg.getSize() >= 10*1024*1024) {
-            responseJson.setCode(3);
-            responseJson.setMessage("您的证件照太大了");
+        //判断图片格式和大小
+        JsonObjectBO frontImgJson = checkImageFile(frontImg);
+        if (frontImgJson.getCode() != 1) {
+            responseJson.setCode(frontImgJson.getCode());
+            responseJson.setMessage(frontImgJson.getMessage());
             return responseJson;
         }
-        //判断图片格式
-        //对于大于200K的图片 进行压缩，压缩到200K到400K之间
+        JsonObjectBO backImgJson = checkImageFile(backImg);
+        if (backImgJson.getCode() != 1) {
+            responseJson.setCode(backImgJson.getCode());
+            responseJson.setMessage(backImgJson.getMessage());
+            return responseJson;
+        }
+
+        /*//一张身份证只能审核通过一次
+        boolean identificationBoo = userIdentificationService.validateIdentification(userCertNo);
+        if (identificationBoo) {
+            responseJson.setCode(5);
+            responseJson.setMessage("此身份证已被使用！");
+            return responseJson;
+        }*/
 
         int userId = Integer.parseInt(userIdStr);
         UserIdentificationDO existIdentification = userIdentificationService.getUserIdentificationByUserAccountLately(userAccount);
@@ -163,15 +182,6 @@ public class IdentificationController {
                 return responseJson;
             }
         }
-
-        /*//一张身份证只能审核通过一次
-        boolean identificationBoo = userIdentificationService.validateIdentification(userCertNo);
-        if (identificationBoo) {
-            responseJson.setCode(5);
-            responseJson.setMessage("此身份证已被使用！");
-            return responseJson;
-        }*/
-
         UserDO userDO = userService.getUserByUserId(userId);
         if (userDO == null) {
             responseJson.setCode(5);
@@ -179,20 +189,51 @@ public class IdentificationController {
             return responseJson;
         }
 
+        //本地缓存目录
+        String path = request.getServletContext().getRealPath("/upload") + "/tempReduceImage/";
+        //图片大于400k，压缩图片到本地缓存目录，再上传至图片服务器，最后删除缓存文件
+        String frontImgSrc = "";
+        if (frontImg.getSize() > 400*1024 ) {
+            frontImgSrc = reduceImage(frontImg, path);
+        }
+        String backImgSrc = "";
+        if (backImg.getSize() > 400*1024 ) {
+            backImgSrc = reduceImage(backImg, path);
+        }
+
         //上传图片到图片服务器
         List<String> imageUrlList = new ArrayList<>();
         List<FileDataEntity> imageEntityList = new ArrayList<>();
         try {
-            FileDataEntity frontImgFileData = new FileDataEntity(frontImg.getOriginalFilename(), frontImg.getInputStream());
-            FileDataEntity backImgFileData = new FileDataEntity(backImg.getOriginalFilename(), backImg.getInputStream());
+            FileDataEntity frontImgFileData = null;  //正面照
+            if (StringUtil.isNotNull(frontImgSrc)) {
+                frontImgFileData = new FileDataEntity(frontImg.getOriginalFilename(), new FileInputStream(frontImgSrc));
+            } else {
+                frontImgFileData = new FileDataEntity(frontImg.getOriginalFilename(), frontImg.getInputStream());
+            }
             imageEntityList.add(frontImgFileData);
+
+            FileDataEntity backImgFileData = null;  //背面照
+            if (StringUtil.isNotNull(backImgSrc)) {
+                backImgFileData = new FileDataEntity(frontImg.getOriginalFilename(), new FileInputStream(backImgSrc));
+            } else {
+                backImgFileData = new FileDataEntity(backImg.getOriginalFilename(), backImg.getInputStream());
+            }
             imageEntityList.add(backImgFileData);
         } catch (IOException e) {
             LogUtil.printErrorLog(e);
         }
 
-        if (imageEntityList.size() > 0) {
+        if (imageEntityList.size() == 2) {
             imageUrlList = FileWriteRemoteUtil.uploadFileList(imageEntityList, FileUrlConfig.file_remote_identificationImage_url);
+        }
+
+        //删除本地缓存文件
+        if (StringUtil.isNotNull(frontImgSrc)) {
+            FileWriteLocalUtil.deleteFileRealPath(frontImgSrc);
+        }
+        if (StringUtil.isNotNull(backImgSrc)) {
+            FileWriteLocalUtil.deleteFileRealPath(backImgSrc);
         }
         if (imageUrlList == null || imageUrlList.size() <= 0) {
             responseJson.setCode(5);
@@ -214,11 +255,100 @@ public class IdentificationController {
         if (insertBoo) {
             responseJson.setCode(1);
             responseJson.setMessage("操作成功");
+        } else {
+            responseJson.setCode(5);
+            responseJson.setMessage("操作失败");
+        }
+        return responseJson;
+    }
+
+    /**
+     * 压缩图片，400K到5M以内的图片压缩至400K以内，5M-10M压缩到700k以内
+     * @param img 图片文件
+     * @param path 缓存文件夹
+     * @return 压缩成功：返回图片路径，压缩失败：返回null
+     */
+    private String reduceImage(MultipartFile img, String path) {
+        StringBuffer url = null;
+        long size = img.getSize();
+
+        try {
+            url = new StringBuffer();
+            url.append(path);
+            url.append(NumberUtil.createNumberStr(6));
+            url.append(".jpg");
+
+            //400K-1M 0.4
+            if (400*1024 <= size && size <= 1024*1024) {
+                Thumbnails.of(img.getInputStream())
+                        .scale(1)
+                        .outputQuality(0.5)
+                        .outputFormat("jpg")
+                        .toFile(url.toString());
+            }
+            //1M-5M  0.2
+            if (1024*1024 < size && size <= 5*1024*1024) {
+                Thumbnails.of(img.getInputStream())
+                        .scale(1)
+                        .outputQuality(0.2)
+                        .outputFormat("jpg")
+                        .toFile(url.toString());
+            }
+            //5M-10M  0.1
+            if (5*1024*1024 < size && size <= 10*1024*1024) {
+                Thumbnails.of(img.getInputStream())
+                        .scale(1)
+                        .outputQuality(0.1)
+                        .outputFormat("jpg")
+                        .toFile(url.toString());
+            }
+        } catch (Exception ex) {
+            LogUtil.printErrorLog(ex);
+            FileWriteLocalUtil.deleteFileRealPath(url.toString());
+            return null;
+        }
+        return url.toString();
+    }
+
+    /**
+     * 验证图片格式 和限制图片大小
+     * @param uploadImg 上传的文件
+     * @return 验证通过：返回code=1，验证失败：返回code!=1
+     */
+    private JsonObjectBO checkImageFile(MultipartFile uploadImg) {
+        JsonObjectBO responseJson = new JsonObjectBO();
+
+        String fileName = uploadImg.getOriginalFilename();
+        String extUpp = fileName.substring(fileName.lastIndexOf(".") + 1);
+
+        //根据扩展名判断是否为要求的图片
+        if (!extUpp.matches("^[(jpg)|(jpeg)|(png)|(JPG)|(JPEG)|(PNG)]+$")) {
+            responseJson.setCode(3);
+            responseJson.setMessage("请上传jpg、jpeg、png格式的图片");
+            return responseJson;
+        }
+        /*//根据图片内容、长宽判断是否为图片文件,ps:影响性能
+        InputStream inputStream = null;
+        try {
+            inputStream = uploadImg.getInputStream();
+            Image img = ImageIO.read(inputStream);
+            if(img == null || img.getWidth(null) <= 0 || img.getHeight(null) <= 0){
+                responseJson.setCode(3);
+                responseJson.setMessage("请上传图片文件");
+                return responseJson;
+            }
+        } catch (IOException e) {
+            LogUtil.printErrorLog(e);
+        }*/
+
+        if (uploadImg.getSize() >= 10*1024*1024) {
+            responseJson.setCode(3);
+            responseJson.setMessage("您的证件照太大了");
             return responseJson;
         }
 
-        responseJson.setCode(5);
-        responseJson.setMessage("操作失败");
+        responseJson.setCode(1);
+        responseJson.setMessage("验证通过");
         return responseJson;
     }
 

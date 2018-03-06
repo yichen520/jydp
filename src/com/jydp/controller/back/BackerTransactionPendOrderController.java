@@ -57,7 +57,7 @@ public class BackerTransactionPendOrderController {
             return "page/back/login";
         }
 
-        List<TransactionCurrencyDO> transactionCurrencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
+        List<TransactionCurrencyDO> transactionCurrencyList = transactionCurrencyService.listTransactionCurrencyAll();
         if(transactionCurrencyList != null){
             request.setAttribute("transactionCurrencyList", transactionCurrencyList);
         }

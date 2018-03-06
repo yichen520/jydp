@@ -58,7 +58,7 @@ public class WebCustomerServiceController {
     }
 
     /**  意见反馈展示 */
-    @RequestMapping("/show")
+    @RequestMapping("/show.htm")
     public String show(HttpServletRequest request) {
         UserSessionBO userBo = UserWebInterceptor.getUser(request);
         if (userBo == null) {
@@ -74,7 +74,7 @@ public class WebCustomerServiceController {
     }
 
     /**  意见反馈 */
-    @RequestMapping("/feedback")
+    @RequestMapping("/feedback.htm")
     public @ResponseBody
     JsonObjectBO feedback(HttpServletRequest request){
         JsonObjectBO responseJson = new JsonObjectBO();

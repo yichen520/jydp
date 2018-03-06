@@ -10,7 +10,6 @@
     <link rel="icon" href="<%=path %>/resources/image/web/icon.ico" type="image/x-ico" />
 
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/authentication.css" />
-    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/public.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/simpleTips.css" />
 
     <title>实名认证</title>
@@ -49,7 +48,8 @@
                     <option value="1">身份证</option>
                     <option value="2">护照</option>
                 </select>
-                <input type="text" id="userCertNo" class="phone" placeholder="您的证件号码" maxlength="18"/>
+                <input type="text" id="userCertNo" class="phone" placeholder="您的证件号码" maxlength="18"
+                       onkeyup="matchUtil(this, 'ENumber')" onblur="matchUtil(this, 'ENumber')"/>
             </span>
         </p>
 
@@ -96,58 +96,16 @@
     }
 
     $(".file").change(function () {
+        var check = checkFileImage(this);
+        if(!check){
+            return;
+        }
+
         var objUrl = getObjectURL(this.files[0]) ;
         if (objUrl) {
             $(this).parent().find("img").attr("src", objUrl)
         }
     });
-
-    //多图片上传
-    function fileOnchange(target) {
-        var check = checkFileImage(target);
-        if(!check){
-            return;
-        }
-
-        var fileNum = $('.pic').length;
-
-        var objUrl = getObjectURL(target.files[0]);
-        console.log(objUrl);
-        if (objUrl) {
-            var dele = '<span class="picBox_max" id="imageDel_'+ fileNum +'">' +
-                            '<img src=' + objUrl + ' class="pic"/>' +
-                            '<span class="delete">' +
-                                '<img src="<%=path %>/resources/image/web/delete.png"/>' +
-                            '</span>' +
-                        '</span>';
-            $(target).parent().before(dele);
-        }
-
-        $("#imageAdd").append("<input type='file' id='imageAdd_"+ fileNum +"' class='file' name='imageList' onchange='fileOnchange(this)'/>");
-
-        //删除图片
-        $(function () {
-            $(".picBox_max .delete").click(function () {
-                var id=$(this).parent().attr("id");
-                var idNum = id.substr(9, id.length)
-                $("#imageAdd_"+idNum).remove();
-
-                $(this).parent().remove();
-                limit(id);
-            });
-        });
-        limit(fileNum);
-    }
-
-    function limit(num) {
-        if (num == 8) {
-            $('.file').hide();
-            $('.picBox').hide();
-        } else {
-            $('.file').show();
-            $('.picBox').show();
-        }
-    }
 
     //新增实名认证
     var addBoo = false;
@@ -163,8 +121,6 @@
         var userName = $("#userName").val();
         var userCertType = $("#userCertType").val();
         var userCertNo = $("#userCertNo").val();
-        /*var frontImg = document.getElementById(frontImg);
-        var backImg = document.getElementById(backImg);*/
         var frontImg = $("#frontImg").val();
         var backImg = $("#backImg").val();
 
@@ -174,6 +130,10 @@
             addBoo = false;
             return openTips("请输入您的姓名");
         }
+        if (userName.length <= 1) {
+            addBoo = false;
+            return openTips("您的姓名过短");
+        }
         if (userCertNo == null || userCertNo == "" || userCertNo.length > 18) {
             addBoo = false;
             return openTips("请输入您的证件号");
@@ -182,9 +142,9 @@
         if (userCertType == 1) {
             if (userName.length > 8) {
                 addBoo = false;
-                return openTips("您的姓名过长");
+                return openTips("您的身份证姓名过长");
             }
-            if(!userName || /[^\u4E00-\u9FA5]/g.test(userName)){
+            if(!userName || /[^\u4E00-\u9FA5]1/g.test(userName)){
                 addBoo = false;
                 return openTips("身份证的姓名必须是中文");
             }
@@ -210,8 +170,6 @@
         formData.append("userCertNo", userCertNo);
         formData.append("frontImg", $('#frontImg')[0].files[0]);
         formData.append("backImg", $('#backImg')[0].files[0]);
-        /*formData.append("frontImg", frontImg.files[0]);
-        formData.append("backImg", backImg.files[0]);*/
         $.ajax({
             url: '<%=path %>' + "/userWeb/identificationController/add",
             type:'post',
@@ -242,7 +200,7 @@
         var filemaxsize = 1024 * 10;//10M
         if (filepath) {
             var isnext = false;
-            var fileend = filepath.substring(filepath.indexOf("."));
+            var fileend = filepath.substring(filepath.lastIndexOf("."));
             if (filetypes && filetypes.length > 0) {
                 for (var i = 0; i < filetypes.length; i++) {
                     if (filetypes[i] == fileend) {
@@ -252,7 +210,7 @@
                 }
             }
             if (!isnext) {
-                openTips("图片格式必须是,jpeg,jpg,png中的一种！");
+                openTips("图片格式必须是jpeg,jpg,png中的一种！");
                 target.value = "";
                 return false;
             }
@@ -330,6 +288,26 @@
         }
         if(!pass) openTips(tip);
         return pass;
+    }
+
+    var mapMatch = {};
+    mapMatch['ENumber'] = /[^\a-\z\A-\Z\d]/g;
+    function matchUtil(o, str) {
+        mapMatch[str] === true ? matchDouble(o, 2) : o.value = o.value.replace(mapMatch[str], '');
+    }
+    function matchDouble(o, num){
+        var matchStr = /^-?\d+\.?\d{0,num}$/;
+        if(!matchStr.test(o.value)){
+            if(isNaN(o.value)){
+                o.value = '';
+            }else{
+                var n = o.value.indexOf('.');
+                var m = n + num + 1;
+                if(n > -1 && o.value.length > m){
+                    o.value = o.value.substring(0, m);
+                }
+            }
+        }
     }
 </script>
 <script type="text/javascript">
