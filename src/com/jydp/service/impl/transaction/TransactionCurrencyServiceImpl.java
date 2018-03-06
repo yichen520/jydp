@@ -205,7 +205,7 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
 
         if (transactionUserDealDTOList != null) {
             //查询各币种最新价信息
-            Map<Integer,TransactionUserDealDTO> newPriceMap = transactionCurrencyDao.getNewPriceForWeb(openTime);
+            Map<Integer,TransactionUserDealDTO> newPriceMap = transactionCurrencyDao.getNewPriceForWeb();
             //查询各币种买一价信息
             Map<Integer,TransactionUserDealDTO> buyOneMap = transactionCurrencyDao.getBuyOneForWeb();
             //查询各币种卖一价信息

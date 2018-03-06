@@ -298,15 +298,14 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
 
     /**
      * 获取各币种最新价
-     * @param openTime 当日开盘时间
      * @return 查询成功：返回币种信息；查询失败：返回null
      */
     @Override
-    public Map<Integer,TransactionUserDealDTO> getNewPriceForWeb(Timestamp openTime) {
+    public Map<Integer,TransactionUserDealDTO> getNewPriceForWeb() {
         Map<Integer,TransactionUserDealDTO> newPriceMap = null;
 
         try {
-            newPriceMap = sqlSessionTemplate.selectMap("TransactionCurrency_getNewPriceForWeb",openTime,"currencyId");
+            newPriceMap = sqlSessionTemplate.selectMap("TransactionCurrency_getNewPriceForWeb","currencyId");
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
