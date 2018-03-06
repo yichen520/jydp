@@ -375,17 +375,22 @@
 
     //动态计算总价
     function mul() {
-        var number = parseFloat($("#addCurrencyNumber").val()) * 1000000;
-        var price = parseFloat($("#addCurrencyPrice").val()) * 1000000;
-        if (number > 0) {
-            if (price > 0) {
-                var total = Math.floor(number * price / 1000000 / 1000000);
-                var tota = mulMaxNumber(total);
-                $("#addTotalPrice").html(tota);
-                return;
+        var s = 0;
+        var sellPrice = $("#addCurrencyNumber").val();
+        var sellNum = $("#addCurrencyPrice").val();
+        if (sellPrice != null && sellPrice != "") {
+            sellPrice = sellPrice.toString();
+            try{s+=sellPrice.split(".")[1].length}catch(e){}
+            if (sellNum != null && sellNum != "") {
+                sellNum = sellNum.toString();
+                try{s+=sellNum.split(".")[1].length}catch(e){}
+                var number = parseFloat((Number(sellPrice.replace(".",""))*Number(sellNum.replace(".",""))/Math.pow(10,s)).toFixed(8));
+                number = mulMaxNumber(number);
+                $("#addTotalPrice").html(number);
             }
+        } else {
+            $("#addTotalPrice").html("");
         }
-        $("#addTotalPrice").html("");
     }
 
     //添加记录

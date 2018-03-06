@@ -86,7 +86,7 @@ public class TradeCenterController {
         UserSessionBO user = UserWebInterceptor.getUser(request);
         if (user != null) {
             userDealCapitalMessage = userService.countCheckUserAmountForTimer(user.getUserId(), currencyId);
-            transactionPendOrderList = transactionPendOrderService.listPendOrderForWeb(user.getUserId(),0, 20);
+            transactionPendOrderList = transactionPendOrderService.listPendOrderForWeb(user.getUserId(),currencyId,0, 20);
         }
 
         //获取币种信息
@@ -549,9 +549,36 @@ public class TradeCenterController {
         return resultJson;
     }
 
+    /** 获取委托记录 */
+    @RequestMapping(value = "/entrust.htm", method = RequestMethod.POST)
+    public @ResponseBody JsonObjectBO entrust(HttpServletRequest request) {
+        JsonObjectBO resultJson = new JsonObjectBO();
+        List<TransactionPendOrderDO> transactionPendOrderList = null;
+        //获取参数
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+        if (!StringUtil.isNotNull(currencyIdStr)) {
+            resultJson.setCode(3);
+            resultJson.setMessage("参数获取错误");
+            return resultJson;
+        }
 
+        int currencyId = 0;
+        currencyId = Integer.parseInt(currencyIdStr);
+        UserSessionBO user = UserWebInterceptor.getUser(request);
+        if (user != null) {
+            transactionPendOrderList = transactionPendOrderService.listPendOrderForWeb(user.getUserId(),currencyId,0, 20);
+        }
 
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("transactionPendOrderList", transactionPendOrderList);
 
+        resultJson.setCode(1);
+        resultJson.setMessage("查询成功");
+        resultJson.setData(jsonObject);
+
+        return resultJson;
+
+    }
 
 
 }

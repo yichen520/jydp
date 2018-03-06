@@ -83,7 +83,7 @@
                 <p class="buyInput">
                     <label class="tradeName">买入数量：</label>
                     <input type="text" class="entry" placeholder="请输入您要买入的数量" id="buyNum" name="buyNum"
-                           onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)" maxlength="18"/>
+                           onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="18"/>
                     <span class="max">当前最大可买：<span id="buyMax">0</span></span>
                 </p>
                 <p class="phoneInput">
@@ -118,8 +118,8 @@
                 <p class="buyInput">
                     <label class="tradeName">卖出数量：</label>
                     <input type="text" class="entry" placeholder="请输入您要买入的该币种数量" id="sellNum" name="sellNum"
-                           onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)" maxlength="18"/>
-                    <span class="max">当前最大可买：<span id="sellMax">0</span></span>
+                           onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="18"/>
+                    <span class="max">当前最大可卖：<span id="sellMax">0</span></span>
                 </p>
                 <p class="phoneInput">
                     <label class="tradeName">支付密码：</label>
@@ -215,62 +215,39 @@
         </div>
     </div>
 
-    <div class="myEntrust">
-        <p class="myTitle">
-            我的委托记录<img src="<%=path %>/resources/image/web/entrust.png" />
-            <a href="#" class="more">查看更多</a>
-        </p>
-        <table class="table" cellspacing="0 " cellpadding="0">
-            <tr class="tableTitle">
-                <td class="time">委托时间</td>
-                <td class="type">类型</td>
-                <td class="amount">委托价格</td>
-                <td class="amount">委托数量</td>
-                <td class="amount">委托总价</td>
-                <td class="operate">操作</td>
-            </tr>
-            <tr class="tableInfo">
-                <td class="time">2016-06-06&nbsp;06:06:05</td>
-                <td class="type rise">买入</td>
-                <td class="amount">$12.0000</td>
-                <td class="amount">0.95</td>
-                <td class="amount rise">$11.40000000</td>
-                <td class="operate"><input type="text" value="撤&nbsp;销" class="revoke" onfocus="this.blur()" /></td>
-            </tr>
-            <tr class="tableInfo">
-                <td class="time">2016-06-06&nbsp;06:06:05</td>
-                <td class="type fall">卖出</td>
-                <td class="amount">$12.0000</td>
-                <td class="amount">0.95</td>
-                <td class="amount fall">$11.40000000</td>
-                <td class="operate"><input type="text" value="撤&nbsp;销" class="revoke" onfocus="this.blur()" /></td>
-            </tr>
-            <tr class="tableInfo">
-                <td class="time">2016-06-06&nbsp;06:06:05</td>
-                <td class="type rise">买入</td>
-                <td class="amount">$12.0000</td>
-                <td class="amount">0.95</td>
-                <td class="amount rise">$11.40000000</td>
-                <td class="operate"><input type="text" value="撤&nbsp;销" class="revoke" onfocus="this.blur()" /></td>
-            </tr>
-            <tr class="tableInfo">
-                <td class="time">2016-06-06&nbsp;06:06:05</td>
-                <td class="type rise">买入</td>
-                <td class="amount">$12.0000</td>
-                <td class="amount">0.95</td>
-                <td class="amount rise">$11.40000000</td>
-                <td class="operate"><input type="text" value="撤&nbsp;销" class="revoke" onfocus="this.blur()" /></td>
-            </tr>
-            <tr class="tableInfo">
-                <td class="time">2016-06-06&nbsp;06:06:05</td>
-                <td class="type fall">卖出</td>
-                <td class="amount">$12.0000</td>
-                <td class="amount">0.95</td>
-                <td class="amount fall">$11.40000000</td>
-                <td class="operate"><input type="text" value="撤&nbsp;销" class="revoke" onfocus="this.blur()" /></td>
-            </tr>
-        </table>
-    </div>
+    <c:if test="${userSession != null}">
+        <div class="myEntrust">
+            <p class="myTitle">
+                我的委托记录<img src="<%=path %>/resources/image/web/entrust.png" />
+                <a href="<%=path%>/userWeb/transactionPendOrderController/show.htm" class="more">查看更多</a>
+            </p>
+            <table class="table" cellspacing="0 " cellpadding="0" id="entrustRecord">
+                <tr class="tableTitle">
+                    <td class="time">委托时间</td>
+                    <td class="type">类型</td>
+                    <td class="amount">委托价格</td>
+                    <td class="amount">委托数量</td>
+                    <td class="amount">委托总价</td>
+                    <td class="operate">操作</td>
+                </tr>
+                <c:forEach items="${transactionPendOrderList}" var="item">
+                    <tr class="tableInfo">
+                        <td class="time"><fmt:formatDate type="time" value="${item.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+                        <c:if test="${item.paymentType == 1}">
+                            <td class="type rise">买入</td>
+                        </c:if>
+                        <c:if test="${item.paymentType == 2}">
+                            <td class="type fall">卖出</td>
+                        </c:if>
+                        <td class="amount">$<fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="4"/></td>
+                        <td class="amount"><fmt:formatNumber type="number" value="${item.pendingNumber}" maxFractionDigits="2"/></td>
+                        <td class="amount rise">$<fmt:formatNumber type="number" value="${item.pendingPrice * item.pendingNumber}" maxFractionDigits="6"/></td>
+                        <td class="operate"><input type="text" value="撤&nbsp;销" class="revoke" onclick="goCancle('${item.pendingOrderNo}')" /></td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </div>
+    </c:if>
 
     <div class="myDeal">
         <p class="myTitle">
@@ -328,6 +305,7 @@
 
     }
 
+    //买入
     var resultBoo = false;
     function buyHandle() {
         if(resultBoo){
@@ -339,6 +317,31 @@
         var buyPrice = $("#buyPrice").val();
         var buyNum = $("#buyNum").val();
         var buyPwd = $("#buyPwd").val();
+        var currencyId = $("#cucyId").val();
+
+        if(buyPrice == null || buyPrice == ""){
+            openTips("价格不能为空");
+            resultBoo = false;
+            return;
+        }
+
+        if(buyNum == null || buyNum == ""){
+            openTips("数量不能为空");
+            resultBoo = false;
+            return;
+        }
+
+        if(buyPwd == null || buyPwd == ""){
+            openTips("交易密码不能为空");
+            resultBoo = false;
+            return;
+        }
+
+        if(currencyId == null || currencyId == ""){
+            openTips("币种标识不存在");
+            resultBoo = false;
+            return;
+        }
 
         $.ajax({
             url: '<%=path%>' + "/userWeb/tradeCenter/buy.htm", //方法路径URL
@@ -346,15 +349,13 @@
                 buyPrice : buyPrice,
                 buyNum : buyNum,
                 buyPwd : buyPwd,
-                currencyId : 1
+                currencyId : currencyId
             },//参数
             dataType: 'json',
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (result) {
-                if(result.code == 1) {
-                    openTips(result.message);
-                } else {
+                if(result.code != 1) {
                     openTips(result.message);
                 }
                 resultBoo = false;
@@ -365,6 +366,7 @@
         });
     }
 
+    //卖出
     function sellHandle() {
         if(resultBoo){
             return false;
@@ -375,6 +377,31 @@
         var sellPrice = $("#sellPrice").val();
         var sellNum = $("#sellNum").val();
         var sellPwd = $("#sellPwd").val();
+        var currencyId = $("#cucyId").val();
+
+        if(sellPrice == null || sellPrice == ""){
+            openTips("价格不能为空");
+            resultBoo = false;
+            return;
+        }
+
+        if(sellNum == null || sellNum == ""){
+            openTips("数量不能为空");
+            resultBoo = false;
+            return;
+        }
+
+        if(sellPwd == null || sellPwd == ""){
+            openTips("交易密码不能为空");
+            resultBoo = false;
+            return;
+        }
+
+        if(currencyId == null || currencyId == ""){
+            openTips("币种标识不存在");
+            resultBoo = false;
+            return;
+        }
 
         $.ajax({
             url: '<%=path%>' + "/userWeb/tradeCenter/sell.htm", //方法路径URL
@@ -382,15 +409,13 @@
                 sellPrice : sellPrice,
                 sellNum : sellNum,
                 sellPwd : sellPwd,
-                currencyId : 1
+                currencyId : currencyId
             },//参数
             dataType: 'json',
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (result) {
-                if(result.code == 1) {
-                    openTips(result.message);
-                } else {
+                if(result.code != 1) {
                     openTips(result.message);
                 }
                 resultBoo = false;
@@ -429,44 +454,57 @@
 
     //动态计算总价
     function mul() {
+        var m = 0;
+        var buyPrice = $("#buyPrice").val();
+        var buyNum = $("#buyNum").val();
 
         //买入
-        var buyPrice = parseFloat($("#buyPrice").val()) * 1000;
-        var buyNum = parseFloat($("#buyNum").val()) * 1000000;
-        if (buyPrice > 0) {
-            if (buyNum > 0) {
-                var total = Math.floor(buyPrice * buyNum ) / 1000 / 1000000;
-                var tota = mulMaxNumber(total);
-                $("#buyTotal").html(tota);
+        if (buyPrice != null && buyPrice != "") {
+            buyPrice = buyPrice.toString();
+            try{m+=buyPrice.split(".")[1].length}catch(e){}
+            if (buyNum != null && buyNum != "") {
+                buyNum = buyNum.toString();
+                try{m+=buyNum.split(".")[1].length}catch(e){}
+                var number = parseFloat((Number(buyPrice.replace(".",""))*Number(buyNum.replace(".",""))/Math.pow(10,m)).toFixed(8));
+                number = mulMaxNumber(number);
+                $("#buyTotal").html("$" + number);
             }
-            var userBalance = parseFloat($("#userBalance").val()) * 1000;
-            if (userBalance > 0) {
-                var total = userBalance / buyPrice;
-                var tota = mulMaxNumber(total);
-                $("#buyMax").html(tota);
-            }
+
+            var userBalance = parseFloat($("#userBalance").val());
+            var total = userBalance / buyPrice;
+            var tota = mulMaxNumber(total);
+            $("#buyMax").html(tota);
         } else {
+        $("#buyMax").html("");
             $("#buyTotal").html("");
         }
 
 
         //卖出
-        var buyPrice = parseFloat($("#sellPrice").val()) * 1000;
-        var buyNum = parseFloat($("#sellNum").val()) * 1000000;
-        if (buyPrice > 0) {
-            if (buyNum > 0) {
-                var total = Math.floor(buyPrice * buyNum )/ 1000 / 1000000;
-                var tota = mulMaxNumber(total);
-                $("#sellTotal").html(tota);
+        var s = 0;
+        var sellPrice = $("#sellPrice").val();
+        var sellNum = $("#sellNum").val();
+        if (sellPrice != null && sellPrice != "") {
+            sellPrice = sellPrice.toString();
+            try{s+=sellPrice.split(".")[1].length}catch(e){}
+            if (sellNum != null && sellNum != "") {
+                sellNum = sellNum.toString();
+                try{s+=sellNum.split(".")[1].length}catch(e){}
+                var number = parseFloat((Number(sellPrice.replace(".",""))*Number(sellNum.replace(".",""))/Math.pow(10,s)).toFixed(8));
+                number = mulMaxNumber(number);
+                $("#sellTotal").html(number);
             }
 
-            var currencyNumber = parseFloat($("#currencyNumber").val()) * 1000000;
-            if (currencyNumber > 0) {
-                var total = Math.floor(currencyNumber * buyPrice) / 1000 / 1000000;
-                var tota = mulMaxNumber(total);
-                $("#sellMax").html(tota);
+            var currencyNumber = $("#currencyNumber").val();
+            if(currencyNumber != null && currencyNumber != ""){
+                currencyNumber = currencyNumber.toString();
+                try{s+=currencyNumber.split(".")[1].length}catch(e){}
+                var number = parseFloat((Number(sellPrice.replace(".",""))*Number(currencyNumber.replace(".",""))/Math.pow(10,s)).toFixed(8));
+                number = mulMaxNumber(number);
+                $("#sellMax").html(number);
             }
         } else {
+            $("#sellMax").html("");
             $("#sellTotal").html("");
         }
 
@@ -537,6 +575,8 @@
         if (start <= 0) {
             //刷新成交记录
             reDeal();
+            //刷新委托记录
+            entrust();
         }
 
         start += step;
@@ -562,7 +602,7 @@
         var currencyId = $("#cucyId").val();
         if (currencyId == null || currencyId == "") {
             dealBoo = false;
-            openTips("参数获取错误，请刷新页面重试")
+            //openTips("参数获取错误，请刷新页面重试")
             return;
         }
 
@@ -647,6 +687,130 @@
         second = second < 10 ? ('0' + second) : second;
         return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
     };
+</script>
+
+<script type="text/javascript">
+
+    var calMoreBoo = false;
+    function goCancle(pendOrderNo){
+        if (calMoreBoo) {
+            return;
+        } else {
+            calMoreBoo = true;
+        }
+
+        if (pendOrderNo == "" || pendOrderNo == null) {
+            calMoreBoo =false;
+            openTips("单号错误");
+            return;
+        }
+
+        $.ajax({
+            url: '<%=path %>' + "/userWeb/transactionPendOrderController/revoke.htm",
+            data: {
+                pendingOrderNo : pendOrderNo
+            },//参数
+            dataType: "json",
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (resultData) {
+                var code = resultData.code;
+                var message = resultData.message;
+                if (code != 1 && message != "") {
+                    calMoreBoo = false;
+                    openTips(message);
+                    return;
+                }
+                calMoreBoo = false
+                entrust();
+
+            },
+
+            error: function () {
+                calMoreBoo = false;
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+
+    }
+
+    /** 刷新委托记录 */
+    var entrustBoo = false;
+    function entrust() {
+        if (entrustBoo) {
+            return;
+        } else {
+            entrustBoo = true;
+        }
+
+        var currencyId = $("#cucyId").val();
+        if (currencyId == null || currencyId == "") {
+            entrustBoo = false;
+            openTips("参数获取错误，请刷新页面重试")
+            return;
+        }
+
+        $.ajax({
+            url: '<%=path%>' + "/userWeb/tradeCenter/entrust.htm", //方法路径URL
+            data: {
+                currencyId: currencyId
+
+            },//参数
+            dataType: 'json',
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (result) {
+                if (result.code != 1 && result.message != null) {
+                    entrustBoo = false;
+                    openTips(result.message);
+                    return;
+                }
+                var data = result.data;
+                var dealList = data.transactionPendOrderList;
+                if (dealList != null && dealList.length > 0) {
+                    var newChild = "";
+
+                    for (var i = 0; i <= dealList.length - 1; i++) {
+                        var deal = dealList[i];
+                        var addTime = formatDateTime(deal.addTime);
+                        var paymentType = "";
+                        var type = ""
+                        if (deal.paymentType == 1) {
+                            paymentType = "买入";
+                            type = "rise";
+                        }
+                        if (deal.paymentType == 2) {
+                            paymentType = "卖出";
+                            type = "fall";
+                        }
+                        var pendingPrice = Math.floor(deal.pendingPrice * 10000) / 10000;
+                        var pendingNumber = Math.floor(deal.pendingNumber * 100) / 100;
+                        var currencyTotalPrice = Math.floor((pendingPrice * pendingNumber )* 1000000) / 1000000;
+
+                        newChild += "<tr class='tableInfo'>" +
+                            "<td class='time'>" + addTime + "</td>" +
+                            "<td class='type " + type + "'>" + paymentType + "</td>" +
+                            "<td class='amount'>" + pendingPrice + "</td>" +
+                            "<td class='amount'>" + pendingNumber + "</td>" +
+                            "<td class='amount rise'>" + currencyTotalPrice+ "</td>" +
+                            "<td class='operate'><input type='text' value='撤&nbsp;销' class='revoke' onclick='goCancle('"+ ${deal.pendingOrderNo} + "')'/></td>" +
+                            "</tr>";
+                    }
+
+                    document.getElementById("entrustRecord").innerHTML = newChild;
+                    entrustBoo = false;
+                }
+
+
+            }, error: function () {
+                entrustBoo = false;
+                openTips("获取失败,请重新刷新页面后重试");
+            }
+        });
+    }
+
+
+
 </script>
 </body>
 </html>
