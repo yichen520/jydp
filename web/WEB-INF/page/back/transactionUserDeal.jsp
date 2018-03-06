@@ -89,8 +89,8 @@
                         <td class="coin">${item.currencyName}</td>
                         <td class="amount"><fmt:formatNumber type="number" value="${item.currencyNumber }" maxFractionDigits="6"/></td>
                         <td class="amount">
-                            <p>总计：$<fmt:formatNumber type="number" value="${item.currencyTotalPrice }" maxFractionDigits="6"/></p>
                             <p>实际：$<fmt:formatNumber type="number" value="${item.feeNumber * item.currencyTotalPrice + item.currencyTotalPrice}" maxFractionDigits="6"/></p>
+                            <p>总计：$<fmt:formatNumber type="number" value="${item.currencyTotalPrice }" maxFractionDigits="6"/></p>
                             <p>手续费：$<fmt:formatNumber type="number" value="${item.feeNumber * item.currencyTotalPrice }" maxFractionDigits="6"/></p>
                         </td>
                         <c:if test="${item.paymentType == 1}">
