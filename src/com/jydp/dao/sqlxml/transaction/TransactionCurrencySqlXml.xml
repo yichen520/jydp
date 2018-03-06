@@ -162,7 +162,7 @@
         SELECT currencyId, MAX(pendingPrice) AS buyOnePrice
         FROM transaction_pend_order_tab
         WHERE paymentType = 1
-        AND (pendingStatus = 1 OR pendingStatus = 2)
+        AND pendingStatus IN (1,2)
         GROUP BY currencyId
     </select>
 
@@ -170,7 +170,7 @@
         SELECT currencyId, MIN( pendingPrice ) AS sellOnePrice
         FROM transaction_pend_order_tab
         WHERE paymentType = 2
-        AND ( pendingStatus = 1 OR pendingStatus = 2 )
+        AND pendingStatus IN (1,2)
         GROUP BY currencyId
     </select>
 
