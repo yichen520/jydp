@@ -725,8 +725,8 @@
                             paymentType = "卖出";
                             type = "fall";
                         }
-                        var transactionPrice = Math.floor(deal.transactionPrice * 10000) / 10000;
-                        var currencyNumber = Math.floor(deal.currencyNumber * 100) / 100;
+                        var transactionPrice = Math.floor(deal.transactionPrice * 100) / 100;
+                        var currencyNumber = Math.floor(deal.currencyNumber * 10000) / 10000;
                         var currencyTotalPrice = Math.floor(deal.currencyTotalPrice * 1000000) / 1000000;
 
                         newChild += "<tr class='tableInfo'>" +
