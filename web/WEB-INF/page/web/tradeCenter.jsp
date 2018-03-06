@@ -83,7 +83,7 @@
                 <p class="buyInput">
                     <label class="tradeName">买入数量：</label>
                     <input type="text" class="entry" placeholder="请输入您要买入的数量" id="buyNum" name="buyNum"
-                           onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)" maxlength="18"/>
+                           onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="18"/>
                     <span class="max">当前最大可买：<span id="buyMax">0</span></span>
                 </p>
                 <p class="phoneInput">
@@ -118,7 +118,7 @@
                 <p class="buyInput">
                     <label class="tradeName">卖出数量：</label>
                     <input type="text" class="entry" placeholder="请输入您要买入的该币种数量" id="sellNum" name="sellNum"
-                           onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)" maxlength="18"/>
+                           onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="18"/>
                     <span class="max">当前最大可卖：<span id="sellMax">0</span></span>
                 </p>
                 <p class="phoneInput">
