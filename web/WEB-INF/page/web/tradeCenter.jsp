@@ -355,9 +355,7 @@
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (result) {
-                if(result.code == 1) {
-                    openTips(result.message);
-                } else {
+                if(result.code != 1) {
                     openTips(result.message);
                 }
                 resultBoo = false;
