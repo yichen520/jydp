@@ -306,7 +306,7 @@
         </div>
 
 
-        <input type="hidden" id="currencyId" name="currencyId" value="${transactionCurrency.currencyId}">
+        <input type="hidden" id="cucyId" name="cucyId" value="${transactionCurrency.currencyId}">
     </div>
 </div>
 
@@ -572,7 +572,7 @@
             dealBoo = true;
         }
 
-        var currencyId = $("#currencyId").val();
+        var currencyId = $("#cucyId").val();
         if (currencyId == null || currencyId == "") {
             dealBoo = false;
             //openTips("参数获取错误，请刷新页面重试")
