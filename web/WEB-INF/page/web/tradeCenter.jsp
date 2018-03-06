@@ -738,7 +738,7 @@
                                         "<td class='type " + type + "'>" + paymentType + "</td>" +
                                         "<td class='dealAmount'>" + "$"+ transactionPrice + "</td>" +
                                         "<td class='dealAmount'>" + currencyNumber +"</td>" +
-                                        "<td class='dealAmount rise'>" + currencyTotalPrice + "</td>" +
+                                        "<td class='dealAmount rise'>$" + currencyTotalPrice + "</td>" +
                                     "</tr>";
 
                     }
