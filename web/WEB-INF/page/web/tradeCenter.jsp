@@ -377,6 +377,7 @@
         var sellPrice = $("#sellPrice").val();
         var sellNum = $("#sellNum").val();
         var sellPwd = $("#sellPwd").val();
+        var currencyId = $("#cucyId").val();
 
         if(sellPrice == null || sellPrice == ""){
             openTips("价格不能为空");
@@ -392,6 +393,12 @@
 
         if(sellPwd == null || sellPwd == ""){
             openTips("交易密码不能为空");
+            resultBoo = false;
+            return;
+        }
+
+        if(currencyId == null || currencyId == ""){
+            openTips("币种标识不存在");
             resultBoo = false;
             return;
         }
