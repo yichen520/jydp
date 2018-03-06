@@ -170,6 +170,9 @@
                         }
                     }
                 }
+            }, error: function () {
+                dealBoo = false;
+                openTips("行情信息获取失败,请重新刷新页面");
             }
         });
     }
@@ -187,16 +190,19 @@
         }
     }
 
+    //跳转至系统公告
     function noticeSubmit(noticeId){
         $("#noticeId").val(noticeId);
         $("#noticeForm").submit();
     }
 
+    //跳转至热门话题
     function hotTopicSubmit(hotId) {
         $("#hotId").val(hotId);
         $("#hotTopicForm").submit();
     }
 
+    //跳转至交易中心
     function toTradeCenter(currencyId) {
         $("#currencyId").val(currencyId);
         $("#tradeCenterForm").submit();

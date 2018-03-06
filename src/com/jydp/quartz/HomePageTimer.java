@@ -1,9 +1,6 @@
 package com.jydp.quartz;
 
-import com.iqmkj.utils.DateUtil;
 import com.jydp.service.IHomePageRedisService;
-import com.jydp.service.IHomePageService;
-import com.jydp.service.IRedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

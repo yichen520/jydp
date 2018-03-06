@@ -2,14 +2,12 @@ package com.jydp.controller.web;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jydp.entity.BO.JsonObjectBO;
-import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.system.SystemAdsHomepagesDO;
 import com.jydp.entity.DO.system.SystemBusinessesPartnerDO;
 import com.jydp.entity.DO.system.SystemHotDO;
 import com.jydp.entity.DO.system.SystemNoticeDO;
 import com.jydp.entity.DTO.TransactionUserDealDTO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
-import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.IHomePageService;
 import com.jydp.service.IRedisService;
 import com.jydp.service.ITransactionCurrencyService;
@@ -19,7 +17,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 

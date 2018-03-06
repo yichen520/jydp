@@ -6,10 +6,8 @@ import com.jydp.entity.DO.system.SystemHotDO;
 import com.jydp.entity.DO.system.SystemNoticeDO;
 import com.jydp.entity.DTO.TransactionUserDealDTO;
 import com.jydp.service.*;
-import config.RedisKeyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 /**
@@ -88,6 +86,4 @@ public class HomePageServiceImpl implements IHomePageService{
         List<TransactionUserDealDTO> transactionUserDealDTOList = transactionCurrencyService.getTransactionCurrencyMarketForWeb();
         return transactionUserDealDTOList;
     }
-
-
 }
