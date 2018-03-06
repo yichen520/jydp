@@ -105,7 +105,7 @@ public class TradeServiceImpl implements ITradeService {
         TransactionPendOrderDO matchOrder = transactionPendOrderService.getLastTransactionPendOrder(0, currencyId, matchPaymentType);
         if(matchOrder == null){
             resultJson.setCode(1);
-            resultJson.setMessage("没有对应的挂单");
+            resultJson.setMessage("该挂单已部分交易");
             return resultJson;
         }
         //如果匹配不上，直接返回false

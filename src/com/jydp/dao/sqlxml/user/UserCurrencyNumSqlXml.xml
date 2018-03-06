@@ -49,6 +49,7 @@
         SET currencyNumber = currencyNumber - #{currencyNumber}
         WHERE userId = #{userId}
           AND currencyId = #{currencyId}
+          AND currencyNumber <![CDATA[ >= ]]> #{currencyNumber}
     </update>
 
     <update id="UserCurrencyNum_increaseCurrencyNumberLock" parameterType="UserCurrencyNumDO">
@@ -63,6 +64,7 @@
         SET currencyNumberLock = currencyNumberLock - #{currencyNumberLock}
         WHERE userId = #{userId}
           AND currencyId = #{currencyId}
+          AND currencyNumberLock <![CDATA[ >= ]]> #{currencyNumberLock}
     </update>
 
     <select id="UserCurrencyNum_countCheckUserAmountForTimer" parameterType="java.util.Map" resultType="int">
