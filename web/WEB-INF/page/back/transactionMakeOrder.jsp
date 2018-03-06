@@ -216,7 +216,7 @@
             <p class="popInput">
                 <label class="popName">成交数量<span class="star">*</span></label>
                 <input type="text" class="entry" placeholder="成交币种的数量" maxlength="18"
-                       onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)"
+                       onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)"
                        id="addCurrencyNumber" name="addCurrencyNumber"/>
             </p>
             <p class="popInput">
