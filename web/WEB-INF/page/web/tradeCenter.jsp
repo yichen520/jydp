@@ -949,10 +949,12 @@
                     $("#nowPriceShow").html(standardParameter.nowPrice);
                     if(standardParameter.todayRange >= 0){
                         $("#todayRangeRise").html("+" + standardParameter.todayRange + "%");
-                        $("#todayRangeRise").css("number rise");
+                        $("#todayRangeRise").removeClass("number fall");
+                        $("#todayRangeRise").addClass("number rise");
                     } else{
                         $("#todayRangeRise").html(standardParameter.todayRange  + "%");
-                        $("#todayRangeRise").css("number fall");
+                        $("#todayRangeRise").removeClass("number rise");
+                        $("#todayRangeRise").addClass("number fall");
                     }
                     $("#todayMax").html(standardParameter.todayMax);
                     $("#todayMin").html(standardParameter.todayMin);
