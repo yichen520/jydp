@@ -118,7 +118,7 @@
 
         var userAccount = '${userAccount}';
         var userId = '${userId}';
-        var userName = $("#userName").val();
+        var userName = $.trim($("#userName").val());
         var userCertType = $("#userCertType").val();
         var userCertNo = $("#userCertNo").val();
         var frontImg = $("#frontImg").val();
@@ -138,21 +138,26 @@
             addBoo = false;
             return openTips("请输入您的证件号");
         }
+        var regEx = /\s+/g;
+        userName = userName.replace(regEx, ' ');
         //证件类型是身份证
         if (userCertType == 1) {
-            if (userName.length > 8) {
+            /*if (userName.length > 8) {
                 addBoo = false;
-                return openTips("您的身份证姓名过长");
-            }
-            if(!userName || /[^\u4E00-\u9FA5]1/g.test(userName)){
+                return openTips("身份证姓名最大8位");
+            }*/
+
+            var reg = /[^\u4e00-\u9fa5]/.test(userName);
+            if(!userName || reg){
                 addBoo = false;
-                return openTips("身份证的姓名必须是中文");
+                return openTips("身份证的姓名必须是全中文");
             }
             if (!IdentityCodeValid(userCertNo)) {
                 addBoo = false;
                 return ;
             }
         }
+        $("#userName").val(userName);
         if (frontImg == null || frontImg == "") {
             addBoo = false;
             return openTips("请上传您的证件正面照");

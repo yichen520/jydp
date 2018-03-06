@@ -125,7 +125,7 @@
                 </p>
                 <p class="serviceInput">
                     <label class="tradeName">手续费：</label>
-                    <span class="service">${userDealCapitalMessage.sellFee }</span>
+                    <span class="service">${transactionCurrency.sellFee }</span>
                 </p>
 
                 <input type="text" class="sellBtn" value="卖&nbsp;出" onfocus="this.blur()" onclick="sellHandle();"/>
