@@ -732,7 +732,7 @@
                         newChild += "<tr class='tableInfo'>" +
                                         "<td class='dealTime'>"+ addTime +"</td>" +
                                         "<td class='type " + type + "'>" + paymentType + "</td>" +
-                                        "<td class='dealAmount'>$" + transactionPrice + "</td>" +
+                                        "<td class='dealAmount'>" + "$"+ transactionPrice + "</td>" +
                                         "<td class='dealAmount'>" + currencyNumber +"</td>" +
                                         "<td class='dealAmount rise'>" + currencyTotalPrice + "</td>" +
                                     "</tr>";
@@ -878,7 +878,7 @@
                         newChild += "<tr class='tableInfo'>" +
                             "<td class='time'>" + addTime + "</td>" +
                             "<td class='type " + type + "'>" + paymentType + "</td>" +
-                            "<td class='amount'>" + pendingPrice + "</td>" +
+                            "<td class='amount'>" + "$" + pendingPrice + "</td>" +
                             "<td class='amount'>" + pendingNumber + "</td>" +
                             "<td class='amount rise'>" + currencyTotalPrice+ "</td>" +
                             "<td class='operate'><input type='text' value='撤&nbsp;销' class='revoke' onclick="+ goCancle + "></td>" +
