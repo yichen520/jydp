@@ -24,35 +24,40 @@
 <div class="content">
     <div class="top">
         <p class="coin">
-            <img src="images/test/test_300.jpg" class="coinLogo" /><br>
-            <span class="coinName">盛源链(MUC/USD)</span>
+            <img src="${transactionCurrency.currencyImgUrl }" class="coinLogo" /><br>
+            <span class="coinName">${transactionCurrency.currencyName }(${transactionCurrency.currencyShortName }/USD)</span>
         </p>
 
         <div class="coinInfo">
-            <span class="priceNow">100.00</span>
+            <span class="priceNow">${standardParameter.nowPrice}</span>
 
             <p class="increase">
-                <span class="number rise">+10%</span>
+                <c:if test="${standardParameter.todayRange >= 0}">
+                    <span class="number rise">+${standardParameter.todayRange }%</span>
+                </c:if>
+                <c:if test="${standardParameter.todayRange < 0}">
+                    <span class="number fall">${standardParameter.todayRange }%</span>
+                </c:if>
                 <span class="infoName">今日涨跌</span>
             </p>
             <p class="info">
-                <span class="number rise">11301.0400</span>
+                <span class="number rise">${standardParameter.todayMax }</span>
                 <span class="infoName">今日最高价</span>
             </p>
             <p class="info">
-                <span class="number fall">123.0000</span>
+                <span class="number fall">${standardParameter.todayMin }</span>
                 <span class="infoName">今日最低价</span>
             </p>
             <p class="info">
-                <span class="number price">123.0000</span>
+                <span class="number price">${standardParameter.buyOne }</span>
                 <span class="infoName">买一价</span>
             </p>
             <p class="info">
-                <span class="number price">123.0000</span>
+                <span class="number price">${standardParameter.sellOne }</span>
                 <span class="infoName">卖一价</span>
             </p>
             <p class="info">
-                <span class="number price">123.0000</span>
+                <span class="number price">${standardParameter.dayTurnove }</span>
                 <span class="infoName">24小时成交量</span>
             </p>
         </div>
@@ -131,30 +136,30 @@
     <div class="right">
         <ul class="account">
             <li class="accountList">
-                <span class="listName">可用盛源链</span>
-                <span class="listMoney rise">123.0000</span>
+                <span class="listName">可用${transactionCurrency.currencyName }</span>
+                <span class="listMoney rise">${userDealCapitalMessage.currencyNumber }</span>
             </li>
             <li class="accountList">
-                <span class="listName">冻结盛源链</span>
-                <span class="listMoney fall">123.0000</span>
+                <span class="listName">冻结${transactionCurrency.currencyName }</span>
+                <span class="listMoney fall">${userDealCapitalMessage.currencyNumberLock }</span>
             </li>
             <li class="accountList">
                 <span class="listName">可用美金</span>
-                <span class="listMoney rise">$123.0000</span>
+                <span class="listMoney rise">$${userDealCapitalMessage.userBalance }</span>
             </li>
             <li class="accountList">
                 <span class="listName">冻结美金</span>
-                <span class="listMoney fall">$123.0000</span>
+                <span class="listMoney fall">$${userDealCapitalMessage.userBalanceLock }</span>
             </li>
             <li class="accountList">
                 <span class="listName">账户总资产</span>
-                <span class="listMoney fall">$123.0000</span>
+                <span class="listMoney fall">$${userDealCapitalMessage.currencyNumberSum }</span>
             </li>
         </ul>
 
         <div class="entrust">
             <p class="entrustTop">
-                <span class="dealPrice">最新成交价：$123.00000</span>
+                <span class="dealPrice">最新成交价：$${standardParameter.nowPrice}</span>
                 <span class="count"><span id="countNum"></span>s后刷新</span>
             </p>
 

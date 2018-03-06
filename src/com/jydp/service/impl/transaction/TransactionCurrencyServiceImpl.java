@@ -6,6 +6,7 @@ import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.ITransactionCurrencyDao;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DTO.TransactionUserDealDTO;
+import com.jydp.entity.VO.StandardParameterVO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.service.IRedisService;
 import com.jydp.service.ITransactionCurrencyService;
@@ -361,5 +362,62 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      */
     public List<TransactionCurrencyDO> listTransactionCurrencyAll(){
         return transactionCurrencyDao.listTransactionCurrencyAll();
+    }
+
+    /**
+     * 根据币种id获取redis中相关币种基准参数
+     * @param currencyId  币种Id
+     * @return  操作成功：返回基准信息，操作失败：返回null
+     */
+    public StandardParameterVO listTransactionCurrencyAll(int currencyId){
+        StandardParameterVO standardParameter = new StandardParameterVO();
+        //当前价
+        if(redisService.getValue(RedisKeyConfig.NOW_PRICE + currencyId) != null){
+            double nowPrice = (double) redisService.getValue(RedisKeyConfig.NOW_PRICE + currencyId);
+            standardParameter.setNowPrice(nowPrice);
+
+        }
+        //买一价
+        if(redisService.getValue(RedisKeyConfig.BUY_ONE_KEY + currencyId) != null){
+            double buyOne = (double) redisService.getValue(RedisKeyConfig.BUY_ONE_KEY + currencyId);
+            standardParameter.setBuyOne(buyOne);
+
+        }
+        //卖一价
+        if(redisService.getValue(RedisKeyConfig.SELL_ONE_KEY + currencyId) != null){
+            double sellOne = (double) redisService.getValue(RedisKeyConfig.SELL_ONE_KEY + currencyId);
+            standardParameter.setSellOne(sellOne);
+
+        }
+        //今日最高价
+        if(redisService.getValue(RedisKeyConfig.TODAY_MAX_PRICE + currencyId) != null){
+            double todayMax = (double) redisService.getValue(RedisKeyConfig.TODAY_MAX_PRICE + currencyId);
+            standardParameter.setTodayMax(todayMax);
+
+        }
+        //今日最低价
+        if(redisService.getValue(RedisKeyConfig.TODAY_MIN_PRICE + currencyId) != null){
+            double todayMin = (double) redisService.getValue(RedisKeyConfig.TODAY_MIN_PRICE + currencyId);
+            standardParameter.setTodayMin(todayMin);
+        }
+
+        //今日涨幅
+        if(redisService.getValue(RedisKeyConfig.TODAY_RANGE + currencyId) != null){
+            double todayRange = (double) redisService.getValue(RedisKeyConfig.TODAY_RANGE + currencyId);
+            standardParameter.setTodayRange(todayRange);
+
+        }
+        //昨日收盘价
+        if(redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + currencyId) != null){
+            double yesterdayPrice = (double) redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + currencyId);
+            standardParameter.setYesterdayPrice(yesterdayPrice);
+        }
+        //24小时成交量
+        if(redisService.getValue(RedisKeyConfig.DAY_TURNOVER + currencyId) != null){
+            double dayTurnove = (double) redisService.getValue(RedisKeyConfig.DAY_TURNOVER + currencyId);
+            standardParameter.setDayTurnove(dayTurnove);
+        }
+
+        return standardParameter;
     }
 }
