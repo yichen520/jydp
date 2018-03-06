@@ -16,6 +16,24 @@ public class StandardParameterVO {
     private double dayTurnove; //24小时成交量
 
     /**
+     * 今日涨幅
+     *
+     * @return the today range
+     */
+    public double getTodayRange() {
+        return todayRange;
+    }
+
+    /**
+     * 今日涨幅
+     *
+     * @param todayRange the today range
+     */
+    public void setTodayRange(double todayRange) {
+        this.todayRange = todayRange;
+    }
+
+    /**
      * 当前成交单价
      *
      * @return the now price
@@ -103,24 +121,6 @@ public class StandardParameterVO {
      */
     public void setTodayMin(double todayMin) {
         this.todayMin = todayMin;
-    }
-
-    /**
-     * 今日涨幅
-     *
-     * @return the today range
-     */
-    public double getTodayRange() {
-        return todayRange;
-    }
-
-    /**
-     * 今日涨幅
-     *
-     * @param todayRange the today range
-     */
-    public void setTodayRange(double todayRange) {
-        this.todayRange = todayRange;
     }
 
     /**
