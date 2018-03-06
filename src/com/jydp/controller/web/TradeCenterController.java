@@ -230,9 +230,11 @@ public class TradeCenterController {
             }
         }
 
-        if(buyPwd.equals("123456")){
+        String pwd = MD5Util.toMd5("123456");
+        boolean resultBoo = userService.validateUserPay(user.getUserAccount(), pwd);
+        if(resultBoo){
             resultJson.setCode(3);
-            resultJson.setMessage("支付密码不能为原始密码");
+            resultJson.setMessage("支付密码不能为原始密码,请修改后操作");
             return resultJson;
         }
 
@@ -387,9 +389,11 @@ public class TradeCenterController {
             }
         }
 
-        if(sellPwd.equals("123456")){
+        String pwd = MD5Util.toMd5("123456");
+        boolean resultBoo = userService.validateUserPay(user.getUserAccount(), pwd);
+        if(resultBoo){
             resultJson.setCode(3);
-            resultJson.setMessage("支付密码不能为原始密码");
+            resultJson.setMessage("支付密码不能为原始密码,请修改后操作");
             return resultJson;
         }
 
