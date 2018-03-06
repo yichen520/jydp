@@ -65,7 +65,6 @@ public class DealRecordController {
             request.setAttribute("totalPageNumber", totalPageNumber);
             request.setAttribute("pendingOrderNo", pendingOrderNo);
             request.setAttribute("dealRecordList", dealRecordList);
-
             request.setAttribute("code", 1);
             request.setAttribute("message", "查询成功");
             return "page/web/recordTrade";

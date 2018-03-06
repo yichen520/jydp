@@ -54,13 +54,7 @@
 		WHERE currencyId = #{currencyId}
 			AND paymentType = #{paymentType}
 			AND pendingStatus IN (1,2)
-		GROUP BY pendingPrice
-		<if test="paymentType == 1 ">
-			DESC
-		</if>
-		<if test="paymentType == 2 ">
-			ASC
-		</if>
+		GROUP BY pendingPrice DESC
 		LIMIT #{num}
 	</select>
 
@@ -176,7 +170,7 @@
 		AND #{dealNumber} + dealNumber <![CDATA[ = ]]> pendingNumber
 	</update>
 
-	<select id="TransactionPendOrder_listPendOrderForWeb" parameterType="java.util.Map" resultType="TransactionPendOrderDO">
+	<select id="TransactionPendOrder_listPendOrderForWeb" parameterType="java.util.Map" resultType="TransactionPendOrderVO">
 		SELECT pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingPrice,
 		pendingNumber, dealNumber, pendingStatus, remark, addTime, endTime, userAccount
 		FROM transaction_pend_order_tab

@@ -14,6 +14,7 @@ import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DTO.TransactionPendOrderDTO;
 import com.jydp.entity.VO.StandardParameterVO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
+import com.jydp.entity.VO.TransactionPendOrderVO;
 import com.jydp.entity.VO.UserDealCapitalMessageVO;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.*;
@@ -71,7 +72,7 @@ public class TradeCenterController {
     @RequestMapping(value = "/show")
     public String show(HttpServletRequest request) {
         UserDealCapitalMessageVO userDealCapitalMessage = new UserDealCapitalMessageVO();
-        List<TransactionPendOrderDO> transactionPendOrderList = null;
+        List<TransactionPendOrderVO> transactionPendOrderList = null;
 
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
         if (!StringUtil.isNotNull(currencyIdStr)) {
@@ -86,7 +87,7 @@ public class TradeCenterController {
         UserSessionBO user = UserWebInterceptor.getUser(request);
         if (user != null) {
             userDealCapitalMessage = userService.countCheckUserAmountForTimer(user.getUserId(), currencyId);
-            transactionPendOrderList = transactionPendOrderService.listPendOrderForWeb(user.getUserId(),currencyId,0, 20);
+            transactionPendOrderList = transactionPendOrderService.listPendOrderForWeb(user.getUserId(),currencyId,0, 10);
         }
 
         //获取币种信息
@@ -553,7 +554,7 @@ public class TradeCenterController {
     @RequestMapping(value = "/entrust.htm", method = RequestMethod.POST)
     public @ResponseBody JsonObjectBO entrust(HttpServletRequest request) {
         JsonObjectBO resultJson = new JsonObjectBO();
-        List<TransactionPendOrderDO> transactionPendOrderList = null;
+        List<TransactionPendOrderVO> transactionPendOrderList = null;
         //获取参数
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
         if (!StringUtil.isNotNull(currencyIdStr)) {
@@ -566,7 +567,7 @@ public class TradeCenterController {
         currencyId = Integer.parseInt(currencyIdStr);
         UserSessionBO user = UserWebInterceptor.getUser(request);
         if (user != null) {
-            transactionPendOrderList = transactionPendOrderService.listPendOrderForWeb(user.getUserId(),currencyId,0, 20);
+            transactionPendOrderList = transactionPendOrderService.listPendOrderForWeb(user.getUserId(),currencyId,0, 10);
         }
 
         JSONObject jsonObject = new JSONObject();

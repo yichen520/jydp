@@ -124,10 +124,9 @@ public interface IUserService {
      * 验证用户信息合法性
      * @param userAccount 用户名
      * @param password 密码
-     * @param userPhone 用户手机号
      * @return 查询成功：返回验证结果; 查询失败：返回null
      */
-    JsonObjectBO validateUserInfo(String userAccount, String password, String userPhone);
+    JsonObjectBO validateUserInfo(String userAccount, String password);
 
     /**
      * 用户注册

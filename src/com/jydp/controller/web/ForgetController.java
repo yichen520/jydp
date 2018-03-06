@@ -1,6 +1,5 @@
 package com.jydp.controller.web;
 
-import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.MD5Util;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
@@ -10,7 +9,6 @@ import com.jydp.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
