@@ -113,12 +113,12 @@
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">卖出价格：</label>
-                    <input type="text" class="entry" placeholder="请输入单个币的买入价" id="sellPrice" name="sellPrice"
+                    <input type="text" class="entry" placeholder="请输入单个币的卖出价" id="sellPrice" name="sellPrice"
                            onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)" maxlength=9/>
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">卖出数量：</label>
-                    <input type="text" class="entry" placeholder="请输入您要买入的该币种数量" id="sellNum" name="sellNum"
+                    <input type="text" class="entry" placeholder="请输入您要卖出的该币种数量" id="sellNum" name="sellNum"
                            onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 4)" maxlength="11"/>
                     <span class="max">当前最大可卖：<span id="sellMax">0</span></span>
                 </p>
