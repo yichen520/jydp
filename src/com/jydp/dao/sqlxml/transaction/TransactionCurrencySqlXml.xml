@@ -188,6 +188,7 @@
         SELECT currencyId, currencyShortName, currencyName, currencyImg
         FROM transaction_currency_tab
         WHERE upStatus IN (2,3)
+        ORDER BY addTime
     </select>
 
     <resultMap id="CurrencyMarketMap" type="TransactionUserDealDTO">
