@@ -239,9 +239,9 @@ public class BackerIdentificationController {
             responseJson.setMessage("参数错误，该认证信息不存在");
             return responseJson;
         }
-        if (userIdentification.getIdentificationStatus() == 2) {
+        if (userIdentification.getIdentificationStatus() != 1) {
             responseJson.setCode(3);
-            responseJson.setMessage("该认证信息已通过");
+            responseJson.setMessage("认证信息状态异常，请刷新页面");
             return responseJson;
         }
 
@@ -262,7 +262,7 @@ public class BackerIdentificationController {
         }
 
         responseJson.setCode(1);
-        responseJson.setMessage("操作失败");
+        responseJson.setMessage("操作成功");
         return responseJson;
     }
 
@@ -308,7 +308,7 @@ public class BackerIdentificationController {
         }
         if (userIdentification.getIdentificationStatus() != 1) {
             responseJson.setCode(3);
-            responseJson.setMessage("该认证信息状态");
+            responseJson.setMessage("认证信息状态异常，请刷新页面");
             return responseJson;
         }
 

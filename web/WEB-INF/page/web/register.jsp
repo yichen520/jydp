@@ -52,11 +52,19 @@
             <p class="registerInput">
                 <label class="popName">手机号码<span class="star">*</span></label>
                <span class="popCode">
-                    <select class="select" id="phoneAreaCode" name="phoneAreaCode">
+                    <span class="select">
+                    <span class="selectCont">${selectedArea}</span>
+                    <img src="<%=path %>/resources/image/web/area.png" alt=""/>
+                    <span class="selectUl">
                         <c:forEach items="${phoneAreaMap}" var="phoneArea">
-                            <option value="${phoneArea.key }">${phoneArea.value }&nbsp;${phoneArea.key }</option>
+                           <span class="selectLi">
+                               <span class="selectName">${phoneArea.value }</span>
+                               <span class="selectNumber">${phoneArea.key }</span>
+                           </span>
                         </c:forEach>
-                    </select>
+                    </span>
+                    </span>
+                <input type="hidden" id="phoneAreaCode" name="phoneAreaCode" value="${selectedArea}"/>
                 <input type="text" class="phone" id="phone" name="phoneNumber" placeholder="绑定的手机号" maxLength="11"
                        onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
                </span>
@@ -93,6 +101,25 @@
 
 
 <script type="text/javascript">
+    $(function(){
+        $('.select').click(function(){
+            $('.selectUl').addClass('selected');
+        });
+        $('.selectLi').click(function(e){
+            e = e || window.event;
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            } else {
+                e.cancelBubble = true;
+            }
+            $('.selectUl').removeClass('selected');
+            $('.selectCont').html( $(this).children('.selectNumber').html());
+            $('#phoneAreaCode').val($('.selectCont').html());
+        });
+        $('.select').mouseleave(function(){
+            $('.selectUl').removeClass('selected');
+        });
+    });
 
     //验证用户账号
     var validateUserBoo = false;
@@ -160,9 +187,15 @@
         }
 
         var phone = $("#phone").val();
+        var regPos = /^\d+(\.\d+)?$/; //非负浮点数
         if (!phone) {
             phoneBoo = false;
             return openTips("请输入您的手机号");
+        }
+
+        if(!regPos.test(phone) || phone.length > 11 || phone.length < 5){
+            phoneBoo = false;
+            return openTips("请输入正确手机号");
         }
 
         time(this);
