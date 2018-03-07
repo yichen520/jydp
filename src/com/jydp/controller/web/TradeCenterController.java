@@ -179,7 +179,7 @@ public class TradeCenterController {
         TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
         if(transactionCurrency == null){
             resultJson.setCode(3);
-            resultJson.setMessage("没有该币种");
+            resultJson.setMessage("币种信息获取失败,请稍候再试");
             return resultJson;
         }
 
@@ -329,7 +329,7 @@ public class TradeCenterController {
         TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
         if(transactionCurrency == null){
             resultJson.setCode(3);
-            resultJson.setMessage("没有该币种");
+            resultJson.setMessage("币种信息获取失败,请稍候再试");
             return resultJson;
         }
 
@@ -462,7 +462,7 @@ public class TradeCenterController {
         TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
         if(transactionCurrency == null){
             resultJson.setCode(3);
-            resultJson.setMessage("没有该币种");
+            resultJson.setMessage("币种信息获取失败,请稍候再试");
             return resultJson;
         }
 
@@ -515,7 +515,7 @@ public class TradeCenterController {
         TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
         if(transactionCurrency == null){
             resultJson.setCode(3);
-            resultJson.setMessage("没有该币种");
+            resultJson.setMessage("币种信息获取失败,请稍候再试");
             return resultJson;
         }
 
