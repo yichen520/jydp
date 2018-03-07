@@ -195,7 +195,10 @@
             success:function(result){
                 passBoo = false;
                 if(result.code == 1) {
-                    $("#backForm").submit();
+                    $(".mask").fadeOut("fast");
+                    $(popObj).fadeOut("fast");
+                    openTips(result.message)
+                    setTimeout(function (){$("#backForm").submit();}, 1000);
                 } else {
                     openTips(result.message);
                 }
@@ -230,7 +233,10 @@
             success:function(result){
                 refuseBoo = false;
                 if(result.code == 1) {
-                    $("#backForm").submit();
+                    $(".mask").fadeOut("fast");
+                    $(popObj).fadeOut("fast");
+                    openTips(result.message)
+                    setTimeout(function (){$("#backForm").submit();}, 1000);
                 } else {
                     openTips(result.message);
                 }
@@ -266,10 +272,10 @@
         $(".close").click(function(){
             $(".bigPic_pop").fadeOut("fast");
         });
-        $(".yes").click(function(){
+        /*$(".yes").click(function(){
             $(".mask").fadeOut("fast");
             $(popObj).fadeOut("fast");
-        });
+        });*/
     });
 
     $(function(){

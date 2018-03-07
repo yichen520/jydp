@@ -7,17 +7,20 @@
 .askSelect{
     width: 90px;
 }
-.time,.account{
+.time{
+    width: 140px;
+}
+.account{
     width: 160px;
 }
 .tableInfo .account{
     text-align: left;
 }
 .money{
-    width: 150px;
+    width: 126px;
 }
 .state{
-    width: 61px;
+    width: 71px;
 }
 .operate{
     width: 280px;
@@ -110,5 +113,6 @@
     width: 240px;
     resize: none;
     height: 60px;
+    font-size: 13px;
     border: 1px solid #ececec;
 }

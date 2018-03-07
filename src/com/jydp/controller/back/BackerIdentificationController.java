@@ -4,7 +4,6 @@ import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.BackerSessionBO;
 import com.jydp.entity.BO.JsonObjectBO;
-import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DO.user.UserIdentificationDO;
 import com.jydp.entity.DO.user.UserIdentificationImageDO;
 import com.jydp.interceptor.BackerWebInterceptor;
@@ -103,7 +102,7 @@ public class BackerIdentificationController {
         }
 
         int pageSize = 20;
-        int totalNumber = userIdentificationService.countUserIdentificationForBacker(userAccount, phoneAreaCode + userPhone,
+        int totalNumber = userIdentificationService.countUserIdentificationForBacker(userAccount, phoneAreaCode, userPhone,
                 userCertType, identificationStatus, startTime, endTime);
 
         int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
@@ -118,7 +117,7 @@ public class BackerIdentificationController {
         List<UserIdentificationDO> userIdentificationList = null;
         if (totalNumber > 0) {
             userIdentificationList = userIdentificationService.listUserIdentificationForBacker(userAccount,
-                    phoneAreaCode + userPhone, userCertType, identificationStatus, startTime, endTime, pageNumber, pageSize);
+                    phoneAreaCode, userPhone, userCertType, identificationStatus, startTime, endTime, pageNumber, pageSize);
         }
 
         request.setAttribute("pageNumber", pageNumber);
@@ -240,42 +239,30 @@ public class BackerIdentificationController {
             responseJson.setMessage("参数错误，该认证信息不存在");
             return responseJson;
         }
+        if (userIdentification.getIdentificationStatus() == 2) {
+            responseJson.setCode(3);
+            responseJson.setMessage("该认证信息已通过");
+            return responseJson;
+        }
 
-        boolean passResult = userIdentificationService.updateUserIdentificationStatus
-                (userIdentification.getId(), 2, DateUtil.getCurrentTime(), remark);
+        boolean passResult = userIdentificationService.
+                passUserIdentification(userIdentification.getId(), userIdentification.getUserId(), remark, 1);
         if (!passResult) {
             responseJson.setCode(5);
             responseJson.setMessage("操作失败");
             return responseJson;
-        } else {
-            responseJson.setCode(1);
-            responseJson.setMessage("操作成功");
-        }
-
-        UserDO userDO = userService.getUserByUserId(userIdentification.getUserId());
-        if (userDO == null) {
-            responseJson.setCode(5);
-            responseJson.setMessage("账户不存在");
-            return responseJson;
-        }
-
-        //启用账号
-        if (userDO.getAccountStatus() == 2) {
-            boolean updateResult = userService.updateUserAccountStatus(userIdentification.getUserId(), 1,2);
-            if (!updateResult) {
-                responseJson.setCode(5);
-                responseJson.setMessage("账号"+ userIdentification.getUserAccount() +"启用失败");
-            }
         }
 
         String messageContent = "您在交易大盘中提交的实名认证信息审核已通过。";
-        passResult = SendMessage.send(userDO.getPhoneNumber(), messageContent);
+        passResult = SendMessage.send(userIdentification.getUserPhone(), messageContent);
         if (!passResult) {
             responseJson.setCode(5);
             responseJson.setMessage("短信发送失败，请拨打电话或发送短信通知用户");
             return responseJson;
         }
 
+        responseJson.setCode(1);
+        responseJson.setMessage("操作失败");
         return responseJson;
     }
 
@@ -319,24 +306,22 @@ public class BackerIdentificationController {
             responseJson.setMessage("参数错误，该认证信息不存在");
             return responseJson;
         }
+        if (userIdentification.getIdentificationStatus() != 1) {
+            responseJson.setCode(3);
+            responseJson.setMessage("该认证信息状态");
+            return responseJson;
+        }
 
-        boolean passResult = userIdentificationService.updateUserIdentificationStatus
-                (userIdentification.getId(), 3, DateUtil.getCurrentTime(), remark);
+        boolean passResult = userIdentificationService.
+                passUserIdentification(userIdentification.getId(), userIdentification.getUserId(), remark, 2);
         if (!passResult) {
             responseJson.setCode(5);
             responseJson.setMessage("操作失败");
             return responseJson;
         }
 
-        UserDO userDO = userService.getUserByUserId(userIdentification.getUserId());
-        if (userDO == null) {
-            responseJson.setCode(5);
-            responseJson.setMessage("账户不存在");
-            return responseJson;
-        }
-
         String messageContent = "您在交易大盘中提交的实名认证信息审核被拒绝。";
-        passResult = SendMessage.send(userDO.getPhoneNumber(), messageContent);
+        passResult = SendMessage.send(userIdentification.getUserPhone(), messageContent);
         if (!passResult) {
             responseJson.setCode(5);
             responseJson.setMessage("短信发送失败，请拨打电话或发送短信通知用户");
