@@ -105,14 +105,14 @@ public class TradeServiceImpl implements ITradeService {
         TransactionPendOrderDO matchOrder = transactionPendOrderService.getLastTransactionPendOrder(0, currencyId, matchPaymentType);
         if(matchOrder == null){
             resultJson.setCode(1);
-            resultJson.setMessage("该挂单已部分交易");
+            resultJson.setMessage("挂单成功");
             return resultJson;
         }
         //如果匹配不上，直接返回false
         if((paymentType == 1 && order.getPendingPrice() < matchOrder.getPendingPrice()) ||
                 (paymentType == 2 && order.getPendingPrice() > matchOrder.getPendingPrice())){
             resultJson.setCode(1);
-            resultJson.setMessage("匹配不到对应的挂单");
+            resultJson.setMessage("挂单成功");
             return resultJson;
         }
 
@@ -270,7 +270,7 @@ public class TradeServiceImpl implements ITradeService {
             userBalance.setCurrencyName(UserBalanceConfig.DOLLAR);
             userBalance.setFromType(UserBalanceConfig.PEND_SUCCESS);
             userBalance.setBalanceNumber(returnMoney);
-            userBalance.setFrozenNumber(-tradeMoney);
+            userBalance.setFrozenNumber(-buyPrice);
             userBalance.setRemark(remark);
             userBalance.setAddTime(curTime);
 

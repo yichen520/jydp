@@ -325,6 +325,8 @@
         document.getElementById("buyPrice").value = "";
         document.getElementById("buyNum").value = "";
         document.getElementById("buyPwd").value = "";
+        document.getElementById("buyMax").value = "";
+        document.getElementById("buyTotal").value = "";
 
         if(buyPrice == null || buyPrice == ""){
             openTips("价格不能为空");
@@ -351,7 +353,7 @@
         }
 
         $.ajax({
-            url: '<%=path%>' + "/userWeb/tradeCenter/buy.htm", //方法路径URL
+            url: '<%=path%>' + "/userWeb/tradeCenter/buy", //方法路径URL
             data:{
                 buyPrice : buyPrice,
                 buyNum : buyNum,
@@ -363,7 +365,9 @@
             async: true, //默认异步调用 (false：同步)
             success: function (result) {
                 openTips(result.message);
-                entrust();
+                if(result.code == 1){
+                    entrust();
+                }
                 resultBoo = false;
             }, error: function () {
                 resultBoo = false;
@@ -388,6 +392,8 @@
         document.getElementById("sellPrice").value = "";
         document.getElementById("sellNum").value = "";
         document.getElementById("sellPwd").value = "";
+        document.getElementById("sellMax").value = "";
+        document.getElementById("sellTotal").value = "";
 
         if(sellPrice == null || sellPrice == ""){
             openTips("价格不能为空");
@@ -414,7 +420,7 @@
         }
 
         $.ajax({
-            url: '<%=path%>' + "/userWeb/tradeCenter/sell.htm", //方法路径URL
+            url: '<%=path%>' + "/userWeb/tradeCenter/sell", //方法路径URL
             data:{
                 sellPrice : sellPrice,
                 sellNum : sellNum,
@@ -426,7 +432,9 @@
             async: true, //默认异步调用 (false：同步)
             success: function (result) {
                 openTips(result.message);
-                entrust();
+                if(result.code == 1){
+                    entrust();
+                }
                 resultBoo = false;
             }, error: function () {
                 resultBoo = false;
@@ -594,7 +602,7 @@
             }
             //刷新成交记录
             reDeal();
-            //获取交易相关价格（基准信息、用户资金信息）
+            //获取交易相关价格（基准信息）
             gainDealPrice();
 
             //刷新挂单记录

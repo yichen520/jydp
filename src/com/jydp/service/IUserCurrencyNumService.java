@@ -28,6 +28,13 @@ public interface IUserCurrencyNumService {
     List<BackerUserCurrencyNumDTO> getUserCurrencyNumByUserIdForBacker (int userId);
 
     /**
+     * 查询用户币数量，带货币名称带货币名称(用户端)
+     * @param userId 用户Id
+     * @return 查询成功：返回用户币数量，查询失败：返回null
+     */
+    List<BackerUserCurrencyNumDTO> getUserCurrencyNumByUserIdForWeb (int userId);
+
+    /**
      * 根据currencyId查询用户币数量
      * @param userId 用户Id
      * @param currencyId 币种Id
