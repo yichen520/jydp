@@ -45,19 +45,23 @@
                         <td class="source">${accountRecord.fromType}</td>
                         <c:if test="${accountRecord.balanceNumber >= 0}">
                             <td class="amount in">
-                                 <c:if test="${accountRecord.balanceNumber > 0}">+</c:if>${accountRecord.balanceNumber}
+                                <c:if test="${accountRecord.balanceNumber > 0}">+</c:if><fmt:formatNumber type="number" value="${accountRecord.balanceNumber}" maxFractionDigits="4"/>
                             </td>
                         </c:if>
                         <c:if test="${accountRecord.balanceNumber < 0}">
-                            <td class="amount pay">${accountRecord.balanceNumber}</td>
+                            <td class="amount pay">
+                                <fmt:formatNumber type="number" value="${accountRecord.balanceNumber}" maxFractionDigits="4"/>
+                            </td>
                         </c:if>
                         <c:if test="${accountRecord.frozenNumber >= 0}">
                             <td class="amount in">
-                                <c:if test="${accountRecord.frozenNumber > 0}">+</c:if>${accountRecord.frozenNumber}
+                                <c:if test="${accountRecord.frozenNumber > 0}">+</c:if><fmt:formatNumber type="number" value="${accountRecord.frozenNumber}" maxFractionDigits="4"/>
                             </td>
                         </c:if>
                         <c:if test="${accountRecord.frozenNumber < 0}">
-                            <td class="amount pay">${accountRecord.frozenNumber}</td>
+                            <td class="amount pay">
+                                <fmt:formatNumber type="number" value="${accountRecord.frozenNumber}" maxFractionDigits="4"/>
+                            </td>
                         </c:if>
                         <td class="mark">${accountRecord.remark}</td>
                     </tr>

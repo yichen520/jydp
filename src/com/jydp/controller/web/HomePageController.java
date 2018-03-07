@@ -97,7 +97,7 @@ public class HomePageController {
 
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
 
-        List<TransactionCurrencyVO> transactionCurrencyVOList = transactionCurrencyService.getTransactionCurrencyListForWeb();
+        List<TransactionCurrencyVO> transactionCurrencyVOList = transactionCurrencyService.getOnlineAndSuspensionCurrencyForWeb();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("transactionCurrencyList",transactionCurrencyVOList);
 

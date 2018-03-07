@@ -7,9 +7,9 @@
 	
 	<insert id="User_insertUser" parameterType="UserDO">
 		INSERT INTO user_tab(userAccount, password, payPassword, phoneAreaCode, phoneNumber, userBalance,
-			userBalanceLock, accountStatus, addTime)
+			userBalanceLock, authenticationStatus, accountStatus, addTime)
 		VALUES (#{userAccount}, #{password}, #{payPassword}, #{phoneAreaCode}, #{phoneNumber}, #{userBalance},
-			#{userBalanceLock}, #{accountStatus}, #{addTime})
+			#{userBalanceLock}, #{authenticationStatus}, #{accountStatus}, #{addTime})
 	</insert>
 	
 	<select id="User_getUserByUserId" parameterType="int" resultType="UserDO">
@@ -83,7 +83,7 @@
 
 	<select id="User_getUserByUserAccount" parameterType="String" resultType="UserDO">
 		SELECT userId, userAccount, phoneAreaCode, phoneNumber, userBalance,
-			userBalanceLock, accountStatus, addTime
+			userBalanceLock, authenticationStatus, accountStatus, addTime
 		FROM user_tab
 		WHERE  userAccount = #{userAccount}
 	</select>
@@ -192,7 +192,7 @@
 		FROM user_tab AS userTab
 		LEFT JOIN
 		(
-			SELECT balanceTab.userId, balanceTab.currencyId
+			SELECT balanceTab.userId, balanceTab.currencyId,
 				SUM(balanceTab.balanceNumber) AS balanceTotal,
 				SUM(balanceTab.frozenNumber) AS frozenTotal
 			FROM user_balance_tab AS balanceTab
