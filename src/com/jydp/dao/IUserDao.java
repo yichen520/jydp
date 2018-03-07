@@ -19,7 +19,7 @@ public interface IUserDao {
      * @param userDO 用户账号
      * @return 新增成功：返回true，新增失败：返回false
      */
-    boolean insertUser (UserDO userDO);
+    UserDO insertUser (UserDO userDO);
 
     /**
      * 查询用户账号

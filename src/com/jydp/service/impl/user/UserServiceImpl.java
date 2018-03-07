@@ -70,7 +70,7 @@ public class UserServiceImpl implements IUserService {
      * @param userDO 用户账号
      * @return 新增成功：返回true，新增失败：返回false
      */
-    public boolean insertUser (UserDO userDO) {
+    public UserDO insertUser (UserDO userDO) {
         return userDao.insertUser(userDO);
     }
 
@@ -238,16 +238,16 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     @Transactional
-    public boolean register(UserDO userDO){
+    public UserDO register(UserDO userDO){
         //用戶信息新增
-        boolean result = userDao.insertUser(userDO);
+        UserDO user = userDao.insertUser(userDO);
 
-        if (result) {
+        if (user != null) {
             //查询出新增用户userId，给用户币数量表添加记录
             userDO = userDao.getUserByUserAccount(userDO.getUserAccount());
             if (userDO == null) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                return false;
+                return null;
             }
             //查询所有币种
             List<TransactionCurrencyVO> transactionCurrencyDOList = transactionCurrencyService.getAllCurrencylistForWeb();
@@ -263,14 +263,14 @@ public class UserServiceImpl implements IUserService {
                     userCurrencyNumDOList.add(userCurrencyNum);
                 }
                 //新增用户币数量记录
-                result = userCurrencyNumService.insertUserCurrencyForWeb(userCurrencyNumDOList);
+                boolean result = userCurrencyNumService.insertUserCurrencyForWeb(userCurrencyNumDOList);
 
                 if (!result) {
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 }
             }
         }
-        return result;
+        return user;
     }
 
     /**

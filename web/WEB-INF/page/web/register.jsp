@@ -84,7 +84,10 @@
         </div>
     </form>
 </div>
-
+<form id="identificationForm" action="<%=path %>/userWeb/identificationController/show" method="post">
+    <input type="hidden" id="userId" name="userId"/>
+    <input type="hidden" id="userAccountIde" name="userAccount"/>
+</form>
 <div class="forgetFoot">盛临九洲版权所有</div>
 
 
@@ -239,7 +242,7 @@
 
         var formData = new FormData(document.getElementById("registerForm"));
         $.ajax({
-            url: '<%=path %>' + "/userWeb/userRegister/register",
+            url: '<%=path %>/userWeb/userRegister/register',
             type:'post',
             data:formData,
             dataType:'json',
@@ -248,7 +251,14 @@
             success:function (result) {
                 if (result.code == 1) {
                     openTips(result.message);
-                    window.location.href = "<%=path%>" + "/userWeb/userLogin/show";
+                    setTimeout(function () {
+                        var obj = result.data;
+                        var userId =obj.userId;
+                        var userAccount = obj.userAccount;
+                        $("#userId").val(userId);
+                        $("#userAccountIde").val(userAccount);
+                        $("#identificationForm").submit();
+                    },2000)
                 } else {
                     openTips(result.message);
                 }

@@ -28,20 +28,19 @@ public class UserDaoImpl implements IUserDao {
     /**
      * 新增用户账号
      * @param userDO 用户账号
-     * @return 新增成功：返回true，新增失败：返回false
+     * @return 新增成功：返回用户实体信息，新增失败：返回false
      */
-    public boolean insertUser (UserDO userDO) {
+    public UserDO insertUser(UserDO userDO) {
         int result = 0;
         try {
             result = sqlSessionTemplate.insert("User_insertUser", userDO);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
-
         if (result > 0) {
-            return true;
+            return userDO;
         } else {
-            return false;
+            return null;
         }
     }
 
