@@ -20,7 +20,7 @@
         </p>
 
         <ul class="levelTwo">
-            <li class="menuInfo"><a id="userMessage" href="<%=path %>/userWeb/userMessage/show.htm" class="personal_pitch">个人信息</a></li>
+            <li class="menuInfo"><a id="userMessage" href="<%=path %>/userWeb/userMessage/show.htm">个人信息</a></li>
             <li class="menuInfo"><a href="#">银行卡绑定</a></li>
         </ul>
     </li>
