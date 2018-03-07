@@ -37,14 +37,14 @@ public interface ITransactionDealRedisDao {
 
 
     /**
-     * 查询24小时总成交数量
+     * 查询今日总成交数量
      * @param date 当前时间戳
      * @return 查询成功：返回总成交数量，查询失败或没有成交量：返回0
      */
     List<TransactionDealPriceDTO> getNowTurnover(Timestamp date);
 
     /**
-     * 查询24小时总交易额
+     * 查询今日总交易额
      * @param date 当前时间戳
      * @return 查询成功：返回总成交金额，查询失败或没有成交额：返回0
      */

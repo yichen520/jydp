@@ -69,24 +69,44 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
     }
 
     /**
-     * 查询24小时总成交数量
+     * 查询今日总成交数量
      * @return 查询成功：返回总成交数量，查询失败或没有成交量：返回0
      */
     public List<TransactionDealPriceDTO> getNowTurnover(){
-        Timestamp date = DateUtil.getCurrentTime();
-        long newDate = date.getTime() - RedisKeyConfig.DAY_TIME;
-        date = DateUtil.longToTimestamp(newDate);
+        long dateLon = DateUtil.lingchenLong();
+        Timestamp date;
+
+        //判断当前时间是否是凌晨至开盘之前
+        long nowDate = DateUtil.getCurrentTimeMillis() - RedisKeyConfig.OPENING_TIME;
+        if(nowDate >= dateLon){
+            dateLon = dateLon + RedisKeyConfig.OPENING_TIME;
+            date = DateUtil.longToTimestamp(dateLon);
+        } else {
+            dateLon = dateLon - RedisKeyConfig.DAY_TIME + RedisKeyConfig.OPENING_TIME;
+            date = DateUtil.longToTimestamp(dateLon);
+
+        }
         return transactionDealRedisDao.getNowTurnover(date);
     }
 
     /**
-     * 查询24小时总交易额
+     * 查询今日总交易额
      * @return 查询成功：返回总成交金额，查询失败或没有成交额：返回0
      */
     public List<TransactionDealPriceDTO> getNowVolumeOfTransaction(){
-        Timestamp date = DateUtil.getCurrentTime();
-        long newDate = date.getTime() - RedisKeyConfig.DAY_TIME;
-        date = DateUtil.longToTimestamp(newDate);
+        long dateLon = DateUtil.lingchenLong();
+        Timestamp date;
+
+        //判断当前时间是否是凌晨至开盘之前
+        long nowDate = DateUtil.getCurrentTimeMillis() - RedisKeyConfig.OPENING_TIME;
+        if(nowDate >= dateLon){
+            dateLon = dateLon + RedisKeyConfig.OPENING_TIME;
+            date = DateUtil.longToTimestamp(dateLon);
+        } else {
+            dateLon = dateLon - RedisKeyConfig.DAY_TIME + RedisKeyConfig.OPENING_TIME;
+            date = DateUtil.longToTimestamp(dateLon);
+
+        }
         return transactionDealRedisDao.getNowVolumeOfTransaction(date);
     }
 

@@ -196,9 +196,9 @@
     </resultMap>
 
     <select id="TransactionCurrency_getNewPriceForWeb" resultMap="CurrencyMarketMap">
-        SELECT t.currencyId, t.transactionPrice AS latestPrice
+        SELECT t.currencyId, MAX(t.transactionPrice) AS latestPrice
         FROM  transaction_deal_redis_tab t,
-        (SELECT currencyId, max(addTime) as lastTime, max(transactionPrice)
+        (SELECT currencyId, MAX(addTime) AS lastTime
         FROM transaction_deal_redis_tab
         GROUP BY currencyId) t2
         WHERE
@@ -224,16 +224,16 @@
     </select>
 
     <select id="TransactionCurrency_getTransactionVolumeForWeb" parameterType="java.sql.Timestamp" resultMap="CurrencyMarketMap">
-        SELECT currencyId, sum( currencyNumber ) AS volume
+        SELECT currencyId, SUM( currencyNumber ) AS volume
         FROM transaction_deal_redis_tab
         WHERE addTime >= #{openTime}
         GROUP BY currencyId
     </select>
 
     <select id="TransactionCurrency_getYesterdayLastPriceForWeb" parameterType="java.util.Map" resultMap="CurrencyMarketMap">
-        SELECT t.currencyId,t.transactionPrice AS yesterdayLastPrice
+        SELECT t.currencyId,MAX(t.transactionPrice) AS yesterdayLastPrice
         FROM
-        transaction_deal_redis_tab t, (SELECT currencyId,max(addTime) as lastTime FROM transaction_deal_redis_tab WHERE addTime >= #{startTime} AND addTime <![CDATA[ < ]]> #{openTime} GROUP BY currencyId) t2
+        transaction_deal_redis_tab t, (SELECT currencyId,MAX(addTime) AS lastTime FROM transaction_deal_redis_tab WHERE addTime >= #{startTime} AND addTime <![CDATA[ < ]]> #{openTime} GROUP BY currencyId) t2
         WHERE
         t.currencyId = t2.currencyId
         AND t.addTime = t2.lastTime
