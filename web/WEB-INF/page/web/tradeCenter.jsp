@@ -83,7 +83,7 @@
                 <p class="buyInput">
                     <label class="tradeName">买入数量：</label>
                     <input type="text" class="entry" placeholder="请输入您要买入的数量" id="buyNum" name="buyNum"
-                           onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 4)" maxlength="11"/>
+                           onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="11"/>
                     <span class="max">当前最大可买：<span id="buyMax">0</span></span>
                 </p>
                 <p class="phoneInput">
@@ -119,7 +119,7 @@
                 <p class="buyInput">
                     <label class="tradeName">卖出数量：</label>
                     <input type="text" class="entry" placeholder="请输入您要卖出的该币种数量" id="sellNum" name="sellNum"
-                           onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 4)" maxlength="11"/>
+                           onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="11"/>
                     <span class="max">当前最大可卖：<span id="sellMax">0</span></span>
                 </p>
                 <p class="phoneInput">
@@ -325,6 +325,8 @@
         document.getElementById("buyPrice").value = "";
         document.getElementById("buyNum").value = "";
         document.getElementById("buyPwd").value = "";
+        document.getElementById("buyMax").value = "";
+        document.getElementById("buyTotal").value = "";
 
         if(buyPrice == null || buyPrice == ""){
             openTips("价格不能为空");
@@ -351,7 +353,7 @@
         }
 
         $.ajax({
-            url: '<%=path%>' + "/userWeb/tradeCenter/buy.htm", //方法路径URL
+            url: '<%=path%>' + "/userWeb/tradeCenter/buy", //方法路径URL
             data:{
                 buyPrice : buyPrice,
                 buyNum : buyNum,
@@ -362,11 +364,6 @@
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (result) {
-                if(result != null && result != ""){
-                    openTips("未登录");
-                    resultBoo = false;
-                    return;
-                }
                 openTips(result.message);
                 if(result.code == 1){
                     entrust();
@@ -395,6 +392,8 @@
         document.getElementById("sellPrice").value = "";
         document.getElementById("sellNum").value = "";
         document.getElementById("sellPwd").value = "";
+        document.getElementById("sellMax").value = "";
+        document.getElementById("sellTotal").value = "";
 
         if(sellPrice == null || sellPrice == ""){
             openTips("价格不能为空");
@@ -421,7 +420,7 @@
         }
 
         $.ajax({
-            url: '<%=path%>' + "/userWeb/tradeCenter/sell.htm", //方法路径URL
+            url: '<%=path%>' + "/userWeb/tradeCenter/sell", //方法路径URL
             data:{
                 sellPrice : sellPrice,
                 sellNum : sellNum,
@@ -432,11 +431,6 @@
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (result) {
-                if(result != null && result != ""){
-                    openTips("未登录");
-                    resultBoo = false;
-                    return;
-                }
                 openTips(result.message);
                 if(result.code == 1){
                     entrust();
