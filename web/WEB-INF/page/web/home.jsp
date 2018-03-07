@@ -57,7 +57,10 @@
                 <td class="money">${transactionUserDeal.sellOnePrice}</td>
                 <td class="money">${transactionUserDeal.volume}</td>
                 <c:if test="${transactionUserDeal.change >= 0 }">
-                    <td class="uplift in">${transactionUserDeal.change}%</td>
+                    <td class="uplift in">
+                        <c:if test="${transactionUserDeal.change > 0 }">+</c:if>
+                            ${transactionUserDeal.change}%
+                    </td>
                 </c:if>
                 <c:if test="${transactionUserDeal.change < 0 }">
                     <td class="uplift minus">${transactionUserDeal.change}%</td>
