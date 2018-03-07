@@ -362,8 +362,15 @@
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (result) {
+                if(result != null && result != ""){
+                    openTips("未登录");
+                    resultBoo = false;
+                    return;
+                }
                 openTips(result.message);
-                entrust();
+                if(result.code == 1){
+                    entrust();
+                }
                 resultBoo = false;
             }, error: function () {
                 resultBoo = false;
@@ -425,8 +432,15 @@
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (result) {
+                if(result != null && result != ""){
+                    openTips("未登录");
+                    resultBoo = false;
+                    return;
+                }
                 openTips(result.message);
-                entrust();
+                if(result.code == 1){
+                    entrust();
+                }
                 resultBoo = false;
             }, error: function () {
                 resultBoo = false;
@@ -594,7 +608,7 @@
             }
             //刷新成交记录
             reDeal();
-            //获取交易相关价格（基准信息、用户资金信息）
+            //获取交易相关价格（基准信息）
             gainDealPrice();
 
             //刷新挂单记录
