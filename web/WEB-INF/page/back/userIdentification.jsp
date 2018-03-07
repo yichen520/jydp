@@ -58,6 +58,7 @@
                             <option value="1">待审核</option>
                             <option value="2">审核通过</option>
                             <option value="3">审核拒绝</option>
+                            <option value="4">未提交</option>
                         </select>
                     </p>
 
