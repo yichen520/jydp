@@ -192,7 +192,7 @@
 		FROM user_tab AS userTab
 		LEFT JOIN
 		(
-			SELECT balanceTab.userId, balanceTab.currencyId
+			SELECT balanceTab.userId, balanceTab.currencyId,
 				SUM(balanceTab.balanceNumber) AS balanceTotal,
 				SUM(balanceTab.frozenNumber) AS frozenTotal
 			FROM user_balance_tab AS balanceTab
