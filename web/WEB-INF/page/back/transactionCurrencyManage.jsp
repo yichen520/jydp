@@ -844,7 +844,7 @@
 
     var mapMatch = {};
     mapMatch['number'] = /[^\d]/g;
-    mapMatch['ENumber'] = /[^\a-\z\A-\Z\d]/g;
+    mapMatch['ENumber'] = /[^\a-\z\A-\Z]/g;
     mapMatch['double'] = true;
     mapMatch['phone'] = /[^\d]/g;
     mapMatch['email'] = /([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;

@@ -369,10 +369,10 @@
         var message = '${message}';
         var transactionPendOrderList = '${transactionPendOrderList}';
         var userSession = '${userSession}';
-
         if(transactionPendOrderList != null && transactionPendOrderList.length > 0 && userSession != null
-             && transactionPendOrderList != ""){
-            $("#tableId").style.display="inline";
+             && transactionPendOrderList != "" && transactionPendOrderList != "[]"){
+            //$("#tableId").style.display="inline";
+            $("#tableId").css("display","block");
         }
 
         if (code != 1 && message != "") {
@@ -1042,7 +1042,7 @@
                 var data = result.data;
                 var dealList = data.transactionPendOrderList;
                 if (dealList != null && dealList.length > 0) {
-                    $("#tableId").show();
+                    $("#tableId").css("display","block");
                     var newChild = "";
 
                     for (var i = 0; i <= dealList.length - 1; i++) {
@@ -1074,7 +1074,8 @@
                     }
                     document.getElementById("entrustRecord").innerHTML = newChild;
                 }else{
-                    $("#tableId").hide();
+                    //$("#tableId").style.display="none";
+                    $("#tableId").css("display","none");
                 }
                 entrustBoo = false;
             }, error: function () {
