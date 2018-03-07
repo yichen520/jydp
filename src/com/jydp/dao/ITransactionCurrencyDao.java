@@ -43,7 +43,7 @@ public interface ITransactionCurrencyDao {
     boolean deleteTransactionCurrencyByCurrencyId(int currencyId);
 
     /**
-     * 获取所有币种信息(web端用户注册时使用)
+     * 获取所有币种信息
      * @return 查询成功：返回币种信息列表；查询失败：返回null
      */
     List<TransactionCurrencyVO> getTransactionCurrencyListForWeb();
@@ -152,5 +152,17 @@ public interface ITransactionCurrencyDao {
      * @return 查询成功：返回各币种信息；查询失败：返回null
      */
     Map<Integer,TransactionUserDealDTO> getYesterdayLastPriceForWeb(Timestamp openTime, Timestamp startTime);
+
+    /**
+     * 查询全部币种信息(web端用户注册时使用)
+     * @return 操作成功：返回币种信息集合，操作失败：返回null
+     */
+    List<TransactionCurrencyVO> getAllCurrencylistForWeb();
+
+    /**
+     * 获取所有上线和停牌币种信息
+     * @return 操作成功：返回币种信息集合，操作失败：返回null
+     */
+    List<TransactionCurrencyVO> getOnlineAndSuspensionCurrencyForWeb();
 
 }

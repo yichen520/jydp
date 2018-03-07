@@ -167,8 +167,14 @@ public interface ITransactionCurrencyService {
     StandardParameterVO listTransactionCurrencyAll(int currencyId);
 
     /**
-     * 获取所有币种信息(web端用户注册时使用)
-     * @return
+     * 查询全部币种信息(web端用户注册时使用)
+     * @return 操作成功：返回币种信息集合，操作失败：返回null
      */
-    List<TransactionCurrencyVO> getAllCurrencyForWeb();
+    List<TransactionCurrencyVO> getAllCurrencylistForWeb();
+
+    /**
+     * 获取所有上线和停牌币种信息
+     * @return 操作成功：返回币种信息集合，操作失败：返回null
+     */
+    List<TransactionCurrencyVO> getOnlineAndSuspensionCurrencyForWeb();
 }
