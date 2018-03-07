@@ -20,6 +20,15 @@
         ORDER BY transactionCurrencyTab.currencyId
     </select>
 
+    <select id="UserCurrencyNum_getUserCurrencyNumByUserIdForWeb" parameterType="int" resultType="BackerUserCurrencyNumDTO">
+        SELECT transactionCurrencyTab.currencyId, transactionCurrencyTab.currencyName, userCurrencyNumTab.currencyNumber, userCurrencyNumTab.currencyNumberLock
+        FROM user_currency_num_tab AS userCurrencyNumTab
+        INNER JOIN transaction_currency_tab AS transactionCurrencyTab ON userCurrencyNumTab.currencyId = transactionCurrencyTab.currencyId
+        WHERE userCurrencyNumTab.userId = #{userId}
+        AND (transactionCurrencyTab.upStatus = 2 or transactionCurrencyTab.upStatus = 3)
+        ORDER BY transactionCurrencyTab.currencyId
+    </select>
+
     <select id="UserCurrencyNum_getUserCurrencyNumByUserIdAndCurrencyId" parameterType="java.util.Map" resultType="UserCurrencyNumDO">
         SELECT userId, currencyId, currencyNumber, currencyNumberLock, addTime
         FROM user_currency_num_tab
