@@ -639,6 +639,9 @@
                 if(result.code != 1 && result.message != null) {
                     pendBoo = false;
                     openTips(result.message);
+                    if(result.code == 5){
+                        setTimeout("returnWebHome()",2000 );
+                    }
                     return;
                 }
                 var data = result.data;
@@ -720,6 +723,10 @@
                 if(result.code != 1 && result.message != null) {
                     dealBoo = false;
                     openTips(result.message);
+                    if(result.code == 5){
+                        setTimeout("returnWebHome()",2000 );
+                    }
+
                     return;
                 }
                 var data = result.data;
@@ -764,9 +771,7 @@
 
     }
 
-
-
-
+    
 
 
 </script>
@@ -1014,6 +1019,10 @@
         });
     }
 
+    //返回首页
+    function returnWebHome(){
+        window.location.href = "<%=path%>" + "/userWeb/homePage/show";
+    }
 </script>
 </body>
 </html>
