@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 import java.sql.Timestamp;
 
 /**
@@ -55,10 +56,24 @@ public class BackerWebInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object controlller) throws Exception {
         BackerSessionBO backerSessionBO = (BackerSessionBO)request.getSession().getAttribute("backerSession");
         if (backerSessionBO == null) {
-            request.setAttribute("code", -1);
-            request.setAttribute("message", "登录过期，请重新登录");
-            request.getRequestDispatcher("/backLogin").forward(request, response);
-            return false;
+            //如果是ajax请求
+            if (request.getHeader("x-requested-with")!= null
+                    && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("code", -1);
+                jsonObject.put("message", "登录过期，请重新登录");
+
+                PrintWriter out = null ;
+                out = response.getWriter();
+                out.append(jsonObject.toString());
+                out.close();
+                return false;
+            } else {
+                request.setAttribute("code", -1);
+                request.setAttribute("message", "登录过期，请重新登录");
+                request.getRequestDispatcher("/backLogin").forward(request, response);
+                return false;
+            }
         }
         return true;
     }
