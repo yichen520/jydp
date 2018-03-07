@@ -20,7 +20,7 @@ public interface IUserService {
      * @param userDO 用户账号
      * @return 新增成功：返回true，新增失败：返回false
      */
-    boolean insertUser (UserDO userDO);
+    UserDO insertUser (UserDO userDO);
 
     /**
      * 查询用户账号
@@ -133,7 +133,7 @@ public interface IUserService {
      * @param userDO 用户注册信息
      * @return 操作成功：返回true; 操作失败：返回false
      */
-    boolean register(UserDO userDO);
+    UserDO register(UserDO userDO);
 
     /**
      * 增加用户余额（后台操作）

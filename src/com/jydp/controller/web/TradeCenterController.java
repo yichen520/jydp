@@ -75,10 +75,13 @@ public class TradeCenterController {
         List<TransactionPendOrderVO> transactionPendOrderList = null;
 
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+
         if (!StringUtil.isNotNull(currencyIdStr)) {
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误");
-            return "page/web/tradeCenter";
+            List<TransactionCurrencyVO> transactionCurrency = transactionCurrencyService.getOnlineAndSuspensionCurrencyForWeb();
+            if(transactionCurrency == null || transactionCurrency.size() <= 0 ){
+                return "redirect:/userWeb/homePage/show";
+            }
+            currencyIdStr = transactionCurrency.get(0).getCurrencyId() + "";
         }
 
         int currencyId = Integer.parseInt(currencyIdStr);
