@@ -100,7 +100,7 @@
                     <span class="service">${transactionCurrency.buyFee }%</span>
                 </p>
 
-                <input type="text" class="buyBtn" value="买&nbsp;入" onfocus="this.blur()" onclick="buyHandle();"/>
+                <input type="text" class="buyBtn" value="买&nbsp;入" onfocus="this.blur()" onclick="buy();"/>
             </div>
 
             <div class="sell">
@@ -136,7 +136,7 @@
                     <span class="service">${transactionCurrency.sellFee }%</span>
                 </p>
 
-                <input type="text" class="sellBtn" value="卖&nbsp;出" onfocus="this.blur()" onclick="sellHandle();"/>
+                <input type="text" class="sellBtn" value="卖&nbsp;出" onfocus="this.blur()" onclick="sell();"/>
             </div>
         </div>
     </div>
@@ -244,7 +244,7 @@
                     <td class="amount">$<fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2"/></td>
                     <td class="amount"><fmt:formatNumber type="number" value="${item.pendingNumber}" maxFractionDigits="4"/></td>
                     <td class="amount rise">$<fmt:formatNumber type="number" value="${item.countPrice}" maxFractionDigits="6"/></td>
-                    <td class="operate"><input type="text" readonly="readonly" value="撤&nbsp;销" class="revoke" onclick="goCancle('${item.pendingOrderNo}')" /></td>
+                    <td class="operate"><input type="text" readonly="readonly" value="撤&nbsp;销" class="revoke" onclick="cancle('${item.pendingOrderNo}')" /></td>
                 </tr>
             </c:forEach>
             </tbody>
@@ -294,6 +294,71 @@
 <div id="helpFooter"></div>
 <div id="footer"></div>
 
+<div class="mask">
+    <div class="mask_content">
+        <div class="buyConfirm">
+            <p class="popTitle">买入提示</p>
+            <p class="popInput">
+                <label class="popName">买入价格：</label>
+                <span class="popInfo" id="buyPriceTips"></span>
+            </p>
+            <p class="popInput">
+                <label class="popName">买入数量：</label>
+                <span class="popInfo" id="buyNumTips" ></span>
+            </p>
+            <p class="popInput">
+                <label class="popName">合计：</label>
+                <span class="popInfo" id="buySumTips" ></span>
+            </p>
+            <p class="popInput">
+                <label class="popName">手续费：</label>
+                <span class="popInfo" >${transactionCurrency.buyFee }%</span>
+            </p>
+
+            <div class="buttons">
+                <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="buyHandle()" />
+            </div>
+        </div>
+
+        <div class="sellConfirm">
+            <p class="popTitle">卖出提示</p>
+            <p class="popInput">
+                <label class="popName">卖出价格：</label>
+                <span class="popInfo" id="sellPriceTips"></span>
+            </p>
+            <p class="popInput">
+                <label class="popName">卖出数量：</label>
+                <span class="popInfo" id="sellNumTips"></span>
+            </p>
+            <p class="popInput">
+                <label class="popName">合计：</label>
+                <span class="popInfo" id="sellSumTips"></span>
+            </p>
+            <p class="popInput">
+                <label class="popName">手续费：</label>
+                <span class="popInfo">${transactionCurrency.sellFee }%</span>
+            </p>
+
+            <div class="buttons">
+                <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="sellHandle()" />
+            </div>
+        </div>
+
+        <div class="revoke_pop">
+            <p class="popTitle">撤销委托</p>
+            <p class="popTips"><img src="<%=path %>/resources/image/web/tips.png" class="tipsImg" />确定撤销该委托内容？</p>
+
+            <div class="buttons">
+                <input type="hidden" id="pendOrderNoCancle" name="pendOrderNoCancle">
+                <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="goCancle()" />
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript" src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" src="<%=path %>/resources/js/loadPageWeb.js"></script>
 <script type="text/javascript" src="<%=path %>/resources/js/simpleTips.js"></script>
@@ -337,41 +402,8 @@
         $("#buyMax").html("0" );
         $("#buyTotal").html("$0");
 
-        if(buyPrice == null || buyPrice == ""){
-            openTips("价格不能为空");
-            resultBoo = false;
-            return;
-        }
-
-        if(buyPrice <= 0){
-            openTips("价格不能小于等于0");
-            resultBoo = false;
-            return;
-        }
-
-        if(buyNum == null || buyNum == ""){
-            openTips("数量不能为空");
-            resultBoo = false;
-            return;
-        }
-
-        if(buyNum <= 0){
-            openTips("数量不能小于等于0");
-            resultBoo = false;
-            return;
-        }
-
-        if(buyPwd == null || buyPwd == ""){
-            openTips("交易密码不能为空");
-            resultBoo = false;
-            return;
-        }
-
-        if(currencyId == null || currencyId == ""){
-            openTips("参数获取错误，请刷新页面重试");
-            resultBoo = false;
-            return;
-        }
+        $(".mask").fadeOut("fast");
+        $(popObj).fadeOut("fast");
 
         $.ajax({
             url: '<%=path%>' + "/userWeb/tradeCenter/buy", //方法路径URL
@@ -416,29 +448,8 @@
         $("#sellMax").html("0");
         $("#sellTotal").html("$0");
 
-        if(sellPrice == null || sellPrice == ""){
-            openTips("价格不能为空");
-            resultBoo = false;
-            return;
-        }
-
-        if(sellNum == null || sellNum == ""){
-            openTips("数量不能为空");
-            resultBoo = false;
-            return;
-        }
-
-        if(sellPwd == null || sellPwd == ""){
-            openTips("交易密码不能为空");
-            resultBoo = false;
-            return;
-        }
-
-        if(currencyId == null || currencyId == ""){
-            openTips("参数获取错误，请刷新页面重试");
-            resultBoo = false;
-            return;
-        }
+        $(".mask").fadeOut("fast");
+        $(popObj).fadeOut("fast");
 
         $.ajax({
             url: '<%=path%>' + "/userWeb/tradeCenter/sell", //方法路径URL
@@ -610,6 +621,119 @@
             $(".sellRecord").show();
             $(".buyRecord").hide();
         })
+    });
+
+    var popObj;
+    $(function(){
+        $(".buyBtn").click(function(){
+            var buyPrice = $("#buyPrice").val();
+            var buyNum = $("#buyNum").val();
+            var buyTotal = $("#buyTotal").html();
+            var buyPwd = $("#buyPwd").val();
+            var currencyId = $("#cucyId").val();
+
+            if(buyPrice == null || buyPrice == ""){
+                openTips("价格不能为空");
+                resultBoo = false;
+                return;
+            }
+
+            if(buyPrice <= 0){
+                openTips("价格不能小于等于0");
+                resultBoo = false;
+                return;
+            }
+
+            if(buyNum == null || buyNum == ""){
+                openTips("数量不能为空");
+                resultBoo = false;
+                return;
+            }
+
+            if(buyNum <= 0){
+                openTips("数量不能小于等于0");
+                resultBoo = false;
+                return;
+            }
+
+            if(buyPwd == null || buyPwd == ""){
+                openTips("交易密码不能为空");
+                resultBoo = false;
+                return;
+            }
+
+            if(currencyId == null || currencyId == ""){
+                openTips("参数获取错误，请刷新页面重试");
+                resultBoo = false;
+                return;
+            }
+
+            $("#buyPriceTips").html("$" + buyPrice );
+            $("#buyNumTips").html(buyNum );
+            $("#buySumTips").html(buyTotal );
+
+            $(".mask").fadeIn();
+            $(".buyConfirm").fadeIn();
+            popObj = ".buyConfirm"
+        });
+        $(".sellBtn").click(function(){
+            var sellPrice = $("#sellPrice").val();
+            var sellNum = $("#sellNum").val();
+            var sellTotal = $("#sellTotal").html();
+            var sellPwd = $("#sellPwd").val();
+            var currencyId = $("#cucyId").val();
+
+            if(sellPrice == null || sellPrice == ""){
+                openTips("价格不能为空");
+                resultBoo = false;
+                return;
+            }
+
+            if(sellPrice <= 0){
+                openTips("价格不能小于等于0");
+                resultBoo = false;
+                return;
+            }
+
+            if(sellNum == null || sellNum == ""){
+                openTips("数量不能为空");
+                resultBoo = false;
+                return;
+            }
+
+            if(sellPwd == null || sellPwd == ""){
+                openTips("交易密码不能为空");
+                resultBoo = false;
+                return;
+            }
+
+            if(currencyId == null || currencyId == ""){
+                openTips("参数获取错误，请刷新页面重试");
+                resultBoo = false;
+                return;
+            }
+
+            $("#sellPriceTips").html("$" + sellPrice );
+            $("#sellNumTips").html(sellNum );
+            $("#sellSumTips").html(sellTotal );
+
+            $(".mask").fadeIn();
+            $(".sellConfirm").fadeIn();
+            popObj = ".sellConfirm"
+        });
+        $(".revoke").click(function(){
+            // $(".mask").fadeIn();
+            // $(".revoke_pop").fadeIn();
+            // popObj = ".revoke_pop"
+        });
+        $(".cancel").click(function(){
+            $(".mask").fadeOut("fast");
+            $(popObj).fadeOut("fast");
+        });
+        $(".yes").click(function(){
+            // $(".mask").fadeOut("fast");
+            // $(popObj).fadeOut("fast");
+        });
     });
 
     var start = 5;
@@ -828,19 +952,31 @@
 
 <script type="text/javascript">
 
+    function cancle(pendOrderNo) {
+        if (pendOrderNo == "" || pendOrderNo == null) {
+            openTips("单号错误");
+            return;
+        }
+
+        $("#pendOrderNoCancle").val(pendOrderNo);
+
+        $(".mask").fadeIn();
+        $(".revoke_pop").fadeIn();
+        popObj = ".revoke_pop"
+    }
+
     var calMoreBoo = false;
-    function goCancle(pendOrderNo) {
+    function goCancle() {
         if (calMoreBoo) {
             return;
         } else {
             calMoreBoo = true;
         }
 
-        if (pendOrderNo == "" || pendOrderNo == null) {
-            calMoreBoo = false;
-            openTips("单号错误");
-            return;
-        }
+        var pendOrderNo = $("#pendOrderNoCancle").val();
+
+        $(".mask").fadeOut("fast");
+        $(popObj).fadeOut("fast");
 
         $.ajax({
             url: '<%=path %>' + "/userWeb/transactionPendOrderController/revoke.htm",
@@ -926,7 +1062,7 @@
                         var pendingNumber = deal.pendingNumber ;
                         var currencyTotalPrice = deal.countPrice;
                         var pendingOrderNo = deal.pendingOrderNo;
-                        var goCancle = "goCancle('"+ pendingOrderNo + "')";
+                        var goCancle = "cancle('"+ pendingOrderNo + "')";
                         newChild += "<tr class='tableInfo'>" +
                             "<td class='time'>" + addTime + "</td>" +
                             "<td class='type " + type + "'>" + paymentType + "</td>" +
