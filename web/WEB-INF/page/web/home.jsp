@@ -108,17 +108,17 @@
     <div class="cooperation">
         <p class="cTitle">合作商家</p>
         <c:forEach items="${systemBusinessesPartnerDOList}" var="partner">
-            <a href="${partner.webLinkUrl}" class="link">
+            <a target="_blank" href="${partner.webLinkUrl}" class="link">
               <p class="company"><img src="${partner.businessesImageUrlFormat}" /><span>${partner.businessesName}</span></p>
             </a>
         </c:forEach>
     </div>
 </div>
-<form id="noticeForm" action="<%=path %>/userWeb/webSystemNotice/showNoticeDetail" method="post">
+<form target="_blank" id="noticeForm" action="<%=path %>/userWeb/webSystemNotice/showNoticeDetail" method="post">
     <input type="hidden" name="noticeId" id="noticeId">
 </form>
 
-<form id="hotTopicForm" action="<%=path %>/userWeb/webSystemHot/showHotDetail" method="post">
+<form target="_blank" id="hotTopicForm" action="<%=path %>/userWeb/webSystemHot/showHotDetail" method="post">
     <input type="hidden" name="hotId" id="hotId">
 </form>
 

@@ -32,7 +32,7 @@ public class TransactionPageTimer {
 		transactionPendOrderCommonService.getPendOrder();
 	}
 
-	/** 组装基准信息参数并存入redis (当前交易价,今日涨跌,今日最高价,今日最低价,24小时成交量)*/
+	/** 组装基准信息参数并存入redis (当前交易价,今日涨跌,今日最高价,今日最低价,今日成交量)*/
 	@Scheduled(cron="0/5 * *  * * ? ")
 	public void standardMessageForRedis(){
 		transactionRedisDealCommonService.standardMessageForRedis();

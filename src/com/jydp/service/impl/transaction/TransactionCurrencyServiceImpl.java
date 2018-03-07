@@ -418,7 +418,7 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
             double yesterdayPrice = Double.parseDouble(redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + currencyId).toString());
             standardParameter.setYesterdayPrice(yesterdayPrice);
         }
-        //24小时成交量
+        //今日小时成交量
         if(redisService.getValue(RedisKeyConfig.DAY_TURNOVER + currencyId) != null){
             double dayTurnove = Double.parseDouble(redisService.getValue(RedisKeyConfig.DAY_TURNOVER + currencyId).toString());
             standardParameter.setDayTurnove(dayTurnove);

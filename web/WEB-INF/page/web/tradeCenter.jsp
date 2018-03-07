@@ -59,7 +59,7 @@
             </p>
             <p class="info">
                 <span class="number price" id="dayTurnove"><fmt:formatNumber type="number" value="${standardParameter.dayTurnove }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
-                <span class="infoName">24小时成交量</span>
+                <span class="infoName">今日成交量</span>
             </p>
         </div>
     </div>
@@ -108,7 +108,7 @@
 
                 <p class="buyInput">
                     <label class="tradeName">可用数量：</label>
-                    <span class="sellAmount fall" id="usableCurrencyNumber">$<fmt:formatNumber type="number"
+                    <span class="sellAmount fall" id="usableCurrencyNumber"><fmt:formatNumber type="number"
                            value="${userDealCapitalMessage.currencyNumber }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
                 </p>
                 <p class="buyInput">
@@ -217,39 +217,41 @@
     </div>
 
     <c:if test="${userSession != null}">
-        <div class="myEntrust">
-            <p class="myTitle">
-                我的委托记录<img src="<%=path %>/resources/image/web/entrust.png" />
-                <a href="<%=path%>/userWeb/transactionPendOrderController/show.htm" class="more">查看更多</a>
-            </p>
-            <table class="table" cellspacing="0 " cellpadding="0" >
-                <tr class="tableTitle">
-                    <td class="time">委托时间</td>
-                    <td class="type">类型</td>
-                    <td class="amount">委托价格</td>
-                    <td class="amount">委托数量</td>
-                    <td class="amount">委托总价</td>
-                    <td class="operate">操作</td>
-                </tr>
-                <tbody id="entrustRecord">
-                <c:forEach items="${transactionPendOrderList}" var="item">
-                    <tr class="tableInfo">
-                        <td class="time"><fmt:formatDate type="time" value="${item.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-                        <c:if test="${item.paymentType == 1}">
-                            <td class="type rise">买入</td>
-                        </c:if>
-                        <c:if test="${item.paymentType == 2}">
-                            <td class="type fall">卖出</td>
-                        </c:if>
-                        <td class="amount">$<fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2"/></td>
-                        <td class="amount"><fmt:formatNumber type="number" value="${item.pendingNumber}" maxFractionDigits="4"/></td>
-                        <td class="amount rise">$<fmt:formatNumber type="number" value="${item.countPrice}" maxFractionDigits="6"/></td>
-                        <td class="operate"><input type="text" value="撤&nbsp;销" class="revoke" onclick="goCancle('${item.pendingOrderNo}')" /></td>
+        <c:if test="${!transactionPendOrderList.isEmpty()}">
+            <div class="myEntrust" id="tableId">
+                <p class="myTitle">
+                    我的委托记录<img src="<%=path %>/resources/image/web/entrust.png" />
+                    <a href="<%=path%>/userWeb/transactionPendOrderController/show.htm" class="more">查看更多</a>
+                </p>
+                <table class="table" cellspacing="0 " cellpadding="0" >
+                    <tr class="tableTitle">
+                        <td class="time">委托时间</td>
+                        <td class="type">类型</td>
+                        <td class="amount">委托价格</td>
+                        <td class="amount">委托数量</td>
+                        <td class="amount">委托总价</td>
+                        <td class="operate">操作</td>
                     </tr>
-                </c:forEach>
-                </tbody>
-            </table>
-        </div>
+                    <tbody id="entrustRecord">
+                    <c:forEach items="${transactionPendOrderList}" var="item">
+                        <tr class="tableInfo">
+                            <td class="time"><fmt:formatDate type="time" value="${item.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+                            <c:if test="${item.paymentType == 1}">
+                                <td class="type rise">买入</td>
+                            </c:if>
+                            <c:if test="${item.paymentType == 2}">
+                                <td class="type fall">卖出</td>
+                            </c:if>
+                            <td class="amount">$<fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2"/></td>
+                            <td class="amount"><fmt:formatNumber type="number" value="${item.pendingNumber}" maxFractionDigits="4"/></td>
+                            <td class="amount rise">$<fmt:formatNumber type="number" value="${item.countPrice}" maxFractionDigits="6"/></td>
+                            <td class="operate"><input type="text" value="撤&nbsp;销" class="revoke" onclick="goCancle('${item.pendingOrderNo}')" /></td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+        </c:if>
     </c:if>
 
     <div class="myDeal">
@@ -325,6 +327,8 @@
         document.getElementById("buyPrice").value = "";
         document.getElementById("buyNum").value = "";
         document.getElementById("buyPwd").value = "";
+        $("#buyMax").html("0" );
+        $("#buyTotal").html("$0");
 
         if(buyPrice == null || buyPrice == ""){
             openTips("价格不能为空");
@@ -332,8 +336,20 @@
             return;
         }
 
+        if(buyPrice <= 0){
+            openTips("价格不能小于等于0");
+            resultBoo = false;
+            return;
+        }
+
         if(buyNum == null || buyNum == ""){
             openTips("数量不能为空");
+            resultBoo = false;
+            return;
+        }
+
+        if(buyNum <= 0){
+            openTips("数量不能小于等于0");
             resultBoo = false;
             return;
         }
@@ -351,7 +367,7 @@
         }
 
         $.ajax({
-            url: '<%=path%>' + "/userWeb/tradeCenter/buy.htm", //方法路径URL
+            url: '<%=path%>' + "/userWeb/tradeCenter/buy", //方法路径URL
             data:{
                 buyPrice : buyPrice,
                 buyNum : buyNum,
@@ -363,7 +379,9 @@
             async: true, //默认异步调用 (false：同步)
             success: function (result) {
                 openTips(result.message);
-                entrust();
+                if(result.code == 1){
+                    entrust();
+                }
                 resultBoo = false;
             }, error: function () {
                 resultBoo = false;
@@ -388,6 +406,8 @@
         document.getElementById("sellPrice").value = "";
         document.getElementById("sellNum").value = "";
         document.getElementById("sellPwd").value = "";
+        $("#sellMax").html("0");
+        $("#sellTotal").html("$0");
 
         if(sellPrice == null || sellPrice == ""){
             openTips("价格不能为空");
@@ -414,7 +434,7 @@
         }
 
         $.ajax({
-            url: '<%=path%>' + "/userWeb/tradeCenter/sell.htm", //方法路径URL
+            url: '<%=path%>' + "/userWeb/tradeCenter/sell", //方法路径URL
             data:{
                 sellPrice : sellPrice,
                 sellNum : sellNum,
@@ -426,7 +446,9 @@
             async: true, //默认异步调用 (false：同步)
             success: function (result) {
                 openTips(result.message);
-                entrust();
+                if(result.code == 1){
+                    entrust();
+                }
                 resultBoo = false;
             }, error: function () {
                 resultBoo = false;
@@ -594,7 +616,7 @@
             }
             //刷新成交记录
             reDeal();
-            //获取交易相关价格（基准信息、用户资金信息）
+            //获取交易相关价格（基准信息）
             gainDealPrice();
 
             //刷新挂单记录
@@ -874,6 +896,7 @@
                 var data = result.data;
                 var dealList = data.transactionPendOrderList;
                 if (dealList != null && dealList.length > 0) {
+                    $("#tableId").show();
                     var newChild = "";
 
                     for (var i = 0; i <= dealList.length - 1; i++) {
@@ -904,6 +927,8 @@
                             "</tr>";
                     }
                     document.getElementById("entrustRecord").innerHTML = newChild;
+                }else{
+                    $("#tableId").hide();
                 }
                 entrustBoo = false;
             }, error: function () {

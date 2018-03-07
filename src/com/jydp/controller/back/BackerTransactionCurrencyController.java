@@ -387,8 +387,7 @@ public class BackerTransactionCurrencyController {
             }
             response.setMessage("停牌成功");
             paymentType = 2;
-        }
-        if (currency.getPaymentType() == 2) {
+        } else {
             //业务功能权限
             boolean havePower = BackerWebInterceptor.validatePower(request, 104008);
             if (!havePower) {

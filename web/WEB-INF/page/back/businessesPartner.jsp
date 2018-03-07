@@ -48,8 +48,8 @@
                         <td class="time"><fmt:formatDate value="${item.addTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                         <td class="name">${item.businessesName}</td>
                         <td class="pic"><img src="${item.businessesImageUrlFormat}" /></td>
-                        <td class="link"><a href="${item.webLinkUrl}">${item.webLinkUrl}</a></td>
-                        <td class="link"><a href="${item.wapLinkUrl}">${item.wapLinkUrl}</a></td>
+                        <td class="link"><a target="_blank" href="${item.webLinkUrl}">${item.webLinkUrl}</a></td>
+                        <td class="link"><a target="_blank" href="${item.wapLinkUrl}">${item.wapLinkUrl}</a></td>
                         <td class="operate">
                             <c:if test="${status.count != 1 || pageNumber != 0}">
                                 <c:if test="${backer_rolePower['112003'] == 112003}">
