@@ -59,7 +59,7 @@
             </p>
             <p class="info">
                 <span class="number price" id="dayTurnove"><fmt:formatNumber type="number" value="${standardParameter.dayTurnove }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
-                <span class="infoName">24小时成交量</span>
+                <span class="infoName">今日成交量</span>
             </p>
         </div>
     </div>
@@ -325,6 +325,8 @@
         document.getElementById("buyPrice").value = "";
         document.getElementById("buyNum").value = "";
         document.getElementById("buyPwd").value = "";
+        $("#buyMax").html("0" );
+        $("#buyTotal").html("$0");
 
         if(buyPrice == null || buyPrice == ""){
             openTips("价格不能为空");
@@ -351,7 +353,7 @@
         }
 
         $.ajax({
-            url: '<%=path%>' + "/userWeb/tradeCenter/buy.htm", //方法路径URL
+            url: '<%=path%>' + "/userWeb/tradeCenter/buy", //方法路径URL
             data:{
                 buyPrice : buyPrice,
                 buyNum : buyNum,
@@ -363,7 +365,9 @@
             async: true, //默认异步调用 (false：同步)
             success: function (result) {
                 openTips(result.message);
-                entrust();
+                if(result.code == 1){
+                    entrust();
+                }
                 resultBoo = false;
             }, error: function () {
                 resultBoo = false;
@@ -388,6 +392,8 @@
         document.getElementById("sellPrice").value = "";
         document.getElementById("sellNum").value = "";
         document.getElementById("sellPwd").value = "";
+        $("#sellMax").html("0");
+        $("#sellTotal").html("$0");
 
         if(sellPrice == null || sellPrice == ""){
             openTips("价格不能为空");
@@ -414,7 +420,7 @@
         }
 
         $.ajax({
-            url: '<%=path%>' + "/userWeb/tradeCenter/sell.htm", //方法路径URL
+            url: '<%=path%>' + "/userWeb/tradeCenter/sell", //方法路径URL
             data:{
                 sellPrice : sellPrice,
                 sellNum : sellNum,
@@ -426,7 +432,9 @@
             async: true, //默认异步调用 (false：同步)
             success: function (result) {
                 openTips(result.message);
-                entrust();
+                if(result.code == 1){
+                    entrust();
+                }
                 resultBoo = false;
             }, error: function () {
                 resultBoo = false;
@@ -594,7 +602,7 @@
             }
             //刷新成交记录
             reDeal();
-            //获取交易相关价格（基准信息、用户资金信息）
+            //获取交易相关价格（基准信息）
             gainDealPrice();
 
             //刷新挂单记录

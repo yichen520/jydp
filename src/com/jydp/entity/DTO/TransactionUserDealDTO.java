@@ -13,7 +13,7 @@ public class TransactionUserDealDTO {
     private double latestPrice; //最新成交价
     private double buyOnePrice; //买一价
     private double sellOnePrice; //卖一价
-    private double volume; //24小时成交量
+    private double volume; //今日成交量
     private double change; //24小时涨跌
     private double yesterdayLastPrice; //昨日最后一笔交易价
     private String currencyImg;  //币种徽标
@@ -153,16 +153,16 @@ public class TransactionUserDealDTO {
     }
 
     /**
-     * 获取 24小时成交量
-     * @return 24小时成交量
+     * 获取 今日成交量
+     * @return 今日成交量
      */
     public double getVolume() {
         return volume;
     }
 
     /**
-     * 设置 24小时成交量
-     * @param volume 24小时成交量
+     * 设置 今日成交量
+     * @param volume 今日成交量
      */
     public void setVolume(double volume) {
         this.volume = volume;

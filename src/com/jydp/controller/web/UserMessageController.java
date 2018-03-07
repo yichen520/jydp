@@ -100,7 +100,7 @@ public class UserMessageController {
         double userBalanceSum = BigDecimalUtil.add(userBalanceNum, userBalanceLockNum);
 
         //查询用户币信息
-        List<BackerUserCurrencyNumDTO> currencyList = userCurrencyNumService.getUserCurrencyNumByUserIdForBacker(user.getUserId());
+        List<BackerUserCurrencyNumDTO> currencyList = userCurrencyNumService.getUserCurrencyNumByUserIdForWeb(user.getUserId());
         if(currencyList == null || currencyList.size()<=0){
             request.setAttribute("code", 2);
             request.setAttribute("message", "未查询到用户相关币种信息");
