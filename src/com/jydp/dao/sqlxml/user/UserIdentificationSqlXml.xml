@@ -26,7 +26,7 @@
 		  AND userCertNo = #{userCertNo}
 	</select>
 
-	<select id="UserIdentification_getUserIdentificationByUserIdLately" parameterType="String" resultType="UserIdentificationDO">
+	<select id="UserIdentification_getUserIdentificationByUserIdLately" parameterType="int" resultType="UserIdentificationDO">
 		SELECT id, userId, userAccount, userName, userPhone, userCertType, userCertNo, identificationStatus, remark, identiTime, addTime
 		FROM user_identification_tab
 		WHERE userId = #{userId}

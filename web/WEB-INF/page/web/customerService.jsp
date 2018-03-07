@@ -45,7 +45,9 @@
                         </c:if>
                         <p class="info">${item.feedbackContent}</p>
                         <p class="time"><fmt:formatDate value="${item.addTime}" pattern="yyyy-MM-dd HH:mm:ss"/></p>
-                        <p class="reply">${item.handleContent}</p>
+                        <c:if test="${item.handleContent != null && item.handleContent != ''}">
+                            <p class="reply">${item.handleContent}</p>
+                        </c:if>
                     </div>
                 </c:forEach>
             </div>
@@ -151,9 +153,21 @@
         });
     }
 
-    $(function(){
-        $(".service").height($(".service").height())
-    });
+    if ($(".service").length > 0) {
+        var height = $(".service")[0].clientHeight;
+        for (var i = 1; i < $(".service").length; i++) {
+            if ($(".service")[i].clientHeight > height) {
+                var height = $(".service")[i].clientHeight
+            }
+        }
+
+        $(function () {
+            $(".service").height(height)
+        });
+
+    }
+
+
 
     var popObj;
     $(function(){
