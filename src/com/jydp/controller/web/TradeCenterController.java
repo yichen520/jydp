@@ -183,15 +183,15 @@ public class TradeCenterController {
             return resultJson;
         }
 
-        if(transactionCurrency.getPaymentType() != 1){
-            resultJson.setCode(5);
-            resultJson.setMessage("该币种不在交易状态");
-            return resultJson;
-        }
-
         if(transactionCurrency.getUpStatus() != 2){
             resultJson.setCode(5);
             resultJson.setMessage("该币种不在上线状态");
+            return resultJson;
+        }
+
+        if(transactionCurrency.getPaymentType() != 1){
+            resultJson.setCode(5);
+            resultJson.setMessage("该币种不在交易状态");
             return resultJson;
         }
 
@@ -333,15 +333,15 @@ public class TradeCenterController {
             return resultJson;
         }
 
-        if(transactionCurrency.getPaymentType() != 1){
-            resultJson.setCode(5);
-            resultJson.setMessage("该币种不在交易状态");
-            return resultJson;
-        }
-
         if(transactionCurrency.getUpStatus() != 2){
             resultJson.setCode(5);
             resultJson.setMessage("该币种不在上线状态");
+            return resultJson;
+        }
+
+        if(transactionCurrency.getPaymentType() != 1){
+            resultJson.setCode(5);
+            resultJson.setMessage("该币种不在交易状态");
             return resultJson;
         }
 
