@@ -529,11 +529,9 @@
         });
     }
 
-
     //去交易
     function dealSkip (currencyId){
         $("#currencyIds").val(currencyId);
-        openTips(currencyId);
         $("#tradeCenters").submit();
     }
 </script>
