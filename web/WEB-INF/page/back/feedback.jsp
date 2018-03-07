@@ -35,7 +35,7 @@
                                maxlength="16" onkeyup="matchUtil(this, 'ENumber')" onblur="matchUtil(this, 'ENumber')"/></p>
                     <p class="condition">反馈标题：
                         <input type="text" class="askInput" id="feedbackTitle" name="feedbackTitle" value="${feedbackTitle}"
-                               maxlength="32" /></p>
+                               maxlength="16" /></p>
                     <p class="condition">处理状态：
                         <select class="askSelect" id="handleStatus" name="handleStatus">
                             <option value="0">全部</option>
