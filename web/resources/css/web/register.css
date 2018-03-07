@@ -117,22 +117,54 @@ input:-webkit-autofill{
 }
 .select{
     float: left;
-    padding-left: 5px;
-    border: none;
+    padding-left: 10px;
     border-right: 1px solid #cccccc;
-    width: 90px;
-    height: 35px;
+    width: 79px;
+    height: 36px;
     font-size: 12px;
     margin-left: -1px;
-    appearance:none;
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    background:url("../../image/web/area.png") no-repeat scroll 70px 15px transparent;
-    background-size: 10px 6px;
-    padding-right:14px;
+    line-height: 35px;
+    position: relative;
+    cursor: pointer;
 }
-select::-ms-expand{
+.select img{
+    float: right;
+    width: 12px;
+    margin: 15px 10px 0 0;
+}
+.selectUl{
     display: none;
+    position: absolute;
+    top: 36px;
+    left: 0;
+    width: 260px;
+    -webkit-box-shadow: 0 5px  16px 2px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 16px 2px rgba(0,0,0,0.1);
+    background-color: #ffffff;
+    z-index: 1;
+    max-height: 186px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.selected{
+    display: block;
+}
+.selectLi{
+    display: block;
+    text-align: left;
+    line-height: 36px;
+    padding: 0 10px;
+    color: #999999;
+}
+.selectLi:hover{
+    color: #333333;
+}
+.selectLi:nth-child(n+2){
+    border-top: 1px solid #ececec;
+}
+.selectNumber{
+    float: right;
+    text-align: right;
 }
 .phone{
     padding-left: 5px;
