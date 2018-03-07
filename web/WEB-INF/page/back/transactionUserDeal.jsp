@@ -97,7 +97,7 @@
                             </c:if>
                             <p>总计：$<fmt:formatNumber type="number" value="${item.currencyTotalPrice }" maxFractionDigits="6"/></p>
                             <c:if test="${item.paymentType != 3}">
-                                <p>手续费：$<fmt:formatNumber type="number" value="${item.feeNumber * item.currencyTotalPrice }" maxFractionDigits="6"/></p>
+                                <p>手续费：$<fmt:formatNumber type="number" value="${item.feeNumber * item.currencyTotalPrice }" maxFractionDigits="8"/></p>
                             </c:if>
                         </td>
                         <c:if test="${item.paymentType == 1}">
