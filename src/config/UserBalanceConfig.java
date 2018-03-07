@@ -23,10 +23,10 @@ public class UserBalanceConfig {
     public static final String SYSTEM_OPERATE = "系统操作";
     /** 挂单成交 */
     public static final String PEND_SUCCESS = "挂单成交";
-    /** 买入委托 */
-    public static final String BUY_ENTRUST = "买入委托";
-    /** 卖出委托 */
-    public static final String SELL_ENTRUST = "卖出委托";
+    /** 买入挂单 */
+    public static final String BUY_ENTRUST = "买入挂单";
+    /** 卖出挂单 */
+    public static final String SELL_ENTRUST = "卖出挂单";
 
 
 }

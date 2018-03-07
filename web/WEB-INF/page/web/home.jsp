@@ -56,7 +56,14 @@
                 <td class="money">${transactionUserDeal.buyOnePrice}</td>
                 <td class="money">${transactionUserDeal.sellOnePrice}</td>
                 <td class="money">${transactionUserDeal.volume}</td>
-                <td class="uplift in">${transactionUserDeal.change}%</td>
+                <c:if test="${transactionUserDeal.change >= 0 }">
+                    <td class="uplift in">
+                        <c:if test="${transactionUserDeal.change > 0 }">+</c:if>${transactionUserDeal.change}%
+                    </td>
+                </c:if>
+                <c:if test="${transactionUserDeal.change < 0 }">
+                    <td class="uplift minus">${transactionUserDeal.change}%</td>
+                </c:if>
                 <td class="operate"><a href="javascript:void(0)" onclick="toTradeCenter(${transactionUserDeal.currencyId})">去交易</a></td>
             </tr>
         </c:forEach>
@@ -73,7 +80,7 @@
                     <li class="listInfo">
                         <a href="javascript:void(0)" onclick="noticeSubmit(${systemNotice.id})" class="link">
                             <span class="noticeTitle">【<span>公告</span>】${systemNotice.noticeTitle}</span>
-                            <span class="time"><fmt:formatDate type="time" value="${systemNotice.addTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></span>
+                            <span class="time"><fmt:formatDate type="time" value="${systemNotice.addTime}" pattern="yyyy-MM-dd"></fmt:formatDate></span>
                         </a>
                     </li>
                 </c:forEach>
@@ -90,7 +97,7 @@
                     <li class="listInfo">
                         <a href="javascript:void(0)" onclick="hotTopicSubmit(${hotTopic.id})" class="link">
                             <span class="noticeTitle">【<span>热门</span>】${hotTopic.noticeTitle}</span>
-                            <span class="time"><fmt:formatDate type="time" value="${hotTopic.addTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></span>
+                            <span class="time"><fmt:formatDate type="time" value="${hotTopic.addTime}" pattern="yyyy-MM-dd"></fmt:formatDate></span>
                         </a>
                     </li>
                 </c:forEach>
@@ -153,6 +160,18 @@
                         if (marketList != null) {
                             for (var i = marketList.length-1; i >=0; i--) {
                                 var transactionUserDeal = marketList[i];
+
+                                //涨幅样式显示
+                                var classStyle = "";
+                                var symbol = "";
+                                if (transactionUserDeal.change >= 0) {
+                                    classStyle = "in";
+                                    if (transactionUserDeal.change > 0){
+                                        symbol = "+"
+                                    }
+                                } else if (transactionUserDeal.change < 0) {
+                                    classStyle = "minus";
+                                }
                                 $(".coinTitle").after(
                                     '<tr class="coinInfo">' +
                                     '<td class="coin">' +
@@ -163,7 +182,7 @@
                                     '<td class="money">' + returnFloat(transactionUserDeal.buyOnePrice) + '</td>' +
                                     '<td class="money">' + returnFloat(transactionUserDeal.sellOnePrice) + '</td>' +
                                     '<td class="money">' + returnFloat(transactionUserDeal.volume) + '</td>' +
-                                    '<td class="uplift in">' + returnFloat(transactionUserDeal.change) + '%</td>' +
+                                    '<td class="uplift '+classStyle+'">' + symbol + returnFloat(transactionUserDeal.change) + '%</td>' +
                                     '<td class="operate"><a href="javascript:void(0)" onclick="toTradeCenter('+transactionUserDeal.currencyId+')">去交易</a></td>' +
                                     '</tr>');
                             }

@@ -262,8 +262,7 @@ public class BackerTransactionCurrencyController {
         String downRangeStr = StringUtil.stringNullHandle(request.getParameter("downRangeUp"));
         String upTimeStr = StringUtil.stringNullHandle(request.getParameter("upTimeUp"));
         if (!StringUtil.isNotNull(currencyIdStr) || !StringUtil.isNotNull(currencyNameStr) || !StringUtil.isNotNull(currencyShortNameStr) || !StringUtil.isNotNull(buyFeeStr)
-                || !StringUtil.isNotNull(sellFeeStr) || !StringUtil.isNotNull(upRangeStr) || !StringUtil.isNotNull(downRangeStr)
-                || !StringUtil.isNotNull(upTimeStr)){
+                || !StringUtil.isNotNull(sellFeeStr) || !StringUtil.isNotNull(upRangeStr) || !StringUtil.isNotNull(downRangeStr)){
             response.setCode(3);
             response.setMessage("参数错误");
             return response;
@@ -281,19 +280,25 @@ public class BackerTransactionCurrencyController {
         sellFee = NumberUtil.doubleFormat(Double.parseDouble(sellFeeStr) / 100, 8);
         upRange = NumberUtil.doubleFormat(Double.parseDouble(upRangeStr) / 100, 8);
         downRange = NumberUtil.doubleFormat(Double.parseDouble(downRangeStr) / 100, 8);
-        upTime = DateUtil.stringToTimestamp(upTimeStr);
-
-        if (upTime.getTime() <= DateUtil.getCurrentTime().getTime()) {
-            response.setCode(3);
-            response.setMessage("执行时间应大于当前时间");
-            return response;
-        }
 
         TransactionCurrencyVO currency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
         if (currency == null) {
             response.setCode(3);
             response.setMessage("币种不存在");
             return response;
+        }
+
+        if (currency.getUpStatus() != 2 && StringUtil.isNotNull(upTimeStr)) {
+            upTime = DateUtil.stringToTimestamp(upTimeStr);
+            if (upTime.getTime() <= DateUtil.getCurrentTime().getTime()) {
+                response.setCode(3);
+                response.setMessage("执行时间应大于当前时间");
+                return response;
+            }
+
+            currency.setPaymentType(2);
+            currency.setUpStatus(1);
+            currency.setUpTime(upTime);
         }
 
         String imageUrl = "";
@@ -322,11 +327,8 @@ public class BackerTransactionCurrencyController {
         currency.setSellFee(sellFee);
         currency.setUpRange(upRange);
         currency.setDownRange(downRange);
-        currency.setPaymentType(2);
-        currency.setUpStatus(1);
         currency.setBackerAccount(backerSession.getBackerAccount());
         currency.setIpAddress(IpAddressUtil.getIpAddress(request));
-        currency.setUpTime(upTime);
 
         boolean result = transactionCurrencyService.updateTransactionCurrency(currency);
         if (result) {

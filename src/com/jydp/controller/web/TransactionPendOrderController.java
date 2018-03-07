@@ -96,6 +96,12 @@ public class TransactionPendOrderController {
             return resultJson;
         }
 
+        if(transactionPendOrder.getUserId() != user.getUserId()){
+            resultJson.setCode(4);
+            resultJson.setMessage("此操作非该挂单本人");
+            return resultJson;
+        }
+
         boolean updateResult = transactionPendOrderService.revokePendOrder(pendingOrderNo);
         if (updateResult) {
             resultJson.setCode(1);

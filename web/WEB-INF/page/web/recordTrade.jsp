@@ -45,13 +45,13 @@
                         <td class="type in">买入</td>
                     </c:if>
                     <c:if test="${dealRecord.paymentType == 2}">
-                        <td class="type in">卖出</td>
+                        <td class="type pay">卖出</td>
                     </c:if>
                     <c:if test="${dealRecord.paymentType == 3}">
-                        <td class="type in">撤销</td>
+                        <td class="type back">撤销</td>
                     </c:if>
                     <td class="amount">${dealRecord.currencyNumber}</td>
-                    <td class="amount">${dealRecord.currencyTotalPrice}</td>
+                    <td class="amount">$${dealRecord.currencyTotalPrice}</td>
                     <td class="time"><fmt:formatDate type="time" value="${dealRecord.addTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
                 </tr>
                 </c:forEach>

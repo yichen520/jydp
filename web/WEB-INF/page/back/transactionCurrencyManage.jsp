@@ -147,7 +147,7 @@
                             <c:if test="${item.upStatus == 1 || item.upStatus == 4}">
                                 <input type="text" value="上&nbsp;线" class="online" onfocus="this.blur()" onclick="goEditUpStatus('${item.currencyId}', 2)"/>
                             </c:if>
-                            <c:if test="${item.upStatus == 2}">
+                            <c:if test="${item.upStatus != 4}">
                                 <input type="text" value="下&nbsp;线" class="offLine" onfocus="this.blur()" onclick="goEditUpStatus('${item.currencyId}', 4)"/>
                             </c:if>
                             <c:if test="${item.paymentType == 2 && item.upStatus == 3}">
@@ -155,7 +155,7 @@
                             </c:if>
                             <input type="text" value="修&nbsp;改" class="change" onfocus="this.blur()"
                                    onclick="goUpdate('${item.currencyId}', '${item.currencyName}','${item.currencyShortName}', '${item.buyFee}', '${item.sellFee}'
-                                           ,'${item.upRange}', '${item.downRange}', '${item.upTimeStr}')"/>
+                                           ,'${item.upRange}', '${item.downRange}', '${item.upTimeStr}', '${item.upStatus}')"/>
                         </td>
                     </tr>
                 </c:forEach>
@@ -319,7 +319,7 @@
                     <input type="text" class="percentage" placeholder="跌停幅度，无限制则填“0”" id="downRangeUp" name="downRangeUp"
                            maxlength="18" onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)"/>%
                 </p>
-                <p class="popInput">
+                <p class="popInput" id="inTime">
                     <label class="popName">上线时间<span class="star">*</span></label>
                     <input placeholder="请选择上线时间" class="askTime entry" id="c_onlineTime"/>
                 </p>
@@ -653,7 +653,7 @@
     }
 
     //去修改页面
-    function goUpdate(currencId, currencyName, currencyShortName, buyFee, sellFee, upRange, downRange, upTime){
+    function goUpdate(currencId, currencyName, currencyShortName, buyFee, sellFee, upRange, downRange, upTime, upStatus){
 
         currencyId = currencId;
 
@@ -664,6 +664,11 @@
         document.getElementById("upRangeUp").value = upRange * 100;
         document.getElementById("downRangeUp").value = downRange * 100;
         document.getElementById("c_onlineTime").value = upTime;
+        if (upStatus == 2) {
+            $("#inTime").hide();
+        } else {
+            $("#inTime").show();
+        }
 
         $(".mask").fadeIn();
         $(".change_pop").fadeIn();
