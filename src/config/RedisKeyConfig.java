@@ -24,9 +24,9 @@ public class RedisKeyConfig {
     public static final String TODAY_RANGE = "todayRange_";
     /** 昨日收盘价（后面需跟上币种id） */
     public static final String YESTERDAY_PRICE  = "yesterdayPrice_";
-    /** 24小时成交量（后面需跟上币种id） */
+    /** 今日小时成交量（后面需跟上币种id） */
     public static final String DAY_TURNOVER = "dayTurnove_";
-    /** 24小时成交额（后面需跟上币种id） */
+    /** 今日成交额（后面需跟上币种id） */
     public static final String DAY_VOLUME_OF_TRANSACTION = "dayTransaction_";
     /** 买入挂单记录key（后面需跟上币种id） */
     public static final String BUY_KEY = "transactionPendOrderBuyList_";
