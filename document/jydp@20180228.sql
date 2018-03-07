@@ -386,6 +386,7 @@ CREATE TABLE `user_identification_tab` (
   `userId` int(11) NOT NULL COMMENT '用户Id',
   `userAccount` varchar(16) NOT NULL COMMENT '用户账号',
   `userName` varchar(16) NOT NULL COMMENT '用户姓名',
+  `phoneAreaCode` varchar(6) NOT NULL COMMENT '手机号区号',
   `userPhone` varchar(20) NOT NULL COMMENT '手机号',
   `userCertNo` varchar(18) NOT NULL COMMENT '证件号码',
   `identificationStatus` tinyint(1) NOT NULL COMMENT '实名认证状态',
@@ -427,6 +428,7 @@ CREATE TABLE `user_tab` (
   `userBalanceLock` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '锁定资产单位(美刀$)',
   `accountStatus` tinyint(1) NOT NULL DEFAULT '1' COMMENT '账号状态：1：启用，2：禁用，-1：删除',
   `addTime` datetime NOT NULL COMMENT '注册时间',
+  `authenticationStatus` tinyint(1) NOT NULL COMMENT '实名认证状态：1：待审核，2：审核通过，3：审核拒绝，4：未提交',
   PRIMARY KEY (`userId`),
   UNIQUE KEY `userAccount` (`userAccount`) USING BTREE,
   UNIQUE KEY `phoneAreaCode, phoneNumber` (`phoneAreaCode`,`phoneNumber`) USING BTREE
