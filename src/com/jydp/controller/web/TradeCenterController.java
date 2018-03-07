@@ -284,7 +284,7 @@ public class TradeCenterController {
 
         if(sellOne > buyPrice || sellOne == 0){
             resultJson.setCode(1);
-            resultJson.setMessage("没有可匹配的挂单");
+            resultJson.setMessage("挂单成功");
             return resultJson;
         }
 
@@ -445,7 +445,7 @@ public class TradeCenterController {
 
         if(buyOne < sellPrice){
             resultJson.setCode(1);
-            resultJson.setMessage("没有可匹配的挂单");
+            resultJson.setMessage("挂单成功");
             return resultJson;
         }
 
