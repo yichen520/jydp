@@ -215,12 +215,14 @@
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (result) {
-                if(result.code == 1) {
-                    document.getElementById("queryPageNumber").value = ${pageNumber };
-                    $("#queryForm").submit();
-                } else {
-                    openTips(result.message);
+                if (result.message != "") {
+                    openTips(message);
                 }
+                if (code == 1){
+                    document.getElementById("queryPageNumber").value = ${pageNumber };
+                    setTimeout(function (){$("#queryForm").submit();}, 2000);
+                }
+
                 resultBoo = false;
             }, error: function () {
                 resultBoo = false;

@@ -443,16 +443,18 @@
             success: function (resultData) {
                 var code = resultData.code;
                 var message = resultData.message;
-                if (code != 1 && message != "") {
-                    addBoo = false;
+                if (message != "") {
                     openTips(message);
-                    return;
+                }
+                if (code == 1){
+                    setTimeout(function (){$("#queryForm").submit();}, 2000);
                 }
 
-                $("#queryForm").submit();
+                addBoo = false;
             },
 
             error: function () {
+                addBoo = false;
                 openTips("数据加载出错，请稍候重试");
             }
         });
@@ -559,16 +561,18 @@
             success: function (resultData) {
                 var code = resultData.code;
                 var message = resultData.message;
-                if (code != 1 && message != "") {
-                    excBoo = false;
+                if (message != "") {
                     openTips(message);
-                    return;
+                }
+                if (code == 1){
+                    setTimeout(function (){$("#queryForm").submit();}, 2000);
                 }
 
-                $("#queryForm").submit();
+                excBoo = false;
             },
 
             error: function () {
+                excBoo = false;
                 openTips("数据加载出错，请稍候重试");
             }
         });
@@ -601,16 +605,18 @@
             success: function (resultData) {
                 var code = resultData.code;
                 var message = resultData.message;
-                if (code != 1 && message != "") {
-                    calBoo = false;
+                if (message != "") {
                     openTips(message);
-                    return;
+                }
+                if (code == 1){
+                    setTimeout(function (){$("#queryForm").submit();}, 2000);
                 }
 
-                $("#queryForm").submit();
+                calBoo = false;
             },
 
             error: function () {
+                calBoo = false;
                 openTips("数据加载出错，请稍候重试");
             }
         });
