@@ -65,17 +65,19 @@ public class UserDaoImpl implements IUserDao {
      * @param phoneAreaCode 手机号区号（可为null）
      * @param phoneNumber 手机号（可为null）
      * @param accountStatus 账号状态，1：启用，2：禁用，查询全部填0
+     * @param authenticationStatus 实名认证状态，1：待审核，2：审核通过，3：审核拒绝， 4：未提交，查询全部填0
      * @param startTime   开始时间(可为null)
      * @param endTime     结束时间(可为null)
      * @return 查询成功：返回用户账户总数，查询失败：返回0
      */
     public int countUserForBacker (String userAccount, String phoneAreaCode, String phoneNumber,
-                                   int accountStatus, Timestamp startTime, Timestamp endTime) {
+                                   int accountStatus, int authenticationStatus, Timestamp startTime, Timestamp endTime) {
         Map<String, Object> map = new HashMap<>();
         map.put("userAccount", userAccount);
         map.put("phoneAreaCode", phoneAreaCode);
         map.put("phoneNumber", phoneNumber);
         map.put("accountStatus", accountStatus);
+        map.put("authenticationStatus", authenticationStatus);
         map.put("startTime", startTime);
         map.put("endTime", endTime);
 
@@ -94,19 +96,21 @@ public class UserDaoImpl implements IUserDao {
      * @param phoneAreaCode 手机号区号（可为null）
      * @param phoneNumber 手机号（可为null）
      * @param accountStatus 账号状态，1：启用，2：禁用，查询全部填0
+     * @param authenticationStatus 实名认证状态，1：待审核，2：审核通过，3：审核拒绝， 4：未提交，查询全部填0
      * @param startTime   开始时间(可为null)
      * @param endTime     结束时间(可为null)
      * @param pageNumber  当前页数
      * @param pageSize    查询条数
      * @return 查询成功：返回用户账户列表，查询失败：返回null
      */
-    public List<UserDO> listUserForBacker (String userAccount, String phoneAreaCode, String phoneNumber, int accountStatus,
+    public List<UserDO> listUserForBacker (String userAccount, String phoneAreaCode, String phoneNumber, int accountStatus, int authenticationStatus,
                                            Timestamp startTime, Timestamp endTime, int pageNumber, int pageSize) {
         Map<String, Object> map = new HashMap<>();
         map.put("userAccount", userAccount);
         map.put("phoneAreaCode", phoneAreaCode);
         map.put("phoneNumber", phoneNumber);
         map.put("accountStatus", accountStatus);
+        map.put("authenticationStatus", authenticationStatus);
         map.put("startTime", startTime);
         map.put("endTime", endTime);
         map.put("startNumber", pageNumber * pageSize);
@@ -137,6 +141,33 @@ public class UserDaoImpl implements IUserDao {
         int result = 0;
         try {
             result = sqlSessionTemplate.update("User_updateUserAccountStatus", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 修改用户账号实名认证状态
+     * @param userId 用户Id
+     * @param authenticationStatus 实名认证状态：1：待审核，2：审核通过，3：审核拒绝，4：未提交
+     * @param oldAuthenticationStatus 原实名认证状态：1：待审核，2：审核通过，3：审核拒绝，4：未提交
+     * @return 修改成功：返回true，修改失败：返回false
+     */
+    public boolean updateUserAuthenticationStatus (int userId, int authenticationStatus, int oldAuthenticationStatus) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("authenticationStatus", authenticationStatus);
+        map.put("oldAuthenticationStatus", oldAuthenticationStatus);
+
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.update("User_updateUserAuthenticationStatus", map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }

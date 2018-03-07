@@ -34,11 +34,13 @@ public interface IUserDao {
      * @param phoneAreaCode 手机号区号（可为null）
      * @param phoneNumber 手机号（可为null）
      * @param accountStatus 账号状态，1：启用，2：禁用，查询全部填0
+     * @param authenticationStatus 实名认证状态，1：待审核，2：审核通过，3：审核拒绝， 4：未提交，查询全部填0
      * @param startTime   开始时间(可为null)
      * @param endTime     结束时间(可为null)
      * @return 查询成功：返回用户账户总数，查询失败：返回0
      */
-    int countUserForBacker (String userAccount, String phoneAreaCode, String phoneNumber, int accountStatus, Timestamp startTime, Timestamp endTime);
+    int countUserForBacker (String userAccount, String phoneAreaCode, String phoneNumber, int accountStatus,
+                            int authenticationStatus, Timestamp startTime, Timestamp endTime);
 
     /**
      * 查询用户账号列表（后台）
@@ -46,14 +48,15 @@ public interface IUserDao {
      * @param phoneAreaCode 手机号区号（可为null）
      * @param phoneNumber 手机号（可为null）
      * @param accountStatus 账号状态，1：启用，2：禁用，查询全部填0
+     * @param authenticationStatus 实名认证状态，1：待审核，2：审核通过，3：审核拒绝， 4：未提交，查询全部填0
      * @param startTime   开始时间(可为null)
      * @param endTime     结束时间(可为null)
      * @param pageNumber  当前页数
      * @param pageSize    查询条数
      * @return 查询成功：返回用户账户列表，查询失败：返回null
      */
-    List<UserDO> listUserForBacker (String userAccount, String phoneAreaCode, String phoneNumber, int accountStatus,
-                                           Timestamp startTime, Timestamp endTime, int pageNumber, int pageSize);
+    List<UserDO> listUserForBacker (String userAccount, String phoneAreaCode, String phoneNumber, int accountStatus, int authenticationStatus,
+                                    Timestamp startTime, Timestamp endTime, int pageNumber, int pageSize);
 
     /**
      * 修改用户账号状态
@@ -63,6 +66,15 @@ public interface IUserDao {
      * @return 修改成功：返回true，修改失败：返回false
      */
     boolean updateUserAccountStatus (int userId, int accountStatus, int oldAccountStatus);
+
+    /**
+     * 修改用户账号实名认证状态
+     * @param userId 用户Id
+     * @param authenticationStatus 实名认证状态：1：待审核，2：审核通过，3：审核拒绝，4：未提交
+     * @param oldAuthenticationStatus 原实名认证状态：1：待审核，2：审核通过，3：审核拒绝，4：未提交
+     * @return 修改成功：返回true，修改失败：返回false
+     */
+    boolean updateUserAuthenticationStatus (int userId, int authenticationStatus, int oldAuthenticationStatus);
 
     /**
      * 修改用户信息

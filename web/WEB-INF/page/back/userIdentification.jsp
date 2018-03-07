@@ -85,7 +85,7 @@
                     <tr class="tableInfo">
                         <td class="time"><fmt:formatDate type="time" value="${item.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                         <td class="account">${item.userAccount}</td>
-                        <td class="tel">${item.userPhone}</td>
+                        <td class="tel">${item.phoneAreaCode}&nbsp;${item.userPhone}</td>
                         <c:if test="${item.userCertType == 1}">
                             <td class="type">身份证</td>
                         </c:if>
