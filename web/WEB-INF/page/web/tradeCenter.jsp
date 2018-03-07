@@ -826,8 +826,9 @@
                     openTips(message);
                     return;
                 }
-                calMoreBoo = false
+
                 entrust();
+                calMoreBoo = false;
 
             },
             error: function () {
