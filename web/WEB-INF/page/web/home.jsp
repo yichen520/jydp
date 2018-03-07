@@ -52,17 +52,17 @@
                     <img src="${transactionUserDeal.currencyImgUrl}" />
                     <span>${transactionUserDeal.currencyName}(${transactionUserDeal.currencyShortName}/USD)</span>
                 </td>
-                <td class="new">${transactionUserDeal.latestPrice}</td>
-                <td class="money">${transactionUserDeal.buyOnePrice}</td>
-                <td class="money">${transactionUserDeal.sellOnePrice}</td>
-                <td class="money">${transactionUserDeal.volume}</td>
+                <td class="new"><fmt:formatNumber type="number" value="${transactionUserDeal.latestPrice}" groupingUsed="FALSE" maxFractionDigits="2"/></td>
+                <td class="money"><fmt:formatNumber type="number" value="${transactionUserDeal.buyOnePrice}" groupingUsed="FALSE" maxFractionDigits="2"/></td>
+                <td class="money"><fmt:formatNumber type="number" value="${transactionUserDeal.sellOnePrice}" groupingUsed="FALSE" maxFractionDigits="2"/></td>
+                <td class="money"><fmt:formatNumber type="number" value="${transactionUserDeal.volume}" groupingUsed="FALSE" maxFractionDigits="2"/></td>
                 <c:if test="${transactionUserDeal.change >= 0 }">
                     <td class="uplift in">
-                        <c:if test="${transactionUserDeal.change > 0 }">+</c:if>${transactionUserDeal.change}%
+                        <c:if test="${transactionUserDeal.change > 0 }">+</c:if><fmt:formatNumber type="number" value="${transactionUserDeal.change}" groupingUsed="FALSE" maxFractionDigits="2"/>%
                     </td>
                 </c:if>
                 <c:if test="${transactionUserDeal.change < 0 }">
-                    <td class="uplift minus">${transactionUserDeal.change}%</td>
+                    <td class="uplift minus"><fmt:formatNumber type="number" value="${transactionUserDeal.change}" groupingUsed="FALSE" maxFractionDigits="2"/>%</td>
                 </c:if>
                 <td class="operate"><a href="javascript:void(0)" onclick="toTradeCenter(${transactionUserDeal.currencyId})">去交易</a></td>
             </tr>
@@ -178,11 +178,11 @@
                                     '<img src="' + transactionUserDeal.currencyImgUrl + '"/>' +
                                     '<span>' + transactionUserDeal.currencyName + '(' + transactionUserDeal.currencyShortName + '/USD)</span>' +
                                     '</td>' +
-                                    '<td class="new">' + returnFloat(transactionUserDeal.latestPrice) + '</td>' +
-                                    '<td class="money">' + returnFloat(transactionUserDeal.buyOnePrice) + '</td>' +
-                                    '<td class="money">' + returnFloat(transactionUserDeal.sellOnePrice) + '</td>' +
-                                    '<td class="money">' + returnFloat(transactionUserDeal.volume) + '</td>' +
-                                    '<td class="uplift '+classStyle+'">' + symbol + returnFloat(transactionUserDeal.change) + '%</td>' +
+                                    '<td class="new">' + parseFloat(transactionUserDeal.latestPrice).toString() + '</td>' +
+                                    '<td class="money">' + parseFloat(transactionUserDeal.buyOnePrice).toString() + '</td>' +
+                                    '<td class="money">' + parseFloat(transactionUserDeal.sellOnePrice).toString() + '</td>' +
+                                    '<td class="money">' + parseFloat(transactionUserDeal.volume).toString() + '</td>' +
+                                    '<td class="uplift '+classStyle+'">' + symbol + parseFloat(transactionUserDeal.change).toString() + '%</td>' +
                                     '<td class="operate"><a href="javascript:void(0)" onclick="toTradeCenter('+transactionUserDeal.currencyId+')">去交易</a></td>' +
                                     '</tr>');
                             }
@@ -191,19 +191,6 @@
                 }
             }
         });
-    }
-
-    //小数位补0
-    function returnFloat(value){
-        var value=Math.round(parseFloat(value)*100)/100;
-        var xsd=value.toString().split(".");
-        if(xsd.length==1){
-            //整数小数位只补一个零
-            value=value.toString()+".0";
-            return value;
-        } else {
-            return value;
-        }
     }
 
     //跳转至系统公告

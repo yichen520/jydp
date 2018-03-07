@@ -137,7 +137,7 @@
     <select id="TransactionCurrency_getTransactionCurrencyMarketForWeb" resultType="TransactionUserDealDTO">
         SELECT currencyId, currencyShortName, currencyName, currencyImg
         FROM transaction_currency_tab
-        WHERE upStatus = 2
+        WHERE upStatus IN (2,3)
     </select>
 
     <resultMap id="CurrencyMarketMap" type="TransactionUserDealDTO">

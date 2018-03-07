@@ -141,6 +141,7 @@ body{
     width: 440px;
     white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 .time{
     float: right;
@@ -178,4 +179,5 @@ body{
     width: 190px;
     white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
