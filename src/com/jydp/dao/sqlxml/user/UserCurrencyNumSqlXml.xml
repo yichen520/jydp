@@ -86,7 +86,7 @@
                 SUM(balanceTab.frozenNumber) AS frozenTotal
             FROM user_balance_tab AS balanceTab, transaction_currency_tab AS transactionCurrencyTab
             WHERE balanceTab.currencyId = transactionCurrencyTab.currencyId
-            GROUP BY balanceTab.userId
+            GROUP BY balanceTab.userId, balanceTab.currencyId
             HAVING balanceTotal != 0 OR frozenTotal != 0
         ) AS balanceTempTab
         ON currencyTab.userId = balanceTempTab.userId
@@ -107,7 +107,7 @@
                 SUM(balanceTab.frozenNumber) AS frozenTotal
             FROM user_balance_tab AS balanceTab, transaction_currency_tab AS transactionCurrencyTab
             WHERE balanceTab.currencyId = transactionCurrencyTab.currencyId
-            GROUP BY balanceTab.userId
+            GROUP BY balanceTab.userId, balanceTab.currencyId
             HAVING balanceTotal != 0 OR frozenTotal != 0
         ) AS balanceTempTab
         ON currencyTab.userId = balanceTempTab.userId
