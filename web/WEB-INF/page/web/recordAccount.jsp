@@ -43,20 +43,14 @@
                         <td class="time"><fmt:formatDate type="time" value="${accountRecord.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                         <td class="coin">${accountRecord.currencyName}</td>
                         <td class="source">${accountRecord.fromType}</td>
-                        <c:if test="${accountRecord.balanceNumber > 0}">
+                        <c:if test="${accountRecord.balanceNumber >= 0}">
                             <td class="amount in">+${accountRecord.balanceNumber}</td>
-                        </c:if>
-                        <c:if test="${accountRecord.balanceNumber == 0}">
-                            <td class="amount">${accountRecord.balanceNumber}</td>
                         </c:if>
                         <c:if test="${accountRecord.balanceNumber < 0}">
                             <td class="amount pay">${accountRecord.balanceNumber}</td>
                         </c:if>
-                        <c:if test="${accountRecord.frozenNumber > 0}">
+                        <c:if test="${accountRecord.frozenNumber >= 0}">
                             <td class="amount in">+${accountRecord.frozenNumber}</td>
-                        </c:if>
-                        <c:if test="${accountRecord.frozenNumber == 0}">
-                            <td class="amount">${accountRecord.frozenNumber}</td>
                         </c:if>
                         <c:if test="${accountRecord.frozenNumber < 0}">
                             <td class="amount pay">${accountRecord.frozenNumber}</td>
