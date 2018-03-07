@@ -1,5 +1,6 @@
 package com.jydp.controller.web;
 
+import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.config.SystemHelpConfig;
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.MD5Util;
@@ -143,17 +144,22 @@ public class RegisterController {
         userDO.setPayPassword(MD5Util.toMd5("123456"));
         userDO.setAccountStatus(2);
         userDO.setAddTime(DateUtil.getCurrentTime());
+        userDO.setAuthenticationStatus(4);
 
-        boolean result = userService.register(userDO);
+        userDO = userService.register(userDO);
 
-
-        if (result) {
+        if (userDO != null) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("userId",userDO.getUserId());
+            jsonObject.put("userAccount",userDO.getUserAccount());
+            responseJson.setData(jsonObject);
             responseJson.setCode(1);
             responseJson.setMessage("注册成功");
         } else {
             responseJson.setCode(2);
             responseJson.setMessage("注册失败");
         }
+
         return responseJson;
     }
 }
