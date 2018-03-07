@@ -216,14 +216,18 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
      * 停，复牌操作
      * @param currencyId  币种Id
      * @param paymentType  交易状态,1:正常，2:停牌
+     * @param backerAccount  后台管理员账号
+     * @param ipAddress  操作时的ip地址
      * @return  操作成功：返回true，操作失败：返回false
      */
-    public boolean updatePaymentType(int currencyId, int paymentType){
+    public boolean updatePaymentType(int currencyId, int paymentType, String backerAccount, String ipAddress){
         int result = 0;
 
         Map<String, Object> map = new HashMap<>();
         map.put("currencyId", currencyId);
         map.put("paymentType", paymentType);
+        map.put("backerAccount", backerAccount);
+        map.put("ipAddress", ipAddress);
 
         try {
             result = sqlSessionTemplate.update("TransactionCurrency_updatePaymentType", map);
@@ -242,14 +246,20 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
      * 上，下线币种操作
      * @param currencyId  币种Id
      * @param upStatus  上线状态,1:待上线,2:上线中,3:停牌,4:已下线
+     * @param backerAccount  后台管理员账号
+     * @param ipAddress  操作时的ip地址
+     * @param upTime  上线时间   下线填空
      * @return  操作成功：返回true，操作失败：返回false
      */
-    public boolean updateUpStatus(int currencyId, int upStatus){
+    public boolean updateUpStatus(int currencyId, int upStatus, String backerAccount, String ipAddress, Timestamp upTime){
         int result = 0;
 
         Map<String, Object> map = new HashMap<>();
         map.put("currencyId", currencyId);
         map.put("upStatus", upStatus);
+        map.put("backerAccount", backerAccount);
+        map.put("ipAddress", ipAddress);
+        map.put("upTime", upTime);
 
         try {
             result = sqlSessionTemplate.update("TransactionCurrency_updateUpStatus", map);

@@ -27,8 +27,9 @@ public class CurrencyExcTimer {
         List<TransactionCurrencyDO> transactionCurrencyDOS = transactionCurrencyService.listTransactionCurrencyAll();
         if (transactionCurrencyDOS != null && transactionCurrencyDOS.size() > 0) {
             for (TransactionCurrencyDO curr: transactionCurrencyDOS) {
-                if (curr.getUpTime().getTime() > DateUtil.getCurrentTime().getTime() && curr.getUpStatus() == 1 && curr.getPaymentType() != 1){
-                    transactionCurrencyService.updateUpStatus(curr.getCurrencyId(), 2);
+                if (curr.getUpTime().getTime() <= DateUtil.getCurrentTime().getTime() && curr.getUpStatus() != 2 && curr.getPaymentType() != 1){
+
+                    transactionCurrencyService.updateUpStatus(curr.getCurrencyId(), 2, null, null, null);
                 }
             }
         }

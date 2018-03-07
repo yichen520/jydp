@@ -28,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -204,6 +205,11 @@ public class BackerTransactionCurrencyController {
                 return response;
             }
             upTime = DateUtil.stringToTimestamp(upTimeStr);
+            if (upTime.getTime() < DateUtil.getCurrentTime().getTime()){
+                response.setCode(3);
+                response.setMessage("上线时间应大于当前时间");
+                return response;
+            }
         }
 
         String imageUrl = "";
@@ -262,8 +268,7 @@ public class BackerTransactionCurrencyController {
         String downRangeStr = StringUtil.stringNullHandle(request.getParameter("downRangeUp"));
         String upTimeStr = StringUtil.stringNullHandle(request.getParameter("upTimeUp"));
         if (!StringUtil.isNotNull(currencyIdStr) || !StringUtil.isNotNull(currencyNameStr) || !StringUtil.isNotNull(currencyShortNameStr) || !StringUtil.isNotNull(buyFeeStr)
-                || !StringUtil.isNotNull(sellFeeStr) || !StringUtil.isNotNull(upRangeStr) || !StringUtil.isNotNull(downRangeStr)
-                || !StringUtil.isNotNull(upTimeStr)){
+                || !StringUtil.isNotNull(sellFeeStr) || !StringUtil.isNotNull(upRangeStr) || !StringUtil.isNotNull(downRangeStr)){
             response.setCode(3);
             response.setMessage("参数错误");
             return response;
@@ -281,19 +286,25 @@ public class BackerTransactionCurrencyController {
         sellFee = NumberUtil.doubleFormat(Double.parseDouble(sellFeeStr) / 100, 8);
         upRange = NumberUtil.doubleFormat(Double.parseDouble(upRangeStr) / 100, 8);
         downRange = NumberUtil.doubleFormat(Double.parseDouble(downRangeStr) / 100, 8);
-        upTime = DateUtil.stringToTimestamp(upTimeStr);
-
-        if (upTime.getTime() <= DateUtil.getCurrentTime().getTime()) {
-            response.setCode(3);
-            response.setMessage("执行时间应大于当前时间");
-            return response;
-        }
 
         TransactionCurrencyVO currency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
         if (currency == null) {
             response.setCode(3);
             response.setMessage("币种不存在");
             return response;
+        }
+
+        if (currency.getUpStatus() != 2 && StringUtil.isNotNull(upTimeStr)) {
+            upTime = DateUtil.stringToTimestamp(upTimeStr);
+            if (upTime.getTime() <= DateUtil.getCurrentTime().getTime()) {
+                response.setCode(3);
+                response.setMessage("执行时间应大于当前时间");
+                return response;
+            }
+
+            currency.setPaymentType(2);
+            currency.setUpStatus(1);
+            currency.setUpTime(upTime);
         }
 
         String imageUrl = "";
@@ -322,11 +333,8 @@ public class BackerTransactionCurrencyController {
         currency.setSellFee(sellFee);
         currency.setUpRange(upRange);
         currency.setDownRange(downRange);
-        currency.setPaymentType(2);
-        currency.setUpStatus(1);
         currency.setBackerAccount(backerSession.getBackerAccount());
         currency.setIpAddress(IpAddressUtil.getIpAddress(request));
-        currency.setUpTime(upTime);
 
         boolean result = transactionCurrencyService.updateTransactionCurrency(currency);
         if (result) {
@@ -392,7 +400,8 @@ public class BackerTransactionCurrencyController {
             paymentType = 1;
         }
 
-        boolean result = transactionCurrencyService.updatePaymentType(currencyId, paymentType);
+        boolean result = transactionCurrencyService.updatePaymentType(currencyId, paymentType,
+                backerSession.getBackerAccount(), IpAddressUtil.getIpAddress(request));
         if (result) {
             response.setCode(1);
         } else {
@@ -453,7 +462,8 @@ public class BackerTransactionCurrencyController {
             return response;
         }
 
-        boolean result = transactionCurrencyService.updateUpStatus(currencyId, upStatus);
+        boolean result = transactionCurrencyService.updateUpStatus(currencyId, upStatus,
+                backerSession.getBackerAccount(), IpAddressUtil.getIpAddress(request), DateUtil.getCurrentTime());
         if (result) {
             response.setCode(1);
         } else {

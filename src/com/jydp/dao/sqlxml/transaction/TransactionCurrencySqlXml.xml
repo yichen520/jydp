@@ -23,12 +23,47 @@
 
 	<update id="TransactionCurrency_updateTransactionCurrency" parameterType="TransactionCurrencyDO">
         UPDATE transaction_currency_tab
-        SET
-            currencyShortName = #{currencyShortName}, currencyName = #{currencyName},
-            currencyImg = #{currencyImg}, buyFee = #{buyFee}, sellFee = #{sellFee},
-            upRange = #{upRange}, downRange = #{downRange}, paymentType = #{paymentType},
-            upStatus = #{upStatus}, backerAccount = #{backerAccount}, ipAddress = #{ipAddress},
-            upTime = #{upTime},  addTime = #{addTime}
+        <set>
+            <if test="currencyShortName != null and currencyShortName != ''">
+                currencyShortName = #{currencyShortName},
+            </if>
+            <if test="currencyName != null and currencyName !=''">
+                currencyName = #{currencyName},
+            </if>
+            <if test="currencyImg != null and currencyImg !=''">
+                currencyImg = #{currencyImg},
+            </if>
+            <if test="backerAccount != null and backerAccount !=''">
+                backerAccount = #{backerAccount},
+            </if>
+            <if test="ipAddress != null and ipAddress !=''">
+                ipAddress = #{ipAddress},
+            </if>
+            <if test="upStatus != 0">
+                upStatus = #{upStatus},
+            </if>
+            <if test="paymentType != 0">
+                paymentType = #{paymentType},
+            </if>
+            <if test="buyFee != 0">
+                buyFee = #{buyFee},
+            </if>
+            <if test="sellFee != 0">
+                sellFee = #{sellFee},
+            </if>
+            <if test="upRange != 0">
+                upRange = #{upRange},
+            </if>
+            <if test="downRange != 0">
+                downRange = #{downRange},
+            </if>
+            <if test="addTime != null">
+                addTime = #{addTime},
+            </if>
+            <if test="upTime != null">
+                upTime = #{upTime},
+            </if>
+        </set>
         WHERE currencyId = #{currencyId}
     </update>
 
@@ -119,12 +154,27 @@
     <update id="TransactionCurrency_updatePaymentType" parameterType="java.util.Map">
         UPDATE transaction_currency_tab
         SET paymentType = #{paymentType}
+            <if test="backerAccount != null and backerAccount !=''">
+                ,backerAccount = #{backerAccount},
+            </if>
+            <if test="ipAddress != null and ipAddress !=''">
+                ipAddress = #{ipAddress}
+            </if>
         WHERE currencyId = #{currencyId}
     </update>
 
     <update id="TransactionCurrency_updateUpStatus" parameterType="java.util.Map">
         UPDATE transaction_currency_tab
         SET upStatus = #{upStatus}
+            <if test="backerAccount != null and backerAccount !=''">
+                ,backerAccount = #{backerAccount}
+            </if>
+            <if test="ipAddress != null and ipAddress !=''">
+                ,ipAddress = #{ipAddress}
+            </if>
+            <if test="upTime != null and upStatus == 2">
+                ,upTime = #{upTime}
+            </if>
         WHERE currencyId = #{currencyId}
     </update>
 
