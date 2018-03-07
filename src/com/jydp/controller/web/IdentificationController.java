@@ -71,6 +71,11 @@ public class IdentificationController {
         request.setAttribute("userAccount", userAccount);
 
         int userId = Integer.parseInt(userIdStr);
+        UserDO userDO = userService.getUserByUserId(userId);
+        if (userDO == null) {
+            return "page/web/login";
+        }
+
         UserIdentificationDO existIdentification = userIdentificationService.getUserIdentificationByUserIdLately(userId);
         if (existIdentification != null) {
             List<UserIdentificationImageDO> userIdentificationImageList =
@@ -177,7 +182,7 @@ public class IdentificationController {
         }*/
 
         int userId = Integer.parseInt(userIdStr);
-        UserIdentificationDO existIdentification = userIdentificationService.getUserIdentificationByUserAccountLately(userAccount);
+        UserIdentificationDO existIdentification = userIdentificationService.getUserIdentificationByUserIdLately(userId);
         if (existIdentification != null) {
             if (existIdentification.getIdentificationStatus() == 1) {
                 responseJson.setCode(5);
@@ -194,6 +199,16 @@ public class IdentificationController {
         if (userDO == null) {
             responseJson.setCode(5);
             responseJson.setMessage("您的账号不存在！");
+            return responseJson;
+        }
+        if (userDO.getAuthenticationStatus() == 1) {
+            responseJson.setCode(5);
+            responseJson.setMessage("您已有认证信息在审核中");
+            return responseJson;
+        }
+        if (userDO.getAuthenticationStatus() == 2) {
+            responseJson.setCode(5);
+            responseJson.setMessage("您已有认证信息通过");
             return responseJson;
         }
 
@@ -263,13 +278,14 @@ public class IdentificationController {
         userIdentificationDO.setUserId(userDO.getUserId());
         userIdentificationDO.setUserAccount(userDO.getUserAccount());  //用户账号
         userIdentificationDO.setUserName(userName);  //用户姓名
-        userIdentificationDO.setUserPhone(userDO.getPhoneAreaCode() + userDO.getPhoneNumber());  //手机号
+        userIdentificationDO.setPhoneAreaCode(userDO.getPhoneAreaCode());  //手机号区号
+        userIdentificationDO.setUserPhone(userDO.getPhoneNumber());  //手机号
         userIdentificationDO.setUserCertType(userCertType);  //证件类型
         userIdentificationDO.setUserCertNo(userCertNo);  //证件号
         userIdentificationDO.setIdentificationStatus(1);
         userIdentificationDO.setAddTime(DateUtil.getCurrentTime());
 
-        boolean insertBoo = userIdentificationService.insertUserIdentificationAndImage(userIdentificationDO, imageUrlList);
+        boolean insertBoo = userIdentificationService.insertUserIdentificationAndImage(userIdentificationDO, imageUrlList, userDO.getAuthenticationStatus());
         if (insertBoo) {
             responseJson.setCode(1);
             responseJson.setMessage("操作成功");

@@ -6,7 +6,6 @@ import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.IUserDao;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.back.BackerHandleUserRecordBalanceDO;
-import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.user.UserBalanceDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
@@ -89,12 +88,14 @@ public class UserServiceImpl implements IUserService {
      * @param phoneAreaCode 手机号区号（可为null）
      * @param phoneNumber 手机号（可为null）
      * @param accountStatus 账号状态，1：启用，2：禁用，查询全部填0
+     * @param authenticationStatus 实名认证状态，1：待审核，2：审核通过，3：审核拒绝， 4：未提交，查询全部填0
      * @param startTime   开始时间(可为null)
      * @param endTime     结束时间(可为null)
      * @return 查询成功：返回用户账户总数，查询失败：返回0
      */
-    public int countUserForBacker (String userAccount, String phoneAreaCode, String phoneNumber, int accountStatus, Timestamp startTime, Timestamp endTime) {
-        return userDao.countUserForBacker(userAccount, phoneAreaCode, phoneNumber, accountStatus, startTime, endTime);
+    public int countUserForBacker (String userAccount, String phoneAreaCode, String phoneNumber, int accountStatus,
+                                   int authenticationStatus, Timestamp startTime, Timestamp endTime) {
+        return userDao.countUserForBacker(userAccount, phoneAreaCode, phoneNumber, accountStatus, authenticationStatus, startTime, endTime);
     }
 
     /**
@@ -103,15 +104,16 @@ public class UserServiceImpl implements IUserService {
      * @param phoneAreaCode 手机号区号（可为null）
      * @param phoneNumber 手机号（可为null）
      * @param accountStatus 账号状态，1：启用，2：禁用，查询全部填0
+     * @param authenticationStatus 实名认证状态，1：待审核，2：审核通过，3：审核拒绝， 4：未提交，查询全部填0
      * @param startTime   开始时间(可为null)
      * @param endTime     结束时间(可为null)
      * @param pageNumber  当前页数
      * @param pageSize    查询条数
      * @return 查询成功：返回用户账户列表，查询失败：返回null
      */
-    public List<UserDO> listUserForBacker (String userAccount, String phoneAreaCode, String phoneNumber, int accountStatus,
-                                    Timestamp startTime, Timestamp endTime, int pageNumber, int pageSize) {
-        return userDao.listUserForBacker(userAccount, phoneAreaCode, phoneNumber, accountStatus, startTime, endTime, pageNumber, pageSize);
+    public List<UserDO> listUserForBacker (String userAccount, String phoneAreaCode, String phoneNumber, int accountStatus, int authenticationStatus,
+                                           Timestamp startTime, Timestamp endTime, int pageNumber, int pageSize) {
+        return userDao.listUserForBacker(userAccount, phoneAreaCode, phoneNumber, accountStatus, authenticationStatus, startTime, endTime, pageNumber, pageSize);
     }
 
     /**
@@ -123,6 +125,17 @@ public class UserServiceImpl implements IUserService {
      */
     public boolean updateUserAccountStatus (int userId, int accountStatus, int oldAccountStatus) {
         return userDao.updateUserAccountStatus(userId, accountStatus, oldAccountStatus);
+    }
+
+    /**
+     * 修改用户账号实名认证状态
+     * @param userId 用户Id
+     * @param authenticationStatus 实名认证状态：1：待审核，2：审核通过，3：审核拒绝，4：未提交
+     * @param oldAuthenticationStatus 原实名认证状态：1：待审核，2：审核通过，3：审核拒绝，4：未提交
+     * @return 修改成功：返回true，修改失败：返回false
+     */
+    public boolean updateUserAuthenticationStatus (int userId, int authenticationStatus, int oldAuthenticationStatus) {
+        return userDao.updateUserAuthenticationStatus(userId, authenticationStatus, oldAuthenticationStatus);
     }
 
     /**

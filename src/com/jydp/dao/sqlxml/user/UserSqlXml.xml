@@ -14,7 +14,7 @@
 	
 	<select id="User_getUserByUserId" parameterType="int" resultType="UserDO">
 		SELECT userId, userAccount, phoneAreaCode, phoneNumber, userBalance,
-			userBalanceLock, accountStatus, addTime
+			userBalanceLock, accountStatus, authenticationStatus, addTime
 		FROM user_tab
 		WHERE userId = #{userId}
 	</select>
@@ -24,6 +24,13 @@
 		SET accountStatus = #{accountStatus}
  		WHERE userId = #{userId}
  		  AND accountStatus = #{oldAccountStatus}
+ 	</update>
+
+	<update id="User_updateUserAuthenticationStatus" parameterType="java.util.Map">
+ 		UPDATE user_tab
+		SET authenticationStatus = #{authenticationStatus}
+ 		WHERE userId = #{userId}
+		  AND authenticationStatus = #{oldAuthenticationStatus}
  	</update>
 
     <update id="User_forgetPayPwd" parameterType="java.util.Map">
@@ -104,6 +111,9 @@
 			<if test="accountStatus > 0">
 				AND accountStatus = #{accountStatus}
 			</if>
+			<if test="authenticationStatus > 0">
+				AND authenticationStatus = #{authenticationStatus}
+			</if>
 			<if test="startTime != null">
 				AND addTime <![CDATA[ >= ]]> #{startTime}
 			</if>
@@ -114,7 +124,7 @@
 	</select>
 
 	<select id="User_listUserForBacker" parameterType="java.util.Map" resultType="UserDO">
-		SELECT  userId, userAccount, phoneAreaCode, phoneNumber, userBalance, userBalanceLock, accountStatus, addTime
+		SELECT  userId, userAccount, phoneAreaCode, phoneNumber, userBalance, userBalanceLock, authenticationStatus, accountStatus, addTime
 		FROM user_tab
 		<where>
 			<if test="userAccount != null and userAccount != '' ">
@@ -128,6 +138,9 @@
 			</if>
 			<if test="accountStatus > 0">
 				AND accountStatus = #{accountStatus}
+			</if>
+			<if test="authenticationStatus > 0">
+				AND authenticationStatus = #{authenticationStatus}
 			</if>
 			<if test="startTime != null">
 				AND addTime <![CDATA[ >= ]]> #{startTime}

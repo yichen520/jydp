@@ -21,7 +21,6 @@ public class UserDO {
     private Timestamp addTime;  //注册时间
     private int authenticationStatus;//用户实名认证状态：1：待审核，2：审核通过，3：审核拒绝， 4：未提交
 
-
     /**
      * 用户Id
      *
@@ -212,7 +211,7 @@ public class UserDO {
     }
 
     /**
-     * 获取实名认证状态
+     * 获取实名认证状态：1：待审核，2：审核通过，3：审核拒绝， 4：未提交
      * @return authenticationStatus 实名认证状态
      */
     public int getAuthenticationStatus() {
@@ -220,7 +219,7 @@ public class UserDO {
     }
 
     /**
-     * 设置实名认证状态
+     * 设置实名认证状态：1：待审核，2：审核通过，3：审核拒绝， 4：未提交
      * @param authenticationStatus 实名认证状态
      */
     public void setAuthenticationStatus(int authenticationStatus) {

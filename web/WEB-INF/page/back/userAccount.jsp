@@ -39,7 +39,17 @@
                             </c:forEach>
                         </select>
                         <input type="text" class="askInput" id="phoneNumber" name="phoneNumber" value="${phoneNumber }"
-                               maxlength="11" onkeyup="matchUtil(this, 'number')" onblur="matchUtil(this, 'number')"/></p>
+                               maxlength="11" onkeyup="matchUtil(this, 'number')" onblur="matchUtil(this, 'number')"/>
+                    </p>
+                    <p class="condition">审核状态：
+                        <select class="askSelect" id="authenticationStatus" name="authenticationStatus">
+                            <option value="0">全部</option>
+                            <option value="1">待审核</option>
+                            <option value="2">审核通过</option>
+                            <option value="3">审核拒绝</option>
+                            <option value="4">未提交</option>
+                        </select>
+                    </p>
                     <p class="condition">账号状态：
                         <select class="askSelect" id="accountStatus" name="accountStatus">
                             <option value="">全部</option>
@@ -71,6 +81,7 @@
                     <td class="money">账户可用余额</td>
                     <td class="money">冻结金额</td>
                     <td class="money">账户总金额</td>
+                    <td class="state">审核状态</td>
                     <td class="state">账号状态</td>
                     <td class="operate">操作</td>
                 </tr>
@@ -79,11 +90,24 @@
                         <td class="time"><fmt:formatDate type="time" value="${user.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                         <td class="account">
                             <p>账号：${user.userAccount}</p>
-                            <p>手机：(${user.phoneAreaCode})${user.phoneNumber}</p>
+                            <p>手机：${user.phoneAreaCode}&nbsp;${user.phoneNumber}</p>
                         </td>
                         <td class="money">$<fmt:formatNumber type="number" value="${user.userBalance }" maxFractionDigits="8"/></td>
                         <td class="money">$<fmt:formatNumber type="number" value="${user.userBalanceLock }" maxFractionDigits="8"/></td>
                         <td class="money">$<fmt:formatNumber type="number" value="${user.userBalance + user.userBalanceLock}" maxFractionDigits="8"/></td>
+                        <c:if test="${user.authenticationStatus == 1}">
+                            <td class="state">待审核</td>
+                        </c:if>
+                        <c:if test="${user.authenticationStatus == 2}">
+                            <td class="state">审核通过</td>
+                        </c:if>
+                        <c:if test="${user.authenticationStatus == 3}">
+                            <td class="state">审核拒绝</td>
+                        </c:if>
+                        <c:if test="${user.authenticationStatus == 4}">
+                            <td class="state">未提交</td>
+                        </c:if>
+
                         <c:if test="${user.accountStatus == 1}">
                             <td class="state">启用</td>
                         </c:if>
@@ -222,6 +246,11 @@
         });
         $("#phoneAreaCode option").each(function(){
             if($(this).val()=='${phoneAreaCode}'){
+                $(this).attr('selected',true);
+            }
+        });
+        $("#authenticationStatus option").each(function(){
+            if($(this).val()=='${authenticationStatus}'){
                 $(this).attr('selected',true);
             }
         });
@@ -452,6 +481,7 @@
         var userAccount = $("#userAccount").val();
         var phoneAreaCode = $("#phoneAreaCode").val();
         var phoneNumber = $("#phoneNumber").val();
+        var authenticationStatus = $("#authenticationStatus").val();
         var accountStatus = $("#accountStatus").val();
 
         $.ajax({
@@ -466,6 +496,7 @@
                 userAccount : userAccount,
                 phoneAreaCode : phoneAreaCode,
                 phoneNumber : phoneNumber,
+                authenticationStatus : authenticationStatus,
                 accountStatus : accountStatus
             },
             success:function(result){

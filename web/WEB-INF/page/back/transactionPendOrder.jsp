@@ -219,8 +219,9 @@
                     openTips(message);
                 }
                 if (code == 1){
+                    $(".mask").fadeOut("fast");
                     document.getElementById("queryPageNumber").value = ${pageNumber };
-                    setTimeout(function (){$("#queryForm").submit();}, 2000);
+                    setTimeout(function (){$("#queryForm").submit();}, 1000);
                 }
 
                 resultBoo = false;
