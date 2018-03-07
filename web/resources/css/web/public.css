@@ -176,6 +176,7 @@ input:-webkit-autofill{
     padding: 0 5px;
     width: 157px;
     height: 45px;
+    text-align: left;
     font-size: 13px;
     color: #999999;
 }
