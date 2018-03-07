@@ -531,13 +531,13 @@ public class BackerUserAccountController {
                 if (user.getAuthenticationStatus() == 1) {
                     cell.setCellValue("未审核");
                 }
-                if (user.getAuthenticationStatus() == 2) {
+                if (user.getAccountStatus() == 2) {
                     cell.setCellValue("审核拒绝");
                 }
-                if (user.getAuthenticationStatus() == 3) {
+                if (user.getAccountStatus() == 3) {
                     cell.setCellValue("审核通过");
                 }
-                if (user.getAuthenticationStatus() == 4) {
+                if (user.getAccountStatus() == 4) {
                     cell.setCellValue("未提交");
                 }
 
