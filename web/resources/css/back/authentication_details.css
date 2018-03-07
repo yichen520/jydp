@@ -35,9 +35,9 @@
 }
 .bigPic_pop{
     display: none;
-    position: fixed;
-    top: 10px;
-    left: 700px;
+    position: absolute;
+    top: -30px;
+    left: 650px;
     z-index:996;
     width:500px;
     margin:70px  auto;

@@ -95,12 +95,16 @@
 
     }
 
+    var pic = $('.pic').attr('src');
     $(".file").change(function () {
+        if(this.files[0] == undefined){
+            $(this).next().attr('src',pic);
+            return;
+        }
         var check = checkFileImage(this);
         if(!check){
             return;
         }
-
         var objUrl = getObjectURL(this.files[0]) ;
         if (objUrl) {
             $(this).parent().find("img").attr("src", objUrl)
