@@ -108,7 +108,7 @@
 
                 <p class="buyInput">
                     <label class="tradeName">可用数量：</label>
-                    <span class="sellAmount fall" id="usableCurrencyNumber">$<fmt:formatNumber type="number"
+                    <span class="sellAmount fall" id="usableCurrencyNumber"><fmt:formatNumber type="number"
                            value="${userDealCapitalMessage.currencyNumber }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
                 </p>
                 <p class="buyInput">
