@@ -193,11 +193,19 @@
             <p class="popInput">
                 <label class="popName">手机号<span class="star">*</span>：</label>
                 <span class="popCode">
-                    <select class="areTel" id="areaCode" >
+                    <span class="select">
+                    <span class="selectCont">0086</span>
+                    <img src="<%=path %>/resources/image/web/area.png" alt=""/>
+                    <span class="selectUl">
                         <c:forEach items="${phoneAreaMap}" var="phoneArea">
-                            <option value="${phoneArea.key }">${phoneArea.value }&nbsp;${phoneArea.key }</option>
+                           <span class="selectLi">
+                               <span class="selectName">${phoneArea.value }</span>
+                               <span class="selectNumber">${phoneArea.key }</span>
+                           </span>
                         </c:forEach>
-                    </select>
+                    </span>
+                </span>
+
                     <input type="text" class="telNumber" placeholder="您的11位手机号" maxlength="11" id="bindingMobile"
                            onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
                 </span>
@@ -265,11 +273,21 @@
                 return;
             }
 
+            if(passwordPop.length < 6){
+                openTips("原密码长度不足！");
+                return;
+            }
+            
             if(newPasswordPop == ""){
                 openTips("请输入新密码");
                 return;
             }
 
+            if(newPasswordPop.length < 6){
+                openTips("新密码长度不足！");
+                return;
+            }
+            
             if(newPasswordPop == "123456"){
                 openTips("不可设为初始密码");
                 return;
@@ -334,6 +352,11 @@
                 return;
             }
 
+            if(newPasswordTel.length <6){
+                openTips("新密码长度不足！");
+                return;
+            }
+            
             if(newPasswordTel == "123456"){
                 openTips("不可设为初始密码");
                 return;
@@ -349,6 +372,11 @@
                 return;
             }
 
+            if(validateCodeTel.length != 6){
+                openTips("验证码为6位");
+                return;
+            }
+            
             if(newPasswordTel != repPasswordTel){
                 openTips("两次密码不一致");
                 return;
@@ -406,11 +434,21 @@
             return;
         }
 
+        if(password.length < 6){
+            openTips("原密码长度不足！");
+            return;
+        }
+        
         if(newPassword == ""){
             openTips("请输入新密码");
             return;
         }
 
+        if(newPassword.length < 6){
+            openTips("新密码长度不足！");
+            return;
+        }
+        
         if(repPassword == ""){
             openTips("请您输入确认密码");
             return;
@@ -472,21 +510,31 @@
             return;
         }
 
-        if(!regPos.test(bindingMobile) || bindingMobile.length > 11){
+        if(!regPos.test(bindingMobile) || bindingMobile.length > 11 || bindingMobile.length < 5){
             openTips("请输入正确手机号");
             return;
         }
-
+        
         if(verifyCode == ""){
             openTips("请输入验证码");
             return;
         }
 
+        if(verifyCode.length < 6){
+            openTips("验证码为六位");
+            return;
+        }
+        
         if(phonePassword == ""){
             openTips("请输入登录密码");
             return;
         }
 
+        if(phonePassword.length < 6){
+            openTips("登录密码长度不足！");
+            return;
+        }
+        
         if(updatePhoneNumberBoo){
             openTips("系统正在更新绑定手机号，请稍后");
             return;
@@ -578,6 +626,26 @@
         })
     });
 
+    $(function(){
+        $('.select').click(function(){
+            $('.selectUl').addClass('selected');
+        });
+        $('.selectLi').click(function(e){
+            e = e || window.event;
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            } else {
+                e.cancelBubble = true;
+            }
+            $('.selectUl').removeClass('selected');
+            $('.selectCont').html( $(this).children('.selectNumber').html());
+        });
+        $('.select').mouseleave(function(){
+            $('.selectUl').removeClass('selected');
+        });
+    });
+
+
     var wait=60;
     function time(o) {
         if (wait == 0) {
@@ -594,7 +662,7 @@
                     return;
                 }
 
-                if(!regPos.test(bindingMobile) || bindingMobile.length > 11){
+                if(!regPos.test(bindingMobile) || bindingMobile.length > 11 || bindingMobile.length < 5){
                     openTips("请输入正确手机号");
                     return;
                 }

@@ -465,7 +465,9 @@
                     openTips(message);
                 }
                 if (code == 1){
-                    setTimeout(function (){$("#queryForm").submit();}, 2000);
+                    $(".mask").fadeOut("fast");
+                    $(popObj).fadeOut("fast");
+                    setTimeout(function (){$("#queryForm").submit();}, 1000);
                 }
                 edUpBoo = false;
             },
@@ -527,7 +529,9 @@
                     openTips(message);
                 }
                 if (code == 1){
-                    setTimeout(function (){$("#queryForm").submit();}, 2000);
+                    $(".mask").fadeOut("fast");
+                    $(popObj).fadeOut("fast");
+                    setTimeout(function (){$("#queryForm").submit();}, 1000);
                 }
                 edPayBoo = false;
             },
@@ -640,7 +644,9 @@
                     openTips(message);
                 }
                 if (code == 1){
-                    setTimeout(function (){$("#queryForm").submit();}, 2000);
+                    $(".mask").fadeOut("fast");
+                    $(popObj).fadeOut("fast");
+                    setTimeout(function (){$("#queryForm").submit();}, 1000);
                 }
 
                 addBoo = false;
@@ -765,7 +771,9 @@
                     openTips(message);
                 }
                 if (code == 1){
-                    setTimeout(function (){$("#queryForm").submit();}, 2000);
+                    $(".mask").fadeOut("fast");
+                    $(popObj).fadeOut("fast");
+                    setTimeout(function (){$("#queryForm").submit();}, 1000);
                 }
 
                 updateBoo = false;
@@ -836,7 +844,7 @@
 
     var mapMatch = {};
     mapMatch['number'] = /[^\d]/g;
-    mapMatch['ENumber'] = /[^\a-\z\A-\Z\d]/g;
+    mapMatch['ENumber'] = /[^\a-\z\A-\Z]/g;
     mapMatch['double'] = true;
     mapMatch['phone'] = /[^\d]/g;
     mapMatch['email'] = /([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;

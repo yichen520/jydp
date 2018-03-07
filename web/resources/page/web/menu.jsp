@@ -18,29 +18,26 @@
 
     <ul class="nav">
         <li class="navInfo"><a id="webHome" href="<%=path %>/userWeb/homePage/show">首页</a></li>
-        <li class="navInfo"><a id="tradeCenter" href="javascript:;" class="tradeCenter">交易中心
-                                <img src="<%=path %>/resources/image/web/tradeCoin.png" class="tradeArrow" />
-                            </a></li>
+        <li class="navInfo tradeCenter">
+            <a id="tradeCenter" href="javascript:;">交易中心
+                <img src="<%=path %>/resources/image/web/tradeCoin.png" class="tradeArrow" />
+            </a>
+            <ul class="coinLink">
+            </ul>
+        </li>
         <li class="navInfo"><a href="#">我要充值</a></li>
         <li class="navInfo"><a id="message" href="<%=path %>/userWeb/userMessage/show.htm">个人中心</a></li>
     </ul>
 
-    <ul class="coinLink">
-    </ul>
+
     <form id="tradeCenterForm" action="<%=path %>/userWeb/tradeCenter/show" method="post">
         <input id="menuCurrencyId" name="currencyId" type="hidden"/>
     </form>
 </div>
 <script type="text/javascript">
     $(function(){
-        $(".tradeCenter").mouseover(function(){
-            $(".coinLink").fadeIn();
-        });
-        $(".coinLink").mouseleave(function(){
-            $(".coinLink").fadeOut();
-        });
-        $(".link_trade").click(function () {
-            $(".coinLink").fadeOut();
+        $(".tradeCenter").hover(function(){
+            $(".coinLink").slideToggle("fast");
         });
 
         $.ajax({
