@@ -30,15 +30,15 @@
             <div class="accountInfo">
                 <p class="info">
                     <span class="infoTitle">总资产</span>
-                    <span class="allMoney"><fmt:formatNumber type="number" value="${userBalanceSum }" maxFractionDigits="2"/></span>
+                    <span class="allMoney">$<fmt:formatNumber type="number" value="${userBalanceSum }" maxFractionDigits="2"/></span>
                 </p>
                 <p class="info">
                     <span class="infoTitle">可用资产</span>
-                    <span class="money"><fmt:formatNumber type="number" value="${userMessage.userBalance }" maxFractionDigits="2"/></span>
+                    <span class="money">$<fmt:formatNumber type="number" value="${userMessage.userBalance }" maxFractionDigits="2"/></span>
                 </p>
                 <p class="info">
                     <span class="infoTitle">冻结资产</span>
-                    <span class="money"><fmt:formatNumber type="number" value="${userMessage.userBalanceLock }" maxFractionDigits="2"/></span>
+                    <span class="money">$<fmt:formatNumber type="number" value="${userMessage.userBalanceLock }" maxFractionDigits="2"/></span>
                 </p>
             </div>
 
@@ -116,7 +116,7 @@
             <div class="password_pop">
                 <p class="popInput">
                     <label class="popName">原密码<span class="star">*</span>：</label>
-                    <input type="password" class="entry" placeholder="原登录密码" maxlength="16" id="passwordPop"
+                    <input type="password" class="entry" placeholder="原支付密码" maxlength="16" id="passwordPop"
                            onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
                 </p>
                 <p class="popInput">
