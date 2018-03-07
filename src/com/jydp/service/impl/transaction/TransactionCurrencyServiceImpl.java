@@ -37,10 +37,6 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
     @Autowired
     private IRedisService redisService;
 
-    /** 日期格式 **/
-    private SimpleDateFormat sdf = new SimpleDateFormat(DateUtil.dateFormat2);
-    private SimpleDateFormat sdf2 = new SimpleDateFormat(DateUtil.dateFormat4);
-
     /**
      * 新增交易币种
      * @param currencyShortName 货币简称
@@ -182,85 +178,19 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
     @Override
     public List<TransactionUserDealDTO> getTransactionCurrencyMarketForWeb() {
 
-        //当日开盘时间
-        Timestamp openTime = null;
-        try {
-            Date date = sdf.parse(sdf2.format(new Date()) +" 08:00:00");
-            openTime = new Timestamp(date.getTime());
-        } catch (ParseException e) {
-            LogUtil.printErrorLog(e);
-        }
-
-        Date todayOpenDate = openTime;
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(todayOpenDate);
-        //减一天求得昨日日期
-        calendar.add(Calendar.DAY_OF_YEAR,-1);
-        Date yesterdayOpenDate = calendar.getTime();
-        String time = sdf.format(yesterdayOpenDate);
-        //昨日开盘时间
-        Timestamp startTime = null;
-        try {
-            startTime = new Timestamp(sdf.parse(time).getTime());
-        } catch (ParseException e) {
-            LogUtil.printErrorLog(e);
-        }
-
-        long beginTime = System.currentTimeMillis();
         //查询所有币种
         List<TransactionUserDealDTO> transactionUserDealDTOList = transactionCurrencyDao.getTransactionCurrencyMarketForWeb();
 
         if (transactionUserDealDTOList != null) {
-            //查询各币种最新价信息
-            Map<Integer,TransactionUserDealDTO> newPriceMap = transactionCurrencyDao.getNewPriceForWeb();
-            //查询各币种买一价信息
-            Map<Integer,TransactionUserDealDTO> buyOneMap = transactionCurrencyDao.getBuyOneForWeb();
-            //查询各币种卖一价信息
-            Map<Integer,TransactionUserDealDTO> sellOneMap = transactionCurrencyDao.getSellOneForWeb();
-            //查询各币种今日成交量信息
-            Map<Integer,TransactionUserDealDTO> volumeMap = transactionCurrencyDao.getTransactionVolumeForWeb(openTime);
-            //查询各币种昨日收盘价信息
-            Map<Integer,TransactionUserDealDTO> yesterdayPriceMap = transactionCurrencyDao.getYesterdayLastPriceForWeb(openTime,startTime);
-
             for (TransactionUserDealDTO transactionUserDeal:transactionUserDealDTOList) {
                 int currencyId = transactionUserDeal.getCurrencyId();
-                double latestPrice = 0.0, buyOnePrice = 0.0, sellOnePrice = 0.0, volume = 0.0, yesterdayLastPrice = 0.0;
+                StandardParameterVO standardParameterVO = listTransactionCurrencyAll(currencyId);
 
-                if (redisService.getValue(RedisKeyConfig.NOW_PRICE + currencyId) != null) {
-                    latestPrice = Double.parseDouble(redisService.getValue(RedisKeyConfig.NOW_PRICE + currencyId).toString());
-                }
-                if (redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE+currencyId) != null) {
-                    yesterdayLastPrice = Double.parseDouble(redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE+currencyId).toString());
-                }
-
-                if (newPriceMap != null && newPriceMap.get(currencyId) != null) {
-                    latestPrice = newPriceMap.get(currencyId).getLatestPrice();
-                }
-
-                if (buyOneMap != null && buyOneMap.get(currencyId) != null) {
-                    buyOnePrice = buyOneMap.get(currencyId).getBuyOnePrice();
-                }
-
-                if (sellOneMap != null && sellOneMap.get(currencyId) != null) {
-                    sellOnePrice = sellOneMap.get(currencyId).getSellOnePrice();
-                }
-
-                if (volumeMap != null && volumeMap.get(currencyId) != null) {
-                    volume = volumeMap.get(currencyId).getVolume();
-                }
-
-                transactionUserDeal.setLatestPrice(NumberUtil.doubleFormat(latestPrice,2));
-                transactionUserDeal.setBuyOnePrice(NumberUtil.doubleFormat(buyOnePrice,2));
-                transactionUserDeal.setSellOnePrice(NumberUtil.doubleFormat(sellOnePrice,2));
-                transactionUserDeal.setVolume(NumberUtil.doubleFormat(volume,2));
-                transactionUserDeal.setYesterdayLastPrice(NumberUtil.doubleFormat(yesterdayLastPrice,2));
-
-                //24小时涨幅 eg:24小时涨跌为24.31%,change = 24.31
-                double change = 0;
-                if (yesterdayLastPrice != 0) {
-                    change = NumberUtil.doubleFormat(((transactionUserDeal.getLatestPrice() - yesterdayLastPrice)/yesterdayLastPrice)*100,2);
-                }
-                transactionUserDeal.setChange(change);
+                transactionUserDeal.setLatestPrice(standardParameterVO.getNowPrice());
+                transactionUserDeal.setBuyOnePrice(standardParameterVO.getBuyOne());
+                transactionUserDeal.setSellOnePrice(standardParameterVO.getSellOne());
+                transactionUserDeal.setVolume(standardParameterVO.getDayTurnove());
+                transactionUserDeal.setChange(standardParameterVO.getTodayRange());
             }
         }
         long endTime = System.currentTimeMillis();
