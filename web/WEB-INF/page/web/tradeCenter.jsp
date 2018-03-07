@@ -322,6 +322,10 @@
         var buyPwd = $("#buyPwd").val();
         var currencyId = $("#cucyId").val();
 
+        document.getElementById("buyPrice").value = "";
+        document.getElementById("buyNum").value = "";
+        document.getElementById("buyPwd").value = "";
+
         if(buyPrice == null || buyPrice == ""){
             openTips("价格不能为空");
             resultBoo = false;
@@ -358,9 +362,7 @@
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (result) {
-                if(result.code != 1) {
-                    openTips(result.message);
-                }
+                openTips(result.message);
                 entrust();
                 resultBoo = false;
             }, error: function () {
@@ -382,6 +384,10 @@
         var sellNum = $("#sellNum").val();
         var sellPwd = $("#sellPwd").val();
         var currencyId = $("#cucyId").val();
+
+        document.getElementById("sellPrice").value = "";
+        document.getElementById("sellNum").value = "";
+        document.getElementById("sellPwd").value = "";
 
         if(sellPrice == null || sellPrice == ""){
             openTips("价格不能为空");
@@ -419,9 +425,7 @@
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (result) {
-                if(result.code != 1) {
-                    openTips(result.message);
-                }
+                openTips(result.message);
                 entrust();
                 resultBoo = false;
             }, error: function () {

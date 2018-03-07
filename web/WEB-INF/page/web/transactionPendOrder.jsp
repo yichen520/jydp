@@ -48,7 +48,7 @@
                             <td class="type in">买入</td>
                         </c:if>
                         <c:if test="${item.paymentType == 2}">
-                            <td class="type in">卖出</td>
+                            <td class="type pay">卖出</td>
                         </c:if>
                         <td class="amount"><fmt:formatNumber type="number" value="${item.pendingNumber}" maxFractionDigits="4"/></td>
                         <td class="amount">$<fmt:formatNumber type="number" value="${item.pendingNumber * item.pendingPrice }" maxFractionDigits="6"/></td>

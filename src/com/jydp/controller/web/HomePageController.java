@@ -91,7 +91,7 @@ public class HomePageController {
         return jsonObjectBO;
     }
 
-    /** 获取所有币种信息 */
+    /** 获取所有币种信息(menu.jsp交易中心选项卡使用) */
     @RequestMapping("/getAllCurrency")
     public @ResponseBody JsonObjectBO getAllCurrency(){
 
