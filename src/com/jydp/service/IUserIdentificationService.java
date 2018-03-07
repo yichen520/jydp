@@ -22,9 +22,10 @@ public interface IUserIdentificationService {
     /**
      * 新增用户认证和用户认证详情图记录
      * @param userIdentificationDO 用户认证
+     * @param authenticationStatus 原实名认证状态：1：待审核，2：审核通过，3：审核拒绝，4：未提交
      * @return 操作成功：返回true，操作失败：返回false
      */
-    boolean insertUserIdentificationAndImage (UserIdentificationDO userIdentificationDO, List<String> imageUrlList);
+    boolean insertUserIdentificationAndImage (UserIdentificationDO userIdentificationDO, List<String> imageUrlList, int authenticationStatus);
 
     /**
      * 查询用户认证信息
@@ -61,6 +62,7 @@ public interface IUserIdentificationService {
      * 查询实名认证信息总数（后台）
      *
      * @param userAccount 用户账号(可为null)
+     * @param phoneAreaCode   手机号区号(可为null)
      * @param userPhone   手机号(可为null)
      * @param userCertType   证件类型，1:身份证，2：护照
      * @param identificationStatus   实名认证状态，1：待审核，2：审核通过，3：审核拒绝（查全部为0）
@@ -68,13 +70,14 @@ public interface IUserIdentificationService {
      * @param endTime     结束时间(可为null)
      * @return 操作成功：返回用户信息总数，操作失败：返回0
      */
-    int countUserIdentificationForBacker(String userAccount, String userPhone, int userCertType,
+    int countUserIdentificationForBacker(String userAccount, String phoneAreaCode, String userPhone, int userCertType,
                                          int identificationStatus, Timestamp startTime, Timestamp endTime);
 
     /**
      * 查询实名认证信息列表（后台）
      *
      * @param userAccount 用户账号(可为null)
+     * @param phoneAreaCode   手机号区号(可为null)
      * @param userPhone   手机号(可为null)
      * @param userCertType   证件类型，1:身份证，2：护照
      * @param identificationStatus   实名认证状态，1：待审核，2：审核通过，3：审核拒绝（查全部为0）
@@ -84,7 +87,7 @@ public interface IUserIdentificationService {
      * @param pageSize    查询条数
      * @return 操作成功 ：返回用户认证信息，操作失败：返回null
      */
-    List<UserIdentificationDO> listUserIdentificationForBacker(String userAccount, String userPhone, int userCertType,
+    List<UserIdentificationDO> listUserIdentificationForBacker(String userAccount, String phoneAreaCode, String userPhone, int userCertType,
                                                                int identificationStatus, Timestamp startTime,
                                                                Timestamp endTime, int pageNumber, int pageSize);
 
@@ -98,4 +101,13 @@ public interface IUserIdentificationService {
      */
     boolean updateUserIdentificationStatus (long id, int identificationStatus, Timestamp identiTime, String remark);
 
+    /**
+     * 用户实名认证审核
+     * @param id 记录Id
+     * @param userId 用户Id
+     * @param remark 备注，可为null
+     * @param status 审核状态，1：通过，2：拒绝
+     * @return 修改成功：返回true，修改失败：返回false
+     */
+    boolean passUserIdentification (long id, int userId, String remark, int status);
 }

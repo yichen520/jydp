@@ -133,11 +133,13 @@ public class BackerUserAccountController {
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
         String phoneNumber = StringUtil.stringNullHandle(request.getParameter("phoneNumber"));
         String accountStatusStr = StringUtil.stringNullHandle(request.getParameter("accountStatus"));
+        String authenticationStatusStr = StringUtil.stringNullHandle(request.getParameter("authenticationStatus"));
         String phoneAreaCode = StringUtil.stringNullHandle(request.getParameter("phoneAreaCode"));
 
         Timestamp startTime = null;
         Timestamp endTime = null;
         int accountStatus = 0;
+        int authenticationStatus = 0;
         int pageNumber = 0;
 
         if (StringUtil.isNotNull(startTimeStr)) {
@@ -152,10 +154,13 @@ public class BackerUserAccountController {
         if (StringUtil.isNotNull(pageNumberStr)) {
             pageNumber = Integer.parseInt(pageNumberStr);
         }
+        if (StringUtil.isNotNull(authenticationStatusStr)) {
+            authenticationStatus = Integer.parseInt(authenticationStatusStr);
+        }
 
         int pageSize = 20;
         int totalNumber = userService.countUserForBacker(userAccount, phoneAreaCode, phoneNumber,
-                accountStatus, startTime, endTime);
+                accountStatus, authenticationStatus, startTime, endTime);
 
         int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
         if (totalPageNumber <= 0) {
@@ -169,7 +174,7 @@ public class BackerUserAccountController {
         List<UserDO> userList = null;
         if (totalNumber > 0) {
             userList = userService.listUserForBacker(userAccount, phoneAreaCode,
-                    phoneNumber, accountStatus, startTime, endTime, pageNumber, pageSize);
+                    phoneNumber, accountStatus, authenticationStatus, startTime, endTime, pageNumber, pageSize);
         }
 
         request.setAttribute("pageNumber", pageNumber);
@@ -179,6 +184,7 @@ public class BackerUserAccountController {
         request.setAttribute("phoneNumber", phoneNumber);
         request.setAttribute("phoneAreaCode", phoneAreaCode);
         request.setAttribute("accountStatus", accountStatus);
+        request.setAttribute("authenticationStatus", authenticationStatus);
 
         request.setAttribute("totalNumber", totalNumber);
         request.setAttribute("totalPageNumber", totalPageNumber);
@@ -433,10 +439,12 @@ public class BackerUserAccountController {
         String phoneNumber = StringUtil.stringNullHandle(request.getParameter("phoneNumber"));
         String phoneAreaCode = StringUtil.stringNullHandle(request.getParameter("phoneAreaCode"));
         String accountStatusStr = StringUtil.stringNullHandle(request.getParameter("accountStatus"));
+        String authenticationStatusStr = StringUtil.stringNullHandle(request.getParameter("authenticationStatus"));
 
         Timestamp startTime = null;
         Timestamp endTime = null;
         int accountStatus = 0;
+        int authenticationStatus = 0;
 
         if (StringUtil.isNotNull(startTimeStr)) {
             startTime = DateUtil.stringToTimestamp(startTimeStr);
@@ -447,8 +455,12 @@ public class BackerUserAccountController {
         if (StringUtil.isNotNull(accountStatusStr)) {
             accountStatus = Integer.parseInt(accountStatusStr);
         }
+        if (StringUtil.isNotNull(authenticationStatusStr)) {
+            authenticationStatus = Integer.parseInt(authenticationStatusStr);
+        }
 
-        List<UserDO> userList = userService.listUserForBacker(userAccount, phoneAreaCode, phoneNumber, accountStatus, startTime, endTime, 0, 1000000);
+        List<UserDO> userList = userService.listUserForBacker(userAccount, phoneAreaCode, phoneNumber, accountStatus,
+                authenticationStatus, startTime, endTime, 0, 1000000);
         if(userList == null || userList.size() <= 0){
             responseJson.setCode(3);
             responseJson.setMessage("未查询到数据");
@@ -478,6 +490,8 @@ public class BackerUserAccountController {
             cell.setCellValue("账号总金额（美元$）");
             cell = row.createCell(6);
             cell.setCellValue("账号状态");
+            cell = row.createCell(7);
+            cell.setCellValue("审核状态");
             //设置列宽
             sheet1.setColumnWidth(0, 5000);
             sheet1.setColumnWidth(1, 5000);
@@ -486,6 +500,7 @@ public class BackerUserAccountController {
             sheet1.setColumnWidth(4, 6000);
             sheet1.setColumnWidth(5, 6000);
             sheet1.setColumnWidth(6, 3000);
+            sheet1.setColumnWidth(7, 3000);
 
             int rowNumber = 1;
             for (UserDO user : userList) {
@@ -510,6 +525,20 @@ public class BackerUserAccountController {
                 }
                 if (user.getAccountStatus() == 2) {
                     cell.setCellValue("禁用");
+                }
+
+                cell = row.createCell(7);
+                if (user.getAuthenticationStatus() == 1) {
+                    cell.setCellValue("未审核");
+                }
+                if (user.getAccountStatus() == 2) {
+                    cell.setCellValue("审核拒绝");
+                }
+                if (user.getAccountStatus() == 3) {
+                    cell.setCellValue("审核通过");
+                }
+                if (user.getAccountStatus() == 4) {
+                    cell.setCellValue("未提交");
                 }
 
                 rowNumber++;

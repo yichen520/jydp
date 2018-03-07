@@ -680,44 +680,43 @@
                 var data = result.data;
                 var orderSellList = data.transactionPendOrderSellList; //卖出
                 var orderBuyList = data.transactionPendOrderBuyList;  //买入
-                if (orderBuyList != null && orderBuyList.length > 0 && orderSellList != null && orderSellList.length > 0) {
-                    //卖出挂单
-                    var newChildSell= "";
-                    for (var i=0;i<=orderSellList.length-1;i++) {
-                        var orderSell = orderSellList[i];
+                //卖出挂单
+                var newChildSell= "";
+                $("#orderSellReId").empty() ;
+                for (var i=0;i<=orderSellList.length-1;i++) {
+                    var orderSell = orderSellList[i];
 
-                        var pendingPrice = Math.floor(orderSell.pendingPrice * 100) / 100;  //单价
-                        var pendingNumber = Math.floor(orderSell.restNumber * 10000) / 10000;  //数量
-                        var sumPrice = Math.floor(orderSell.sumPrice * 1000000) / 1000000;  //总额
+                    var pendingPrice = Math.floor(orderSell.pendingPrice * 100) / 100;  //单价
+                    var pendingNumber = Math.floor(orderSell.restNumber * 10000) / 10000;  //数量
+                    var sumPrice = Math.floor(orderSell.sumPrice * 1000000) / 1000000;  //总额
 
-                        newChildSell += '<li class="recordInfo">' +
-                                            '<span class="rangeType">卖' + (orderSellList.length-i) + '</span>' +
-                                            '<span class="rangePrice">' + pendingPrice + '</span>' +
-                                            '<span class="rangeNum">' + pendingNumber + '</span>' +
-                                            '<span class="rangeAmount">' + sumPrice + '</span>' +
-                                        '</li>';
-                    }
-                    $("#orderSellReId").html(newChildSell);
-
-                    //买入挂单
-                    var newChildBuy= "";
-                    for (var i=0;i<=orderBuyList.length-1;i++) {
-                        var orderBuy = orderBuyList[i];
-
-                        var pendingPrice = Math.floor(orderBuy.pendingPrice * 100) / 100;  //单价
-                        var pendingNumber = Math.floor(orderBuy.restNumber * 10000) / 10000;  //数量
-                        var sumPrice = Math.floor(orderBuy.sumPrice * 1000000) / 1000000;  //总额
-
-                        newChildBuy += '<li class="recordInfo">' +
-                                            '<span class="rangeType">买' + (i+1) + '</span>' +
-                                            '<span class="rangePrice">' + pendingPrice + '</span>' +
-                                            '<span class="rangeNum">' + pendingNumber + '</span>' +
-                                            '<span class="rangeAmount">' + sumPrice + '</span>' +
-                                        '</li>';
-                    }
-                    $("#orderBuyReId").html(newChildBuy);
-
+                    newChildSell += '<li class="recordInfo">' +
+                                        '<span class="rangeType">卖' + (orderSellList.length-i) + '</span>' +
+                                        '<span class="rangePrice">' + pendingPrice + '</span>' +
+                                        '<span class="rangeNum">' + pendingNumber + '</span>' +
+                                        '<span class="rangeAmount">' + sumPrice + '</span>' +
+                                    '</li>';
                 }
+                $("#orderSellReId").html(newChildSell);
+
+                //买入挂单
+                var newChildBuy= "";
+                $("#orderBuyReId").empty() ;
+                for (var i=0;i<=orderBuyList.length-1;i++) {
+                    var orderBuy = orderBuyList[i];
+
+                    var pendingPrice = Math.floor(orderBuy.pendingPrice * 100) / 100;  //单价
+                    var pendingNumber = Math.floor(orderBuy.restNumber * 10000) / 10000;  //数量
+                    var sumPrice = Math.floor(orderBuy.sumPrice * 1000000) / 1000000;  //总额
+
+                    newChildBuy += '<li class="recordInfo">' +
+                                        '<span class="rangeType">买' + (i+1) + '</span>' +
+                                        '<span class="rangePrice">' + pendingPrice + '</span>' +
+                                        '<span class="rangeNum">' + pendingNumber + '</span>' +
+                                        '<span class="rangeAmount">' + sumPrice + '</span>' +
+                                    '</li>';
+                }
+                $("#orderBuyReId").html(newChildBuy);
                 pendBoo = false;
             }, error: function () {
                 pendBoo = false;
@@ -1038,11 +1037,11 @@
                 var userDealCapitalMessage = data.userDealCapitalMessage;
                 if(userDealCapitalMessage != null){
                     $("#currencyNumberShow").html(userDealCapitalMessage.currencyNumber);
-                    $("#currencyNumber").html(userDealCapitalMessage.currencyNumber);
+                    $("#currencyNumber").val(userDealCapitalMessage.currencyNumber);
                     $("#usableCurrencyNumber").html(userDealCapitalMessage.currencyNumber);
                     $("#currencyNumberLockShow").html(userDealCapitalMessage.currencyNumberLock);
                     $("#userBalanceShow").html("$" + userDealCapitalMessage.userBalance);
-                    $("#userBalance").html("$" + userDealCapitalMessage.userBalance);
+                    $("#userBalance").val(userDealCapitalMessage.userBalance);
                     $("#usableUserBalance").html("$" + userDealCapitalMessage.userBalance);
                     $("#userBalanceLockShow").html("$" + userDealCapitalMessage.userBalanceLock);
                     $("#currencyNumberSumShow").html("$" + userDealCapitalMessage.currencyNumberSum);

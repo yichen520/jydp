@@ -156,4 +156,14 @@ public class UserCurrencyNumServiceImpl implements IUserCurrencyNumService {
         return userCurrencyNumDao.listCheckUserAmountForTimer(checkAmount, checkAmountLock, pageNumber, pageSize);
     }
 
+    /**
+     * 获取当前用户没有的币种
+     * @param userId 用户Id
+     * @return 查询成功：返回用户币种列表，查询失败：返回null
+     */
+    @Override
+    public List<Integer> getUserCurrencyNotOwnForWeb(int userId){
+        return userCurrencyNumDao.getUserCurrencyNotOwnForWeb(userId);
+    }
+
 }

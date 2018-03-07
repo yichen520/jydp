@@ -262,11 +262,10 @@
                 enbaleBackerId : enbaleBackerId
             },
             success:function(result){
+                openTips(result.message);
                 enableConfirmBoo = false;
                 if(result.code == 1) {
-                    $("#queryForm").submit();
-                } else {
-                    openTips(result.message);
+                    setTimeout("refresh()",1000 );
                 }
             }, error:function(){
                 enableConfirmBoo = false;
@@ -298,11 +297,10 @@
                 disableBackerId : disableBackerId
             },
             success:function(result){
+                openTips(result.message);
                 disableConfirmBoo = false;
                 if(result.code == 1) {
-                    $("#queryForm").submit();
-                } else {
-                    openTips(result.message);
+                   setTimeout("refresh()",1000 );
                 }
             }, error:function(){
                 disableConfirmBoo = false;
@@ -335,11 +333,10 @@
                 resetPasswordBackerId : resetPasswordBackerId
             },
             success:function(result){
+                openTips(result.message);
                 resetConfirmBoo = false;
                 if(result.code == 1) {
-                    $("#queryForm").submit();
-                } else {
-                    openTips(result.message);
+                   setTimeout("refresh()",1000 );
                 }
             }, error:function(){
                 resetConfirmBoo = false;
@@ -372,11 +369,10 @@
                 deleteBackerId : deleteBackerId
             },
             success:function(result){
+                openTips(result.message);
                 deleteConfirmBoo = false;
                 if(result.code == 1) {
-                    $("#queryForm").submit();
-                } else {
-                    openTips(result.message);
+                   setTimeout("refresh()",1000 );
                 }
             }, error:function(){
                 deleteConfirmBoo = false;
@@ -417,11 +413,10 @@
                 updateRoleBackerId : updateRoleBackerId
             },
             success:function(result){
+                openTips(result.message);
                 updateRoleSubmitBoo = false;
                 if(result.code == 1) {
-                    $("#queryForm").submit();
-                } else {
-                    openTips(result.message);
+                   setTimeout("refresh()",1000 );
                 }
             }, error:function(){
                 updateRoleSubmitBoo = false;
@@ -467,12 +462,10 @@
                 updateBackerRepeatPassword : newRepeatPassword
             },
             success:function(result){
+                openTips(result.message);
                 updatePasswordSubmitBoo = false;
                 if(result.code == 1) {
-                    openTips(result.message);
                     setTimeout("backLogin()",1000 );
-                } else {
-                    openTips(result.message);
                 }
             }, error:function(){
                 updatePasswordSubmitBoo = false;
@@ -480,10 +473,7 @@
             }
         });
     }
-    //登陆页跳转
-    function backLogin() {
-        window.location.href = "<%=path%>" + "/backLogin";
-    }
+
 
     var addBackerSubmitBoo = false;
     //新增账号
@@ -531,11 +521,10 @@
                 addBackerRepeatPassword : addBackerRepeatPassword
             },
             success:function(result){
+                openTips(result.message);
                 addBackerSubmitBoo = false;
                 if(result.code == 1) {
-                    $("#queryForm").submit();
-                } else {
-                    openTips(result.message);
+                   setTimeout("refresh()",1000 );
                 }
             }, error:function(){
                 addBackerSubmitBoo = false;
@@ -581,6 +570,16 @@
                 validateUserBoo = false;
             }
         });
+    }
+
+    //页面刷新
+    function refresh() {
+        $("#queryForm").submit();
+    }
+
+    //登陆页跳转
+    function backLogin() {
+        window.location.href = "<%=path%>" + "/backLogin";
     }
 </script>
 

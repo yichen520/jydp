@@ -265,11 +265,21 @@
                 return;
             }
 
+            if(passwordPop.length < 6){
+                openTips("原密码长度不足！");
+                return;
+            }
+            
             if(newPasswordPop == ""){
                 openTips("请输入新密码");
                 return;
             }
 
+            if(newPasswordPop.length < 6){
+                openTips("新密码长度不足！");
+                return;
+            }
+            
             if(newPasswordPop == "123456"){
                 openTips("不可设为初始密码");
                 return;
@@ -334,6 +344,11 @@
                 return;
             }
 
+            if(newPasswordTel.length <6){
+                openTips("新密码长度不足！");
+                return;
+            }
+            
             if(newPasswordTel == "123456"){
                 openTips("不可设为初始密码");
                 return;
@@ -349,6 +364,11 @@
                 return;
             }
 
+            if(validateCodeTel.length != 6){
+                openTips("验证码为6位");
+                return;
+            }
+            
             if(newPasswordTel != repPasswordTel){
                 openTips("两次密码不一致");
                 return;
@@ -406,11 +426,21 @@
             return;
         }
 
+        if(password.length < 6){
+            openTips("原密码长度不足！");
+            return;
+        }
+        
         if(newPassword == ""){
             openTips("请输入新密码");
             return;
         }
 
+        if(newPassword.length < 6){
+            openTips("新密码长度不足！");
+            return;
+        }
+        
         if(repPassword == ""){
             openTips("请您输入确认密码");
             return;
@@ -472,21 +502,31 @@
             return;
         }
 
-        if(!regPos.test(bindingMobile) || bindingMobile.length > 11){
+        if(!regPos.test(bindingMobile) || bindingMobile.length > 11 || bindingMobile.length < 5){
             openTips("请输入正确手机号");
             return;
         }
-
+        
         if(verifyCode == ""){
             openTips("请输入验证码");
             return;
         }
 
+        if(verifyCode.length < 6){
+            openTips("验证码为六位");
+            return;
+        }
+        
         if(phonePassword == ""){
             openTips("请输入登录密码");
             return;
         }
 
+        if(phonePassword.length < 6){
+            openTips("登录密码长度不足！");
+            return;
+        }
+        
         if(updatePhoneNumberBoo){
             openTips("系统正在更新绑定手机号，请稍后");
             return;
@@ -594,7 +634,7 @@
                     return;
                 }
 
-                if(!regPos.test(bindingMobile) || bindingMobile.length > 11){
+                if(!regPos.test(bindingMobile) || bindingMobile.length > 11 || bindingMobile.length < 5){
                     openTips("请输入正确手机号");
                     return;
                 }
