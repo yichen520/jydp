@@ -490,9 +490,14 @@
             }
 
             var userBalance = parseFloat($("#userBalance").val());
-            var total = userBalance / buyPrice;
-            var tota = mulMaxNumber(total);
-            $("#buyMax").html(tota);
+            if(buyPrice != "0"){
+                var total = userBalance / buyPrice;
+                var tota = mulMaxNumber(total);
+                $("#buyMax").html(tota);
+            }else{
+                $("#buyMax").html("0");
+            }
+
         } else {
             $("#buyMax").html("0" );
             $("#buyTotal").html("$0");
