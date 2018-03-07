@@ -305,7 +305,10 @@
             success:function(result){
                 unlockBoo = false;
                 if(result.code == 1) {
-                    $("#queryForm").submit();
+                    $(".mask").fadeOut("fast");
+                    $(popObj).fadeOut("fast");
+                    openTips(result.message)
+                    setTimeout(function (){$("#queryForm").submit();}, 1000);
                 } else {
                     openTips(result.message);
                 }
@@ -337,7 +340,10 @@
             success:function(result){
                 lockBoo = false;
                 if(result.code == 1) {
-                    $("#queryForm").submit();
+                    $(".mask").fadeOut("fast");
+                    $(popObj).fadeOut("fast");
+                    openTips(result.message)
+                    setTimeout(function (){$("#queryForm").submit();}, 1000);
                 } else {
                     openTips(result.message);
                 }
@@ -404,7 +410,10 @@
             success:function(result){
                 addAmountBoo = false;
                 if(result.code == 1) {
-                    $("#queryForm").submit();
+                    $(".mask").fadeOut("fast");
+                    $(popObj).fadeOut("fast");
+                    openTips(result.message)
+                    setTimeout(function (){$("#queryForm").submit();}, 1000);
                 } else {
                     openTips(result.message);
                 }
@@ -455,7 +464,10 @@
             success:function(result){
                 reduceAmountBoo = false;
                 if(result.code == 1) {
-                    $("#queryForm").submit();
+                    $(".mask").fadeOut("fast");
+                    $(popObj).fadeOut("fast");
+                    openTips(result.message)
+                    setTimeout(function (){$("#queryForm").submit();}, 1000);
                 } else {
                     openTips(result.message);
                 }
