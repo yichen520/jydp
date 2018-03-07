@@ -456,28 +456,24 @@ public class TradeCenterController {
 
         //获取币种信息
         TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
-        if(transactionCurrency == null){
-            resultJson.setCode(3);
-            resultJson.setMessage("币种信息获取失败,请稍候再试");
-            return resultJson;
-        }
+        if(transactionCurrency != null){
+            if(transactionCurrency.getPaymentType() != 1){
+                resultJson.setCode(5);
+                resultJson.setMessage("该币种不在交易状态");
+                return resultJson;
+            }
 
-        if(transactionCurrency.getPaymentType() != 1){
-            resultJson.setCode(5);
-            resultJson.setMessage("该币种不在交易状态");
-            return resultJson;
-        }
-
-        if(transactionCurrency.getUpStatus() != 2){
-            resultJson.setCode(5);
-            resultJson.setMessage("该币种不在上线状态");
-            return resultJson;
+            if(transactionCurrency.getUpStatus() != 2){
+                resultJson.setCode(5);
+                resultJson.setMessage("该币种不在上线状态");
+                return resultJson;
+            }
         }
 
         List<TransactionDealRedisDO> dealList = null;
-        dealList = (List<TransactionDealRedisDO>) redisService.getValue(RedisKeyConfig.CURRENCY_DEAL_KEY + transactionCurrency.getCurrencyId());
+        dealList = (List<TransactionDealRedisDO>) redisService.getValue(RedisKeyConfig.CURRENCY_DEAL_KEY + currencyId);
         if (dealList == null || dealList.isEmpty()) {
-            dealList = transactionDealRedisService.listTransactionDealRedis(50, transactionCurrency.getCurrencyId());
+            dealList = transactionDealRedisService.listTransactionDealRedis(50, currencyId);
         }
 
         JSONObject jsonObject = new JSONObject();
@@ -509,34 +505,30 @@ public class TradeCenterController {
 
         //获取币种信息
         TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
-        if(transactionCurrency == null){
-            resultJson.setCode(3);
-            resultJson.setMessage("币种信息获取失败,请稍候再试");
-            return resultJson;
-        }
+        if(transactionCurrency != null){
+            if(transactionCurrency.getPaymentType() != 1){
+                resultJson.setCode(5);
+                resultJson.setMessage("该币种不在交易状态");
+                return resultJson;
+            }
 
-        if(transactionCurrency.getPaymentType() != 1){
-            resultJson.setCode(5);
-            resultJson.setMessage("该币种不在交易状态");
-            return resultJson;
-        }
-
-        if(transactionCurrency.getUpStatus() != 2){
-            resultJson.setCode(5);
-            resultJson.setMessage("该币种不在上线状态");
-            return resultJson;
+            if(transactionCurrency.getUpStatus() != 2){
+                resultJson.setCode(5);
+                resultJson.setMessage("该币种不在上线状态");
+                return resultJson;
+            }
         }
 
         List<TransactionPendOrderDTO> transactionPendOrderBuyList = null;
-        transactionPendOrderBuyList = (List<TransactionPendOrderDTO>) redisService.getValue(RedisKeyConfig.BUY_KEY + transactionCurrency.getCurrencyId());
+        transactionPendOrderBuyList = (List<TransactionPendOrderDTO>) redisService.getValue(RedisKeyConfig.BUY_KEY + currencyId);
         if (transactionPendOrderBuyList == null || transactionPendOrderBuyList.isEmpty()) {
-            transactionPendOrderBuyList = transactionPendOrderService.listLatestRecords(1,transactionCurrency.getCurrencyId(),15);
+            transactionPendOrderBuyList = transactionPendOrderService.listLatestRecords(1,currencyId,15);
         }
 
         List<TransactionPendOrderDTO> transactionPendOrderSellList = null;
-        transactionPendOrderSellList = (List<TransactionPendOrderDTO>) redisService.getValue(RedisKeyConfig.SELL_KEY + transactionCurrency.getCurrencyId());
+        transactionPendOrderSellList = (List<TransactionPendOrderDTO>) redisService.getValue(RedisKeyConfig.SELL_KEY + currencyId);
         if (transactionPendOrderSellList == null || transactionPendOrderSellList.isEmpty()) {
-            transactionPendOrderSellList = transactionPendOrderService.listLatestRecords(2,transactionCurrency.getCurrencyId(),15);
+            transactionPendOrderSellList = transactionPendOrderService.listLatestRecords(2,currencyId,15);
         }
 
         JSONObject jsonObject = new JSONObject();
