@@ -155,7 +155,7 @@ input:-webkit-autofill{
     display: none;
     position: absolute;
     z-index: 20;
-    top: 80px;
+    top: 78px;
     right:0;
     width: 670px;
     padding: 10px;
