@@ -45,16 +45,16 @@
             <if test="paymentType != 0">
                 paymentType = #{paymentType},
             </if>
-            <if test="buyFee != 0">
+            <if test="buyFee >= 0">
                 buyFee = #{buyFee},
             </if>
-            <if test="sellFee != 0">
+            <if test="sellFee >= 0">
                 sellFee = #{sellFee},
             </if>
-            <if test="upRange != 0">
+            <if test="upRange >= 0">
                 upRange = #{upRange},
             </if>
-            <if test="downRange != 0">
+            <if test="downRange >= 0">
                 downRange = #{downRange},
             </if>
             <if test="addTime != null">
