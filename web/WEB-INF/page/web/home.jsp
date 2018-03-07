@@ -164,8 +164,12 @@
 
                                 //涨幅样式显示
                                 var classStyle = "";
-                                if (transactionUserDeal.change > 0) {
+                                var symbol = "";
+                                if (transactionUserDeal.change >= 0) {
                                     classStyle = "in";
+                                    if (transactionUserDeal.change > 0){
+                                        symbol = "+"
+                                    }
                                 } else if (transactionUserDeal.change < 0) {
                                     classStyle = "minus";
                                 }
@@ -179,7 +183,7 @@
                                     '<td class="money">' + returnFloat(transactionUserDeal.buyOnePrice) + '</td>' +
                                     '<td class="money">' + returnFloat(transactionUserDeal.sellOnePrice) + '</td>' +
                                     '<td class="money">' + returnFloat(transactionUserDeal.volume) + '</td>' +
-                                    '<td class="uplift '+classStyle+'">' + returnFloat(transactionUserDeal.change) + '%</td>' +
+                                    '<td class="uplift '+classStyle+'">' + symbol + returnFloat(transactionUserDeal.change) + '%</td>' +
                                     '<td class="operate"><a href="javascript:void(0)" onclick="toTradeCenter('+transactionUserDeal.currencyId+')">去交易</a></td>' +
                                     '</tr>');
                             }

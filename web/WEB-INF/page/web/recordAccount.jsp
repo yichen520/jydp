@@ -44,13 +44,19 @@
                         <td class="coin">${accountRecord.currencyName}</td>
                         <td class="source">${accountRecord.fromType}</td>
                         <c:if test="${accountRecord.balanceNumber >= 0}">
-                            <td class="amount in">+${accountRecord.balanceNumber}</td>
+                            <td class="amount in">
+                                 <c:if test="${accountRecord.balanceNumber > 0}">+</c:if>
+                                 ${accountRecord.balanceNumber}
+                            </td>
                         </c:if>
                         <c:if test="${accountRecord.balanceNumber < 0}">
                             <td class="amount pay">${accountRecord.balanceNumber}</td>
                         </c:if>
                         <c:if test="${accountRecord.frozenNumber >= 0}">
-                            <td class="amount in">+${accountRecord.frozenNumber}</td>
+                            <td class="amount in">
+                                <c:if test="${accountRecord.frozenNumber > 0}">+</c:if>
+                                ${accountRecord.frozenNumber}
+                            </td>
                         </c:if>
                         <c:if test="${accountRecord.frozenNumber < 0}">
                             <td class="amount pay">${accountRecord.frozenNumber}</td>
