@@ -19,6 +19,7 @@ public class UserDO {
     private double userBalanceLock;  //锁定资产单位(美刀$)
     private int accountStatus;  //账号状态：1：启用，2：禁用，-1：删除
     private Timestamp addTime;  //注册时间
+    private int authenticationStatus;//用户实名认证状态：1：待审核，2：审核通过，3：审核拒绝， 4：未提交
 
 
     /**
@@ -210,4 +211,19 @@ public class UserDO {
         this.addTime = addTime;
     }
 
+    /**
+     * 获取实名认证状态
+     * @return authenticationStatus 实名认证状态
+     */
+    public int getAuthenticationStatus() {
+        return authenticationStatus;
+    }
+
+    /**
+     * 设置实名认证状态
+     * @param authenticationStatus 实名认证状态
+     */
+    public void setAuthenticationStatus(int authenticationStatus) {
+        this.authenticationStatus = authenticationStatus;
+    }
 }

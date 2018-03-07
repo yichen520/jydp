@@ -5,7 +5,7 @@
 
 <mapper namespace="com.jydp.dao.impl.user.UserDaoImpl">
 	
-	<insert id="User_insertUser" parameterType="UserDO">
+	<insert id="User_insertUser" parameterType="UserDO"  useGeneratedKeys="true" keyColumn="userId" keyProperty="userId">
 		INSERT INTO user_tab(userAccount, password, payPassword, phoneAreaCode, phoneNumber, userBalance,
 			userBalanceLock, authenticationStatus, accountStatus, addTime)
 		VALUES (#{userAccount}, #{password}, #{payPassword}, #{phoneAreaCode}, #{phoneNumber}, #{userBalance},

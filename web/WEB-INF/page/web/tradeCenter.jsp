@@ -336,8 +336,20 @@
             return;
         }
 
+        if(buyPrice <= 0){
+            openTips("价格不能小于等于0");
+            resultBoo = false;
+            return;
+        }
+
         if(buyNum == null || buyNum == ""){
             openTips("数量不能为空");
+            resultBoo = false;
+            return;
+        }
+
+        if(buyNum <= 0){
+            openTips("数量不能小于等于0");
             resultBoo = false;
             return;
         }
@@ -490,9 +502,14 @@
             }
 
             var userBalance = parseFloat($("#userBalance").val());
-            var total = userBalance / buyPrice;
-            var tota = mulMaxNumber(total);
-            $("#buyMax").html(tota);
+            if(buyPrice != "0"){
+                var total = userBalance / buyPrice;
+                var tota = mulMaxNumber(total);
+                $("#buyMax").html(tota);
+            }else{
+                $("#buyMax").html("0");
+            }
+
         } else {
             $("#buyMax").html("0" );
             $("#buyTotal").html("$0");

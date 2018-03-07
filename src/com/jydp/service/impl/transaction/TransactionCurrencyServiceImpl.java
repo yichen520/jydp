@@ -249,10 +249,6 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
                     volume = volumeMap.get(currencyId).getVolume();
                 }
 
-                if (yesterdayPriceMap != null && yesterdayPriceMap.get(currencyId) != null) {
-                    yesterdayLastPrice = yesterdayPriceMap.get(currencyId).getYesterdayLastPrice();
-                }
-
                 transactionUserDeal.setLatestPrice(NumberUtil.doubleFormat(latestPrice,2));
                 transactionUserDeal.setBuyOnePrice(NumberUtil.doubleFormat(buyOnePrice,2));
                 transactionUserDeal.setSellOnePrice(NumberUtil.doubleFormat(sellOnePrice,2));

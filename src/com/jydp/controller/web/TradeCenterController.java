@@ -75,10 +75,13 @@ public class TradeCenterController {
         List<TransactionPendOrderVO> transactionPendOrderList = null;
 
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+
         if (!StringUtil.isNotNull(currencyIdStr)) {
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "参数错误");
-            return "page/web/tradeCenter";
+            List<TransactionCurrencyVO> transactionCurrency = transactionCurrencyService.getOnlineAndSuspensionCurrencyForWeb();
+            if(transactionCurrency == null || transactionCurrency.size() <= 0 ){
+                return "redirect:/userWeb/homePage/show";
+            }
+            currencyIdStr = transactionCurrency.get(0).getCurrencyId() + "";
         }
 
         int currencyId = Integer.parseInt(currencyIdStr);
@@ -208,6 +211,12 @@ public class TradeCenterController {
         }
 
         //交易价格限制
+        if(buyPrice <= 0){
+            resultJson.setCode(3);
+            resultJson.setMessage("交易单价不能小于等于0");
+            return resultJson;
+        }
+
         Object yesterdayPrice = redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + currencyId);
         if(yesterdayPrice != "" && yesterdayPrice != null){
             double yesterdayLastPrice = (double)yesterdayPrice;
