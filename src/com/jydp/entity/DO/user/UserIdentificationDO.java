@@ -14,6 +14,7 @@ public class UserIdentificationDO {
     private int userId;  //用户Id
     private String userAccount;  //用户账号
     private String userName;  //用户姓名
+    private String phoneAreaCode;  //手机号区号
     private String userPhone;  //手机号
     private int userCertType;  //证件类型，1:身份证，2：护照
     private String userCertNo;  //证件号码
@@ -22,6 +23,23 @@ public class UserIdentificationDO {
     private Timestamp identiTime;  //审核时间
     private Timestamp addTime;  //提交时间
 
+    /**
+     * 手机号区号
+     *
+     * @return the phone area code
+     */
+    public String getPhoneAreaCode() {
+        return phoneAreaCode;
+    }
+
+    /**
+     * 手机号区号
+     *
+     * @param phoneAreaCode the phone area code
+     */
+    public void setPhoneAreaCode(String phoneAreaCode) {
+        this.phoneAreaCode = phoneAreaCode;
+    }
 
     /**
      * 证件类型，1:身份证，2：护照
