@@ -211,6 +211,12 @@ public class TradeCenterController {
         }
 
         //交易价格限制
+        if(buyPrice <= 0){
+            resultJson.setCode(3);
+            resultJson.setMessage("交易单价不能小于等于0");
+            return resultJson;
+        }
+
         Object yesterdayPrice = redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + currencyId);
         if(yesterdayPrice != "" && yesterdayPrice != null){
             double yesterdayLastPrice = (double)yesterdayPrice;

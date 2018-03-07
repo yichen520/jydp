@@ -1,16 +1,21 @@
 package com.jydp.quartz;
 
 import com.iqmkj.utils.DateUtil;
+import com.iqmkj.utils.LogUtil;
 import com.jydp.entity.DO.system.SystemSwitchRecordDO;
+import com.jydp.entity.DTO.UserAmountCheckDTO;
 import com.jydp.other.SendMessage;
 import com.jydp.service.ISystemSwitchRecordService;
 import com.jydp.service.IUserCurrencyNumService;
 import com.jydp.service.IUserService;
 import config.CheckUserAmountConfig;
 import config.SystemSwitchConfig;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * 核对用户美金账户，数字货币账户
@@ -66,7 +71,13 @@ public class CheckUserAmountTimer {
         if (beyondUserTotal <= 0) {
             return false;
         }
-        //SendMessage.send(CheckUserAmountConfig.NOTICE_PHONE_ONE, CheckUserAmountConfig.MESSAGE_USD);
+        SendMessage.send(CheckUserAmountConfig.NOTICE_PHONE_ONE, CheckUserAmountConfig.MESSAGE_USD);
+        //测试代码 TODO
+        List<UserAmountCheckDTO> userAmountCheckList = userService.listCheckUserAmountForTimer(CheckUserAmountConfig.USD_CURRENCYID,
+                CheckUserAmountConfig.USD_BEYOND_MAX, CheckUserAmountConfig.USD_BEYOND_LOCK_MAX, 0, 100);
+        if (CollectionUtils.isNotEmpty(userAmountCheckList)) {
+            LogUtil.printInfoLog(userAmountCheckList.toString());
+        }
         return true;
     }
 
@@ -78,7 +89,13 @@ public class CheckUserAmountTimer {
         if (beyondUserTotal <= 0) {
             return false;
         }
-        //SendMessage.send(CheckUserAmountConfig.NOTICE_PHONE_ONE, CheckUserAmountConfig.MESSAGE_COIN);
+        SendMessage.send(CheckUserAmountConfig.NOTICE_PHONE_ONE, CheckUserAmountConfig.MESSAGE_COIN);
+        //测试代码 TODO
+        List<UserAmountCheckDTO> userAmountCheckList = userCurrencyNumService.listCheckUserAmountForTimer(CheckUserAmountConfig.COIN_BEYOND_MAX,
+                CheckUserAmountConfig.COIN_BEYOND_LOCK_MAX, 0, 100);
+        if (CollectionUtils.isNotEmpty(userAmountCheckList)) {
+            LogUtil.printInfoLog(userAmountCheckList.toString());
+        }
         return true;
     }
 

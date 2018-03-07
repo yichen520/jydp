@@ -336,8 +336,20 @@
             return;
         }
 
+        if(buyPrice <= 0){
+            openTips("价格不能小于等于0");
+            resultBoo = false;
+            return;
+        }
+
         if(buyNum == null || buyNum == ""){
             openTips("数量不能为空");
+            resultBoo = false;
+            return;
+        }
+
+        if(buyNum <= 0){
+            openTips("数量不能小于等于0");
             resultBoo = false;
             return;
         }

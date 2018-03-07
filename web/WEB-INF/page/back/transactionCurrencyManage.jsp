@@ -461,13 +461,13 @@
             success: function (resultData) {
                 var code = resultData.code;
                 var message = resultData.message;
-                if (code != 1 && message != "") {
-                    edUpBoo = false;
+                if (message != "") {
                     openTips(message);
-                    return;
                 }
-
-                $("#queryForm").submit();
+                if (code == 1){
+                    setTimeout(function (){$("#queryForm").submit();}, 2000);
+                }
+                edUpBoo = false;
             },
 
             error: function () {
@@ -523,13 +523,13 @@
             success: function (resultData) {
                 var code = resultData.code;
                 var message = resultData.message;
-                if (code != 1 && message != "") {
-                    edPayBoo = false;
+                if (message != "") {
                     openTips(message);
-                    return;
                 }
-
-                $("#queryForm").submit();
+                if (code == 1){
+                    setTimeout(function (){$("#queryForm").submit();}, 2000);
+                }
+                edPayBoo = false;
             },
 
             error: function () {
@@ -636,13 +636,14 @@
             success: function (resultData) {
                 var code = resultData.code;
                 var message = resultData.message;
-                if (code != 1 && message != "") {
-                    addBoo = false;
+                if (message != "") {
                     openTips(message);
-                    return;
+                }
+                if (code == 1){
+                    setTimeout(function (){$("#queryForm").submit();}, 2000);
                 }
 
-                $("#queryForm").submit();
+                addBoo = false;
             },
 
             error: function () {
@@ -760,13 +761,14 @@
             success: function (resultData) {
                 var code = resultData.code;
                 var message = resultData.message;
-                if (code != 1 && message != "") {
-                    updateBoo = false;
+                if (message != "") {
                     openTips(message);
-                    return;
+                }
+                if (code == 1){
+                    setTimeout(function (){$("#queryForm").submit();}, 2000);
                 }
 
-                $("#queryForm").submit();
+                updateBoo = false;
             },
 
             error: function () {
