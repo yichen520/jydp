@@ -150,11 +150,8 @@ public class RegisterController {
 
         if (userDO != null) {
             JSONObject jsonObject = new JSONObject();
-            if (userDO != null){
-                jsonObject.put("userId",userDO.getUserId());
-                jsonObject.put("userAccount",userDO.getUserAccount());
-            }
-
+            jsonObject.put("userId",userDO.getUserId());
+            jsonObject.put("userAccount",userDO.getUserAccount());
             responseJson.setData(jsonObject);
             responseJson.setCode(1);
             responseJson.setMessage("注册成功");
