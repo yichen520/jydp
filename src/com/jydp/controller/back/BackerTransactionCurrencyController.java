@@ -28,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -204,6 +205,11 @@ public class BackerTransactionCurrencyController {
                 return response;
             }
             upTime = DateUtil.stringToTimestamp(upTimeStr);
+            if (upTime.getTime() < DateUtil.getCurrentTime().getTime()){
+                response.setCode(3);
+                response.setMessage("上线时间应大于当前时间");
+                return response;
+            }
         }
 
         String imageUrl = "";
@@ -394,7 +400,8 @@ public class BackerTransactionCurrencyController {
             paymentType = 1;
         }
 
-        boolean result = transactionCurrencyService.updatePaymentType(currencyId, paymentType);
+        boolean result = transactionCurrencyService.updatePaymentType(currencyId, paymentType,
+                backerSession.getBackerAccount(), IpAddressUtil.getIpAddress(request));
         if (result) {
             response.setCode(1);
         } else {
@@ -455,7 +462,8 @@ public class BackerTransactionCurrencyController {
             return response;
         }
 
-        boolean result = transactionCurrencyService.updateUpStatus(currencyId, upStatus);
+        boolean result = transactionCurrencyService.updateUpStatus(currencyId, upStatus,
+                backerSession.getBackerAccount(), IpAddressUtil.getIpAddress(request), DateUtil.getCurrentTime());
         if (result) {
             response.setCode(1);
         } else {

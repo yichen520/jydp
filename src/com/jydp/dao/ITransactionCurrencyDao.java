@@ -91,17 +91,22 @@ public interface ITransactionCurrencyDao {
      * 停，复牌操作
      * @param currencyId  币种Id
      * @param paymentType  交易状态,1:正常，2:停牌
+     * @param backerAccount  后台管理员账号
+     * @param ipAddress  操作时的ip地址
      * @return  操作成功：返回true，操作失败：返回false
      */
-    boolean updatePaymentType(int currencyId, int paymentType);
+    boolean updatePaymentType(int currencyId, int paymentType, String backerAccount, String ipAddress);
 
     /**
      * 上，下线币种操作
      * @param currencyId  币种Id
      * @param upStatus  上线状态,1:待上线,2:上线中,3:停牌,4:已下线
+     * @param backerAccount  后台管理员账号
+     * @param ipAddress  操作时的ip地址
+     * @param upTime  上线时间   下线填空
      * @return  操作成功：返回true，操作失败：返回false
      */
-    boolean updateUpStatus(int currencyId, int upStatus);
+    boolean updateUpStatus(int currencyId, int upStatus, String backerAccount, String ipAddress, Timestamp upTime);
 
     /**
      * 查询全部币种信息
