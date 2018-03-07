@@ -325,8 +325,8 @@
         document.getElementById("buyPrice").value = "";
         document.getElementById("buyNum").value = "";
         document.getElementById("buyPwd").value = "";
-        document.getElementById("buyMax").value = "";
-        document.getElementById("buyTotal").value = "";
+        $("#buyMax").html("0" );
+        $("#buyTotal").html("$0");
 
         if(buyPrice == null || buyPrice == ""){
             openTips("价格不能为空");
@@ -392,8 +392,8 @@
         document.getElementById("sellPrice").value = "";
         document.getElementById("sellNum").value = "";
         document.getElementById("sellPwd").value = "";
-        document.getElementById("sellMax").value = "";
-        document.getElementById("sellTotal").value = "";
+        $("#sellMax").html("0");
+        $("#sellTotal").html("$0");
 
         if(sellPrice == null || sellPrice == ""){
             openTips("价格不能为空");
