@@ -54,8 +54,8 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
 
     /** 组装基准信息参数并存入redis (当前交易价,今日涨跌,今日最高价,今日最低价,当日成交量)*/
     public void standardMessageForRedis() {
-        List<TransactionDealPriceDTO> nowTurnover = transactionDealRedisService.getNowTurnover();  //24小时成交量
-        //double nowTurnover = transactionDealRedisService.getNowVolumeOfTransaction();  24小时成交额
+        List<TransactionDealPriceDTO> nowTurnover = transactionDealRedisService.getNowTurnover();  //今日成交量
+        //double nowTurnover = transactionDealRedisService.getNowVolumeOfTransaction();  今日成交额
         if(nowTurnover != null && nowTurnover.size() > 0){
             for(TransactionDealPriceDTO transactionDealPrice : nowTurnover){
                 redisService.addValue(RedisKeyConfig.DAY_TURNOVER + transactionDealPrice.getCurrencyId(),
@@ -102,7 +102,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
         }
     }
 
-    /** 每日开盘基准信息重置(今日涨跌,今日最高价,今日最低价,昨日收盘价)*/
+    /** 每日开盘基准信息重置(今日涨跌,今日最高价,今日最低价,昨日收盘价，当日成交量)*/
     public void updateWeeHoursBasisOfPrice(){
         Timestamp date;
         double quantity = 0;
@@ -151,6 +151,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                     redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE + transactionUser.getCurrencyId(), quantity);
                     redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE + transactionUser.getCurrencyId(), quantity);
                     redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionUser.getCurrencyId(), quantity);
+                    redisService.addValue(RedisKeyConfig.DAY_TURNOVER + transactionUser.getCurrencyId(), quantity);
                 }
             } else {
                 for (TransactionCurrencyDO transactionUser : transactionUserDeal) {
@@ -159,6 +160,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                             redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE + transactionUser.getCurrencyId(), quantity);
                             redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE + transactionUser.getCurrencyId(), quantity);
                             redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionUser.getCurrencyId(), quantity);
+                            redisService.addValue(RedisKeyConfig.DAY_TURNOVER + transactionUser.getCurrencyId(), quantity);
                         }
                     }
                 }

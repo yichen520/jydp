@@ -59,7 +59,7 @@
             </p>
             <p class="info">
                 <span class="number price" id="dayTurnove"><fmt:formatNumber type="number" value="${standardParameter.dayTurnove }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
-                <span class="infoName">24小时成交量</span>
+                <span class="infoName">今日成交量</span>
             </p>
         </div>
     </div>

@@ -13,7 +13,7 @@ public class StandardParameterVO {
     private double todayMin; //今日最低价
     private double todayRange; //今日涨幅
     private double yesterdayPrice; //昨日收盘价
-    private double dayTurnove; //24小时成交量
+    private double dayTurnove; //今日成交量
 
     /**
      * 今日涨幅
@@ -142,7 +142,7 @@ public class StandardParameterVO {
     }
 
     /**
-     * 24小时成交量
+     * 今日成交量
      *
      * @return the day turnove
      */
@@ -151,7 +151,7 @@ public class StandardParameterVO {
     }
 
     /**
-     * 24小时成交量
+     * 今日成交量
      *
      * @param dayTurnove the day turnove
      */
