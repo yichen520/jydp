@@ -96,10 +96,8 @@
 
     //跳转至交易中心
     function toTradeCenter(currencyId) {
-        var url = '<%=path %>' + "/userWeb/tradeCenter/show?currencyId=" + currencyId;
-        window.location.href = url;
-        // $("#menuCurrencyId").val(currencyId);
-        // $("#tradeCenterForm").submit();
+        $("#menuCurrencyId").val(currencyId);
+        $("#tradeCenterForm").submit();
     }
 </script>
 </body>

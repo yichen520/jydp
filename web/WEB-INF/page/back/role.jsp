@@ -131,17 +131,22 @@
                 delete_roleId : delete_roleId
             },
             success:function(result){
-                if(result.code == 1) {
-                    window.location.href = "<%=path %>/backerWeb/backerRole/show.htm";
-                } else {
-                    openTips(result.message);
-                }
+                openTips(result.message);
                 exportDataBoo = false;
+                if(result.code == 1) {
+                    setTimeout("refresh()",1000 );
+                }
+
             }, error:function(){
                 exportDataBoo = false;
                 openTips("系统错误！");
             }
         });
+    }
+
+    //页面刷新
+    function refresh() {
+        window.location.href = "<%=path %>/backerWeb/backerRole/show.htm";
     }
 
     function updateRole(roleId) {
