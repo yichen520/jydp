@@ -152,7 +152,7 @@
 		<if test="paymentType == 2 ">
 			ASC
 		</if>
-		,  addTime DESC
+		,  addTime ASC
 		LIMIT 1
 	</select>
 
