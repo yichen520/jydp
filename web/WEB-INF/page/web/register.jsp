@@ -160,9 +160,15 @@
         }
 
         var phone = $("#phone").val();
+        var regPos = /^\d+(\.\d+)?$/; //非负浮点数
         if (!phone) {
             phoneBoo = false;
             return openTips("请输入您的手机号");
+        }
+
+        if(!regPos.test(phone) || phone.length > 11 || phone.length < 5){
+            phoneBoo = false;
+            return openTips("请输入正确手机号");
         }
 
         time(this);
