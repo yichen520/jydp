@@ -76,7 +76,26 @@ body{
 .charts{
     width: 765px;
     height: 370px;
-    border: 1px solid #ececec;
+}
+.promt{
+    height: 35px;
+    line-height: 35px;
+    width: 765px;
+    margin: 15px auto 0;
+    background-color: #ffffff;
+    overflow: hidden;
+    font-size: 12px;
+    -webkit-box-shadow:  0 0 16px 2px rgba(237,237,237,0.9);
+    box-shadow:  0 0 16px 2px rgba(237,237,237,0.9);
+    color: #e83a33;
+}
+.promtText{
+    float: left;
+    margin-left: 20px;
+}
+.promptTime{
+    float: left;
+    margin-left: 30px;
 }
 .right{
     float: right;
@@ -115,7 +134,7 @@ body{
     float: left;
     margin-top: 15px;
     width: 765px;
-    height: 367px;
+    height: 387px;
     -webkit-box-shadow: 0 0  16px 2px rgba(237,237,237,0.9);
     box-shadow: 0 0 16px 2px rgba(237,237,237,0.9);
     background-color: #ffffff;
@@ -136,7 +155,7 @@ body{
 }
 .buyInput{
     float: left;
-    margin-top: 10px;
+    margin-top: 15px;
     width: 342px;
 }
 .serviceInput{
@@ -195,6 +214,10 @@ body{
     margin: 20px 0;
     padding: 0 20px;
     width: 342px;
+}
+.sellTitle{
+    color: #4dac7b;
+    font-size: 18px;
 }
 .sellBtn{
     margin: 15px 40px 0 80px;
@@ -268,7 +291,7 @@ body{
     width: 405px;
 }
 .scroll{
-    max-height: 442px;
+    max-height: 510px;
     overflow-x: hidden;
     overflow-y: auto;
 }
@@ -429,4 +452,28 @@ body{
     padding: 0 5px;
     float: left;
     text-align: center;
+}
+
+
+.buyConfirm,.sellConfirm,.revoke_pop{
+    display: none;
+}
+.popName{
+    float: left;
+    width: 100px;
+    height: 20px;
+    line-height: 20px;
+    text-align: left;
+    color: #666666;
+    font-size: 14px;
+}
+.popInfo{
+    float: right;
+    text-align: left;
+    width: 250px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 14px;
+    color: #777777;
+    word-break: break-all;
 }

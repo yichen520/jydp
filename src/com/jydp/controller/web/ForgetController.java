@@ -37,6 +37,7 @@ public class ForgetController {
     @RequestMapping(value = "/show")
     public String show(HttpServletRequest request){
         Map<String, String> phoneAreaMap = PhoneAreaConfig.phoneAreaMap;
+        request.setAttribute("selectedArea", PhoneAreaConfig.PHONE_AREA_CHINA);
         request.setAttribute("phoneAreaMap", phoneAreaMap);
         return "page/web/forget";
     }

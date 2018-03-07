@@ -16,8 +16,8 @@ public class HomePageTimer {
     @Autowired
     private IHomePageRedisService homePageRedisService;
 
-    /** 从数据库查询所有首页数据存储到redis中(除币种行情外) (每30分钟执行一次) */
-    @Scheduled(cron="0 */30 * * * ?")
+    /** 从数据库查询所有首页数据存储到redis中(除币种行情外) (每5分钟执行一次) */
+    @Scheduled(cron="0 */5 * * * ?")
     public void getHomePageData(){
         homePageRedisService.getHomePageData();
     }
