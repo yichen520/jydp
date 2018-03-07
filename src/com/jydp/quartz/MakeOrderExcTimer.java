@@ -31,7 +31,7 @@ public class MakeOrderExcTimer {
         List<String> list = new ArrayList<>();
         if (transactionMakeOrderList != null && transactionMakeOrderList.size() > 0) {
             for (TransactionMakeOrderVO order: transactionMakeOrderList) {
-                if (order.getExecuteTime().getTime() > DateUtil.getCurrentTime().getTime() && order.getExecuteStatus() == 1){
+                if (order.getExecuteTime().getTime() <= DateUtil.getCurrentTime().getTime() && order.getExecuteStatus() == 1){
                     list.add(order.getOrderNo());
                 }
             }
