@@ -512,7 +512,7 @@
             return;
         }
 
-        if(verifyCode == ""){
+        if(verifyCode.length < 6){
             openTips("验证码为六位");
             return;
         }
@@ -634,7 +634,7 @@
                     return;
                 }
 
-                if(!regPos.test(bindingMobile) || bindingMobile.length > 11){
+                if(!regPos.test(bindingMobile) || bindingMobile.length > 11 || bindingMobile.length < 5){
                     openTips("请输入正确手机号");
                     return;
                 }
