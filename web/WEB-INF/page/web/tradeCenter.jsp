@@ -216,43 +216,41 @@
         </div>
     </div>
 
-    <c:if test="${userSession != null}">
-        <c:if test="${!transactionPendOrderList.isEmpty()}">
-            <div class="myEntrust" id="tableId">
-                <p class="myTitle">
-                    我的委托记录<img src="<%=path %>/resources/image/web/entrust.png" />
-                    <a href="<%=path%>/userWeb/transactionPendOrderController/show.htm" class="more">查看更多</a>
-                </p>
-                <table class="table" cellspacing="0 " cellpadding="0" >
-                    <tr class="tableTitle">
-                        <td class="time">委托时间</td>
-                        <td class="type">类型</td>
-                        <td class="amount">委托价格</td>
-                        <td class="amount">委托数量</td>
-                        <td class="amount">委托总价</td>
-                        <td class="operate">操作</td>
-                    </tr>
-                    <tbody id="entrustRecord">
-                    <c:forEach items="${transactionPendOrderList}" var="item">
-                        <tr class="tableInfo">
-                            <td class="time"><fmt:formatDate type="time" value="${item.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-                            <c:if test="${item.paymentType == 1}">
-                                <td class="type rise">买入</td>
-                            </c:if>
-                            <c:if test="${item.paymentType == 2}">
-                                <td class="type fall">卖出</td>
-                            </c:if>
-                            <td class="amount">$<fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2"/></td>
-                            <td class="amount"><fmt:formatNumber type="number" value="${item.pendingNumber}" maxFractionDigits="4"/></td>
-                            <td class="amount rise">$<fmt:formatNumber type="number" value="${item.countPrice}" maxFractionDigits="6"/></td>
-                            <td class="operate"><input type="text" value="撤&nbsp;销" class="revoke" onclick="goCancle('${item.pendingOrderNo}')" /></td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
-            </div>
-        </c:if>
-    </c:if>
+
+    <div class="myEntrust" id="tableId" style="display:none;">
+        <p class="myTitle">
+            我的委托记录<img src="<%=path %>/resources/image/web/entrust.png" />
+            <a href="<%=path%>/userWeb/transactionPendOrderController/show.htm" class="more">查看更多</a>
+        </p>
+        <table class="table" cellspacing="0 " cellpadding="0" >
+            <tr class="tableTitle">
+                <td class="time">委托时间</td>
+                <td class="type">类型</td>
+                <td class="amount">委托价格</td>
+                <td class="amount">委托数量</td>
+                <td class="amount">委托总价</td>
+                <td class="operate">操作</td>
+            </tr>
+            <tbody id="entrustRecord">
+            <c:forEach items="${transactionPendOrderList}" var="item">
+                <tr class="tableInfo">
+                    <td class="time"><fmt:formatDate type="time" value="${item.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+                    <c:if test="${item.paymentType == 1}">
+                        <td class="type rise">买入</td>
+                    </c:if>
+                    <c:if test="${item.paymentType == 2}">
+                        <td class="type fall">卖出</td>
+                    </c:if>
+                    <td class="amount">$<fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2"/></td>
+                    <td class="amount"><fmt:formatNumber type="number" value="${item.pendingNumber}" maxFractionDigits="4"/></td>
+                    <td class="amount rise">$<fmt:formatNumber type="number" value="${item.countPrice}" maxFractionDigits="6"/></td>
+                    <td class="operate"><input type="text" readonly="readonly" value="撤&nbsp;销" class="revoke" onclick="goCancle('${item.pendingOrderNo}')" /></td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+    </div>
+
 
     <div class="myDeal">
         <p class="myTitle">
@@ -301,8 +299,17 @@
 <script type="text/javascript" src="<%=path %>/resources/js/simpleTips.js"></script>
 <script type="text/javascript">
     window.onload = function() {
+        count();
         var code = '${code}';
         var message = '${message}';
+        var transactionPendOrderList = '${transactionPendOrderList}';
+        var userSession = '${userSession}';
+
+        if(transactionPendOrderList != null && transactionPendOrderList.length > 0 && userSession != null
+             && transactionPendOrderList != ""){
+            $("#tableId").style.display="inline";
+        }
+
         if (code != 1 && message != "") {
             openTips(message);
             return false;
@@ -636,7 +643,6 @@
 
 
     }
-    window.onload = count;
 
     /** 挂单记录 */
     var pendBoo = false;
@@ -928,7 +934,7 @@
                             "<td class='amount'>" + "$" + pendingPrice + "</td>" +
                             "<td class='amount'>" + pendingNumber + "</td>" +
                             "<td class='amount rise'>" + "$" + currencyTotalPrice+ "</td>" +
-                            "<td class='operate'><input type='text' value='撤&nbsp;销' class='revoke' onclick="+ goCancle + "></td>" +
+                            "<td class='operate'><input type='text' readonly='readonly' value='撤&nbsp;销' class='revoke' onclick="+ goCancle + "></td>" +
                             "</tr>";
                     }
                     document.getElementById("entrustRecord").innerHTML = newChild;
