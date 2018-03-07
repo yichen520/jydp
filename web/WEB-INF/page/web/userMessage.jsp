@@ -100,7 +100,7 @@
 <div id="helpFooter"></div>
 <div id="footer"></div>
 
-<form id="tradeCenter" action="<%=path %>/userWeb/tradeCenter/show" method="post">
+<form id="tradeCenters" action="<%=path %>/userWeb/tradeCenter/show" method="post">
     <input type="hidden" id="currencyIds" name="currencyId">
 </form>
 
@@ -533,7 +533,8 @@
     //去交易
     function dealSkip (currencyId){
         $("#currencyIds").val(currencyId);
-        $("#tradeCenter").submit();
+        openTips(currencyId);
+        $("#tradeCenters").submit();
     }
 </script>
 <script type="text/javascript">
