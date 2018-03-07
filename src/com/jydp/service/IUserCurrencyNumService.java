@@ -103,4 +103,11 @@ public interface IUserCurrencyNumService {
     List<UserAmountCheckDTO> listCheckUserAmountForTimer(double checkAmount, double checkAmountLock,
                                                          int pageNumber, int pageSize);
 
+    /**
+     * 获取当前用户没有的币种
+     * @param userId 用户Id
+     * @return 查询成功：返回用户币种列表，查询失败：返回null
+     */
+    List<Integer> getUserCurrencyNotOwnForWeb(int userId);
+
 }

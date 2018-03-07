@@ -258,7 +258,7 @@
                         $("#userId").val(userId);
                         $("#userAccountIde").val(userAccount);
                         $("#identificationForm").submit();
-                    },2000)
+                    },3000)
                 } else {
                     openTips(result.message);
                 }
