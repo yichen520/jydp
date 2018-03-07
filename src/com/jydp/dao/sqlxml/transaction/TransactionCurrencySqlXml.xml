@@ -27,14 +27,14 @@
             <if test="currencyShortName != null and currencyShortName != ''">
                 currencyShortName = #{currencyShortName},
             </if>
-            <if test="backerAccount != null and backerAccount !=''">
-                backerAccount = #{backerAccount},
-            </if>
             <if test="currencyName != null and currencyName !=''">
                 currencyName = #{currencyName},
             </if>
             <if test="currencyImg != null and currencyImg !=''">
                 currencyImg = #{currencyImg},
+            </if>
+            <if test="backerAccount != null and backerAccount !=''">
+                backerAccount = #{backerAccount},
             </if>
             <if test="ipAddress != null and ipAddress !=''">
                 ipAddress = #{ipAddress},
@@ -154,12 +154,27 @@
     <update id="TransactionCurrency_updatePaymentType" parameterType="java.util.Map">
         UPDATE transaction_currency_tab
         SET paymentType = #{paymentType}
+            <if test="backerAccount != null and backerAccount !=''">
+                ,backerAccount = #{backerAccount},
+            </if>
+            <if test="ipAddress != null and ipAddress !=''">
+                ipAddress = #{ipAddress}
+            </if>
         WHERE currencyId = #{currencyId}
     </update>
 
     <update id="TransactionCurrency_updateUpStatus" parameterType="java.util.Map">
         UPDATE transaction_currency_tab
         SET upStatus = #{upStatus}
+            <if test="backerAccount != null and backerAccount !=''">
+                ,backerAccount = #{backerAccount}
+            </if>
+            <if test="ipAddress != null and ipAddress !=''">
+                ,ipAddress = #{ipAddress}
+            </if>
+            <if test="upTime != null and upStatus == 2">
+                ,upTime = #{upTime}
+            </if>
         WHERE currencyId = #{currencyId}
     </update>
 

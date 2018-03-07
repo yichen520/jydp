@@ -18,7 +18,7 @@
 
     <ul class="nav">
         <li class="navInfo"><a id="webHome" href="<%=path %>/userWeb/homePage/show">首页</a></li>
-        <li class="navInfo"><a id="tradeCenter" href="javascript:void(0)" onclick="toTradeCenter()" class="tradeCenter">交易中心
+        <li class="navInfo"><a id="tradeCenter" href="javascript:;" class="tradeCenter">交易中心
                                 <img src="<%=path %>/resources/image/web/tradeCoin.png" class="tradeArrow" />
                             </a></li>
         <li class="navInfo"><a href="#">我要充值</a></li>

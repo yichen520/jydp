@@ -313,19 +313,21 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      * 停，复牌操作
      * @param currencyId  币种Id
      * @param paymentType  交易状态,1:正常，2:停牌
+     * @param backerAccount  后台管理员账号
+     * @param ipAddress  操作时的ip地址
      * @return  操作成功：返回true，操作失败：返回false
      */
     @Transactional
-    public boolean updatePaymentType(int currencyId, int paymentType){
+    public boolean updatePaymentType(int currencyId, int paymentType, String backerAccount, String ipAddress){
         //修改交易状态
-        boolean excBoo = transactionCurrencyDao.updatePaymentType(currencyId, paymentType);
+        boolean excBoo = transactionCurrencyDao.updatePaymentType(currencyId, paymentType, backerAccount, ipAddress);
 
         //修改上线状态
         if (excBoo && paymentType == 2) {
-            excBoo = transactionCurrencyDao.updateUpStatus(currencyId, 3);
+            excBoo = transactionCurrencyDao.updateUpStatus(currencyId, 3, backerAccount, ipAddress, null);
         }
         if (excBoo && paymentType == 1) {
-            excBoo = transactionCurrencyDao.updateUpStatus(currencyId, 2);
+            excBoo = transactionCurrencyDao.updateUpStatus(currencyId, 2, backerAccount, ipAddress, DateUtil.getCurrentTime());
         }
 
         //数据回滚
@@ -340,19 +342,22 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      * 上，下线币种操作
      * @param currencyId  币种Id
      * @param upStatus  上线状态,,2:上线中,4:已下线
+     * @param backerAccount  后台管理员账号
+     * @param ipAddress  操作时的ip地址
+     * @param upTime  上线时间   下线填空
      * @return  操作成功：返回true，操作失败：返回false
      */
     @Transactional
-    public boolean updateUpStatus(int currencyId, int upStatus){
+    public boolean updateUpStatus(int currencyId, int upStatus,  String backerAccount, String ipAddress, Timestamp upTime){
         //修改上线状态
-        boolean upBoo = transactionCurrencyDao.updateUpStatus(currencyId, upStatus);
+        boolean upBoo = transactionCurrencyDao.updateUpStatus(currencyId, upStatus, backerAccount, ipAddress, upTime);
 
         //修改交易状态
         if (upStatus == 2) {
-            upBoo = transactionCurrencyDao.updatePaymentType(currencyId, 1);
+            upBoo = transactionCurrencyDao.updatePaymentType(currencyId, 1, backerAccount, ipAddress);
         }
         if (upStatus == 4) {
-            upBoo = transactionCurrencyDao.updatePaymentType(currencyId, 2);
+            upBoo = transactionCurrencyDao.updatePaymentType(currencyId, 2, backerAccount, ipAddress);
         }
 
         //数据回滚
