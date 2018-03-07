@@ -81,7 +81,7 @@
                     <li class="listInfo">
                         <a href="javascript:void(0)" onclick="noticeSubmit(${systemNotice.id})" class="link">
                             <span class="noticeTitle">【<span>公告</span>】${systemNotice.noticeTitle}</span>
-                            <span class="time"><fmt:formatDate type="time" value="${systemNotice.addTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></span>
+                            <span class="time"><fmt:formatDate type="time" value="${systemNotice.addTime}" pattern="yyyy-MM-dd"></fmt:formatDate></span>
                         </a>
                     </li>
                 </c:forEach>
@@ -98,7 +98,7 @@
                     <li class="listInfo">
                         <a href="javascript:void(0)" onclick="hotTopicSubmit(${hotTopic.id})" class="link">
                             <span class="noticeTitle">【<span>热门</span>】${hotTopic.noticeTitle}</span>
-                            <span class="time"><fmt:formatDate type="time" value="${hotTopic.addTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></span>
+                            <span class="time"><fmt:formatDate type="time" value="${hotTopic.addTime}" pattern="yyyy-MM-dd"></fmt:formatDate></span>
                         </a>
                     </li>
                 </c:forEach>
