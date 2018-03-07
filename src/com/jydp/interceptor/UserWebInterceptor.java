@@ -7,7 +7,9 @@ import com.iqmkj.utils.IpAddressUtil;
 import com.iqmkj.utils.NumberUtil;
 import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.user.UserSessionDO;
+import com.jydp.service.IRedisService;
 import com.jydp.service.IUserSessionService;
+import config.SessionConfig;
 import config.SystemCommonConfig;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -33,6 +35,17 @@ public class UserWebInterceptor implements HandlerInterceptor {
             userSessionService = (IUserSessionService) ApplicationContextHandle.getBean("userSessionService");
         }
         return userSessionService;
+    }
+
+    /** redis服务 */
+    private static IRedisService redisService;
+
+    /** redis服务 */
+    private static IRedisService getRedisService(HttpServletRequest request) {
+        if (redisService == null) {
+            redisService = (IRedisService) ApplicationContextHandle.getBean("redisService");
+        }
+        return redisService;
     }
 
     /**
@@ -90,6 +103,11 @@ public class UserWebInterceptor implements HandlerInterceptor {
         //session缓存信息
         userSession.setOutTime(curTime.getTime());
         request.getSession().setAttribute("userSession", userSession);
+        //记录用户id与sessionid的映射关系
+        String springSessionId = request.getSession().getId();
+        String SESSION_USER_KEY = SessionConfig.SESSION_USER_ID + String.valueOf(userSession.getUserId());
+        String SESSION_SESSIONS_KEY = SessionConfig.SESSION_SESSIONS + springSessionId;
+        getRedisService(request).addList(SESSION_USER_KEY, SESSION_SESSIONS_KEY, SessionConfig.SESSION_TIME_OUT);
         return;
     }
 

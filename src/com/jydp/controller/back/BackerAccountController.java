@@ -10,6 +10,7 @@ import com.jydp.entity.DO.back.BackerRoleDO;
 import com.jydp.interceptor.BackerWebInterceptor;
 import com.jydp.service.IBackerRoleService;
 import com.jydp.service.IBackerService;
+import com.jydp.service.IBackerSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -36,6 +37,10 @@ public class BackerAccountController {
     /** 系统角色 */
     @Autowired
     private IBackerRoleService backerRoleService;
+
+    /** 系统管理员登录记录 */
+    @Autowired
+    private IBackerSessionService backerSessionService;
 
     /** 展示 后台管理员页面 */
     @RequestMapping(value = "/show.htm")
@@ -391,6 +396,9 @@ public class BackerAccountController {
         int accountStatus = 2;
         boolean updateResult = backerService.updateAccountStatus(backerId, accountStatus);
         if(updateResult){
+            //删除session信息
+            backerSessionService.deleteRedisSession(backerId);
+
             responseJson.setCode(1);
             responseJson.setMessage("禁用成功");
         } else {
