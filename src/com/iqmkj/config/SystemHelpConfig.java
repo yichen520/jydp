@@ -13,8 +13,6 @@ public class SystemHelpConfig {
 	public static final Map<Integer, String> userHelpMap = new HashMap<Integer, String>(){
 		private static final long serialVersionUID = 1L;{
 			put(101010, "注册协议");
-			put(101011, "常见问题");
-			put(101012, "关于我们");
 			put(101013, "联系我们");
 			put(101014, "公司简介");
 			put(101015, "充值流程");
@@ -26,13 +24,7 @@ public class SystemHelpConfig {
 	
 	/** 注册协议 */
 	public static final int REGISTER_AGREEMENT = 101010;
-	
-	/** 常见问题 */
-	public static final int COMMON_PROBLEM = 101011;
 
-	/** 关于我们 */
-	public static final int ABOUT_US = 101012;
-	
 	/** 联系我们 */
 	public static final int CONTACT_US = 101013;
 

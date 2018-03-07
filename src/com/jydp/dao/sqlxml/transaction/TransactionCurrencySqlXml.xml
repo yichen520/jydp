@@ -198,7 +198,7 @@
     <select id="TransactionCurrency_getNewPriceForWeb" resultMap="CurrencyMarketMap">
         SELECT t.currencyId, t.transactionPrice AS latestPrice
         FROM  transaction_deal_redis_tab t,
-        (SELECT currencyId, max(addTime) as lastTime
+        (SELECT currencyId, max(addTime) as lastTime, max(transactionPrice)
         FROM transaction_deal_redis_tab
         GROUP BY currencyId) t2
         WHERE
@@ -231,13 +231,25 @@
     </select>
 
     <select id="TransactionCurrency_getYesterdayLastPriceForWeb" parameterType="java.util.Map" resultMap="CurrencyMarketMap">
-        SELECT
-        t.currencyId,t.transactionPrice AS yesterdayLastPrice
+        SELECT t.currencyId,t.transactionPrice AS yesterdayLastPrice
         FROM
         transaction_deal_redis_tab t, (SELECT currencyId,max(addTime) as lastTime FROM transaction_deal_redis_tab WHERE addTime >= #{startTime} AND addTime <![CDATA[ < ]]> #{openTime} GROUP BY currencyId) t2
         WHERE
         t.currencyId = t2.currencyId
         AND t.addTime = t2.lastTime
         GROUP BY currencyId
+    </select>
+
+    <select id="TransactionCurrency_getAllCurrencylistForWeb" resultType="TransactionCurrencyVO">
+        SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, upRange, downRange,
+            paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
+        FROM transaction_currency_tab
+    </select>
+
+    <select id="TransactionCurrency_getOnlineAndSuspensionCurrencyForWeb" resultType="TransactionCurrencyVO">
+        SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, upRange, downRange,
+            paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
+        FROM transaction_currency_tab
+        WHERE upStatus IN (2,3)
     </select>
 </mapper>
