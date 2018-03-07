@@ -1032,11 +1032,11 @@
                 var userDealCapitalMessage = data.userDealCapitalMessage;
                 if(userDealCapitalMessage != null){
                     $("#currencyNumberShow").html(userDealCapitalMessage.currencyNumber);
-                    $("#currencyNumber").html(userDealCapitalMessage.currencyNumber);
+                    $("#currencyNumber").val(userDealCapitalMessage.currencyNumber);
                     $("#usableCurrencyNumber").html(userDealCapitalMessage.currencyNumber);
                     $("#currencyNumberLockShow").html(userDealCapitalMessage.currencyNumberLock);
                     $("#userBalanceShow").html("$" + userDealCapitalMessage.userBalance);
-                    $("#userBalance").html("$" + userDealCapitalMessage.userBalance);
+                    $("#userBalance").val(userDealCapitalMessage.userBalance);
                     $("#usableUserBalance").html("$" + userDealCapitalMessage.userBalance);
                     $("#userBalanceLockShow").html("$" + userDealCapitalMessage.userBalanceLock);
                     $("#currencyNumberSumShow").html("$" + userDealCapitalMessage.currencyNumberSum);
