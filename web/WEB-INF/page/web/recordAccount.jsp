@@ -45,8 +45,7 @@
                         <td class="source">${accountRecord.fromType}</td>
                         <c:if test="${accountRecord.balanceNumber >= 0}">
                             <td class="amount in">
-                                 <c:if test="${accountRecord.balanceNumber > 0}">+</c:if>
-                                 ${accountRecord.balanceNumber}
+                                 <c:if test="${accountRecord.balanceNumber > 0}">+</c:if>${accountRecord.balanceNumber}
                             </td>
                         </c:if>
                         <c:if test="${accountRecord.balanceNumber < 0}">
@@ -54,8 +53,7 @@
                         </c:if>
                         <c:if test="${accountRecord.frozenNumber >= 0}">
                             <td class="amount in">
-                                <c:if test="${accountRecord.frozenNumber > 0}">+</c:if>
-                                ${accountRecord.frozenNumber}
+                                <c:if test="${accountRecord.frozenNumber > 0}">+</c:if>${accountRecord.frozenNumber}
                             </td>
                         </c:if>
                         <c:if test="${accountRecord.frozenNumber < 0}">
