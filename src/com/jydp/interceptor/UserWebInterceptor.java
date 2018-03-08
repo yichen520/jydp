@@ -70,7 +70,7 @@ public class UserWebInterceptor implements HandlerInterceptor {
                 return false;
             } else {
                 request.setAttribute("code", -1);
-                request.setAttribute("message", "登录过期，请重新登录");
+                request.setAttribute("message", "未登录");
                 request.getRequestDispatcher("/webLogin").forward(request, response);
                 return false;
             }
