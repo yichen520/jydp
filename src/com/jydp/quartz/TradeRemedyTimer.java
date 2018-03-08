@@ -63,9 +63,9 @@ public class TradeRemedyTimer {
 			long buyTime = buyOrder.getAddTime().getTime();
 			long sellTime = sellOrder.getAddTime().getTime();
 			//时间优先
-			if(sellTime > buyTime){
+			if(buyTime > sellTime){
 				order = buyOrder;
-			}else if(sellTime < buyTime){
+			}else if(buyTime < sellTime){
 				order = sellOrder;
 			}if(sellTime == buyTime){
 				//数量优先
