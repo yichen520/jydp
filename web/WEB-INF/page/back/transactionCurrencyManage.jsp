@@ -94,7 +94,6 @@
                     <td class="coin">币种信息</td>
                     <td class="coinLogo">币种徽标</td>
                     <td class="service">手续费</td>
-                    <td class="range">涨跌幅度</td>
                     <td class="state">交易状态</td>
                     <td class="time">上线时间</td>
                     <td class="state">上线状态</td>
@@ -150,8 +149,7 @@
                                 <input type="text" value="复&nbsp;牌" class="start" onfocus="this.blur()" onclick="goPayType('${item.currencyId}', 1)"/>
                             </c:if>
                             <input type="text" value="修&nbsp;改" class="change" onfocus="this.blur()"
-                                   onclick="goUpdate('${item.currencyId}', '${item.currencyName}','${item.currencyShortName}', '${item.buyFee}', '${item.sellFee}'
-                                           ,'${item.upRange}', '${item.downRange}', '${item.upTimeStr}', '${item.upStatus}')"/>
+                                   onclick="goUpdate('${item.currencyId}', '${item.currencyName}','${item.currencyShortName}', '${item.buyFee}', '${item.sellFee}', '${item.upTimeStr}', '${item.upStatus}')"/>
                         </td>
                     </tr>
                 </c:forEach>
@@ -621,7 +619,7 @@
     }
 
     //去修改页面
-    function goUpdate(currencId, currencyName, currencyShortName, buyFee, sellFee, upRange, downRange, upTime, upStatus){
+    function goUpdate(currencId, currencyName, currencyShortName, buyFee, sellFee, upTime, upStatus){
 
         currencyId = currencId;
 

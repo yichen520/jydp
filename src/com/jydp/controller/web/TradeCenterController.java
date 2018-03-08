@@ -223,28 +223,6 @@ public class TradeCenterController {
             return resultJson;
         }
 
-        Object yesterdayPrice = redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + currencyId);
-        if(yesterdayPrice != "" && yesterdayPrice != null){
-            double yesterdayLastPrice = (double)yesterdayPrice;
-            if(transactionCurrency.getUpRange() > 0){
-                double highPrice = yesterdayLastPrice * (1 + transactionCurrency.getUpRange());
-                if(buyPrice > highPrice){
-                    resultJson.setCode(3);
-                    resultJson.setMessage("交易单价不符合涨幅要求");
-                    return resultJson;
-                }
-            }
-
-            if(transactionCurrency.getDownRange() > 0){
-                double lowPrice = yesterdayLastPrice * (1 - transactionCurrency.getDownRange());
-                if(buyPrice < lowPrice){
-                    resultJson.setCode(3);
-                    resultJson.setMessage("交易单价不符合跌幅要求");
-                    return resultJson;
-                }
-            }
-        }
-
         String pwd = MD5Util.toMd5("123456");
         boolean resultBoo = userService.validateUserPay(user.getUserAccount(), pwd);
         if(resultBoo){
@@ -400,28 +378,6 @@ public class TradeCenterController {
             resultJson.setCode(3);
             resultJson.setMessage("交易单价不能小于等于0");
             return resultJson;
-        }
-
-        Object yesterdayPrice = redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + currencyId);
-        if(yesterdayPrice != "" && yesterdayPrice != null){
-            double yesterdayLastPrice = (double)yesterdayPrice;
-            if(transactionCurrency.getUpRange() > 0){
-                double highPrice = yesterdayLastPrice * (1 + transactionCurrency.getUpRange());
-                if(sellPrice > highPrice){
-                    resultJson.setCode(3);
-                    resultJson.setMessage("交易单价不符合涨幅要求");
-                    return resultJson;
-                }
-            }
-
-            if(transactionCurrency.getDownRange() > 0){
-                double lowPrice = yesterdayLastPrice * (1 - transactionCurrency.getDownRange());
-                if(sellPrice < lowPrice){
-                    resultJson.setCode(3);
-                    resultJson.setMessage("交易单价不符合跌幅要求");
-                    return resultJson;
-                }
-            }
         }
 
         String pwd = MD5Util.toMd5("123456");

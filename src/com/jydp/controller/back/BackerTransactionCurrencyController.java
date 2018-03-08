@@ -185,8 +185,6 @@ public class BackerTransactionCurrencyController {
         int status = 0;
         double buyFee = 0;
         double sellFee = 0;
-        double upRange = 0;
-        double downRange = 0;
         Timestamp upTime = null;
 
         status = Integer.parseInt(statusStr);
@@ -270,8 +268,6 @@ public class BackerTransactionCurrencyController {
         int currencyId = 0;
         double buyFee = 0;
         double sellFee = 0;
-        double upRange = 0;
-        double downRange = 0;
         Timestamp upTime = null;
 
         currencyId = Integer.parseInt(currencyIdStr);
@@ -558,8 +554,6 @@ public class BackerTransactionCurrencyController {
             sheet1.setColumnWidth(5, 5000);
             sheet1.setColumnWidth(6, 5000);
             sheet1.setColumnWidth(7, 5000);
-            sheet1.setColumnWidth(8, 5000);
-            sheet1.setColumnWidth(9, 5000);
 
             int rowNumber = 0;// 行
             // 先列出表头
@@ -575,11 +569,11 @@ public class BackerTransactionCurrencyController {
             cell.setCellValue("买入手续费(%)");
             cell = row.createCell(4);
             cell.setCellValue("卖出手续费(%)");
-            cell = row.createCell(7);
+            cell = row.createCell(5);
             cell.setCellValue("交易状态");
-            cell = row.createCell(8);
+            cell = row.createCell(6);
             cell.setCellValue("上线时间");
-            cell = row.createCell(9);
+            cell = row.createCell(7);
             cell.setCellValue("上线状态");
 
             rowNumber++;
@@ -604,9 +598,9 @@ public class BackerTransactionCurrencyController {
                 } else {
                     cell.setCellValue("停牌");
                 }
-                cell = row.createCell(8);
+                cell = row.createCell(6);
                 cell.setCellValue(DateUtil.longToTimeStr(transactionCurrency.getUpTime().getTime(), DateUtil.dateFormat2));
-                cell = row.createCell(9);
+                cell = row.createCell(7);
                 if (transactionCurrency.getUpStatus() == 1) {
                     cell.setCellValue("待上线");
                 } else if (transactionCurrency.getUpStatus() == 2) {

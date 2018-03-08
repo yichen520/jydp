@@ -74,7 +74,7 @@
     </select>
 
     <select id="TransactionCurrency_getTransactionCurrencyByCurrencyName" parameterType="java.lang.String" resultType="TransactionCurrencyVO">
-        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, upRange, downRange,
+        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee,
             paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         WHERE currencyName = #{currencyName}
@@ -173,7 +173,7 @@
     </update>
 
     <select id="TransactionCurrency_listTransactionCurrencyAll" resultType="TransactionCurrencyDO">
-        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, upRange, downRange,
+        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee,
             paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
     </select>
@@ -242,7 +242,7 @@
     </select>
 
     <select id="TransactionCurrency_getOnlineAndSuspensionCurrencyForWeb" resultType="TransactionCurrencyVO">
-        SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, upRange, downRange,
+        SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee,
             paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         WHERE upStatus IN (2,3)
