@@ -86,10 +86,13 @@ public class BackerNoticeController {
 
         int maxRankNumber = 0;
 
-        int length = systemNoticeList.size();
-        if (length > 0) {
-            maxRankNumber = systemNoticeList.get(length - 1).getRankNumber();
+        if (systemNoticeList != null) {
+            int length = systemNoticeList.size();
+            if (length > 0) {
+                maxRankNumber = systemNoticeList.get(length - 1).getRankNumber();
+            }
         }
+
         int totalPageNumber = (int) Math.ceil(totalNumber / (pageSize * 1.0));
         if (totalPageNumber <= 0) {
             totalPageNumber = 1;

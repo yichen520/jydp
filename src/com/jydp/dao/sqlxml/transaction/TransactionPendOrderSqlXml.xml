@@ -117,7 +117,7 @@
 		<if test="endFinishTime != null">
 			AND endTime <![CDATA[ <= ]]> #{endFinishTime}
 		</if>
-		ORDER BY addTime DESC
+		ORDER BY addTime DESC, pendingOrderNo
 		LIMIT #{startNumber}, #{pageSize}
 	</select>
 

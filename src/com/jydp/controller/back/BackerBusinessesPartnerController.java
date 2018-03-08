@@ -86,9 +86,11 @@ public class BackerBusinessesPartnerController {
 
         int maxRankNumber = 0;
 
-        int length = systemBusinessesPartnerList.size();
-        if (length > 0) {
-            maxRankNumber = systemBusinessesPartnerList.get(length - 1).getRankNumber();
+        if (systemBusinessesPartnerList != null) {
+            int length = systemBusinessesPartnerList.size();
+            if (length > 0) {
+                maxRankNumber = systemBusinessesPartnerList.get(length - 1).getRankNumber();
+            }
         }
 
         int totalPageNumber = (int) Math.ceil(totalNumber/(pageSize*1.0));
