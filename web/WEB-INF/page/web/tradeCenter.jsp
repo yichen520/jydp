@@ -67,6 +67,13 @@
     <div class="left">
         <div class="charts">蜡烛图</div>
 
+        <p class="promt">
+            <span class="promtText"> 重要提示：今日最高价格：<span id="hintTodayMax">$<fmt:formatNumber type="number" value="${standardParameter.todayMax }" groupingUsed="FALSE" maxFractionDigits="6"/></span>，
+                今日最低价格：<span id="hintTodayMin">$<fmt:formatNumber type="number" value="${standardParameter.todayMin }" groupingUsed="FALSE" maxFractionDigits="6"/></span></span>
+            <span  class="promptTime">交易时间：00:00:00-23:59:00</span>
+        </p>
+
+
         <div class="tradeArea">
             <div class="buy">
                 <p class="buyTitle">买入</p>
@@ -120,7 +127,7 @@
                     <label class="tradeName">卖出数量：</label>
                     <input type="text" class="entry" placeholder="请输入您要卖出的该币种数量" id="sellNum" name="sellNum"
                            onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="11"/>
-                    <span class="max">当前最大可卖：<span id="sellMax">0</span></span>
+                    <span class="max">当前最大可卖：$<span id="sellMax">0</span></span>
                 </p>
                 <p class="phoneInput">
                     <label class="tradeName">支付密码：</label>
@@ -1128,7 +1135,10 @@
                         $("#todayRangeRise").addClass("number fall");
                     }
                     $("#todayMax").html(standardParameter.todayMax);
+                    $("#hintTodayMax").html("$" + standardParameter.todayMax);
+
                     $("#todayMin").html(standardParameter.todayMin);
+                    $("#hintTodayMin").html("$" + standardParameter.todayMin);
                     $("#buyOne").html(standardParameter.buyOne);
                     $("#sellOne").html(standardParameter.sellOne);
                     $("#dayTurnove").html(standardParameter.dayTurnove);

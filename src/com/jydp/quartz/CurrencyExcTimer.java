@@ -22,7 +22,7 @@ public class CurrencyExcTimer {
     private ITransactionCurrencyService transactionCurrencyService;
 
     /** 币种上线 */
-    @Scheduled(cron="0/59 * *  * * ? ")
+    //@Scheduled(cron="0/59 * *  * * ? ")
     public void transferMarketRate(){
         List<TransactionCurrencyDO> transactionCurrencyDOS = transactionCurrencyService.listTransactionCurrencyAll();
         if (transactionCurrencyDOS != null && transactionCurrencyDOS.size() > 0) {
