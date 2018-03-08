@@ -511,7 +511,7 @@ public class BackerUserAccountController {
                 cell = row.createCell(1);
                 cell.setCellValue(user.getUserAccount());
                 cell = row.createCell(2);
-                cell.setCellValue("(" + user.getPhoneAreaCode() + ")" + user.getPhoneNumber());
+                cell.setCellValue(user.getPhoneAreaCode() + " " + user.getPhoneNumber());
                 cell = row.createCell(3);
                 cell.setCellValue(user.getUserBalance());
                 cell = row.createCell(4);

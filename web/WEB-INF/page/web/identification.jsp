@@ -190,7 +190,8 @@
             success:function(result){
                 addBoo = false;
                 if(result.code == 1) {
-                    $("#queryForm").submit();
+                    openTips(result.message)
+                    setTimeout(function (){$("#queryForm").submit();}, 1000);
                 } else {
                     openTips(result.message);
                 }
