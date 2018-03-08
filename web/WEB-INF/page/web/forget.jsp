@@ -379,6 +379,8 @@
             str = "<img class='delete' id='delete_code' style='right: 100px;' src='<%=path %>/resources/image/web/register.png' />";
         } else if ('password' == id || 'repeatPassword' == id) {
             str = "<img class='delete' id='delete_password' src='<%=path %>/resources/image/web/register.png' />";
+        } else if ('phone' == id) {
+            str = "<img class='delete' id='delete_phone' src='<%=path %>/resources/image/web/register.png' />";
         }
 
         $(o).parent().append(str);
@@ -392,6 +394,9 @@
                 $(".password").removeClass("error");
                 $(".password").attr("type","password");
                 $(".password").val("");
+            } else if('delete_phone' == id){
+                $(this).parent().find(".phone").val("");
+                $(this).parent().find(".phone").removeClass("error");
             } else {
                 $(this).parent().find(".entry").val("");
                 $(this).parent().find(".entry").removeClass("error");
