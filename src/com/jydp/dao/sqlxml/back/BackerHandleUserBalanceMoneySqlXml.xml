@@ -3,13 +3,13 @@
         "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.jydp.dao.impl.back.BackerHandleUserRecordBalanceFreezeDaoImpl">
+<mapper namespace="com.jydp.dao.impl.back.BackerHandleUserBalanceMoneyDaoImpl">
 
-    <insert id="BackerHandleUserRecordBalanceFreeze_insertBackerHandleUserRecordBalanceFreeze" parameterType="BackerHandleUserRecordBalanceFreezeDO">
-        INSERT INTO backer_handle_user_balance_freeze_tab(userId, userAccount, typeHandle, userBalance,
+    <insert id="BackerHandleUserBalanceMoney_insertBackerHandleUserBalanceMoney" parameterType="BackerHandleUserBalanceMoneyDO">
+        INSERT INTO backer_handle_user_balance_money_tab(userId, userAccount, typeHandle, currencyId, userBalance,
             remarks, ipAddress, backerId, backerAccount, addTime)
         VALUES
-            (#{userId}, #{userAccount}, #{typeHandle}, #{userBalance}, #{remarks}, #{ipAddress}, #{backerId},
+            (#{userId}, #{userAccount}, #{typeHandle}, #{currencyId}, #{userBalance}, #{remarks}, #{ipAddress}, #{backerId},
                 #{backerAccount}, #{addTime})
     </insert>
 
