@@ -190,9 +190,9 @@ public class TradeCenterController {
             return resultJson;
         }
 
-        if(transactionCurrency.getUpStatus() != 2){
+        if(transactionCurrency.getUpStatus() == 4){
             resultJson.setCode(5);
-            resultJson.setMessage("该币种不在上线状态");
+            resultJson.setMessage("该币种已下线");
             return resultJson;
         }
 
@@ -341,9 +341,9 @@ public class TradeCenterController {
             return resultJson;
         }
 
-        if(transactionCurrency.getUpStatus() != 2){
+        if(transactionCurrency.getUpStatus() == 4){
             resultJson.setCode(5);
-            resultJson.setMessage("该币种不在上线状态");
+            resultJson.setMessage("该币种已下线");
             return resultJson;
         }
 
