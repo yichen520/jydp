@@ -6,9 +6,9 @@
 <mapper namespace="com.jydp.dao.impl.system.SystemHotDaoImpl">
 
 	<select id="SystemHot_getSystemHotlistForWeb" resultType="SystemHotDO">
-		SELECT id, noticeTitle, noticeUrl, content, addTime, topTime, noticeType
+		SELECT id, noticeTitle, noticeUrl, content, addTime, rankNumber, noticeType
 		FROM system_hot_tab
-		ORDER BY topTime DESC, addTime DESC
+		ORDER BY rankNumber ASC
 		LIMIT 5
 	</select>
 
@@ -26,7 +26,7 @@
 	</select>
 
 	<select id="SystemHot_listSystemHotForBack" resultType="SystemHotDO" parameterType="java.util.Map">
-		SELECT id, noticeTitle, noticeUrl, content, addTime, topTime, noticeType
+		SELECT id, noticeTitle, noticeUrl, content, addTime, rankNumber, noticeType
 		FROM system_hot_tab
         <where>
             <if test="noticeType != null and noticeType != '' ">
@@ -36,19 +36,19 @@
                 AND noticeTitle LIKE CONCAT('%', #{noticeTitle}, '%')
             </if>
         </where>
-        ORDER BY topTime DESC, addTime DESC
+        ORDER BY rankNumber ASC
 		LIMIT #{startNumber}, #{pageSize}
 	</select>
 
 	<insert id="SystemHot_insertSystemHot" parameterType="java.util.Map">
 		INSERT INTO system_hot_tab(
-		noticeTitle, noticeType, noticeUrl, content, addTime, topTime)
+		noticeTitle, noticeType, noticeUrl, content, rankNumber, addTime)
 		VALUES
-		(#{noticeTitle}, #{noticeType}, #{noticeUrl}, #{content}, #{addTime}, #{topTime})
+		(#{noticeTitle}, #{noticeType}, #{noticeUrl}, #{content}, #{rankNumber}, #{addTime})
 	</insert>
 
     <select id="SystemHot_getSystemHotById" resultType="SystemHotDO" parameterType="int">
-        SELECT id, noticeTitle, noticeUrl, content, addTime, topTime, noticeType
+        SELECT id, noticeTitle, noticeUrl, content, addTime, rankNumber, noticeType
         FROM system_hot_tab
         WHERE id = #{id}
     </select>
@@ -79,9 +79,55 @@
     </select>
 
     <select id="SystemHot_listSystemHotForUser" parameterType="java.util.Map" resultType="SystemHotDO">
-        SELECT id, noticeTitle, noticeUrl, content, addTime, topTime, noticeType
+        SELECT id, noticeTitle, noticeUrl, content, addTime, rankNumber, noticeType
         FROM system_hot_tab
-        ORDER BY topTime DESC, addTime DESC
+        ORDER BY rankNumber ASC
         LIMIT #{startNumber}, #{pageSize}
     </select>
+
+    <select id="SystemHot_getIdByRankForBack" parameterType="int" resultType="int">
+        SELECT id
+		FROM system_hot_tab
+		WHERE rankNumber = #{rankNumber}
+    </select>
+
+    <update id="SystemHot_upMoveHotTopicForBack" parameterType="int">
+        UPDATE system_hot_tab
+		SET rankNumber = rankNumber - 1
+		WHERE id = #{id}
+    </update>
+
+    <update id="SystemHot_downMoveHotTopicForBack" parameterType="int">
+        UPDATE system_hot_tab
+		SET rankNumber = rankNumber + 1
+		WHERE id = #{id}
+    </update>
+
+    <update id="SystemHot_updateSystemHotRankNumber">
+        UPDATE system_hot_tab
+		SET rankNumber = rankNumber + 1
+    </update>
+
+    <select id="SystemHot_getMaxRankForBack" resultType="int">
+        SELECT MAX(rankNumber)
+		FROM system_hot_tab
+    </select>
+
+    <update id="SystemHot_updateHotTopicRank">
+        UPDATE system_hot_tab
+		SET rankNumber = rankNumber - 1
+		WHERE rankNumber <![CDATA[ > ]]> #{rankNumber}
+    </update>
+
+    <update id="SystemHot_updateHotTopicToRankNumber" parameterType="java.util.Map">
+        UPDATE system_hot_tab
+		SET rankNumber = #{rankNumber}
+		WHERE id = #{id}
+    </update>
+
+    <update id="SystemHot_updateHotTopicRankNumberUp" parameterType="int">
+        UPDATE system_hot_tab
+		SET rankNumber = rankNumber + 1
+		WHERE rankNumber <![CDATA[ < ]]> #{rankNumber}
+    </update>
 </mapper>
