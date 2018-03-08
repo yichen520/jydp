@@ -16,8 +16,8 @@
     <select id="BackerHandleUserBalanceFreezeMoney_getUserRecordBalanceList" parameterType="java.util.Map" resultType="BackerHandleUserBalanceFreezeMoneyVO">
         SELECT BHUBM.id, BHUBM.userId, BHUBM.userAccount, BHUBM.typeHandle,
         BHUBM.userBalance, BHUBM.remarks, BHUBM.ipAddress, BHUBM.backerId, BHUBM.backerAccount, BHUBM.addTime,TC.currencyName
-        FROM backer_handle_user_balance_money_tab BHUBM
-        LEFT JOIN backer_handle_user_balance_freeze_money_tab TC
+        FROM backer_handle_user_balance_freeze_money_tab BHUBM
+        LEFT JOIN transaction_currency_tab TC
         ON BHUBM.currencyId = TC.currencyId
         <where>
             <if test="userAccount != null and userAccount !=''">

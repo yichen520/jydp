@@ -29,7 +29,7 @@
 
         <div class="top">
             <div class="askArea">
-                <form id="queryForm" action="<%=path %>/backerWeb/backerAdministratorOperation/show.htm" method="post">
+                <form id="queryForm" action="<%=path %>/backerWeb/backerHandleUserRecordBalanceFreeze/show.htm" method="post">
                     <p class="condition">
                         操作时间：
                         从&nbsp;<input placeholder="请选择起始时间" class="askTime"  name="startAddTime" onfocus="this.blur()" value="${startAddTime }"/>
@@ -64,7 +64,7 @@
                     <td class="account">操作管理员账号</td>
                     <td class="ip">操作时IP地址</td>
                 </tr>
-                <c:forEach items="${backerHandleUserRecordBalanceList}" var="item">
+                <c:forEach items="${backerHandleUserRecordBalanceFreezeList}" var="item">
                     <tr class="tableInfo">
                         <td class="time"><fmt:formatDate type="time" value="${item.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                         <td class="account">${item.userAccount}</td>
@@ -74,7 +74,7 @@
                         <c:if test="${item.typeHandle == 2}">
                             <td class="type">减少</td>
                         </c:if>
-                        <td class="money"><fmt:formatNumber type="number" value="${item.--- }" maxFractionDigits="2"/></td>
+                        <td class="money"><fmt:formatNumber type="number" value="${item.userBalance }" maxFractionDigits="2"/></td>
                         <td class="mark">${item.remarks}</td>
                         <td class="account">${item.backerAccount }</td>
                         <td class="ip">${item.ipAddress }</td>

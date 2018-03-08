@@ -12,7 +12,7 @@ public class BackerHandleUserBalanceMoneyDO {
     private String userAccount;  //用户账号
     private int typeHandle;  //操作类型，1：增加，2：减少
     private int currencyId;  //币种id
-    private double userBalance;  //冻结币 单位（个）
+    private double userBalance;  //可用币 单位（个）
     private String remarks;  //备注
     private String ipAddress;  //操作时的ip地址
     private int backerId;  //后台管理员Id
@@ -110,7 +110,7 @@ public class BackerHandleUserBalanceMoneyDO {
     }
 
     /**
-     * 冻结币（个）
+     * 可用币（个）
      *
      * @return user balance
      */
@@ -119,7 +119,7 @@ public class BackerHandleUserBalanceMoneyDO {
     }
 
     /**
-     * 冻结币（个）
+     * 可用币（个）
      *
      * @param userBalance the user balance
      */

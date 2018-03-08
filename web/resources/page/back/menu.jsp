@@ -103,7 +103,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         </p>
 
         <ul class="levelTwo">
-            <li class="menuInfo" id="li_121000"><a id="a_121000" href="<%=path%>/backerWeb/backerAdministratorOperation/show.htm">用户余额操作记录</a></li>
+            <li class="menuInfo" id="li_121000"><a id="a_121000" href="<%=path%>/backerWeb/backerAdministratorOperation/show.htm">用户可用余额记录</a></li>
+            <li class="menuInfo" id="li_121100"><a id="a_121100" href="<%=path%>/backerWeb/backerHandleUserRecordBalanceFreeze/show.htm">用户冻结余额记录</a></li>
+            <li class="menuInfo" id="li_121200"><a id="a_121200" href="<%=path%>/backerWeb/backerHandleUserBalanceMoney/show.htm">用户可用币操作记录</a></li>
+            <li class="menuInfo" id="li_121300"><a id="a_121300" href="<%=path%>/backerWeb/backerHandleUserBalanceFreezeMoney/show.htm">用户冻结币操作记录</a></li>
         </ul>
     </li>
 </ul>
