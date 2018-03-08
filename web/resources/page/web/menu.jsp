@@ -36,8 +36,8 @@
 </div>
 <script type="text/javascript">
     $(function(){
-        $(".tradeCenter").hover(function(){
-            $(".coinLink").slideToggle("fast");
+        $(".tradeCenter").mouseover(function(){
+            $(".coinLink").slideDown("fast");
             $(this).css("background","#fafafa")
         });
         $("body").click(function(){
