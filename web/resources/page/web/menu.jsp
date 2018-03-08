@@ -38,6 +38,10 @@
     $(function(){
         $(".tradeCenter").hover(function(){
             $(".coinLink").slideToggle("fast");
+            $(this).css("background","#fafafa")
+        });
+        $(".tradeCenter").mouseleave(function(){
+            $(this).css("background","#ffffff")
         });
 
         $.ajax({
