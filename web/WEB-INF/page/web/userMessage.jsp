@@ -193,11 +193,19 @@
             <p class="popInput">
                 <label class="popName">手机号<span class="star">*</span>：</label>
                 <span class="popCode">
-                    <select class="areTel" id="areaCode" >
+                    <span class="select">
+                    <span class="selectCont">0086</span>
+                    <img src="<%=path %>/resources/image/web/area.png" alt=""/>
+                    <span class="selectUl">
                         <c:forEach items="${phoneAreaMap}" var="phoneArea">
-                            <option value="${phoneArea.key }">${phoneArea.value }&nbsp;${phoneArea.key }</option>
+                           <span class="selectLi">
+                               <span class="selectName">${phoneArea.value }</span>
+                               <span class="selectNumber">${phoneArea.key }</span>
+                           </span>
                         </c:forEach>
-                    </select>
+                    </span>
+                </span>
+
                     <input type="text" class="telNumber" placeholder="您的11位手机号" maxlength="11" id="bindingMobile"
                            onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
                 </span>
@@ -617,6 +625,26 @@
             $(".tel_pop").show();
         })
     });
+
+    $(function(){
+        $('.select').click(function(){
+            $('.selectUl').addClass('selected');
+        });
+        $('.selectLi').click(function(e){
+            e = e || window.event;
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            } else {
+                e.cancelBubble = true;
+            }
+            $('.selectUl').removeClass('selected');
+            $('.selectCont').html( $(this).children('.selectNumber').html());
+        });
+        $('.select').mouseleave(function(){
+            $('.selectUl').removeClass('selected');
+        });
+    });
+
 
     var wait=60;
     function time(o) {

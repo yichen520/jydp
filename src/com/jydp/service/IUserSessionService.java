@@ -46,5 +46,12 @@ public interface IUserSessionService {
 	 * @return 操作成功：返回true，操作失败：返回false
 	 */
 	boolean deleteSessionByUserId(int userId);
-	
+
+	/**
+	 * 删除redis中用户的session
+	 * @param userId 用户Id
+	 * @return 操作成功：返回true，操作失败：返回false
+	 */
+	boolean deleteRedisSession(int userId);
+
 }

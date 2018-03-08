@@ -40,11 +40,19 @@
             <p class="phoneInput">
                 <label class="popName">手机号<span class="star">*</span></label>
                 <span class="popCode">
-                    <select class="select" id="phoneAreaCode" name="phoneAreaCode">
-                         <c:forEach items="${phoneAreaMap}" var="phoneArea">
-                             <option value="${phoneArea.key }">${phoneArea.value }&nbsp;${phoneArea.key }</option>
-                         </c:forEach>
-                    </select>
+                    <span class="select">
+                    <span class="selectCont">${selectedArea}</span>
+                    <img src="<%=path %>/resources/image/web/area.png" alt=""/>
+                    <span class="selectUl">
+                        <c:forEach items="${phoneAreaMap}" var="phoneArea">
+                           <span class="selectLi">
+                               <span class="selectName">${phoneArea.value }</span>
+                               <span class="selectNumber">${phoneArea.key }</span>
+                           </span>
+                        </c:forEach>
+                    </span>
+                </span>
+                <input type="hidden" id="phoneAreaCode" name="phoneAreaCode" value="${selectedArea}"/>
                 <input type="text" class="phone" id="phone" name="phoneNumber" placeholder="绑定的手机号码" maxLength="11"
                        onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
                </span>
@@ -80,6 +88,27 @@
 <div class="forgetFoot">盛临九洲版权所有</div>
 
 <script type="text/javascript">
+    $(function(){
+        $('.select').click(function(){
+            $('.selectUl').addClass('selected');
+        });
+        $('.selectLi').click(function(e){
+            e = e || window.event;
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            } else {
+                e.cancelBubble = true;
+            }
+            $('.selectUl').removeClass('selected');
+            $('.selectCont').html( $(this).children('.selectNumber').html());
+            $('#phoneAreaCode').val($('.selectCont').html());
+        });
+        $('.select').mouseleave(function(){
+            $('.selectUl').removeClass('selected');
+        });
+    });
+
+
     $(function () {
         $(".pChoose").click(function () {
             $(".phone").show();
@@ -128,9 +157,16 @@
         }
 
         var phone = $("#phone").val();
+        var regPos = /^\d+(\.\d+)?$/; //非负浮点数
         if (!phone) {
             phoneBoo = false;
             return openTips("请输入您的手机号");
+        }
+
+
+        if(!regPos.test(phone) || phone.length > 11 || phone.length < 5){
+            phoneBoo = false;
+            return openTips("请输入正确手机号");
         }
 
         time(this);
@@ -212,7 +248,9 @@
             success:function (result) {
                 if (result.code == 1) {
                     openTips(result.message);
-                    window.location.href = "<%=path%>" + "/userWeb/userLogin/show";
+                    setTimeout(function () {
+                        window.location.href = "<%=path%>" + "/userWeb/userLogin/show";
+                    },3000);
                 } else {
                     openTips(result.message);
                 }

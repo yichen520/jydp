@@ -276,7 +276,7 @@ public class BackerUserAccountController {
         boolean updateResult = userService.updateUserAccountStatus(userId, 2,1);
         if (updateResult) {
             //删除用户session
-            userSessionService.deleteSessionByUserId(userId);
+            userSessionService.deleteRedisSession(userId);
 
             responseJson.setCode(1);
             responseJson.setMessage("操作成功");
@@ -489,9 +489,9 @@ public class BackerUserAccountController {
             cell = row.createCell(5);
             cell.setCellValue("账号总金额（美元$）");
             cell = row.createCell(6);
-            cell.setCellValue("账号状态");
-            cell = row.createCell(7);
             cell.setCellValue("审核状态");
+            cell = row.createCell(7);
+            cell.setCellValue("账号状态");
             //设置列宽
             sheet1.setColumnWidth(0, 5000);
             sheet1.setColumnWidth(1, 5000);
@@ -520,25 +520,25 @@ public class BackerUserAccountController {
                 double countBalance = BigDecimalUtil.add(user.getUserBalance(), user.getUserBalanceLock());
                 cell.setCellValue(countBalance);
                 cell = row.createCell(6);
+                if (user.getAuthenticationStatus() == 1) {
+                    cell.setCellValue("未审核");
+                }
+                if (user.getAuthenticationStatus() == 2) {
+                    cell.setCellValue("审核通过");
+                }
+                if (user.getAuthenticationStatus() == 3) {
+                    cell.setCellValue("审核拒绝");
+                }
+                if (user.getAuthenticationStatus() == 4) {
+                    cell.setCellValue("未提交");
+                }
+
+                cell = row.createCell(7);
                 if (user.getAccountStatus() == 1) {
                     cell.setCellValue("启用");
                 }
                 if (user.getAccountStatus() == 2) {
                     cell.setCellValue("禁用");
-                }
-
-                cell = row.createCell(7);
-                if (user.getAuthenticationStatus() == 1) {
-                    cell.setCellValue("未审核");
-                }
-                if (user.getAuthenticationStatus() == 2) {
-                    cell.setCellValue("审核拒绝");
-                }
-                if (user.getAuthenticationStatus() == 3) {
-                    cell.setCellValue("审核通过");
-                }
-                if (user.getAuthenticationStatus() == 4) {
-                    cell.setCellValue("未提交");
                 }
 
                 rowNumber++;

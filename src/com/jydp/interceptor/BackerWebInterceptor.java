@@ -11,12 +11,15 @@ import com.jydp.entity.DO.back.BackerRolePowerDO;
 import com.jydp.entity.DO.back.BackerSessionDO;
 import com.jydp.service.IBackerRolePowerService;
 import com.jydp.service.IBackerSessionService;
+import com.jydp.service.IRedisService;
+import config.SessionConfig;
 import config.SystemCommonConfig;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 import java.sql.Timestamp;
 
 /**
@@ -47,6 +50,17 @@ public class BackerWebInterceptor implements HandlerInterceptor {
         return backerRolePowerService;
     }
 
+    /** redis服务 */
+    private static IRedisService redisService;
+
+    /** redis服务 */
+    private static IRedisService getRedisService(HttpServletRequest request) {
+        if (redisService == null) {
+            redisService = (IRedisService) ApplicationContextHandle.getBean("redisService");
+        }
+        return redisService;
+    }
+
     /**
      * 在请求到达运行的方法之前，用于拦截非法请求
      * 在controlller之前
@@ -55,10 +69,24 @@ public class BackerWebInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object controlller) throws Exception {
         BackerSessionBO backerSessionBO = (BackerSessionBO)request.getSession().getAttribute("backerSession");
         if (backerSessionBO == null) {
-            request.setAttribute("code", -1);
-            request.setAttribute("message", "登录过期，请重新登录");
-            request.getRequestDispatcher("/backLogin").forward(request, response);
-            return false;
+            //如果是ajax请求
+            if (request.getHeader("x-requested-with")!= null
+                    && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("code", -1);
+                jsonObject.put("message", "登录过期，请重新登录");
+
+                PrintWriter out = null ;
+                out = response.getWriter();
+                out.append(jsonObject.toString());
+                out.close();
+                return false;
+            } else {
+                request.setAttribute("code", -1);
+                request.setAttribute("message", "登录过期，请重新登录");
+                request.getRequestDispatcher("/backLogin").forward(request, response);
+                return false;
+            }
         }
         return true;
     }
@@ -106,6 +134,11 @@ public class BackerWebInterceptor implements HandlerInterceptor {
 
         request.getSession().setAttribute("backer_rolePower", powerJson);
         request.getSession().setAttribute("backerSession", backerSessionBO);
+        //记录管理员id与sessionid的映射关系
+        String springSessionId = request.getSession().getId();
+        String SESSION_BACKER_KEY = SessionConfig.SESSION_BACKER_ID + String.valueOf(backerSessionBO.getBackerId());
+        String SESSION_SESSIONS_KEY = SessionConfig.SESSION_SESSIONS + springSessionId;
+        getRedisService(request).addList(SESSION_BACKER_KEY, SESSION_SESSIONS_KEY, SessionConfig.SESSION_TIME_OUT);
     }
 
     /**
@@ -125,6 +158,9 @@ public class BackerWebInterceptor implements HandlerInterceptor {
      */
     public static boolean validatePower(HttpServletRequest request, int powerId) {
         JSONObject rolePowerJson = (JSONObject) request.getSession().getAttribute("backer_rolePower");
+        if (rolePowerJson == null || rolePowerJson.isEmpty()) {
+            return false;
+        }
         if (rolePowerJson.containsKey(String.valueOf(powerId))) {
             return true;
         }
