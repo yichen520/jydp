@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  */
 @Service("backerHandleUserBalanceMoneyService")
 public class BackerHandleUserBalanceMoneyServiceImpl implements IBackerHandleUserBalanceMoneyService {
-    /**后台管理员增减用户余额记录*/
+    /**后台管理员增减用户可用币记录*/
     @Autowired
     private IBackerHandleUserBalanceMoneyDao backerHandleUserBalanceMoneyDao;
 
