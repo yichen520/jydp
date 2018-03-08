@@ -85,6 +85,13 @@ public class BackerHotTopicController {
             systemHotList = systemHotService.listSystemHotForBack(noticeTitle, noticeType, pageNumber, pageSize);
         }
 
+        int maxRankNumber = 0;
+
+        int length = systemHotList.size();
+        if (length > 0) {
+            maxRankNumber = systemHotList.get(length - 1).getRankNumber();
+        }
+
         int totalPageNumber = (int) Math.ceil(totalNumber / (pageSize * 1.0));
         if (totalPageNumber <= 0) {
             totalPageNumber = 1;
@@ -96,6 +103,7 @@ public class BackerHotTopicController {
         //返回数据
         request.setAttribute("noticeTitle", noticeTitle);
         request.setAttribute("noticeType", noticeType);
+        request.setAttribute("maxRankNumber", maxRankNumber);
 
         request.setAttribute("pageNumber", pageNumber);
         request.setAttribute("totalNumber", totalNumber);
@@ -157,7 +165,7 @@ public class BackerHotTopicController {
         }
 
         Timestamp addTime = DateUtil.getCurrentTime();
-        boolean addResult = systemHotService.insertSystemHot(noticeTitle, noticeType, imageUrl, content, addTime, null);
+        boolean addResult = systemHotService.insertSystemHot(noticeTitle, noticeType, imageUrl, content, 1, addTime);
         if (addResult) {
             response.put("code", 1);
             response.put("message", "新增成功！");
@@ -371,6 +379,87 @@ public class BackerHotTopicController {
             redisService.addValue(hotTopicKey,systemHotDOList);
         } else {
             redisService.addValue(hotTopicKey,null);
+        }
+
+        return response;
+    }
+
+    /** 上移热门话题 */
+    @RequestMapping(value = "/upMoveHotTopic.htm", method = RequestMethod.POST)
+    public @ResponseBody JSONObject upMoveHotTopic(HttpServletRequest request) {
+        JSONObject response = new JSONObject();
+        // 业务功能权限
+        boolean havePower = BackerWebInterceptor.validatePower(request, 114007);
+        if (!havePower) {
+            response.put("code", 6);
+            response.put("message", "您没有该权限");
+            return response;
+        }
+
+        //获取参数
+        String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
+        if (!StringUtil.isNotNull(idStr)) {
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
+        }
+
+        int id = Integer.parseInt(idStr);
+        //处理页面参数
+        if (id <= 0) {
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
+        }
+
+        boolean updateResult = systemHotService.upMoveHotTopicForBack(id);
+        if (updateResult) {
+            response.put("code", 1);
+            response.put("message", "上移成功！");
+        } else {
+            response.put("code", 5);
+            response.put("message", "上移失败！");
+        }
+
+        return response;
+    }
+
+    /** 下移热门话题 */
+    @RequestMapping(value = "/downMoveHotTopic.htm", method = RequestMethod.POST)
+    public @ResponseBody JSONObject downMoveHotTopic(HttpServletRequest request) {
+        JSONObject response = new JSONObject();
+        // 业务功能权限
+        boolean havePower = BackerWebInterceptor.validatePower(request, 114008);
+        if (!havePower) {
+            response.put("code", 6);
+            response.put("message", "您没有该权限");
+            return response;
+        }
+
+        // 获取参数
+        String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
+
+        if (!StringUtil.isNotNull(idStr)) {
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
+        }
+
+        int id = Integer.parseInt(idStr);
+        // 处理页面参数
+        if (id <= 0) {
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
+        }
+
+        boolean updateResult = systemHotService.downMoveHotTopicForBack(id);
+        if (updateResult) {
+            response.put("code", 1);
+            response.put("message", "下移成功！");
+        } else {
+            response.put("code", 5);
+            response.put("message", "下移失败！");
         }
 
         return response;

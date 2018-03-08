@@ -16,19 +16,19 @@
     object-fit: cover;
 }
 .type{
-    width: 240px;
+    width: 200px;
 }
 .nTitle{
-    width: 466px;
+    width: 386px;
     word-break: break-all;
 }
 .operate{
-    width: 175px;
+    width: 295px;
 }
 .tableInfo .operate{
     text-align: right;
 }
-.toTop,.change,.details,.delete{
+.adUp,.adDown,.change,.delete,.toTop,.details{
     margin-right: 5px;
     width: 40px;
     text-align: center;
@@ -38,10 +38,9 @@
     font-size: 12px;
     color: #49a2fb;
 }
-.toTop:hover,.change:hover,.details:hover,.delete:hover{
+.adUp:hover,.adDown:hover,.change:hover,.delete:hover,.toTop:hover,.details:hover{
     color: #2c94fd;
 }
-
 
 .delete_pop{
     display: none;

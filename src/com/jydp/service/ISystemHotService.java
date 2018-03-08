@@ -42,11 +42,11 @@ public interface ISystemHotService {
      * @param noticeType 话题类型
      * @param noticeUrl 话题封面图地址
      * @param content 话题内容
+     * @param rankNumber 话题排名
      * @param addTime 添加时间
-     * @param topTime 置顶时间,没有值时填null
      * @return 查询成功：返回true；查询失败：返回false
      */
-    boolean insertSystemHot(String noticeTitle, String noticeType, String noticeUrl, String content, Timestamp addTime, Timestamp topTime);
+    boolean insertSystemHot(String noticeTitle, String noticeType, String noticeUrl, String content, int rankNumber, Timestamp addTime);
 
     /**
      * 根据记录id查询热门话题
@@ -94,4 +94,25 @@ public interface ISystemHotService {
      * @return 查询成功:返回热门话题列表, 查询失败:返回null
      */
     List<SystemHotDO> listSystemHotForUser(int pageNumber, int pageSize);
+
+    /**
+     * 上移热门话题
+     * @param id 记录Id
+     * @return 操作成功:返回true, 操作失败:返回false
+     */
+    boolean upMoveHotTopicForBack(int id);
+
+    /**
+     * 下移热门话题
+     * @param id 记录Id
+     * @return 操作成功:返回true, 操作失败:返回false
+     */
+    boolean downMoveHotTopicForBack(int id);
+
+    /**
+     * 通过排名获取当前热门话题id
+     * @param rankNumber 排名
+     * @return 查询成功:返回热门话题id, 查询失败:返回0
+     */
+    int getIdByRankForBack(int rankNumber);
 }

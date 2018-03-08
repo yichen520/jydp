@@ -5,6 +5,8 @@ import com.jydp.entity.DO.system.SystemHotDO;
 import com.jydp.service.ISystemHotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -57,12 +59,29 @@ public class SystemHotServiceImpl implements ISystemHotService {
      * @param noticeType 话题类型
      * @param noticeUrl 话题封面图地址
      * @param content 话题内容
+     * @param rankNumber 话题排名
      * @param addTime 添加时间
-     * @param topTime 置顶时间,没有值时填null
      * @return 查询成功：返回true；查询失败：返回false
      */
-    public boolean insertSystemHot(String noticeTitle, String noticeType, String noticeUrl, String content, Timestamp addTime, Timestamp topTime){
-        return systemHotDao.insertSystemHot(noticeTitle, noticeType, noticeUrl, content, addTime, topTime);
+    @Transactional
+    public boolean insertSystemHot(String noticeTitle, String noticeType, String noticeUrl, String content,int rankNumber, Timestamp addTime){
+        int totalNumber = systemHotDao.countSystemHotForUser();
+        if (totalNumber == 0) {
+            return systemHotDao.insertSystemHot(noticeTitle, noticeType, noticeUrl, content, rankNumber, addTime);
+        }
+
+        //所有热门话题排名+1
+        boolean executeSuccess = systemHotDao.updateSystemHotRankNumber();
+        if (executeSuccess) {
+            systemHotDao.insertSystemHot(noticeTitle, noticeType, noticeUrl, content, rankNumber, addTime);
+        }
+
+        // 数据回滚
+        if (!executeSuccess) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+
+        return executeSuccess;
     }
 
     /**
@@ -92,8 +111,30 @@ public class SystemHotServiceImpl implements ISystemHotService {
      * @param id 记录id
      * @return 查询成功：返回true；查询失败：返回false
      */
+    @Transactional
     public boolean deteleSystemHot(int id){
-        return systemHotDao.deteleSystemHot(id);
+        SystemHotDO systemHot = systemHotDao.getSystemHotById(id);
+        // 热门话题不存在
+        if (systemHot == null) {
+            return false;
+        }
+
+        int max = systemHotDao.getMaxRankForBack();
+
+        boolean executeSuccess = systemHotDao.deteleSystemHot(id);
+        if (executeSuccess) {
+            // 删除成功，处理排名变动
+            if (systemHot.getRankNumber() < max) {
+                executeSuccess = systemHotDao.updateHotTopicRank(systemHot.getRankNumber());
+            }
+        }
+
+        // 数据回滚
+        if (!executeSuccess) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+
+        return executeSuccess;
     }
 
     /**
@@ -102,8 +143,33 @@ public class SystemHotServiceImpl implements ISystemHotService {
      * @param topTime 置顶时间
      * @return 查询成功：返回true；查询失败：返回false
      */
+    @Transactional
     public boolean topHotTopic(int id, Timestamp topTime){
-        return systemHotDao.topHotTopic(id, topTime);
+        SystemHotDO systemHot = systemHotDao.getSystemHotById(id);
+        // 热门话题不存在
+        if (systemHot == null) {
+            return false;
+        }
+
+        int rankNumber = systemHot.getRankNumber() - 1;
+        int changeId = systemHotDao.getIdByRankForBack(rankNumber);
+
+        // 如果是第一个热门话题就不能置顶了
+        if (changeId == 0) {
+            return false;
+        }
+
+        boolean executeSuccess = systemHotDao.updateHotTopicToRankNumber(systemHot.getId(), 0);
+        if (executeSuccess) {
+            executeSuccess = systemHotDao.updateHotTopicRankNumberUp(systemHot.getRankNumber());
+        }
+
+        // 数据回滚
+        if (!executeSuccess) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+
+        return executeSuccess;
         }
 
     /**
@@ -122,5 +188,80 @@ public class SystemHotServiceImpl implements ISystemHotService {
      */
     public List<SystemHotDO> listSystemHotForUser(int pageNumber, int pageSize) {
         return systemHotDao.listSystemHotForUser(pageNumber, pageSize);
+    }
+
+    /**
+     * 上移热门话题
+     * @param id 记录Id
+     * @return 操作成功:返回true, 操作失败:返回false
+     */
+    @Transactional
+    public boolean upMoveHotTopicForBack(int id) {
+        SystemHotDO systemHot = systemHotDao.getSystemHotById(id);
+        if (systemHot == null) {
+            return false;
+        }
+
+        int rankNumber = systemHot.getRankNumber() - 1;
+        int changeId = systemHotDao.getIdByRankForBack(rankNumber);
+
+        // 如果是第一个热门话题就不能上移了
+        if (changeId == 0) {
+            return false;
+        }
+
+        boolean executeSuccess = systemHotDao.upMoveHotTopicForBack(id);
+        if (executeSuccess) {
+            executeSuccess = systemHotDao.downMoveHotTopicForBack(changeId);
+        }
+
+        // 数据回滚
+        if (!executeSuccess) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+
+        return executeSuccess;
+
+    }
+
+    /**
+     * 下移热门话题
+     * @param id 记录Id
+     * @return 操作成功:返回true, 操作失败:返回false
+     */
+    @Transactional
+    public boolean downMoveHotTopicForBack(int id) {
+        SystemHotDO systemHot = systemHotDao.getSystemHotById(id);
+        if (systemHot == null) {
+            return false;
+        }
+
+        int changeId = systemHotDao.getIdByRankForBack(systemHot.getRankNumber() + 1);
+
+        // 如果是最后一个热门话题就不能下移了
+        if (changeId == 0) {
+            return false;
+        }
+
+        boolean executeSuccess = systemHotDao.downMoveHotTopicForBack(id);
+        if (executeSuccess) {
+            executeSuccess = systemHotDao.upMoveHotTopicForBack(changeId);
+        }
+
+        // 数据回滚
+        if (!executeSuccess) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+
+        return executeSuccess;
+    }
+
+    /**
+     * 通过排名获取当前热门话题id
+     * @param rankNumber 排名
+     * @return 查询成功:返回热门话题id, 查询失败:返回0
+     */
+    public int getIdByRankForBack(int rankNumber) {
+        return systemHotDao.getIdByRankForBack(rankNumber);
     }
 }

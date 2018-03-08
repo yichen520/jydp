@@ -16,8 +16,8 @@ public class SystemHotDO {
     private String noticeType; //话题类型
     private String noticeUrl; //话题封面图地址
     private String content; //话题内容
+    private int rankNumber; //排名位置
     private Timestamp addTime; //添加时间
-    private Timestamp topTime; //置顶时间
 
     private String noticeUrlFormat; //话题封面图绝对路径
 
@@ -137,18 +137,18 @@ public class SystemHotDO {
     }
 
     /**
-     * 置顶时间
-     * @return topTime
+     * 排名位置
+     * @return rankNumber
      */
-    public Timestamp getTopTime() {
-        return topTime;
+    public int getRankNumber() {
+        return rankNumber;
     }
 
     /**
-     *置顶时间
-     * @param topTime the topTime to set
+     * 排名位置
+     * @param rankNumber the rankNumber to set
      */
-    public void setTopTime(Timestamp topTime) {
-        this.topTime = topTime;
+    public void setRankNumber(int rankNumber) {
+        this.rankNumber = rankNumber;
     }
 }
