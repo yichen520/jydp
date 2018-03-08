@@ -200,9 +200,9 @@
                             <c:forEach items="${transactionPendOrderSellList}" var="item" varStatus="status">
                                 <li class="recordInfo">
                                     <span class="rangeType">卖${fn:length(transactionPendOrderSellList) - status.index}</span>
-                                    <span class="rangePrice"><fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2"/></span>
-                                    <span class="rangeNum"><fmt:formatNumber type="number" value="${item.restNumber}" maxFractionDigits="4"/></span>
-                                    <span class="rangeAmount"><fmt:formatNumber type="number" value="${item.sumPrice}" maxFractionDigits="6"/></span>
+                                    <span class="rangePrice"><fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2" groupingUsed="FALSE"/></span>
+                                    <span class="rangeNum"><fmt:formatNumber type="number" value="${item.restNumber}" maxFractionDigits="4" groupingUsed="FALSE"/></span>
+                                    <span class="rangeAmount"><fmt:formatNumber type="number" value="${item.sumPrice}" maxFractionDigits="6" groupingUsed="FALSE"/></span>
                                 </li>
                             </c:forEach>
                         </ul>
@@ -211,9 +211,9 @@
                             <c:forEach items="${transactionPendOrderBuyList}" var="item" varStatus="status">
                                 <li class="recordInfo">
                                     <span class="rangeType">买${status.count}</span>
-                                    <span class="rangePrice"><fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2"/></span>
-                                    <span class="rangeNum"><fmt:formatNumber type="number" value="${item.restNumber}" maxFractionDigits="4"/></span>
-                                    <span class="rangeAmount"><fmt:formatNumber type="number" value="${item.sumPrice}" maxFractionDigits="6"/></span>
+                                    <span class="rangePrice"><fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2" groupingUsed="FALSE"/></span>
+                                    <span class="rangeNum"><fmt:formatNumber type="number" value="${item.restNumber}" maxFractionDigits="4" groupingUsed="FALSE"/></span>
+                                    <span class="rangeAmount"><fmt:formatNumber type="number" value="${item.sumPrice}" maxFractionDigits="6" groupingUsed="FALSE"/></span>
                                 </li>
                             </c:forEach>
                         </ul>
@@ -249,10 +249,10 @@
                     <c:if test="${item.paymentType == 2}">
                         <td class="type fall">卖出</td>
                     </c:if>
-                    <td class="amount">$<fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2"/></td>
-                    <td class="amount"><fmt:formatNumber type="number" value="${item.pendingNumber}" maxFractionDigits="4"/></td>
-                    <td class="amount rise">$<fmt:formatNumber type="number" value="${item.countPrice}" maxFractionDigits="6"/></td>
-                    <td class="amount"><fmt:formatNumber type="number" value="${item.dealNumber}" maxFractionDigits="4"/></td>
+                    <td class="amount">$<fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2" groupingUsed="FALSE"/></td>
+                    <td class="amount"><fmt:formatNumber type="number" value="${item.pendingNumber}" maxFractionDigits="4" groupingUsed="FALSE"/></td>
+                    <td class="amount rise">$<fmt:formatNumber type="number" value="${item.countPrice}" maxFractionDigits="6" groupingUsed="FALSE"/></td>
+                    <td class="amount"><fmt:formatNumber type="number" value="${item.dealNumber}" maxFractionDigits="4" groupingUsed="FALSE"/></td>
                     <td class="operate"><input type="text" readonly="readonly" value="撤&nbsp;销" class="revoke" onclick="cancle('${item.pendingOrderNo}')" /></td>
                 </tr>
             </c:forEach>
@@ -286,9 +286,9 @@
                         <c:if test="${item.paymentType == 2}">
                             <td class="type fall">卖出</td>
                         </c:if>
-                        <td class="dealAmount">$<fmt:formatNumber type="number" value="${item.transactionPrice}" maxFractionDigits="2"/></td>
-                        <td class="dealAmount"><fmt:formatNumber type="number" value="${item.currencyNumber}" maxFractionDigits="4"/></td>
-                        <td class="dealAmount rise">$<fmt:formatNumber type="number" value="${item.currencyTotalPrice}" maxFractionDigits="6"/></td>
+                        <td class="dealAmount">$<fmt:formatNumber type="number" value="${item.transactionPrice}" maxFractionDigits="2" groupingUsed="FALSE"/></td>
+                        <td class="dealAmount"><fmt:formatNumber type="number" value="${item.currencyNumber}" maxFractionDigits="4" groupingUsed="FALSE"/></td>
+                        <td class="dealAmount rise">$<fmt:formatNumber type="number" value="${item.currencyTotalPrice}" maxFractionDigits="6" groupingUsed="FALSE"/></td>
                     </tr>
                 </c:forEach>
             </table>
