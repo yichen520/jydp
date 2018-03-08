@@ -44,8 +44,6 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      * @param currencyImg  币种徽标
      * @param buyFee  买入手续费
      * @param sellFee  卖出手续费
-     * @param upRange  涨停幅度
-     * @param downRange  跌停幅度
      * @param paymentType  交易状态,1:正常，2:停牌
      * @param upStatus  上线状态,1:待上线,2:上线中,3:停牌,4:已下线
      * @param backerAccount  管理员账号
@@ -55,8 +53,8 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      * @return  操作成功：返回true，操作失败：返回false
      */
     public boolean insertTransactionCurrency(String currencyShortName, String currencyName, String currencyImg,
-                                             double buyFee, double sellFee, double upRange, double downRange,
-                                             int paymentType, int upStatus, String backerAccount, String ipAddresse,
+                                             double buyFee, double sellFee, int paymentType, int upStatus,
+                                             String backerAccount, String ipAddresse,
                                              Timestamp upTime,Timestamp addTime){
         TransactionCurrencyDO transactionCurrency = new TransactionCurrencyDO();
         transactionCurrency.setCurrencyName(currencyName);
@@ -64,8 +62,6 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
         transactionCurrency.setCurrencyImg(currencyImg);
         transactionCurrency.setBuyFee(buyFee);
         transactionCurrency.setSellFee(sellFee);
-        transactionCurrency.setUpRange(upRange);
-        transactionCurrency.setDownRange(downRange);
         transactionCurrency.setPaymentType(paymentType);
         transactionCurrency.setUpStatus(upStatus);
         transactionCurrency.setBackerAccount(backerAccount);
@@ -82,8 +78,6 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      * @param currencyImg  币种徽标
      * @param buyFee  买入手续费
      * @param sellFee  卖出手续费
-     * @param upRange  涨停幅度
-     * @param downRange  跌停幅度
      * @param paymentType  交易状态,1:正常，2:停牌
      * @param upStatus  上线状态,1:待上线,2:上线中,3:停牌,4:已下线
      * @param backerAccount  管理员账号
@@ -94,8 +88,7 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      */
     @Transactional
     public boolean addTransactionCurrency(String currencyShortName, String currencyName, String currencyImg,
-                                   double buyFee, double sellFee, double upRange, double downRange,
-                                   int paymentType, int upStatus, String backerAccount, String ipAddresse,
+                                   double buyFee, double sellFee,int paymentType, int upStatus, String backerAccount, String ipAddresse,
                                           Timestamp upTime,Timestamp addTime){
         TransactionCurrencyDO transactionCurrency = new TransactionCurrencyDO();
         transactionCurrency.setCurrencyName(currencyName);
@@ -103,8 +96,6 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
         transactionCurrency.setCurrencyImg(currencyImg);
         transactionCurrency.setBuyFee(buyFee);
         transactionCurrency.setSellFee(sellFee);
-        transactionCurrency.setUpRange(upRange);
-        transactionCurrency.setDownRange(downRange);
         transactionCurrency.setPaymentType(paymentType);
         transactionCurrency.setUpStatus(upStatus);
         transactionCurrency.setBackerAccount(backerAccount);

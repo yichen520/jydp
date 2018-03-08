@@ -14,8 +14,6 @@ public class TransactionCurrencyDO {
     private String currencyImg;  //币种徽标
     private double buyFee;  //买入手续费
     private double sellFee;  //卖出手续费
-    private double upRange;  //涨停幅度
-    private double downRange;  //跌停幅度
     private int paymentType;  //交易状态,1:正常，2:停牌
     private int upStatus;  //上线状态,1:待上线,2:上线中,3:停牌,4:已下线
     private String backerAccount;  //管理员账号
@@ -123,38 +121,6 @@ public class TransactionCurrencyDO {
      */
     public void setSellFee(double sellFee) {
         this.sellFee = sellFee;
-    }
-
-    /**
-     * 涨停幅度
-     * @return the upRange
-     */
-    public double getUpRange() {
-        return upRange;
-    }
-
-    /**
-     * 涨停幅度
-     * @param upRange the upRange to set
-     */
-    public void setUpRange(double upRange) {
-        this.upRange = upRange;
-    }
-
-    /**
-     * 跌停幅度
-     * @return the downRange
-     */
-    public double getDownRange() {
-        return downRange;
-    }
-
-    /**
-     * 跌停幅度
-     * @param downRange the downRange to set
-     */
-    public void setDownRange(double downRange) {
-        this.downRange = downRange;
     }
 
     /**
