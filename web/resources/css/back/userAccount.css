@@ -20,10 +20,10 @@
     width: 126px;
 }
 .state{
-    width: 71px;
+    width: 126px;
 }
 .operate{
-    width: 280px;
+    width: 172px;
 }
 .stop{
     width: 50px;
@@ -55,7 +55,8 @@
     cursor: pointer;
     font-size: 12px;
 }
-.addMoney,.minusMoney{
+.addMoney,.minusMoney,.addFrozen,.minusFrozen{
+    margin-top: 5px;
     margin-left: 5px;
     width: 77px;
     text-align: center;
@@ -65,11 +66,11 @@
     cursor: pointer;
     font-size: 12px;
 }
-.details:hover,.addMoney:hover,.minusMoney:hover{
+.details:hover,.addMoney:hover,.minusMoney:hover,.addFrozen:hover,.minusFrozen:hover{
     color: #2c94fd;
 }
 
-.stop_pop,.start_pop,.addMoney_pop,.minusMoney_pop{
+.stop_pop,.start_pop,.addMoney_pop,.minusMoney_pop,.addFrozen_pop,.minusFrozen_pop{
     display: none;
 }
 .popName{
