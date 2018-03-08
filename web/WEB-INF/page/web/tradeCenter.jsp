@@ -529,7 +529,7 @@
             }
 
             var userBalance = parseFloat($("#userBalance").val());
-            if(buyPrice != "0"){
+            if(buyPrice > 0){
                 var total = userBalance / buyPrice;
                 var tota = mulMaxNumber(total);
                 $("#buyMax").html(tota);
