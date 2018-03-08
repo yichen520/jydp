@@ -375,7 +375,7 @@ input:-webkit-autofill{
     margin-left: 5px;
 }
 .first:hover,.end:hover,.upPage:hover,.downPage:hover{
-    color: #ff9a3b;
+    color: #e83a33;
 }
 .pageNumber{
     margin: 0 5px;

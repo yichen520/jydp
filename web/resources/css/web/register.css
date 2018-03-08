@@ -118,14 +118,15 @@ input:-webkit-autofill{
 .select{
     float: left;
     padding-left: 10px;
-    border-right: 1px solid #cccccc;
+    border: 1px solid #cccccc;
     width: 79px;
-    height: 36px;
+    height: 35px;
     font-size: 12px;
     margin-left: -1px;
     line-height: 35px;
     position: relative;
     cursor: pointer;
+    border-right: none;
 }
 .select img{
     float: right;
@@ -168,10 +169,10 @@ input:-webkit-autofill{
 }
 .phone{
     padding-left: 5px;
-    width: 164px;
+    width: 162px;
     height: 34px;
     font-size: 12px;
-    border: none;
+    border: 1px solid #cccccc;
     padding-bottom: 1px;
 }
 .entry{
@@ -197,7 +198,6 @@ input:-webkit-autofill{
 }
 .popCode{
     float: right;
-    border: 1px solid #cccccc;
     width: 258px;
     height: 35px;
     text-align: left;
@@ -206,18 +206,20 @@ input:-webkit-autofill{
 .code{
     float: left;
     padding-left: 5px;
-    width: 163px;
-    border: none;
+    width: 161px;
     height: 34px;
     font-size: 12px;
+    border: 1px solid #cccccc;
+    border-right: none;
 }
 .message{
     float: right;
     width: 90px;
     text-align: center;
     color: #333333;
-    border: none;
-    height: 34px;
+    border: 1px solid #cccccc;
+    border-left: none;
+    height: 33px;
     background-color: #f2f2f2;
     cursor: pointer;
     font-size: 12px;

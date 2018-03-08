@@ -13,7 +13,7 @@
 <body>
 <div class="menu">
     <span class="logo">
-        <a href="<%=path %>/userWeb/homePage/show" class="m_logo"><img src="<%=path %>/resources/image/web/trade_logo.png" /></a>交易大盘
+        <a id="meunlogo" href="<%=path %>/userWeb/homePage/show" class="m_logo"><img src="<%=path %>/resources/image/web/trade_logo.png" /></a><span onclick="document.getElementById('meunlogo').click();" style="cursor:pointer" >交易大盘</span>
     </span>
 
     <ul class="nav">
@@ -81,6 +81,27 @@
         }
         //个人中心
         if (curUrl.indexOf("/userWeb/userMessage/show.htm") > 0) {
+            menuObj = $("#message");
+        }
+        if (curUrl.indexOf("/userWeb/accountRecord/show.htm") > 0) {
+            menuObj = $("#message");
+        }
+        if (curUrl.indexOf("/userWeb/transactionPendOrderController/show.htm") > 0) {
+            menuObj = $("#message");
+        }
+        if (curUrl.indexOf("/userWeb/dealRecord/show.htm") > 0) {
+            menuObj = $("#message");
+        }
+        if (curUrl.indexOf("/userWeb/webSystemNotice/show") > 0) {
+            menuObj = $("#message");
+        }
+        if (curUrl.indexOf("/userWeb/webSystemHot/show") > 0) {
+            menuObj = $("#message");
+        }
+        if (curUrl.indexOf("/userWeb/webCustomerService/show.htm") > 0) {
+            menuObj = $("#message");
+        }
+        if (curUrl.indexOf("userWeb/webHelpCenter/show") > 0) {
             menuObj = $("#message");
         }
 
