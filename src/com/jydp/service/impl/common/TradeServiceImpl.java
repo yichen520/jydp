@@ -160,7 +160,7 @@ public class TradeServiceImpl implements ITradeService {
             sellUsrId = matchOrder.getUserId();
             buyFee = order.getBuyFee();
             buyPrice = NumberUtil.doubleUpFormat(BigDecimalUtil.mul(BigDecimalUtil.mul(order.getPendingPrice(), tradeNum),BigDecimalUtil.add(1,order.getBuyFee())),8);
-            returnMoney = NumberUtil.doubleFormat(BigDecimalUtil.mul(BigDecimalUtil.mul((BigDecimalUtil.sub(order.getPendingPrice(), tradePrice)), tradeNum), order.getBuyFee()),8);
+            returnMoney = NumberUtil.doubleFormat(BigDecimalUtil.mul(BigDecimalUtil.mul((BigDecimalUtil.sub(order.getPendingPrice(), tradePrice)), tradeNum), BigDecimalUtil.add(1, order.getBuyFee())),8);
         }else if(paymentType == 2){
             buyUserId = matchOrder.getUserId();
             sellUsrId = userId;
