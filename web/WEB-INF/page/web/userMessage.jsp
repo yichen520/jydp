@@ -67,8 +67,12 @@
 
             <ul class="safetyList">
                 <li class="safetyInfo">
+                    <c:if test="${userMessage.payPassword != '1'}">
                     <img src="<%=path %>/resources/image/web/pass.png" class="pass" id="payPass"/>
-                    <img src="<%=path %>/resources/image/web/error.png" class="error" id="payError" style="display: none" />
+                    </c:if>
+                    <c:if test="${userMessage.payPassword == '1'}">
+                        <img src="<%=path %>/resources/image/web/error.png" class="error" id="payPass" />
+                    </c:if>
                     <span class="safetyTitle">支付密码</span>
                     <span class="state">已设置</span>
                     <span class="explain">为保证账号安全，建议设置与登录密码不同的密码组合</span>
@@ -194,7 +198,7 @@
                 <label class="popName">手机号<span class="star">*</span>：</label>
                 <span class="popCode">
                     <span class="select">
-                    <span class="selectCont">0086</span>
+                    <span class="selectCont" id="areaCode">+86</span>
                     <img src="<%=path %>/resources/image/web/area.png" alt=""/>
                     <span class="selectUl">
                         <c:forEach items="${phoneAreaMap}" var="phoneArea">
@@ -245,13 +249,6 @@
         var payPassword = '${userMessage.payPassword }';
         var payPass = document.getElementById("payPass");
         var payError = document.getElementById("payError");
-        if(payPassword == 1){
-            payError.style.display ="inline";
-            payPass.style.display = "none";
-        } else {
-            payPass.style.display ="inline";
-            payError.style.display = "none";
-        }
         if (code != 1 && message != "") {
             openTips(message);
             return false;
@@ -323,10 +320,7 @@
                 success:function(result){
                     updatePayPasswordBoo = false;
                     if(result.code == 1) {
-                        var payPass = document.getElementById("payPass");
-                        var payError = document.getElementById("payError");
-                        payPass.style.display ="inline";
-                        payError.style.display = "none";
+                        $("#payPass").attr('src',"<%=path %>" + "/resources/image/web/pass.png");
                         $(".mask").fadeOut("fast");
                         $(".changePay_pop").fadeOut("fast");
                         $("#passwordPop").val("");
@@ -402,10 +396,7 @@
                     updatePayPasswordBoo = false;
                     if(result.code == 1) {
                         openTips(result.message);
-                        var payPass = document.getElementById("payPass");
-                        var payError = document.getElementById("payError");
-                        payPass.style.display ="inline";
-                        payError.style.display = "none";
+                        $("#payPass").attr('src',"<%=path %>" + "/resources/image/web/pass.png");
                         $(".mask").fadeOut("fast");
                         $(".changePay_pop").fadeOut("fast");
                         $("#newPasswordTel").val("");
@@ -501,17 +492,26 @@
         var regPos = /^\d+(\.\d+)?$/; //非负浮点数
         var bindingMobile = $("#bindingMobile").val();
         var verifyCode = $("#verifyCode").val();
-        var areaCode = $("#areaCode").val();
+        var areaCode = $("#areaCode").html();
         var phonePassword = $("#phonePassword").val();
         if(bindingMobile == ""){
             openTips("请输入手机号");
             return;
         }
 
-        if(!regPos.test(bindingMobile) || bindingMobile.length > 11 || bindingMobile.length < 5){
-            openTips("请输入正确手机号");
-            return;
+        if(areaCode == "+86"){
+            if(!regPos.test(bindingMobile) || bindingMobile.length > 11 || bindingMobile.length <= 10){
+                openTips("请输入正确手机号");
+                return;
+            }
+        } else {
+            if(!regPos.test(bindingMobile) || (bindingMobile.length + areaCode.length) > 14 || bindingMobile.length <= 5 || bindingMobile.length > 11){
+                openTips("请输入正确手机号");
+                return;
+            }
         }
+
+
         
         if(verifyCode == ""){
             openTips("请输入验证码");

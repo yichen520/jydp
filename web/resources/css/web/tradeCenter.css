@@ -29,7 +29,7 @@ body{
     float: left;
     vertical-align: middle;
     margin-top: 40px;
-    margin-right: 10px;
+    margin-right: 25px;
     font-size: 28px;
     color: #68adfa;
 }
@@ -393,13 +393,13 @@ body{
     opacity: 0.8;
 }
 .time{
-    width: 250px;
+    width: 182px;
 }
 .type{
     width: 130px;
 }
 .amount{
-    width: 220px;
+    width: 180px;
 }
 .operate{
     width: 100px;
