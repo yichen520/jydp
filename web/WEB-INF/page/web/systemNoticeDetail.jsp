@@ -17,9 +17,10 @@
 <header id="header"></header>
 <div id="menu"></div>
 
-
 <div class="content">
-    ${systemNotice.content }
+    <div class="editor">
+        ${systemNotice.content }
+    </div>
 </div>
 
 

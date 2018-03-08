@@ -284,7 +284,7 @@ public class TradeCenterController {
 
         if(sellOne > buyPrice || sellOne == 0){
             resultJson.setCode(1);
-            resultJson.setMessage("没有可匹配的挂单");
+            resultJson.setMessage("挂单成功");
             return resultJson;
         }
 
@@ -376,6 +376,12 @@ public class TradeCenterController {
         }
 
         //交易价格限制
+        if(sellPrice <= 0){
+            resultJson.setCode(3);
+            resultJson.setMessage("交易单价不能小于等于0");
+            return resultJson;
+        }
+
         Object yesterdayPrice = redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + currencyId);
         if(yesterdayPrice != "" && yesterdayPrice != null){
             double yesterdayLastPrice = (double)yesterdayPrice;
@@ -439,7 +445,7 @@ public class TradeCenterController {
 
         if(buyOne < sellPrice){
             resultJson.setCode(1);
-            resultJson.setMessage("没有可匹配的挂单");
+            resultJson.setMessage("挂单成功");
             return resultJson;
         }
 

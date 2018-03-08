@@ -276,7 +276,7 @@ public class BackerUserAccountController {
         boolean updateResult = userService.updateUserAccountStatus(userId, 2,1);
         if (updateResult) {
             //删除用户session
-            userSessionService.deleteSessionByUserId(userId);
+            userSessionService.deleteRedisSession(userId);
 
             responseJson.setCode(1);
             responseJson.setMessage("操作成功");

@@ -11,6 +11,8 @@ import com.jydp.entity.DO.back.BackerRolePowerDO;
 import com.jydp.entity.DO.back.BackerSessionDO;
 import com.jydp.service.IBackerRolePowerService;
 import com.jydp.service.IBackerSessionService;
+import com.jydp.service.IRedisService;
+import config.SessionConfig;
 import config.SystemCommonConfig;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -46,6 +48,17 @@ public class BackerWebInterceptor implements HandlerInterceptor {
             backerRolePowerService = (IBackerRolePowerService) ApplicationContextHandle.getBean("backerRolePowerService");
         }
         return backerRolePowerService;
+    }
+
+    /** redis服务 */
+    private static IRedisService redisService;
+
+    /** redis服务 */
+    private static IRedisService getRedisService(HttpServletRequest request) {
+        if (redisService == null) {
+            redisService = (IRedisService) ApplicationContextHandle.getBean("redisService");
+        }
+        return redisService;
     }
 
     /**
@@ -121,6 +134,11 @@ public class BackerWebInterceptor implements HandlerInterceptor {
 
         request.getSession().setAttribute("backer_rolePower", powerJson);
         request.getSession().setAttribute("backerSession", backerSessionBO);
+        //记录管理员id与sessionid的映射关系
+        String springSessionId = request.getSession().getId();
+        String SESSION_BACKER_KEY = SessionConfig.SESSION_BACKER_ID + String.valueOf(backerSessionBO.getBackerId());
+        String SESSION_SESSIONS_KEY = SessionConfig.SESSION_SESSIONS + springSessionId;
+        getRedisService(request).addList(SESSION_BACKER_KEY, SESSION_SESSIONS_KEY, SessionConfig.SESSION_TIME_OUT);
     }
 
     /**
@@ -140,6 +158,9 @@ public class BackerWebInterceptor implements HandlerInterceptor {
      */
     public static boolean validatePower(HttpServletRequest request, int powerId) {
         JSONObject rolePowerJson = (JSONObject) request.getSession().getAttribute("backer_rolePower");
+        if (rolePowerJson == null || rolePowerJson.isEmpty()) {
+            return false;
+        }
         if (rolePowerJson.containsKey(String.valueOf(powerId))) {
             return true;
         }

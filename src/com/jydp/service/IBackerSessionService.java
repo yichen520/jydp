@@ -75,5 +75,12 @@ public interface IBackerSessionService {
      * @return 操作成功：返回true，操作失败：返回false
      */
     boolean deleteSessionByTimeForTimer(Timestamp loginTime, int pageSize);
-    
+
+    /**
+     * 删除redis中管理员的session
+     * @param backerId 管理员Id
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean deleteRedisSession(int backerId);
+
 }
