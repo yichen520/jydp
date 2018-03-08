@@ -166,7 +166,7 @@
         }
 
 
-        if(!regPos.test(phone) || phone.length > 11 || phone.length < 5){
+        if(!regPos.test(phone) || phone.length > 11 || phone.length < 6){
             phoneBoo = false;
             return openTips("请输入正确手机号");
         }
