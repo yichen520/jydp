@@ -1,9 +1,7 @@
 package com.jydp.controller.web;
 
 import com.alibaba.fastjson.JSONObject;
-import com.iqmkj.utils.MD5Util;
-import com.iqmkj.utils.NumberUtil;
-import com.iqmkj.utils.StringUtil;
+import com.iqmkj.utils.*;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
@@ -205,9 +203,12 @@ public class TradeCenterController {
         }
 
         //判断交易时间限制
-
-
-
+        boolean timeBoo = DateUtil.isTradeTime();
+        if(timeBoo){
+            resultJson.setCode(3);
+            resultJson.setMessage("不在交易时间段内");
+            return resultJson;
+        }
 
         //交易数量限制
         if(buyNum <= 0){
@@ -241,7 +242,7 @@ public class TradeCenterController {
 
         //计算手续费及总价
         double buyFee = transactionCurrency.getBuyFee();
-        double sumPrice = NumberUtil.doubleUpFormat(buyNum * buyPrice *(1 + buyFee),8);
+        double sumPrice = NumberUtil.doubleUpFormat(BigDecimalUtil.mul(BigDecimalUtil.mul(buyNum, buyPrice),BigDecimalUtil.add(1, buyFee)),8);
 
         if(user.getUserBalance() < sumPrice){
             resultJson.setCode(5);
@@ -362,9 +363,12 @@ public class TradeCenterController {
         }
 
         //判断交易时间限制
-
-
-
+        boolean timeBoo = DateUtil.isTradeTime();
+        if(timeBoo){
+            resultJson.setCode(3);
+            resultJson.setMessage("不在交易时间段内");
+            return resultJson;
+        }
 
         //交易数量限制
         if(sellNum <= 0){

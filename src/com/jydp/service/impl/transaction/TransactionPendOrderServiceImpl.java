@@ -12,7 +12,6 @@ import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DTO.TransactionPendOrderDTO;
 import com.jydp.entity.VO.TransactionPendOrderVO;
 import com.jydp.service.*;
-import config.SystemAccountAmountConfig;
 import config.SystemCommonConfig;
 import config.UserBalanceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,7 +93,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
             }
             //增加用户锁定美金
             if(excuteSuccess){
-                excuteSuccess = userService.updateAddUserAmount(userId, 0, pendingPrice * pendingNumber);
+                excuteSuccess = userService.updateAddUserAmount(userId, 0, tradePriceSum);
             }
             //增加买方账户美金记录
             if(excuteSuccess){
@@ -110,16 +109,11 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
                 userBalance.setCurrencyName(UserBalanceConfig.DOLLAR);
                 userBalance.setFromType(UserBalanceConfig.BUY_ENTRUST);
                 userBalance.setBalanceNumber(-tradePriceSum);
-                userBalance.setFrozenNumber(pendingPrice * pendingNumber);
+                userBalance.setFrozenNumber(tradePriceSum);
                 userBalance.setRemark(remark);
                 userBalance.setAddTime(curTime);
 
                 excuteSuccess = userBalanceService.insertUserBalance(userBalance);
-            }
-            //增加系统账户记录
-            if (excuteSuccess) {
-                excuteSuccess = systemAccountAmountService.addSystemAccountAmount(SystemAccountAmountConfig.PEND_FEE,
-                        NumberUtil.doubleUpFormat(fee,8));
             }
         } else if(paymentType == 2){
             //减少用户币数量
@@ -324,13 +318,17 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
         if(pendingStatus != 1 && pendingStatus != 2){
             return false;
         }
+        //获取币种信息
         TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
-        if(transactionCurrency == null){
+        if(transactionCurrency == null || transactionCurrency.getUpStatus() == 4){
             return false;
         }
 
         //计算撤销的币数量
         double num = BigDecimalUtil.sub(transactionPendOrder.getPendingNumber(), dealNumber);
+        if(num <= 0){
+            return false;
+        }
         //业务执行状态
         boolean excuteSuccess = true;
         UserDO user = userService.getUserByUserId(userId);
@@ -340,7 +338,8 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
 
         if(paymentType == 1){ //如果是买入
             //计算撤销的美金数量
-            double balanceRevoke = BigDecimalUtil.mul(num, transactionPendOrder.getPendingPrice());
+            double balanceRevoke = BigDecimalUtil.mul(BigDecimalUtil.mul(num, transactionPendOrder.getPendingPrice()),
+                    BigDecimalUtil.add(1,transactionCurrency.getBuyFee()));
             //判断冻结金额是否大于等于balanceRevoke
             if(user.getUserBalanceLock() < balanceRevoke){
                 return false;
@@ -368,7 +367,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
                 userBalance.setFromType(UserBalanceConfig.REVOKE_BUY_ORDER);
                 userBalance.setBalanceNumber(balanceRevoke);
                 userBalance.setFrozenNumber(-balanceRevoke);
-                userBalance.setRemark("返还冻结美金");
+                userBalance.setRemark("撤销买入挂单,返还冻结美金");
                 userBalance.setAddTime(curTime);
 
                 excuteSuccess = userBalanceService.insertUserBalance(userBalance);
@@ -378,8 +377,11 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
             //查询用户币数量
             UserCurrencyNumDO userCurrencyNum = userCurrencyNumService.getUserCurrencyNumByUserIdAndCurrencyId(
                     userId, currencyId);
+            if(userCurrencyNum == null){
+                return false;
+            }
             //判断冻结数量是否大于等于num
-            if(userCurrencyNum == null || userCurrencyNum.getCurrencyNumberLock() < num){
+            if(userCurrencyNum.getCurrencyNumberLock() < num){
                 return false;
             }
             //减少冻结数量
@@ -405,7 +407,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
                 userBalance.setFromType(UserBalanceConfig.REVOKE_SELL_ORDER);
                 userBalance.setBalanceNumber(num);
                 userBalance.setFrozenNumber(-num);
-                userBalance.setRemark("撤销卖出委托");
+                userBalance.setRemark("撤销卖出挂单，返还冻结币");
                 userBalance.setAddTime(curTime);
 
                 excuteSuccess = userBalanceService.insertUserBalance(userBalance);

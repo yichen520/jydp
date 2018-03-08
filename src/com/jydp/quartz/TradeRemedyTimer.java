@@ -53,14 +53,27 @@ public class TradeRemedyTimer {
 			if(buyOrder == null || sellOrder == null){
 				continue;
 			}
+			//如果无法匹配，则不交易
+			if(buyOrder.getPendingPrice() < sellOrder.getPendingPrice()){
+				continue;
+			}
 
 			double buyNum = BigDecimalUtil.sub(buyOrder.getPendingNumber(), buyOrder.getDealNumber());
 			double sellNum = BigDecimalUtil.sub(sellOrder.getPendingNumber(), sellOrder.getDealNumber());
-			//以可以交易数量多的委托当做刚挂单的委托进行交易匹配
-			if(buyNum >= sellNum){
+			long buyTime = buyOrder.getAddTime().getTime();
+			long sellTime = sellOrder.getAddTime().getTime();
+			//时间优先
+			if(sellTime > buyTime){
 				order = buyOrder;
-			}else if(buyNum < sellNum){
+			}else if(sellTime < buyTime){
 				order = sellOrder;
+			}if(sellTime == buyTime){
+				//数量优先
+				if(buyNum >= sellNum){
+					order = buyOrder;
+				}else if(buyNum < sellNum){
+					order = sellOrder;
+				}
 			}
 			//交易
 			tradeCommonService.trade(order);
