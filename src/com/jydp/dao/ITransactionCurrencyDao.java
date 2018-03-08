@@ -19,7 +19,7 @@ public interface ITransactionCurrencyDao {
      * @param transactionCurrency  交易币种
      * @return  操作成功：返回true，操作失败：返回false
      */
-    boolean insertTransactionCurrency(TransactionCurrencyDO transactionCurrency);
+    int insertTransactionCurrency(TransactionCurrencyDO transactionCurrency);
 
     /**
      * 根据币种Id获取交易币种
@@ -165,4 +165,38 @@ public interface ITransactionCurrencyDao {
      */
     List<TransactionCurrencyVO> getOnlineAndSuspensionCurrencyForWeb();
 
+    /**
+     * 根据币种排名位置获取币种信息id
+     * @param rankNumber   排名位置
+     * @return  操作成功：返回币种Id，操作失败：返回0
+     */
+    int getTransactionCurrencyByRankNumber(int rankNumber);
+
+    /**
+     * 修改币种信息排名（大于该排名的所有币种排名-1）
+     * @param rankNumber 排名位置
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean updateCurrencyRankNumber(int rankNumber);
+
+    /**
+     * 上移币种
+     * @param currencyId  币种Id
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    boolean upCurrencyRankNumber(int currencyId);
+
+    /**
+     * 下移币种
+     * @param currencyId  币种Id
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    boolean downCurrencyRankNumber(int currencyId);
+
+    /**
+     * 置顶币种
+     * @param currencyId  币种Id
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    boolean topCurrencyRankNumber(int currencyId);
 }

@@ -449,7 +449,7 @@
                 if (code == 1){
                     $(".mask").fadeOut("fast");
                     $(popObj).fadeOut("fast");
-                    setTimeout(function (){$("#queryForm").submit();}, 1000);
+                    setTimeout(function (){queryForm();}, 1000);
                 }
 
                 addBoo = false;
@@ -567,7 +567,7 @@
                 if (code == 1){
                     $(".mask").fadeOut("fast");
                     $(popObj).fadeOut("fast");
-                    setTimeout(function (){$("#queryForm").submit();}, 1000);
+                    setTimeout(function (){queryForm();}, 1000);
                 }
 
                 excBoo = false;
@@ -613,7 +613,7 @@
                 if (code == 1){
                     $(".mask").fadeOut("fast");
                     $(popObj).fadeOut("fast");
-                    setTimeout(function (){$("#queryForm").submit();}, 1000);
+                    setTimeout(function (){queryForm();}, 1000);
                 }
 
                 calBoo = false;
@@ -670,7 +670,7 @@
                     return;
                 }
 
-                $("#queryForm").submit();
+                queryForm();
             },
 
             error: function () {

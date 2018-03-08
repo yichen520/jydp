@@ -5,18 +5,19 @@
 
 <mapper namespace="com.jydp.dao.impl.transaction.TransactionCurrencyDaoImpl">
 
-	<insert id="TransactionCurrency_insertTransactionCurrency" parameterType="TransactionCurrencyDO">
+	<insert id="TransactionCurrency_insertTransactionCurrency" parameterType="TransactionCurrencyDO"
+            useGeneratedKeys="true" keyColumn="currencyId" keyProperty="currencyId">
         INSERT INTO transaction_currency_tab
             (currencyShortName, currencyName, currencyImg, buyFee, sellFee,
-             paymentType, upStatus, backerAccount, ipAddress, upTime, addTime)
+             paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime)
         VALUES
             (#{currencyShortName}, #{currencyName}, #{currencyImg}, #{buyFee}, #{sellFee},
-            #{paymentType}, #{upStatus}, #{backerAccount}, #{ipAddress}, #{upTime}, #{addTime})
+            #{paymentType}, #{upStatus}, #{rankNumber}, #{backerAccount}, #{ipAddress}, #{upTime}, #{addTime})
     </insert>
 
 	<select id="TransactionCurrency_getTransactionCurrencyByCurrencyId" parameterType="int" resultType="TransactionCurrencyVO">
         SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee,
-            paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
+            paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         WHERE currencyId = #{currencyId}
 	</select>
@@ -68,14 +69,14 @@
 
     <select id="TransactionCurrency_getTransactionCurrencyListForWeb" resultType="TransactionCurrencyVO">
         SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee,
-            paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
+            paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         WHERE upStatus = 2
     </select>
 
     <select id="TransactionCurrency_getTransactionCurrencyByCurrencyName" parameterType="java.lang.String" resultType="TransactionCurrencyVO">
         SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee,
-            paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
+            paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         WHERE currencyName = #{currencyName}
     </select>
@@ -113,7 +114,7 @@
 
     <select id="TransactionCurrency_listTransactionCurrencyForBack" parameterType="java.util.Map" resultType="TransactionCurrencyVO">
         SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee,
-                 paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
+                 paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         <where>
             <if test="currencyName != null and currencyName !=''">
@@ -141,7 +142,7 @@
                 AND upTime <![CDATA[ <= ]]> #{endUpTime}
             </if>
         </where>
-        ORDER BY addTime DESC
+        ORDER BY rankNumber ASC
         LIMIT #{startNumber}, #{pageSize}
     </select>
 
@@ -174,7 +175,7 @@
 
     <select id="TransactionCurrency_listTransactionCurrencyAll" resultType="TransactionCurrencyDO">
         SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee,
-            paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
+            paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
     </select>
 
@@ -182,7 +183,7 @@
         SELECT currencyId, currencyShortName, currencyName, currencyImg
         FROM transaction_currency_tab
         WHERE upStatus IN (2,3)
-        ORDER BY addTime
+        ORDER BY rankNumber ASC
     </select>
 
     <resultMap id="CurrencyMarketMap" type="TransactionUserDealDTO">
@@ -237,15 +238,47 @@
 
     <select id="TransactionCurrency_getAllCurrencylistForWeb" resultType="TransactionCurrencyVO">
         SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee,
-            paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
+            paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
+        ORDER BY rankNumber ASC
     </select>
 
     <select id="TransactionCurrency_getOnlineAndSuspensionCurrencyForWeb" resultType="TransactionCurrencyVO">
         SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee,
-            paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
+        paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         WHERE upStatus IN (2,3)
-        ORDER BY addTime
+        ORDER BY rankNumber ASC
     </select>
+
+    <select id="TransactionCurrency_getTransactionCurrencyByRankNumber" parameterType="int" resultType="int">
+        SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee,
+            paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
+        FROM transaction_currency_tab
+        WHERE rankNumber = #{rankNumber}
+    </select>
+
+    <update id="TransactionCurrency_updateCurrencyRankNumber" parameterType="int">
+        UPDATE transaction_currency_tab
+        SET rankNumber = rankNumber + 1
+        WHERE rankNumber <![CDATA[ <= ]]> #{rankNumber}
+    </update>
+
+    <update id="TransactionCurrency_upCurrencyRankNumber" parameterType="int">
+        UPDATE transaction_currency_tab
+        SET rankNumber = rankNumber - 1
+        WHERE currencyId = #{currencyId}
+    </update>
+
+    <update id="TransactionCurrency_downCurrencyRankNumber" parameterType="int">
+        UPDATE transaction_currency_tab
+        SET rankNumber = rankNumber + 1
+        WHERE currencyId = #{currencyId}
+    </update>
+
+    <update id="TransactionCurrency_topCurrencyRankNumber" parameterType="int">
+        UPDATE transaction_currency_tab
+        SET rankNumber = 1
+        WHERE currencyId = #{currencyId}
+    </update>
 </mapper>

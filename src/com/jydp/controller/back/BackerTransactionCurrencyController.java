@@ -641,4 +641,121 @@ public class BackerTransactionCurrencyController {
         }
         return response;
     }
+
+    /** 上移币种 */
+    @RequestMapping(value = "/up.htm", method = RequestMethod.POST)
+    public @ResponseBody JsonObjectBO uprank(HttpServletRequest request) {
+        JsonObjectBO response = new JsonObjectBO();
+        BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
+        if (backerSession == null) {
+            response.setCode(4);
+            response.setMessage("登录过期");
+            return response;
+        }
+        //业务功能权限
+        boolean havePower = BackerWebInterceptor.validatePower(request, 104009);
+        if (!havePower) {
+            response.setCode(5);
+            response.setMessage("您没有该权限");
+            return response;
+        }
+
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+        if (!StringUtil.isNotNull(currencyIdStr)){
+            response.setCode(3);
+            response.setMessage("参数错误");
+            return response;
+        }
+
+        int currencyId = 0;
+        currencyId = Integer.parseInt(currencyIdStr);
+
+        boolean result =  transactionCurrencyService.upCurrencyRankNumber(currencyId);
+        if (result) {
+            response.setCode(1);
+            response.setMessage("上移成功");
+        } else {
+            response.setCode(5);
+            response.setMessage("上移失败");
+        }
+        return response;
+    }
+
+    /** 下移币种 */
+    @RequestMapping(value = "/down.htm", method = RequestMethod.POST)
+    public @ResponseBody JsonObjectBO downrank(HttpServletRequest request) {
+        JsonObjectBO response = new JsonObjectBO();
+        BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
+        if (backerSession == null) {
+            response.setCode(4);
+            response.setMessage("登录过期");
+            return response;
+        }
+        //业务功能权限
+        boolean havePower = BackerWebInterceptor.validatePower(request, 104010);
+        if (!havePower) {
+            response.setCode(5);
+            response.setMessage("您没有该权限");
+            return response;
+        }
+
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+        if (!StringUtil.isNotNull(currencyIdStr)){
+            response.setCode(3);
+            response.setMessage("参数错误");
+            return response;
+        }
+
+        int currencyId = 0;
+        currencyId = Integer.parseInt(currencyIdStr);
+
+        boolean result =  transactionCurrencyService.downCurrencyRankNumber(currencyId);
+        if (result) {
+            response.setCode(1);
+            response.setMessage("下移成功");
+        } else {
+            response.setCode(5);
+            response.setMessage("下移失败");
+        }
+        return response;
+    }
+
+    /** 置顶币种 */
+    @RequestMapping(value = "/top.htm", method = RequestMethod.POST)
+    public @ResponseBody JsonObjectBO toprank(HttpServletRequest request) {
+        JsonObjectBO response = new JsonObjectBO();
+        BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
+        if (backerSession == null) {
+            response.setCode(4);
+            response.setMessage("登录过期");
+            return response;
+        }
+        //业务功能权限
+        boolean havePower = BackerWebInterceptor.validatePower(request, 104011);
+        if (!havePower) {
+            response.setCode(5);
+            response.setMessage("您没有该权限");
+            return response;
+        }
+
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+        if (!StringUtil.isNotNull(currencyIdStr)){
+            response.setCode(3);
+            response.setMessage("参数错误");
+            return response;
+        }
+
+        int currencyId = 0;
+        currencyId = Integer.parseInt(currencyIdStr);
+
+        boolean result =  transactionCurrencyService.topCurrencyRankNumber(currencyId);
+        if (result) {
+            response.setCode(1);
+            response.setMessage("置顶成功");
+        } else {
+            response.setCode(5);
+            response.setMessage("置顶失败");
+        }
+        return response;
+    }
 }

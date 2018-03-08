@@ -136,6 +136,17 @@
                             <p>IP:${item.ipAddress}</p>
                         </td>
                         <td class="operate">
+                            <p>
+                                <c:if test="${item.rankNumber != 1}">
+                                    <input type="text" value="上&nbsp;移" class="adUp" onfocus="this.blur()" onclick="upMove('${item.currencyId}')"/>
+                                </c:if>
+                                <c:if test="${item.rankNumber != totalNumber}">
+                                    <input type="text" value="下&nbsp;移" class="adDown" onfocus="this.blur()" onclick="downMove('${item.currencyId}')"/>
+                                </c:if>
+                                <c:if test="${item.rankNumber != 1}">
+                                    <input type="text" value="置&nbsp; 顶" class="toTop" onfocus="this.blur()" onclick="topMove('${item.currencyId}')"/>
+                                </c:if>
+                            </p>
                             <c:if test="${item.paymentType != 2}">
                                 <input type="text" value="停&nbsp;牌" class="stop" onfocus="this.blur()" onclick="goPayType('${item.currencyId}', 2)"/>
                             </c:if>
@@ -148,7 +159,7 @@
                             <c:if test="${item.paymentType == 2 && item.upStatus == 3}">
                                 <input type="text" value="复&nbsp;牌" class="start" onfocus="this.blur()" onclick="goPayType('${item.currencyId}', 1)"/>
                             </c:if>
-                            <input type="text" value="修&nbsp;改" class="change" onfocus="this.blur()"
+                                <input type="text" value="修&nbsp;改" class="change" onfocus="this.blur()"
                                    onclick="goUpdate('${item.currencyId}', '${item.currencyName}','${item.currencyShortName}', '${item.buyFee}', '${item.sellFee}', '${item.upTimeStr}', '${item.upStatus}')"/>
                         </td>
                     </tr>
@@ -439,7 +450,7 @@
                 if (code == 1){
                     $(".mask").fadeOut("fast");
                     $(popObj).fadeOut("fast");
-                    setTimeout(function (){$("#queryForm").submit();}, 1000);
+                    setTimeout(function (){queryForm();}, 1000);
                 }
                 edUpBoo = false;
             },
@@ -504,7 +515,7 @@
                 if (code == 1){
                     $(".mask").fadeOut("fast");
                     $(popObj).fadeOut("fast");
-                    setTimeout(function (){$("#queryForm").submit();}, 1000);
+                    setTimeout(function (){queryForm();}, 1000);
                 }
                 edPayBoo = false;
             },
@@ -604,7 +615,7 @@
                 if (code == 1){
                     $(".mask").fadeOut("fast");
                     $(popObj).fadeOut("fast");
-                    setTimeout(function (){$("#queryForm").submit();}, 1000);
+                    setTimeout(function (){queryForm();}, 1000);
                 }
 
                 addBoo = false;
@@ -715,7 +726,7 @@
                 if (code == 1){
                     $(".mask").fadeOut("fast");
                     $(popObj).fadeOut("fast");
-                    setTimeout(function (){$("#queryForm").submit();}, 1000);
+                    setTimeout(function (){queryForm();}, 1000);
                 }
 
                 updateBoo = false;
@@ -781,8 +792,136 @@
             }
         });
     }
-    
-    
+
+    //上移
+    var upBoo = false;
+    function upMove(id) {
+        if (upBoo) {
+            return;
+        } else {
+            upBoo = true;
+        }
+
+        if (id == null || parseInt(id) <= 0) {
+            upBoo = false;
+            openTips("获取参数错误");
+            return;
+        }
+
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/transactionCurrency/up.htm",
+            data:{
+                currencyId : id
+            },//参数
+            dataType: "json",
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (resultData) {
+                var code = resultData.code;
+                var message = resultData.message;
+                if (message != "") {
+                    openTips(message);
+                }
+                if (code == 1){
+                    setTimeout(function (){queryForm();}, 1000);
+                }
+
+                upBoo = false;
+            },
+
+            error: function () {
+                upBoo = false;
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+    }
+
+    //下移
+    var downBoo = false;
+    function downMove(id) {
+        if (downBoo) {
+            return;
+        } else {
+            downBoo = true;
+        }
+
+        if (id == null || parseInt(id) <= 0) {
+            downBoo = false;
+            openTips("获取参数错误");
+            return;
+        }
+
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/transactionCurrency/down.htm",
+            data:{
+                currencyId : id
+            },//参数
+            dataType: "json",
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (resultData) {
+                var code = resultData.code;
+                var message = resultData.message;
+                if (message != "") {
+                    openTips(message);
+                }
+                if (code == 1){
+                    setTimeout(function (){queryForm();}, 1000);
+                }
+
+                downBoo = false;
+            },
+
+            error: function () {
+                downBoo = false;
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+    }
+
+    //置顶
+    var topBoo = false;
+    function topMove(id) {
+        if (topBoo) {
+            return;
+        } else {
+            topBoo = true;
+        }
+
+        if (id == null || parseInt(id) <= 0) {
+            topBoo = false;
+            openTips("获取参数错误");
+            return;
+        }
+
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/transactionCurrency/top.htm",
+            data:{
+                currencyId : id
+            },//参数
+            dataType: "json",
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (resultData) {
+                var code = resultData.code;
+                var message = resultData.message;
+                if (message != "") {
+                    openTips(message);
+                }
+                if (code == 1){
+                    setTimeout(function (){queryForm();}, 1000);
+                }
+
+                topBoo = false;
+            },
+
+            error: function () {
+                topBoo = false;
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+    }
+
 
     var mapMatch = {};
     mapMatch['number'] = /[^\d]/g;

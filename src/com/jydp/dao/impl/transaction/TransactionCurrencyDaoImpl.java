@@ -28,22 +28,18 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
     /**
      * 新增交易币种
      * @param transactionCurrency  交易币种
-     * @return  操作成功：返回true，操作失败：返回false
+     * @return  操作成功：返回币种Id，操作失败：返回0
      */
-    public boolean insertTransactionCurrency(TransactionCurrencyDO transactionCurrency){
-        int result = 0;
+    public int insertTransactionCurrency(TransactionCurrencyDO transactionCurrency){
+        int currencyId = 0;
 
         try {
-            result = sqlSessionTemplate.insert("TransactionCurrency_insertTransactionCurrency", transactionCurrency);
+            currencyId = sqlSessionTemplate.insert("TransactionCurrency_insertTransactionCurrency", transactionCurrency);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
 
-        if (result > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return currencyId;
     }
 
     /**
@@ -425,4 +421,104 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
         return transactionCurrencyVOList;
     }
 
+    /**
+     * 根据币种排名位置获取币种信息id
+     * @param rankNumber   排名位置
+     * @return  操作成功：返回币种Id，操作失败：返回0
+     */
+    public int getTransactionCurrencyByRankNumber(int rankNumber){
+        int result = 0;
+
+        try {
+            result = sqlSessionTemplate.selectOne("TransactionCurrency_getTransactionCurrencyByRankNumber", rankNumber);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return result;
+    }
+
+    /**
+     * 修改币种信息排名（大于该排名的所有币种排名-1）
+     * @param rankNumber 排名位置
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean updateCurrencyRankNumber(int rankNumber){
+        int result = 0;
+
+        try {
+            result = sqlSessionTemplate.update("TransactionCurrency_updateCurrencyRankNumber", rankNumber);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 上移币种
+     * @param currencyId  币种Id
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    public boolean upCurrencyRankNumber(int currencyId){
+        int result = 0;
+
+        try {
+            result = sqlSessionTemplate.update("TransactionCurrency_upCurrencyRankNumber", currencyId);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 下移币种
+     * @param currencyId  币种Id
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    public boolean downCurrencyRankNumber(int currencyId){
+        int result = 0;
+
+        try {
+            result = sqlSessionTemplate.update("TransactionCurrency_downCurrencyRankNumber", currencyId);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 置顶币种
+     * @param currencyId  币种Id
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    public boolean topCurrencyRankNumber(int currencyId){
+        int result = 0;
+
+        try {
+            result = sqlSessionTemplate.update("TransactionCurrency_topCurrencyRankNumber", currencyId);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
