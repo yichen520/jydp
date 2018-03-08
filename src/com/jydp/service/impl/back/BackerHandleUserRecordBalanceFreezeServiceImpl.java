@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service("backerHandleUserRecordBalanceFreezeService")
 public class BackerHandleUserRecordBalanceFreezeServiceImpl implements IBackerHandleUserRecordBalanceFreezeService {
 
-    /**后台管理员增减用户余额记录*/
+    /**后台管理员增减用户冻结余额记录*/
     @Autowired
     private IBackerHandleUserRecordBalanceFreezeDao backerHandleUserRecordBalanceFreezeDao;
 
