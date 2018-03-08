@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -27,8 +26,7 @@ public class CurrencyExcTimer {
         List<TransactionCurrencyDO> transactionCurrencyDOS = transactionCurrencyService.listTransactionCurrencyAll();
         if (transactionCurrencyDOS != null && transactionCurrencyDOS.size() > 0) {
             for (TransactionCurrencyDO curr: transactionCurrencyDOS) {
-                if (curr.getUpTime().getTime() <= DateUtil.getCurrentTime().getTime() && curr.getUpStatus() != 2 && curr.getPaymentType() != 1){
-
+                if (curr.getUpTime().getTime() <= DateUtil.getCurrentTime().getTime() && curr.getUpStatus()==1){
                     transactionCurrencyService.updateUpStatus(curr.getCurrencyId(), 2, null, null, null);
                 }
             }

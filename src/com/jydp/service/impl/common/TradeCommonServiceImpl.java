@@ -2,6 +2,7 @@ package com.jydp.service.impl.common;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.iqmkj.utils.BigDecimalUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
 import com.jydp.service.ITradeCommonService;
@@ -31,7 +32,7 @@ public class TradeCommonServiceImpl implements ITradeCommonService {
 
         double pendingNumber = order.getPendingNumber();
         double dealNumber = order.getDealNumber();
-        double restNumber = pendingNumber - dealNumber;
+        double restNumber = BigDecimalUtil.sub(pendingNumber, dealNumber);
 
         if(restNumber < 0){
             resultJson.setCode(5);

@@ -1,5 +1,6 @@
 package com.jydp.quartz;
 
+import com.iqmkj.utils.BigDecimalUtil;
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.service.ITradeCommonService;
@@ -53,8 +54,8 @@ public class TradeRemedyTimer {
 				continue;
 			}
 
-			double buyNum = buyOrder.getPendingNumber() - buyOrder.getDealNumber();
-			double sellNum = sellOrder.getPendingNumber() - sellOrder.getDealNumber();
+			double buyNum = BigDecimalUtil.sub(buyOrder.getPendingNumber(), buyOrder.getDealNumber());
+			double sellNum = BigDecimalUtil.sub(sellOrder.getPendingNumber(), sellOrder.getDealNumber());
 			//以可以交易数量多的委托当做刚挂单的委托进行交易匹配
 			if(buyNum >= sellNum){
 				order = buyOrder;

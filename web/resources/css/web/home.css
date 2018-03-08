@@ -50,7 +50,11 @@ body{
     color: #666666;
 }
 .coin{
-    width: 250px;
+    padding: 0 20px !important;
+    width: 220px;
+}
+.coinInfo .coin{
+    text-align: left;
 }
 .coin img{
     margin-right: 10px;

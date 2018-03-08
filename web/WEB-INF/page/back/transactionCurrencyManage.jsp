@@ -518,7 +518,8 @@
         $.ajax({
             url: '<%=path %>' + "/backerWeb/transactionCurrency/editPayType.htm",
             data: {
-                currencyId : currencyId
+                currencyId : currencyId,
+                paymentType : typeS
             },//参数
             type: 'POST',
             async: true, //默认异步调用 (false：同步)

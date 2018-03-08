@@ -13,7 +13,7 @@
 <body>
 <div class="menu">
     <span class="logo">
-        <a href="<%=path %>/userWeb/homePage/show" class="m_logo"><img src="<%=path %>/resources/image/web/trade_logo.png" /></a>交易大盘
+        <a id="meunlogo" href="<%=path %>/userWeb/homePage/show" class="m_logo"><img src="<%=path %>/resources/image/web/trade_logo.png" /></a><span onclick="document.getElementById('meunlogo').click();" style="cursor:pointer" >交易大盘</span>
     </span>
 
     <ul class="nav">
@@ -38,6 +38,10 @@
     $(function(){
         $(".tradeCenter").hover(function(){
             $(".coinLink").slideToggle("fast");
+            $(this).css("background","#fafafa")
+        });
+        $(".tradeCenter").mouseleave(function(){
+            $(this).css("background","#ffffff")
         });
 
         $.ajax({

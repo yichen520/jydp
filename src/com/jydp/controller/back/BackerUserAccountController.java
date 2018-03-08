@@ -521,7 +521,7 @@ public class BackerUserAccountController {
                 cell.setCellValue(countBalance);
                 cell = row.createCell(6);
                 if (user.getAuthenticationStatus() == 1) {
-                    cell.setCellValue("未审核");
+                    cell.setCellValue("待审核");
                 }
                 if (user.getAuthenticationStatus() == 2) {
                     cell.setCellValue("审核通过");

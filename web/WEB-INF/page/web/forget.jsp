@@ -70,20 +70,20 @@
 
             <p class="phoneInput">
                 <label class="popName">新密码<span class="star">*</span></label>
-                <input type="password" class="entry" id="password" name="password" placeholder="新密码，6~16个字符，字母和数字" maxLength="16"
+                <input type="password" class="password entry" id="password" name="password" placeholder="新密码，6~16个字符，字母和数字" maxLength="16"
                        onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
             </p>
 
             <p class="phoneInput">
                 <label class="popName">重复密码<span class="star">*</span></label>
-                <input type="password" class="entry" id="repeatPassword"  placeholder="再次输入新密码" maxLength="16"
+                <input type="password" class="password entry" id="repeatPassword"  placeholder="再次输入新密码" maxLength="16"
                        onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
             </p>
             <input type="text" value="提&nbsp;交" class="submit" onfocus="this.blur()" onclick="forgetPwd()"/>
         </div>
     </form>
 </div>
-
+<input type="hidden" id="chinaArea" value="${selectedArea}">
 
 <div class="forgetFoot">盛临九洲版权所有</div>
 
@@ -156,6 +156,8 @@
             phoneBoo = true;
         }
 
+        var chinaArea = '${selectedArea}';
+        var area =  $(".selectCont").html();
         var phone = $("#phone").val();
         var regPos = /^\d+(\.\d+)?$/; //非负浮点数
         if (!phone) {
@@ -165,6 +167,11 @@
 
 
         if(!regPos.test(phone) || phone.length > 11 || phone.length < 5){
+            phoneBoo = false;
+            return openTips("请输入正确手机号");
+        }
+
+        if (area == chinaArea && phone.length != 11) {
             phoneBoo = false;
             return openTips("请输入正确手机号");
         }
@@ -275,6 +282,19 @@
             str = "<img class='delete' id='delete_code' style='right: 100px;' src='<%=path %>/resources/image/web/register.png' />";
         } else if ('password' == id || 'repeatPassword' == id) {
             str = "<img class='delete' id='delete_password' src='<%=path %>/resources/image/web/register.png' />";
+            if (id == 'password') {
+                $("#password").focus(function(){
+                    $("#password").val("");
+                    $("#password").attr("type","password");
+                });
+            }
+
+            if (id == 'repeatPassword') {
+                $("#repeatPassword").focus(function(){
+                    $("#repeatPassword").val("");
+                    $("#repeatPassword").attr("type","password");
+                });
+            }
         }
 
         $(o).parent().append(str);
