@@ -168,6 +168,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
             transactionPendOrder.setPendingPrice(pendingPrice);
             transactionPendOrder.setPendingNumber(pendingNumber);
             transactionPendOrder.setDealNumber(0);
+            transactionPendOrder.setBuyFee(buyFee);
             transactionPendOrder.setPendingStatus(1);
             transactionPendOrder.setRemark("");
             transactionPendOrder.setFeeRemark(feeRemark);
@@ -338,8 +339,8 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
 
         if(paymentType == 1){ //如果是买入
             //计算撤销的美金数量
-            double balanceRevoke = BigDecimalUtil.mul(BigDecimalUtil.mul(num, transactionPendOrder.getPendingPrice()),
-                    BigDecimalUtil.add(1,transactionCurrency.getBuyFee()));
+            double balanceRevoke = NumberUtil.doubleUpFormat(BigDecimalUtil.mul(BigDecimalUtil.mul(num, transactionPendOrder.getPendingPrice()),
+                    BigDecimalUtil.add(1,transactionPendOrder.getBuyFee())),8);
             //判断冻结金额是否大于等于balanceRevoke
             if(user.getUserBalanceLock() < balanceRevoke){
                 return false;

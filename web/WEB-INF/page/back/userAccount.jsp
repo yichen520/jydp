@@ -131,10 +131,16 @@
                                 <a href="#" onclick="showDetail('${user.userId}')" class="details">账户明细</a>
                             </c:if>
                             <c:if test="${backer_rolePower['141106'] == 141106}">
-                                <input type="text" class="addMoney" value="增加账户余额" onfocus="this.blur()" onclick="addAmount('${user.userId }', '${user.userAccount }')"/>
+                                <input type="text" class="addMoney" value="增加可用余额" onfocus="this.blur()" onclick="addAmount('${user.userId }', '${user.userAccount }')"/>
                             </c:if>
                             <c:if test="${backer_rolePower['141107'] == 141107}">
-                                <input type="text" class="minusMoney" value="减少账户余额" onfocus="this.blur()" onclick="reduceAmount('${user.userId }', '${user.userAccount }', '${user.userBalance }')"/>
+                                <input type="text" class="minusMoney" value="减少可用余额" onfocus="this.blur()" onclick="reduceAmount('${user.userId }', '${user.userAccount }', '${user.userBalance }')"/>
+                            </c:if>
+                            <c:if test="${backer_rolePower['141108'] == 141108}">
+                                <input type="text" class="addFrozen" value="增加冻结余额" onfocus="this.blur()" onclick="addLockAmount('${user.userId }', '${user.userAccount }')"/>
+                            </c:if>
+                            <c:if test="${backer_rolePower['141109'] == 141109}">
+                                <input type="text" class="minusFrozen" value="减少冻结余额" onfocus="this.blur()" onclick="reduceLockAmount('${user.userId }', '${user.userAccount }', '${user.userBalanceLock }')"/>
                             </c:if>
                         </td>
                     </tr>
@@ -146,7 +152,7 @@
     </div>
 </div>
 
-<form id="detailForm" action="<%=path %>/backerWeb/backerUserAccount/showDetail.htm" target="_blank" method="post">
+<form id="detailForm" action="<%=path %>/backerWeb/backerUserAccountDetail/showDetail.htm" target="_blank" method="post">
     <input type="hidden" id="detailUserId" name="userId">
 </form>
 
@@ -178,7 +184,7 @@
         </div>
 
         <div class="addMoney_pop">
-            <p class="popTitle">增加账户余额</p>
+            <p class="popTitle">增加可用余额</p>
             <p class="popInput">
                 <label class="popName">用户账号</label>
                 <span class="popAccount" id="addAccount"></span>
@@ -201,13 +207,13 @@
         </div>
 
         <div class="minusMoney_pop">
-            <p class="popTitle">减少账户余额</p>
+            <p class="popTitle">减少可用余额</p>
             <p class="popInput">
                 <label class="popName">用户账号</label>
                 <span class="popAccount" id="reduceAccount"></span>
             </p>
             <p class="popInput">
-                <label class="popName">减少账户余额<span class="star">*</span></label>
+                <label class="popName">减少可用余额<span class="star">*</span></label>
                 <input type="text" id="reduceBalanceNumber" class="entry" placeholder="要减少的金额"
                        maxLength="9"  onkeyup="matchUtil(this, 'double')" onblur="matchUtil(this, 'double')"/>
             </p>
@@ -221,6 +227,54 @@
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
                 <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="reduceAmountSubmit()" />
+            </div>
+        </div>
+
+
+        <div class="addFrozen_pop">
+            <p class="popTitle">增加冻结余额</p>
+            <p class="popInput">
+                <label class="popName">用户账号</label>
+                <span class="popAccount"  id="addLockAccount"></span>
+            </p>
+            <p class="popInput">
+                <label class="popName">增加冻结余额<span class="star">*</span></label>
+                <input type="text" id="addLockBalanceNumber" class="entry" placeholder="要增加的金额"
+                       maxLength="9"  onkeyup="matchUtil(this, 'double')" onblur="matchUtil(this, 'double')"/>
+            </p>
+            <p class="popInput">
+                <label class="popName" style="line-height: 20px">备注内容</label>
+                <textarea class="txt" maxLength="100" id="addLockMark" placeholder="备注内容，非必填"></textarea>
+            </p>
+
+            <input type="hidden" id="addLockId" />
+            <div class="buttons">
+                <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="addLockAmountSubmit()" />
+            </div>
+        </div>
+
+        <div class="minusFrozen_pop">
+            <p class="popTitle">减少冻结余额</p>
+            <p class="popInput">
+                <label class="popName">用户账号</label>
+                <span class="popAccount" id="reduceLockAccount"></span>
+            </p>
+            <p class="popInput">
+                <label class="popName">减少冻结余额<span class="star">*</span></label>
+                <input type="text" id="reduceLockBalanceNumber" class="entry" placeholder="要减少的金额"
+                       maxLength="9"  onkeyup="matchUtil(this, 'double')" onblur="matchUtil(this, 'double')"/>
+            </p>
+            <p class="popInput">
+                <label class="popName" style="line-height: 20px">备注内容</label>
+                <textarea class="txt" maxLength="100"  id="reduceLockMark" placeholder="备注内容，非必填"></textarea>
+            </p>
+
+            <input type="hidden" id="reduceLockId" />
+            <input type="hidden" id="reduceLockUserBalance" />
+            <div class="buttons">
+                <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="reduceLockAmountSubmit()" />
             </div>
         </div>
     </div>
@@ -525,6 +579,130 @@
         });
     }
 
+    //增加账户冻结金额
+    function addLockAmount(userId, userBalanceLock) {
+        $(".mask").fadeIn();
+        $(".addFrozen_pop").fadeIn();
+        popObj = ".addFrozen_pop"
+
+        $("#addLockId").val(userId);
+        $("#addLockAccount").html(userBalanceLock);
+    }
+
+    //减少账户冻结金额
+    function reduceLockAmount(userId, userAccount, userBalanceLock) {
+        $(".mask").fadeIn();
+        $(".minusFrozen_pop").fadeIn();
+        popObj = ".minusFrozen_pop"
+
+        $("#reduceLockId").val(userId);
+        $("#reduceLockAccount").html(userAccount);
+        $("#reduceLockUserBalance").val(userBalanceLock);
+    }
+
+    //增加账户冻结金额
+    var addLockAmountBoo = false;
+    function addLockAmountSubmit() {
+        if(addLockAmountBoo){
+            return false;
+        }else{
+            addLockAmountBoo = true;
+        }
+
+        var addLockId = $("#addLockId").val();
+        var addLockAccount = $("#addLockAccount").html();
+        var addLockBalanceNumberStr = $("#addLockBalanceNumber").val();
+        var addLockBalanceNumber = parseFloat(addLockBalanceNumberStr);
+        var addLockMark = $("#addLockMark").val();
+
+        $("#addLockBalanceNumber").val("");
+        $("#addLockMark").val("");
+        if (addLockBalanceNumberStr == null || addLockBalanceNumberStr == "" || addLockBalanceNumber <= 0) {
+            addLockAmountBoo = false;
+            return openTips("请输入要增加的冻结金额");
+        }
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerUserAccount/addLockAmount.htm",
+            type:'post',
+            dataType:'json',
+            async:true,
+            data:{
+                userId : addLockId,
+                userAccount : addLockAccount,
+                balanceNumber : addLockBalanceNumber,
+                remark : addLockMark
+            },
+            success:function(result){
+                addLockAmountBoo = false;
+                if(result.code == 1) {
+                    $(".mask").fadeOut("fast");
+                    $(popObj).fadeOut("fast");
+                    openTips(result.message)
+                    setTimeout(function (){$("#queryForm").submit();}, 1000);
+                } else {
+                    openTips(result.message);
+                }
+            }, error:function(){
+                addLockAmountBoo = false;
+                openTips("服务器异常，请稍后再试！");
+            }
+        });
+    }
+
+    //减少账户冻结金额
+    var reduceLockAmountBoo = false;
+    function reduceLockAmountSubmit() {
+        if(reduceLockAmountBoo){
+            return false;
+        }else{
+            reduceLockAmountBoo = true;
+        }
+
+        var reduceLockId = $("#reduceLockId").val();
+        var reduceLockAccount = $("#reduceLockAccount").html();
+        var reduceLockBalanceNumberStr = $("#reduceLockBalanceNumber").val();
+        var reduceLockBalanceNumber = parseFloat(reduceLockBalanceNumberStr);
+        var reduceLockMark = $("#reduceLockMark").val();
+        var userBalance = parseFloat($("#reduceLockUserBalance").val());
+
+        $("#reduceLockBalanceNumber").val("");
+        $("#reduceLockMark").val("");
+        if (reduceLockBalanceNumberStr == null || reduceLockBalanceNumberStr == "" || reduceLockBalanceNumber <= 0) {
+            reduceLockAmountBoo = false;
+            return openTips("请输入要减少的冻结金额");
+        }
+        if (userBalance < reduceLockBalanceNumber) {
+            reduceLockAmountBoo = false;
+            return openTips("您输入的金额大于该账户剩余的冻结金额");
+        }
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerUserAccount/reduceLockAmount.htm",
+            type:'post',
+            dataType:'json',
+            async:true,
+            data:{
+                userId : reduceLockId,
+                userAccount : reduceLockAccount,
+                balanceNumber : reduceLockBalanceNumber,
+                remark : reduceLockMark
+            },
+            success:function(result){
+                reduceLockAmountBoo = false;
+                if(result.code == 1) {
+                    $(".mask").fadeOut("fast");
+                    $(popObj).fadeOut("fast");
+                    openTips(result.message)
+                    setTimeout(function (){$("#queryForm").submit();}, 1000);
+                } else {
+                    openTips(result.message);
+                }
+            }, error:function(){
+                reduceLockAmountBoo = false;
+                openTips("服务器异常，请稍后再试！");
+            }
+        });
+    }
+
     var mapMatch = {};
     mapMatch['ENumber'] = /[^\a-\z\A-\Z\d]/g;
     mapMatch['number'] = /[^\d]/g;
@@ -577,6 +755,16 @@
             $(".mask").fadeIn();
             $(".minusMoney_pop").fadeIn();
             popObj = ".minusMoney_pop"
+        });
+        $(".addFrozen").click(function(){
+            $(".mask").fadeIn();
+            $(".addFrozen_pop").fadeIn();
+            popObj = ".addFrozen_pop"
+        });
+        $(".minusFrozen").click(function(){
+            $(".mask").fadeIn();
+            $(".minusFrozen_pop").fadeIn();
+            popObj = ".minusFrozen_pop"
         });*/
         $(".cancel").click(function(){
             $(".mask").fadeOut("fast");

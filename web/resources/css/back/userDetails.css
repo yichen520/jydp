@@ -9,3 +9,58 @@
     color: #ff9a3b;
     border-top: 1px solid #ececec;
 }
+.coin{
+    width: 150px;
+}
+.amount{
+    width: 210px;
+}
+.operate{
+    width: 350px;
+}
+.addMoney,.minusMoney,.addFrozen,.minusFrozen{
+    margin-left: 5px;
+    width: 77px;
+    text-align: center;
+    border: none;
+    color: #49a2fb;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 12px;
+}
+.addMoney:hover,.minusMoney:hover,.addFrozen:hover,.minusFrozen:hover{
+    color: #2c94fd;
+}
+
+.stop_pop,.start_pop,.addMoney_pop,.minusMoney_pop,.addFrozen_pop,.minusFrozen_pop{
+    display: none;
+}
+.popName{
+    display: inline-block;
+    width: 100px;
+    height: 35px;
+    line-height: 35px;
+    text-align: left;
+    color: #666666;
+    font-size: 14px;
+}
+.star{
+    color: #ff0000;
+}
+.entry{
+    float: right;
+    padding-left: 5px;
+    border: 1px solid #ececec;
+    width: 245px;
+    height: 35px;
+}
+.txt{
+    float: right;
+    vertical-align: top;
+    padding: 5px;
+    width: 240px;
+    resize: none;
+    height: 60px;
+    font-size: 13px;
+    border: 1px solid #ececec;
+}

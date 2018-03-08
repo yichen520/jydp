@@ -190,9 +190,9 @@ public class TradeCenterController {
             return resultJson;
         }
 
-        if(transactionCurrency.getUpStatus() != 2){
+        if(transactionCurrency.getUpStatus() == 4){
             resultJson.setCode(5);
-            resultJson.setMessage("该币种不在上线状态");
+            resultJson.setMessage("该币种已下线");
             return resultJson;
         }
 
@@ -242,7 +242,7 @@ public class TradeCenterController {
 
         //计算手续费及总价
         double buyFee = transactionCurrency.getBuyFee();
-        double sumPrice = NumberUtil.doubleUpFormat(BigDecimalUtil.mul(BigDecimalUtil.mul(buyNum, buyPrice),BigDecimalUtil.add(1, buyFee)),8);
+        double sumPrice = NumberUtil.doubleUpFormat(BigDecimalUtil.mul(BigDecimalUtil.mul(buyNum, buyPrice),BigDecimalUtil.add(1, buyFee)),6);
 
         if(user.getUserBalance() < sumPrice){
             resultJson.setCode(5);
@@ -341,9 +341,9 @@ public class TradeCenterController {
             return resultJson;
         }
 
-        if(transactionCurrency.getUpStatus() != 2){
+        if(transactionCurrency.getUpStatus() == 4){
             resultJson.setCode(5);
-            resultJson.setMessage("该币种不在上线状态");
+            resultJson.setMessage("该币种已下线");
             return resultJson;
         }
 
