@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jydp.dao.impl.back.BackerHandleUserBalanceMoneyDaoImpl">
+
+    <insert id="BackerHandleUserBalanceMoney_insertBackerHandleUserBalanceMoney" parameterType="BackerHandleUserBalanceMoneyDO">
+        INSERT INTO backer_handle_user_balance_money_tab(userId, userAccount, typeHandle, currencyId, userBalance,
+            remarks, ipAddress, backerId, backerAccount, addTime)
+        VALUES
+            (#{userId}, #{userAccount}, #{typeHandle}, #{currencyId}, #{userBalance}, #{remarks}, #{ipAddress}, #{backerId},
+                #{backerAccount}, #{addTime})
+    </insert>
+
+    <select id="BackerHandleUserBalanceMoney_getUserRecordBalanceList" parameterType="java.util.Map" resultType="BackerHandleUserBalanceMoneyVO">
+        SELECT BHUBM.id, BHUBM.userId, BHUBM.userAccount, BHUBM.typeHandle,
+        BHUBM.userBalance, BHUBM.remarks, BHUBM.ipAddress, BHUBM.backerId, BHUBM.backerAccount, BHUBM.addTime,TC.currencyName
+        FROM backer_handle_user_balance_money_tab BHUBM
+        LEFT JOIN transaction_currency_tab TC
+        ON BHUBM.currencyId = TC.currencyId
+        <where>
+            <if test="userAccount != null and userAccount !=''">
+                AND BHUBM.userAccount LIKE CONCAT('%', #{userAccount}, '%')
+            </if>
+            <if test="typeHandle != null and typeHandle !=0 ">
+                AND BHUBM.typeHandle = #{typeHandle}
+            </if>
+            <if test="currencyId != null and currencyId !=0 ">
+                AND BHUBM.currencyId = #{currencyId}
+            </if>
+            <if test="backerAccount != null and backerAccount !=''">
+                AND BHUBM.backerAccount LIKE CONCAT('%', #{backerAccount}, '%')
+            </if>
+            <if test="startAddTime != null">
+                AND BHUBM.addTime <![CDATA[ >= ]]> #{startAddTime}
+            </if>
+            <if test="endAddTime != null">
+                AND BHUBM.addTime <![CDATA[ <= ]]> #{endAddTime}
+            </if>
+        </where>
+        ORDER BY BHUBM.addTime DESC
+        LIMIT #{startNumber}, #{pageSize}
+    </select>
+
+    <select id="BackerHandleUserBalanceMoney_getUserRecordBalanceNumber" parameterType="java.util.Map" resultType="int">
+        SELECT COUNT(id)
+        FROM backer_handle_user_balance_money_tab
+        <where>
+            <if test="userAccount != null and userAccount !=''">
+                AND userAccount LIKE CONCAT('%', #{userAccount}, '%')
+            </if>
+            <if test="typeHandle != null and typeHandle !=0 ">
+                AND typeHandle = #{typeHandle}
+            </if>
+            <if test="currencyId != null and currencyId !=0 ">
+                AND currencyId = #{currencyId}
+            </if>
+            <if test="backerAccount != null and backerAccount !=''">
+                AND backerAccount LIKE CONCAT('%', #{backerAccount}, '%')
+            </if>
+            <if test="startAddTime != null">
+                AND addTime <![CDATA[ >= ]]> #{startAddTime}
+            </if>
+            <if test="endAddTime != null">
+                AND addTime <![CDATA[ <= ]]> #{endAddTime}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -91,8 +91,7 @@ public class TradeServiceImpl implements ITradeService {
             resultJson.setMessage("没有该币种");
             return resultJson;
         }
-        //获取买入/卖出手续费
-        double buyFee = transactionCurrency.getBuyFee();
+        //获取卖出手续费
         double sellFee = transactionCurrency.getSellFee();
 
         //获取对应的最新的挂单记录
@@ -150,23 +149,23 @@ public class TradeServiceImpl implements ITradeService {
             }
         }
 
-        double tradePrice = 0; //交易单价
+        double tradePrice = matchOrder.getPendingPrice(); //交易单价
         int buyUserId = 0; //买方id
         int sellUsrId = 0; //卖方id
-        double returnMoney = 0; //差价返还金额
-        double buyPrice = 0; //买方挂单总价（买方出价单价*交易数量）
+        double buyPrice = 0; //买方挂单总价（买方出价单价*交易数量*(1+手续费)）
+        double returnMoney = 0; //买方差价返还
+        double buyFee = 0; //买方费率
         if(paymentType == 1){
-            tradePrice = matchOrder.getPendingPrice();
             buyUserId = userId;
             sellUsrId = matchOrder.getUserId();
-            returnMoney = BigDecimalUtil.mul(BigDecimalUtil.sub(order.getPendingPrice(), tradePrice), tradeNum);
-            buyPrice = BigDecimalUtil.mul(order.getPendingPrice(), tradeNum);
+            buyFee = order.getBuyFee();
+            buyPrice = NumberUtil.doubleUpFormat(BigDecimalUtil.mul(BigDecimalUtil.mul(order.getPendingPrice(), tradeNum),BigDecimalUtil.add(1,order.getBuyFee())),8);
+            returnMoney = NumberUtil.doubleFormat(BigDecimalUtil.mul(BigDecimalUtil.mul((BigDecimalUtil.sub(order.getPendingPrice(), tradePrice)), tradeNum), BigDecimalUtil.add(1, order.getBuyFee())),8);
         }else if(paymentType == 2){
-            tradePrice = order.getPendingPrice();
             buyUserId = matchOrder.getUserId();
             sellUsrId = userId;
-            returnMoney = BigDecimalUtil.mul(BigDecimalUtil.sub(matchOrder.getPendingPrice(), tradePrice), tradeNum);
-            buyPrice = BigDecimalUtil.mul(matchOrder.getPendingPrice(), tradeNum);
+            buyFee = matchOrder.getBuyFee();
+            buyPrice = NumberUtil.doubleUpFormat(BigDecimalUtil.mul(BigDecimalUtil.mul(matchOrder.getPendingPrice(), tradeNum),BigDecimalUtil.add(1,matchOrder.getBuyFee())),8);
         }
 
         //成交总价
@@ -179,8 +178,8 @@ public class TradeServiceImpl implements ITradeService {
             excuteSuccess = userService.updateReduceUserBalanceLock(buyUserId, buyPrice);
         }
         //增加买方用户美金
-        if(excuteSuccess){
-            if(returnMoney > 0){
+        if(returnMoney > 0){
+            if(excuteSuccess){
                 excuteSuccess = userService.updateAddUserAmount(buyUserId, returnMoney, 0);
             }
         }
@@ -199,58 +198,50 @@ public class TradeServiceImpl implements ITradeService {
         }
 
         String  remark = "挂单成交";
+        //买入订单号
+        String buyOrderNo = SystemCommonConfig.TRANSACTION_USER_DEAL +
+                DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
+                NumberUtil.createNumberStr(10);
+        //卖出订单号
+        String sellOrderNo = SystemCommonConfig.TRANSACTION_USER_DEAL +
+                DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
+                NumberUtil.createNumberStr(10);
+        //redis订单号
+        String redisOrderNo = "";
         if(paymentType == 1){ //如果买入
+            redisOrderNo = buyOrderNo;
             //增加买方成交记录
             if(excuteSuccess){
-                String orderNo = SystemCommonConfig.TRANSACTION_USER_DEAL +
-                        DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
-                        NumberUtil.createNumberStr(10);
-
-                excuteSuccess = transactionUserDealService.insertTransactionUserDeal(orderNo, order.getPendingOrderNo(),
-                        userId, order.getUserAccount(), 1, currencyId, order.getCurrencyName(),
+                excuteSuccess = transactionUserDealService.insertTransactionUserDeal(buyOrderNo, order.getPendingOrderNo(),
+                        buyUserId, order.getUserAccount(), 1, currencyId, order.getCurrencyName(),
                         tradePrice, tradeNum, buyFee, tradeMoney, remark, order.getAddTime(), curTime);
-                //增加redis成交记录表记录
-                if (excuteSuccess) {
-                    excuteSuccess = transactionDealRedisService.insertTransactionDealRedis(orderNo, paymentType, currencyId,
-                            tradePrice, tradeNum, tradeMoney, curTime);
-                }
             }
             //增加卖方成交记录
             if(excuteSuccess){
-                String orderNo = SystemCommonConfig.TRANSACTION_USER_DEAL +
-                        DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
-                        NumberUtil.createNumberStr(10);
-
-                excuteSuccess = transactionUserDealService.insertTransactionUserDeal(orderNo, matchOrder.getPendingOrderNo(),
-                        matchOrder.getUserId(), matchOrder.getUserAccount(), 2, currencyId, matchOrder.getCurrencyName(),
+                excuteSuccess = transactionUserDealService.insertTransactionUserDeal(sellOrderNo, matchOrder.getPendingOrderNo(),
+                        sellUsrId, matchOrder.getUserAccount(), 2, currencyId, matchOrder.getCurrencyName(),
                         tradePrice, tradeNum, sellFee, tradeMoney, remark, matchOrder.getAddTime(), curTime);
             }
         } else if(paymentType == 2){
+            redisOrderNo = sellOrderNo;
             //增加买方成交记录
             if(excuteSuccess){
-                String orderNo = SystemCommonConfig.TRANSACTION_USER_DEAL +
-                        DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
-                        NumberUtil.createNumberStr(10);
-
-                excuteSuccess = transactionUserDealService.insertTransactionUserDeal(orderNo, matchOrder.getPendingOrderNo(),
+                excuteSuccess = transactionUserDealService.insertTransactionUserDeal(buyOrderNo, matchOrder.getPendingOrderNo(),
                         buyUserId, matchOrder.getUserAccount(), 1, currencyId, matchOrder.getCurrencyName(),
                         tradePrice, tradeNum, buyFee, tradeMoney, remark, matchOrder.getAddTime(), curTime);
             }
             //增加卖方成交记录
             if(excuteSuccess){
-                String orderNo = SystemCommonConfig.TRANSACTION_USER_DEAL +
-                        DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
-                        NumberUtil.createNumberStr(10);
-
-                excuteSuccess = transactionUserDealService.insertTransactionUserDeal(orderNo, order.getPendingOrderNo(),
+                excuteSuccess = transactionUserDealService.insertTransactionUserDeal(sellOrderNo, order.getPendingOrderNo(),
                         sellUsrId, order.getUserAccount(), 2, currencyId, order.getCurrencyName(),
                         tradePrice, tradeNum, sellFee, tradeMoney, remark, order.getAddTime(), curTime);
-                //增加redis成交记录表记录
-                if (excuteSuccess) {
-                    excuteSuccess = transactionDealRedisService.insertTransactionDealRedis(orderNo, paymentType, currencyId,
-                            tradePrice, tradeNum, tradeMoney, curTime);
-                }
             }
+        }
+
+        //增加redis成交记录表记录
+        if (excuteSuccess) {
+            excuteSuccess = transactionDealRedisService.insertTransactionDealRedis(redisOrderNo, paymentType, currencyId,
+                    tradePrice, tradeNum, tradeMoney, curTime);
         }
 
         //增加买方账户美金记录
@@ -260,7 +251,7 @@ public class TradeServiceImpl implements ITradeService {
                     NumberUtil.createNumberStr(10);
             remark = "买入" + order.getCurrencyName() + "，扣除锁定美金";
             if(returnMoney > 0){
-                remark = "买入" + order.getCurrencyName() + "，扣除锁定美金,返还差价金额";
+                remark = remark + ",返还差价金额";
             }
 
             UserBalanceDO userBalance = new UserBalanceDO();
@@ -340,8 +331,14 @@ public class TradeServiceImpl implements ITradeService {
 
         //增加系统账户记录
         if (excuteSuccess) {
+            excuteSuccess = systemAccountAmountService.addSystemAccountAmount(SystemAccountAmountConfig.TRADE_BUY_FEE,
+                    NumberUtil.doubleUpFormat(BigDecimalUtil.mul(tradeMoney, buyFee),8));
+        }
+
+        //增加系统账户记录
+        if (excuteSuccess) {
             excuteSuccess = systemAccountAmountService.addSystemAccountAmount(SystemAccountAmountConfig.TRADE_SELL_FEE,
-                    NumberUtil.doubleUpFormat(tradeMoney*sellFee,8));
+                    NumberUtil.doubleUpFormat(BigDecimalUtil.mul(tradeMoney, sellFee),8));
         }
 
         if(!excuteSuccess){

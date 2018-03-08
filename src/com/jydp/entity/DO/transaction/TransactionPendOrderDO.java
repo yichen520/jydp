@@ -18,6 +18,7 @@ public class TransactionPendOrderDO {
     private double pendingPrice;  //挂单单价
     private double pendingNumber;  //挂单数量
     private double dealNumber;  //成交数量
+    private double buyFee;  //买入手续费
     private int pendingStatus;  //挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销
     private String remark;  //备注
     private String feeRemark;  //费率备注，手续费
@@ -249,6 +250,22 @@ public class TransactionPendOrderDO {
      */
     public void setUserAccount(String userAccount) {
         this.userAccount = userAccount;
+    }
+
+    /**
+     * 买入手续费
+     * @return the buyFee
+     */
+    public double getBuyFee() {
+        return buyFee;
+    }
+
+    /**
+     * 买入手续费
+     * @param buyFee the buyFee to set
+     */
+    public void setBuyFee(double buyFee) {
+        this.buyFee = buyFee;
     }
 
 }

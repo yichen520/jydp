@@ -18,8 +18,8 @@
 
     <ul class="nav">
         <li class="navInfo"><a id="webHome" href="<%=path %>/userWeb/homePage/show">首页</a></li>
-        <li class="navInfo tradeCenter">
-            <a id="tradeCenter" href="javascript:;">交易中心
+        <li class="navInfo">
+            <a id="tradeCenter" class="tradeCenter" href="javascript:;">交易中心
                 <img src="<%=path %>/resources/image/web/tradeCoin.png" class="tradeArrow" />
             </a>
             <ul class="coinLink">
@@ -36,12 +36,13 @@
 </div>
 <script type="text/javascript">
     $(function(){
-        $(".tradeCenter").hover(function(){
-            $(".coinLink").slideToggle("fast");
+        $(".tradeCenter").mouseover(function(){
+            $(".coinLink").slideDown("fast");
             $(this).css("background","#fafafa")
         });
-        $(".tradeCenter").mouseleave(function(){
-            $(this).css("background","#ffffff")
+        $("body").click(function(){
+            $(".coinLink").slideUp("fast");
+            $(".tradeCenter").css("background","#ffffff")
         });
 
         $.ajax({

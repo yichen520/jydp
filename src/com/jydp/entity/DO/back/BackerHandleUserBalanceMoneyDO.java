@@ -3,16 +3,16 @@ package com.jydp.entity.DO.back;
 import java.sql.Timestamp;
 
 /**
- * 后台管理员增减用户可用余额记录
+ * 后台管理员增减用户可用币记录
  * @author sy
  */
-public class BackerHandleUserRecordBalanceDO {
-
+public class BackerHandleUserBalanceMoneyDO {
     private long id;  //记录号
     private int userId;  //用户Id
     private String userAccount;  //用户账号
     private int typeHandle;  //操作类型，1：增加，2：减少
-    private double userBalance;  //可用资产
+    private int currencyId;  //币种id
+    private double userBalance;  //冻结币 单位（个）
     private String remarks;  //备注
     private String ipAddress;  //操作时的ip地址
     private int backerId;  //后台管理员Id
@@ -21,7 +21,8 @@ public class BackerHandleUserRecordBalanceDO {
 
     /**
      * 记录号
-     * @return
+     *
+     * @return id
      */
     public long getId() {
         return id;
@@ -29,7 +30,8 @@ public class BackerHandleUserRecordBalanceDO {
 
     /**
      * 记录号
-     * @param id
+     *
+     * @param id the id
      */
     public void setId(long id) {
         this.id = id;
@@ -37,7 +39,8 @@ public class BackerHandleUserRecordBalanceDO {
 
     /**
      * 用户Id
-     * @return
+     *
+     * @return user id
      */
     public int getUserId() {
         return userId;
@@ -45,7 +48,8 @@ public class BackerHandleUserRecordBalanceDO {
 
     /**
      * 用户Id
-     * @param userId
+     *
+     * @param userId the user id
      */
     public void setUserId(int userId) {
         this.userId = userId;
@@ -53,7 +57,8 @@ public class BackerHandleUserRecordBalanceDO {
 
     /**
      * 用户账号
-     * @return
+     *
+     * @return user account
      */
     public String getUserAccount() {
         return userAccount;
@@ -61,7 +66,8 @@ public class BackerHandleUserRecordBalanceDO {
 
     /**
      * 用户账号
-     * @param userAccount
+     *
+     * @param userAccount the user account
      */
     public void setUserAccount(String userAccount) {
         this.userAccount = userAccount;
@@ -69,7 +75,8 @@ public class BackerHandleUserRecordBalanceDO {
 
     /**
      * 操作类型，1：增加，2：减少
-     * @return
+     *
+     * @return type handle
      */
     public int getTypeHandle() {
         return typeHandle;
@@ -77,23 +84,44 @@ public class BackerHandleUserRecordBalanceDO {
 
     /**
      * 操作类型，1：增加，2：减少
-     * @param typeHandle
+     *
+     * @param typeHandle the type handle
      */
     public void setTypeHandle(int typeHandle) {
         this.typeHandle = typeHandle;
     }
 
     /**
-     * 可用资产
-     * @return
+     * 币种id
+     *
+     * @return the currency id
+     */
+    public int getCurrencyId() {
+        return currencyId;
+    }
+
+    /**
+     * 币种id
+     *
+     * @param currencyId the currency id
+     */
+    public void setCurrencyId(int currencyId) {
+        this.currencyId = currencyId;
+    }
+
+    /**
+     * 冻结币（个）
+     *
+     * @return user balance
      */
     public double getUserBalance() {
         return userBalance;
     }
 
     /**
-     * 可用资产
-     * @param userBalance
+     * 冻结币（个）
+     *
+     * @param userBalance the user balance
      */
     public void setUserBalance(double userBalance) {
         this.userBalance = userBalance;
@@ -101,7 +129,8 @@ public class BackerHandleUserRecordBalanceDO {
 
     /**
      * 备注
-     * @return
+     *
+     * @return remarks
      */
     public String getRemarks() {
         return remarks;
@@ -109,7 +138,8 @@ public class BackerHandleUserRecordBalanceDO {
 
     /**
      * 备注
-     * @param remarks
+     *
+     * @param remarks the remarks
      */
     public void setRemarks(String remarks) {
         this.remarks = remarks;
@@ -117,7 +147,8 @@ public class BackerHandleUserRecordBalanceDO {
 
     /**
      * 操作时的ip地址
-     * @return
+     *
+     * @return ip address
      */
     public String getIpAddress() {
         return ipAddress;
@@ -125,7 +156,8 @@ public class BackerHandleUserRecordBalanceDO {
 
     /**
      * 操作时的ip地址
-     * @param ipAddress
+     *
+     * @param ipAddress the ip address
      */
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
@@ -133,7 +165,8 @@ public class BackerHandleUserRecordBalanceDO {
 
     /**
      * 后台管理员Id
-     * @return
+     *
+     * @return backer id
      */
     public int getBackerId() {
         return backerId;
@@ -141,7 +174,8 @@ public class BackerHandleUserRecordBalanceDO {
 
     /**
      * 后台管理员Id
-     * @param backerId
+     *
+     * @param backerId the backer id
      */
     public void setBackerId(int backerId) {
         this.backerId = backerId;
@@ -149,7 +183,8 @@ public class BackerHandleUserRecordBalanceDO {
 
     /**
      * 后台管理员帐号
-     * @return
+     *
+     * @return backer account
      */
     public String getBackerAccount() {
         return backerAccount;
@@ -157,7 +192,8 @@ public class BackerHandleUserRecordBalanceDO {
 
     /**
      * 后台管理员帐号
-     * @param backerAccount
+     *
+     * @param backerAccount the backer account
      */
     public void setBackerAccount(String backerAccount) {
         this.backerAccount = backerAccount;
@@ -165,7 +201,8 @@ public class BackerHandleUserRecordBalanceDO {
 
     /**
      * 操作时间
-     * @return
+     *
+     * @return add time
      */
     public Timestamp getAddTime() {
         return addTime;
@@ -173,7 +210,8 @@ public class BackerHandleUserRecordBalanceDO {
 
     /**
      * 操作时间
-     * @param addTime
+     *
+     * @param addTime the add time
      */
     public void setAddTime(Timestamp addTime) {
         this.addTime = addTime;
