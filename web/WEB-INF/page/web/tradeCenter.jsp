@@ -301,10 +301,12 @@
             <p class="popInput">
                 <label class="popName">买入价格：</label>
                 <span class="popInfo" id="buyPriceTips"></span>
+                <input type="hidden" id="buyPriceConfirm" />
             </p>
             <p class="popInput">
                 <label class="popName">买入数量：</label>
                 <span class="popInfo" id="buyNumTips" ></span>
+                <input type="hidden" id="buyNumConfirm" />
             </p>
             <p class="popInput">
                 <label class="popName">合计：</label>
@@ -316,6 +318,7 @@
             </p>
 
             <div class="buttons">
+                <input type="hidden" id="buyPwdConfirm" />
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
                 <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="buyHandle()" />
             </div>
@@ -326,10 +329,12 @@
             <p class="popInput">
                 <label class="popName">卖出价格：</label>
                 <span class="popInfo" id="sellPriceTips"></span>
+                <input type="hidden" id="sellPriceConfirm" />
             </p>
             <p class="popInput">
                 <label class="popName">卖出数量：</label>
                 <span class="popInfo" id="sellNumTips"></span>
+                <input type="hidden" id="sellNumConfirm" />
             </p>
             <p class="popInput">
                 <label class="popName">合计：</label>
@@ -341,6 +346,7 @@
             </p>
 
             <div class="buttons">
+                <input type="hidden" id="sellPwdConfirm" />
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
                 <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="sellHandle()" />
             </div>
@@ -391,9 +397,9 @@
             resultBoo = true;
         }
 
-        var buyPrice = $("#buyPrice").val();
-        var buyNum = $("#buyNum").val();
-        var buyPwd = $("#buyPwd").val();
+        var buyPrice = $("#buyPriceConfirm").val();
+        var buyNum = $("#buyNumConfirm").val();
+        var buyPwd = $("#buyPwdConfirm").val();
         var currencyId = $("#cucyId").val();
 
         document.getElementById("buyPrice").value = "";
@@ -406,7 +412,7 @@
         $(popObj).fadeOut("fast");
 
         $.ajax({
-            url: '<%=path%>' + "/userWeb/tradeCenter/buy", //方法路径URL
+            url: '<%=path%>' + "/userWeb/tradeCenter/buy.htm", //方法路径URL
             data:{
                 buyPrice : buyPrice,
                 buyNum : buyNum,
@@ -437,22 +443,16 @@
             resultBoo = true;
         }
 
-        var sellPrice = $("#sellPrice").val();
-        var sellNum = $("#sellNum").val();
-        var sellPwd = $("#sellPwd").val();
+        var sellPrice = $("#sellPriceConfirm").val();
+        var sellNum = $("#sellNumConfirm").val();
+        var sellPwd = $("#sellPwdConfirm").val();
         var currencyId = $("#cucyId").val();
-
-        document.getElementById("sellPrice").value = "";
-        document.getElementById("sellNum").value = "";
-        document.getElementById("sellPwd").value = "";
-        $("#sellMax").html("0");
-        $("#sellTotal").html("$0");
 
         $(".mask").fadeOut("fast");
         $(popObj).fadeOut("fast");
 
         $.ajax({
-            url: '<%=path%>' + "/userWeb/tradeCenter/sell", //方法路径URL
+            url: '<%=path%>' + "/userWeb/tradeCenter/sell.htm", //方法路径URL
             data:{
                 sellPrice : sellPrice,
                 sellNum : sellNum,
@@ -632,9 +632,24 @@
             var buyPwd = $("#buyPwd").val();
             var currencyId = $("#cucyId").val();
 
+            $("#buyPriceConfirm").val(buyPrice);
+            $("#buyNumConfirm").val(buyNum);
+            $("#buyPwdConfirm").val(buyPwd);
+
+            document.getElementById("buyPrice").value = "";
+            document.getElementById("buyNum").value = "";
+            document.getElementById("buyPwd").value = "";
+            $("#buyMax").html("0");
+            $("#buyTotal").html("$0");
+
+            var user = '${userSession}';
+            if (user == null || user == "") {
+                openTips("请先登录再操作");
+                return;
+            }
+
             if(buyPrice == null || buyPrice == ""){
                 openTips("价格不能为空");
-                resultBoo = false;
                 return;
             }
 
@@ -646,25 +661,21 @@
 
             if(buyNum == null || buyNum == ""){
                 openTips("数量不能为空");
-                resultBoo = false;
                 return;
             }
 
             if(buyNum <= 0){
                 openTips("数量不能小于等于0");
-                resultBoo = false;
                 return;
             }
 
             if(buyPwd == null || buyPwd == ""){
                 openTips("交易密码不能为空");
-                resultBoo = false;
                 return;
             }
 
             if(currencyId == null || currencyId == ""){
                 openTips("参数获取错误，请刷新页面重试");
-                resultBoo = false;
                 return;
             }
 
@@ -683,33 +694,44 @@
             var sellPwd = $("#sellPwd").val();
             var currencyId = $("#cucyId").val();
 
+            $("#sellPriceConfirm").val(sellPrice);
+            $("#sellNumConfirm").val(sellNum);
+            $("#sellPwdConfirm").val(sellPwd);
+
+            document.getElementById("sellPrice").value = "";
+            document.getElementById("sellNum").value = "";
+            document.getElementById("sellPwd").value = "";
+            $("#sellMax").html("0");
+            $("#sellTotal").html("$0");
+
+            var user = '${userSession}';
+            if (user == null || user == "") {
+                openTips("请先登录再操作");
+                return;
+            }
+
             if(sellPrice == null || sellPrice == ""){
                 openTips("价格不能为空");
-                resultBoo = false;
                 return;
             }
 
             if(sellPrice <= 0){
                 openTips("价格不能小于等于0");
-                resultBoo = false;
                 return;
             }
 
             if(sellNum == null || sellNum == ""){
                 openTips("数量不能为空");
-                resultBoo = false;
                 return;
             }
 
             if(sellPwd == null || sellPwd == ""){
                 openTips("交易密码不能为空");
-                resultBoo = false;
                 return;
             }
 
             if(currencyId == null || currencyId == ""){
                 openTips("参数获取错误，请刷新页面重试");
-                resultBoo = false;
                 return;
             }
 

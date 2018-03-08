@@ -4,10 +4,8 @@ import com.iqmkj.utils.DateUtil;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.service.ITransactionCurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -22,7 +20,7 @@ public class CurrencyExcTimer {
     private ITransactionCurrencyService transactionCurrencyService;
 
     /** 币种上线 */
-    @Scheduled(cron="0/59 * *  * * ? ")
+    //@Scheduled(cron="0/59 * *  * * ? ")
     public void transferMarketRate(){
         List<TransactionCurrencyDO> transactionCurrencyDOS = transactionCurrencyService.listTransactionCurrencyAll();
         if (transactionCurrencyDOS != null && transactionCurrencyDOS.size() > 0) {
