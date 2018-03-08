@@ -199,6 +199,7 @@
         var area =  $(".selectCont").html();
         var phone = $("#phone").val();
         var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+        var phoneReg = /^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$/;
         if (!phone) {
             phoneBoo = false;
             return openTips("请输入您的手机号");
@@ -209,7 +210,7 @@
             return openTips("请输入正确手机号");
         }
 
-        if (area == chinaArea && phone.length != 11) {
+        if (area == chinaArea && !phoneReg.test(phone)) {
             phoneBoo = false;
             return openTips("请输入正确手机号");
         }
@@ -260,11 +261,13 @@
                 changeValue(userAccountEle, "请输入账号，字母、数字，6~16个字符");
                 return;
             }
-            if ( userAccount.length < 6 || userAccount.length > 16) {
+            if ("请输入账号，字母、数字，6~16个字符" != userAccount && (userAccount.length < 6 || userAccount.length > 16)) {
                 changeValue(userAccountEle, "账号长度在6~16个字符之间");
                 return;
             }
-            changeValue(userAccountEle, "账号格式不正确");
+            if ("请输入账号，字母、数字，6~16个字符" != userAccount && "账号长度在6~16个字符之间" != userAccount) {
+                changeValue(userAccountEle, "账号格式不正确");
+            }
             return;
         }
 
@@ -273,11 +276,13 @@
                 changeValue(passwordEle, "请输入登录密码，字母、数字，6~16个字符");
                 return;
             }
-            if (password.length < 6 || password.length > 16) {
+            if ("请输入登录密码，字母、数字，6~16个字符" != password && (password.length < 6 || password.length > 16)) {
                 changeValue(passwordEle, "密码长度在6~16个字符之间");
                 return;
             }
-            changeValue(passwordEle, "登录密码格式不正确");
+            if ("两次密码不匹配" != password && "请输入登录密码，字母、数字，6~16个字符" != password && "密码长度在6~16个字符之间" != password) {
+                changeValue(passwordEle, "登录密码格式不正确");
+            }
             return;
         }
 
@@ -286,11 +291,13 @@
                 changeValue(repeatPasswordEle, "请输入重复密码，字母、数字，6~16个字符");
                 return;
             }
-            if (repeatPassword.length < 6 || repeatPassword.length > 16) {
+            if ("请输入重复密码，字母、数字，6~16个字符" != repeatPassword && (repeatPassword.length < 6 || repeatPassword.length > 16)) {
                 changeValue(repeatPasswordEle, "密码长度在6~16个字符之间");
                 return;
             }
-            changeValue(repeatPasswordEle, "重复密码格式不正确");
+            if ("两次密码不匹配" != repeatPassword && "请输入重复密码，字母、数字，6~16个字符" != repeatPassword && "密码长度在6~16个字符之间" != repeatPassword) {
+                changeValue(repeatPasswordEle, "重复密码格式不正确");
+            }
             return;
         }
         if (repeatPassword != password) {
@@ -303,11 +310,11 @@
             changeValue(phoneEle, "请输入您的手机号");
             return;
         }
-        if (area != chinaArea && (phone.length < 6 || phone.length > 11)) {
+        if ("请输入您的手机号" != phone && area != chinaArea && (phone.length < 6 || phone.length > 11)) {
             changeValue(phoneEle, "请输入正确手机号");
             return;
         }
-        if (area == chinaArea && !phoneReg.test(phone)) {
+        if ("请输入您的手机号" != phone && area == chinaArea && !phoneReg.test(phone)) {
             changeValue(phoneEle, "请输入正确手机号");
             return;
         }
@@ -420,6 +427,8 @@
             str = "<img class='delete' id='delete_code' style='right: 100px;' src='<%=path %>/resources/image/web/register.png' />";
         } else if ('password' == id || 'repeatPassword' == id) {
             str = "<img class='delete' id='delete_password' src='<%=path %>/resources/image/web/register.png' />";
+        } else if ('phone' == id) {
+            str = "<img class='delete' id='delete_phone' src='<%=path %>/resources/image/web/register.png' />";
         }
 
         $(o).parent().append(str);
@@ -433,7 +442,10 @@
                 $(".password").removeClass("error");
                 $(".password").attr("type","password");
                 $(".password").val("");
-            } else {
+            } else if('delete_phone' == id){
+                $(this).parent().find(".phone").val("");
+                $(this).parent().find(".phone").removeClass("error");
+            } else{
                 $(this).parent().find(".entry").val("");
                 $(this).parent().find(".entry").removeClass("error");
             }

@@ -19,7 +19,7 @@ import java.util.List;
 @Service("backerHandleUserRecordBalanceService")
 public class BackerHandleUserRecordBalanceServiceImpl implements IBackerHandleUserRecordBalanceService {
 
-    /**后台管理员增减用户余额记录*/
+    /**后台管理员增减用户可用余额记录*/
     @Autowired
     private IBackerHandleUserRecordBalanceDao backerHandleUserRecordBalanceDao;
 
