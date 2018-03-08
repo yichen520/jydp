@@ -87,9 +87,11 @@ public class BackerHotTopicController {
 
         int maxRankNumber = 0;
 
-        int length = systemHotList.size();
-        if (length > 0) {
-            maxRankNumber = systemHotList.get(length - 1).getRankNumber();
+        if (systemHotList != null) {
+            int length = systemHotList.size();
+            if (length > 0) {
+                maxRankNumber = systemHotList.get(length - 1).getRankNumber();
+            }
         }
 
         int totalPageNumber = (int) Math.ceil(totalNumber / (pageSize * 1.0));
