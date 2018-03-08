@@ -173,13 +173,10 @@ public class BackerTransactionCurrencyController {
         String currencyShortNameStr = StringUtil.stringNullHandle(request.getParameter("currencyShortNameAd"));
         String buyFeeStr = StringUtil.stringNullHandle(request.getParameter("buyFeeAd"));
         String sellFeeStr = StringUtil.stringNullHandle(request.getParameter("sellFeeAd"));
-        String upRangeStr = StringUtil.stringNullHandle(request.getParameter("upRangeAd"));
-        String downRangeStr = StringUtil.stringNullHandle(request.getParameter("downRangeAd"));
         String statusStr = StringUtil.stringNullHandle(request.getParameter("status"));
         String upTimeStr = StringUtil.stringNullHandle(request.getParameter("upTimeAd"));
         if (!StringUtil.isNotNull(currencyNameStr) || !StringUtil.isNotNull(currencyShortNameStr) || !StringUtil.isNotNull(buyFeeStr)
-                || !StringUtil.isNotNull(sellFeeStr) || !StringUtil.isNotNull(upRangeStr) || !StringUtil.isNotNull(downRangeStr)
-                || !StringUtil.isNotNull(statusStr) || adsImageUrl == null || adsImageUrl.isEmpty()){
+                || !StringUtil.isNotNull(sellFeeStr) || !StringUtil.isNotNull(statusStr) || adsImageUrl == null || adsImageUrl.isEmpty()){
             response.setCode(3);
             response.setMessage("参数错误");
             return response;
@@ -195,8 +192,6 @@ public class BackerTransactionCurrencyController {
         status = Integer.parseInt(statusStr);
         buyFee = NumberUtil.doubleFormat(Double.parseDouble(buyFeeStr) / 100, 8);
         sellFee = NumberUtil.doubleFormat(Double.parseDouble(sellFeeStr) / 100, 8);
-        upRange = NumberUtil.doubleFormat(Double.parseDouble(upRangeStr) / 100, 8);
-        downRange = NumberUtil.doubleFormat(Double.parseDouble(downRangeStr) / 100, 8);
 
         if (status == 2) {
             if (!StringUtil.isNotNull(upTimeStr)) {
@@ -228,7 +223,7 @@ public class BackerTransactionCurrencyController {
 
         //新增币种
         boolean result = transactionCurrencyService.addTransactionCurrency(currencyShortNameStr, currencyNameStr, imageUrl,
-                buyFee, sellFee, upRange, downRange, 2, 1, backerSession.getBackerAccount(),
+                buyFee, sellFee,2, 1, backerSession.getBackerAccount(),
                 IpAddressUtil.getIpAddress(request), upTime, DateUtil.getCurrentTime());
         if (result) {
             response.setCode(1);
@@ -264,11 +259,9 @@ public class BackerTransactionCurrencyController {
         String currencyShortNameStr = StringUtil.stringNullHandle(request.getParameter("currencyShortNameUp"));
         String buyFeeStr = StringUtil.stringNullHandle(request.getParameter("buyFeeUp"));
         String sellFeeStr = StringUtil.stringNullHandle(request.getParameter("sellFeeUp"));
-        String upRangeStr = StringUtil.stringNullHandle(request.getParameter("upRangeUp"));
-        String downRangeStr = StringUtil.stringNullHandle(request.getParameter("downRangeUp"));
         String upTimeStr = StringUtil.stringNullHandle(request.getParameter("upTimeUp"));
         if (!StringUtil.isNotNull(currencyIdStr) || !StringUtil.isNotNull(currencyNameStr) || !StringUtil.isNotNull(currencyShortNameStr) || !StringUtil.isNotNull(buyFeeStr)
-                || !StringUtil.isNotNull(sellFeeStr) || !StringUtil.isNotNull(upRangeStr) || !StringUtil.isNotNull(downRangeStr)){
+                || !StringUtil.isNotNull(sellFeeStr)){
             response.setCode(3);
             response.setMessage("参数错误");
             return response;
@@ -284,9 +277,6 @@ public class BackerTransactionCurrencyController {
         currencyId = Integer.parseInt(currencyIdStr);
         buyFee = NumberUtil.doubleFormat(Double.parseDouble(buyFeeStr) / 100, 8);
         sellFee = NumberUtil.doubleFormat(Double.parseDouble(sellFeeStr) / 100, 8);
-        upRange = NumberUtil.doubleFormat(Double.parseDouble(upRangeStr) / 100, 8);
-        downRange = NumberUtil.doubleFormat(Double.parseDouble(downRangeStr) / 100, 8);
-
         TransactionCurrencyVO currency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
         if (currency == null) {
             response.setCode(3);
@@ -331,8 +321,6 @@ public class BackerTransactionCurrencyController {
         currency.setCurrencyName(currencyNameStr);
         currency.setBuyFee(buyFee);
         currency.setSellFee(sellFee);
-        currency.setUpRange(upRange);
-        currency.setDownRange(downRange);
         currency.setBackerAccount(backerSession.getBackerAccount());
         currency.setIpAddress(IpAddressUtil.getIpAddress(request));
 
@@ -587,10 +575,6 @@ public class BackerTransactionCurrencyController {
             cell.setCellValue("买入手续费(%)");
             cell = row.createCell(4);
             cell.setCellValue("卖出手续费(%)");
-            cell = row.createCell(5);
-            cell.setCellValue("涨停幅度(%)");
-            cell = row.createCell(6);
-            cell.setCellValue("跌停幅度(%)");
             cell = row.createCell(7);
             cell.setCellValue("交易状态");
             cell = row.createCell(8);
@@ -615,10 +599,6 @@ public class BackerTransactionCurrencyController {
                 cell = row.createCell(4);
                 cell.setCellValue(transactionCurrency.getSellFee() * 100);
                 cell = row.createCell(5);
-                cell.setCellValue(transactionCurrency.getUpRange() * 100);
-                cell = row.createCell(6);
-                cell.setCellValue(transactionCurrency.getDownRange() * 100);
-                cell = row.createCell(7);
                 if (transactionCurrency.getPaymentType() == 1) {
                     cell.setCellValue("正常");
                 } else {

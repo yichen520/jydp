@@ -7,15 +7,15 @@
 
 	<insert id="TransactionCurrency_insertTransactionCurrency" parameterType="TransactionCurrencyDO">
         INSERT INTO transaction_currency_tab
-            (currencyShortName, currencyName, currencyImg, buyFee, sellFee, upRange, downRange,
+            (currencyShortName, currencyName, currencyImg, buyFee, sellFee,
              paymentType, upStatus, backerAccount, ipAddress, upTime, addTime)
         VALUES
-            (#{currencyShortName}, #{currencyName}, #{currencyImg}, #{buyFee}, #{sellFee}, #{upRange},
-            #{downRange}, #{paymentType}, #{upStatus}, #{backerAccount}, #{ipAddress}, #{upTime}, #{addTime})
+            (#{currencyShortName}, #{currencyName}, #{currencyImg}, #{buyFee}, #{sellFee},
+            #{paymentType}, #{upStatus}, #{backerAccount}, #{ipAddress}, #{upTime}, #{addTime})
     </insert>
 
 	<select id="TransactionCurrency_getTransactionCurrencyByCurrencyId" parameterType="int" resultType="TransactionCurrencyVO">
-        SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, upRange, downRange,
+        SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee,
             paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         WHERE currencyId = #{currencyId}
@@ -51,12 +51,6 @@
             <if test="sellFee >= 0">
                 sellFee = #{sellFee},
             </if>
-            <if test="upRange >= 0">
-                upRange = #{upRange},
-            </if>
-            <if test="downRange >= 0">
-                downRange = #{downRange},
-            </if>
             <if test="addTime != null">
                 addTime = #{addTime},
             </if>
@@ -73,7 +67,7 @@
     </delete>
 
     <select id="TransactionCurrency_getTransactionCurrencyListForWeb" resultType="TransactionCurrencyVO">
-        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, upRange, downRange,
+        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee,
             paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         WHERE upStatus = 2
@@ -118,7 +112,7 @@
     </select>
 
     <select id="TransactionCurrency_listTransactionCurrencyForBack" parameterType="java.util.Map" resultType="TransactionCurrencyVO">
-        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, upRange, downRange,
+        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee,
                  paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         <where>
@@ -242,7 +236,7 @@
     </select>
 
     <select id="TransactionCurrency_getAllCurrencylistForWeb" resultType="TransactionCurrencyVO">
-        SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, upRange, downRange,
+        SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee,
             paymentType, upStatus, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
     </select>
