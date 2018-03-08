@@ -116,7 +116,7 @@ public class BackerAccountController {
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
         if (backerSession == null) {
             responseJson.setCode(4);
-            responseJson.setMessage("登陆过期");
+            responseJson.setMessage("登录过期");
             return responseJson;
         }
 
@@ -206,7 +206,7 @@ public class BackerAccountController {
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
         if (backerSession == null) {
             responseJson.setCode(4);
-            responseJson.setMessage("登陆过期");
+            responseJson.setMessage("登录过期");
             return responseJson;
         }
         
@@ -248,7 +248,7 @@ public class BackerAccountController {
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
         if (backerSession == null) {
             responseJson.setCode(4);
-            responseJson.setMessage("登陆过期");
+            responseJson.setMessage("登录过期");
             return responseJson;
         }
 
@@ -281,7 +281,7 @@ public class BackerAccountController {
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
         if (backerSession == null) {
             responseJson.setCode(4);
-            responseJson.setMessage("登陆过期");
+            responseJson.setMessage("登录过期");
             return responseJson;
         }
         
@@ -313,7 +313,7 @@ public class BackerAccountController {
         if(updateResult){
             BackerWebInterceptor.loginOut(request);
             responseJson.setCode(1);
-            responseJson.setMessage("修改成功，请重新登陆");
+            responseJson.setMessage("修改成功，请重新登录");
         } else {
             responseJson.setCode(5);
             responseJson.setMessage("密码修改失败");
@@ -336,7 +336,7 @@ public class BackerAccountController {
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
         if (backerSession == null) {
             responseJson.setCode(4);
-            responseJson.setMessage("登陆过期");
+            responseJson.setMessage("登录过期");
             return responseJson;
         }
 
@@ -375,7 +375,7 @@ public class BackerAccountController {
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
         if (backerSession == null) {
             responseJson.setCode(4);
-            responseJson.setMessage("登陆过期");
+            responseJson.setMessage("登录过期");
             return responseJson;
         }
 
@@ -423,7 +423,7 @@ public class BackerAccountController {
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
         if (backerSession == null) {
             responseJson.setCode(4);
-            responseJson.setMessage("登陆过期");
+            responseJson.setMessage("登录过期");
             return responseJson;
         }
 
