@@ -485,7 +485,6 @@
                     $("#password").val("");
                     $("#newPassword").val("");
                     $("#repPassword").val("");
-
                     setTimeout("webLogin()",1000 );
                 }
             }, error:function(){
@@ -572,7 +571,7 @@
             }, error:function(){
                 updatePhoneNumberBoo = false;
                 openTips("系统错误！");
-            }.
+            }
         });
     }
 
