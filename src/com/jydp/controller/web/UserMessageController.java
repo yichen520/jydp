@@ -400,7 +400,7 @@ public class UserMessageController {
         UserDO userLog = userService.validateUserLogin(user.getUserAccount(), password);
         if(userLog == null){
             responseJson.setCode(3);
-            responseJson.setMessage("登陆密码错误！");
+            responseJson.setMessage("登录密码错误！");
             return responseJson;
         }
 

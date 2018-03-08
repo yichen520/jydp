@@ -101,9 +101,9 @@
         if (curUrl.indexOf("/userWeb/webCustomerService/show.htm") > 0) {
             menuObj = $("#message");
         }
-
-
-
+        if (curUrl.indexOf("userWeb/webHelpCenter/show") > 0) {
+            menuObj = $("#message");
+        }
 
         if (curUrl.indexOf("/userWeb/tradeCenter/show") > 0) {
             menuObj = $("#tradeCenter");

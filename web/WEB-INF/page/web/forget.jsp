@@ -34,7 +34,7 @@
                 <label class="popName">登录账号<span class="star">*</span></label>
                 <input type="text" class="entry" placeholder="登录账号" id="userAccount" name="userAccount"
                        onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
-                       maxLength="16" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                       maxLength="16" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="checkUser(this.value)"/>
             </p>
 
             <p class="phoneInput">
@@ -54,7 +54,7 @@
                 </span>
                 <input type="hidden" id="phoneAreaCode" name="phoneAreaCode" value="${selectedArea}"/>
                 <input type="text" class="phone" id="phone" name="phoneNumber" placeholder="绑定的手机号码" maxLength="11"
-                       onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
+                       onkeyup="value=value.replace(/[^\d]/g,'')"  onblur="checkPhone(this.value)"/>
                </span>
             </p>
 
@@ -63,7 +63,7 @@
 
                     <span class="popCode">
                         <input type="text" class="code" id="validateCode" name="validateCode" placeholder="6位短信验证码" maxLength="6"
-                               onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
+                               onkeyup="value=value.replace(/[^\d]/g,'')" onblur="checkCode(this.value)"/>
                         <input type="text" value="获取验证码" onfocus="this.blur()" class="message" id="btn" autocomplete="off"/>
                     </span>
             </p>
@@ -71,13 +71,13 @@
             <p class="phoneInput">
                 <label class="popName">新密码<span class="star">*</span></label>
                 <input type="password" class="password entry" id="password" name="password" placeholder="新密码，6~16个字符，字母和数字" maxLength="16"
-                       onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                       onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="checkPwd(this.value)"/>
             </p>
 
             <p class="phoneInput">
                 <label class="popName">重复密码<span class="star">*</span></label>
                 <input type="password" class="password entry" id="repeatPassword"  placeholder="再次输入新密码" maxLength="16"
-                       onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                       onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="checkRepeatPwd(this.value)"/>
             </p>
             <input type="text" value="提&nbsp;交" class="submit" onfocus="this.blur()" onclick="forgetPwd()"/>
         </div>
@@ -196,6 +196,74 @@
         });
     };
 
+    //校验用户名
+    function checkUser(userAccount) {
+        var reg = /^[A-Za-z0-9]{6,16}$/;
+        var userAccountEle = $("#userAccount");
+        if (!reg.test(userAccount)) {
+            changeValue(userAccountEle, "请输入账号，字母、数字，6~16个字符");
+            return;
+        }
+    }
+
+    //校验密码
+    function checkPwd(pwd) {
+        var reg = /^[A-Za-z0-9]{6,16}$/;
+        var passwordEle = $("#password");
+        if (!reg.test(pwd)) {
+            changeValue(passwordEle, "请输入登录密码，字母、数字，6~16个字符");
+        }
+    }
+
+    //校验重复密码
+    function checkRepeatPwd(repeatPwd) {
+        var reg = /^[A-Za-z0-9]{6,16}$/;
+        var passwordEle = $("#password");
+        var repeatPasswordEle = $("#repeatPassword");
+        var password = passwordEle.val();
+        var repeatPassword = repeatPasswordEle.val();
+
+        if (!reg.test(repeatPwd)) {
+            changeValue(repeatPasswordEle, "请输入重复密码，字母、数字，6~16个字符");
+            return ;
+        }
+        if (repeatPassword != password) {
+            changeValue(repeatPasswordEle, "两次密码不匹配");
+            changeValue(passwordEle, "两次密码不匹配");
+            return ;
+        }
+    }
+
+    //校验手机号
+    function checkPhone(phone) {
+        var reg = /^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$/;
+        var phoneEle = $("#phone");
+        var chinaArea = '${selectedArea}';
+        var area =  $(".selectCont").html();
+        if (area == chinaArea && !reg.test(phone)) {
+            changeValue(phoneEle, "请输入正确手机号");
+            return false;
+        }
+        return true;
+    }
+
+    //校验验证码
+    function checkCode(validateCode) {
+        var validateCodeEle = $("#validateCode");
+        if (!validateCode || validateCode.length!=6) {
+            changeValue(validateCodeEle, "请输入6位短信验证码");
+            return ;
+        }
+    }
+
+    $(".phoneInput input").focus(function(){
+        $(this).removeClass("error");
+        if (this.id != 'btn') {
+            $(this).val('');
+        }
+        $(this).parent().children("img").remove();
+    });
+
     //忘记密码
     var forgetPwdBoo = false;
     function forgetPwd() {
@@ -232,6 +300,11 @@
             changeValue(phoneEle, "请输入您的手机号");
             return ;
         }
+
+        if (!checkPhone(phone)) {
+            return ;
+        }
+
         if (!validateCode || validateCode.length!=6) {
             changeValue(validateCodeEle, "请输入6位短信验证码");
             return ;

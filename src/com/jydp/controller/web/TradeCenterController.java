@@ -178,6 +178,12 @@ public class TradeCenterController {
             return resultJson;
         }
 
+        if(user.getAccountStatus() != 1){
+            resultJson.setCode(3);
+            resultJson.setMessage("该账号已被禁用");
+            return resultJson;
+        }
+
         //获取币种信息
         TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
         if(transactionCurrency == null){
@@ -193,7 +199,7 @@ public class TradeCenterController {
         }
 
         if(transactionCurrency.getPaymentType() != 1){
-            resultJson.setCode(5);
+            resultJson.setCode(4);
             resultJson.setMessage("该币种不在交易状态");
             return resultJson;
         }
@@ -215,28 +221,6 @@ public class TradeCenterController {
             resultJson.setCode(3);
             resultJson.setMessage("交易单价不能小于等于0");
             return resultJson;
-        }
-
-        Object yesterdayPrice = redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + currencyId);
-        if(yesterdayPrice != "" && yesterdayPrice != null){
-            double yesterdayLastPrice = (double)yesterdayPrice;
-            if(transactionCurrency.getUpRange() > 0){
-                double highPrice = yesterdayLastPrice * (1 + transactionCurrency.getUpRange());
-                if(buyPrice > highPrice){
-                    resultJson.setCode(3);
-                    resultJson.setMessage("交易单价不符合涨幅要求");
-                    return resultJson;
-                }
-            }
-
-            if(transactionCurrency.getDownRange() > 0){
-                double lowPrice = yesterdayLastPrice * (1 - transactionCurrency.getDownRange());
-                if(buyPrice < lowPrice){
-                    resultJson.setCode(3);
-                    resultJson.setMessage("交易单价不符合跌幅要求");
-                    return resultJson;
-                }
-            }
         }
 
         String pwd = MD5Util.toMd5("123456");
@@ -300,8 +284,8 @@ public class TradeCenterController {
     public @ResponseBody JsonObjectBO sell(HttpServletRequest request) {
         JsonObjectBO resultJson = new JsonObjectBO();
 
-        UserSessionBO user = UserWebInterceptor.getUser(request);
-        if (user == null) {
+        UserSessionBO userSession = UserWebInterceptor.getUser(request);
+        if (userSession == null) {
             resultJson.setCode(4);
             resultJson.setMessage("未登录");
             return resultJson;
@@ -334,6 +318,20 @@ public class TradeCenterController {
             currencyId = Integer.parseInt(currencyIdStr);
         }
 
+        //获取用户信息
+        UserDO user = userService.getUserByUserId(userSession.getUserId());
+        if(user == null){
+            resultJson.setCode(3);
+            resultJson.setMessage("该用户不存在");
+            return resultJson;
+        }
+
+        if(user.getAccountStatus() != 1){
+            resultJson.setCode(3);
+            resultJson.setMessage("该账号已被禁用");
+            return resultJson;
+        }
+
         //获取币种信息
         TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
         if(transactionCurrency == null){
@@ -349,7 +347,7 @@ public class TradeCenterController {
         }
 
         if(transactionCurrency.getPaymentType() != 1){
-            resultJson.setCode(5);
+            resultJson.setCode(4);
             resultJson.setMessage("该币种不在交易状态");
             return resultJson;
         }
@@ -380,28 +378,6 @@ public class TradeCenterController {
             resultJson.setCode(3);
             resultJson.setMessage("交易单价不能小于等于0");
             return resultJson;
-        }
-
-        Object yesterdayPrice = redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + currencyId);
-        if(yesterdayPrice != "" && yesterdayPrice != null){
-            double yesterdayLastPrice = (double)yesterdayPrice;
-            if(transactionCurrency.getUpRange() > 0){
-                double highPrice = yesterdayLastPrice * (1 + transactionCurrency.getUpRange());
-                if(sellPrice > highPrice){
-                    resultJson.setCode(3);
-                    resultJson.setMessage("交易单价不符合涨幅要求");
-                    return resultJson;
-                }
-            }
-
-            if(transactionCurrency.getDownRange() > 0){
-                double lowPrice = yesterdayLastPrice * (1 - transactionCurrency.getDownRange());
-                if(sellPrice < lowPrice){
-                    resultJson.setCode(3);
-                    resultJson.setMessage("交易单价不符合跌幅要求");
-                    return resultJson;
-                }
-            }
         }
 
         String pwd = MD5Util.toMd5("123456");
@@ -476,13 +452,8 @@ public class TradeCenterController {
         //获取币种信息
         TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
         if(transactionCurrency != null){
-            if(transactionCurrency.getPaymentType() != 1){
-                resultJson.setCode(5);
-                resultJson.setMessage("该币种不在交易状态");
-                return resultJson;
-            }
 
-            if(transactionCurrency.getUpStatus() != 2){
+            if(transactionCurrency.getUpStatus() == 4){
                 resultJson.setCode(5);
                 resultJson.setMessage("该币种不在上线状态");
                 return resultJson;
@@ -525,13 +496,8 @@ public class TradeCenterController {
         //获取币种信息
         TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
         if(transactionCurrency != null){
-            if(transactionCurrency.getPaymentType() != 1){
-                resultJson.setCode(5);
-                resultJson.setMessage("该币种不在交易状态");
-                return resultJson;
-            }
 
-            if(transactionCurrency.getUpStatus() != 2){
+            if(transactionCurrency.getUpStatus() == 4){
                 resultJson.setCode(5);
                 resultJson.setMessage("该币种不在上线状态");
                 return resultJson;

@@ -200,9 +200,9 @@
                             <c:forEach items="${transactionPendOrderSellList}" var="item" varStatus="status">
                                 <li class="recordInfo">
                                     <span class="rangeType">卖${fn:length(transactionPendOrderSellList) - status.index}</span>
-                                    <span class="rangePrice"><fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2"/></span>
-                                    <span class="rangeNum"><fmt:formatNumber type="number" value="${item.restNumber}" maxFractionDigits="4"/></span>
-                                    <span class="rangeAmount"><fmt:formatNumber type="number" value="${item.sumPrice}" maxFractionDigits="6"/></span>
+                                    <span class="rangePrice"><fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2" groupingUsed="FALSE"/></span>
+                                    <span class="rangeNum"><fmt:formatNumber type="number" value="${item.restNumber}" maxFractionDigits="4" groupingUsed="FALSE"/></span>
+                                    <span class="rangeAmount"><fmt:formatNumber type="number" value="${item.sumPrice}" maxFractionDigits="6" groupingUsed="FALSE"/></span>
                                 </li>
                             </c:forEach>
                         </ul>
@@ -211,9 +211,9 @@
                             <c:forEach items="${transactionPendOrderBuyList}" var="item" varStatus="status">
                                 <li class="recordInfo">
                                     <span class="rangeType">买${status.count}</span>
-                                    <span class="rangePrice"><fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2"/></span>
-                                    <span class="rangeNum"><fmt:formatNumber type="number" value="${item.restNumber}" maxFractionDigits="4"/></span>
-                                    <span class="rangeAmount"><fmt:formatNumber type="number" value="${item.sumPrice}" maxFractionDigits="6"/></span>
+                                    <span class="rangePrice"><fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2" groupingUsed="FALSE"/></span>
+                                    <span class="rangeNum"><fmt:formatNumber type="number" value="${item.restNumber}" maxFractionDigits="4" groupingUsed="FALSE"/></span>
+                                    <span class="rangeAmount"><fmt:formatNumber type="number" value="${item.sumPrice}" maxFractionDigits="6" groupingUsed="FALSE"/></span>
                                 </li>
                             </c:forEach>
                         </ul>
@@ -249,10 +249,10 @@
                     <c:if test="${item.paymentType == 2}">
                         <td class="type fall">卖出</td>
                     </c:if>
-                    <td class="amount">$<fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2"/></td>
-                    <td class="amount"><fmt:formatNumber type="number" value="${item.pendingNumber}" maxFractionDigits="4"/></td>
-                    <td class="amount rise">$<fmt:formatNumber type="number" value="${item.countPrice}" maxFractionDigits="6"/></td>
-                    <td class="amount"><fmt:formatNumber type="number" value="${item.dealNumber}" maxFractionDigits="4"/></td>
+                    <td class="amount">$<fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2" groupingUsed="FALSE"/></td>
+                    <td class="amount"><fmt:formatNumber type="number" value="${item.pendingNumber}" maxFractionDigits="4" groupingUsed="FALSE"/></td>
+                    <td class="amount rise">$<fmt:formatNumber type="number" value="${item.countPrice}" maxFractionDigits="6" groupingUsed="FALSE"/></td>
+                    <td class="amount"><fmt:formatNumber type="number" value="${item.dealNumber}" maxFractionDigits="4" groupingUsed="FALSE"/></td>
                     <td class="operate"><input type="text" readonly="readonly" value="撤&nbsp;销" class="revoke" onclick="cancle('${item.pendingOrderNo}')" /></td>
                 </tr>
             </c:forEach>
@@ -286,9 +286,9 @@
                         <c:if test="${item.paymentType == 2}">
                             <td class="type fall">卖出</td>
                         </c:if>
-                        <td class="dealAmount">$<fmt:formatNumber type="number" value="${item.transactionPrice}" maxFractionDigits="2"/></td>
-                        <td class="dealAmount"><fmt:formatNumber type="number" value="${item.currencyNumber}" maxFractionDigits="4"/></td>
-                        <td class="dealAmount rise">$<fmt:formatNumber type="number" value="${item.currencyTotalPrice}" maxFractionDigits="6"/></td>
+                        <td class="dealAmount">$<fmt:formatNumber type="number" value="${item.transactionPrice}" maxFractionDigits="2" groupingUsed="FALSE"/></td>
+                        <td class="dealAmount"><fmt:formatNumber type="number" value="${item.currencyNumber}" maxFractionDigits="4" groupingUsed="FALSE"/></td>
+                        <td class="dealAmount rise">$<fmt:formatNumber type="number" value="${item.currencyTotalPrice}" maxFractionDigits="6" groupingUsed="FALSE"/></td>
                     </tr>
                 </c:forEach>
             </table>
@@ -918,37 +918,35 @@
                 }
                 var data = result.data;
                 var dealList = data.dealList;
-                if (dealList != null && dealList.length > 0) {
-                    var newChild= "";
+                var newChild= "";
 
-                    for (var i=0;i<=dealList.length-1;i++) {
-                        var deal = dealList[i];
-                        var addTime = formatDateTime(deal.addTime);
-                        var paymentType = "";
-                        var type = ""
-                        if (deal.paymentType == 1) {
-                            paymentType = "买入";
-                            type = "rise";
-                        }
-                        if (deal.paymentType == 2) {
-                            paymentType = "卖出";
-                            type = "fall";
-                        }
-                        var transactionPrice = Math.floor(deal.transactionPrice * 1000) / 1000;
-                        var currencyNumber = Math.floor(deal.currencyNumber * 100000) / 100000;
-                        var currencyTotalPrice = Math.floor(deal.currencyTotalPrice * 1000000) / 1000000;
-
-                        newChild += "<tr class='tableInfo'>" +
-                                        "<td class='dealTime'>"+ addTime +"</td>" +
-                                        "<td class='type " + type + "'>" + paymentType + "</td>" +
-                                        "<td class='dealAmount'>" + "$"+ transactionPrice + "</td>" +
-                                        "<td class='dealAmount'>" + currencyNumber +"</td>" +
-                                        "<td class='dealAmount rise'>$" + currencyTotalPrice + "</td>" +
-                                    "</tr>";
-
+                for (var i=0;i<=dealList.length-1;i++) {
+                    var deal = dealList[i];
+                    var addTime = formatDateTime(deal.addTime);
+                    var paymentType = "";
+                    var type = ""
+                    if (deal.paymentType == 1) {
+                        paymentType = "买入";
+                        type = "rise";
                     }
-                    document.getElementById("dealOrder").innerHTML = newChild;
+                    if (deal.paymentType == 2) {
+                        paymentType = "卖出";
+                        type = "fall";
+                    }
+                    var transactionPrice = Math.floor(deal.transactionPrice * 1000) / 1000;
+                    var currencyNumber = Math.floor(deal.currencyNumber * 100000) / 100000;
+                    var currencyTotalPrice = Math.floor(deal.currencyTotalPrice * 1000000) / 1000000;
+
+                    newChild += "<tr class='tableInfo'>" +
+                                    "<td class='dealTime'>"+ addTime +"</td>" +
+                                    "<td class='type " + type + "'>" + paymentType + "</td>" +
+                                    "<td class='dealAmount'>" + "$"+ transactionPrice + "</td>" +
+                                    "<td class='dealAmount'>" + currencyNumber +"</td>" +
+                                    "<td class='dealAmount rise'>$" + currencyTotalPrice + "</td>" +
+                                "</tr>";
+
                 }
+                document.getElementById("dealOrder").innerHTML = newChild;
                 dealBoo = false;
             }, error: function () {
                 dealBoo = false;
