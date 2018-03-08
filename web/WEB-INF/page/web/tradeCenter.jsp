@@ -532,11 +532,10 @@
             }
 
             var userBalance = parseFloat($("#userBalance").val());
-            buyFee = buyFee * 100;
-            var number = buyFee * userBalance * 100;
-            userBalance = ((userBalance * 1000000) - (number)) / 1000000
-
             if(buyPrice > 0){
+                buyFee = buyFee * 100;
+                var number = buyFee * (buyPrice * 100);
+                buyPrice = ((buyPrice * 1000000) + (number)) / 1000000
                 var total = userBalance / buyPrice;
                 var tota = mulMaxNumber(total);
                 $("#buyMax").html(tota);

@@ -510,8 +510,6 @@
                 return;
             }
         }
-
-
         
         if(verifyCode == ""){
             openTips("请输入验证码");
