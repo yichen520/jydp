@@ -477,6 +477,7 @@
                 repetitionPassword : repPassword
             },
             success:function(result){
+                openTips(result.message);
                 updateLogPasswordBoo = false;
                 if(result.code == 1) {
                     $(".mask").fadeOut("fast");
@@ -485,9 +486,7 @@
                     $("#newPassword").val("");
                     $("#repPassword").val("");
 
-                    window.location.href = "<%=path%>" + "/userWeb/userLogin/show";
-                } else {
-                    openTips(result.message);
+                    setTimeout("webLogin()",1000 );
                 }
             }, error:function(){
                 updateLogPasswordBoo = false;
@@ -573,8 +572,13 @@
             }, error:function(){
                 updatePhoneNumberBoo = false;
                 openTips("系统错误！");
-            }
+            }.
         });
+    }
+
+    //返回登陆页
+    function webLogin(){
+        window.location.href = "<%=path%>" + "/userWeb/userLogin/show";
     }
 
     //去交易
