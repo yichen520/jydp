@@ -372,7 +372,7 @@
         if(transactionPendOrderList != null && transactionPendOrderList.length > 0 && userSession != null
              && transactionPendOrderList != "" && transactionPendOrderList != "[]"){
             //$("#tableId").style.display="inline";
-            $("#tableId").css("display","block");
+            $("#tableId").css("display","inline-block");
         }
 
         if (code != 1 && message != "") {
@@ -1042,7 +1042,7 @@
                 var data = result.data;
                 var dealList = data.transactionPendOrderList;
                 if (dealList != null && dealList.length > 0) {
-                    $("#tableId").css("display","block");
+                    $("#tableId").css("display","inline-block");
                     var newChild = "";
 
                     for (var i = 0; i <= dealList.length - 1; i++) {
