@@ -3,16 +3,15 @@ package com.jydp.entity.DO.back;
 import java.sql.Timestamp;
 
 /**
- * 后台管理员增减用户可用余额记录
+ * 后台管理员增减用户冻结余额记录
  * @author sy
  */
-public class BackerHandleUserRecordBalanceDO {
-
+public class BackerHandleUserRecordBalanceFreezeDO {
     private long id;  //记录号
     private int userId;  //用户Id
     private String userAccount;  //用户账号
     private int typeHandle;  //操作类型，1：增加，2：减少
-    private double userBalance;  //可用资产
+    private double userBalance;  //冻结资产
     private String remarks;  //备注
     private String ipAddress;  //操作时的ip地址
     private int backerId;  //后台管理员Id
@@ -84,7 +83,7 @@ public class BackerHandleUserRecordBalanceDO {
     }
 
     /**
-     * 可用资产
+     * 冻结资产
      * @return
      */
     public double getUserBalance() {
@@ -92,7 +91,7 @@ public class BackerHandleUserRecordBalanceDO {
     }
 
     /**
-     * 可用资产
+     * 冻结资产
      * @param userBalance
      */
     public void setUserBalance(double userBalance) {
