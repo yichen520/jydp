@@ -531,25 +531,7 @@
         var sellFeeAd = document.getElementById("sellFeeAd").value;
         var changead_t1 = document.getElementById("changead_t1").value;
         var adsImageUrl = document.getElementById("changead_a1").files[0];
-
         var status = $('input:radio:checked').val();
-        if (status == null || status == "") {
-            addBoo = false;
-            openTips("请选择执行方式");
-            return;
-        }
-        var staNum = parseInt(status);
-        if (staNum == 1) {
-            var upTimeAd = null;
-        }
-        if (staNum == 2) {
-            var upTimeAd = document.getElementById("upTimeAd").value;
-            if (upTimeAd == null || upTimeAd == "") {
-                addBoo = false;
-                openTips("请选择正确的时间");
-                return;
-            }
-        }
 
         if (currencyNameAd == null || currencyNameAd == "") {
             addBoo = false;
@@ -575,6 +557,23 @@
             addBoo = false;
             openTips("请上传徽标");
             return;
+        }
+        if (status == null || status == "") {
+            addBoo = false;
+            openTips("请选择执行方式");
+            return;
+        }
+        var staNum = parseInt(status);
+        if (staNum == 1) {
+            var upTimeAd = null;
+        }
+        if (staNum == 2) {
+            var upTimeAd = document.getElementById("upTimeAd").value;
+            if (upTimeAd == null || upTimeAd == "") {
+                addBoo = false;
+                openTips("请选择正确的时间");
+                return;
+            }
         }
 
         var formData = new FormData();
@@ -661,11 +660,6 @@
             openTips("币种参数获取错误");
             return;
         }
-        if (upTimeUp == null || upTimeUp == "") {
-            updateBoo = false;
-            openTips("请选择正确的时间");
-            return;
-        }
         if (currencyNameUp == null || currencyNameUp == "") {
             updateBoo = false;
             openTips("请输入币种名称");
@@ -684,6 +678,11 @@
         if (sellFeeUp == null || sellFeeUp == "") {
             updateBoo = false;
             openTips("请输入卖出手续费");
+            return;
+        }
+        if (upTimeUp == null || upTimeUp == "") {
+            updateBoo = false;
+            openTips("请选择正确的时间");
             return;
         }
 

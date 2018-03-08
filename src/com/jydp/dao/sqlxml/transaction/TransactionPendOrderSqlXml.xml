@@ -125,14 +125,14 @@
 		UPDATE transaction_pend_order_tab
 		SET pendingStatus = 4, endTime = #{endTime}
 		WHERE pendingOrderNo = #{pendingOrderNo}
-		  AND dealNumber + #{revokeNumber} <![CDATA[ = ]]> pendingNumber
+		  AND dealNumber + (CAST(#{revokeNumber} AS DECIMAL(18,6))) <![CDATA[ = ]]> pendingNumber
 	</update>
 
 	<update id="TransactionPendOrder_updateAllRevoke" parameterType="java.util.Map">
 		UPDATE transaction_pend_order_tab
 		SET pendingStatus = 5, endTime = #{endTime}
 		WHERE pendingOrderNo = #{pendingOrderNo}
-		AND #{revokeNumber} <![CDATA[ = ]]> pendingNumber
+		AND (CAST(#{revokeNumber} AS DECIMAL(18,6))) <![CDATA[ = ]]> pendingNumber
 	</update>
 
 	<select id="TransactionPendOrder_getLastTransactionPendOrder" parameterType="java.util.Map" resultType="TransactionPendOrderDO">
@@ -152,7 +152,7 @@
 		<if test="paymentType == 2 ">
 			ASC
 		</if>
-		,  addTime ASC
+		,  addTime ASC, (pendingNumber - dealNumber) DESC
 		LIMIT 1
 	</select>
 
@@ -160,7 +160,7 @@
 		UPDATE transaction_pend_order_tab
 		SET pendingStatus = 2, endTime = #{endTime}, dealNumber = dealNumber + #{dealNumber}
 		WHERE pendingOrderNo = #{pendingOrderNo}
-		  AND #{dealNumber} + dealNumber <![CDATA[ < ]]> pendingNumber
+		  AND (CAST(#{dealNumber} AS DECIMAL(18,6))) + dealNumber <![CDATA[ < ]]> pendingNumber
 	</update>
 
 	<update id="TransactionPendOrder_updateAllDeal" parameterType="java.util.Map">
