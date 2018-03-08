@@ -55,7 +55,7 @@
                 <td class="new"><fmt:formatNumber type="number" value="${transactionUserDeal.latestPrice}" groupingUsed="FALSE" maxFractionDigits="2"/></td>
                 <td class="money"><fmt:formatNumber type="number" value="${transactionUserDeal.buyOnePrice}" groupingUsed="FALSE" maxFractionDigits="2"/></td>
                 <td class="money"><fmt:formatNumber type="number" value="${transactionUserDeal.sellOnePrice}" groupingUsed="FALSE" maxFractionDigits="2"/></td>
-                <td class="money"><fmt:formatNumber type="number" value="${transactionUserDeal.volume}" groupingUsed="FALSE" maxFractionDigits="2"/></td>
+                <td class="money"><fmt:formatNumber type="number" value="${transactionUserDeal.volume}" groupingUsed="FALSE" maxFractionDigits="4"/></td>
                 <c:if test="${transactionUserDeal.change >= 0 }">
                     <td class="uplift in">
                         <c:if test="${transactionUserDeal.change > 0 }">+</c:if><fmt:formatNumber type="number" value="${transactionUserDeal.change}" groupingUsed="FALSE" maxFractionDigits="2"/>%
