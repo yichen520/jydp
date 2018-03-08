@@ -210,7 +210,7 @@
                     </span>
                 </span>
 
-                    <input type="text" class="telNumber" placeholder="您的11位手机号" maxlength="11" id="bindingMobile"
+                    <input type="text" class="telNumber" placeholder="请输入您的手机号" maxlength="11" id="bindingMobile"
                            onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
                 </span>
             </p>
@@ -657,15 +657,21 @@
             if( wait == 60){
                 var regPos = /^\d+(\.\d+)?$/; //非负浮点数
                 var bindingMobile = $("#bindingMobile").val();
-                var areaCode = $("#areaCode").val();
+                var areaCode = $("#areaCode").html();
                 if(bindingMobile == ""){
                     openTips("请输入手机号");
                     return;
                 }
-
-                if(!regPos.test(bindingMobile) || bindingMobile.length > 11 || bindingMobile.length < 5){
-                    openTips("请输入正确手机号");
-                    return;
+                if(areaCode == "+86"){
+                    if(!regPos.test(bindingMobile) || bindingMobile.length > 11 || bindingMobile.length <= 10){
+                        openTips("请输入正确手机号");
+                        return;
+                    }
+                } else {
+                    if(!regPos.test(bindingMobile) || (bindingMobile.length + areaCode.length) > 14 || bindingMobile.length <= 5 || bindingMobile.length > 11){
+                        openTips("请输入正确手机号");
+                        return;
+                    }
                 }
                 //bindingMobile = areaCode + bindingMobile;
                 $.ajax({
