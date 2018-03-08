@@ -330,7 +330,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
         }
 
         //计算撤销的币数量
-        double num = transactionPendOrder.getPendingNumber() - dealNumber;
+        double num = BigDecimalUtil.sub(transactionPendOrder.getPendingNumber(), dealNumber);
         //业务执行状态
         boolean excuteSuccess = true;
         UserDO user = userService.getUserByUserId(userId);
@@ -340,7 +340,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
 
         if(paymentType == 1){ //如果是买入
             //计算撤销的美金数量
-            double balanceRevoke = num * transactionPendOrder.getPendingPrice();
+            double balanceRevoke = BigDecimalUtil.mul(num, transactionPendOrder.getPendingPrice());
             //判断冻结金额是否大于等于balanceRevoke
             if(user.getUserBalanceLock() < balanceRevoke){
                 return false;

@@ -18,7 +18,7 @@
 <div id="menu"></div>
 
 <div class="content">
-    <div class="content">
+    <div class="editor">
         ${systemHot.content }
     </div>
 </div>

@@ -303,15 +303,13 @@ public class IdentificationController {
      * @return 压缩成功：返回图片路径，压缩失败：返回null
      */
     private String reduceImage(MultipartFile img, String path) {
-        StringBuffer url = null;
+        StringBuffer url = new StringBuffer();
+        url.append(path);
+        url.append(NumberUtil.createNumberStr(6));
+        url.append(".jpg");
+
         long size = img.getSize()/1024;
-
         try {
-            url = new StringBuffer();
-            url.append(path);
-            url.append(NumberUtil.createNumberStr(6));
-            url.append(".jpg");
-
             //400K-1M 0.4
             if (400 <= size && size <= 1024) {
                 Thumbnails.of(img.getInputStream())
@@ -332,7 +330,7 @@ public class IdentificationController {
             if (5*1024 < size && size <= 10*1024) {
                 Thumbnails.of(img.getInputStream())
                         .scale(1)
-                        .outputQuality(0.05)
+                        .outputQuality(0.1)
                         .outputFormat("jpg")
                         .toFile(url.toString());
             }
