@@ -33,7 +33,7 @@
                     <p class="condition">
                         操作时间：
                         从&nbsp;<input placeholder="请选择起始时间" class="askTime"  name="startAddTime" onfocus="this.blur()" value="${startAddTime }"/>
-                        到&nbsp;<input placeholder="请选择结束时间" class="askTime"name="endAddTime" onfocus="this.blur()" value="${endAddTime }"/>
+                        到&nbsp;<input placeholder="请选择结束时间" class="askTime" name="endAddTime" onfocus="this.blur()" value="${endAddTime }"/>
                     </p>
                     <p class="condition">用户账号：<input type="text" class="askInput" maxlength="16" name="userAccount" value="${userAccount }"
                                                      onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/></p>

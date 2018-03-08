@@ -82,7 +82,7 @@
 			<if test="endPendTime != null">
 				AND pendTime <![CDATA[ <= ]]> #{endPendTime}
 			</if>
-		ORDER BY addTime DESC
+		ORDER BY addTime DESC, orderNo
 		LIMIT #{startNumber}, #{pageSize}
 	</select>
 
