@@ -109,10 +109,10 @@
                 AND addTime <![CDATA[ <= ]]> #{endAddTime}
             </if>
             <if test="startUpTime != null">
-                AND startUpTime <![CDATA[ >= ]]> #{startUpTime}
+                AND upTime <![CDATA[ >= ]]> #{startUpTime}
             </if>
             <if test="endUpTime != null">
-                AND endUpTime <![CDATA[ <= ]]> #{endUpTime}
+                AND upTime <![CDATA[ <= ]]> #{endUpTime}
             </if>
         </where>
     </select>
@@ -141,10 +141,10 @@
                 AND addTime <![CDATA[ <= ]]> #{endAddTime}
             </if>
             <if test="startUpTime != null">
-                AND startUpTime <![CDATA[ >= ]]> #{startUpTime}
+                AND upTime <![CDATA[ >= ]]> #{startUpTime}
             </if>
             <if test="endUpTime != null">
-                AND endUpTime <![CDATA[ <= ]]> #{endUpTime}
+                AND upTime <![CDATA[ <= ]]> #{endUpTime}
             </if>
         </where>
         ORDER BY addTime DESC
