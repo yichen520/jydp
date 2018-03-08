@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@include file="/resources/page/common/path.jsp"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,6 +19,10 @@
 <div id="menu"></div>
 
 <div class="content">
+    <p class="noticeTitle">
+        <span class="nTitle"><span>【公告】</span>${systemNotice.noticeTitle}</span>
+        <span class="time"><fmt:formatDate value="${systemNotice.addTime}" pattern="yyyy-MM-dd HH:mm:ss"/></span>
+    </p>
     <div class="editor">
         ${systemNotice.content }
     </div>
