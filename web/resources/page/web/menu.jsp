@@ -83,6 +83,27 @@
         if (curUrl.indexOf("/userWeb/userMessage/show.htm") > 0) {
             menuObj = $("#message");
         }
+        if (curUrl.indexOf("/userWeb/accountRecord/show.htm") > 0) {
+            menuObj = $("#message");
+        }
+        if (curUrl.indexOf("/userWeb/transactionPendOrderController/show.htm") > 0) {
+            menuObj = $("#message");
+        }
+        if (curUrl.indexOf("/userWeb/dealRecord/show.htm") > 0) {
+            menuObj = $("#message");
+        }
+        if (curUrl.indexOf("/userWeb/webSystemNotice/show") > 0) {
+            menuObj = $("#message");
+        }
+        if (curUrl.indexOf("/userWeb/webSystemHot/show") > 0) {
+            menuObj = $("#message");
+        }
+        if (curUrl.indexOf("/userWeb/webCustomerService/show.htm") > 0) {
+            menuObj = $("#message");
+        }
+
+
+
 
         if (curUrl.indexOf("/userWeb/tradeCenter/show") > 0) {
             menuObj = $("#tradeCenter");
