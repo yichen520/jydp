@@ -1,11 +1,11 @@
 .time{
-    width: 160px;
+    width: 130px;
 }
 .pic{
     width: 70px;
 }
 .name{
-    width: 250px;
+    width: 204px;
 }
 .link{
     width: 238px;
@@ -23,22 +23,22 @@
     object-fit: cover;
 }
 .operate{
-    width: 164px;
+    width: 240px;
 }
 .tableInfo .operate{
     text-align: right;
 }
-.toTop,.change,.delete{
+.adUp,.adDown,.change,.delete,.toTop{
     margin-right: 5px;
     width: 40px;
     text-align: center;
     border: none;
-    background-color: transparent !important;
+    background-color: transparent;
     cursor: pointer;
     font-size: 12px;
     color: #49a2fb;
 }
-.toTop:hover,.change:hover,.delete:hover{
+.adUp:hover,.adDown:hover,.change:hover,.delete:hover,.toTop:hover{
     color: #2c94fd;
 }
 

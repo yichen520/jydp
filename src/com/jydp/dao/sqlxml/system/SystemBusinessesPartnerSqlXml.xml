@@ -6,20 +6,20 @@
 <mapper namespace="com.jydp.dao.impl.system.SystemBusinessesPartnerDaoImpl">
 
 	<select id="SystemBusinessesPartner_getSystemBusinessesPartnerForWeb" resultType="SystemBusinessesPartnerDO">
-		SELECT id, businessesName, businessesImageUrl, webLinkUrl, wapLinkUrl, addTime, topTime
+		SELECT id, businessesName, businessesImageUrl, webLinkUrl, wapLinkUrl, addTime, rankNumber
 		FROM  system_businesses_partner_tab
-		ORDER BY topTime DESC
+		ORDER BY rankNumber
 	</select>
 
 	<insert id="SystemBusinessesPartner_insertSystemBusinessesPartner" parameterType="SystemBusinessesPartnerDO" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
 		INSERT INTO system_businesses_partner_tab
-		(businessesName, businessesImageUrl, webLinkUrl, wapLinkUrl, topTime, addTime)
+		(businessesName, businessesImageUrl, webLinkUrl, wapLinkUrl, rankNumber, addTime)
 		VALUES
-		(#{businessesName}, #{businessesImageUrl}, #{webLinkUrl}, #{wapLinkUrl}, #{topTime}, #{addTime})
+		(#{businessesName}, #{businessesImageUrl}, #{webLinkUrl}, #{wapLinkUrl}, #{rankNumber}, #{addTime})
 	</insert>
 
 	<select id="SystemBusinessesPartner_getSystemBusinessesPartnerById" parameterType="int" resultType="SystemBusinessesPartnerDO">
-		SELECT id, businessesName, businessesImageUrl, webLinkUrl, wapLinkUrl, topTime, addTime
+		SELECT id, businessesName, businessesImageUrl, webLinkUrl, wapLinkUrl, rankNumber, addTime
 		FROM system_businesses_partner_tab
 		WHERE id = #{id}
 	</select>
@@ -30,9 +30,9 @@
 	</select>
 
 	<select id="SystemBusinessesPartner_listSystemBusinessesPartnerByPage" parameterType="java.util.Map" resultType="SystemBusinessesPartnerDO">
-		SELECT id, businessesName, businessesImageUrl, webLinkUrl, wapLinkUrl, topTime, addTime
+		SELECT id, businessesName, businessesImageUrl, webLinkUrl, wapLinkUrl, rankNumber, addTime
 		FROM system_businesses_partner_tab
-		ORDER BY topTime DESC, addTime DESC
+		ORDER BY rankNumber
 		LIMIT #{startNumber}, #{pageSize}
 	</select>
 
@@ -45,9 +45,6 @@
 			<if test="businessesImageUrl != null and businessesImageUrl != ''" >
 				,businessesImageUrl = #{businessesImageUrl}
 			</if>
-			<if test="topTime != null" >
-				,topTime = #{topTime}
-			</if>
 		WHERE id = #{id}
 	</update>
 
@@ -56,9 +53,49 @@
 		WHERE id = #{id}
 	</delete>
 
-	<update id="SystemBusinessesPartner_topTheBusinessesPartner" parameterType="java.util.Map">
+	<update id="SystemBusinessesPartner_topTheBusinessesPartner" parameterType="int">
 		UPDATE system_businesses_partner_tab
-		SET topTime = #{topTime}
+		SET rankNumber = 0
 		WHERE id = #{id}
+	</update>
+
+	<update id="SystemBusinessesPartner_updatebusinessesPartnerRankNumber">
+		UPDATE system_businesses_partner_tab
+		SET rankNumber = rankNumber + 1
+	</update>
+
+	<select id="SystemBusinessesPartner_getIdByRankForBack" parameterType="int" resultType="int">
+		SELECT id
+		FROM system_businesses_partner_tab
+		WHERE rankNumber = #{rankNumber}
+	</select>
+
+	<update id="SystemBusinessesPartner_upMoveBusinessesPartnerForBack" parameterType="int">
+		UPDATE system_businesses_partner_tab
+		SET rankNumber = rankNumber - 1
+		WHERE id = #{id}
+	</update>
+
+	<update id="SystemBusinessesPartner_downMoveBusinessesPartnerForBack" parameterType="int">
+		UPDATE system_businesses_partner_tab
+		SET rankNumber = rankNumber + 1
+		WHERE id = #{id}
+	</update>
+
+	<select id="SystemBusinessesPartner_getMaxRankForBack" resultType="int">
+		SELECT MAX(rankNumber)
+		FROM system_businesses_partner_tab
+	</select>
+
+	<update id="SystemBusinessesPartner_updateBusinessesPartnerRank" parameterType="int">
+		UPDATE system_businesses_partner_tab
+		SET rankNumber = rankNumber - 1
+		WHERE rankNumber <![CDATA[ > ]]> #{rankNumber}
+	</update>
+
+	<update id="SystemBusinessesPartner_updateRankNumber" parameterType="int">
+		UPDATE system_businesses_partner_tab
+		SET rankNumber = rankNumber + 1
+		WHERE rankNumber <![CDATA[ < ]]> #{rankNumber}
 	</update>
 </mapper>

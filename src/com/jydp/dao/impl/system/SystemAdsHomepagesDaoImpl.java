@@ -224,4 +224,46 @@ public class SystemAdsHomepagesDaoImpl implements ISystemAdsHomepagesDao {
         }
         return systemAdsHomepagesList;
     }
+
+    /**
+     * 置顶首页广告
+     * @param id 记录Id
+     * @return 置顶成功：返回true，置顶失败：返回false
+     */
+    public boolean topAdsHomepages(int id){
+        int changeNumber = 0;
+
+        try {
+            changeNumber = sqlSessionTemplate.update("SystemAdsHomepages_topAdsHomepages", id);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (changeNumber == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * 修改首页广告排名（小于该排名的所有广告排名+1）
+     * @param rank 排名
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean updateRankNumber(int rank){
+        int changeNumber = 0;
+
+        try {
+            changeNumber = sqlSessionTemplate.update("SystemAdsHomepages_updateRankNumber", rank);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (changeNumber == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

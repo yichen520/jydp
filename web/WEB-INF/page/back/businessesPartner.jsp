@@ -52,6 +52,16 @@
                         <td class="link"><a target="_blank" href="${item.wapLinkUrl}">${item.wapLinkUrl}</a></td>
                         <td class="operate">
                             <c:if test="${status.count != 1 || pageNumber != 0}">
+                                <c:if test="${backer_rolePower['112006'] == 112006}">
+                                    <input type="text" value="上&nbsp;移" class="adUp" onfocus="this.blur()" onclick="upMove('${item.id}')"/>
+                                </c:if>
+                            </c:if>
+                            <c:if test="${backer_rolePower['112007'] == 112007}">
+                                <c:if test="${item.rankNumber != maxRankNumber}">
+                                    <input type="text" value="下&nbsp;移" class="adDown" onfocus="this.blur()" onclick="downMove('${item.id}')"/>
+                                </c:if>
+                            </c:if>
+                            <c:if test="${status.count != 1 || pageNumber != 0}">
                                 <c:if test="${backer_rolePower['112003'] == 112003}">
                                     <input type="text" value="置&nbsp; 顶" class="toTop" onfocus="this.blur()" onclick="topPartner('${item.id}')"/>
                                 </c:if>
@@ -378,6 +388,83 @@
 
             error: function () {
                 topBoo = false;
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+
+    }
+
+    //上移
+    var upMoveBoo = false;
+    function upMove(id) {
+
+        if(upMoveBoo){
+            openTips("正在上移，请稍后！");
+            return;
+        }else{
+            upMoveBoo = true;
+        }
+
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerBusinessesPartner/upMoveBusinesses.htm",
+            data: {
+                id : id,
+            },//参数
+            dataType: "json",
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (resultData) {
+                var code = resultData.code;
+                var message = resultData.message;
+                if (code != 1 && message != "") {
+                    upMoveBoo = false;
+                    openTips(message);
+                    return;
+                }
+
+                $("#queryForm").submit();
+            },
+
+            error: function () {
+                upMoveBoo = false;
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+
+    }
+
+    //下移
+    var downMoveBoo = false;
+    function downMove(id) {
+
+        if(downMoveBoo){
+            openTips("正在上移，请稍后！");
+            return;
+        }else{
+            downMoveBoo = true;
+        }
+
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerBusinessesPartner/downMoveBusinesses.htm",
+            data: {
+                id : id,
+            },//参数
+            dataType: "json",
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (resultData) {
+                var code = resultData.code;
+                var message = resultData.message;
+                if (code != 1 && message != "") {
+                    downMoveBoo = false;
+                    openTips(message);
+                    return;
+                }
+
+                $("#queryForm").submit();
+            },
+            error: function () {
+                downMoveBoo = false;
                 openTips("数据加载出错，请稍候重试");
             }
         });

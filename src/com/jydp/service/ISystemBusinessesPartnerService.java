@@ -43,10 +43,9 @@ public interface ISystemBusinessesPartnerService {
     /**
      * 置顶合作商家
      * @param id 合作商家Id
-     * @param topTime 置顶时间topTime
      * @return 置顶成功：返回true，置顶失败：返回false
      */
-    boolean topTheBusinessesPartner(int id, Timestamp topTime);
+    boolean topTheBusinessesPartner(int id);
 
     /**
      * 修改 合作商家
@@ -67,4 +66,31 @@ public interface ISystemBusinessesPartnerService {
      * @return 查询成功：返回合作商家列表；查询失败：返回null
      */
     List<SystemBusinessesPartnerDO> getSystemBusinessesPartnerForWeb();
+
+    /**
+     * 上移合作商家
+     * @param id 合作商家id
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean upMoveBusinessesPartnerForBack(int id);
+
+    /**
+     * 通过排名获取当前合作商家id
+     * @param rankNumber 排名
+     * @return 查询成功：返回合作商家id，查询失败：返回0
+     */
+    int getIdByRankForBack(int rankNumber);
+
+    /**
+     * 下移合作商家
+     * @param id 合作商家id
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean downMoveBusinessesPartnerForBack(int id);
+
+    /**
+     * 获取当前广告排名的最大位置
+     * @return 查询成功：返回最大的排名，查询失败：返回0
+     */
+    int getMaxRankForBack();
 }

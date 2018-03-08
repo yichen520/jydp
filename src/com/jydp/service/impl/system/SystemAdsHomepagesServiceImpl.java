@@ -185,4 +185,35 @@ public class SystemAdsHomepagesServiceImpl implements ISystemAdsHomepagesService
     public List<SystemAdsHomepagesDO> getSystemAdsHomepageslistForWeb() {
         return systemAdsHomepagesDao.getSystemAdsHomepageslistForWeb();
     }
+
+    /**
+     * 置顶首页广告
+     * @param id 记录Id
+     * @return 置顶成功：返回true，置顶失败：返回false
+     */
+   public boolean topAdsHomepages(int id){
+       SystemAdsHomepagesDO systemAdsHomepagesDO = systemAdsHomepagesDao.getSystemAdsHomePagesById(id);
+       if (systemAdsHomepagesDO == null) {
+           return false;
+       }
+
+       int rankNumber = systemAdsHomepagesDO.getRankNumber() - 1;
+       int changeId = systemAdsHomepagesDao.getIdByRankForBack(rankNumber);
+
+       // 如果是第一个广告就不能上移了
+       if (changeId == 0) {
+           return false;
+       }
+
+       boolean executeSuccess = systemAdsHomepagesDao.topAdsHomepages(id);
+       if(executeSuccess){
+           executeSuccess = systemAdsHomepagesDao.updateRankNumber(systemAdsHomepagesDO.getRankNumber());
+       }
+       // 数据回滚
+       if (!executeSuccess) {
+           TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+       }
+
+       return executeSuccess;
+   }
 }

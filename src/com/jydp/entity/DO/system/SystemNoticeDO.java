@@ -17,7 +17,7 @@ public class SystemNoticeDO {
     private String noticeUrl; //公告封面图地址
     private String content; //公告内容
     private Timestamp addTime; //添加时间
-    private Timestamp topTime; //置顶时间
+    private int rankNumber; //排名位置
 
     private String noticeUrlFormat; //公告封面图绝对地址
 
@@ -137,18 +137,18 @@ public class SystemNoticeDO {
     }
 
     /**
-     * 置顶时间
-     * @return topTime
+     * 排名位置
+     * @return rankNumber
      */
-    public Timestamp getTopTime() {
-        return topTime;
+    public int getRankNumber() {
+        return rankNumber;
     }
 
     /**
-     * 置顶时间
-     * @param topTime the topTime to set
+     * 排名位置
+     * @param rankNumber the rankNumber to set
      */
-    public void setTopTime(Timestamp topTime) {
-        this.topTime = topTime;
+    public void setRankNumber(int rankNumber) {
+        this.rankNumber = rankNumber;
     }
 }

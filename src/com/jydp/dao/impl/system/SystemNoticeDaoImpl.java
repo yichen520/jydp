@@ -203,4 +203,160 @@ public class SystemNoticeDaoImpl implements ISystemNoticeDao {
 
         return resultList;
     }
+
+    /**
+     * 修改用户公告排位位置（全部后移一位）
+     * @return 修改成功：返回true，修改失败：返回false
+     */
+    public boolean updateNoticeRankNumber(){
+        int result = 0;
+
+        try {
+            result = sqlSessionTemplate.update("SystemNotice_updateNoticeRankNumber");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    /**
+     * 通过排名获取当前用户公告id
+     * @param rankNumber 排名
+     * @return 查询成功：返回广告id，查询失败：返回0
+     */
+    public int getIdByRankForBack(int rankNumber){
+        int changeNumber = 0;
+
+        try {
+            changeNumber = sqlSessionTemplate.selectOne("SystemNotice_getIdByRankForBack", rankNumber);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return changeNumber;
+    }
+
+    /**
+     * 上移用户公告
+     * @param id 首页广告id
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean upMoveNoticeForBack(int id){
+        int changeNumber = 0;
+
+        try {
+            changeNumber = sqlSessionTemplate.update("SystemNotice_upMoveNoticeForBack", id);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (changeNumber == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * 下移用户公告
+     * @param id 首页广告id
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean downMoveNoticeForBack(int id){
+        int changeNumber = 0;
+
+        try {
+            changeNumber = sqlSessionTemplate.update("SystemNotice_downMoveNoticeForBack", id);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (changeNumber == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * 获取当前广告排名的最大位置
+     * @return 查询成功：返回最大的排名，查询失败：返回0
+     */
+    public int getMaxRankForBack(){
+        int changeNumber = 0;
+        try {
+            changeNumber = sqlSessionTemplate.selectOne("SystemNotice_getMaxRankForBack");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return changeNumber;
+    }
+
+    /**
+     * 修改首页广告排名（大于该排名的所有广告排名-1）
+     * @param rank 排名
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean updateNoticeRank(int rank){
+        int changeNumber = 0;
+
+        try {
+            changeNumber = sqlSessionTemplate.update("SystemNotice_updateNoticeRank", rank);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (changeNumber == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    /**
+     * 置顶用户公告
+     * @param id 记录Id
+     * @return 置顶成功：返回true，置顶失败：返回false
+     */
+    public boolean topSystemNotice(int id){
+        int changeNumber = 0;
+
+        try {
+            changeNumber = sqlSessionTemplate.update("SystemNotice_topSystemNotice", id);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (changeNumber == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * 修改首页广告排名（小于该排名的所有广告排名+1）
+     * @param rank 排名
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean updateRankNumber(int rank){
+        int changeNumber = 0;
+
+        try {
+            changeNumber = sqlSessionTemplate.update("SystemNotice_updateRankNumber", rank);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (changeNumber == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

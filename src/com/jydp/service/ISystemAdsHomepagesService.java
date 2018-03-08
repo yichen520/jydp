@@ -77,4 +77,11 @@ public interface ISystemAdsHomepagesService {
      * @return 查询成功：返回首页广告列表；查询失败：返回null
      */
     List<SystemAdsHomepagesDO> getSystemAdsHomepageslistForWeb();
+
+    /**
+     * 置顶首页广告
+     * @param id 记录Id
+     * @return 置顶成功：返回true，置顶失败：返回false
+     */
+    boolean topAdsHomepages(int id);
 }
