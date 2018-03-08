@@ -167,7 +167,7 @@
 		UPDATE transaction_pend_order_tab
 		SET pendingStatus = 3, endTime = #{endTime}, dealNumber = dealNumber + #{dealNumber}
 		WHERE pendingOrderNo = #{pendingOrderNo}
-		AND #{dealNumber} + dealNumber <![CDATA[ = ]]> pendingNumber
+		AND CAST(#{dealNumber} AS DECIMAL(18,8)) + dealNumber <![CDATA[ = ]]> pendingNumber
 	</update>
 
 	<select id="TransactionPendOrder_listPendOrderForWeb" parameterType="java.util.Map" resultType="TransactionPendOrderVO">
