@@ -8,7 +8,7 @@
     float: left;
     margin:10px 0 0 10px;
     width: 242px;
-    height: 215px;
+    height: 242px;
     cursor: pointer;
 }
 .notice:hover{
@@ -17,7 +17,7 @@
 }
 .noticeImg{
     width: 242px;
-    height: 215px;
+    height: 242px;
     object-fit: cover;
 }
 .noticeInfo{
@@ -36,6 +36,7 @@
     font-size: 14px;
     white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 .time{
     margin-left: 10px;
