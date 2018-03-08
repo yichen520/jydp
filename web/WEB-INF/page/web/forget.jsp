@@ -160,6 +160,7 @@
         var area =  $(".selectCont").html();
         var phone = $("#phone").val();
         var regPos = /^\d+(\.\d+)?$/; //非负浮点数
+        var phoneReg = /^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$/;
         if (!phone) {
             phoneBoo = false;
             return openTips("请输入您的手机号");
@@ -171,7 +172,7 @@
             return openTips("请输入正确手机号");
         }
 
-        if (area == chinaArea && phone.length != 11) {
+        if (area == chinaArea && !phoneReg.test(phone)) {
             phoneBoo = false;
             return openTips("请输入正确手机号");
         }
@@ -221,11 +222,31 @@
                 changeValue(userAccountEle, "请输入账号，字母、数字，6~16个字符");
                 return;
             }
-            if (userAccount.length < 6 || userAccount.length > 16) {
+            if ("请输入账号，字母、数字，6~16个字符" != userAccount && (userAccount.length < 6 || userAccount.length > 16)) {
                 changeValue(userAccountEle, "账号长度在6~16个字符之间");
                 return;
             }
-            changeValue(userAccountEle, "账号格式不正确");
+            if ("请输入账号，字母、数字，6~16个字符" != userAccount && "账号长度在6~16个字符之间" != userAccount) {
+                changeValue(userAccountEle, "账号格式不正确");
+            }
+            return;
+        }
+
+        if (!phone) {
+            changeValue(phoneEle, "请输入您的手机号");
+            return;
+        }
+        if ("请输入您的手机号" != phone && area != chinaArea && (phone.length < 6 || phone.length > 11)) {
+            changeValue(phoneEle, "请输入正确手机号");
+            return;
+        }
+        if ("请输入您的手机号" != phone && area == chinaArea && !phoneReg.test(phone)) {
+            changeValue(phoneEle, "请输入正确手机号");
+            return;
+        }
+
+        if (!validateCode || validateCode.length!=6) {
+            changeValue(validateCodeEle, "请输入6位短信验证码");
             return;
         }
 
@@ -234,11 +255,13 @@
                 changeValue(passwordEle, "请输入登录密码，字母、数字，6~16个字符");
                 return;
             }
-            if (password.length < 6 || password.length > 16) {
+            if ("请输入登录密码，字母、数字，6~16个字符" != password && (password.length < 6 || password.length > 16)) {
                 changeValue(passwordEle, "密码长度在6~16个字符之间");
                 return;
             }
-            changeValue(passwordEle, "登录密码格式不正确");
+            if ("两次密码不匹配" != password && "请输入登录密码，字母、数字，6~16个字符" != password && "密码长度在6~16个字符之间" != password) {
+                changeValue(passwordEle, "登录密码格式不正确");
+            }
             return;
         }
 
@@ -247,37 +270,18 @@
                 changeValue(repeatPasswordEle, "请输入重复密码，字母、数字，6~16个字符");
                 return;
             }
-            if (repeatPassword.length < 6 || repeatPassword.length > 16) {
+            if ("请输入重复密码，字母、数字，6~16个字符" != repeatPassword && (repeatPassword.length < 6 || repeatPassword.length > 16)) {
                 changeValue(repeatPasswordEle, "密码长度在6~16个字符之间");
                 return;
             }
-            changeValue(repeatPasswordEle, "重复密码格式不正确");
+            if ("两次密码不匹配" != repeatPassword && "请输入重复密码，字母、数字，6~16个字符" != repeatPassword && "密码长度在6~16个字符之间" != repeatPassword) {
+                changeValue(repeatPasswordEle, "重复密码格式不正确");
+            }
             return;
         }
-
         if (repeatPassword != password) {
             changeValue(repeatPasswordEle, "两次密码不匹配");
             changeValue(passwordEle, "两次密码不匹配");
-            return;
-        }
-
-        if (!phone) {
-            changeValue(phoneEle, "请输入您的手机号");
-            return;
-        }
-
-        if (area != chinaArea && (phone.length < 6 || phone.length > 11)) {
-            changeValue(phoneEle, "请输入正确手机号");
-            return;
-        }
-
-        if (area == chinaArea && !phoneReg.test(phone)) {
-            changeValue(phoneEle, "请输入正确手机号");
-            return;
-        }
-
-        if (!validateCode || validateCode.length!=6) {
-            changeValue(validateCodeEle, "请输入6位短信验证码");
             return;
         }
 
@@ -323,7 +327,6 @@
     });
 
     $("#password").focus(function(){
-        console.log("知识")
         if ($(this).hasClass("error")){
             $(this).removeClass("error");
             $(this).val('');
