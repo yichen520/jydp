@@ -51,8 +51,9 @@ public class ForgetController {
         String password = StringUtil.stringNullHandle(request.getParameter("password"));
         String validateCode = StringUtil.stringNullHandle(request.getParameter("validateCode"));
         String phoneNumber = StringUtil.stringNullHandle(request.getParameter("phoneNumber"));
+        String phoneAreaCode = StringUtil.stringNullHandle(request.getParameter("phoneAreaCode"));
         if (!StringUtil.isNotNull(userAccount) || !StringUtil.isNotNull(password) ||
-                !StringUtil.isNotNull(validateCode) || !StringUtil.isNotNull(phoneNumber)) {
+                !StringUtil.isNotNull(validateCode) || !StringUtil.isNotNull(phoneNumber) || !StringUtil.isNotNull(phoneAreaCode)) {
             responseJson.setCode(2);
             responseJson.setMessage("提交信息存在为空选项");
             return responseJson;
@@ -72,7 +73,7 @@ public class ForgetController {
         }
 
         UserDO user = userService.getUserByPhone(phoneNumber);
-        if (user == null || !userAccount.equals(user.getUserAccount())) {
+        if (user == null || !(phoneAreaCode.equals(user.getPhoneAreaCode()) && userAccount.equals(user.getUserAccount()))) {
             responseJson.setCode(2);
             responseJson.setMessage("手机号与用户所绑手机号不匹配");
             return responseJson;

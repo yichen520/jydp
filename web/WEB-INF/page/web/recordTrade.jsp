@@ -51,7 +51,7 @@
                         <td class="type back">撤销</td>
                     </c:if>
                     <td class="amount"><fmt:formatNumber type="number" value="${dealRecord.currencyNumber}" maxFractionDigits="4"/></td>
-                    <td class="amount">$<fmt:formatNumber type="number" value="${dealRecord.currencyTotalPrice}" maxFractionDigits="4"/></td>
+                    <td class="amount">$<fmt:formatNumber type="number" value="${dealRecord.currencyTotalPrice}" maxFractionDigits="6"/></td>
                     <td class="time"><fmt:formatDate type="time" value="${dealRecord.addTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
                 </tr>
                 </c:forEach>

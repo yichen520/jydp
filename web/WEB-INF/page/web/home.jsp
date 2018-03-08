@@ -106,7 +106,7 @@
     </div>
 
     <div class="cooperation">
-        <p class="cTitle">合作商家</p>
+        <p class="cTitle">合作伙伴</p>
         <c:forEach items="${systemBusinessesPartnerDOList}" var="partner">
             <a target="_blank" href="${partner.webLinkUrl}" class="link">
               <p class="company"><img src="${partner.businessesImageUrlFormat}" /><span>${partner.businessesName}</span></p>
