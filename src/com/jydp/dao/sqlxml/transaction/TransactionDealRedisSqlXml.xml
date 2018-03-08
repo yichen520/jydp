@@ -9,7 +9,7 @@
 		SELECT paymentType, transactionPrice, currencyNumber, currencyTotalPrice, addTime
 	  	FROM transaction_deal_redis_tab
 	  	WHERE currencyId = #{currencyId}
-	  	ORDER BY addTime DESC
+	  	ORDER BY addTime DESC, orderNo
 		LIMIT #{num}
 	</select>
 
