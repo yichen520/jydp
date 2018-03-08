@@ -150,4 +150,22 @@ public class DateUtil {
 		return timestamp;
 	}
 
+	/**
+	 * 判断此时是否在交易时间段内 08：00：00 - 07：59：00
+	 * @return 不在交易时间段内：true；在交易时间段内：false
+	 */
+	public static boolean isTradeTime(){
+		long curTime = DateUtil.getCurrentTimeMillis();
+		String today = DateUtil.longToTimeStr(curTime,DateUtil.dateFormat4);
+		String todayUp = today + " 07:59:00";
+		String todayDown = today + " 08:00:00";
+		long timeUp = DateUtil.timeStrToLong(todayUp);
+		long timeDown = DateUtil.timeStrToLong(todayDown);
+		if(curTime > timeUp && curTime <timeDown){
+			return true;
+		}else {
+			return false;
+		}
+	}
+
 }
