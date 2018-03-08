@@ -9,7 +9,6 @@ import com.jydp.entity.BO.BackerSessionBO;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.back.BackerDO;
 import com.jydp.entity.DO.user.UserDO;
-import com.jydp.entity.DTO.BackerUserCurrencyNumDTO;
 import com.jydp.interceptor.BackerWebInterceptor;
 import com.jydp.service.IBackerService;
 import com.jydp.service.IUserCurrencyNumService;
@@ -81,49 +80,6 @@ public class BackerUserAccountController {
 
         showList(request);
         return "page/back/userAccount";
-    }
-
-    /** 展示账户明细页面 */
-    @RequestMapping(value = "/showDetail.htm", method = RequestMethod.POST)
-    public String showDetail(HttpServletRequest request) {
-        BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
-        if (backerSession == null) {
-            request.setAttribute("code", 4);
-            request.setAttribute("message", "登录过期");
-            return "page/back/login";
-        }
-        //业务功能权限
-        boolean havePower = BackerWebInterceptor.validatePower(request, 141103);
-        if (!havePower) {
-            request.setAttribute("code", 6);
-            request.setAttribute("message", "您没有该权限");
-            request.getSession().setAttribute("backer_rolePowerId", 0);
-            return "page/back/index";
-        }
-
-        String userIdStr = StringUtil.stringNullHandle(request.getParameter("userId"));
-        if (!StringUtil.isNotNull(userIdStr)) {
-            request.setAttribute("code", 2);
-            request.setAttribute("message", "参数为空");
-            showList(request);
-            return "page/back/userAccount";
-        }
-
-        int userId = Integer.parseInt(userIdStr);
-        UserDO userDO = userService.getUserByUserId(userId);
-        if (userDO == null || userDO.getAccountStatus() <= 0) {
-            request.setAttribute("code", 3);
-            request.setAttribute("message", "用户不存在");
-            showList(request);
-            return "page/back/userAccount";
-        }
-
-        List<BackerUserCurrencyNumDTO> userCurrencyNumList = userCurrencyNumService.getUserCurrencyNumByUserIdForBacker(userId);
-
-        request.setAttribute("userCurrencyNumList", userCurrencyNumList);
-        request.setAttribute("userId", userIdStr);
-        request.setAttribute("userAccount", userDO.getUserAccount());
-        return "page/back/userAccountDetail";
     }
 
     /** 获取列表数据 */

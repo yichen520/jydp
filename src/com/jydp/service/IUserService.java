@@ -259,7 +259,8 @@ public interface IUserService {
      * 增加用户货币数量（后台操作）
      * @param userId 用户Id
      * @param userAccount 用户账号
-     * @param currencyId 币种Id
+     * @param currencyId 货币Id
+     * @param currencyName 货币名称
      * @param currencyNumber 增加的货币数量
      * @param backerId 后台管理员Id
      * @param backerAccount 后台管理员帐号
@@ -267,7 +268,55 @@ public interface IUserService {
      * @param ipAddress 操作时的ip地址
      * @return 操作成功：返回true，操作失败：返回false
      */
-    boolean addUserCurrencyNumberForBack(int userId, String userAccount, int currencyId, double currencyNumber,
+    boolean addUserCurrencyNumberForBack(int userId, String userAccount, int currencyId, String currencyName, double currencyNumber,
                                                 int backerId, String backerAccount, String remarks, String ipAddress);
+
+    /**
+     * 减少用户货币数量（后台操作）
+     * @param userId 用户Id
+     * @param userAccount 用户账号
+     * @param currencyId 货币Id
+     * @param currencyName 货币名称
+     * @param currencyNumber 减少的货币数量
+     * @param backerId 后台管理员Id
+     * @param backerAccount 后台管理员帐号
+     * @param remarks 备注
+     * @param ipAddress 操作时的ip地址
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean reduceUserCurrencyNumberForBack(int userId, String userAccount, int currencyId, String currencyName, double currencyNumber,
+                                         int backerId, String backerAccount, String remarks, String ipAddress);
+
+    /**
+     * 增加用户货币冻结数量（后台操作）
+     * @param userId 用户Id
+     * @param userAccount 用户账号
+     * @param currencyId 货币Id
+     * @param currencyName 货币名称
+     * @param currencyNumber 增加的货币冻结数量
+     * @param backerId 后台管理员Id
+     * @param backerAccount 后台管理员帐号
+     * @param remarks 备注
+     * @param ipAddress 操作时的ip地址
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean addUserCurrencyNumberLockForBack(int userId, String userAccount, int currencyId, String currencyName, double currencyNumber,
+                                         int backerId, String backerAccount, String remarks, String ipAddress);
+
+    /**
+     * 减少用户货币冻结数量（后台操作）
+     * @param userId 用户Id
+     * @param userAccount 用户账号
+     * @param currencyId 货币Id
+     * @param currencyName 货币名称
+     * @param currencyNumber 减少的货币冻结数量
+     * @param backerId 后台管理员Id
+     * @param backerAccount 后台管理员帐号
+     * @param remarks 备注
+     * @param ipAddress 操作时的ip地址
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean reduceUserCurrencyNumberLockForBack(int userId, String userAccount, int currencyId, String currencyName, double currencyNumber,
+                                            int backerId, String backerAccount, String remarks, String ipAddress);
 
 }

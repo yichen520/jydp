@@ -5,6 +5,8 @@ import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.IUserDao;
 import com.jydp.entity.BO.JsonObjectBO;
+import com.jydp.entity.DO.back.BackerHandleUserBalanceFreezeMoneyDO;
+import com.jydp.entity.DO.back.BackerHandleUserBalanceMoneyDO;
 import com.jydp.entity.DO.back.BackerHandleUserRecordBalanceDO;
 import com.jydp.entity.DO.back.BackerHandleUserRecordBalanceFreezeDO;
 import com.jydp.entity.DO.user.UserBalanceDO;
@@ -14,6 +16,8 @@ import com.jydp.entity.DTO.UserAmountCheckDTO;
 import com.jydp.entity.DTO.UserDTO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.entity.VO.UserDealCapitalMessageVO;
+import com.jydp.service.IBackerHandleUserBalanceFreezeMoneyService;
+import com.jydp.service.IBackerHandleUserBalanceMoneyService;
 import com.jydp.service.IBackerHandleUserRecordBalanceFreezeService;
 import com.jydp.service.IBackerHandleUserRecordBalanceService;
 import com.jydp.service.IRedisService;
@@ -65,6 +69,14 @@ public class UserServiceImpl implements IUserService {
     /**  后台管理员增减用户冻结余额记录 */
     @Autowired
     private IBackerHandleUserRecordBalanceFreezeService backerHandleUserRecordBalanceFreezeService;
+
+    /**  后台管理员增减用户可用币记录 */
+    @Autowired
+    private IBackerHandleUserBalanceMoneyService backerHandleUserBalanceMoneyService;
+
+    /**  后台管理员增减用户冻结币记录 */
+    @Autowired
+    private IBackerHandleUserBalanceFreezeMoneyService backerHandleUserBalanceFreezeMoneyService;
 
     /** redis服务 */
     @Autowired
@@ -641,7 +653,8 @@ public class UserServiceImpl implements IUserService {
      * 增加用户货币数量（后台操作）
      * @param userId 用户Id
      * @param userAccount 用户账号
-     * @param currencyId 币种Id
+     * @param currencyId 货币Id
+     * @param currencyName 货币名称
      * @param currencyNumber 增加的货币数量
      * @param backerId 后台管理员Id
      * @param backerAccount 后台管理员帐号
@@ -650,7 +663,7 @@ public class UserServiceImpl implements IUserService {
      * @return 操作成功：返回true，操作失败：返回false
      */
     @Transactional
-    public boolean addUserCurrencyNumberForBack(int userId, String userAccount, int currencyId, double currencyNumber,
+    public boolean addUserCurrencyNumberForBack(int userId, String userAccount, int currencyId, String currencyName, double currencyNumber,
                                                 int backerId, String backerAccount, String remarks, String ipAddress) {
         Timestamp currentTime = DateUtil.getCurrentTime();
         String orderNo = SystemCommonConfig.USER_BALANCE + DateUtil.longToTimeStr(currentTime.getTime(), DateUtil.dateFormat10) + NumberUtil.createNumberStr(10);
@@ -658,8 +671,8 @@ public class UserServiceImpl implements IUserService {
         userBalanceDO.setOrderNo(orderNo);  //记录号：业务类型（2）+日期（6）+随机位（10）
         userBalanceDO.setUserId(userId);
         userBalanceDO.setFromType("系统操作");
-        userBalanceDO.setCurrencyId(UserBalanceConfig.DOLLAR_ID);  //币种Id,美元id=999
-        userBalanceDO.setCurrencyName(UserBalanceConfig.DOLLAR);  //货币名称
+        userBalanceDO.setCurrencyId(currencyId);  //币种Id,美元id=999
+        userBalanceDO.setCurrencyName(currencyName);  //货币名称
         userBalanceDO.setBalanceNumber(currencyNumber);  //交易数量
         userBalanceDO.setFrozenNumber(0);  //冻结数量
         userBalanceDO.setRemark(remarks);
@@ -671,12 +684,215 @@ public class UserServiceImpl implements IUserService {
         //添加用户账户记录
         executeSuccess = userBalanceService.insertUserBalance(userBalanceDO);
 
-        //新增账户记录
+        //新增管理员操作记录
+        if (executeSuccess) {
+            BackerHandleUserBalanceMoneyDO backerHandleUserBalanceMoney = new BackerHandleUserBalanceMoneyDO();
+            backerHandleUserBalanceMoney.setAddTime(currentTime);
+            backerHandleUserBalanceMoney.setBackerAccount(backerAccount);
+            backerHandleUserBalanceMoney.setBackerId(backerId);
+            backerHandleUserBalanceMoney.setIpAddress(ipAddress);
+            backerHandleUserBalanceMoney.setRemarks(remarks);
+            backerHandleUserBalanceMoney.setTypeHandle(1);  //操作类型，1：增加，2：减少
+            backerHandleUserBalanceMoney.setUserAccount(userAccount);
+            backerHandleUserBalanceMoney.setUserId(userId);
+            backerHandleUserBalanceMoney.setCurrencyId(currencyId);
+            backerHandleUserBalanceMoney.setUserBalance(currencyNumber);  //可用币
+
+            executeSuccess = backerHandleUserBalanceMoneyService.insertBackerHandleUserBalanceMoney(backerHandleUserBalanceMoney);
+        }
+        //增加用户货币数量
+        if (executeSuccess) {
+            executeSuccess = userCurrencyNumService.increaseCurrencyNumber(userId, currencyId, currencyNumber);
+        }
+
+        //数据回滚
+        if(!executeSuccess){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return executeSuccess;
+    }
+
+    /**
+     * 减少用户货币数量（后台操作）
+     * @param userId 用户Id
+     * @param userAccount 用户账号
+     * @param currencyId 货币Id
+     * @param currencyName 货币名称
+     * @param currencyNumber 减少的货币数量
+     * @param backerId 后台管理员Id
+     * @param backerAccount 后台管理员帐号
+     * @param remarks 备注
+     * @param ipAddress 操作时的ip地址
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    @Transactional
+    public boolean reduceUserCurrencyNumberForBack(int userId, String userAccount, int currencyId, String currencyName, double currencyNumber,
+                                            int backerId, String backerAccount, String remarks, String ipAddress) {
+        Timestamp currentTime = DateUtil.getCurrentTime();
+        String orderNo = SystemCommonConfig.USER_BALANCE + DateUtil.longToTimeStr(currentTime.getTime(), DateUtil.dateFormat10) + NumberUtil.createNumberStr(10);
+        UserBalanceDO userBalanceDO = new UserBalanceDO();
+        userBalanceDO.setOrderNo(orderNo);  //记录号：业务类型（2）+日期（6）+随机位（10）
+        userBalanceDO.setUserId(userId);
+        userBalanceDO.setFromType("系统操作");
+        userBalanceDO.setCurrencyId(currencyId);  //币种Id,美元id=999
+        userBalanceDO.setCurrencyName(currencyName);  //货币名称
+        userBalanceDO.setBalanceNumber(-currencyNumber);  //交易数量
+        userBalanceDO.setFrozenNumber(0);  //冻结数量
+        userBalanceDO.setRemark(remarks);
+        userBalanceDO.setAddTime(currentTime);
+
+        //业务执行状态
+        boolean executeSuccess = true;
+
+        //添加用户账户记录
+        executeSuccess = userBalanceService.insertUserBalance(userBalanceDO);
 
         //新增管理员操作记录
+        if (executeSuccess) {
+            BackerHandleUserBalanceMoneyDO backerHandleUserBalanceMoney = new BackerHandleUserBalanceMoneyDO();
+            backerHandleUserBalanceMoney.setAddTime(currentTime);
+            backerHandleUserBalanceMoney.setBackerAccount(backerAccount);
+            backerHandleUserBalanceMoney.setBackerId(backerId);
+            backerHandleUserBalanceMoney.setIpAddress(ipAddress);
+            backerHandleUserBalanceMoney.setRemarks(remarks);
+            backerHandleUserBalanceMoney.setTypeHandle(2);  //操作类型，1：增加，2：减少
+            backerHandleUserBalanceMoney.setUserAccount(userAccount);
+            backerHandleUserBalanceMoney.setUserId(userId);
+            backerHandleUserBalanceMoney.setCurrencyId(currencyId);
+            backerHandleUserBalanceMoney.setUserBalance(currencyNumber);  //可用币
 
-        //增加用户货币数量
+            executeSuccess = backerHandleUserBalanceMoneyService.insertBackerHandleUserBalanceMoney(backerHandleUserBalanceMoney);
+        }
+        //减少用户货币数量
+        if (executeSuccess) {
+            executeSuccess = userCurrencyNumService.reduceCurrencyNumber(userId, currencyId, currencyNumber);
+        }
 
+        //数据回滚
+        if(!executeSuccess){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return executeSuccess;
+    }
+
+    /**
+     * 增加用户货币冻结数量（后台操作）
+     * @param userId 用户Id
+     * @param userAccount 用户账号
+     * @param currencyId 货币Id
+     * @param currencyName 货币名称
+     * @param currencyNumber 增加的货币冻结数量
+     * @param backerId 后台管理员Id
+     * @param backerAccount 后台管理员帐号
+     * @param remarks 备注
+     * @param ipAddress 操作时的ip地址
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    @Transactional
+    public boolean addUserCurrencyNumberLockForBack(int userId, String userAccount, int currencyId, String currencyName, double currencyNumber,
+                                                int backerId, String backerAccount, String remarks, String ipAddress) {
+        Timestamp currentTime = DateUtil.getCurrentTime();
+        String orderNo = SystemCommonConfig.USER_BALANCE + DateUtil.longToTimeStr(currentTime.getTime(), DateUtil.dateFormat10) + NumberUtil.createNumberStr(10);
+        UserBalanceDO userBalanceDO = new UserBalanceDO();
+        userBalanceDO.setOrderNo(orderNo);  //记录号：业务类型（2）+日期（6）+随机位（10）
+        userBalanceDO.setUserId(userId);
+        userBalanceDO.setFromType("系统操作");
+        userBalanceDO.setCurrencyId(currencyId);  //币种Id,美元id=999
+        userBalanceDO.setCurrencyName(currencyName);  //货币名称
+        userBalanceDO.setBalanceNumber(0);  //交易数量
+        userBalanceDO.setFrozenNumber(currencyNumber);  //冻结数量
+        userBalanceDO.setRemark(remarks);
+        userBalanceDO.setAddTime(currentTime);
+
+        //业务执行状态
+        boolean executeSuccess = true;
+
+        //添加用户账户记录
+        executeSuccess = userBalanceService.insertUserBalance(userBalanceDO);
+
+        //新增管理员操作记录
+        if (executeSuccess) {
+            BackerHandleUserBalanceFreezeMoneyDO backerHandleUserBalanceFreezeMoney = new BackerHandleUserBalanceFreezeMoneyDO();
+            backerHandleUserBalanceFreezeMoney.setAddTime(currentTime);
+            backerHandleUserBalanceFreezeMoney.setBackerAccount(backerAccount);
+            backerHandleUserBalanceFreezeMoney.setBackerId(backerId);
+            backerHandleUserBalanceFreezeMoney.setIpAddress(ipAddress);
+            backerHandleUserBalanceFreezeMoney.setRemarks(remarks);
+            backerHandleUserBalanceFreezeMoney.setTypeHandle(1);  //操作类型，1：增加，2：减少
+            backerHandleUserBalanceFreezeMoney.setUserAccount(userAccount);
+            backerHandleUserBalanceFreezeMoney.setUserId(userId);
+            backerHandleUserBalanceFreezeMoney.setCurrencyId(currencyId);
+            backerHandleUserBalanceFreezeMoney.setUserBalance(currencyNumber);  //冻结币（个）
+
+            executeSuccess = backerHandleUserBalanceFreezeMoneyService.insertBackerHandleUserBalanceFreezeMoney(backerHandleUserBalanceFreezeMoney);
+        }
+        //增加用户货币冻结数量
+        if (executeSuccess) {
+            executeSuccess = userCurrencyNumService.increaseCurrencyNumberLock(userId, currencyId, currencyNumber);
+        }
+
+        //数据回滚
+        if(!executeSuccess){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return executeSuccess;
+    }
+
+    /**
+     * 减少用户货币冻结数量（后台操作）
+     * @param userId 用户Id
+     * @param userAccount 用户账号
+     * @param currencyId 货币Id
+     * @param currencyName 货币名称
+     * @param currencyNumber 减少的货币冻结数量
+     * @param backerId 后台管理员Id
+     * @param backerAccount 后台管理员帐号
+     * @param remarks 备注
+     * @param ipAddress 操作时的ip地址
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    @Transactional
+    public boolean reduceUserCurrencyNumberLockForBack(int userId, String userAccount, int currencyId, String currencyName, double currencyNumber,
+                                                   int backerId, String backerAccount, String remarks, String ipAddress) {
+        Timestamp currentTime = DateUtil.getCurrentTime();
+        String orderNo = SystemCommonConfig.USER_BALANCE + DateUtil.longToTimeStr(currentTime.getTime(), DateUtil.dateFormat10) + NumberUtil.createNumberStr(10);
+        UserBalanceDO userBalanceDO = new UserBalanceDO();
+        userBalanceDO.setOrderNo(orderNo);  //记录号：业务类型（2）+日期（6）+随机位（10）
+        userBalanceDO.setUserId(userId);
+        userBalanceDO.setFromType("系统操作");
+        userBalanceDO.setCurrencyId(currencyId);  //币种Id,美元id=999
+        userBalanceDO.setCurrencyName(currencyName);  //货币名称
+        userBalanceDO.setBalanceNumber(0);  //交易数量
+        userBalanceDO.setFrozenNumber(-currencyNumber);  //冻结数量
+        userBalanceDO.setRemark(remarks);
+        userBalanceDO.setAddTime(currentTime);
+
+        //业务执行状态
+        boolean executeSuccess = true;
+
+        //添加用户账户记录
+        executeSuccess = userBalanceService.insertUserBalance(userBalanceDO);
+
+        //新增管理员操作记录
+        if (executeSuccess) {
+            BackerHandleUserBalanceFreezeMoneyDO backerHandleUserBalanceFreezeMoney = new BackerHandleUserBalanceFreezeMoneyDO();
+            backerHandleUserBalanceFreezeMoney.setAddTime(currentTime);
+            backerHandleUserBalanceFreezeMoney.setBackerAccount(backerAccount);
+            backerHandleUserBalanceFreezeMoney.setBackerId(backerId);
+            backerHandleUserBalanceFreezeMoney.setIpAddress(ipAddress);
+            backerHandleUserBalanceFreezeMoney.setRemarks(remarks);
+            backerHandleUserBalanceFreezeMoney.setTypeHandle(2);  //操作类型，1：增加，2：减少
+            backerHandleUserBalanceFreezeMoney.setUserAccount(userAccount);
+            backerHandleUserBalanceFreezeMoney.setUserId(userId);
+            backerHandleUserBalanceFreezeMoney.setCurrencyId(currencyId);
+            backerHandleUserBalanceFreezeMoney.setUserBalance(currencyNumber);  //冻结币（个）
+
+            executeSuccess = backerHandleUserBalanceFreezeMoneyService.insertBackerHandleUserBalanceFreezeMoney(backerHandleUserBalanceFreezeMoney);
+        }
+        //减少用户货币冻结数量
+        if (executeSuccess) {
+            executeSuccess = userCurrencyNumService.reduceCurrencyNumberLock(userId, currencyId, currencyNumber);
+        }
 
         //数据回滚
         if(!executeSuccess){

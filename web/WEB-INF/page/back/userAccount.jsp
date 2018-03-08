@@ -152,7 +152,7 @@
     </div>
 </div>
 
-<form id="detailForm" action="<%=path %>/backerWeb/backerUserAccount/showDetail.htm" target="_blank" method="post">
+<form id="detailForm" action="<%=path %>/backerWeb/backerUserAccountDetail/showDetail.htm" target="_blank" method="post">
     <input type="hidden" id="detailUserId" name="userId">
 </form>
 
