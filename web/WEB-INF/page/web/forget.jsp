@@ -70,13 +70,13 @@
 
             <p class="phoneInput">
                 <label class="popName">新密码<span class="star">*</span></label>
-                <input type="password" class="entry" id="password" name="password" placeholder="新密码，6~16个字符，字母和数字" maxLength="16"
+                <input type="password" class="password entry" id="password" name="password" placeholder="新密码，6~16个字符，字母和数字" maxLength="16"
                        onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
             </p>
 
             <p class="phoneInput">
                 <label class="popName">重复密码<span class="star">*</span></label>
-                <input type="password" class="entry" id="repeatPassword"  placeholder="再次输入新密码" maxLength="16"
+                <input type="password" class="password entry" id="repeatPassword"  placeholder="再次输入新密码" maxLength="16"
                        onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
             </p>
             <input type="text" value="提&nbsp;交" class="submit" onfocus="this.blur()" onclick="forgetPwd()"/>
@@ -282,6 +282,8 @@
             str = "<img class='delete' id='delete_code' style='right: 100px;' src='<%=path %>/resources/image/web/register.png' />";
         } else if ('password' == id || 'repeatPassword' == id) {
             str = "<img class='delete' id='delete_password' src='<%=path %>/resources/image/web/register.png' />";
+            $(".password").val("");
+            $(".password").attr("type","password");
         }
 
         $(o).parent().append(str);
