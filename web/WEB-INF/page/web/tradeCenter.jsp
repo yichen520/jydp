@@ -105,6 +105,7 @@
                 <p class="serviceInput">
                     <label class="tradeName">手续费：</label>
                     <span class="service">${transactionCurrency.buyFee }%</span>
+                    <input type="hidden" id="buyFee" value="${transactionCurrency.buyFee }">
                 </p>
 
                 <input type="text" class="buyBtn" value="买&nbsp;入" onfocus="this.blur()" onclick="buy();"/>
@@ -513,8 +514,10 @@
     //动态计算总价
     function mul() {
         var m = 0;
+        var f = 0;
         var buyPrice = $("#buyPrice").val();
         var buyNum = $("#buyNum").val();
+        var buyFee = $("#buyFee").val();
 
         //买入
         if (buyPrice != null && buyPrice != "") {
@@ -529,6 +532,10 @@
             }
 
             var userBalance = parseFloat($("#userBalance").val());
+            buyFee = buyFee * 100;
+            var number = buyFee * userBalance * 100;
+            userBalance = ((userBalance * 1000000) - (number)) / 1000000
+
             if(buyPrice > 0){
                 var total = userBalance / buyPrice;
                 var tota = mulMaxNumber(total);

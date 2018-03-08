@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/public.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/simpleTips.css" />
 
-    <title>增减用户余额记录</title>
+    <title>增减用户可用余额记录</title>
 </head>
 <body>
 <div id="header"></div>
@@ -24,7 +24,7 @@
 
     <div class="contentRight">
         <div class="caption">
-            <span class="title">增减用户余额记录</span>
+            <span class="title">增减用户可用余额记录</span>
         </div>
 
         <div class="top">
