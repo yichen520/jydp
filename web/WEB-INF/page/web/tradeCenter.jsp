@@ -236,6 +236,7 @@
                 <td class="amount">委托价格</td>
                 <td class="amount">委托数量</td>
                 <td class="amount">委托总价</td>
+                <td class="amount">已成交数量</td>
                 <td class="operate">操作</td>
             </tr>
             <tbody id="entrustRecord">
@@ -251,6 +252,7 @@
                     <td class="amount">$<fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2"/></td>
                     <td class="amount"><fmt:formatNumber type="number" value="${item.pendingNumber}" maxFractionDigits="4"/></td>
                     <td class="amount rise">$<fmt:formatNumber type="number" value="${item.countPrice}" maxFractionDigits="6"/></td>
+                    <td class="amount"><fmt:formatNumber type="number" value="${item.dealNumber}" maxFractionDigits="4"/></td>
                     <td class="operate"><input type="text" readonly="readonly" value="撤&nbsp;销" class="revoke" onclick="cancle('${item.pendingOrderNo}')" /></td>
                 </tr>
             </c:forEach>
@@ -1091,6 +1093,7 @@
                         var pendingNumber = deal.pendingNumber ;
                         var currencyTotalPrice = deal.countPrice;
                         var pendingOrderNo = deal.pendingOrderNo;
+                        var dealNumber = deal.dealNumber;
                         var goCancle = "cancle('"+ pendingOrderNo + "')";
                         newChild += "<tr class='tableInfo'>" +
                             "<td class='time'>" + addTime + "</td>" +
@@ -1098,6 +1101,7 @@
                             "<td class='amount'>" + "$" + pendingPrice + "</td>" +
                             "<td class='amount'>" + pendingNumber + "</td>" +
                             "<td class='amount rise'>" + "$" + currencyTotalPrice+ "</td>" +
+                            "<td class='amount'>"+ dealNumber +"</td>" +
                             "<td class='operate'><input type='text' readonly='readonly' value='撤&nbsp;销' class='revoke' onclick="+ goCancle + "></td>" +
                             "</tr>";
                     }
