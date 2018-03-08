@@ -68,7 +68,7 @@
             <ul class="safetyList">
                 <li class="safetyInfo">
                     <img src="<%=path %>/resources/image/web/pass.png" class="pass" id="payPass"/>
-                    <img src="<%=path %>/resources/image/web/error.png" class="error" id="payError" />
+                    <img src="<%=path %>/resources/image/web/error.png" class="error" id="payError" style="display: none" />
                     <span class="safetyTitle">支付密码</span>
                     <span class="state">已设置</span>
                     <span class="explain">为保证账号安全，建议设置与登录密码不同的密码组合</span>
