@@ -45,22 +45,22 @@
                         <td class="source">${accountRecord.fromType}</td>
                         <c:if test="${accountRecord.balanceNumber >= 0}">
                             <td class="amount in">
-                                <c:if test="${accountRecord.balanceNumber > 0}">+</c:if><fmt:formatNumber type="number" value="${accountRecord.balanceNumber}" maxFractionDigits="4"/>
+                                <c:if test="${accountRecord.balanceNumber > 0}">+</c:if><fmt:formatNumber type="number" value="${accountRecord.balanceNumber}" maxFractionDigits="6"/>
                             </td>
                         </c:if>
                         <c:if test="${accountRecord.balanceNumber < 0}">
                             <td class="amount pay">
-                                <fmt:formatNumber type="number" value="${accountRecord.balanceNumber}" maxFractionDigits="4"/>
+                                <fmt:formatNumber type="number" value="${accountRecord.balanceNumber}" maxFractionDigits="6"/>
                             </td>
                         </c:if>
                         <c:if test="${accountRecord.frozenNumber >= 0}">
                             <td class="amount in">
-                                <c:if test="${accountRecord.frozenNumber > 0}">+</c:if><fmt:formatNumber type="number" value="${accountRecord.frozenNumber}" maxFractionDigits="4"/>
+                                <c:if test="${accountRecord.frozenNumber > 0}">+</c:if><fmt:formatNumber type="number" value="${accountRecord.frozenNumber}" maxFractionDigits="6"/>
                             </td>
                         </c:if>
                         <c:if test="${accountRecord.frozenNumber < 0}">
                             <td class="amount pay">
-                                <fmt:formatNumber type="number" value="${accountRecord.frozenNumber}" maxFractionDigits="4"/>
+                                <fmt:formatNumber type="number" value="${accountRecord.frozenNumber}" maxFractionDigits="6"/>
                             </td>
                         </c:if>
                         <td class="mark">${accountRecord.remark}</td>

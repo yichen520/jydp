@@ -38,9 +38,8 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
 
         if (transactionUserDealDOList != null) {
             for (TransactionUserDealDO transactionUserDeal:transactionUserDealDOList) {
-                int accuracy = 4;
-                transactionUserDeal.setCurrencyNumber(NumberUtil.doubleFormat(transactionUserDeal.getCurrencyNumber(),accuracy));
-                transactionUserDeal.setCurrencyTotalPrice(NumberUtil.doubleFormat(transactionUserDeal.getCurrencyTotalPrice(),accuracy));
+                transactionUserDeal.setCurrencyNumber(NumberUtil.doubleFormat(transactionUserDeal.getCurrencyNumber(),4));
+                transactionUserDeal.setCurrencyTotalPrice(NumberUtil.doubleFormat(transactionUserDeal.getCurrencyTotalPrice(),6));
             }
         }
 

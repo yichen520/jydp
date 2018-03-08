@@ -288,10 +288,10 @@ public class IdentificationController {
         boolean insertBoo = userIdentificationService.insertUserIdentificationAndImage(userIdentificationDO, imageUrlList, userDO.getAuthenticationStatus());
         if (insertBoo) {
             responseJson.setCode(1);
-            responseJson.setMessage("操作成功");
+            responseJson.setMessage("提交成功");
         } else {
             responseJson.setCode(5);
-            responseJson.setMessage("操作失败");
+            responseJson.setMessage("提交失败");
         }
         return responseJson;
     }

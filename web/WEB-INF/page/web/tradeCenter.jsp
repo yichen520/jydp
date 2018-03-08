@@ -34,31 +34,31 @@
 
             <p class="increase">
                 <c:if test="${standardParameter.todayRange >= 0}">
-                    <span class="number rise" id="todayRangeRise">+<fmt:formatNumber type="number" value="${standardParameter.todayRange }" groupingUsed="FALSE" maxFractionDigits="8"/>%</span>
+                    <span class="number rise" id="todayRangeRise">+<fmt:formatNumber type="number" value="${standardParameter.todayRange }" groupingUsed="FALSE" maxFractionDigits="6"/>%</span>
                 </c:if>
                 <c:if test="${standardParameter.todayRange < 0}">
-                    <span class="number fall" id="todayRangeRise"><fmt:formatNumber type="number" value="${standardParameter.todayRange }" groupingUsed="FALSE" maxFractionDigits="8"/>%</span>
+                    <span class="number fall" id="todayRangeRise"><fmt:formatNumber type="number" value="${standardParameter.todayRange }" groupingUsed="FALSE" maxFractionDigits="6"/>%</span>
                 </c:if>
                 <span class="infoName">今日涨跌</span>
             </p>
             <p class="info">
-                <span class="number rise" id="todayMax"><fmt:formatNumber type="number" value="${standardParameter.todayMax }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
+                <span class="number rise" id="todayMax"><fmt:formatNumber type="number" value="${standardParameter.todayMax }" groupingUsed="FALSE" maxFractionDigits="6"/></span>
                 <span class="infoName" >今日最高价</span>
             </p>
             <p class="info">
-                <span class="number fall" id="todayMin"><fmt:formatNumber type="number" value="${standardParameter.todayMin }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
+                <span class="number fall" id="todayMin"><fmt:formatNumber type="number" value="${standardParameter.todayMin }" groupingUsed="FALSE" maxFractionDigits="6"/></span>
                 <span class="infoName">今日最低价</span>
             </p>
             <p class="info">
-                <span class="number price" id="buyOne"><fmt:formatNumber type="number" value="${standardParameter.buyOne }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
+                <span class="number price" id="buyOne"><fmt:formatNumber type="number" value="${standardParameter.buyOne }" groupingUsed="FALSE" maxFractionDigits="6"/></span>
                 <span class="infoName">买一价</span>
             </p>
             <p class="info">
-                <span class="number price" id="sellOne"><fmt:formatNumber type="number" value="${standardParameter.sellOne }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
+                <span class="number price" id="sellOne"><fmt:formatNumber type="number" value="${standardParameter.sellOne }" groupingUsed="FALSE" maxFractionDigits="6"/></span>
                 <span class="infoName">卖一价</span>
             </p>
             <p class="info">
-                <span class="number price" id="dayTurnove"><fmt:formatNumber type="number" value="${standardParameter.dayTurnove }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
+                <span class="number price" id="dayTurnove"><fmt:formatNumber type="number" value="${standardParameter.dayTurnove }" groupingUsed="FALSE" maxFractionDigits="4"/></span>
                 <span class="infoName">今日成交量</span>
             </p>
         </div>
@@ -73,7 +73,7 @@
 
                 <p class="buyInput">
                     <label class="tradeName">可用美金：</label>
-                    <span class="buyAmount rise" id="usableUserBalance">$<fmt:formatNumber type="number" value="${userDealCapitalMessage.userBalance }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
+                    <span class="buyAmount rise" id="usableUserBalance">$<fmt:formatNumber type="number" value="${userDealCapitalMessage.userBalance }" groupingUsed="FALSE" maxFractionDigits="6"/></span>
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">买入价格：</label>
@@ -109,7 +109,7 @@
                 <p class="buyInput">
                     <label class="tradeName">可用数量：</label>
                     <span class="sellAmount fall" id="usableCurrencyNumber"><fmt:formatNumber type="number"
-                           value="${userDealCapitalMessage.currencyNumber }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
+                           value="${userDealCapitalMessage.currencyNumber }" groupingUsed="FALSE" maxFractionDigits="4"/></span>
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">卖出价格：</label>
@@ -145,31 +145,31 @@
         <ul class="account">
             <li class="accountList">
                 <span class="listName">可用${transactionCurrency.currencyName }</span>
-                <span class="listMoney rise" id="currencyNumberShow"><fmt:formatNumber type="number" value="${userDealCapitalMessage.currencyNumber }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
-                <input type="hidden" id="currencyNumber" value="<fmt:formatNumber type="number" value="${userDealCapitalMessage.currencyNumber }" groupingUsed="FALSE" maxFractionDigits="8"/>">
+                <span class="listMoney rise" id="currencyNumberShow"><fmt:formatNumber type="number" value="${userDealCapitalMessage.currencyNumber }" groupingUsed="FALSE" maxFractionDigits="4"/></span>
+                <input type="hidden" id="currencyNumber" value="<fmt:formatNumber type="number" value="${userDealCapitalMessage.currencyNumber }" groupingUsed="FALSE" maxFractionDigits="4"/>">
             </li>
             <li class="accountList">
                 <span class="listName" >冻结${transactionCurrency.currencyName }</span>
-                <span class="listMoney fall" id="currencyNumberLockShow"><fmt:formatNumber type="number" value="${userDealCapitalMessage.currencyNumberLock }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
+                <span class="listMoney fall" id="currencyNumberLockShow"><fmt:formatNumber type="number" value="${userDealCapitalMessage.currencyNumberLock }" groupingUsed="FALSE" maxFractionDigits="4"/></span>
             </li>
             <li class="accountList">
                 <span class="listName">可用美金</span>
-                <span class="listMoney rise" id="userBalanceShow">$<fmt:formatNumber type="number" value="${userDealCapitalMessage.userBalance }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
-                <input type="hidden" id="userBalance" value="<fmt:formatNumber type="number" value="${userDealCapitalMessage.userBalance }" groupingUsed="FALSE" maxFractionDigits="8"/>">
+                <span class="listMoney rise" id="userBalanceShow">$<fmt:formatNumber type="number" value="${userDealCapitalMessage.userBalance }" groupingUsed="FALSE" maxFractionDigits="6"/></span>
+                <input type="hidden" id="userBalance" value="<fmt:formatNumber type="number" value="${userDealCapitalMessage.userBalance }" groupingUsed="FALSE" maxFractionDigits="6"/>">
             </li>
             <li class="accountList">
                 <span class="listName">冻结美金</span>
-                <span class="listMoney fall" id="userBalanceLockShow">$<fmt:formatNumber type="number" value="${userDealCapitalMessage.userBalanceLock }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
+                <span class="listMoney fall" id="userBalanceLockShow">$<fmt:formatNumber type="number" value="${userDealCapitalMessage.userBalanceLock }" groupingUsed="FALSE" maxFractionDigits="6"/></span>
             </li>
             <li class="accountList">
                 <span class="listName">账户总资产</span>
-                <span class="listMoney fall" id="currencyNumberSumShow">$<fmt:formatNumber type="number" value="${userDealCapitalMessage.currencyNumberSum }" groupingUsed="FALSE" maxFractionDigits="8"/></span>
+                <span class="listMoney fall" id="currencyNumberSumShow">$<fmt:formatNumber type="number" value="${userDealCapitalMessage.currencyNumberSum }" groupingUsed="FALSE" maxFractionDigits="6"/></span>
             </li>
         </ul>
 
         <div class="entrust">
             <p class="entrustTop">
-                <span class="dealPrice" id="nowPriceShow">最新成交价：$<fmt:formatNumber type="number" value="${standardParameter.nowPrice}" groupingUsed="FALSE" maxFractionDigits="8"/></span>
+                <span class="dealPrice" id="nowPriceShow">最新成交价：$<fmt:formatNumber type="number" value="${standardParameter.nowPrice}" groupingUsed="FALSE" maxFractionDigits="6"/></span>
                 <span class="count"><span id="countNum"></span>s后刷新</span>
             </p>
 
@@ -372,7 +372,7 @@
         if(transactionPendOrderList != null && transactionPendOrderList.length > 0 && userSession != null
              && transactionPendOrderList != "" && transactionPendOrderList != "[]"){
             //$("#tableId").style.display="inline";
-            $("#tableId").css("display","block");
+            $("#tableId").css("display","inline-block");
         }
 
         if (code != 1 && message != "") {
@@ -1042,7 +1042,7 @@
                 var data = result.data;
                 var dealList = data.transactionPendOrderList;
                 if (dealList != null && dealList.length > 0) {
-                    $("#tableId").css("display","block");
+                    $("#tableId").css("display","inline-block");
                     var newChild = "";
 
                     for (var i = 0; i <= dealList.length - 1; i++) {

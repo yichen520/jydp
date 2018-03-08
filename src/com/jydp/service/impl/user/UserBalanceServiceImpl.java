@@ -54,7 +54,7 @@ public class UserBalanceServiceImpl implements IUserBalanceService {
         if (userBalanceList != null) {
             for (UserBalanceDO userBalance:userBalanceList) {
                 int currencyId = userBalance.getCurrencyId();
-                int accuracy = 4;
+                int accuracy = 6;
                 if (currencyId == 999) {
                     accuracy = 2;
                 }

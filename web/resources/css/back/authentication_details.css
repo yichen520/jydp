@@ -53,12 +53,11 @@
 .over{
     max-height: 460px;
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: auto;
     text-align: center;
 }
 .over img{
     margin: 10px 20px;
-    max-width: 460px;
     max-height: 440px;
 }
 .close{
