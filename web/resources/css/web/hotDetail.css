@@ -4,8 +4,15 @@
     width: 1170px;
     background-color: #ffffff;
 }
+.editor{
+    display: inline-block;
+}
 .content img{
     max-width: 100%;
+    margin-right: 10px;
+    margin-top: 10px;
+    float: left !important;
+
 }
 .content p,span{
     word-break: break-all;
