@@ -282,8 +282,19 @@
             str = "<img class='delete' id='delete_code' style='right: 100px;' src='<%=path %>/resources/image/web/register.png' />";
         } else if ('password' == id || 'repeatPassword' == id) {
             str = "<img class='delete' id='delete_password' src='<%=path %>/resources/image/web/register.png' />";
-            $(".password").val("");
-            $(".password").attr("type","password");
+            if (id == 'password') {
+                $("#password").focus(function(){
+                    $("#password").val("");
+                    $("#password").attr("type","password");
+                });
+            }
+
+            if (id == 'repeatPassword') {
+                $("#repeatPassword").focus(function(){
+                    $("#repeatPassword").val("");
+                    $("#repeatPassword").attr("type","password");
+                });
+            }
         }
 
         $(o).parent().append(str);
