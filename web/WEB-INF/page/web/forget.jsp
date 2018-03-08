@@ -83,7 +83,7 @@
         </div>
     </form>
 </div>
-
+<input type="hidden" id="chinaArea" value="${selectedArea}">
 
 <div class="forgetFoot">盛临九洲版权所有</div>
 
@@ -156,6 +156,8 @@
             phoneBoo = true;
         }
 
+        var chinaArea = '${selectedArea}';
+        var area =  $(".selectCont").html();
         var phone = $("#phone").val();
         var regPos = /^\d+(\.\d+)?$/; //非负浮点数
         if (!phone) {
@@ -165,6 +167,11 @@
 
 
         if(!regPos.test(phone) || phone.length > 11 || phone.length < 5){
+            phoneBoo = false;
+            return openTips("请输入正确手机号");
+        }
+
+        if (area == chinaArea && phone.length != 11) {
             phoneBoo = false;
             return openTips("请输入正确手机号");
         }
