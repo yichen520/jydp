@@ -8,10 +8,10 @@
     width: 150px;
 }
 .time{
-    width: 120px;
+    width: 150px;
 }
 .coin{
-    width: 205px;
+    width: 173px;
 }
 .coinLogo{
     width: 60px;
@@ -21,14 +21,14 @@
     height: 60px;
     object-fit: cover;
 }
-.service,.range{
-    width: 90px;
+.service{
+    width: 130px;
 }
 .state{
-    width: 60px;
+    width: 70px;
 }
 .account{
-    width: 140px;
+    width: 170px;
 }
 .tableInfo .account,.tableInfo .coin{
     text-align: left;
