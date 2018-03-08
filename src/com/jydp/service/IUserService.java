@@ -173,6 +173,34 @@ public interface IUserService {
      */
     boolean reduceBalanceNumberForBack(int userId, String userAccount, double balanceNumber,
                                               int backerId, String backerAccount, String remarks, String ipAddress);
+
+    /**
+     * 增加用户冻结金额（后台操作）
+     * @param userId 用户Id
+     * @param userAccount 用户账号
+     * @param balanceNumber 增加的账户锁定金额
+     * @param backerId 后台管理员Id
+     * @param backerAccount 后台管理员帐号
+     * @param remarks 备注
+     * @param ipAddress 操作时的ip地址
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean addBalanceNumberLockForBack(int userId, String userAccount, double balanceNumber,
+                                               int backerId, String backerAccount, String remarks, String ipAddress);
+
+    /**
+     * 减少用户冻结金额（后台操作）
+     * @param userId 用户Id
+     * @param userAccount 用户账号
+     * @param balanceNumber 减少的账户锁定金额
+     * @param backerId 后台管理员Id
+     * @param backerAccount 后台管理员帐号
+     * @param remarks 备注
+     * @param ipAddress 操作时的ip地址
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean reduceBalanceNumberLockForBack(int userId, String userAccount, double balanceNumber,
+                                        int backerId, String backerAccount, String remarks, String ipAddress);
     /**
      * 增加用户账户金额
      * @param userId 用户Id
@@ -226,5 +254,20 @@ public interface IUserService {
      * @return 查询成功：返回用户账户错误总数，查询失败：返回0
      */
     UserDealCapitalMessageVO countCheckUserAmountForTimer(int userId, int currencyId);
+
+    /**
+     * 增加用户货币数量（后台操作）
+     * @param userId 用户Id
+     * @param userAccount 用户账号
+     * @param currencyId 币种Id
+     * @param currencyNumber 增加的货币数量
+     * @param backerId 后台管理员Id
+     * @param backerAccount 后台管理员帐号
+     * @param remarks 备注
+     * @param ipAddress 操作时的ip地址
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean addUserCurrencyNumberForBack(int userId, String userAccount, int currencyId, double currencyNumber,
+                                                int backerId, String backerAccount, String remarks, String ipAddress);
 
 }

@@ -121,6 +121,7 @@ public class BackerUserAccountController {
         List<BackerUserCurrencyNumDTO> userCurrencyNumList = userCurrencyNumService.getUserCurrencyNumByUserIdForBacker(userId);
 
         request.setAttribute("userCurrencyNumList", userCurrencyNumList);
+        request.setAttribute("userId", userIdStr);
         request.setAttribute("userAccount", userDO.getUserAccount());
         return "page/back/userAccountDetail";
     }
@@ -574,5 +575,124 @@ public class BackerUserAccountController {
         return responseJson;
     }
 
+    /** 增加账户锁定余额 */
+    @RequestMapping(value = "/addLockAmount.htm", method = RequestMethod.POST)
+    public @ResponseBody JsonObjectBO addLockAmount(HttpServletRequest request) {
+        JsonObjectBO responseJson = new JsonObjectBO();
+        BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
+        if (backerSession == null) {
+            responseJson.setCode(4);
+            responseJson.setMessage("登录过期，请重新登录");
+            return responseJson;
+        }
+        boolean handleFrequent = BackerWebInterceptor.handleFrequent(request);
+        if (handleFrequent) {
+            responseJson.setCode(6);
+            responseJson.setMessage("您的操作太频繁");
+            return responseJson;
+        }
+        //业务功能权限
+        boolean havePower = BackerWebInterceptor.validatePower(request, 141108);
+        if (!havePower) {
+            responseJson.setCode(6);
+            responseJson.setMessage("您没有该权限");
+            request.getSession().setAttribute("backer_pagePowerId", 0);
+            return responseJson;
+        }
+
+        String userIdStr = StringUtil.stringNullHandle(request.getParameter("userId"));
+        String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
+        String balanceNumberStr = StringUtil.stringNullHandle(request.getParameter("balanceNumber"));
+        String remark = StringUtil.stringNullHandle(request.getParameter("remark"));
+        if (!StringUtil.isNotNull(userIdStr) || !StringUtil.isNotNull(userAccount)
+                || !StringUtil.isNotNull(balanceNumberStr)) {
+            responseJson.setCode(2);
+            responseJson.setMessage("参数为空");
+            return responseJson;
+        }
+
+        int userId = Integer.parseInt(userIdStr);
+        double balanceNumber = Double.parseDouble(balanceNumberStr);
+        String ipAddress = IpAddressUtil.getIpAddress(request);
+
+        BackerDO backer = backerService.getBackerById(backerSession.getBackerId());
+        if (backer == null || backer.getAccountStatus() != 1) {
+            responseJson.setCode(3);
+            responseJson.setMessage("操作非法");
+            return responseJson;
+        }
+
+        boolean updateResult = userService.addBalanceNumberLockForBack(userId, userAccount, balanceNumber,
+                backer.getBackerId(), backer.getBackerAccount(), remark, ipAddress);
+        if (updateResult) {
+            responseJson.setCode(1);
+            responseJson.setMessage("操作成功");
+            return responseJson;
+        }
+
+        responseJson.setCode(5);
+        responseJson.setMessage("操作失败");
+        return responseJson;
+    }
+
+    /** 减少账户锁定余额 */
+    @RequestMapping(value = "/reduceLockAmount.htm", method = RequestMethod.POST)
+    public @ResponseBody JsonObjectBO reduceLockAmount(HttpServletRequest request) {
+        JsonObjectBO responseJson = new JsonObjectBO();
+        BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
+        if (backerSession == null) {
+            responseJson.setCode(4);
+            responseJson.setMessage("登录过期，请重新登录");
+            return responseJson;
+        }
+        boolean handleFrequent = BackerWebInterceptor.handleFrequent(request);
+        if (handleFrequent) {
+            responseJson.setCode(6);
+            responseJson.setMessage("您的操作太频繁");
+            return responseJson;
+        }
+        //业务功能权限
+        boolean havePower = BackerWebInterceptor.validatePower(request, 141109);
+        if (!havePower) {
+            responseJson.setCode(6);
+            responseJson.setMessage("您没有该权限");
+            request.getSession().setAttribute("backer_pagePowerId", 0);
+            return responseJson;
+        }
+
+        String userIdStr = StringUtil.stringNullHandle(request.getParameter("userId"));
+        String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
+        String balanceNumberStr = StringUtil.stringNullHandle(request.getParameter("balanceNumber"));
+        String remark = StringUtil.stringNullHandle(request.getParameter("remark"));
+        if (!StringUtil.isNotNull(userIdStr) || !StringUtil.isNotNull(userAccount)
+                || !StringUtil.isNotNull(balanceNumberStr)) {
+            responseJson.setCode(2);
+            responseJson.setMessage("参数为空");
+            return responseJson;
+        }
+
+        int userId = Integer.parseInt(userIdStr);
+        double balanceNumber = Double.parseDouble(balanceNumberStr);
+        String ipAddress = IpAddressUtil.getIpAddress(request);
+
+        BackerDO backer = backerService.getBackerById(backerSession.getBackerId());
+        if (backer == null || backer.getAccountStatus() != 1) {
+            responseJson.setCode(3);
+            responseJson.setMessage("操作非法，您的账号不可用");
+            return responseJson;
+        }
+
+        boolean updateResult = userService.reduceBalanceNumberLockForBack(userId, userAccount, balanceNumber,
+                backerSession.getBackerId(), backerSession.getBackerAccount(), remark, ipAddress);
+        if (updateResult) {
+            responseJson.setCode(1);
+            responseJson.setMessage("操作成功");
+            return responseJson;
+        }
+
+        responseJson.setCode(5);
+        responseJson.setMessage("操作失败");
+        return responseJson;
+    }
 
 }
