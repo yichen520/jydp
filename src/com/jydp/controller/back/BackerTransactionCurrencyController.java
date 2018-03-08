@@ -360,7 +360,8 @@ public class BackerTransactionCurrencyController {
         }
 
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
-        if (!StringUtil.isNotNull(currencyIdStr)){
+        String paymentTypeStr = StringUtil.stringNullHandle(request.getParameter("paymentType"));
+        if (!StringUtil.isNotNull(currencyIdStr) || !StringUtil.isNotNull(paymentTypeStr)){
             response.setCode(3);
             response.setMessage("参数错误");
             return response;
@@ -369,15 +370,9 @@ public class BackerTransactionCurrencyController {
         int currencyId = 0;
         int paymentType = 0;
         currencyId = Integer.parseInt(currencyIdStr);
+        paymentType = Integer.parseInt(paymentTypeStr);
 
-        TransactionCurrencyVO currency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
-        if (currency == null) {
-            response.setCode(3);
-            response.setMessage("币种不存在");
-            return response;
-        }
-
-        if (currency.getPaymentType() == 1) {
+        if (paymentType == 2) {
             //业务功能权限
             boolean havePower = BackerWebInterceptor.validatePower(request, 104007);
             if (!havePower) {
@@ -386,7 +381,6 @@ public class BackerTransactionCurrencyController {
                 return response;
             }
             response.setMessage("停牌成功");
-            paymentType = 2;
         } else {
             //业务功能权限
             boolean havePower = BackerWebInterceptor.validatePower(request, 104008);
@@ -396,7 +390,18 @@ public class BackerTransactionCurrencyController {
                 return response;
             }
             response.setMessage("复牌成功");
-            paymentType = 1;
+        }
+
+        TransactionCurrencyVO currency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
+        if (currency == null) {
+            response.setCode(3);
+            response.setMessage("币种不存在");
+            return response;
+        }
+        if (currency.getPaymentType() == paymentType) {
+            response.setCode(3);
+            response.setMessage("币种已修改");
+            return response;
         }
 
         boolean result = transactionCurrencyService.updatePaymentType(currencyId, paymentType,

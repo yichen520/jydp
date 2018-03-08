@@ -840,7 +840,7 @@
                     var orderSell = orderSellList[i];
 
                     var pendingPrice = Math.floor(orderSell.pendingPrice * 100) / 100;  //单价
-                    var pendingNumber = Math.floor(orderSell.restNumber * 10000) / 10000;  //数量
+                    var pendingNumber = Math.floor(orderSell.restNumber * 100000) / 100000;  //数量
                     var sumPrice = Math.floor(orderSell.sumPrice * 1000000) / 1000000;  //总额
 
                     newChildSell += '<li class="recordInfo">' +
@@ -859,7 +859,7 @@
                     var orderBuy = orderBuyList[i];
 
                     var pendingPrice = Math.floor(orderBuy.pendingPrice * 100) / 100;  //单价
-                    var pendingNumber = Math.floor(orderBuy.restNumber * 10000) / 10000;  //数量
+                    var pendingNumber = Math.floor(orderBuy.restNumber * 100000) / 100000;  //数量
                     var sumPrice = Math.floor(orderBuy.sumPrice * 1000000) / 1000000;  //总额
 
                     newChildBuy += '<li class="recordInfo">' +
@@ -932,8 +932,8 @@
                             paymentType = "卖出";
                             type = "fall";
                         }
-                        var transactionPrice = Math.floor(deal.transactionPrice * 100) / 100;
-                        var currencyNumber = Math.floor(deal.currencyNumber * 10000) / 10000;
+                        var transactionPrice = Math.floor(deal.transactionPrice * 1000) / 1000;
+                        var currencyNumber = Math.floor(deal.currencyNumber * 100000) / 100000;
                         var currencyTotalPrice = Math.floor(deal.currencyTotalPrice * 1000000) / 1000000;
 
                         newChild += "<tr class='tableInfo'>" +
