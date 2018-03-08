@@ -132,7 +132,7 @@ public class TradeCenterController {
     }
 
     /** 买入 */
-    @RequestMapping(value = "/buy", method = RequestMethod.POST)
+    @RequestMapping(value = "/buy.htm", method = RequestMethod.POST)
     public @ResponseBody JsonObjectBO buy(HttpServletRequest request) {
         JsonObjectBO resultJson = new JsonObjectBO();
 
@@ -296,7 +296,7 @@ public class TradeCenterController {
     }
 
     /** 卖出 */
-    @RequestMapping(value = "/sell", method = RequestMethod.POST)
+    @RequestMapping(value = "/sell.htm", method = RequestMethod.POST)
     public @ResponseBody JsonObjectBO sell(HttpServletRequest request) {
         JsonObjectBO resultJson = new JsonObjectBO();
 
