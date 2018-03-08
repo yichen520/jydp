@@ -7,6 +7,8 @@ import com.jydp.entity.DO.system.SystemNoticeDO;
 import com.jydp.service.ISystemNoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.List;
 
@@ -36,8 +38,23 @@ public class SystemNoticeServiceImpl implements ISystemNoticeService {
      * @param systemNoticeDO 待新增的 系统公告
      * @return 新增成功：返回true；新增失败：返回false
      */
+    @Transactional
     public boolean insertSystemNotice(SystemNoticeDO systemNoticeDO) {
-        return systemNoticeDao.insertSystemNotice(systemNoticeDO);
+        int result = systemNoticeDao.sumNoticeForBack(null, null);
+        boolean executeSuccess = false;
+        if(result != 0){
+            executeSuccess = systemNoticeDao.updateNoticeRankNumber();
+            if(executeSuccess){
+                executeSuccess = systemNoticeDao.insertSystemNotice(systemNoticeDO);
+            }
+        }else{
+            executeSuccess = systemNoticeDao.insertSystemNotice(systemNoticeDO);
+        }
+        if (!executeSuccess) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+
+        return executeSuccess;
     }
 
     /**
@@ -103,12 +120,31 @@ public class SystemNoticeServiceImpl implements ISystemNoticeService {
      * @param id 记录Id
      * @return 置顶成功：返回true，置顶失败：返回false
      */
+    @Transactional
     public boolean topSystemNotice(int id) {
-        SystemNoticeDO systemNoticeDO = new SystemNoticeDO();
-        systemNoticeDO.setId(id);
-        systemNoticeDO.setTopTime(DateUtil.getCurrentTime());
+        SystemNoticeDO systemNoticeDO = systemNoticeDao.getSystemNoticeById(id);
+        if (systemNoticeDO == null) {
+            return false;
+        }
 
-        return systemNoticeDao.updateSystemNotice(systemNoticeDO);
+        int rankNumber = systemNoticeDO.getRankNumber() - 1;
+        int changeId = systemNoticeDao.getIdByRankForBack(rankNumber);
+
+        // 如果是第一个广告就不能上移了
+        if (changeId == 0) {
+            return false;
+        }
+
+        boolean executeSuccess = systemNoticeDao.topSystemNotice(id);
+        if(executeSuccess){
+            executeSuccess = systemNoticeDao.updateRankNumber(systemNoticeDO.getRankNumber());
+        }
+        // 数据回滚
+        if (!executeSuccess) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+
+        return executeSuccess;
     }
 
     /**
@@ -116,20 +152,106 @@ public class SystemNoticeServiceImpl implements ISystemNoticeService {
      * @param id 系统公告 的记录id
      * @return 删除成功：返回true，删除失败：返回false
      */
+    @Transactional
     public boolean deleteSystemNotice(int id) {
+        boolean executeSuccess = false;
         SystemNoticeDO systemNoticeDO = systemNoticeDao.getSystemNoticeById(id);
         if (systemNoticeDO == null) {
             return false;
         }
 
-        boolean deleteResult = systemNoticeDao.deleteSystemNotice(id);
-        if (deleteResult) {
-            // 删除封面图
-            FileWriteRemoteUtil.deleteFile(systemNoticeDO.getNoticeUrl());
-            return true;
-        } else {
+        int max = systemNoticeDao.getMaxRankForBack();
+        executeSuccess = systemNoticeDao.deleteSystemNotice(id);
+        if (executeSuccess) {
+            // 删除成功，处理排名变动
+            if (systemNoticeDO.getRankNumber() < max){
+                executeSuccess = systemNoticeDao.updateNoticeRank(systemNoticeDO.getRankNumber());
+            }
+        }
+        // 数据回滚
+        if (!executeSuccess) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+
+        return executeSuccess;
+    }
+
+    /**
+     * 上移用户公告
+     * @param id 合作商家id
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean upMoveNoticeForBack(int id){
+        // 首先查询广告是否存在
+        SystemNoticeDO systemNoticeDO = systemNoticeDao.getSystemNoticeById(id);
+        if (systemNoticeDO == null) {
             return false;
         }
+
+        int rankNumber = systemNoticeDO.getRankNumber() - 1;
+        int changeId = systemNoticeDao.getIdByRankForBack(rankNumber);
+
+        // 如果是第一个广告就不能上移了
+        if (changeId == 0) {
+            return false;
+        }
+
+        boolean executeSuccess = systemNoticeDao.upMoveNoticeForBack(id);
+        if (executeSuccess) {
+            // 把这个广告之前的一个广告排名+1
+            executeSuccess = systemNoticeDao.downMoveNoticeForBack(changeId);
+        }
+
+        // 数据回滚
+        if (!executeSuccess) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+
+        return executeSuccess;
+
+    }
+
+    /**
+     * 通过排名获取当前用户公告id
+     * @param rankNumber 排名
+     * @return 查询成功：返回广告id，查询失败：返回0
+     */
+    public int getIdByRankForBack(int rankNumber) {
+        return systemNoticeDao.getIdByRankForBack(rankNumber);
+    }
+
+    /**
+     * 下移用户公告
+     * @param id 首页广告id
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    @Transactional
+    public boolean downMoveNoticeForBack(int id){
+        // 首先查询广告是否存在
+        SystemNoticeDO systemNoticeDO = systemNoticeDao.getSystemNoticeById(id);
+        if (systemNoticeDO == null) {
+            return false;
+        }
+
+        int changeId = systemNoticeDao.getIdByRankForBack(systemNoticeDO.getRankNumber() + 1);
+
+        // 如果是最后一个广告就不能下移了
+        if (changeId == 0) {
+            return false;
+        }
+
+        boolean executeSuccess = systemNoticeDao.downMoveNoticeForBack(id);
+        if (executeSuccess) {
+            // 把这个广告之前的一个广告排名-1
+            executeSuccess = systemNoticeDao.upMoveNoticeForBack(changeId);
+        }
+
+        // 数据回滚
+        if (!executeSuccess) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+
+        return executeSuccess;
     }
 
 }

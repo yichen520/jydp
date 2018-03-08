@@ -85,4 +85,18 @@ public interface ISystemAdsHomepagesDao {
      * @return 查询成功：返回首页广告列表；查询失败：返回null
      */
     List<SystemAdsHomepagesDO> getSystemAdsHomepageslistForWeb();
+
+    /**
+     * 置顶首页广告
+     * @param id 记录Id
+     * @return 置顶成功：返回true，置顶失败：返回false
+     */
+    boolean topAdsHomepages(int id);
+
+    /**
+     * 修改首页广告排名（小于该排名的所有广告排名+1）
+     * @param rank 排名
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean updateRankNumber(int rank);
 }

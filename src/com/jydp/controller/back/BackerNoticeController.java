@@ -84,6 +84,12 @@ public class BackerNoticeController {
             systemNoticeList = systemNoticeService.getNoticeForBack(noticeType, noticeTitle, pageNumber, pageSize);
         }
 
+        int maxRankNumber = 0;
+
+        int length = systemNoticeList.size();
+        if (length > 0) {
+            maxRankNumber = systemNoticeList.get(length - 1).getRankNumber();
+        }
         int totalPageNumber = (int) Math.ceil(totalNumber / (pageSize * 1.0));
         if (totalPageNumber <= 0) {
             totalPageNumber = 1;
@@ -98,6 +104,7 @@ public class BackerNoticeController {
         request.setAttribute("pageNumber", pageNumber);
         request.setAttribute("totalNumber", totalNumber);
         request.setAttribute("totalPageNumber", totalPageNumber);
+        request.setAttribute("maxRankNumber", maxRankNumber);
         request.setAttribute("systemNoticeList", systemNoticeList);
 
         request.getSession().setAttribute("backer_pagePowerId", 113000);
@@ -159,6 +166,7 @@ public class BackerNoticeController {
         systemNoticeDO.setNoticeType(noticeType);
         systemNoticeDO.setContent(content);
         systemNoticeDO.setNoticeUrl(imageUrl);
+        systemNoticeDO.setRankNumber(1);
         systemNoticeDO.setAddTime(DateUtil.getCurrentTime());
 
         boolean addResult = systemNoticeService.insertSystemNotice(systemNoticeDO);
@@ -423,5 +431,87 @@ public class BackerNoticeController {
         }
 
         return response;
+    }
+
+    /** 上移用户公告 */
+    @RequestMapping(value = "/upMoveNotice.htm", method = RequestMethod.POST)
+    public @ResponseBody JSONObject upMoveNotice(HttpServletRequest request) {
+        JSONObject response = new JSONObject();
+        // 业务功能权限
+        boolean havePower = BackerWebInterceptor.validatePower(request, 113003);
+        if (!havePower) {
+            response.put("code", 6);
+            response.put("message", "您没有该权限");
+            return response;
+        }
+
+        String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
+
+        // 处理页面参数
+        if (!StringUtil.isNotNull(idStr)) {
+            response.put("code", 3);
+            response.put("message", "参数错误");
+            return response;
+        }
+
+        int id = Integer.parseInt(idStr);
+        if (id <= 0) {
+            response.put("code", 3);
+            response.put("message", "参数错误");
+            return response;
+        }
+
+        boolean updateResult = systemNoticeService.upMoveNoticeForBack(id);
+        if (updateResult) {
+            response.put("code", 1);
+            response.put("message", "上移成功！");
+        } else {
+            response.put("code", 5);
+            response.put("message", "上移失败！");
+        }
+
+        return response;
+
+    }
+
+    /** 下移用户公告 */
+    @RequestMapping(value = "/downMoveNotice.htm", method = RequestMethod.POST)
+    public @ResponseBody JSONObject downMoveNotice(HttpServletRequest request) {
+        JSONObject response = new JSONObject();
+        // 业务功能权限
+        boolean havePower = BackerWebInterceptor.validatePower(request, 113003);
+        if (!havePower) {
+            response.put("code", 6);
+            response.put("message", "您没有该权限");
+            return response;
+        }
+
+        String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
+
+        // 处理页面参数
+        if (!StringUtil.isNotNull(idStr)) {
+            response.put("code", 3);
+            response.put("message", "参数错误");
+            return response;
+        }
+
+        int id = Integer.parseInt(idStr);
+        if (id <= 0) {
+            response.put("code", 3);
+            response.put("message", "参数错误");
+            return response;
+        }
+
+        boolean updateResult = systemNoticeService.downMoveNoticeForBack(id);
+        if (updateResult) {
+            response.put("code", 1);
+            response.put("message", "下移成功！");
+        } else {
+            response.put("code", 5);
+            response.put("message", "下移失败！");
+        }
+
+        return response;
+
     }
 }

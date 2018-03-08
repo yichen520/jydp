@@ -52,6 +52,7 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      * @param addTime 添加时间
      * @return  操作成功：返回true，操作失败：返回false
      */
+    @Transactional
     public boolean insertTransactionCurrency(String currencyShortName, String currencyName, String currencyImg,
                                              double buyFee, double sellFee, int paymentType, int upStatus,
                                              String backerAccount, String ipAddresse,
@@ -68,7 +69,13 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
         transactionCurrency.setIpAddress(ipAddresse);
         transactionCurrency.setUpTime(upTime);
         transactionCurrency.setAddTime(addTime);
-        return transactionCurrencyDao.insertTransactionCurrency(transactionCurrency);
+
+        int currencyId = transactionCurrencyDao.insertTransactionCurrency(transactionCurrency);
+        if (currencyId > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -98,22 +105,38 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
         transactionCurrency.setSellFee(sellFee);
         transactionCurrency.setPaymentType(paymentType);
         transactionCurrency.setUpStatus(upStatus);
+        transactionCurrency.setRankNumber(1);
         transactionCurrency.setBackerAccount(backerAccount);
         transactionCurrency.setIpAddress(ipAddresse);
         transactionCurrency.setAddTime(addTime);
-
-        boolean addBoo = false;
-
         if (upTime == null) {
             transactionCurrency.setUpTime(DateUtil.getCurrentTime());
             transactionCurrency.setPaymentType(1);
             transactionCurrency.setUpStatus(2);
-            addBoo = transactionCurrencyDao.insertTransactionCurrency(transactionCurrency);
         } else {
             transactionCurrency.setUpTime(upTime);
-            addBoo = transactionCurrencyDao.insertTransactionCurrency(transactionCurrency);
         }
 
+        boolean addBoo = true;
+        int currencyId = 0;
+
+        int maxNum = transactionCurrencyDao.countTransactionCurrencyForBack(null,0, 0, null, null, null,null, null);
+        //降位
+        if (maxNum > 0) {
+            addBoo = transactionCurrencyDao.updateCurrencyRankNumber(maxNum);
+        }
+        currencyId = transactionCurrencyDao.insertTransactionCurrency(transactionCurrency);
+        if (maxNum > 0 && !addBoo) {
+            addBoo = false;
+        }
+        if (currencyId <= 0){
+            addBoo = false;
+        }
+
+        // 数据回滚
+        if (!addBoo) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
         return addBoo;
     }
 
@@ -364,5 +387,126 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
     @Override
     public List<TransactionCurrencyVO> getOnlineAndSuspensionCurrencyForWeb() {
         return transactionCurrencyDao.getOnlineAndSuspensionCurrencyForWeb();
+    }
+
+    /**
+     * 上移币种
+     * @param currencyId  币种Id
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    @Transactional
+    public boolean upCurrencyRankNumber(int currencyId){
+        boolean executeSuccess = false;
+
+        //查询验空
+        TransactionCurrencyVO currency = transactionCurrencyDao.getTransactionCurrencyByCurrencyId(currencyId);
+        if (currency == null) {
+            return false;
+        }
+
+        int rankNumber = currency.getRankNumber() - 1;
+        int currId = transactionCurrencyDao.getTransactionCurrencyByRankNumber(rankNumber);
+
+        if (currId == 0){
+            return false;
+        }
+
+        //上移此币种
+        executeSuccess = transactionCurrencyDao.upCurrencyRankNumber(currencyId);
+
+        //下移之前排名靠前一位的币种
+        if (executeSuccess) {
+            executeSuccess = transactionCurrencyDao.downCurrencyRankNumber(currId);
+        }
+
+        // 数据回滚
+        if (!executeSuccess) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return executeSuccess;
+    }
+
+    /**
+     * 下移币种
+     * @param currencyId  币种Id
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    @Transactional
+    public boolean downCurrencyRankNumber(int currencyId){
+        boolean executeSuccess = false;
+
+        //查询验空
+        TransactionCurrencyVO currency = transactionCurrencyDao.getTransactionCurrencyByCurrencyId(currencyId);
+        if (currency == null) {
+            return false;
+        }
+
+        int rankNumber = currency.getRankNumber() + 1;
+        int currId = transactionCurrencyDao.getTransactionCurrencyByRankNumber(rankNumber);
+
+        if (currId == 0){
+            return false;
+        }
+
+        //下移此币种
+        executeSuccess = transactionCurrencyDao.downCurrencyRankNumber(currencyId);
+
+        //上移之前排名靠后一位的币种
+        if (executeSuccess) {
+            executeSuccess = transactionCurrencyDao.upCurrencyRankNumber(currId);
+        }
+
+        // 数据回滚
+        if (!executeSuccess) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+
+        return executeSuccess;
+    }
+
+    /**
+     * 根据币种排名位置获取币种信息
+     * @param rankNumber   排名位置
+     * @return  操作成功：返回币种Id，操作失败：返回0
+     */
+    public int getTransactionCurrencyByRankNumber(int rankNumber){
+        return transactionCurrencyDao.getTransactionCurrencyByRankNumber(rankNumber);
+    }
+
+    /**
+     * 置顶币种
+     * @param currencyId  币种Id
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    @Transactional
+    public boolean topCurrencyRankNumber(int currencyId){
+        boolean executeSuccess = false;
+
+        TransactionCurrencyVO currency = transactionCurrencyDao.getTransactionCurrencyByCurrencyId(currencyId);
+        if (currency == null) {
+            return false;
+        }
+
+        int rankNumber = currency.getRankNumber() - 1;
+        int currId = transactionCurrencyDao.getTransactionCurrencyByRankNumber(rankNumber);
+
+        if (currId == 0){
+            return false;
+        }
+
+        //修改之前的币种排名靠后一位
+        executeSuccess = transactionCurrencyDao.updateCurrencyRankNumber(currency.getRankNumber());
+
+        //置顶此币种
+        if (executeSuccess) {
+            executeSuccess = transactionCurrencyDao.topCurrencyRankNumber(currencyId);
+        }
+
+        // 数据回滚
+        if (!executeSuccess) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+
+        return executeSuccess;
     }
 }

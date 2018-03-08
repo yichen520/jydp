@@ -8,10 +8,10 @@
     width: 150px;
 }
 .time{
-    width: 150px;
+    width: 140px;
 }
 .coin{
-    width: 173px;
+    width: 145px;
 }
 .coinLogo{
     width: 60px;
@@ -25,18 +25,22 @@
     width: 130px;
 }
 .state{
-    width: 70px;
+    width: 60px;
 }
 .account{
-    width: 170px;
+    width: 198px;
 }
 .tableInfo .account,.tableInfo .coin{
     text-align: left;
 }
 .operate{
-    width: 138px;
+    width: 160px;
+}
+.tableInfo .operate{
+    text-align: left;
 }
 .stop{
+    margin-right: 5px;
     width: 40px;
     text-align: center;
     border: none;
@@ -49,6 +53,7 @@
     opacity: 0.8;
 }
 .start{
+    margin-right: 5px;
     width: 40px;
     text-align: center;
     border: none;
@@ -60,17 +65,32 @@
 .start:hover{
     opacity: 0.8;
 }
-.change,.online,.offLine{
+.adUp,.adDown,.toTop{
+    margin-bottom: 5px;
+    margin-right: 5px;
     width: 40px;
     text-align: center;
     border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 12px;
     color: #49a2fb;
+}
+.adUp:hover,.adDown:hover,.toTop:hover{
+    color: #2c94fd;
+}
+.change,.online,.offLine{
+    margin-right: 5px;
+    width: 40px;
+    text-align: center;
+    border: none;
+    color: #ff9a3b;
     background-color: transparent;
     cursor: pointer;
     font-size: 12px;
 }
 .change:hover,.online:hover,.offLine:hover{
-    color: #2c94fd;
+    color: #ff9a3b;
 }
 
 .stop_pop,.start_pop,.add_pop,.change_pop,.online_pop,.offLine_pop{

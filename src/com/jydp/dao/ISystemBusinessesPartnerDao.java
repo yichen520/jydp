@@ -62,8 +62,55 @@ public interface ISystemBusinessesPartnerDao {
     /**
      * 置顶合作商家
      * @param id 合作商家Id
-     * @param topTime 置顶时间topTime
      * @return 置顶成功：返回true，置顶失败：返回false
      */
-    boolean topTheBusinessesPartner(int id, Timestamp topTime);
+    boolean topTheBusinessesPartner(int id);
+
+    /**
+     * 修改合作商家排位位置（全部后移一位）
+     * @return 修改成功：返回true，修改失败：返回false
+     */
+    boolean updatebusinessesPartnerRankNumber();
+
+    /**
+     * 通过排名获取当前合作商家id
+     * @param rankNumber 排名
+     * @return 查询成功：返回合作商家d，查询失败：返回0
+     */
+    int getIdByRankForBack(int rankNumber);
+
+    /**
+     * 上移合作商家
+     * @param id 合作商家id
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean upMoveBusinessesPartnerForBack(int id);
+
+    /**
+     * 下移合作商家
+     * @param id 合作商家id
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean downMoveBusinessesPartnerForBack(int id);
+
+    /**
+     * 获取当前广告排名的最大位置
+     * @return 查询成功：返回最大的排名，查询失败：返回0
+     */
+    int getMaxRankForBack();
+
+    /**
+     * 修改合作商家排名（大于该排名的所有广告排名-1）
+     * @param rank 排名
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean updateBusinessesPartnerRank(int rank);
+
+    /**
+     * 修改合作商家排名（小于该排名的所有广告排名+1）
+     * @param rank 排名
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean updateRankNumber(int rank);
+
 }

@@ -3,11 +3,11 @@ package com.jydp.controller.back;
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.BackerSessionBO;
-import com.jydp.entity.DO.back.BackerDO;
-import com.jydp.entity.DO.back.BackerHandleUserRecordBalanceDO;
-import com.jydp.entity.DO.back.BackerRoleDO;
+import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
+import com.jydp.entity.VO.BackerHandleUserBalanceMoneyVO;
 import com.jydp.interceptor.BackerWebInterceptor;
-import com.jydp.service.IBackerHandleUserRecordBalanceService;
+import com.jydp.service.IBackerHandleUserBalanceMoneyService;
+import com.jydp.service.ITransactionCurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -18,24 +18,28 @@ import java.sql.Timestamp;
 import java.util.List;
 
 /**
- * 后台管理员操作管理
+ * 后台管理员增减用户可用币记录
  * @author sy
  *
  */
 @Controller
-@RequestMapping("/backerWeb/backerAdministratorOperation")
+@RequestMapping("/backerWeb/backerHandleUserBalanceMoney")
 @Scope(value="prototype")
-public class BackerAdministratorOperation {
-
-    /** 后台管理员增减用户余额记录 */
+public class BackerHandleUserBalanceMoneyController {
+    /** 后台管理员增减用户可用币记录 */
     @Autowired
-    private IBackerHandleUserRecordBalanceService backerHandleUserRecordBalanceService;
+    private IBackerHandleUserBalanceMoneyService backerHandleUserBalanceMoneyService;
 
-    /** 展示 后台管理员增减用户余额记录页面 */
+    /** 币种管理 */
+    @Autowired
+    private ITransactionCurrencyService transactionCurrencyService;
+
+
+    /** 展示 后台管理员增减用户可用币记录页面 */
     @RequestMapping(value = "/show.htm")
     public String show(HttpServletRequest request) {
         //业务功能权限
-        boolean havePower = BackerWebInterceptor.validatePower(request, 121001);
+        boolean havePower = BackerWebInterceptor.validatePower(request, 121201);
         if (!havePower) {
             request.setAttribute("code", 6);
             request.setAttribute("message", "您没有该权限");
@@ -51,13 +55,14 @@ public class BackerAdministratorOperation {
         }
 
         showList(request);
-        return "page/back/userBalanceRecord";
+        return "page/back/userBalanceCoinRecord";
     }
 
-    /** 分页查询 后台管理员增减用户余额记录数据  */
+    /** 分页查询 后台管理员增减用户可用币记录数据  */
     private void showList(HttpServletRequest request) {
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
         String typeHandleStr = StringUtil.stringNullHandle(request.getParameter("typeHandle"));
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
         String backerAccount = StringUtil.stringNullHandle(request.getParameter("backerAccount"));
         String startAddTimeStr = StringUtil.stringNullHandle(request.getParameter("startAddTime"));
         String endAddTimeStr = StringUtil.stringNullHandle(request.getParameter("endAddTime"));
@@ -73,6 +78,11 @@ public class BackerAdministratorOperation {
             typeHandle = Integer.parseInt(typeHandleStr);
         }
 
+        int currencyId = 0;
+        if (StringUtil.isNotNull(currencyIdStr)) {
+            currencyId = Integer.parseInt(currencyIdStr);
+        }
+
         Timestamp startAddTime = null;
         if (StringUtil.isNotNull(startAddTimeStr)) {
             startAddTime = DateUtil.stringToTimestamp(startAddTimeStr);
@@ -84,7 +94,7 @@ public class BackerAdministratorOperation {
         }
 
         int pageSize = 20;
-        int totalNumber = backerHandleUserRecordBalanceService.getUserRecordBalanceNumber(userAccount, typeHandle, backerAccount, startAddTime,endAddTime);
+        int totalNumber = backerHandleUserBalanceMoneyService.getUserRecordBalanceNumber(userAccount, typeHandle, currencyId, backerAccount, startAddTime,endAddTime);
         int totalPageNumber = (int) Math.ceil(totalNumber/1.0/pageSize);   //总页码数
         if(totalPageNumber <= 0){
             totalPageNumber = 1;
@@ -93,22 +103,27 @@ public class BackerAdministratorOperation {
             pageNumber = totalPageNumber - 1;
         }
 
-        List<BackerHandleUserRecordBalanceDO> backerHandleUserRecordBalanceList = null;
+        List<BackerHandleUserBalanceMoneyVO> backerHandleUserBalanceMoneyList = null;
         if (totalNumber > 0) {
-            backerHandleUserRecordBalanceList = backerHandleUserRecordBalanceService.getUserRecordBalanceList(userAccount, typeHandle, backerAccount,
+            backerHandleUserBalanceMoneyList = backerHandleUserBalanceMoneyService.getUserRecordBalanceList(userAccount, typeHandle, currencyId, backerAccount,
                     startAddTime,endAddTime, pageNumber, pageSize);
         }
+
+        //获取币种信息
+        List<TransactionCurrencyDO> transactionCurrencyList= transactionCurrencyService.listTransactionCurrencyAll();
 
         request.setAttribute("pageNumber", pageNumber);
         request.setAttribute("totalNumber", totalNumber);
         request.setAttribute("totalPageNumber", totalPageNumber);
-        request.setAttribute("backerHandleUserRecordBalanceList", backerHandleUserRecordBalanceList);
+        request.setAttribute("backerHandleUserBalanceMoneyList", backerHandleUserBalanceMoneyList);
+        request.setAttribute("transactionCurrencyList", transactionCurrencyList);
         request.setAttribute("userAccount", userAccount);
         request.setAttribute("typeHandle", typeHandle);
+        request.setAttribute("currencyId", currencyId);
         request.setAttribute("backerAccount", backerAccount);
         request.setAttribute("startAddTime", startAddTimeStr);
         request.setAttribute("endAddTime", endAddTimeStr);
         //当前页面的权限标识
-        request.getSession().setAttribute("backer_pagePowerId", 121000);
+        request.getSession().setAttribute("backer_pagePowerId", 121200);
     }
 }

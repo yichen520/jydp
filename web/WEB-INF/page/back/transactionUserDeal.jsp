@@ -175,6 +175,7 @@
 
     //查询
     function queryForm() {
+        $("#queryPageNumber").val("0");
         $("#queryForm").submit();
     }
 </script>

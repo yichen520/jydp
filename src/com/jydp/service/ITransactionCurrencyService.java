@@ -171,4 +171,32 @@ public interface ITransactionCurrencyService {
      * @return 操作成功：返回币种信息集合，操作失败：返回null
      */
     List<TransactionCurrencyVO> getOnlineAndSuspensionCurrencyForWeb();
+
+    /**
+     * 上移币种
+     * @param currencyId  币种Id
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    boolean upCurrencyRankNumber(int currencyId);
+
+    /**
+     * 下移币种
+     * @param currencyId  币种Id
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    boolean downCurrencyRankNumber(int currencyId);
+
+    /**
+     * 置顶币种
+     * @param currencyId  币种Id
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    boolean topCurrencyRankNumber(int currencyId);
+
+    /**
+     * 根据币种排名位置获取币种信息
+     * @param rankNumber   排名位置
+     * @return  操作成功：返回币种Id，操作失败：返回0
+     */
+    int getTransactionCurrencyByRankNumber(int rankNumber);
 }

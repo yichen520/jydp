@@ -159,17 +159,13 @@ public class SystemBusinessesPartnerDaoImpl implements ISystemBusinessesPartnerD
     /**
      * 置顶合作商家
      * @param id 合作商家Id
-     * @param topTime 置顶时间topTime
      * @return 置顶成功：返回true，置顶失败：返回false
      */
-    public boolean topTheBusinessesPartner(int id, Timestamp topTime){
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("id", id);
-        map.put("topTime", topTime);
+    public boolean topTheBusinessesPartner(int id){
         int result = 0;
 
         try {
-            result = sqlSessionTemplate.update("SystemBusinessesPartner_topTheBusinessesPartner", map);
+            result = sqlSessionTemplate.update("SystemBusinessesPartner_topTheBusinessesPartner", id);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
@@ -180,4 +176,141 @@ public class SystemBusinessesPartnerDaoImpl implements ISystemBusinessesPartnerD
             return false;
         }
     }
+
+    /**
+     * 修改合作商家排位位置（全部后移一位）
+     * @return 修改成功：返回true，修改失败：返回false
+     */
+    public boolean updatebusinessesPartnerRankNumber(){
+        int result = 0;
+
+        try {
+            result = sqlSessionTemplate.update("SystemBusinessesPartner_updatebusinessesPartnerRankNumber");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    /**
+     * 通过排名获取当前合作商家id
+     * @param rankNumber 排名
+     * @return 查询成功：返回合作商家id，查询失败：返回0
+     */
+    public int getIdByRankForBack(int rankNumber){
+        int changeNumber = 0;
+
+        try {
+            changeNumber = sqlSessionTemplate.selectOne("SystemBusinessesPartner_getIdByRankForBack", rankNumber);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return changeNumber;
+    }
+
+    /**
+     * 上移合作商家
+     * @param id 首页合作商家id
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean upMoveBusinessesPartnerForBack(int id){
+        int changeNumber = 0;
+
+        try {
+            changeNumber = sqlSessionTemplate.update("SystemBusinessesPartner_upMoveBusinessesPartnerForBack", id);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (changeNumber == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * 下移合作商家
+     * @param id 首页合作商家id
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean downMoveBusinessesPartnerForBack(int id){
+        int changeNumber = 0;
+
+        try {
+            changeNumber = sqlSessionTemplate.update("SystemBusinessesPartner_downMoveBusinessesPartnerForBack", id);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (changeNumber == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * 获取当前合作商家排名的最大位置
+     * @return 查询成功：返回最大的排名，查询失败：返回0
+     */
+    public int getMaxRankForBack(){
+        int changeNumber = 0;
+        try {
+            changeNumber = sqlSessionTemplate.selectOne("SystemBusinessesPartner_getMaxRankForBack");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return changeNumber;
+    }
+
+    /**
+     * 修改首页合作商家排名（大于该排名的所有合作商家排名-1）
+     * @param rank 排名
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean updateBusinessesPartnerRank(int rank){
+        int changeNumber = 0;
+
+        try {
+            changeNumber = sqlSessionTemplate.update("SystemBusinessesPartner_updateBusinessesPartnerRank", rank);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (changeNumber == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * 修改首页合作商家排名（小于该排名的所有合作商家排名+1）
+     * @param rank 排名
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean updateRankNumber(int rank){
+        int changeNumber = 0;
+
+        try {
+            changeNumber = sqlSessionTemplate.update("SystemBusinessesPartner_updateRankNumber", rank);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (changeNumber == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 }

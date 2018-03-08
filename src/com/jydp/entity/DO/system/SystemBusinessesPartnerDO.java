@@ -17,7 +17,7 @@ public class SystemBusinessesPartnerDO {
     private String webLinkUrl; //web端链接地址
     private String wapLinkUrl; //wap端链接地址
     private Timestamp addTime; //添加时间
-    private Timestamp topTime; //置顶时间
+    private int rankNumber; //排名位置
 
     private String businessesImageUrlFormat; // 商家图片绝对地址
 
@@ -138,18 +138,18 @@ public class SystemBusinessesPartnerDO {
     }
 
     /**
-     * 置顶时间
-     * @return topTime
+     *  排名位置
+     * @return  rankNumber
      */
-    public Timestamp getTopTime() {
-        return topTime;
+    public int getRankNumber() {
+        return rankNumber;
     }
 
     /**
-     * 置顶时间
-     * @param topTime the topTime to set
+     *  排名位置
+     * @param rankNumber the rankNumber to set
      */
-    public void setTopTime(Timestamp topTime) {
-        this.topTime = topTime;
+    public void setRankNumber(int rankNumber) {
+        this.rankNumber = rankNumber;
     }
 }

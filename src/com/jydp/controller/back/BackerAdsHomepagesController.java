@@ -356,4 +356,44 @@ public class BackerAdsHomepagesController {
 
         return response;
     }
+
+    /** 置顶首页公告 */
+    @RequestMapping(value = "/top.htm", method = RequestMethod.POST)
+    public @ResponseBody JSONObject top(HttpServletRequest request) {
+        JSONObject response = new JSONObject();
+        // 业务功能权限
+        boolean havePower = BackerWebInterceptor.validatePower(request, 113003);
+        if (!havePower) {
+            response.put("code", 6);
+            response.put("message", "您没有该权限");
+            return response;
+        }
+
+        String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
+
+        // 处理页面参数
+        if (!StringUtil.isNotNull(idStr)) {
+            response.put("code", 3);
+            response.put("message", "参数错误");
+            return response;
+        }
+
+        int id = Integer.parseInt(idStr);
+        if (id <= 0) {
+            response.put("code", 3);
+            response.put("message", "参数错误");
+            return response;
+        }
+
+        boolean topResult = systemAdsHomepagesService.topAdsHomepages(id);
+        if (topResult) {
+            response.put("code", 1);
+            response.put("message", "置顶成功");
+        } else {
+            response.put("code", 5);
+            response.put("message", "置顶失败");
+        }
+
+        return response;
+    }
 }

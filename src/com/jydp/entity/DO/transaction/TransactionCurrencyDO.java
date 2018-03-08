@@ -16,6 +16,7 @@ public class TransactionCurrencyDO {
     private double sellFee;  //卖出手续费
     private int paymentType;  //交易状态,1:正常，2:停牌
     private int upStatus;  //上线状态,1:待上线,2:上线中,3:停牌,4:已下线
+    private int rankNumber;  //排名位置
     private String backerAccount;  //管理员账号
     private String ipAddress;  //操作时的ip地址
     private Timestamp upTime;  //上线时间
@@ -153,6 +154,22 @@ public class TransactionCurrencyDO {
      */
     public void setUpStatus(int upStatus) {
         this.upStatus = upStatus;
+    }
+
+    /**
+     * 排名位置
+     * @return the rankNumber
+     */
+    public int getRankNumber() {
+        return rankNumber;
+    }
+
+    /**
+     * 排名位置
+     * @param rankNumber the rankNumber to set
+     */
+    public void setRankNumber(int rankNumber) {
+        this.rankNumber = rankNumber;
     }
 
     /**

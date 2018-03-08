@@ -70,7 +70,7 @@
         <p class="promt">
             <span class="promtText"> 重要提示：今日最高价格：<span id="hintTodayMax">$<fmt:formatNumber type="number" value="${standardParameter.todayMax }" groupingUsed="FALSE" maxFractionDigits="6"/></span>，
                 今日最低价格：<span id="hintTodayMin">$<fmt:formatNumber type="number" value="${standardParameter.todayMin }" groupingUsed="FALSE" maxFractionDigits="6"/></span></span>
-            <span  class="promptTime">交易时间：00:00:00-23:59:00</span>
+            <span  class="promptTime">交易时间：08:00:00-07:59:00</span>
         </p>
 
 
@@ -529,7 +529,7 @@
             }
 
             var userBalance = parseFloat($("#userBalance").val());
-            if(buyPrice != "0"){
+            if(buyPrice > 0){
                 var total = userBalance / buyPrice;
                 var tota = mulMaxNumber(total);
                 $("#buyMax").html(tota);

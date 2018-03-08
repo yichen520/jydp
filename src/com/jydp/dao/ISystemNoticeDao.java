@@ -76,4 +76,58 @@ public interface ISystemNoticeDao {
      * @return 查询成功:返回公告列表, 查询失败:返回null
      */
     List<SystemNoticeDO> listSystemNoticeForUser(int pageNumber, int pageSize);
+
+    /**
+     * 修改用户公告排位位置（全部后移一位）
+     * @return 修改成功：返回true，修改失败：返回false
+     */
+    boolean updateNoticeRankNumber();
+
+    /**
+     * 通过排名获取当前用户公告id
+     * @param rankNumber 排名
+     * @return 查询成功：返回广告id，查询失败：返回0
+     */
+    int getIdByRankForBack(int rankNumber);
+
+    /**
+     * 上移用户公告
+     * @param id 首页广告id
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean upMoveNoticeForBack(int id);
+
+    /**
+     * 下移用户公告
+     * @param id 首页广告id
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean downMoveNoticeForBack(int id);
+
+    /**
+     * 获取当前广告排名的最大位置
+     * @return 查询成功：返回最大的排名，查询失败：返回0
+     */
+    int getMaxRankForBack();
+
+    /**
+     * 修改首页广告排名（大于该排名的所有广告排名-1）
+     * @param rank 排名
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean updateNoticeRank(int rank);
+
+    /**
+     * 置顶用户公告
+     * @param id 记录Id
+     * @return 置顶成功：返回true，置顶失败：返回false
+     */
+    boolean topSystemNotice(int id);
+
+    /**
+     * 修改首页广告排名（小于该排名的所有广告排名+1）
+     * @param rank 排名
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean updateRankNumber(int rank);
 }

@@ -75,4 +75,16 @@
 		FROM system_ads_homepages_tab
 		ORDER BY rankNumber ASC
 	</select>
+
+	<update id="SystemAdsHomepages_topAdsHomepages" parameterType="int">
+		UPDATE system_ads_homepages_tab
+		SET rankNumber = 0
+		WHERE id = #{id}
+	</update>
+
+	<update id="SystemAdsHomepages_updateRankNumber" parameterType="int">
+		UPDATE system_ads_homepages_tab
+		SET rankNumber = rankNumber + 1
+		WHERE rankNumber <![CDATA[ < ]]> #{rankNumber}
+	</update>
 </mapper>

@@ -61,6 +61,11 @@
                                 <c:if test="${homeAd.rankNumber != maxRankNumber}">
                                     <input type="text" value="下&nbsp;移" class="adDown" onfocus="this.blur()" onclick="downMove('${homeAd.id}')"/>
                                 </c:if>
+                            <c:if test="${backer_rolePower['111007'] == 111007}">
+                                <c:if test="${homeAd.rankNumber != 1}">
+                                    <input type="text" value="置&nbsp;顶" class="toTop" onfocus="this.blur()" onclick="topNotice(${homeAd.id });"/>
+                                </c:if>
+                            </c:if>
                             </c:if>
                             <c:if test="${backer_rolePower['111005'] == 111005}">
                                 <input type="text" value="修&nbsp;改" class="change" onfocus="this.blur()" onclick="openModify('${homeAd.id}', '${homeAd.adsTitle}','${homeAd.webLinkUrl}', '${homeAd.wapLinkUrl}' )"/>
@@ -467,6 +472,44 @@
 
             error: function () {
                 downMoveBoo = false;
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+
+    }
+
+    //置顶
+    var topNoticeBoo = false;
+    function topNotice(id) {
+        if(topNoticeBoo){
+            openTips("正在置顶，请稍后！");
+            return;
+        }else{
+            topNoticeBoo = true;
+        }
+
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerAdsHomepages/top.htm",
+            data: {
+                id : id,
+            },//参数
+            dataType: "json",
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (resultData) {
+                var code = resultData.code;
+                var message = resultData.message;
+                if (code != 1 && message != "") {
+                    topNoticeBoo = false;
+                    openTips(message);
+                    return;
+                }
+
+                window.location.href = "<%=path%>" + "/backerWeb/backerAdsHomepages/show.htm";
+            },
+
+            error: function () {
+                topNoticeBoo = false;
                 openTips("数据加载出错，请稍候重试");
             }
         });

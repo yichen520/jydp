@@ -72,6 +72,16 @@
                     <td class="nTitle">${systemNotice.noticeTitle }</td>
                     <td class="operate">
                         <c:if test="${status.count != 1 || pageNumber != 0}">
+                            <c:if test="${backer_rolePower['113007'] == 113007}">
+                                <input type="text" value="上&nbsp;移" class="adUp" onfocus="this.blur()" onclick="upMove('${systemNotice.id}')"/>
+                            </c:if>
+                        </c:if>
+                        <c:if test="${backer_rolePower['113008'] == 113008}">
+                            <c:if test="${systemNotice.rankNumber != maxRankNumber}">
+                                <input type="text" value="下&nbsp;移" class="adDown" onfocus="this.blur()" onclick="downMove('${systemNotice.id}')"/>
+                            </c:if>
+                        </c:if>
+                        <c:if test="${status.count != 1 || pageNumber != 0}">
                             <c:if test="${backer_rolePower['113003'] == 113003}">
                                 <input type="text" value="置&nbsp; 顶" class="toTop" onfocus="this.blur()" onclick="topNotice(${systemNotice.id });"/>
                             </c:if>
@@ -211,7 +221,15 @@
     }
 
     //置顶
+    var topNoticeBoo = false;
     function topNotice(id) {
+        if(topNoticeBoo){
+            openTips("正在置顶，请稍后！");
+            return;
+        }else{
+            topNoticeBoo = true;
+        }
+
         $.ajax({
             url: '<%=path %>' + "/backerWeb/backerNotice/top.htm",
             data: {
@@ -224,6 +242,7 @@
                 var code = resultData.code;
                 var message = resultData.message;
                 if (code != 1 && message != "") {
+                    topNoticeBoo = false;
                     openTips(message);
                     return;
                 }
@@ -232,6 +251,84 @@
             },
 
             error: function () {
+                topNoticeBoo = false;
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+
+    }
+
+    //上移
+    var upMoveBoo = false;
+    function upMove(id) {
+
+        if(upMoveBoo){
+            openTips("正在上移，请稍后！");
+            return;
+        }else{
+            upMoveBoo = true;
+        }
+
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerNotice/upMoveNotice.htm",
+            data: {
+                id : id,
+            },//参数
+            dataType: "json",
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (resultData) {
+                var code = resultData.code;
+                var message = resultData.message;
+                if (code != 1 && message != "") {
+                    upMoveBoo = false;
+                    openTips(message);
+                    return;
+                }
+
+                $("#queryForm").submit();
+            },
+
+            error: function () {
+                upMoveBoo = false;
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+
+    }
+
+    //下移
+    var downMoveBoo = false;
+    function downMove(id) {
+
+        if(downMoveBoo){
+            openTips("正在上移，请稍后！");
+            return;
+        }else{
+            downMoveBoo = true;
+        }
+
+        $.ajax({
+            url: '<%=path %>' + "/backerWeb/backerNotice/downMoveNotice.htm",
+            data: {
+                id : id,
+            },//参数
+            dataType: "json",
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (resultData) {
+                var code = resultData.code;
+                var message = resultData.message;
+                if (code != 1 && message != "") {
+                    downMoveBoo = false;
+                    openTips(message);
+                    return;
+                }
+
+                $("#queryForm").submit();
+            },
+            error: function () {
+                downMoveBoo = false;
                 openTips("数据加载出错，请稍候重试");
             }
         });

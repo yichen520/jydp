@@ -77,10 +77,31 @@ public interface ISystemNoticeService {
     int countSystemNoticeForUser();
 
     /**
-     *  查询系统公告列表（web端）
+     *  查询用户公告列表（web端）
      * @param pageNumber 当前页数
      * @param pageSize 每页大小
      * @return 查询成功:返回公告列表, 查询失败:返回null
      */
     List<SystemNoticeDO> listSystemNoticeForUser(int pageNumber, int pageSize);
+
+    /**
+     * 上移用户公告
+     * @param id 系统公告id
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean upMoveNoticeForBack(int id);
+
+    /**
+     * 通过排名获取当前用户公告id
+     * @param rankNumber 排名
+     * @return 查询成功：返回广告id，查询失败：返回0
+     */
+    int getIdByRankForBack(int rankNumber);
+
+    /**
+     * 下移用户公告
+     * @param id 系统公告id
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean downMoveNoticeForBack(int id);
 }

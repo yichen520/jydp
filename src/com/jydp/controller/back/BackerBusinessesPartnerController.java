@@ -1,5 +1,6 @@
 package com.jydp.controller.back;
 
+import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.FileWriteRemoteUtil;
 import com.iqmkj.utils.LogUtil;
@@ -83,6 +84,13 @@ public class BackerBusinessesPartnerController {
             systemBusinessesPartnerList = systemBusinessesPartnerService.listSystemBusinessesPartnerByPage(pageNumber, pageSize);
         }
 
+        int maxRankNumber = 0;
+
+        int length = systemBusinessesPartnerList.size();
+        if (length > 0) {
+            maxRankNumber = systemBusinessesPartnerList.get(length - 1).getRankNumber();
+        }
+
         int totalPageNumber = (int) Math.ceil(totalNumber/(pageSize*1.0));
         if (totalPageNumber <= 0) {
             totalPageNumber = 1;
@@ -95,6 +103,7 @@ public class BackerBusinessesPartnerController {
         request.setAttribute("pageNumber",pageNumber);
         request.setAttribute("totalNumber",totalNumber);
         request.setAttribute("totalPageNumber",totalPageNumber);
+        request.setAttribute("maxRankNumber",maxRankNumber);
         request.setAttribute("systemBusinessesPartnerList",systemBusinessesPartnerList);
 
         //当前页面的权限标识
@@ -145,6 +154,7 @@ public class BackerBusinessesPartnerController {
         systemBusinessesPartner.setBusinessesImageUrl(imgUrl);  //商家图片地址
         systemBusinessesPartner.setWebLinkUrl(webLinkUrl);  //web端链接地址
         systemBusinessesPartner.setWapLinkUrl(wapLinkUrl);  //wap端链接地址
+        systemBusinessesPartner.setRankNumber(1);  //排名位置
         systemBusinessesPartner.setAddTime(DateUtil.getCurrentTime());  //添加时间
 
         boolean insertResult = systemBusinessesPartnerService.insertSystemBusinessesPartner(systemBusinessesPartner);
@@ -186,8 +196,7 @@ public class BackerBusinessesPartnerController {
             return responsJson;
         }
 
-        Timestamp topTime = DateUtil.getCurrentTime();
-        boolean topResult = systemBusinessesPartnerService.topTheBusinessesPartner(id, topTime);
+        boolean topResult = systemBusinessesPartnerService.topTheBusinessesPartner(id);
         if (topResult) {
             responsJson.setCode(1);
             responsJson.setMessage("置顶成功");
@@ -197,6 +206,86 @@ public class BackerBusinessesPartnerController {
         }
 
         return responsJson;
+    }
+
+    /**上移合作商家*/
+    @RequestMapping(value="/upMoveBusinesses.htm", method=RequestMethod.POST)
+    public @ResponseBody JSONObject upMoveBusinesses(HttpServletRequest request) {
+        JSONObject response = new JSONObject();
+        // 业务功能权限
+        boolean havePower = BackerWebInterceptor.validatePower(request, 111003);
+        if (!havePower) {
+            response.put("code", 6);
+            response.put("message", "您没有该权限");
+            return response;
+        }
+
+        //获取参数
+        String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
+        if (!StringUtil.isNotNull(idStr)) {
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
+        }
+
+        int id = Integer.parseInt(idStr);
+        //处理页面参数
+        if (id <= 0) {
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
+        }
+
+        boolean updateResult = systemBusinessesPartnerService.upMoveBusinessesPartnerForBack(id);
+        if (updateResult) {
+            response.put("code", 1);
+            response.put("message", "上移成功！");
+        } else {
+            response.put("code", 5);
+            response.put("message", "上移失败！");
+        }
+
+        return response;
+    }
+
+    /** 下移合作商家 */
+    @RequestMapping(value = "/downMoveBusinesses.htm", method = RequestMethod.POST)
+    public @ResponseBody JSONObject downMoveBusinesses(HttpServletRequest request) {
+        JSONObject response = new JSONObject();
+        // 业务功能权限
+        boolean havePower = BackerWebInterceptor.validatePower(request, 111004);
+        if (!havePower) {
+            response.put("code", 6);
+            response.put("message", "您没有该权限");
+            return response;
+        }
+        // 获取参数
+        String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
+        if (!StringUtil.isNotNull(idStr)) {
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
+        }
+
+        int id = Integer.parseInt(idStr);
+        // 处理页面参数
+        if (id <= 0) {
+            response.put("code", 3);
+            response.put("message", "参数错误！");
+            return response;
+        }
+
+        boolean updateResult = systemBusinessesPartnerService.downMoveBusinessesPartnerForBack(id);
+        if (updateResult) {
+            response.put("code", 1);
+            response.put("message", "下移成功！");
+        } else {
+            response.put("code", 5);
+            response.put("message", "下移失败！");
+        }
+
+        return response;
+
     }
 
     /**修改合作商家*/
