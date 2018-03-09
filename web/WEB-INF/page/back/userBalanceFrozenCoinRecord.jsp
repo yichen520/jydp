@@ -24,7 +24,7 @@
 
     <div class="contentRight">
         <div class="caption">
-            <span class="title">增减冻结用户币记录</span>
+            <span class="title">增减用户冻结币记录</span>
         </div>
 
         <div class="top">

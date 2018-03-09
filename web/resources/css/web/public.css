@@ -330,6 +330,9 @@ input:-webkit-autofill{
 .tableInfo:last-of-type td{
     border-bottom: 1px solid #f5f5f5;
 }
+.tableInfo td,.tableInfo p{
+    word-break: break-all;
+}
 
 /*-----changePage-----*/
 .changePage{

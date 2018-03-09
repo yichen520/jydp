@@ -114,7 +114,7 @@
                             <td class="state">部分成交</td>
                         </c:if>
                         <c:if test="${pend.pendingStatus == 3}">
-                            <td class="state">已成交</td>
+                            <td class="state">全部成交</td>
                         </c:if>
                         <c:if test="${pend.pendingStatus == 4}">
                             <td class="state">部分撤销</td>
