@@ -157,11 +157,11 @@ public class DateUtil {
 	public static boolean isTradeTime(){
 		long curTime = DateUtil.getCurrentTimeMillis();
 		String today = DateUtil.longToTimeStr(curTime,DateUtil.dateFormat4);
-		String todayUp = today + " 07:59:00";
-		String todayDown = today + " 08:00:00";
+		String todayUp = today + " 07:59:00.0";
+		String todayDown = today + " 08:00:00.0";
 		long timeUp = DateUtil.timeStrToLong(todayUp);
 		long timeDown = DateUtil.timeStrToLong(todayDown);
-		if(curTime > timeUp && curTime <timeDown){
+		if(curTime > timeUp && curTime < timeDown){
 			return true;
 		}else {
 			return false;
