@@ -290,7 +290,7 @@ p,span{
 .tableInfo:hover{
     background-color: #e4f4fc !important;
 }
-.tableInfo td,.tableTitle td,.tableInfo p
+.tableInfo td,.tableTitle td
 {
     text-align: center;
     padding: 5px ;
