@@ -33,10 +33,8 @@
                     <td class="time">委托时间</td>
                     <td class="coin">币种</td>
                     <td class="type">类型</td>
-                    <td class="amount">委托数量</td>
-                    <td class="amount">委托总价</td>
-                    <td class="amount">成交数量</td>
-                    <td class="amount">剩余数量</td>
+                    <td class="amount">委托详情</td>
+                    <td class="amount">成交详情</td>
                     <td class="state">状态</td>
                     <td class="operate">操作</td>
                 </tr>
@@ -50,10 +48,15 @@
                         <c:if test="${item.paymentType == 2}">
                             <td class="type pay">卖出</td>
                         </c:if>
-                        <td class="amount"><fmt:formatNumber type="number" value="${item.pendingNumber}" maxFractionDigits="4"/></td>
-                        <td class="amount">$<fmt:formatNumber type="number" value="${item.pendingNumber * item.pendingPrice }" maxFractionDigits="6"/></td>
-                        <td class="amount"><fmt:formatNumber type="number" value="${item.dealNumber }" maxFractionDigits="4"/></td>
-                        <td class="amount"><fmt:formatNumber type="number" value="${item.pendingNumber - item.dealNumber }" maxFractionDigits="4"/></td>
+                        <td class="amount">
+                            <p>委托数量：<fmt:formatNumber type="number" value="${item.pendingNumber}" maxFractionDigits="4"/></p>
+                            <p>委托单价：$<fmt:formatNumber type="number" value="${item.pendingPrice }" maxFractionDigits="6"/></p>
+                            <p>委托总价：$<fmt:formatNumber type="number" value="${item.pendingNumber * item.pendingPrice }" maxFractionDigits="6"/></p>
+                        </td>
+                        <td class="amount">
+                            <p>已成交数量：<fmt:formatNumber type="number" value="${item.dealNumber }" maxFractionDigits="4"/></p>
+                            <p>剩余数量：<fmt:formatNumber type="number" value="${item.pendingNumber - item.dealNumber }" maxFractionDigits="4"/></p>
+                        </td>
                         <c:if test="${item.pendingStatus == 1}">
                             <td class="state">未成交</td>
                         </c:if>

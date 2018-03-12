@@ -43,6 +43,9 @@
             <if test="upStatus != 0">
                 upStatus = #{upStatus},
             </if>
+            <if test="guidancePrice != 0">
+                guidancePrice = #{guidancePrice},
+            </if>
             <if test="paymentType != 0">
                 paymentType = #{paymentType},
             </if>

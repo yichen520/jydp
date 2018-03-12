@@ -18,6 +18,8 @@ public class TransactionCurrencyVO extends TransactionCurrencyDO {
 
     private String upTimeStr;  //添加时间字符串
     private Timestamp upTime;  //添加时间
+
+    private int reCode;  //上市指导价修改开关 1：可以修改，2：不能修改
     /**
      * 币种徽标
      * @return the currencyImg
@@ -87,5 +89,21 @@ public class TransactionCurrencyVO extends TransactionCurrencyDO {
         if (upTime != null) {
             setUpTimeStr(DateUtil.longToTimeStr(upTime.getTime(), DateUtil.dateFormat2));
         }
+    }
+
+    /**
+     * 上市指导价修改开关 1：可以修改，2：不能修改
+     * @return the reCode
+     */
+    public int getReCode() {
+        return reCode;
+    }
+
+    /**
+     * 上市指导价修改开关 1：可以修改，2：不能修改
+     * @param reCode the reCode to set
+     */
+    public void setReCode(int reCode) {
+        this.reCode = reCode;
     }
 }
