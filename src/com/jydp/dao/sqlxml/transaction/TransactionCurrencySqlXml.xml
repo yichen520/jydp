@@ -8,15 +8,15 @@
 	<insert id="TransactionCurrency_insertTransactionCurrency" parameterType="TransactionCurrencyDO"
             useGeneratedKeys="true" keyColumn="currencyId" keyProperty="currencyId">
         INSERT INTO transaction_currency_tab
-            (currencyShortName, currencyName, currencyImg, buyFee, sellFee,
+            (currencyShortName, currencyName, currencyImg, buyFee, sellFee, guidancePrice,
              paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime)
         VALUES
-            (#{currencyShortName}, #{currencyName}, #{currencyImg}, #{buyFee}, #{sellFee},
+            (#{currencyShortName}, #{currencyName}, #{currencyImg}, #{buyFee}, #{sellFee}, #{guidancePrice},
             #{paymentType}, #{upStatus}, #{rankNumber}, #{backerAccount}, #{ipAddress}, #{upTime}, #{addTime})
     </insert>
 
 	<select id="TransactionCurrency_getTransactionCurrencyByCurrencyId" parameterType="int" resultType="TransactionCurrencyVO">
-        SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee,
+        SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, guidancePrice,
             paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         WHERE currencyId = #{currencyId}
@@ -68,14 +68,14 @@
     </delete>
 
     <select id="TransactionCurrency_getTransactionCurrencyListForWeb" resultType="TransactionCurrencyVO">
-        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee,
+        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, guidancePrice,
             paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         WHERE upStatus = 2
     </select>
 
     <select id="TransactionCurrency_getTransactionCurrencyByCurrencyName" parameterType="java.lang.String" resultType="TransactionCurrencyVO">
-        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee,
+        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, guidancePrice,
             paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         WHERE currencyName = #{currencyName}
@@ -113,7 +113,7 @@
     </select>
 
     <select id="TransactionCurrency_listTransactionCurrencyForBack" parameterType="java.util.Map" resultType="TransactionCurrencyVO">
-        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee,
+        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, guidancePrice,
                  paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         <where>
@@ -174,7 +174,7 @@
     </update>
 
     <select id="TransactionCurrency_listTransactionCurrencyAll" resultType="TransactionCurrencyDO">
-        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee,
+        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, guidancePrice,
             paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
     </select>
@@ -237,14 +237,14 @@
     </select>
 
     <select id="TransactionCurrency_getAllCurrencylistForWeb" resultType="TransactionCurrencyVO">
-        SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee,
+        SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, guidancePrice,
             paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         ORDER BY rankNumber ASC
     </select>
 
     <select id="TransactionCurrency_getOnlineAndSuspensionCurrencyForWeb" resultType="TransactionCurrencyVO">
-        SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee,
+        SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, guidancePrice,
         paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         WHERE upStatus IN (2,3)
@@ -252,7 +252,7 @@
     </select>
 
     <select id="TransactionCurrency_getTransactionCurrencyByRankNumber" parameterType="int" resultType="int">
-        SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee,
+        SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, guidancePrice,
             paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         WHERE rankNumber = #{rankNumber}

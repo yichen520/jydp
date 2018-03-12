@@ -173,10 +173,12 @@ public class BackerTransactionCurrencyController {
         String currencyShortNameStr = StringUtil.stringNullHandle(request.getParameter("currencyShortNameAd"));
         String buyFeeStr = StringUtil.stringNullHandle(request.getParameter("buyFeeAd"));
         String sellFeeStr = StringUtil.stringNullHandle(request.getParameter("sellFeeAd"));
+        String guidancePriceStr =  StringUtil.stringNullHandle(request.getParameter("guidancePrice"));
         String statusStr = StringUtil.stringNullHandle(request.getParameter("status"));
         String upTimeStr = StringUtil.stringNullHandle(request.getParameter("upTimeAd"));
         if (!StringUtil.isNotNull(currencyNameStr) || !StringUtil.isNotNull(currencyShortNameStr) || !StringUtil.isNotNull(buyFeeStr)
-                || !StringUtil.isNotNull(sellFeeStr) || !StringUtil.isNotNull(statusStr) || adsImageUrl == null || adsImageUrl.isEmpty()){
+                || !StringUtil.isNotNull(sellFeeStr) || !StringUtil.isNotNull(statusStr) || !StringUtil.isNotNull(guidancePriceStr)
+                || adsImageUrl == null || adsImageUrl.isEmpty()){
             response.setCode(3);
             response.setMessage("参数错误");
             return response;
@@ -185,11 +187,13 @@ public class BackerTransactionCurrencyController {
         int status = 0;
         double buyFee = 0;
         double sellFee = 0;
+        double guidancePrice = 0;
         Timestamp upTime = null;
 
         status = Integer.parseInt(statusStr);
         buyFee = NumberUtil.doubleFormat(Double.parseDouble(buyFeeStr) / 100, 8);
         sellFee = NumberUtil.doubleFormat(Double.parseDouble(sellFeeStr) / 100, 8);
+        guidancePrice = NumberUtil.doubleFormat(Double.parseDouble(guidancePriceStr), 8);
 
         if (status == 2) {
             if (!StringUtil.isNotNull(upTimeStr)) {
@@ -203,6 +207,11 @@ public class BackerTransactionCurrencyController {
                 response.setMessage("上线时间应大于当前时间");
                 return response;
             }
+        }
+        if (guidancePrice <= 0) {
+            response.setCode(3);
+            response.setMessage("指导价必须大于0");
+            return response;
         }
 
         String imageUrl = "";
@@ -222,7 +231,7 @@ public class BackerTransactionCurrencyController {
         //新增币种
         boolean result = transactionCurrencyService.addTransactionCurrency(currencyShortNameStr, currencyNameStr, imageUrl,
                 buyFee, sellFee,2, 1, backerSession.getBackerAccount(),
-                IpAddressUtil.getIpAddress(request), upTime, DateUtil.getCurrentTime());
+                IpAddressUtil.getIpAddress(request), guidancePrice, upTime, DateUtil.getCurrentTime());
         if (result) {
             response.setCode(1);
             response.setMessage("新增成功");
