@@ -166,7 +166,6 @@
             return openTips("请输入您的手机号");
         }
 
-
         if(!regPos.test(phone) || phone.length > 11 || phone.length < 6){
             phoneBoo = false;
             return openTips("请输入正确手机号");
@@ -217,30 +216,28 @@
         var chinaArea = '${selectedArea}';
         var area =  $(".selectCont").html();
 
-        if (!commonReg.test(userAccount)) {
-            if (!userAccount) {
-                changeValue(userAccountEle, "请输入账号，字母、数字，6~16个字符");
-                return;
-            }
-            if ("请输入账号，字母、数字，6~16个字符" != userAccount && (userAccount.length < 6 || userAccount.length > 16)) {
-                changeValue(userAccountEle, "账号长度在6~16个字符之间");
-                return;
-            }
-            if ("请输入账号，字母、数字，6~16个字符" != userAccount && "账号长度在6~16个字符之间" != userAccount) {
-                changeValue(userAccountEle, "账号格式不正确");
-            }
+        if ($("#userAccount").hasClass("error")) {
+            return;
+        } else if (!userAccount) {
+            changeValue(userAccountEle, "请输入账号，字母、数字，6~16个字符");
+            return;
+        } else if (userAccount.length < 6 || userAccount.length > 16) {
+            changeValue(userAccountEle, "账号长度在6~16个字符之间");
+            return;
+        } else if (!commonReg.test(userAccount)) {
+            changeValue(userAccountEle, "账号格式不正确");
             return;
         }
 
-        if (!phone) {
+        if ($("#phone").hasClass("error")) {
+            return;
+        } else if (!phone) {
             changeValue(phoneEle, "请输入您的手机号");
             return;
-        }
-        if ("请输入您的手机号" != phone && area != chinaArea && (phone.length < 6 || phone.length > 11)) {
+        } else if (area != chinaArea && (phone.length < 6 || phone.length > 11)) {
             changeValue(phoneEle, "请输入正确手机号");
             return;
-        }
-        if ("请输入您的手机号" != phone && area == chinaArea && !phoneReg.test(phone)) {
+        } else if (area == chinaArea && !phoneReg.test(phone)) {
             changeValue(phoneEle, "请输入正确手机号");
             return;
         }
@@ -250,33 +247,29 @@
             return;
         }
 
-        if (!commonReg.test(password)) {
-            if (!password) {
-                changeValue(passwordEle, "请输入登录密码，字母、数字，6~16个字符");
-                return;
-            }
-            if ("请输入登录密码，字母、数字，6~16个字符" != password && (password.length < 6 || password.length > 16)) {
-                changeValue(passwordEle, "密码长度在6~16个字符之间");
-                return;
-            }
-            if ("两次密码不匹配" != password && "请输入登录密码，字母、数字，6~16个字符" != password && "密码长度在6~16个字符之间" != password) {
-                changeValue(passwordEle, "登录密码格式不正确");
-            }
+        if ($("#password").hasClass("error")) {
+            return;
+        } else if (!password) {
+            changeValue(passwordEle, "请输入登录密码，字母、数字，6~16个字符");
+            return;
+        } else if (password.length < 6 || password.length > 16) {
+            changeValue(passwordEle, "密码长度在6~16个字符之间");
+            return;
+        } else if (!commonReg.test(password)) {
+            changeValue(passwordEle, "登录密码格式不正确");
             return;
         }
 
-        if (!commonReg.test(repeatPassword)) {
-            if (!repeatPassword) {
-                changeValue(repeatPasswordEle, "请输入重复密码，字母、数字，6~16个字符");
-                return;
-            }
-            if ("请输入重复密码，字母、数字，6~16个字符" != repeatPassword && (repeatPassword.length < 6 || repeatPassword.length > 16)) {
-                changeValue(repeatPasswordEle, "密码长度在6~16个字符之间");
-                return;
-            }
-            if ("两次密码不匹配" != repeatPassword && "请输入重复密码，字母、数字，6~16个字符" != repeatPassword && "密码长度在6~16个字符之间" != repeatPassword) {
-                changeValue(repeatPasswordEle, "重复密码格式不正确");
-            }
+        if ($("#repeatPassword").hasClass("error")) {
+            return;
+        } else if (!repeatPassword) {
+            changeValue(repeatPasswordEle, "请输入重复密码，字母、数字，6~16个字符");
+            return;
+        } else if (repeatPassword.length < 6 || repeatPassword.length > 16) {
+            changeValue(repeatPasswordEle, "密码长度在6~16个字符之间");
+            return;
+        } else if (!commonReg.test(repeatPassword)) {
+            changeValue(repeatPasswordEle, "重复密码格式不正确");
             return;
         }
         if (repeatPassword != password) {
