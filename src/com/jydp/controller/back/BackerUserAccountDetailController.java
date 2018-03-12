@@ -91,22 +91,28 @@ public class BackerUserAccountDetailController {
         }
         //查询用户币数量，带货币名称
         List<BackerUserCurrencyNumDTO> userCurrencyNumList = userCurrencyNumService.getUserCurrencyNumByUserIdForBacker(userId);
-        Map<Integer, BackerUserCurrencyNumDTO> userCurrencyNumMap = new HashMap<>();
-        for (BackerUserCurrencyNumDTO backerUserCurrencyNumDTO : userCurrencyNumList) {
-            userCurrencyNumMap.put(backerUserCurrencyNumDTO.getCurrencyId(), backerUserCurrencyNumDTO);
-        }
 
-        //查询所有币种信息，插入用户没有的币种信息
+        //查询所有币种信息
         List<TransactionCurrencyBasicDTO> transactionCurrencyBasicList = transactionCurrencyService.listAllTransactionCurrencyBasicInfor();
-        for (TransactionCurrencyBasicDTO transactionCurrencyBasicDTO : transactionCurrencyBasicList) {
-            BackerUserCurrencyNumDTO backerUserCurrencyNumDTO = userCurrencyNumMap.get(transactionCurrencyBasicDTO.getCurrencyId());
-            if (backerUserCurrencyNumDTO == null) {
-                backerUserCurrencyNumDTO = new BackerUserCurrencyNumDTO();
-                backerUserCurrencyNumDTO.setCurrencyId(transactionCurrencyBasicDTO.getCurrencyId());
-                backerUserCurrencyNumDTO.setCurrencyName(transactionCurrencyBasicDTO.getCurrencyName());
-                backerUserCurrencyNumDTO.setCurrencyNumber(0);
-                backerUserCurrencyNumDTO.setCurrencyNumberLock(0);
-                userCurrencyNumList.add(backerUserCurrencyNumDTO);
+
+        //插入用户没有的币种信息
+        if (userCurrencyNumList.size() != transactionCurrencyBasicList.size()) {
+            Map<Integer, BackerUserCurrencyNumDTO> userCurrencyNumMap = new HashMap<>();
+            for (BackerUserCurrencyNumDTO backerUserCurrencyNumDTO : userCurrencyNumList) {
+                userCurrencyNumMap.put(backerUserCurrencyNumDTO.getCurrencyId(), backerUserCurrencyNumDTO);
+            }
+
+            for (TransactionCurrencyBasicDTO transactionCurrencyBasicDTO : transactionCurrencyBasicList) {
+                BackerUserCurrencyNumDTO backerUserCurrencyNumDTO = userCurrencyNumMap.get(transactionCurrencyBasicDTO.getCurrencyId());
+                if (backerUserCurrencyNumDTO == null) {
+                    backerUserCurrencyNumDTO = new BackerUserCurrencyNumDTO();
+                    backerUserCurrencyNumDTO.setCurrencyId(transactionCurrencyBasicDTO.getCurrencyId());
+                    backerUserCurrencyNumDTO.setCurrencyName(transactionCurrencyBasicDTO.getCurrencyName());
+                    backerUserCurrencyNumDTO.setCurrencyNumber(0);
+                    backerUserCurrencyNumDTO.setCurrencyNumberLock(0);
+
+                    userCurrencyNumList.add(backerUserCurrencyNumDTO);
+                }
             }
         }
 
