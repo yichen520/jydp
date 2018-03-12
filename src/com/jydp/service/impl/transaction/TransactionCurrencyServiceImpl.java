@@ -53,7 +53,6 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      * @param addTime 添加时间
      * @return  操作成功：返回true，操作失败：返回false
      */
-    @Transactional
     public boolean insertTransactionCurrency(String currencyShortName, String currencyName, String currencyImg,
                                              double buyFee, double sellFee, int paymentType, int upStatus,
                                              String backerAccount, String ipAddresse,
