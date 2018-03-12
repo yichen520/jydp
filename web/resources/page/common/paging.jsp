@@ -19,10 +19,10 @@
 <script type="text/javascript">
     //上一页
     function pagePre() {
-        var pageNumber = ${pageNumber };
+        var pageNumber = parseInt(${pageNumber });
 
-        if(parseInt(pageNumber) > 0){
-            pageNumber = parseInt(pageNumber) - 1;
+        if(pageNumber > 0){
+            pageNumber = pageNumber - 1;
 
             document.getElementById("queryPageNumber").value = pageNumber;
             $("#queryForm").submit();
@@ -33,11 +33,11 @@
 
     //下一页
     function pageNext() {
-        var pageNumber = ${pageNumber };
-        var totalPageNumber = ${totalPageNumber };
+        var pageNumber = parseInt(${pageNumber });
+        var totalPageNumber = parseInt(${totalPageNumber });
 
-        if(parseInt(pageNumber) < parseInt(totalPageNumber) - 1){
-            pageNumber = parseInt(pageNumber) + 1;
+        if(pageNumber < totalPageNumber - 1){
+            pageNumber = pageNumber + 1;
 
             document.getElementById("queryPageNumber").value = pageNumber;
             $("#queryForm").submit();
@@ -48,10 +48,9 @@
 
     //跳转首页
     function pageFirst() {
-        var pageNumber = ${pageNumber };
-        var totalPageNumber = ${totalPageNumber };
+        var pageNumber = parseInt(${pageNumber });
 
-        if(parseInt(pageNumber) > 0){
+        if(pageNumber > 0){
             pageNumber = 0;
 
             document.getElementById("queryPageNumber").value = pageNumber;
@@ -63,11 +62,11 @@
 
     //跳转尾页
     function pageEnd() {
-        var pageNumber = ${pageNumber };
-        var totalPageNumber = ${totalPageNumber };
+        var pageNumber = parseInt(${pageNumber });
+        var totalPageNumber = parseInt(${totalPageNumber });
 
-        if(parseInt(pageNumber) < parseInt(totalPageNumber) - 1){
-            pageNumber = parseInt(totalPageNumber) - 1;
+        if(pageNumber < totalPageNumber - 1){
+            pageNumber = totalPageNumber - 1;
 
             document.getElementById("queryPageNumber").value = pageNumber;
             $("#queryForm").submit();
@@ -79,17 +78,19 @@
     //页面跳转
     function pageGo() {
         var pageNumber = ${pageNumber };
-        var totalPageNumber = ${totalPageNumber };
+        var totalPageNumber = parseInt(${totalPageNumber });
 
         var pageGoNumber = document.getElementById("pageGoNumber").value;
-        if(pageGoNumber == null || pageGoNumber == "" || parseInt(pageGoNumber) <= 0){
-            pageGoNumber = 1;
-        }
-        if(parseInt(pageGoNumber) > parseInt(totalPageNumber)) {
-            return openTips("当前最大" + parseInt(totalPageNumber) + "页");
+        var pageGoNumberInt = parseInt(pageGoNumber);
+        if(pageGoNumber == null || pageGoNumber == "" || isNaN(pageGoNumberInt) || !pageGoNumberInt > 0){
+            pageGoNumberInt = 1;
         }
 
-        pageNumber = parseInt(pageGoNumber) - 1;
+        if(pageGoNumberInt > totalPageNumber) {
+            return openTips("当前最大" + totalPageNumber + "页");
+        }
+
+        pageNumber = pageGoNumberInt - 1;
         document.getElementById("queryPageNumber").value = pageNumber;
         $("#queryForm").submit();
     }
