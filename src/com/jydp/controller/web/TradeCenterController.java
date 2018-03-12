@@ -17,6 +17,7 @@ import com.jydp.entity.VO.UserDealCapitalMessageVO;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.*;
 import config.RedisKeyConfig;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -89,6 +91,21 @@ public class TradeCenterController {
         if (user != null) {
             userDealCapitalMessage = userService.countCheckUserAmountForTimer(user.getUserId(), currencyId);
             transactionPendOrderList = transactionPendOrderService.listPendOrderForWeb(user.getUserId(),currencyId,0, 10);
+
+            //获取用户没有的币种，创建该币种账户
+            UserCurrencyNumDO userCurrencyNum = userCurrencyNumService.getUserCurrencyNumByUserIdAndCurrencyId(user.getUserId(), currencyId);
+            if (userCurrencyNum == null) {
+                UserCurrencyNumDO userCurrencyNumDO = new UserCurrencyNumDO();
+                userCurrencyNumDO.setUserId(user.getUserId());
+                userCurrencyNumDO.setCurrencyId(currencyId);
+                userCurrencyNumDO.setCurrencyNumber(0);
+                userCurrencyNumDO.setCurrencyNumberLock(0);
+                userCurrencyNumDO.setAddTime(DateUtil.getCurrentTime());
+
+                List<UserCurrencyNumDO> userCurrencyNumDOList = new ArrayList<UserCurrencyNumDO>();
+                userCurrencyNumDOList.add(userCurrencyNumDO);
+                userCurrencyNumService.insertUserCurrencyForWeb(userCurrencyNumDOList);
+            }
         }
 
         //获取币种信息

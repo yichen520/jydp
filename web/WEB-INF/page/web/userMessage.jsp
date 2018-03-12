@@ -42,24 +42,26 @@
                 </p>
             </div>
 
-            <table class="accountTable" cellspacing="0" cellpadding="0">
-                <tr class="coinTitle">
-                    <td class="coin">币种</td>
-                    <td class="amount">可用数量</td>
-                    <td class="amount">冻结数量</td>
-                    <td class="amount">币种总资产</td>
-                    <td class="operate">操作</td>
-                </tr>
-                <c:forEach items="${userCurrencyList }" var="userCurrency">
-                    <tr class="coinInfo">
-                        <td class="coin">${userCurrency.currencyName }</td>
-                        <td class="amount">${userCurrency.currencyNumber }</td>
-                        <td class="amount">${userCurrency.currencyNumberLock }</td>
-                        <td class="amount">${userCurrency.currencyNumberSum }</td>
-                        <td><a href="javascript:;" class="link" onclick="dealSkip('${userCurrency.currencyId }')" >去交易</a></td>
+            <c:if test="${!empty userCurrencyList}">
+                <table class="accountTable" cellspacing="0" cellpadding="0">
+                    <tr class="coinTitle">
+                        <td class="coin">币种</td>
+                        <td class="amount">可用数量</td>
+                        <td class="amount">冻结数量</td>
+                        <td class="amount">币种总资产</td>
+                        <td class="operate">操作</td>
                     </tr>
-                </c:forEach>
-            </table>
+                    <c:forEach items="${userCurrencyList }" var="userCurrency">
+                        <tr class="coinInfo">
+                            <td class="coin">${userCurrency.currencyName }</td>
+                            <td class="amount">${userCurrency.currencyNumber }</td>
+                            <td class="amount">${userCurrency.currencyNumberLock }</td>
+                            <td class="amount">${userCurrency.currencyNumberSum }</td>
+                            <td><a href="javascript:;" class="link" onclick="dealSkip('${userCurrency.currencyId }')" >去交易</a></td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </c:if>
         </div>
 
         <div class="safety">

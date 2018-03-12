@@ -14,6 +14,13 @@ import java.util.List;
 public interface IUserCurrencyNumDao {
 
     /**
+     * 新增用户币账户
+     * @param userCurrencyNum 用户币账户
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean insertUserCurrencyNum(UserCurrencyNumDO userCurrencyNum);
+
+    /**
      * 查询用户币数量
      * @param userId 用户Id
      * @return 查询成功：返回用户币数量，查询失败：返回null

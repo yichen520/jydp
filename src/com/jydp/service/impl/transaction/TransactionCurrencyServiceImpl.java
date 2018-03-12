@@ -5,6 +5,7 @@ import com.iqmkj.utils.LogUtil;
 import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.ITransactionCurrencyDao;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
+import com.jydp.entity.DTO.TransactionCurrencyBasicDTO;
 import com.jydp.entity.DTO.TransactionUserDealDTO;
 import com.jydp.entity.VO.StandardParameterVO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
@@ -509,4 +510,13 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
 
         return executeSuccess;
     }
+
+    /**
+     * 查询所有交易币种基本信息
+     * @return 操作成功：返回币种信息，操作失败：返回null
+     */
+    public List<TransactionCurrencyBasicDTO> listAllTransactionCurrencyBasicInfor() {
+        return transactionCurrencyDao.listAllTransactionCurrencyBasicInfor();
+    }
+
 }

@@ -14,6 +14,13 @@ import java.util.List;
 public interface IUserCurrencyNumService {
 
     /**
+     * 新增用户币账户
+     * @param userCurrencyNum 用户币账户
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean insertUserCurrencyNum(UserCurrencyNumDO userCurrencyNum);
+
+    /**
      * 查询用户币数量
      * @param userId 用户Id
      * @return 查询成功：返回用户币数量，查询失败：返回null
@@ -109,5 +116,12 @@ public interface IUserCurrencyNumService {
      * @return 查询成功：返回用户币种列表，查询失败：返回null
      */
     List<Integer> getUserCurrencyNotOwnForWeb(int userId);
+
+    /**
+     * 增加用户没有的所有币种账户
+     * @param userId 用户id
+     * @return 操作成功：返回true，操作失败：返回false（如果该用户币种账户已全部存在返回true）
+     */
+    boolean addUserCurrencyNotOwn(int userId);
 
 }

@@ -1,6 +1,7 @@
 package com.jydp.service;
 
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
+import com.jydp.entity.DTO.TransactionCurrencyBasicDTO;
 import com.jydp.entity.DTO.TransactionUserDealDTO;
 import com.jydp.entity.VO.StandardParameterVO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
@@ -199,4 +200,11 @@ public interface ITransactionCurrencyService {
      * @return  操作成功：返回币种Id，操作失败：返回0
      */
     int getTransactionCurrencyByRankNumber(int rankNumber);
+
+    /**
+     * 查询所有交易币种基本信息
+     * @return 操作成功：返回币种信息，操作失败：返回null
+     */
+    List<TransactionCurrencyBasicDTO> listAllTransactionCurrencyBasicInfor();
+
 }

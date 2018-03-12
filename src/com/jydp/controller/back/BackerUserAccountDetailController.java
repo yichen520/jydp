@@ -1,17 +1,18 @@
 package com.jydp.controller.back;
 
+import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.IpAddressUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.BackerSessionBO;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.back.BackerDO;
+import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DTO.BackerUserCurrencyNumDTO;
+import com.jydp.entity.DTO.TransactionCurrencyBasicDTO;
 import com.jydp.interceptor.BackerWebInterceptor;
-import com.jydp.service.IBackerService;
-import com.jydp.service.IUserCurrencyNumService;
-import com.jydp.service.IUserService;
-import com.jydp.service.IUserSessionService;
+import com.jydp.service.*;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,6 +50,10 @@ public class BackerUserAccountDetailController {
     /** 用户登录记录 */
     @Autowired
     private IUserSessionService userSessionService;
+
+    /** 交易币种 */
+    @Autowired
+    private ITransactionCurrencyService transactionCurrencyService;
 
     /** 展示账户明细页面 */
     @RequestMapping(value = "/showDetail.htm", method = RequestMethod.POST)
@@ -81,8 +87,11 @@ public class BackerUserAccountDetailController {
             attributes.addFlashAttribute("message", "用户不存在");
             return "redirect:/backer/backerUserAccount/show.htm";
         }
-
+        //查询用户币数量，带货币名称
         List<BackerUserCurrencyNumDTO> userCurrencyNumList = userCurrencyNumService.getUserCurrencyNumByUserIdForBacker(userId);
+
+        List<TransactionCurrencyBasicDTO> transactionCurrencyBasicList = transactionCurrencyService.listAllTransactionCurrencyBasicInfor();
+
 
         request.setAttribute("userCurrencyNumList", userCurrencyNumList);
         request.setAttribute("userId", userIdStr);

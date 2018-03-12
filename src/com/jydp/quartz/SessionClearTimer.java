@@ -28,7 +28,7 @@ public class SessionClearTimer {
 	
 	/** 清除数据库session记录（每天凌晨4点执行一次） */
 	@Scheduled(cron="0 0 4  * * ? ")
-	public void transferMarketRate(){
+	public void executeClear(){
 		Timestamp currTime = DateUtil.getCurrentTime();
 		long currTimeLong = currTime.getTime() - 1L * 7 * 24 * 60 * 60 * 1000;
 		Timestamp loginTime = DateUtil.longToTimestamp(currTimeLong);
