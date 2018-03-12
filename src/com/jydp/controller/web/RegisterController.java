@@ -1,7 +1,7 @@
 package com.jydp.controller.web;
 
 import com.alibaba.fastjson.JSONObject;
-import com.iqmkj.config.SystemHelpConfig;
+import config.SystemHelpConfig;
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.MD5Util;
 import com.iqmkj.utils.StringUtil;
