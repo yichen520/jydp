@@ -7,14 +7,14 @@
 	
 	<insert id="User_insertUser" parameterType="UserDO"  useGeneratedKeys="true" keyColumn="userId" keyProperty="userId">
 		INSERT INTO user_tab(userAccount, password, payPassword, phoneAreaCode, phoneNumber, userBalance,
-			userBalanceLock, authenticationStatus, accountStatus, addTime)
+			userBalanceLock, authenticationStatus, accountStatus, payPasswordStatus, addTime)
 		VALUES (#{userAccount}, #{password}, #{payPassword}, #{phoneAreaCode}, #{phoneNumber}, #{userBalance},
-			#{userBalanceLock}, #{authenticationStatus}, #{accountStatus}, #{addTime})
+			#{userBalanceLock}, #{authenticationStatus}, #{accountStatus}, #{payPasswordStatus}, #{addTime})
 	</insert>
 	
 	<select id="User_getUserByUserId" parameterType="int" resultType="UserDO">
 		SELECT userId, userAccount, phoneAreaCode, phoneNumber, userBalance,
-			userBalanceLock, accountStatus, authenticationStatus, addTime
+			userBalanceLock, accountStatus, authenticationStatus, payPasswordStatus, addTime
 		FROM user_tab
 		WHERE userId = #{userId}
 	</select>
@@ -73,7 +73,7 @@
 
 	<select id="User_validateUserLogin" parameterType="java.util.Map" resultType="UserDO">
 		SELECT userId, userAccount, phoneAreaCode, phoneNumber, userBalance,
-			userBalanceLock, accountStatus, addTime
+			userBalanceLock, accountStatus, payPasswordStatus, addTime
 		FROM user_tab
 		WHERE userAccount = #{userAccount}
 		 	  AND password = #{password}
@@ -90,7 +90,7 @@
 
 	<select id="User_getUserByUserAccount" parameterType="String" resultType="UserDO">
 		SELECT userId, userAccount, phoneAreaCode, phoneNumber, userBalance,
-			userBalanceLock, authenticationStatus, accountStatus, addTime
+			userBalanceLock, authenticationStatus, accountStatus, payPasswordStatus, addTime
 		FROM user_tab
 		WHERE  userAccount = #{userAccount}
 	</select>
@@ -124,7 +124,8 @@
 	</select>
 
 	<select id="User_listUserForBacker" parameterType="java.util.Map" resultType="UserDO">
-		SELECT  userId, userAccount, phoneAreaCode, phoneNumber, userBalance, userBalanceLock, authenticationStatus, accountStatus, addTime
+		SELECT  userId, userAccount, phoneAreaCode, phoneNumber, userBalance,
+				userBalanceLock, authenticationStatus, accountStatus, payPasswordStatus, addTime
 		FROM user_tab
 		<where>
 			<if test="userAccount != null and userAccount != '' ">
@@ -155,7 +156,7 @@
 
 	<select id="User_getUserByPhone" parameterType="String" resultType="UserDO">
 		SELECT userId, userAccount, phoneAreaCode, phoneNumber, userBalance,
-			userBalanceLock, accountStatus, addTime
+			userBalanceLock, accountStatus, payPasswordStatus, addTime
 		FROM user_tab
 		WHERE phoneNumber = #{phoneNumber}
 	</select>
@@ -218,5 +219,11 @@
 		ORDER BY userTab.userId
 		LIMIT #{startNumber}, #{pageSize}
 	</select>
+
+	<update id="User_updateUserPayPasswordStatus" parameterType="java.util.Map">
+		UPDATE user_tab
+		SET payPasswordStatus = #{payPasswordStatus}
+		WHERE userId = #{userId}
+	</update>
 
 </mapper>

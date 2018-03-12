@@ -461,4 +461,29 @@ public class UserDaoImpl implements IUserDao {
         return result;
     }
 
+    /**
+     * 修改用户账号支付密码状态
+     * @param userId 用户Id
+     * @param payPasswordStatus 支付密码状态：1：每笔交易都输入交易密码，2：每次登录只输入一次交易密码
+     * @return 修改成功：返回true，修改失败：返回false
+     */
+    public boolean updateUserPayPasswordStatus (int userId, int payPasswordStatus){
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("payPasswordStatus", payPasswordStatus);
+
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.update("User_updateUserPayPasswordStatus", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

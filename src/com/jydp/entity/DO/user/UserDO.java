@@ -18,6 +18,7 @@ public class UserDO {
     private double userBalance;  //可用资产单位(美刀$)
     private double userBalanceLock;  //锁定资产单位(美刀$)
     private int accountStatus;  //账号状态：1：启用，2：禁用，-1：删除
+    private int payPasswordStatus;  //支付密码状态：1：每笔交易都输入交易密码，2：每次登录只输入一次交易密码
     private Timestamp addTime;  //注册时间
     private int authenticationStatus;//用户实名认证状态：1：待审核，2：审核通过，3：审核拒绝， 4：未提交
 
@@ -191,6 +192,21 @@ public class UserDO {
         this.accountStatus = accountStatus;
     }
 
+    /**
+     * 支付密码状态：1：每笔交易都输入交易密码，2：每次登录只输入一次交易密码
+     * @return the payPasswordStatus
+     */
+    public int getPayPasswordStatus() {
+        return payPasswordStatus;
+    }
+
+    /**
+     * 支付密码状态：1：每笔交易都输入交易密码，2：每次登录只输入一次交易密码
+     * @param payPasswordStatus he payPasswordStatus
+     */
+    public void setPayPasswordStatus(int payPasswordStatus) {
+        this.payPasswordStatus = payPasswordStatus;
+    }
 
     /**
      * 注册时间

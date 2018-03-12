@@ -95,8 +95,11 @@
                 </p>
                 <p class="phoneInput">
                     <label class="tradeName">支付密码：</label>
-                    <input type="password" class="entry" placeholder="您的支付密码" id="buyPwd" name="buyPwd" maxlength="16"
-                           onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
+                    <span class="passwordSetting">
+                        <input type="password" class="tradePassword" placeholder="您的支付密码" id="buyPwd" name="buyPwd" maxlength="16"
+                               onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
+                        <img src="<%=path %>/resources/image/web/setting.png" class="setting" />
+                    </span>
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">合计：</label>
@@ -132,8 +135,11 @@
                 </p>
                 <p class="phoneInput">
                     <label class="tradeName">支付密码：</label>
-                    <input type="password" class="entry" placeholder="您的支付密码" id="sellPwd" name="sellPwd" maxlength="16"
+                    <span class="passwordSetting">
+                        <input type="password" class="tradePassword" placeholder="您的支付密码" id="sellPwd" name="sellPwd" maxlength="16"
                            onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
+                        <img src="<%=path %>/resources/image/web/setting.png" class="setting" />
+                    </span>
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">合计：</label>
@@ -357,6 +363,25 @@
                 <input type="hidden" id="sellPwdConfirm" />
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
                 <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="sellHandle()" />
+            </div>
+        </div>
+
+        <div class="password_pop">
+            <p class="popTitle">记住密码提示</p>
+            <p class="popTips">
+                <label><input type="radio" class="choose" name="password" onclick="isPwd(2);">每次登录只输入一次交易密码</label>
+                <label><input type="radio" class="choose" name="password" onclick="isPwd(1);" checked>每笔交易都输入交易密码</label>
+            </p>
+            <p class="popInput">
+                <label class="popName">支付密码<span class="star">*</span>：</label>
+                <input type="password" class="entry" placeholder="您的支付密码" id="rememberPwd" name="rememberPwd" maxlength="16"
+                       onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
+            </p>
+
+            <div class="buttons">
+                <input type="hidden" id="payPasswordStatus" name="payPasswordStatus" value="1"/>
+                <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="updatePayPwd();" />
             </div>
         </div>
 
@@ -682,7 +707,7 @@
                 return;
             }
 
-            if(buyPwd == null || buyPwd == ""){
+            if((buyPwd == null || buyPwd == "") && parseInt('${userSession.isPwd}') == 1){
                 openTips("交易密码不能为空");
                 return;
             }
@@ -738,7 +763,8 @@
                 return;
             }
 
-            if(sellPwd == null || sellPwd == ""){
+            var userIsPwd = '${userSession.isPwd}';
+            if((sellPwd == null || sellPwd == "") && userIsPwd == 1){
                 openTips("交易密码不能为空");
                 return;
             }
@@ -755,6 +781,11 @@
             $(".mask").fadeIn();
             $(".sellConfirm").fadeIn();
             popObj = ".sellConfirm"
+        });
+        $(".setting").click(function(){
+            $(".mask").fadeIn();
+            $(".password_pop").fadeIn();
+            popObj = ".password_pop"
         });
         $(".revoke").click(function(){
             // $(".mask").fadeIn();
@@ -799,7 +830,58 @@
         start = 5;
         setTimeout("count()",1000);
 
+    }
 
+    //更改交易密码状态
+    function isPwd(type) {
+        $("#payPasswordStatus").val(type);
+    }
+
+    var PayPwdBoo = false;
+    function updatePayPwd() {
+        if (PayPwdBoo) {
+            return;
+        } else {
+            PayPwdBoo = true;
+        }
+
+        var rememberPwd = $("#rememberPwd").val();
+        var payPasswordStatus = parseInt($("#payPasswordStatus").val());
+
+        if(payPasswordStatus != 1 && payPasswordStatus != 2){
+            openTips("参数错误，请刷新页面重试");
+            PayPwdBoo = false;
+            return;
+        }
+
+        if(rememberPwd == null || rememberPwd == ""){
+            openTips("交易密码不能为空");
+            PayPwdBoo = false;
+            return;
+        }
+
+        $.ajax({
+            url: '<%=path%>' + "/userWeb/tradeCenter/rememberPwd.htm", //方法路径URL
+            data:{
+                rememberPwd : rememberPwd,
+                payPasswordStatus : payPasswordStatus
+            },//参数
+            dataType: 'json',
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (result) {
+                resultBoo = false;
+                $(".mask").fadeOut("fast");
+                $(popObj).fadeOut("fast");
+                openTips(result.message);
+                setTimeout("location.reload()",1000 );
+            }, error: function () {
+                resultBoo = false;
+                $(".mask").fadeOut("fast");
+                $(popObj).fadeOut("fast");
+                openTips("修改失败,请重新刷新页面后重试");
+            }
+        });
 
     }
 
@@ -815,7 +897,7 @@
         var currencyId = $("#cucyId").val();
         if (currencyId == null || currencyId == "") {
             pendBoo = false;
-            openTips("参数获取错误，请刷新页面重试")
+            openTips("参数获取错误，请刷新页面重试");
             return;
         }
 

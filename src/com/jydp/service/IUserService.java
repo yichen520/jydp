@@ -319,4 +319,12 @@ public interface IUserService {
     boolean reduceUserCurrencyNumberLockForBack(int userId, String userAccount, int currencyId, String currencyName, double currencyNumber,
                                             int backerId, String backerAccount, String remarks, String ipAddress);
 
+    /**
+     * 修改用户账号支付密码状态
+     * @param userId 用户Id
+     * @param payPasswordStatus 支付密码状态：1：每笔交易都输入交易密码，2：每次登录只输入一次交易密码
+     * @return 修改成功：返回true，修改失败：返回false
+     */
+    boolean updateUserPayPasswordStatus (int userId, int payPasswordStatus);
+
 }

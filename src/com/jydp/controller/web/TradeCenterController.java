@@ -17,7 +17,6 @@ import com.jydp.entity.VO.UserDealCapitalMessageVO;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.*;
 import config.RedisKeyConfig;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -164,12 +163,6 @@ public class TradeCenterController {
         String buyPwd = StringUtil.stringNullHandle(request.getParameter("buyPwd"));
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
 
-        if (!StringUtil.isNotNull(buyPwd)) {
-            resultJson.setCode(3);
-            resultJson.setMessage("参数错误");
-            return resultJson;
-        }
-
         double buyPrice = 0;
         if (StringUtil.isNotNull(buyPriceStr)) {
             buyPrice = Double.parseDouble(buyPriceStr);
@@ -241,20 +234,23 @@ public class TradeCenterController {
             return resultJson;
         }
 
-        String pwd = MD5Util.toMd5("123456");
-        boolean resultBoo = userService.validateUserPay(user.getUserAccount(), pwd);
-        if(resultBoo){
-            resultJson.setCode(3);
-            resultJson.setMessage("支付密码不能为原始密码,请修改后操作");
-            return resultJson;
+        //判断是否需要验证交易密码以及验证交易密码
+        int isPwd = userSession.getIsPwd();
+        int payPasswordStatus = user.getPayPasswordStatus();
+        if(payPasswordStatus == 1 ||(payPasswordStatus == 2 && isPwd == 1)) {
+            buyPwd = MD5Util.toMd5(buyPwd);
+            boolean checkResult = userService.validateUserPay(user.getUserAccount(), buyPwd);
+            if (!checkResult) {
+                resultJson.setCode(4);
+                resultJson.setMessage("支付密码错误");
+                return resultJson;
+            }
         }
 
-        buyPwd = MD5Util.toMd5(buyPwd);
-        boolean checkResult = userService.validateUserPay(user.getUserAccount(), buyPwd);
-        if(!checkResult){
-            resultJson.setCode(4);
-            resultJson.setMessage("支付密码错误");
-            return resultJson;
+        //修改session中是否输入过密码标识
+        if(isPwd == 2){
+            userSession.setIsPwd(2);
+            request.getSession().setAttribute("userSession", userSession);
         }
 
         //计算手续费及总价
@@ -314,12 +310,6 @@ public class TradeCenterController {
         String sellNumStr = StringUtil.stringNullHandle(request.getParameter("sellNum"));
         String sellPwd = StringUtil.stringNullHandle(request.getParameter("sellPwd"));
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
-
-        if (!StringUtil.isNotNull(sellPwd)) {
-            resultJson.setCode(3);
-            resultJson.setMessage("参数错误");
-            return resultJson;
-        }
 
         double sellPrice = 0;
         if (StringUtil.isNotNull(sellPriceStr)) {
@@ -401,20 +391,23 @@ public class TradeCenterController {
             return resultJson;
         }
 
-        String pwd = MD5Util.toMd5("123456");
-        boolean resultBoo = userService.validateUserPay(user.getUserAccount(), pwd);
-        if(resultBoo){
-            resultJson.setCode(3);
-            resultJson.setMessage("支付密码不能为原始密码,请修改后操作");
-            return resultJson;
+        //判断是否需要验证交易密码以及验证交易密码
+        int isPwd = userSession.getIsPwd();
+        int payPasswordStatus = user.getPayPasswordStatus();
+        if(payPasswordStatus == 1 ||(payPasswordStatus == 2 && isPwd == 1)){
+            sellPwd = MD5Util.toMd5(sellPwd);
+            boolean checkResult = userService.validateUserPay(user.getUserAccount(), sellPwd);
+            if(!checkResult){
+                resultJson.setCode(4);
+                resultJson.setMessage("支付密码错误");
+                return resultJson;
+            }
         }
 
-        sellPwd = MD5Util.toMd5(sellPwd);
-        boolean checkResult = userService.validateUserPay(user.getUserAccount(), sellPwd);
-        if(!checkResult){
-            resultJson.setCode(4);
-            resultJson.setMessage("支付密码错误");
-            return resultJson;
+        //修改session中是否输入过密码标识
+        if(isPwd == 2){
+            userSession.setIsPwd(2);
+            request.getSession().setAttribute("userSession", userSession);
         }
 
         if(userCurrencyNum.getCurrencyNumber() < sellNum){
@@ -451,7 +444,6 @@ public class TradeCenterController {
 
         return resultJson;
     }
-
 
     /** 获取成交记录 */
     @RequestMapping(value = "/deal", method = RequestMethod.POST)
@@ -635,4 +627,62 @@ public class TradeCenterController {
         resultJson.setData(jsonObject);
         return resultJson;
     }
+
+    /** 记住密码提示 */
+    @RequestMapping(value = "/rememberPwd.htm", method = RequestMethod.POST)
+    public @ResponseBody JsonObjectBO rememberPwd(HttpServletRequest request) {
+        JsonObjectBO resultJson = new JsonObjectBO();
+
+        UserSessionBO user = UserWebInterceptor.getUser(request);
+        if (user == null) {
+            resultJson.setCode(4);
+            resultJson.setMessage("未登录");
+            return resultJson;
+        }
+
+        //获取参数
+        String rememberPwd = StringUtil.stringNullHandle(request.getParameter("rememberPwd"));
+        String payPasswordStatusStr = StringUtil.stringNullHandle(request.getParameter("payPasswordStatus"));
+        if (!StringUtil.isNotNull(rememberPwd)) {
+            resultJson.setCode(3);
+            resultJson.setMessage("参数获取错误");
+            return resultJson;
+        }
+
+        int payPasswordStatus = 1;
+        if (StringUtil.isNotNull(payPasswordStatusStr)) {
+            payPasswordStatus = Integer.parseInt(payPasswordStatusStr);
+        }
+
+        //验证交易密码
+        rememberPwd = MD5Util.toMd5(rememberPwd);
+        boolean checkResult = userService.validateUserPay(user.getUserAccount(), rememberPwd);
+        if(!checkResult){
+            resultJson.setCode(4);
+            resultJson.setMessage("支付密码错误");
+            return resultJson;
+        }
+
+        //修改交易密码状态
+        boolean updateBoo = userService.updateUserPayPasswordStatus(user.getUserId(), payPasswordStatus);
+        if(!updateBoo){
+            resultJson.setCode(2);
+            resultJson.setMessage("修改失败");
+            return resultJson;
+        }
+
+        //修改session中是否输入过密码标识
+        if(payPasswordStatus == 2){
+            user.setIsPwd(2);
+            request.getSession().setAttribute("userSession", user);
+        }else if(payPasswordStatus == 1){
+            user.setIsPwd(1);
+            request.getSession().setAttribute("userSession", user);
+        }
+
+        resultJson.setCode(1);
+        resultJson.setMessage("修改成功");
+        return resultJson;
+    }
+
 }
