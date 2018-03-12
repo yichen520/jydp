@@ -2,6 +2,7 @@ package com.jydp.service.impl.common;
 
 import com.iqmkj.utils.BigDecimalUtil;
 import com.iqmkj.utils.DateUtil;
+import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.DTO.TransactionDealPriceDTO;
@@ -90,8 +91,9 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
 
             //涨跌幅度计算
             for(TransactionDealPriceDTO transactionDealPrice : nowLastPrice){
-                if(redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + transactionDealPrice.getCurrencyId()) != null){
-                    double transactionPrice = Double.parseDouble(redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + transactionDealPrice.getCurrencyId()).toString());
+                String yesterdayPriceStr = (String) redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + transactionDealPrice.getCurrencyId());
+                if(StringUtil.isNotNull(yesterdayPriceStr)){
+                    double transactionPrice = Double.parseDouble(yesterdayPriceStr);
                     double range = BigDecimalUtil.sub(transactionDealPrice.getTransactionPrice(), transactionPrice) * 100;
                     String rangeStr = BigDecimalUtil.div(range, transactionPrice, 2);
                     redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionDealPrice.getCurrencyId(), Double.parseDouble(rangeStr));

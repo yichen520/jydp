@@ -324,14 +324,14 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
     public StandardParameterVO listTransactionCurrencyAll(int currencyId){
         StandardParameterVO standardParameter = new StandardParameterVO();
         //当前价
-        String nowPriceStr = redisService.getValue(RedisKeyConfig.NOW_PRICE + currencyId).toString();
+        String nowPriceStr = (String) redisService.getValue(RedisKeyConfig.NOW_PRICE + currencyId);
         if(StringUtil.isNotNull(nowPriceStr)){
             double nowPrice = Double.parseDouble(nowPriceStr);
             standardParameter.setNowPrice(nowPrice);
         }
 
         //买一价
-        String buyOneKeyStr = redisService.getValue(RedisKeyConfig.BUY_ONE_KEY + currencyId).toString();
+        String buyOneKeyStr = (String) redisService.getValue(RedisKeyConfig.BUY_ONE_KEY + currencyId);
         if(StringUtil.isNotNull(buyOneKeyStr)){
             double buyOne = Double.parseDouble(buyOneKeyStr);
             standardParameter.setBuyOne(buyOne);
@@ -339,7 +339,7 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
         }
 
         //卖一价
-        String sellOneKeyStr = redisService.getValue(RedisKeyConfig.SELL_ONE_KEY + currencyId).toString();
+        String sellOneKeyStr = (String) redisService.getValue(RedisKeyConfig.SELL_ONE_KEY + currencyId);
         if(StringUtil.isNotNull(sellOneKeyStr)){
             double sellOne = Double.parseDouble(sellOneKeyStr);
             standardParameter.setSellOne(sellOne);
@@ -347,7 +347,7 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
         }
 
         //今日最高价
-        String todayMaxPriceStr = redisService.getValue(RedisKeyConfig.TODAY_MAX_PRICE + currencyId).toString();
+        String todayMaxPriceStr = (String) redisService.getValue(RedisKeyConfig.TODAY_MAX_PRICE + currencyId);
         if(StringUtil.isNotNull(todayMaxPriceStr)){
             double todayMax = Double.parseDouble(todayMaxPriceStr);
             standardParameter.setTodayMax(todayMax);
@@ -355,14 +355,14 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
         }
 
         //今日最低价
-        String todayMinpriceStr = redisService.getValue(RedisKeyConfig.TODAY_MIN_PRICE + currencyId).toString();
+        String todayMinpriceStr = (String) redisService.getValue(RedisKeyConfig.TODAY_MIN_PRICE + currencyId);
         if(StringUtil.isNotNull(todayMinpriceStr)){
             double todayMin = Double.parseDouble(todayMinpriceStr);
             standardParameter.setTodayMin(todayMin);
         }
 
         //今日涨幅
-        String todayRangeSre = redisService.getValue(RedisKeyConfig.TODAY_RANGE + currencyId).toString();
+        String todayRangeSre = (String) redisService.getValue(RedisKeyConfig.TODAY_RANGE + currencyId);
         if(StringUtil.isNotNull(todayRangeSre)){
             double todayRange = Double.parseDouble(todayRangeSre);
             standardParameter.setTodayRange(todayRange);
