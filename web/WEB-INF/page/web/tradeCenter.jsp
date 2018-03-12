@@ -410,12 +410,14 @@
 <script type="text/javascript" src="<%=path %>/resources/js/loadPageWeb.js"></script>
 <script type="text/javascript" src="<%=path %>/resources/js/simpleTips.js"></script>
 <script type="text/javascript">
+    var isPwd = 0;
     window.onload = function() {
         count();
         var code = '${code}';
         var message = '${message}';
         var transactionPendOrderList = '${transactionPendOrderList}';
         var userSession = '${userSession}';
+        isPwd = parseInt('${userSession.isPwd}');
         if(transactionPendOrderList != null && transactionPendOrderList.length > 0 && userSession != null
              && transactionPendOrderList != "" && transactionPendOrderList != "[]"){
             //$("#tableId").style.display="inline";
@@ -716,8 +718,13 @@
                 return;
             }
 
-            if((buyPwd == null || buyPwd == "") && parseInt('${userSession.isPwd}') == 1){
+            if((buyPwd == null || buyPwd == "") && isPwd == 1){
                 openTips("交易密码不能为空");
+                return;
+            }
+
+            if(buyPwd.length < 6 && isPwd == 1){
+                openTips("交易密码不能小于六位");
                 return;
             }
 
@@ -772,9 +779,13 @@
                 return;
             }
 
-            var userIsPwd = '${userSession.isPwd}';
-            if((sellPwd == null || sellPwd == "") && userIsPwd == 1){
+            if((sellPwd == null || sellPwd == "") && isPwd == 1){
                 openTips("交易密码不能为空");
+                return;
+            }
+
+            if(sellPwd.length < 6 && isPwd == 1){
+                openTips("交易密码不能小于六位");
                 return;
             }
 
