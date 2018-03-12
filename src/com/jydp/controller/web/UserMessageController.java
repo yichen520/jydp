@@ -23,9 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -72,13 +70,6 @@ public class UserMessageController {
             request.setAttribute("code", 2);
             request.setAttribute("message", "用户信息查询失败，请重试！");
             return "page/web/userMessage";
-        }
-
-        //原密码判定TODO
-        String password = MD5Util.toMd5("123456");
-        boolean userPay = userService.validateUserPay(user.getUserAccount(), password);
-        if(userPay){
-            userMessage.setPayPassword("1");
         }
 
         //手机号格式化
@@ -150,9 +141,10 @@ public class UserMessageController {
         String password = StringUtil.stringNullHandle(request.getParameter("password"));
         String newPassword = StringUtil.stringNullHandle(request.getParameter("newPassword"));
         String repetitionPassword = StringUtil.stringNullHandle(request.getParameter("repetitionPassword"));
+        String pasVerifyCode = StringUtil.stringNullHandle(request.getParameter("pasVerifyCode"));
 
         if (!StringUtil.isNotNull(password) || !StringUtil.isNotNull(newPassword)
-                || !StringUtil.isNotNull(repetitionPassword)) {
+                || !StringUtil.isNotNull(repetitionPassword) || !StringUtil.isNotNull(pasVerifyCode)) {
             responseJson.setCode(3);
             responseJson.setMessage("未接受到参数");
             return responseJson;
@@ -162,6 +154,22 @@ public class UserMessageController {
         if(!newPassword.equals(repetitionPassword)){
             responseJson.setCode(3);
             responseJson.setMessage("密码输入不一致！");
+            return responseJson;
+        }
+
+        //获取用户信息
+        UserDO userMessage = userService.getUserByUserId(user.getUserId());
+        if(userMessage == null){
+            responseJson.setCode(3);
+            responseJson.setMessage("用户信息查询失败，请稍后重试");
+            return responseJson;
+        }
+
+        //验证码判定
+        JsonObjectBO validatePhone = systemValidatePhoneService.validatePhone(userMessage.getPhoneNumber(), pasVerifyCode);
+        if(validatePhone.getCode() != 1){
+            responseJson.setCode(validatePhone.getCode());
+            responseJson.setMessage(validatePhone.getMessage());
             return responseJson;
         }
 
@@ -176,6 +184,12 @@ public class UserMessageController {
 
         //新密码修改
         newPassword = MD5Util.toMd5(newPassword);
+        boolean userPay = userService.validateUserPay(user.getUserAccount(), newPassword);
+        if(userPay){
+            responseJson.setCode(3);
+            responseJson.setMessage("不可与支付密码相同！");
+            return responseJson;
+        }
         boolean forgetPwd = userService.forgetPwd(user.getUserAccount(), newPassword);
         if(!forgetPwd){
             responseJson.setCode(3);
@@ -203,18 +217,12 @@ public class UserMessageController {
         String password = StringUtil.stringNullHandle(request.getParameter("password"));
         String newPassword = StringUtil.stringNullHandle(request.getParameter("newPassword"));
         String repetitionPassword = StringUtil.stringNullHandle(request.getParameter("repetitionPassword"));
+        String payVerifyCode = StringUtil.stringNullHandle(request.getParameter("payVerifyCode"));
 
         if (!StringUtil.isNotNull(password) || !StringUtil.isNotNull(newPassword)
-                || !StringUtil.isNotNull(repetitionPassword)) {
+                || !StringUtil.isNotNull(repetitionPassword) || !StringUtil.isNotNull(payVerifyCode)) {
             responseJson.setCode(3);
             responseJson.setMessage("未接受到参数");
-            return responseJson;
-        }
-
-        //初始密码判定
-        if(newPassword.equals("123456")){
-            responseJson.setCode(3);
-            responseJson.setMessage("不可设为初始密码！");
             return responseJson;
         }
 
@@ -225,10 +233,26 @@ public class UserMessageController {
             return responseJson;
         }
 
+        //获取用户信息
+        UserDO userMessage = userService.getUserByUserId(user.getUserId());
+        if(userMessage == null){
+            responseJson.setCode(3);
+            responseJson.setMessage("用户信息查询失败，请稍后重试");
+            return responseJson;
+        }
+
+        //验证码判定
+        JsonObjectBO validatePhone = systemValidatePhoneService.validatePhone(userMessage.getPhoneNumber(), payVerifyCode);
+        if(validatePhone.getCode() != 1){
+            responseJson.setCode(validatePhone.getCode());
+            responseJson.setMessage(validatePhone.getMessage());
+            return responseJson;
+        }
+
         //原密码判定
         password = MD5Util.toMd5(password);
-        boolean userLog = userService.validateUserPay(user.getUserAccount(), password);
-        if(!userLog){
+        boolean userPay = userService.validateUserPay(user.getUserAccount(), password);
+        if(!userPay){
             responseJson.setCode(3);
             responseJson.setMessage("原密码错误！");
             return responseJson;
@@ -236,6 +260,14 @@ public class UserMessageController {
 
         //新密码修改
         newPassword = MD5Util.toMd5(newPassword);
+        UserDO userLog = userService.validateUserLogin(user.getUserAccount(), newPassword);
+        if(userLog != null){
+            responseJson.setCode(3);
+            responseJson.setMessage("不可与登陆密码相同！");
+            return responseJson;
+        }
+
+        //修改支付密码
         boolean forgetPwd = userService.forgetPayPwd(user.getUserId(), newPassword);
         if(!forgetPwd){
             responseJson.setCode(3);
@@ -345,6 +377,13 @@ public class UserMessageController {
 
         //新密码修改
         newPassword = MD5Util.toMd5(newPassword);
+        UserDO userLog = userService.validateUserLogin(user.getUserAccount(), newPassword);
+        if(userLog != null){
+            responseJson.setCode(3);
+            responseJson.setMessage("不可与登陆密码相同！");
+            return responseJson;
+        }
+
         boolean forgetPwd = userService.forgetPayPwd(user.getUserId(), newPassword);
         if(!forgetPwd){
             responseJson.setCode(3);
@@ -370,19 +409,41 @@ public class UserMessageController {
         }
 
         String validateCode = StringUtil.stringNullHandle(request.getParameter("validateCode"));
+        String newVerifyCode = StringUtil.stringNullHandle(request.getParameter("newVerifyCode"));
         String password = StringUtil.stringNullHandle(request.getParameter("password"));
         String areaCode = StringUtil.stringNullHandle(request.getParameter("areaCode"));
         String phone = StringUtil.stringNullHandle(request.getParameter("phone"));
 
-        if (!StringUtil.isNotNull(validateCode) || !StringUtil.isNotNull(password)
+        if (!StringUtil.isNotNull(validateCode) || !StringUtil.isNotNull(password) || !StringUtil.isNotNull(newVerifyCode)
                 || !StringUtil.isNotNull(phone) || !StringUtil.isNotNull(areaCode)) {
             responseJson.setCode(3);
             responseJson.setMessage("未接受到参数");
             return responseJson;
         }
 
+        //获取用户信息
+        UserDO userMessage = userService.getUserByUserId(user.getUserId());
+        if(userMessage == null){
+            responseJson.setCode(3);
+            responseJson.setMessage("用户信息查询失败，请稍后重试");
+            return responseJson;
+        }
+
+        if(phone.equals(userMessage.getPhoneNumber())){
+            responseJson.setCode(3);
+            responseJson.setMessage("新密码不可与原密码相同");
+            return responseJson;
+        }
         //验证码判定
-        JsonObjectBO validatePhone = systemValidatePhoneService.validatePhone(phone, validateCode);
+        JsonObjectBO validatePhone = systemValidatePhoneService.validatePhone(userMessage.getPhoneNumber(), validateCode);
+        if(validatePhone.getCode() != 1){
+            responseJson.setCode(validatePhone.getCode());
+            responseJson.setMessage(validatePhone.getMessage());
+            return responseJson;
+        }
+
+        //验证码判定
+        validatePhone = systemValidatePhoneService.validatePhone(phone, newVerifyCode);
         if(validatePhone.getCode() != 1){
             responseJson.setCode(validatePhone.getCode());
             responseJson.setMessage(validatePhone.getMessage());
