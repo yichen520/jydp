@@ -320,62 +320,62 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
     public StandardParameterVO listTransactionCurrencyAll(int currencyId){
         StandardParameterVO standardParameter = new StandardParameterVO();
         //当前价
-        String nowPriceStr = (String) redisService.getValue(RedisKeyConfig.NOW_PRICE + currencyId);
-        if(StringUtil.isNotNull(nowPriceStr)){
-            double nowPrice = Double.parseDouble(nowPriceStr);
+        Object nowPriceStr = redisService.getValue(RedisKeyConfig.NOW_PRICE + currencyId);
+        if(nowPriceStr != null){
+            double nowPrice = Double.parseDouble(nowPriceStr.toString());
             standardParameter.setNowPrice(nowPrice);
         }
 
         //买一价
-        String buyOneKeyStr = (String) redisService.getValue(RedisKeyConfig.BUY_ONE_KEY + currencyId);
-        if(StringUtil.isNotNull(buyOneKeyStr)){
-            double buyOne = Double.parseDouble(buyOneKeyStr);
+        Object buyOneKeyStr = redisService.getValue(RedisKeyConfig.BUY_ONE_KEY + currencyId);
+        if(buyOneKeyStr != null){
+            double buyOne = Double.parseDouble(buyOneKeyStr.toString());
             standardParameter.setBuyOne(buyOne);
 
         }
 
         //卖一价
-        String sellOneKeyStr = (String) redisService.getValue(RedisKeyConfig.SELL_ONE_KEY + currencyId);
-        if(StringUtil.isNotNull(sellOneKeyStr)){
-            double sellOne = Double.parseDouble(sellOneKeyStr);
+        Object sellOneKeyStr = redisService.getValue(RedisKeyConfig.SELL_ONE_KEY + currencyId);
+        if(sellOneKeyStr != null){
+            double sellOne = Double.parseDouble(sellOneKeyStr.toString());
             standardParameter.setSellOne(sellOne);
 
         }
 
         //今日最高价
-        String todayMaxPriceStr = (String) redisService.getValue(RedisKeyConfig.TODAY_MAX_PRICE + currencyId);
-        if(StringUtil.isNotNull(todayMaxPriceStr)){
-            double todayMax = Double.parseDouble(todayMaxPriceStr);
+        Object todayMaxPriceStr = redisService.getValue(RedisKeyConfig.TODAY_MAX_PRICE + currencyId);
+        if(todayMaxPriceStr != null){
+            double todayMax = Double.parseDouble(todayMaxPriceStr.toString());
             standardParameter.setTodayMax(todayMax);
 
         }
 
         //今日最低价
-        String todayMinpriceStr = (String) redisService.getValue(RedisKeyConfig.TODAY_MIN_PRICE + currencyId);
-        if(StringUtil.isNotNull(todayMinpriceStr)){
-            double todayMin = Double.parseDouble(todayMinpriceStr);
+        Object todayMinpriceStr = redisService.getValue(RedisKeyConfig.TODAY_MIN_PRICE + currencyId);
+        if(todayMinpriceStr != null){
+            double todayMin = Double.parseDouble(todayMinpriceStr.toString());
             standardParameter.setTodayMin(todayMin);
         }
 
         //今日涨幅
-        String todayRangeSre = (String) redisService.getValue(RedisKeyConfig.TODAY_RANGE + currencyId);
-        if(StringUtil.isNotNull(todayRangeSre)){
-            double todayRange = Double.parseDouble(todayRangeSre);
+        Object todayRangeSre = redisService.getValue(RedisKeyConfig.TODAY_RANGE + currencyId);
+        if(todayRangeSre != null){
+            double todayRange = Double.parseDouble(todayRangeSre.toString());
             standardParameter.setTodayRange(todayRange);
 
         }
 
         //昨日收盘价
-        String yesterdayPriceStr = (String) redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + currencyId);
-        if(StringUtil.isNotNull(yesterdayPriceStr)){
-            double yesterdayPrice = Double.parseDouble(yesterdayPriceStr);
+        Object yesterdayPriceStr = redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + currencyId);
+        if(yesterdayPriceStr != null){
+            double yesterdayPrice = Double.parseDouble(yesterdayPriceStr.toString());
             standardParameter.setYesterdayPrice(yesterdayPrice);
         }
 
         //今日小时成交量
-        String dayTurnoverStr = (String) redisService.getValue(RedisKeyConfig.DAY_TURNOVER + currencyId);
-        if(StringUtil.isNotNull(dayTurnoverStr)){
-            double dayTurnove = Double.parseDouble(dayTurnoverStr);
+        Object dayTurnoverStr = redisService.getValue(RedisKeyConfig.DAY_TURNOVER + currencyId);
+        if(dayTurnoverStr != null){
+            double dayTurnove = Double.parseDouble(dayTurnoverStr.toString());
             standardParameter.setDayTurnove(dayTurnove);
         }
 
