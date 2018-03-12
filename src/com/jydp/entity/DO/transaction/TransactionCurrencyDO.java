@@ -14,6 +14,7 @@ public class TransactionCurrencyDO {
     private String currencyImg;  //币种徽标
     private double buyFee;  //买入手续费
     private double sellFee;  //卖出手续费
+    private double guidancePrice;  //上市指导价
     private int paymentType;  //交易状态,1:正常，2:停牌
     private int upStatus;  //上线状态,1:待上线,2:上线中,3:停牌,4:已下线
     private int rankNumber;  //排名位置
@@ -232,9 +233,25 @@ public class TransactionCurrencyDO {
     /**
      * 添加时间
      *
-     * @param addTime the add time
+     * @param addTime the add time to set
      */
     public void setAddTime(Timestamp addTime) {
         this.addTime = addTime;
+    }
+
+    /**
+     *  上市指导价
+     * @return the guidancePrice
+     */
+    public double getGuidancePrice() {
+        return guidancePrice;
+    }
+
+    /**
+     *  上市指导价
+     * @param guidancePrice the guidancePrice to set
+     */
+    public void setGuidancePrice(double guidancePrice) {
+        this.guidancePrice = guidancePrice;
     }
 }

@@ -28,13 +28,14 @@ public interface ITransactionCurrencyService {
      * @param upStatus  上线状态,1:待上线,2:上线中,3:停牌,4:已下线
      * @param backerAccount  管理员账号
      * @param ipAddresse  操作时的ip地址
+     * @param guidancePrice  上市指导价
      * @param upTime  上线时间
      * @param addTime 添加时间
      * @return  操作成功：返回true，操作失败：返回false
      */
     boolean insertTransactionCurrency(String currencyShortName, String currencyName, String currencyImg,
                                       double buyFee, double sellFee, int paymentType, int upStatus, String backerAccount, String ipAddresse,
-                                      Timestamp upTime,Timestamp addTime);
+                                      double guidancePrice, Timestamp upTime,Timestamp addTime);
 
     /**
      * 新增交易币种(后台)
@@ -47,13 +48,14 @@ public interface ITransactionCurrencyService {
      * @param upStatus  上线状态,1:待上线,2:上线中,3:停牌,4:已下线
      * @param backerAccount  管理员账号
      * @param ipAddresse  操作时的ip地址
+     * @param guidancePrice  上市指导价
      * @param upTime  上线时间
      * @param addTime 添加时间
      * @return  操作成功：返回true，操作失败：返回false
      */
     boolean addTransactionCurrency(String currencyShortName, String currencyName, String currencyImg,
                                       double buyFee, double sellFee,int paymentType, int upStatus, String backerAccount, String ipAddresse,
-                                      Timestamp upTime,Timestamp addTime);
+                                      double guidancePrice, Timestamp upTime,Timestamp addTime);
 
     /**
      * 根据币种Id获取交易币种

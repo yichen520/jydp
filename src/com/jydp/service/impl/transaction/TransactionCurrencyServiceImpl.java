@@ -46,13 +46,14 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      * @param upStatus  上线状态,1:待上线,2:上线中,3:停牌,4:已下线
      * @param backerAccount  管理员账号
      * @param ipAddresse  操作时的ip地址
+     * @param guidancePrice  上市指导价
      * @param upTime  上线时间
      * @param addTime 添加时间
      * @return  操作成功：返回true，操作失败：返回false
      */
     public boolean insertTransactionCurrency(String currencyShortName, String currencyName, String currencyImg,
                                              double buyFee, double sellFee, int paymentType, int upStatus,
-                                             String backerAccount, String ipAddresse,
+                                             String backerAccount, String ipAddresse, double guidancePrice,
                                              Timestamp upTime,Timestamp addTime){
         TransactionCurrencyDO transactionCurrency = new TransactionCurrencyDO();
         transactionCurrency.setCurrencyName(currencyName);
@@ -60,6 +61,7 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
         transactionCurrency.setCurrencyImg(currencyImg);
         transactionCurrency.setBuyFee(buyFee);
         transactionCurrency.setSellFee(sellFee);
+        transactionCurrency.setGuidancePrice(guidancePrice);
         transactionCurrency.setPaymentType(paymentType);
         transactionCurrency.setUpStatus(upStatus);
         transactionCurrency.setBackerAccount(backerAccount);
@@ -86,6 +88,7 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      * @param upStatus  上线状态,1:待上线,2:上线中,3:停牌,4:已下线
      * @param backerAccount  管理员账号
      * @param ipAddresse  操作时的ip地址
+     * @param guidancePrice  上市指导价
      * @param upTime  上线时间
      * @param addTime 添加时间
      * @return  操作成功：返回true，操作失败：返回false
@@ -93,13 +96,14 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
     @Transactional
     public boolean addTransactionCurrency(String currencyShortName, String currencyName, String currencyImg,
                                    double buyFee, double sellFee,int paymentType, int upStatus, String backerAccount, String ipAddresse,
-                                          Timestamp upTime,Timestamp addTime){
+                                   double guidancePrice, Timestamp upTime,Timestamp addTime){
         TransactionCurrencyDO transactionCurrency = new TransactionCurrencyDO();
         transactionCurrency.setCurrencyName(currencyName);
         transactionCurrency.setCurrencyShortName(currencyShortName);
         transactionCurrency.setCurrencyImg(currencyImg);
         transactionCurrency.setBuyFee(buyFee);
         transactionCurrency.setSellFee(sellFee);
+        transactionCurrency.setGuidancePrice(guidancePrice);
         transactionCurrency.setPaymentType(paymentType);
         transactionCurrency.setUpStatus(upStatus);
         transactionCurrency.setRankNumber(1);
@@ -128,6 +132,12 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
         }
         if (currencyId <= 0){
             addBoo = false;
+        }
+
+        //存入redis上市指导价
+        if (addBoo) {
+            redisService.addValue(RedisKeyConfig.YESTERDAY_PRICE + transactionCurrency.getCurrencyId(),
+                    transactionCurrency.getGuidancePrice());
         }
 
         // 数据回滚

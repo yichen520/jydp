@@ -271,9 +271,8 @@
         <p class="tableTitle">
             <span class="dealTime">成交时间</span>
             <span class="type">类型</span>
-            <span class="dealAmount">委托价格</span>
-            <span class="dealAmount">委托数量</span>
-            <span class="dealAmount">委托总价</span>
+            <span class="dealAmount">成交价格</span>
+            <span class="dealAmount">成交数量</span>
         </p>
 
         <div class="tableScroll">
@@ -289,7 +288,6 @@
                         </c:if>
                         <td class="dealAmount">$<fmt:formatNumber type="number" value="${item.transactionPrice}" maxFractionDigits="2" groupingUsed="FALSE"/></td>
                         <td class="dealAmount"><fmt:formatNumber type="number" value="${item.currencyNumber}" maxFractionDigits="4" groupingUsed="FALSE"/></td>
-                        <td class="dealAmount rise">$<fmt:formatNumber type="number" value="${item.currencyTotalPrice}" maxFractionDigits="6" groupingUsed="FALSE"/></td>
                     </tr>
                 </c:forEach>
             </table>
