@@ -42,7 +42,6 @@
                 </p>
                 <p class="loginCode">
                     <input type="text" id="validateCode" name="validateCode" class="codeInput" placeholder="验证码"
-                           onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
                            maxLength="4" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"
                            onkeypress="keypressHandle(event);"/>
                     <span class="codeImg"><img src="<%=path%>/kaptcha/getKaptchaImage" id="kaptchaImage" class="codeImg" /></span>
