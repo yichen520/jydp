@@ -85,8 +85,7 @@
                     <td class="time">挂单时间</td>
                     <td class="account">用户账号</td>
                     <td class="coin">币种</td>
-                    <td class="amount">挂单数量</td>
-                    <td class="amount">挂单总价</td>
+                    <td class="entrust">委托详情</td>
                     <td class="amount">剩余数量</td>
                     <td class="type">交易类型</td>
                     <td class="state">交易状态</td>
@@ -98,8 +97,11 @@
                         <td class="time"><fmt:formatDate type="time" value="${pend.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                         <td class="account">${pend.userAccount}</td>
                         <td class="coin">${pend.currencyName}</td>
-                        <td class="amount"><fmt:formatNumber type="number" value="${pend.pendingNumber }" maxFractionDigits="4"/></td>
-                        <td class="amount"><fmt:formatNumber type="number" value="${pend.pendingNumber * pend.pendingPrice }" maxFractionDigits="6"/></td>
+                        <td class="entrust">
+                            <p>数量：<fmt:formatNumber type="number" value="${pend.pendingNumber }" maxFractionDigits="4"/></p>
+                            <p>单价：$<fmt:formatNumber type="number" value="${pend.pendingPrice }" maxFractionDigits="4"/></p>
+                            <p>总价：$<fmt:formatNumber type="number" value="${pend.pendingNumber * pend.pendingPrice }" maxFractionDigits="6"/></p>
+                        </td>
                         <td class="amount"><fmt:formatNumber type="number" value="${pend.pendingNumber - pend.dealNumber }" maxFractionDigits="4"/></td>
                         <c:if test="${pend.paymentType == 1}">
                             <td class="type">买入</td>

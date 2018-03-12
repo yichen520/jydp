@@ -8,19 +8,28 @@
     width: 160px;
 }
 .time{
-    width: 135px;
+    width: 149px;
 }
 .account{
     width: 150px;
 }
+.coin{
+    width: 100px;
+}
+.entrust{
+    width: 171px;
+}
+.tableInfo .entrust{
+    text-align: left;
+}
 .amount{
-    width: 126px;
+    width: 146px;
 }
 .type,.state{
     width: 70px;
 }
 .operate{
-    width: 65px;
+    width: 85px;
 }
 .revoke{
     margin-left: 5px;
