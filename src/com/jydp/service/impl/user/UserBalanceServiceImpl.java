@@ -4,6 +4,7 @@ import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.IUserBalanceDao;
 import com.jydp.entity.DO.user.UserBalanceDO;
 import com.jydp.service.IUserBalanceService;
+import config.UserBalanceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,7 +56,7 @@ public class UserBalanceServiceImpl implements IUserBalanceService {
             for (UserBalanceDO userBalance:userBalanceList) {
                 int currencyId = userBalance.getCurrencyId();
                 int accuracy = 6;
-                if (currencyId == 999) {
+                if (currencyId == UserBalanceConfig.DOLLAR_ID) {
                     accuracy = 2;
                 }
                 userBalance.setBalanceNumber(NumberUtil.doubleFormat(userBalance.getBalanceNumber(),accuracy));
