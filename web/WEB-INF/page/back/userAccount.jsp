@@ -35,7 +35,7 @@
                         <select class="askSelect" id="phoneAreaCode" name="phoneAreaCode">
                             <option value="">选择区号</option>
                             <c:forEach items="${phoneAreaMap}" var="phoneArea">
-                                <option value="${phoneArea.key }">${phoneArea.value }(${phoneArea.key })</option>
+                                <option value="${phoneArea.key }">${phoneArea.key }</option>
                             </c:forEach>
                         </select>
                         <input type="text" class="askInput" id="phoneNumber" name="phoneNumber" value="${phoneNumber }"
