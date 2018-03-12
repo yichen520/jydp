@@ -173,7 +173,7 @@ public class BackerTransactionCurrencyController {
         String currencyShortNameStr = StringUtil.stringNullHandle(request.getParameter("currencyShortNameAd"));
         String buyFeeStr = StringUtil.stringNullHandle(request.getParameter("buyFeeAd"));
         String sellFeeStr = StringUtil.stringNullHandle(request.getParameter("sellFeeAd"));
-        String guidancePriceStr =  StringUtil.stringNullHandle(request.getParameter("guidancePrice"));
+        String guidancePriceStr =  StringUtil.stringNullHandle(request.getParameter("guidAd"));
         String statusStr = StringUtil.stringNullHandle(request.getParameter("status"));
         String upTimeStr = StringUtil.stringNullHandle(request.getParameter("upTimeAd"));
         if (!StringUtil.isNotNull(currencyNameStr) || !StringUtil.isNotNull(currencyShortNameStr) || !StringUtil.isNotNull(buyFeeStr)
@@ -266,6 +266,7 @@ public class BackerTransactionCurrencyController {
         String currencyShortNameStr = StringUtil.stringNullHandle(request.getParameter("currencyShortNameUp"));
         String buyFeeStr = StringUtil.stringNullHandle(request.getParameter("buyFeeUp"));
         String sellFeeStr = StringUtil.stringNullHandle(request.getParameter("sellFeeUp"));
+        String guidancePriceStr =  StringUtil.stringNullHandle(request.getParameter("guidUp"));
         String upTimeStr = StringUtil.stringNullHandle(request.getParameter("upTimeUp"));
         if (!StringUtil.isNotNull(currencyIdStr) || !StringUtil.isNotNull(currencyNameStr) || !StringUtil.isNotNull(currencyShortNameStr) || !StringUtil.isNotNull(buyFeeStr)
                 || !StringUtil.isNotNull(sellFeeStr)){
@@ -277,6 +278,7 @@ public class BackerTransactionCurrencyController {
         int currencyId = 0;
         double buyFee = 0;
         double sellFee = 0;
+        double guidancePrice = 0;
         Timestamp upTime = null;
 
         currencyId = Integer.parseInt(currencyIdStr);
@@ -300,6 +302,10 @@ public class BackerTransactionCurrencyController {
             currency.setPaymentType(2);
             currency.setUpStatus(1);
             currency.setUpTime(upTime);
+        }
+        if (StringUtil.isNotNull(guidancePriceStr)) {
+            guidancePrice = Double.parseDouble(guidancePriceStr);
+            currency.setGuidancePrice(guidancePrice);
         }
 
         String imageUrl = "";
@@ -450,13 +456,6 @@ public class BackerTransactionCurrencyController {
                 return response;
             }
             response.setMessage("下线成功");
-        }
-
-        TransactionCurrencyVO currency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
-        if (currency == null) {
-            response.setCode(3);
-            response.setMessage("币种不存在");
-            return response;
         }
 
         boolean result = transactionCurrencyService.updateUpStatus(currencyId, upStatus,
