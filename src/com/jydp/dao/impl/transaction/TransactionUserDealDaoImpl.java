@@ -7,8 +7,6 @@ import com.jydp.entity.VO.TransactionUserDealVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import sun.rmi.runtime.Log;
-
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
@@ -33,13 +31,13 @@ public class TransactionUserDealDaoImpl implements ITransactionUserDealDao{
      * @return 查询成功：返回用户成交记录；查询失败：返回null
      */
     @Override
-    public List<TransactionUserDealDO> getTransactionUserDeallist(int userId, int pageNumber, int pageSize) {
+    public List<TransactionUserDealVO> getTransactionUserDeallist(int userId, int pageNumber, int pageSize) {
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
         map.put("startNumber", pageNumber * pageSize);
         map.put("pageSize", pageSize);
 
-        List<TransactionUserDealDO> transactionUserDealList = null;
+        List<TransactionUserDealVO> transactionUserDealList = null;
         try {
             transactionUserDealList = sqlSessionTemplate.selectList("TransactionUserDeal_getTransactionUserDeallist",map);
         } catch (Exception e) {
@@ -164,8 +162,8 @@ public class TransactionUserDealDaoImpl implements ITransactionUserDealDao{
      * @param pageSize  每页条数
      * @return  操作成功：返回成交记录集合，操作失败:返回null
      */
-    public List<TransactionUserDealDO> listTransactionUserDealByPendNo(String pendNo, int pageNumber, int pageSize){
-        List<TransactionUserDealDO> resultList = null;
+    public List<TransactionUserDealVO> listTransactionUserDealByPendNo(String pendNo, int pageNumber, int pageSize){
+        List<TransactionUserDealVO> resultList = null;
 
         Map<String, Object> map = new HashMap<>();
         map.put("pendNo", pendNo);

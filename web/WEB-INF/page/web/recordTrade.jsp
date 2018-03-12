@@ -33,7 +33,9 @@
                     <td class="order">交易订单号</td>
                     <td class="coin">币种</td>
                     <td class="type">类型</td>
+                    <td class="amount">单价</td>
                     <td class="amount">数量</td>
+                    <td class="amount">手续费</td>
                     <td class="amount">成交总价</td>
                     <td class="time">完成时间</td>
                 </tr>
@@ -50,7 +52,9 @@
                     <c:if test="${dealRecord.paymentType == 3}">
                         <td class="type back">撤销</td>
                     </c:if>
+                    <td class="amount">$<fmt:formatNumber type="number" value="${dealRecord.transactionPrice}" maxFractionDigits="2"/></td>
                     <td class="amount"><fmt:formatNumber type="number" value="${dealRecord.currencyNumber}" maxFractionDigits="4"/></td>
+                    <td class="amount">$<fmt:formatNumber type="number" value="${dealRecord.fee}" maxFractionDigits="6"/></td>
                     <td class="amount">$<fmt:formatNumber type="number" value="${dealRecord.currencyTotalPrice}" maxFractionDigits="6"/></td>
                     <td class="time"><fmt:formatDate type="time" value="${dealRecord.addTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
                 </tr>

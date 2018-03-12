@@ -5,7 +5,7 @@
 
 <mapper namespace="com.jydp.dao.impl.transaction.TransactionUserDealDaoImpl">
 
-	<select id="TransactionUserDeal_getTransactionUserDeallist" parameterType="java.util.Map" resultType="TransactionUserDealDO">
+	<select id="TransactionUserDeal_getTransactionUserDeallist" parameterType="java.util.Map" resultType="TransactionUserDealVO">
 		SELECT orderNo, pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, transactionPrice,
 				currencyNumber, feeNumber, currencyTotalPrice, remark, pendTime, addTime
 	  	FROM transaction_user_deal_tab
@@ -98,7 +98,7 @@
 		WHERE pendingOrderNo = #{pendNo}
 	</select>
 
-	<select id="TransactionUserDeal_listTransactionUserDealByPendNo" parameterType="java.util.Map" resultType="TransactionUserDealDO">
+	<select id="TransactionUserDeal_listTransactionUserDealByPendNo" parameterType="java.util.Map" resultType="TransactionUserDealVO">
 		SELECT orderNo, pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, transactionPrice,
 		currencyNumber, feeNumber, currencyTotalPrice, remark, pendTime, addTime
 		FROM transaction_user_deal_tab

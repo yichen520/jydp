@@ -3,6 +3,7 @@ package com.jydp.controller.web;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.transaction.TransactionUserDealDO;
+import com.jydp.entity.VO.TransactionUserDealVO;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.ITransactionUserDealService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,7 @@ public class DealRecordController {
                 pageNumber = totalPageNumber - 1;
             }
 
-            List<TransactionUserDealDO> dealRecordList = null;
+            List<TransactionUserDealVO> dealRecordList = null;
             if (totalNumber > 0) {
                 dealRecordList = transactionUserDealService.listTransactionUserDealByPendNo(pendingOrderNo, pageNumber, pageSize);
             }
@@ -82,7 +83,7 @@ public class DealRecordController {
             pageNumber = totalPageNumber -1;
         }
 
-        List<TransactionUserDealDO> transactionUserDealList = null;
+        List<TransactionUserDealVO> transactionUserDealList = null;
         if (totalNumber > 0) {
             transactionUserDealList = transactionUserDealService.getTransactionUserDeallist(userId,pageNumber,pageSize);
         }
