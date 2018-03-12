@@ -11,7 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="icon" href="<%=path %>/resources/image/web/icon.ico" type="image/x-ico" />
-    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/record_account.css" />
+    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/recordAccount.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/public.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/simpleTips.css" />
     <title>账户记录</title>
