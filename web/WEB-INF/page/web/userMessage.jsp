@@ -637,7 +637,7 @@
 
     //返回登陆页
     function webLogin(){
-        window.location.href = "<%=path%>" + "/userWeb/userLogin/show";
+        window.location.href = "<%=path%>" + "/userWeb/userLogin/loginOut.htm";
     }
 
     //去交易

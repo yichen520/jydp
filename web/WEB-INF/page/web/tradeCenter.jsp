@@ -84,7 +84,7 @@
                 </p>
                 <p class="serviceInput">
                     <label class="tradeName">最佳买价：</label>
-                    <span class="service">$<fmt:formatNumber type="number" value="${standardParameter.sellOne }" groupingUsed="FALSE" maxFractionDigits="6"/></span>
+                    <span class="service" id="optimumBuy" >$<fmt:formatNumber type="number" value="${standardParameter.sellOne }" groupingUsed="FALSE" maxFractionDigits="6"/></span>
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">买入价格：</label>
@@ -125,7 +125,7 @@
                 </p>
                 <p class="serviceInput">
                     <label class="tradeName">最佳卖价：</label>
-                    <span class="service">$<fmt:formatNumber type="number" value="${standardParameter.buyOne }" groupingUsed="FALSE" maxFractionDigits="6"/></span>
+                    <span class="service" id="optimumSell">$<fmt:formatNumber type="number" value="${standardParameter.buyOne }" groupingUsed="FALSE" maxFractionDigits="6"/></span>
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">卖出价格：</label>
@@ -136,7 +136,7 @@
                     <label class="tradeName">卖出数量：</label>
                     <input type="text" class="entry" placeholder="请输入您要卖出的该币种数量" id="sellNum" name="sellNum"
                            onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="11"/>
-                    <span class="max">当前可获得：$<span id="sellMax">0</span></span>
+                    <span class="max">最大可获得：$<span id="sellMax">0</span></span>
                 </p>
                 <p class="phoneInput">
                     <label class="tradeName">支付密码：</label>
@@ -1173,11 +1173,12 @@
                     }
                     $("#todayMax").html(standardParameter.todayMax);
                     $("#hintTodayMax").html("$" + standardParameter.todayMax);
-
                     $("#todayMin").html(standardParameter.todayMin);
                     $("#hintTodayMin").html("$" + standardParameter.todayMin);
                     $("#buyOne").html(standardParameter.buyOne);
+                    $("#optimumSell").html("$" + standardParameter.buyOne);
                     $("#sellOne").html(standardParameter.sellOne);
+                    $("#optimumBuy").html("$" + standardParameter.sellOne);
                     $("#dayTurnove").html(standardParameter.dayTurnove);
                 }
             },
