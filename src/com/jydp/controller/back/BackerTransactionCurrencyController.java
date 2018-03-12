@@ -210,7 +210,7 @@ public class BackerTransactionCurrencyController {
         }
         if (guidancePrice <= 0) {
             response.setCode(3);
-            response.setMessage("指导价不能小于等于0");
+            response.setMessage("指导价必须大于0");
             return response;
         }
 
