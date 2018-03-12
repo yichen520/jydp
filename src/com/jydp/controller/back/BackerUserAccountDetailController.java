@@ -1,18 +1,19 @@
 package com.jydp.controller.back;
 
-import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.IpAddressUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.BackerSessionBO;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.back.BackerDO;
-import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DTO.BackerUserCurrencyNumDTO;
 import com.jydp.entity.DTO.TransactionCurrencyBasicDTO;
 import com.jydp.interceptor.BackerWebInterceptor;
-import com.jydp.service.*;
-import org.apache.commons.collections4.CollectionUtils;
+import com.jydp.service.IBackerService;
+import com.jydp.service.ITransactionCurrencyService;
+import com.jydp.service.IUserCurrencyNumService;
+import com.jydp.service.IUserService;
+import com.jydp.service.IUserSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -22,8 +23,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description: 用户账户币种余额
@@ -89,9 +91,24 @@ public class BackerUserAccountDetailController {
         }
         //查询用户币数量，带货币名称
         List<BackerUserCurrencyNumDTO> userCurrencyNumList = userCurrencyNumService.getUserCurrencyNumByUserIdForBacker(userId);
+        Map<Integer, BackerUserCurrencyNumDTO> userCurrencyNumMap = new HashMap<>();
+        for (BackerUserCurrencyNumDTO backerUserCurrencyNumDTO : userCurrencyNumList) {
+            userCurrencyNumMap.put(backerUserCurrencyNumDTO.getCurrencyId(), backerUserCurrencyNumDTO);
+        }
 
+        //查询所有币种信息，插入用户没有的币种信息
         List<TransactionCurrencyBasicDTO> transactionCurrencyBasicList = transactionCurrencyService.listAllTransactionCurrencyBasicInfor();
-
+        for (TransactionCurrencyBasicDTO transactionCurrencyBasicDTO : transactionCurrencyBasicList) {
+            BackerUserCurrencyNumDTO backerUserCurrencyNumDTO = userCurrencyNumMap.get(transactionCurrencyBasicDTO.getCurrencyId());
+            if (backerUserCurrencyNumDTO == null) {
+                backerUserCurrencyNumDTO = new BackerUserCurrencyNumDTO();
+                backerUserCurrencyNumDTO.setCurrencyId(transactionCurrencyBasicDTO.getCurrencyId());
+                backerUserCurrencyNumDTO.setCurrencyName(transactionCurrencyBasicDTO.getCurrencyName());
+                backerUserCurrencyNumDTO.setCurrencyNumber(0);
+                backerUserCurrencyNumDTO.setCurrencyNumberLock(0);
+                userCurrencyNumList.add(backerUserCurrencyNumDTO);
+            }
+        }
 
         request.setAttribute("userCurrencyNumList", userCurrencyNumList);
         request.setAttribute("userId", userIdStr);

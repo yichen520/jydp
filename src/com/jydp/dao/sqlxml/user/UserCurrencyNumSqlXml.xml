@@ -22,7 +22,8 @@
         FROM user_currency_num_tab AS userCurrencyNumTab
         INNER JOIN transaction_currency_tab AS transactionCurrencyTab ON userCurrencyNumTab.currencyId = transactionCurrencyTab.currencyId
         WHERE userCurrencyNumTab.userId = #{userId}
-        ORDER BY transactionCurrencyTab.currencyId
+        ORDER BY (userCurrencyNumTab.currencyNumber + userCurrencyNumTab.currencyNumberLock) DESC,
+          transactionCurrencyTab.upTime DESC
     </select>
 
     <select id="UserCurrencyNum_getUserCurrencyNumByUserIdForWeb" parameterType="int" resultType="BackerUserCurrencyNumDTO">
