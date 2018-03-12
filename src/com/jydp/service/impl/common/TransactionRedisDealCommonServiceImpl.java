@@ -91,9 +91,9 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
 
             //涨跌幅度计算
             for(TransactionDealPriceDTO transactionDealPrice : nowLastPrice){
-                String yesterdayPriceStr = (String) redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + transactionDealPrice.getCurrencyId());
-                if(StringUtil.isNotNull(yesterdayPriceStr)){
-                    double transactionPrice = Double.parseDouble(yesterdayPriceStr);
+                Object yesterdayPriceStr = redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + transactionDealPrice.getCurrencyId());
+                if(yesterdayPriceStr != null){
+                    double transactionPrice = Double.parseDouble(yesterdayPriceStr.toString());
                     double range = BigDecimalUtil.sub(transactionDealPrice.getTransactionPrice(), transactionPrice) * 100;
                     String rangeStr = BigDecimalUtil.div(range, transactionPrice, 2);
                     redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionDealPrice.getCurrencyId(), Double.parseDouble(rangeStr));
