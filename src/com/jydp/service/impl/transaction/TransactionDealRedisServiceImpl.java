@@ -186,4 +186,22 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
             return false;
         }
     }
+
+    /**
+     * 根据订单号查询记录
+     * @param orderNo  订单号
+     * @return  操作成功：返回记录集合，操作失败：返回null
+     */
+    public List<TransactionDealRedisDO> listTransactionDealRedisByOrderNo(String orderNo){
+        return transactionDealRedisDao.listTransactionDealRedisByOrderNo(orderNo);
+    }
+
+    /**
+     * 根据订单号删除记录
+     * @param orderNo 订单号
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean deleteDealByOrderNo(String orderNo){
+        return transactionDealRedisDao.deleteDealByOrderNo(orderNo);
+    }
 }

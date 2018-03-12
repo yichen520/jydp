@@ -10,14 +10,13 @@ import java.sql.Timestamp;
 public class TransactionMakeOrderDO {
 
     private String orderNo;  //记录号,业务类型（2）+日期（6）+随机位（10）
-    private int paymentType;  //收支类型,1：买入，2：卖出
     private int currencyId;  //币种Id
     private String currencyName;  //货币名称
+    private double currencyPrice;  //成交价格
     private double currencyNumber;  //成交数量
-    private double currencyTotalPrice;  //成交总价
     private String backerAccount;  //后台管理员帐号
     private String ipAddress;  //操作时的ip地址
-    private int executeStatus;  //执行状态，1：待执行,2:执行中,3:执行完成,4:执行失败,5:已撤回
+    private int executeStatus;  //执行状态，1：待执行,2:执行中,3:执行完成,4:执行失败
     private String remark;  //备注
     private Timestamp executeTime;  //执行时间
     private Timestamp addTime;  //添加时间
@@ -36,22 +35,6 @@ public class TransactionMakeOrderDO {
      */
     public void setOrderNo(String orderNo) {
         this.orderNo = orderNo;
-    }
-
-    /**
-     * 收支类型,1：买入，2：卖出
-     * @return the paymentType
-     */
-    public int getPaymentType() {
-        return paymentType;
-    }
-
-    /**
-     * 收支类型,1：买入，2：卖出
-     * @param paymentType the paymentType to set
-     */
-    public void setPaymentType(int paymentType) {
-        this.paymentType = paymentType;
     }
 
     /**
@@ -103,19 +86,19 @@ public class TransactionMakeOrderDO {
     }
 
     /**
-     * 成交总价
-     * @return the currencyTotalPrice
+     * 成交价格
+     * @return the currencyPrice
      */
-    public double getCurrencyTotalPrice() {
-        return currencyTotalPrice;
+    public double getCurrencyPrice() {
+        return currencyPrice;
     }
 
     /**
-     * 成交总价
-     * @param currencyTotalPrice the currencyTotalPrice to set
+     * 成交价格
+     * @param currencyPrice the currencyPrice to set
      */
-    public void setCurrencyTotalPrice(double currencyTotalPrice) {
-        this.currencyTotalPrice = currencyTotalPrice;
+    public void setCurrencyPrice(double currencyPrice) {
+        this.currencyPrice = currencyPrice;
     }
 
     /**

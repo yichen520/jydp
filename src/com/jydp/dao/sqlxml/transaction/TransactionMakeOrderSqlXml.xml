@@ -7,15 +7,15 @@
 
 	<insert id="TransactionMakeOrder_insertMakeOrder" parameterType="TransactionMakeOrderDO">
         INSERT INTO transaction_make_order_tab
-            (orderNo, paymentType, currencyId, currencyName, currencyNumber, currencyTotalPrice,
+            (orderNo, currencyId, currencyName, currencyNumber, currencyPrice,
              backerAccount, ipAddress, executeStatus, remark, executeTime, addTime)
         VALUES
-            (#{orderNo}, #{paymentType}, #{currencyId}, #{currencyName}, #{currencyNumber}, #{currencyTotalPrice},
+            (#{orderNo}, #{currencyId}, #{currencyName}, #{currencyNumber}, #{currencyPrice},
               #{backerAccount}, #{ipAddress}, #{executeStatus}, #{remark}, #{executeTime}, #{addTime})
 	</insert>
 
 	<select id="TransactionMakeOrder_getTransactionMakeOrderByOrderNo" parameterType="java.lang.String" resultType="TransactionMakeOrderDO">
-        SELECT orderNo, paymentType, currencyId, currencyName, currencyNumber, currencyTotalPrice,
+        SELECT orderNo, currencyId, currencyName, currencyNumber, currencyPrice,
             backerAccount, ipAddress, executeStatus, remark, executeTime, addTime
         FROM transaction_make_order_tab
         WHERE orderNo = #{orderNo}
@@ -29,20 +29,11 @@
             <if test="currencyName != null and currencyName !=''">
                 AND currencyName LIKE CONCAT('%', #{currencyName}, '%')
             </if>
-            <if test="backerAccount != null and backerAccount !=''">
-                AND backerAccount LIKE CONCAT('%', #{backerAccount}, '%')
+            <if test="orderNo != null and orderNo !=''">
+                AND orderNo LIKE CONCAT('%', #{orderNo}, '%')
             </if>
             <if test="executeStatus != 0">
                 AND executeStatus = #{executeStatus}
-            </if>
-            <if test="paymentType != 0">
-                AND paymentType = #{paymentType}
-            </if>
-            <if test="startAddTime != null">
-                AND addTime <![CDATA[ >= ]]> #{startAddTime}
-            </if>
-            <if test="endAddTime != null">
-                AND addTime <![CDATA[ <= ]]> #{endAddTime}
             </if>
             <if test="startExecuteTime != null">
                 AND executeTime <![CDATA[ >= ]]> #{startExecuteTime}
@@ -52,8 +43,8 @@
             </if>
     </select>
 
-    <select id="TransactionMakeOrder_listTransactionMakeOrderForBack" parameterType="java.util.Map" resultType="TransactionMakeOrderVO">
-        SELECT orderNo, paymentType, currencyId, currencyName, currencyNumber, currencyTotalPrice,
+    <select id="TransactionMakeOrder_listTransactionMakeOrderForBack" parameterType="java.util.Map" resultType="TransactionMakeOrderDO">
+        SELECT orderNo, currencyId, currencyName, currencyNumber, currencyPrice,
         backerAccount, ipAddress, executeStatus, remark, executeTime, addTime
         FROM transaction_make_order_tab
         WHERE
@@ -61,20 +52,11 @@
             <if test="currencyName != null and currencyName !=''">
                 AND currencyName LIKE CONCAT('%', #{currencyName}, '%')
             </if>
-            <if test="backerAccount != null and backerAccount !=''">
-                AND backerAccount LIKE CONCAT('%', #{backerAccount}, '%')
+            <if test="orderNo != null and orderNo !=''">
+                AND orderNo LIKE CONCAT('%', #{orderNo}, '%')
             </if>
             <if test="executeStatus != 0">
                 AND executeStatus = #{executeStatus}
-            </if>
-            <if test="paymentType != 0">
-                AND paymentType = #{paymentType}
-            </if>
-            <if test="startAddTime != null">
-                AND addTime <![CDATA[ >= ]]> #{startAddTime}
-            </if>
-            <if test="endAddTime != null">
-                AND addTime <![CDATA[ <= ]]> #{endAddTime}
             </if>
             <if test="startExecuteTime != null">
                 AND executeTime <![CDATA[ >= ]]> #{startExecuteTime}
@@ -88,12 +70,12 @@
 
     <insert id="TransactionMakeOrder_insertTransactionMakeOrderList" parameterType="java.util.List">
         INSERT INTO transaction_make_order_tab
-        (orderNo, paymentType, currencyId, currencyName, currencyNumber, currencyTotalPrice,
+        (orderNo, currencyId, currencyName, currencyNumber, currencyPrice,
          backerAccount, ipAddress, executeStatus, remark, executeTime, addTime)
         VALUES
             <foreach collection="list" item="item" index="index" separator=",">
-                (#{item.orderNo}, #{item.paymentType}, #{item.currencyId}, #{item.currencyName}, #{item.currencyNumber},
-                #{item.currencyTotalPrice}, #{item.backerAccount}, #{item.ipAddress}, #{item.executeStatus},
+                (#{item.orderNo}, #{item.currencyId}, #{item.currencyName}, #{item.currencyNumber},
+                #{item.currencyPrice}, #{item.backerAccount}, #{item.ipAddress}, #{item.executeStatus},
                 #{item.remark}, #{item.executeTime}, #{item.addTime})
             </foreach>
     </insert>
@@ -119,7 +101,7 @@
     </update>
 
     <select id="TransactionMakeOrder_listTransactionMakeOrderByOrderNoList" parameterType="java.util.List" resultType="TransactionMakeOrderDO">
-        SELECT orderNo, paymentType, currencyId, currencyName, currencyNumber, currencyTotalPrice,
+        SELECT orderNo, currencyId, currencyName, currencyNumber, currencyPrice,
             backerAccount, ipAddress, executeStatus, remark, executeTime, addTime
         FROM transaction_make_order_tab
         WHERE orderNo IN
@@ -127,4 +109,9 @@
                 #{item}
             </foreach>
     </select>
+
+    <delete id="TransactionMakeOrder_deleteMakeOrderByOrderNo" parameterType="java.lang.String">
+        DELETE FROM transaction_make_order_tab
+        WHERE orderNo = #{transaction_make_order_tab}
+    </delete>
 </mapper>

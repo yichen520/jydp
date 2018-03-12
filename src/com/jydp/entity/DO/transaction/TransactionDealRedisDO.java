@@ -9,7 +9,8 @@ import java.sql.Timestamp;
  */
 public class TransactionDealRedisDO {
 
-    private String orderNo;  //记录号,业务类型（2）+日期（6）+随机位（10）
+    private long id;  //记录Id
+    private String orderNo;  //批次号
     private int paymentType;  //收支类型,1：买入，2：卖出
     private int currencyId;  //币种Id
     private double transactionPrice; //成交单价
@@ -18,7 +19,23 @@ public class TransactionDealRedisDO {
     private Timestamp addTime;  //添加时间
 
     /**
-     * 记录号,业务类型（2）+日期（6）+随机位（10）
+     * 记录Id
+     * @return the id
+     */
+    public long getId() {
+        return id;
+    }
+
+    /**
+     * 记录Id
+     * @param id the id to set
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    /**
+     * 批次号
      * @return the orderNo
      */
     public String getOrderNo() {
@@ -26,7 +43,7 @@ public class TransactionDealRedisDO {
     }
 
     /**
-     * 记录号,业务类型（2）+日期（6）+随机位（10）
+     * 批次号
      * @param orderNo the orderNo to set
      */
     public void setOrderNo(String orderNo) {

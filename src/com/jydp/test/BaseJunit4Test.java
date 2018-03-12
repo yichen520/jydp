@@ -1,11 +1,25 @@
 package com.jydp.test;
 
+import com.iqmkj.utils.DateUtil;
+import com.jydp.dao.ITransactionMakeOrderDao;
+import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
+import com.jydp.entity.DO.transaction.TransactionMakeOrderDO;
+import com.jydp.entity.DO.transaction.TransactionUserDealDO;
+import com.jydp.service.ITransactionCurrencyService;
+import com.jydp.service.ITransactionMakeOrderService;
+import com.jydp.service.ITransactionUserDealService;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.Timestamp;
+import java.util.List;
+
 
 /**
  * JUnit4测试
@@ -20,26 +34,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class BaseJunit4Test {
 
     /** 用户登录记录 */
-    /*@Autowired
-    private IUserSessionService userSessionService;*/
+    @Autowired
+    private ITransactionUserDealService transactionUserDealService;
 
     /**
      * 测试示例
      */
-    /*@Test
+    @Test
     public void testUser() {
-        Timestamp curTime = DateUtil.getCurrentTime();
-        String sessionId = SystemCommonConfig.LOGIN_USER + DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
-                NumberUtil.createNumberStr(12);
-
-        UserSessionDO userSessionDO = new UserSessionDO();
-        userSessionDO.setSessionId(sessionId);
-        userSessionDO.setUserId(1);
-        userSessionDO.setLoginForm(1);
-        userSessionDO.setIpAddress("127.0.0.1");
-        userSessionDO.setLoginTime(curTime);
-
-        userSessionService.insertUserSession(userSessionDO);
-    }*/
+    }
 
 }

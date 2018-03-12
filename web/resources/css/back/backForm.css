@@ -1,19 +1,5 @@
-.topOperate{
-    margin-left: 15px;
-    position: relative;
-}
 .add{
-    margin-right: 10px;
-}
-.file{
-    position: absolute;
-    z-index: 2;
-    top: 10px;
-    left: 220px;
-    width: 110px;
-    height: 36px;
-    cursor: pointer;
-    opacity: 0;
+    margin-left: 15px !important;
 }
 .askSelect{
     width: 100px;
@@ -24,55 +10,26 @@
 .askTime{
     width: 160px;
 }
-.batchOperate{
-    margin-top: 10px;
-    text-align: right;
-}
-.recall{
-    margin-left: 8px;
-    width: 55px;
-    height: 36px;
-    line-height: 36px;
-    border-radius: 4px;
-    background-color: #49a2fb;
-    font-size: 15px;
-    color: #ffffff;
-    cursor: pointer;
-    border: none;
-    text-align: center;
-}
-.implement{
-    width: 80px;
-    height: 36px;
-    line-height: 36px;
-    border-radius: 4px;
-    background-color: #49a2fb;
-    font-size: 15px;
-    color: #ffffff;
-    cursor: pointer;
-    border: none;
-    text-align: center;
-}
-.recall:hover,.implement:hover{
-    background-color: #2c94fd;
+.number{
+    width: 130px;
 }
 .time{
-    width: 118px;
+    width: 120px;
 }
 .coin{
-    width: 40px;
+    width: 80px;
 }
 .type{
     width: 35px;
 }
 .amount{
-    width: 110px;
+    width: 130px;
 }
 .state{
-    width: 60px;
+    width: 57px;
 }
 .account{
-    width: 120px;
+    width: 126px;
 }
 .ip{
     width: 90px;
@@ -80,10 +37,7 @@
 .operate{
     width: 98px;
 }
-.check{
-    width: 50px;
-}
-.tRecall{
+.delete{
     margin-left: 5px;
     width: 35px;
     text-align: center;
@@ -93,8 +47,7 @@
     cursor: pointer;
     font-size: 12px;
 }
-.tImplement{
-    width: 52px;
+.details{
     text-align: center;
     border: none;
     color: #49a2fb;
@@ -102,46 +55,11 @@
     cursor: pointer;
     font-size: 12px;
 }
-.tRecall:hover,.tImplement:hover{
+.details:hover,.delete:hover{
     color: #2c94fd;
 }
 
 
-.addTrade_pop,.tRecall_pop,.tImplement_pop,.recall_pop,.implement_pop{
+.delete_pop{
     display: none;
-}
-.popName{
-    display: inline-block;
-    width: 70px;
-    height: 35px;
-    line-height: 35px;
-    text-align: left;
-    color: #666666;
-    font-size: 14px;
-}
-.star{
-    color: #ff0000;
-}
-.entry{
-    float: right;
-    padding-left: 5px !important;
-    border: 1px solid #ececec !important;
-    width: 280px;
-    height: 35px !important;
-    border-radius: 0 !important;
-}
-.popSelected{
-    float: right;
-    padding-left: 5px;
-    border: 1px solid #ececec;
-    width: 285px;
-    height: 35px;
-}
-.popAccount{
-    float: right;
-    text-align: left;
-    width: 285px;
-    height: 35px;
-    line-height: 35px;
-    color: #999999;
 }

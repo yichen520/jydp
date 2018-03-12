@@ -27,10 +27,10 @@ public class MakeOrderExcTimer {
     /** 执行做单 */
     @Scheduled(cron="0/15 * *  * * ? ")
     public void executeMakeOrderExc(){
-        List<TransactionMakeOrderVO> transactionMakeOrderList = transactionMakeOrderService.listTransactionMakeOrderForBack(null, 1, 0, null, null, null, null,null, 0,20);
+        List<TransactionMakeOrderDO> transactionMakeOrderList = transactionMakeOrderService.listTransactionMakeOrderForBack(null, null, 1, null, DateUtil.getCurrentTime(), 0, 5);
         List<String> list = new ArrayList<>();
         if (transactionMakeOrderList != null && transactionMakeOrderList.size() > 0) {
-            for (TransactionMakeOrderVO order: transactionMakeOrderList) {
+            for (TransactionMakeOrderDO order: transactionMakeOrderList) {
                 if (order.getExecuteTime().getTime() <= DateUtil.getCurrentTime().getTime() && order.getExecuteStatus() == 1){
                     list.add(order.getOrderNo());
                 }

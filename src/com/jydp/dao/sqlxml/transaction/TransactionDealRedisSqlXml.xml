@@ -6,9 +6,10 @@
 <mapper namespace="com.jydp.dao.impl.transaction.TranactionDealRedisDaoImpl">
 
 	<select id="TransactionDealRedis_listTransactionDealRedis" parameterType="java.util.Map" resultType="TransactionDealRedisDO">
-		SELECT paymentType, transactionPrice, currencyNumber, addTime
+		SELECT id, orderNo, paymentType, currencyId, transactionPrice, currencyNumber, currencyTotalPrice, addTime
 	  	FROM transaction_deal_redis_tab
 	  	WHERE currencyId = #{currencyId}
+			AND addTime <![CDATA[ <= ]]> NOW()
 	  	ORDER BY addTime DESC, orderNo
 		LIMIT #{num}
 	</select>
@@ -37,6 +38,7 @@
 		SELECT SUM(TDRT.currencyNumber) transactionPrice,TDRT.currencyId
 		FROM transaction_deal_redis_tab  TDRT
 		WHERE TDRT.addTime <![CDATA[ >= ]]> #{date}
+			  AND addTime <![CDATA[ <= ]]> NOW()
 		GROUP BY TDRT.currencyId
 	</select>
 
@@ -44,6 +46,7 @@
 		SELECT SUM(TDRT.currencyTotalPrice) transactionPrice,TDRT.currencyId
 		FROM transaction_deal_redis_tab  TDRT
 		WHERE TDRT.addTime <![CDATA[ >= ]]> #{date}
+			  AND addTime <![CDATA[ <= ]]> NOW()
 		GROUP BY TDRT.currencyId
 	</select>
 
@@ -51,6 +54,7 @@
 		SELECT MAX(TDRT.transactionPrice) transactionPrice,TDRT.currencyId
 		FROM transaction_deal_redis_tab  TDRT
 		WHERE TDRT.addTime <![CDATA[ >= ]]> #{date}
+			  AND addTime <![CDATA[ <= ]]> NOW()
 		GROUP BY TDRT.currencyId
 	</select>
 
@@ -58,6 +62,7 @@
 		SELECT MIN(TDRT.transactionPrice) transactionPrice,TDRT.currencyId
 		FROM transaction_deal_redis_tab  TDRT
 		WHERE TDRT.addTime <![CDATA[ >= ]]> #{date}
+			  AND addTime <![CDATA[ <= ]]> NOW()
 		GROUP BY TDRT.currencyId
 	</select>
 
@@ -72,4 +77,16 @@
 		GROUP BY TDRT.addTime,TDRT.currencyId
 	</select>
 
+	<select id="TransactionDealRedis_listTransactionDealRedisByOrderNo" parameterType="java.lang.String" resultType="TransactionDealRedisDO">
+		SELECT id, orderNo, paymentType, currencyId, transactionPrice, currencyNumber, currencyTotalPrice, addTime
+		FROM transaction_deal_redis_tab
+		WHERE orderNo = #{orderNo}
+			  AND addTime <![CDATA[ <= ]]> NOW()
+		ORDER BY addTime DESC, orderNo
+	</select>
+
+	<delete id="TransactionDealRedis_deleteDealByOrderNo" parameterType="java.lang.String">
+		DELETE  FROM  transaction_deal_redis_tab
+		WHERE orderNo = #{transaction_deal_redis_tab}
+	</delete>
 </mapper>

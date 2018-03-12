@@ -1,0 +1,20 @@
+.bottom{
+    margin-top: 0!important;
+}
+.account{
+    width: 1170px;
+    margin: 0 15px;
+    padding-top: 10px;
+    font-size: 13px;
+    color: #ff9a3b;
+    border-top: 1px solid #ececec;
+}
+.number,.type{
+    width: 100px;
+}
+.amount{
+    width: 320px;
+}
+.time{
+    width: 301px;
+}

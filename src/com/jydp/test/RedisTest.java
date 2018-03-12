@@ -1,61 +1,50 @@
 package com.jydp.test;
 
-import com.alibaba.fastjson.JSONObject;
-import com.jydp.entity.BO.JsonObjectBO;
+import com.iqmkj.utils.DateUtil;
+import com.jydp.dao.ITransactionMakeOrderDao;
+import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
+import com.jydp.entity.DO.transaction.TransactionMakeOrderDO;
+import com.jydp.entity.DO.transaction.TransactionUserDealDO;
+import com.jydp.entity.DO.user.UserDO;
 import com.jydp.service.IRedisService;
+import com.jydp.service.ITransactionCurrencyService;
+import com.jydp.service.ITransactionMakeOrderService;
+import com.jydp.service.ITransactionUserDealService;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.sql.Timestamp;
 import java.util.List;
-import java.util.Map;
+
 
 /**
- * 测试redids
+ * JUnit4测试
  * @author whx
+ *
  */
-public class RedisTest extends BaseJunit4Test {
+@RunWith(SpringJUnit4ClassRunner.class)//JUnit4进行测试
+@ContextConfiguration(locations={"classpath:spring/spring-*.xml"})//加载spring配置文件
+@WebAppConfiguration("src/resources")//加载resources
+@Transactional(transactionManager = "transactionManager")//不加入这个注解配置，事务控制会失效
+@Rollback(value = false)//true为回滚(执行成功也不会修改数据)，false不回滚(会修改数据)。若使用@Commit不会回滚。
+public class RedisTest {
 
     @Autowired
     private IRedisService redisService;
 
     @Test
     public void testRedis() {
-        String key = "123456789";
-        String valueStr = "qazwsx123";
-
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("111111", "cscs");
-        jsonObject.put("222222", "测试123");
-
-        JsonObjectBO jsonObjectBO = new JsonObjectBO();
-        jsonObjectBO.setCode(1);
-        jsonObjectBO.setMessage("测试测试");
-        jsonObjectBO.setData(jsonObject);
-
-        String keyMap = "keymap";
-        Map<Object, Object> map = new HashMap<Object, Object>();
-        map.put(keyMap, jsonObjectBO);
-        map.put("map测试", 123456789);
-        map.put("mapDouble", 12345.0123);
-
-        List<Object> listObject = new ArrayList<>();
-        listObject.add(1);
-        listObject.add("12测试");
-
-        String listKey = "lis123123";
-        List<Object> listmap = new ArrayList<>();
-        listmap.add(map);
-
-        String nullKey = "nullkey";
-        System.out.println(redisService.addValue(nullKey, null));
-        System.out.println(redisService.addList(listKey, listmap));
-        System.out.println(redisService.addList(listKey, 123));
-        System.out.println(redisService.addMap(keyMap, map, 20));
-        System.out.println(redisService.deleteValue("9999999"));
-        System.out.println(redisService.getList(listKey));
-        System.out.println(redisService.getListSize(listKey));
+        UserDO user = new UserDO();
+        user.setUserAccount("mmp");
+        redisService.addValue("cnm",user);
+        UserDO u = (UserDO) redisService.getValue("cnm");
+        System.out.println(u.getUserAccount());
 
     }
 

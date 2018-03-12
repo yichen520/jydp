@@ -1,0 +1,80 @@
+.addInfo{
+    margin:0 15px 15px 15px;
+    padding-top: 15px;
+    width: 1170px;
+    background-color: #ffffff;
+    border-top: 1px solid #ececec;
+}
+.askTime{
+    border-radius: 0 !important;
+}
+.popInput{
+    padding: 0 !important;
+    margin:0 20px 20px 0!important;
+    width: 1000px !important;
+}
+.star{
+    color: #ff0000;
+}
+.popName{
+    display: inline-block;
+    width: 100px;
+    text-align: left;
+    color: #666666;
+    font-size: 14px;
+}
+.entry{
+    padding-left: 5px;
+    border: 1px solid #cccccc;
+    width: 245px;
+    height: 35px;
+}
+.popSelect{
+    padding-left: 5px;
+    border: 1px solid #cccccc;
+    width: 250px;
+    height: 35px;
+}
+.txt{
+    vertical-align: top;
+    padding: 5px;
+    border: 1px solid #cccccc;
+    width: 450px;
+    height: 500px;
+    resize: none;
+}
+.operate{
+    display: inline-block;
+    margin-top: 10px;
+}
+.back{
+    display: inline-block;
+    margin-right: 20px;
+    width: 70px;
+    height: 35px;
+    line-height: 35px;
+    border: none;
+    background-color: #dddddd;
+    text-align: center;
+    font-size: 14px;
+    color: #ffffff;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.back:hover{
+    opacity: 0.8;
+}
+.submit{
+    width: 70px;
+    height: 35px;
+    background-color: #ff9a3b;
+    text-align: center;
+    font-size: 14px;
+    color: #ffffff;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+}
+.submit:hover{
+    background-color: #fd891d;
+}

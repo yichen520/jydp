@@ -80,4 +80,18 @@ public interface ITransactionDealRedisService {
      * @return  操作成功：返回true，操作失败：返回false
      */
     boolean validateGuidancePrice(int currencyId);
+
+    /**
+     * 根据订单号查询记录
+     * @param orderNo  订单号
+     * @return  操作成功：返回记录集合，操作失败：返回null
+     */
+    List<TransactionDealRedisDO> listTransactionDealRedisByOrderNo(String orderNo);
+
+    /**
+     * 根据订单号删除记录
+     * @param orderNo 订单号
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean deleteDealByOrderNo(String orderNo);
 }

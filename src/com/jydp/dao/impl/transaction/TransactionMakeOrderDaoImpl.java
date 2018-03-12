@@ -3,13 +3,11 @@ package com.jydp.dao.impl.transaction;
 import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.ITransactionMakeOrderDao;
 import com.jydp.entity.DO.transaction.TransactionMakeOrderDO;
-import com.jydp.entity.VO.TransactionMakeOrderVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,28 +63,20 @@ public class TransactionMakeOrderDaoImpl implements ITransactionMakeOrderDao{
 
     /**
      * 查询做单记录个数(后台)
+     * @param orderNo 批次号
      * @param currencyName 货币名称(币种)
-     * @param executeStatus 执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败,5:已撤回
-     * @param paymentType 操作类型
-     * @param backerAccount 后台管理员帐号
-     * @param startAddTime 起始生成时间
-     * @param endAddTime 结束生成时间
+     * @param executeStatus 执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败
      * @param startExecuteTime 起始执行时间
      * @param endExecuteTime 结束执行时间
      * @return 操作成功：返回做单记录集合，操作失败：返回null
      */
-    public int countTransactionMakeOrderForBack(String currencyName, int executeStatus, int paymentType, String backerAccount,
-                                                Timestamp startAddTime, Timestamp endAddTime,
-                                                Timestamp startExecuteTime, Timestamp endExecuteTime){
+    public int countTransactionMakeOrderForBack(String orderNo, String currencyName, int executeStatus, Timestamp startExecuteTime, Timestamp endExecuteTime){
         int result = 0;
 
         Map<String, Object> map = new HashMap<>();
         map.put("currencyName", currencyName);
         map.put("executeStatus", executeStatus);
-        map.put("paymentType", paymentType);
-        map.put("backerAccount", backerAccount);
-        map.put("startAddTime", startAddTime);
-        map.put("endAddTime", endAddTime);
+        map.put("orderNo", orderNo);
         map.put("startExecuteTime", startExecuteTime);
         map.put("endExecuteTime", endExecuteTime);
 
@@ -101,31 +91,23 @@ public class TransactionMakeOrderDaoImpl implements ITransactionMakeOrderDao{
 
     /**
      * 查询做单记录集合(后台)
+     * @param orderNo 批次号
      * @param currencyName 货币名称(币种)
-     * @param executeStatus 执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败,5:已撤回
-     * @param paymentType 操作类型
-     * @param backerAccount 后台管理员帐号
-     * @param startAddTime 起始生成时间
-     * @param endAddTime 结束生成时间
+     * @param executeStatus 执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败
      * @param startExecuteTime 起始执行时间
      * @param endExecuteTime 结束执行时间
      * @param pageNumber 起始页数
      * @param pageSize 每页条数
      * @return 操作成功：返回做单记录集合，操作失败：返回null
      */
-    public List<TransactionMakeOrderVO> listTransactionMakeOrderForBack(String currencyName, int executeStatus, int paymentType, String backerAccount,
-                                                                        Timestamp startAddTime, Timestamp endAddTime,
-                                                                        Timestamp startExecuteTime, Timestamp endExecuteTime,
-                                                                        int pageNumber, int pageSize){
-        List<TransactionMakeOrderVO> resultList = null;
+    public List<TransactionMakeOrderDO> listTransactionMakeOrderForBack(String orderNo, String currencyName, int executeStatus,
+                                                                 Timestamp startExecuteTime, Timestamp endExecuteTime, int pageNumber, int pageSize){
+        List<TransactionMakeOrderDO> resultList = null;
 
         Map<String, Object> map = new HashMap<>();
         map.put("currencyName", currencyName);
         map.put("executeStatus", executeStatus);
-        map.put("paymentType", paymentType);
-        map.put("backerAccount", backerAccount);
-        map.put("startAddTime", startAddTime);
-        map.put("endAddTime", endAddTime);
+        map.put("orderNo", orderNo);
         map.put("startExecuteTime", startExecuteTime);
         map.put("endExecuteTime", endExecuteTime);
         map.put("startNumber", pageNumber * pageSize);
@@ -164,7 +146,7 @@ public class TransactionMakeOrderDaoImpl implements ITransactionMakeOrderDao{
     /**
      * 修改记录执行状态
      * @param orderNo  记录号
-     * @param executeStatus  执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败,5:已撤回
+     * @param executeStatus  执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败
      * @return  操作成功，返回true，操作失败，返回false
      */
     public boolean updateOrderExecuteStatusByOrderNo(String orderNo, int executeStatus){
@@ -190,7 +172,7 @@ public class TransactionMakeOrderDaoImpl implements ITransactionMakeOrderDao{
     /**
      * 批量修改记录号状态
      * @param orderNoList  记录号集合
-     * @param executeStatus  执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败,5:已撤回
+     * @param executeStatus  执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败
      * @return  操作成功：true，操作失败：返回false
      */
     public boolean updateMakeOrderExecuteStatusByOrderNoList(List<String> orderNoList, int executeStatus){
@@ -227,5 +209,26 @@ public class TransactionMakeOrderDaoImpl implements ITransactionMakeOrderDao{
         }
 
         return resultList;
+    }
+
+    /**
+     * 根据记录号删除做单记录
+     * @param orderNo 记录号
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    public boolean deleteMakeOrderByOrderNo(String orderNo){
+        int result = 0;
+
+        try {
+            result = sqlSessionTemplate.delete("TransactionMakeOrder_deleteMakeOrderByOrderNo", orderNo);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else  {
+            return false;
+        }
     }
 }

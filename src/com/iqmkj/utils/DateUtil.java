@@ -120,6 +120,27 @@ public class DateUtil {
 	 * @param timeStr  时间字符串，格式：yyyy-MM-dd HH:mm:ss
 	 * @return 时间戳毫秒数
 	 */
+	public static Timestamp stringToTimestampByFormatStr(String timeStr, String formatStr){
+		if(StringUtil.isNotNull(timeStr)){
+			SimpleDateFormat sdf= new SimpleDateFormat(formatStr);
+			Date date = null;
+			try {
+				date = sdf.parse(timeStr);
+				Timestamp timestamp = new Timestamp(date.getTime());
+				return timestamp;
+			} catch (ParseException e) {
+				LogUtil.printErrorLog(e);
+			}
+		}
+		
+		return null;
+	}
+
+	/**
+	 * 将时间字符串转换成时间戳毫秒数
+	 * @param timeStr  时间字符串，格式：yyyy-MM-dd HH:mm:ss
+	 * @return 时间戳毫秒数
+	 */
 	public static long timeStrToLong(String timeStr){
 		if(StringUtil.isNotNull(timeStr)){
 			SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -132,7 +153,7 @@ public class DateUtil {
 				LogUtil.printErrorLog(e);
 			}
 		}
-		
+
 		return 0;
 	}
 	

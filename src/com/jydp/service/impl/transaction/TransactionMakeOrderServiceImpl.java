@@ -7,22 +7,16 @@ import com.iqmkj.utils.StringUtil;
 import com.jydp.dao.ITransactionMakeOrderDao;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.DO.transaction.TransactionMakeOrderDO;
-import com.jydp.entity.VO.TransactionMakeOrderVO;
 import com.jydp.service.ITransactionDealRedisService;
 import com.jydp.service.ITransactionMakeOrderService;
-import com.jydp.service.ITransactionUserDealService;
 import config.SystemCommonConfig;
-import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 做单记录
@@ -43,29 +37,27 @@ public class TransactionMakeOrderServiceImpl implements ITransactionMakeOrderSer
     /**
      * 新增做单记录
      * @param orderNo 记录号,业务类型（2）+日期（6）+随机位（10）
-     * @param paymentType 收支类型,1：买入，2：卖出
      * @param currencyId 币种Id
      * @param currencyName 货币名称
      * @param currencyNumber 成交数量
-     * @param currencyTotalPrice 成交总价
+     * @param currencyPrice 成交价格
      * @param backerAccount 后台管理员帐号
      * @param ipAddress 操作时的ip地址
-     * @param executeStatus 执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败,5:已撤回
+     * @param executeStatus 执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败
      * @param remark 备注
      * @param executeTime 执行时间
      * @param addTime 添加时间
      * @return  操作成功：返回true，操作失败：返回false
      */
-    public boolean insertMakeOrder(String orderNo, int paymentType, int currencyId, String currencyName, double currencyNumber,
-                            double currencyTotalPrice, String backerAccount, String ipAddress, int executeStatus,
+    public boolean insertMakeOrder(String orderNo, int currencyId, String currencyName, double currencyNumber,
+                            double currencyPrice, String backerAccount, String ipAddress, int executeStatus,
                             String remark, Timestamp executeTime, Timestamp addTime){
         TransactionMakeOrderDO transactionMakeOrderDO = new TransactionMakeOrderDO();
         transactionMakeOrderDO.setOrderNo(orderNo);
-        transactionMakeOrderDO.setPaymentType(paymentType);
         transactionMakeOrderDO.setCurrencyId(currencyId);
         transactionMakeOrderDO.setCurrencyName(currencyName);
         transactionMakeOrderDO.setCurrencyNumber(currencyNumber);
-        transactionMakeOrderDO.setCurrencyTotalPrice(currencyTotalPrice);
+        transactionMakeOrderDO.setCurrencyPrice(currencyPrice);
         transactionMakeOrderDO.setBackerAccount(backerAccount);
         transactionMakeOrderDO.setIpAddress(ipAddress);
         transactionMakeOrderDO.setExecuteStatus(1);
@@ -87,43 +79,31 @@ public class TransactionMakeOrderServiceImpl implements ITransactionMakeOrderSer
 
     /**
      * 查询做单记录个数(后台)
+     * @param orderNo 批次号
      * @param currencyName 货币名称(币种)
-     * @param executeStatus 执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败,5:已撤回
-     * @param paymentType 操作类型
-     * @param backerAccount 后台管理员帐号
-     * @param startAddTime 起始生成时间
-     * @param endAddTime 结束生成时间
+     * @param executeStatus 执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败
      * @param startExecuteTime 起始执行时间
      * @param endExecuteTime 结束执行时间
      * @return 操作成功：返回做单记录集合，操作失败：返回null
      */
-    public int countTransactionMakeOrderForBack(String currencyName, int executeStatus, int paymentType, String backerAccount,
-                                         Timestamp startAddTime, Timestamp endAddTime,
-                                         Timestamp startExecuteTime, Timestamp endExecuteTime){
-        return transactionMakeOrderDao.countTransactionMakeOrderForBack(currencyName, executeStatus, paymentType, backerAccount,
-                startAddTime, endAddTime, startExecuteTime, endExecuteTime);
+    public int countTransactionMakeOrderForBack(String orderNo, String currencyName, int executeStatus, Timestamp startExecuteTime, Timestamp endExecuteTime){
+        return transactionMakeOrderDao.countTransactionMakeOrderForBack(orderNo, currencyName, executeStatus, startExecuteTime, endExecuteTime);
     }
 
     /**
      * 查询做单记录集合(后台)
+     * @param orderNo 批次号
      * @param currencyName 货币名称(币种)
-     * @param executeStatus 执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败,5:已撤回
-     * @param paymentType 操作类型
-     * @param backerAccount 后台管理员帐号
-     * @param startAddTime 起始生成时间
-     * @param endAddTime 结束生成时间
+     * @param executeStatus 执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败
      * @param startExecuteTime 起始执行时间
      * @param endExecuteTime 结束执行时间
      * @param pageNumber 起始页数
      * @param pageSize 每页条数
      * @return 操作成功：返回做单记录集合，操作失败：返回null
      */
-    public List<TransactionMakeOrderVO> listTransactionMakeOrderForBack(String currencyName, int executeStatus, int paymentType, String backerAccount,
-                                                                        Timestamp startAddTime, Timestamp endAddTime,
-                                                                        Timestamp startExecuteTime, Timestamp endExecuteTime,
-                                                                        int pageNumber, int pageSize){
-        return transactionMakeOrderDao.listTransactionMakeOrderForBack(currencyName, executeStatus, paymentType, backerAccount, startAddTime, endAddTime,
-                startExecuteTime, endExecuteTime, pageNumber, pageSize);
+    public List<TransactionMakeOrderDO> listTransactionMakeOrderForBack(String orderNo, String currencyName, int executeStatus,
+                                                                 Timestamp startExecuteTime, Timestamp endExecuteTime, int pageNumber, int pageSize){
+        return transactionMakeOrderDao.listTransactionMakeOrderForBack(orderNo, currencyName, executeStatus, startExecuteTime, endExecuteTime, pageNumber, pageSize);
     }
 
     /**
@@ -138,7 +118,7 @@ public class TransactionMakeOrderServiceImpl implements ITransactionMakeOrderSer
     /**
      * 修改记录执行状态
      * @param orderNo  记录号
-     * @param executeStatus  执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败,5:已撤回
+     * @param executeStatus  执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败
      * @return  操作成功，返回true，操作失败，返回false
      */
     public boolean updateOrderExecuteStatusByOrderNo(String orderNo, int executeStatus){
@@ -155,49 +135,85 @@ public class TransactionMakeOrderServiceImpl implements ITransactionMakeOrderSer
         boolean executeBoo = false;
 
         List<TransactionMakeOrderDO> resultList = transactionMakeOrderDao.listTransactionMakeOrderByOrderNoList(orderNoList);
-        if (resultList.isEmpty() || resultList.size() != orderNoList.size()) {
+        if (resultList == null || resultList.isEmpty()) {
             return false;
         }
 
+        //批量修改为执行中
         executeBoo = transactionMakeOrderDao.updateMakeOrderExecuteStatusByOrderNoList(orderNoList, 2);
-        //计算成交单价
-        List<TransactionDealRedisDO> redisDealList = new ArrayList<TransactionDealRedisDO>();
-        for (TransactionMakeOrderDO order: resultList) {
-            Timestamp curTime = DateUtil.getCurrentTime();
-            String transactionPriceStr = BigDecimalUtil.div(order.getCurrencyTotalPrice(), order.getCurrencyNumber(), 8);
-            if (!StringUtil.isNotNull(transactionPriceStr)) {
-                return false;
+        List<TransactionDealRedisDO> transactionDealRedisDOS = new ArrayList<TransactionDealRedisDO>();
+
+        for (TransactionMakeOrderDO order : resultList) {
+            //得到随机条数
+            int num = (int) (Math.random() * 15) + 5;
+            //总数量
+            double currencyNumber = order.getCurrencyNumber();
+            //子数量集合
+            List<Double> numList = new ArrayList<Double>();
+            //数量，时间集合
+            Map<Double, Long> doubleTimestampHashMap = new HashMap<Double, Long>();
+
+            List<Double> nList = new ArrayList<Double>();
+            int i = 0;
+            while (i<num){
+                double random = Math.random();
+                if (nList.contains(random)){
+                    continue;
+                }
+                nList.add(random);
+                i++;
             }
-            double transactionPrice = Double.parseDouble(transactionPriceStr);
-            if (transactionPrice <= 0) {
-                return false;
+
+            Collections.sort(nList);
+            double currNumForLast = order.getCurrencyNumber();
+            for (int a = 0; a < nList.size(); a++) {
+                double currNum = 0;
+                if (a == 0) {
+                    currNum = NumberUtil.doubleFormat(BigDecimalUtil.mul(nList.get(a) - 0, order.getCurrencyNumber()), 8);
+                } else if (a == nList.size() - 1){
+                    currNum = currNumForLast;
+                } else {
+                    currNum = NumberUtil.doubleFormat(BigDecimalUtil.mul(nList.get(a+1) - nList.get(a), order.getCurrencyNumber()), 8);
+                }
+                currNumForLast -= currNum;
+                numList.add(currNum);
             }
 
-            String orderDealNo = SystemCommonConfig.TRANSACTION_MAKE_ORDER_PENDNO
-                    + DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10)
-                    + NumberUtil.createNumberStr(10);
+            int j = 0;
+            while (j<num){
+                Double number = numList.get(j);
+                int random = (int)(Math.random() * 100);
+                Long timeL = (random * 5 * 6) * 100L;
+                boolean result = doubleTimestampHashMap.containsValue(timeL);
+                if (result){
+                    continue;
+                }
+                doubleTimestampHashMap.put(number, timeL);
+                j++;
+            }
 
-            TransactionDealRedisDO transactionDealRedis = new TransactionDealRedisDO();
-            transactionDealRedis.setOrderNo(orderDealNo);
-            transactionDealRedis.setPaymentType(order.getPaymentType());
-            transactionDealRedis.setCurrencyId(order.getCurrencyId());
-            transactionDealRedis.setCurrencyNumber(order.getCurrencyNumber());
-            transactionDealRedis.setCurrencyTotalPrice(order.getCurrencyTotalPrice());
-            transactionDealRedis.setTransactionPrice(transactionPrice);
-            transactionDealRedis.setAddTime(curTime);
+            for (Map.Entry<Double, Long> entry : doubleTimestampHashMap.entrySet()){
+                TransactionDealRedisDO deal = new TransactionDealRedisDO();
+                deal.setOrderNo(order.getOrderNo());
+                deal.setPaymentType((int) Math.round(Math.random() + 1));
+                deal.setCurrencyId(order.getCurrencyId());
+                deal.setTransactionPrice(order.getCurrencyPrice());
+                deal.setCurrencyNumber(entry.getKey());
+                deal.setCurrencyTotalPrice(NumberUtil.doubleFormat(BigDecimalUtil.mul(entry.getKey(), order.getCurrencyPrice()), 8));
+                deal.setAddTime(DateUtil.longToTimestamp(order.getExecuteTime().getTime() + entry.getValue()));
 
-            redisDealList.add(transactionDealRedis);
+                transactionDealRedisDOS.add(deal);
+            }
         }
-
         //添加redis成交记录
         if (executeBoo) {
-            executeBoo = transactionDealRedisService.insertTransactionDealRedisList(redisDealList);
+            executeBoo = transactionDealRedisService.insertTransactionDealRedisList(transactionDealRedisDOS);
         }
-
-        //修改做单记录执行状态
+        //修改做单记录状态
         if (executeBoo) {
             executeBoo = transactionMakeOrderDao.updateMakeOrderExecuteStatusByOrderNoList(orderNoList, 3);
         }
+
         //数据回滚
         if(!executeBoo){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -205,14 +221,34 @@ public class TransactionMakeOrderServiceImpl implements ITransactionMakeOrderSer
 
         return executeBoo;
     }
-
+    
     /**
      * 批量修改记录号状态
      * @param orderNoList  记录号集合
-     * @param executeStatus  执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败,5:已撤回
+     * @param executeStatus  执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败
      * @return  操作成功：true，操作失败：返回false
      */
     public boolean updateMakeOrderExecuteStatusByOrderNoList(List<String> orderNoList, int executeStatus){
         return transactionMakeOrderDao.updateMakeOrderExecuteStatusByOrderNoList(orderNoList, executeStatus);
+    }
+
+    /**
+     * 根据记录号删除做单记录
+     * @param orderNo 记录号
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    @Transactional
+    public boolean deleteMakeOrderByOrderNo(String orderNo){
+        boolean resultBoo = transactionMakeOrderDao.deleteMakeOrderByOrderNo(orderNo);
+
+        if (resultBoo) {
+            resultBoo = transactionDealRedisService.deleteDealByOrderNo(orderNo);
+        }
+
+        //数据回滚
+        if(!resultBoo){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return resultBoo;
     }
 }
