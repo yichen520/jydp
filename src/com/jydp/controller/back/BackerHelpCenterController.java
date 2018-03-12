@@ -1,6 +1,6 @@
 package com.jydp.controller.back;
 
-import com.iqmkj.config.SystemHelpConfig;
+import config.SystemHelpConfig;
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;

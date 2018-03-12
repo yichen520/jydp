@@ -1,6 +1,6 @@
 package com.jydp.controller.web;
 
-import com.iqmkj.config.SystemHelpConfig;
+import config.SystemHelpConfig;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.DO.system.SystemHelpDO;
 import com.jydp.service.ISystemHelpService;
