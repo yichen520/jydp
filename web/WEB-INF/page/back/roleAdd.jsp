@@ -113,6 +113,12 @@
             return openTips(message);
         }
     }
+    //禁用enter事件
+    $(document).keydown(function(event){
+        switch(event.keyCode){
+            case 13:return false;
+        }
+    });
 
     function roleSubmit() {
         var powerIdList = "";

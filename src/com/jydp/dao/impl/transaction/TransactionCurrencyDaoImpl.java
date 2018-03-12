@@ -3,6 +3,7 @@ package com.jydp.dao.impl.transaction;
 import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.ITransactionCurrencyDao;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
+import com.jydp.entity.DTO.TransactionCurrencyBasicDTO;
 import com.jydp.entity.DTO.TransactionUserDealDTO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -521,4 +522,19 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
             return false;
         }
     }
+
+    /**
+     * 查询所有交易币种基本信息
+     * @return 操作成功：返回币种信息，操作失败：返回null
+     */
+    public List<TransactionCurrencyBasicDTO> listAllTransactionCurrencyBasicInfor() {
+        List<TransactionCurrencyBasicDTO> result = null;
+        try {
+            result = sqlSessionTemplate.selectList("TransactionCurrency_listAllTransactionCurrencyBasicInfor");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return result;
+    }
+
 }

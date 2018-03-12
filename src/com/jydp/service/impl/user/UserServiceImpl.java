@@ -703,6 +703,17 @@ public class UserServiceImpl implements IUserService {
         //增加用户货币数量
         if (executeSuccess) {
             executeSuccess = userCurrencyNumService.increaseCurrencyNumber(userId, currencyId, currencyNumber);
+            //用户货币账户未创建时，创建该货币账户
+            if (!executeSuccess) {
+                UserCurrencyNumDO userCurrencyNum = new UserCurrencyNumDO();
+                userCurrencyNum.setUserId(userId);
+                userCurrencyNum.setCurrencyId(currencyId);
+                userCurrencyNum.setCurrencyNumber(currencyNumber);
+                userCurrencyNum.setCurrencyNumberLock(0);
+                userCurrencyNum.setAddTime(currentTime);
+
+                executeSuccess = userCurrencyNumService.insertUserCurrencyNum(userCurrencyNum);
+            }
         }
 
         //数据回滚
@@ -781,7 +792,7 @@ public class UserServiceImpl implements IUserService {
      * @param userAccount 用户账号
      * @param currencyId 货币Id
      * @param currencyName 货币名称
-     * @param currencyNumber 增加的货币冻结数量
+     * @param currencyNumberLock 增加的货币冻结数量
      * @param backerId 后台管理员Id
      * @param backerAccount 后台管理员帐号
      * @param remarks 备注
@@ -789,7 +800,7 @@ public class UserServiceImpl implements IUserService {
      * @return 操作成功：返回true，操作失败：返回false
      */
     @Transactional
-    public boolean addUserCurrencyNumberLockForBack(int userId, String userAccount, int currencyId, String currencyName, double currencyNumber,
+    public boolean addUserCurrencyNumberLockForBack(int userId, String userAccount, int currencyId, String currencyName, double currencyNumberLock,
                                                 int backerId, String backerAccount, String remarks, String ipAddress) {
         Timestamp currentTime = DateUtil.getCurrentTime();
         String orderNo = SystemCommonConfig.USER_BALANCE + DateUtil.longToTimeStr(currentTime.getTime(), DateUtil.dateFormat10) + NumberUtil.createNumberStr(10);
@@ -800,7 +811,7 @@ public class UserServiceImpl implements IUserService {
         userBalanceDO.setCurrencyId(currencyId);  //币种Id,美元id=999
         userBalanceDO.setCurrencyName(currencyName);  //货币名称
         userBalanceDO.setBalanceNumber(0);  //交易数量
-        userBalanceDO.setFrozenNumber(currencyNumber);  //冻结数量
+        userBalanceDO.setFrozenNumber(currencyNumberLock);  //冻结数量
         userBalanceDO.setRemark(remarks);
         userBalanceDO.setAddTime(currentTime);
 
@@ -822,13 +833,24 @@ public class UserServiceImpl implements IUserService {
             backerHandleUserBalanceFreezeMoney.setUserAccount(userAccount);
             backerHandleUserBalanceFreezeMoney.setUserId(userId);
             backerHandleUserBalanceFreezeMoney.setCurrencyId(currencyId);
-            backerHandleUserBalanceFreezeMoney.setUserBalance(currencyNumber);  //冻结币（个）
+            backerHandleUserBalanceFreezeMoney.setUserBalance(currencyNumberLock);  //冻结币（个）
 
             executeSuccess = backerHandleUserBalanceFreezeMoneyService.insertBackerHandleUserBalanceFreezeMoney(backerHandleUserBalanceFreezeMoney);
         }
         //增加用户货币冻结数量
         if (executeSuccess) {
-            executeSuccess = userCurrencyNumService.increaseCurrencyNumberLock(userId, currencyId, currencyNumber);
+            executeSuccess = userCurrencyNumService.increaseCurrencyNumberLock(userId, currencyId, currencyNumberLock);
+            //用户货币账户未创建时，创建该货币账户
+            if (!executeSuccess) {
+                UserCurrencyNumDO userCurrencyNum = new UserCurrencyNumDO();
+                userCurrencyNum.setUserId(userId);
+                userCurrencyNum.setCurrencyId(currencyId);
+                userCurrencyNum.setCurrencyNumber(0);
+                userCurrencyNum.setCurrencyNumberLock(currencyNumberLock);
+                userCurrencyNum.setAddTime(currentTime);
+
+                executeSuccess = userCurrencyNumService.insertUserCurrencyNum(userCurrencyNum);
+            }
         }
 
         //数据回滚

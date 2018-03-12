@@ -119,6 +119,13 @@
         showPower();
     }
 
+    //禁用enter事件
+    $(document).keydown(function(event){
+        switch(event.keyCode){
+            case 13:return false;
+        }
+    });
+
     function showPower() {
         var powerList = eval(${role.powerJson});
         Object.keys(powerList).map(function handle(num){

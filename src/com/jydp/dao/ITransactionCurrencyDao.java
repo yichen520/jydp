@@ -1,6 +1,7 @@
 package com.jydp.dao;
 
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
+import com.jydp.entity.DTO.TransactionCurrencyBasicDTO;
 import com.jydp.entity.DTO.TransactionUserDealDTO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
 import java.sql.Timestamp;
@@ -199,4 +200,11 @@ public interface ITransactionCurrencyDao {
      * @return  操作成功：返回true，操作失败：返回false
      */
     boolean topCurrencyRankNumber(int currencyId);
+
+    /**
+     * 查询所有交易币种基本信息
+     * @return 操作成功：返回币种信息，操作失败：返回null
+     */
+    List<TransactionCurrencyBasicDTO> listAllTransactionCurrencyBasicInfor();
+
 }

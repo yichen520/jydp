@@ -1,13 +1,16 @@
 package com.jydp.service.impl.user;
 
+import com.iqmkj.utils.DateUtil;
 import com.jydp.dao.IUserCurrencyNumDao;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DTO.BackerUserCurrencyNumDTO;
 import com.jydp.entity.DTO.UserAmountCheckDTO;
 import com.jydp.service.IUserCurrencyNumService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +24,15 @@ public class UserCurrencyNumServiceImpl implements IUserCurrencyNumService {
     /** 用户币数量 */
     @Autowired
     private IUserCurrencyNumDao userCurrencyNumDao;
+
+    /**
+     * 新增用户币账户
+     * @param userCurrencyNum 用户币账户
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean insertUserCurrencyNum(UserCurrencyNumDO userCurrencyNum) {
+        return userCurrencyNumDao.insertUserCurrencyNum(userCurrencyNum);
+    }
 
     /**
      * 查询用户币数量
@@ -164,6 +176,31 @@ public class UserCurrencyNumServiceImpl implements IUserCurrencyNumService {
     @Override
     public List<Integer> getUserCurrencyNotOwnForWeb(int userId){
         return userCurrencyNumDao.getUserCurrencyNotOwnForWeb(userId);
+    }
+
+    /**
+     * 增加用户没有的所有币种账户
+     * @param userId 用户id
+     * @return 操作成功：返回true，操作失败：返回false（如果该用户币种账户已全部存在返回true）
+     */
+    public boolean addUserCurrencyNotOwn(int userId) {
+        //获取当前用户没有的币种，为null说明所有币种都存在
+        List<Integer> userCurrencyNumDOList =  getUserCurrencyNotOwnForWeb(userId);
+        if (CollectionUtils.isEmpty(userCurrencyNumDOList)){
+            return true;
+        }
+
+        List<UserCurrencyNumDO> userCurrencyNumDOList1 = new ArrayList<UserCurrencyNumDO>();
+        for (Integer currencyId:userCurrencyNumDOList) {
+            UserCurrencyNumDO userCurrencyNumDO = new UserCurrencyNumDO();
+            userCurrencyNumDO.setUserId(userId);
+            userCurrencyNumDO.setCurrencyId(currencyId);
+            userCurrencyNumDO.setCurrencyNumber(0);
+            userCurrencyNumDO.setCurrencyNumberLock(0);
+            userCurrencyNumDO.setAddTime(DateUtil.getCurrentTime());
+            userCurrencyNumDOList1.add(userCurrencyNumDO);
+        }
+        return insertUserCurrencyForWeb(userCurrencyNumDOList1);
     }
 
 }

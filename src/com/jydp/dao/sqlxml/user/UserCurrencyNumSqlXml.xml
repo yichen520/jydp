@@ -5,6 +5,11 @@
 
 <mapper namespace="com.jydp.dao.impl.user.UserCurrencyNumDaoImpl">
 
+    <insert id="UserCurrencyNum_insertUserCurrencyNum" parameterType="UserCurrencyNumDO">
+        INSERT INTO user_currency_num_tab(userId, currencyId, currencyNumber, currencyNumberLock, addTime)
+        VALUES (#{userId}, #{currencyId}, #{currencyNumber}, #{currencyNumberLock}, #{addTime})
+    </insert>
+
     <select id="UserCurrencyNum_getUserCurrencyNumByUserId" parameterType="int" resultType="UserCurrencyNumDO">
         SELECT userId, currencyId, currencyNumber, currencyNumberLock, addTime
         FROM user_currency_num_tab

@@ -30,7 +30,7 @@ public class GlobalExceptionResolver implements HandlerExceptionResolver {
 		LogUtil.printErrorLog(exception);
 		
 		/*ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("index");*/
+		modelAndView.setViewName("error");*/
 		return null;
 	}
 

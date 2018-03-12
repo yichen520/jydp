@@ -25,6 +25,26 @@ public class UserCurrencyNumDaoImpl implements IUserCurrencyNumDao {
     private SqlSessionTemplate sqlSessionTemplate;
 
     /**
+     * 新增用户币账户
+     * @param userCurrencyNum 用户币账户
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean insertUserCurrencyNum(UserCurrencyNumDO userCurrencyNum) {
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.insert("UserCurrencyNum_insertUserCurrencyNum", userCurrencyNum);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 查询用户币数量
      * @param userId 用户Id
      * @return 查询成功：返回用户币数量，查询失败：返回null

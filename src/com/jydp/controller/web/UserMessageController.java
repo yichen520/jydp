@@ -16,6 +16,7 @@ import com.jydp.service.ISystemValidatePhoneService;
 import com.jydp.service.IUserCurrencyNumService;
 import com.jydp.service.IUserService;
 import config.PhoneAreaConfig;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -99,38 +100,31 @@ public class UserMessageController {
         //总资产计算
         double userBalanceSum = BigDecimalUtil.add(userBalanceNum, userBalanceLockNum);
 
+        List<UserCurrencyNumVO> userCurrencyList = new ArrayList<>();
         //查询用户币信息
         List<BackerUserCurrencyNumDTO> currencyList = userCurrencyNumService.getUserCurrencyNumByUserIdForWeb(user.getUserId());
-        if(currencyList == null || currencyList.size()<=0){
-            request.setAttribute("code", 2);
-            request.setAttribute("message", "未查询到用户相关币种信息");
-            request.setAttribute("userBalanceSum", userBalanceSum);
-            request.setAttribute("userMessage", userMessage);
-            return "page/web/userMessage";
-        }
+        if(CollectionUtils.isNotEmpty(currencyList)){
+            for(BackerUserCurrencyNumDTO userCurrency : currencyList){
+                UserCurrencyNumVO userCurrencyNum = new UserCurrencyNumVO();
+                userCurrencyNum.setCurrencyName(userCurrency.getCurrencyName());
+                userCurrencyNum.setCurrencyNumber(userCurrency.getCurrencyNumber());
+                userCurrencyNum.setCurrencyId(userCurrency.getCurrencyId());
+                userCurrencyNum.setCurrencyNumberLock(userCurrency.getCurrencyNumberLock());
 
-        List<UserCurrencyNumVO> userCurrencyList = new ArrayList<>();
-        for(BackerUserCurrencyNumDTO userCurrency : currencyList){
-            UserCurrencyNumVO userCurrencyNum = new UserCurrencyNumVO();
-            userCurrencyNum.setCurrencyName(userCurrency.getCurrencyName());
-            userCurrencyNum.setCurrencyNumber(userCurrency.getCurrencyNumber());
-            userCurrencyNum.setCurrencyId(userCurrency.getCurrencyId());
-            userCurrencyNum.setCurrencyNumberLock(userCurrency.getCurrencyNumberLock());
+                //币数量精度截取保留四位小数
+                double currencyNum = NumberUtil.doubleFormat(userCurrency.getCurrencyNumber(), 4);
+                double currencyLock = NumberUtil.doubleFormat(userCurrency.getCurrencyNumberLock(), 4);
 
-            //币数量精度截取保留四位小数
-            double currencyNum = NumberUtil.doubleFormat(userCurrency.getCurrencyNumber(), 4);
-            double currencyLock = NumberUtil.doubleFormat(userCurrency.getCurrencyNumberLock(), 4);
-
-            //计算总金额
-            double currencyNumberSum = BigDecimalUtil.add(currencyNum, currencyLock);
-            userCurrencyNum.setCurrencyNumber(currencyNum);
-            userCurrencyNum.setCurrencyNumberLock(currencyLock);
-            userCurrencyNum.setCurrencyNumberSum(currencyNumberSum);
-            userCurrencyList.add(userCurrencyNum);
+                //计算总金额
+                double currencyNumberSum = BigDecimalUtil.add(currencyNum, currencyLock);
+                userCurrencyNum.setCurrencyNumber(currencyNum);
+                userCurrencyNum.setCurrencyNumberLock(currencyLock);
+                userCurrencyNum.setCurrencyNumberSum(currencyNumberSum);
+                userCurrencyList.add(userCurrencyNum);
+            }
         }
 
         Map<String, String> phoneAreaMap = PhoneAreaConfig.phoneAreaMap;
-
         userService.countCheckUserAmountForTimer(user.getUserId(), 1);
         request.setAttribute("code", 1);
         request.setAttribute("message", "查询成功");

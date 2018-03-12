@@ -351,7 +351,7 @@
         $("#addLockCurrencyNumber").val("");
         $("#addLockMark").val("");
         if (addCurrencyNumberStr == null || addCurrencyNumberStr == "" || addCurrencyNumber <= 0) {
-            addCurrencyNumberBoo = false;
+            addLockCurrencyNumberBoo = false;
             return openTips("请输入要增加的数量");
         }
         $.ajax({
@@ -405,11 +405,11 @@
         $("#reduceLockCurrencyNumber").val("");
         $("#reduceLockMark").val("");
         if (reduceCurrencyNumberStr == null || reduceCurrencyNumberStr == "" || reduceCurrencyNumber <= 0) {
-            reduceCurrencyNumberBoo = false;
+            reduceLockCurrencyNumberBoo = false;
             return openTips("请输入要减少的数量");
         }
         if (userCurrency < reduceCurrencyNumber) {
-            reduceCurrencyNumberBoo = false;
+            reduceLockCurrencyNumberBoo = false;
             return openTips("您输入的金额大于[" + currencyName + "]的冻结数量");
         }
         $.ajax({

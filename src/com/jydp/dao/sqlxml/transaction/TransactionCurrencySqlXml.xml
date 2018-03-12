@@ -281,4 +281,10 @@
         SET rankNumber = 1
         WHERE currencyId = #{currencyId}
     </update>
+
+    <select id="TransactionCurrency_listAllTransactionCurrencyBasicInfor" resultType="TransactionCurrencyBasicDTO">
+        SELECT currencyId, currencyName, buyFee, sellFee, paymentType, upStatus, rankNumber
+        FROM transaction_currency_tab
+    </select>
+
 </mapper>

@@ -42,24 +42,26 @@
                 </p>
             </div>
 
-            <table class="accountTable" cellspacing="0" cellpadding="0">
-                <tr class="coinTitle">
-                    <td class="coin">币种</td>
-                    <td class="amount">可用数量</td>
-                    <td class="amount">冻结数量</td>
-                    <td class="amount">币种总资产</td>
-                    <td class="operate">操作</td>
-                </tr>
-                <c:forEach items="${userCurrencyList }" var="userCurrency">
-                    <tr class="coinInfo">
-                        <td class="coin">${userCurrency.currencyName }</td>
-                        <td class="amount">${userCurrency.currencyNumber }</td>
-                        <td class="amount">${userCurrency.currencyNumberLock }</td>
-                        <td class="amount">${userCurrency.currencyNumberSum }</td>
-                        <td><a href="javascript:;" class="link" onclick="dealSkip('${userCurrency.currencyId }')" >去交易</a></td>
+            <c:if test="${!empty userCurrencyList}">
+                <table class="accountTable" cellspacing="0" cellpadding="0">
+                    <tr class="coinTitle">
+                        <td class="coin">币种</td>
+                        <td class="amount">可用数量</td>
+                        <td class="amount">冻结数量</td>
+                        <td class="amount">币种总资产</td>
+                        <td class="operate">操作</td>
                     </tr>
-                </c:forEach>
-            </table>
+                    <c:forEach items="${userCurrencyList }" var="userCurrency">
+                        <tr class="coinInfo">
+                            <td class="coin">${userCurrency.currencyName }</td>
+                            <td class="amount">${userCurrency.currencyNumber }</td>
+                            <td class="amount">${userCurrency.currencyNumberLock }</td>
+                            <td class="amount">${userCurrency.currencyNumberSum }</td>
+                            <td><a href="javascript:;" class="link" onclick="dealSkip('${userCurrency.currencyId }')" >去交易</a></td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </c:if>
         </div>
 
         <div class="safety">
@@ -210,7 +212,7 @@
                     </span>
                 </span>
 
-                    <input type="text" class="telNumber" placeholder="您的11位手机号" maxlength="11" id="bindingMobile"
+                    <input type="text" class="telNumber" placeholder="请输入您的手机号" maxlength="11" id="bindingMobile"
                            onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
                 </span>
             </p>
@@ -510,8 +512,6 @@
                 return;
             }
         }
-
-
         
         if(verifyCode == ""){
             openTips("请输入验证码");
@@ -659,15 +659,21 @@
             if( wait == 60){
                 var regPos = /^\d+(\.\d+)?$/; //非负浮点数
                 var bindingMobile = $("#bindingMobile").val();
-                var areaCode = $("#areaCode").val();
+                var areaCode = $("#areaCode").html();
                 if(bindingMobile == ""){
                     openTips("请输入手机号");
                     return;
                 }
-
-                if(!regPos.test(bindingMobile) || bindingMobile.length > 11 || bindingMobile.length < 5){
-                    openTips("请输入正确手机号");
-                    return;
+                if(areaCode == "+86"){
+                    if(!regPos.test(bindingMobile) || bindingMobile.length > 11 || bindingMobile.length <= 10){
+                        openTips("请输入正确手机号");
+                        return;
+                    }
+                } else {
+                    if(!regPos.test(bindingMobile) || (bindingMobile.length + areaCode.length) > 14 || bindingMobile.length <= 5 || bindingMobile.length > 11){
+                        openTips("请输入正确手机号");
+                        return;
+                    }
                 }
                 //bindingMobile = areaCode + bindingMobile;
                 $.ajax({

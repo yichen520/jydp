@@ -68,7 +68,7 @@
 	
 	<!-- 全局异常捕获（未在项目中明确捕获的异常） -->
 	<bean class="com.iqmkj.exception.GlobalExceptionResolver"/>
-	<!--系统开关初始化操作-->
+	<!--系统初始化操作-->
 	<bean id="systemCommonInit" class="com.iqmkj.config.SystemCommonInit" init-method="executeInit"/>
 	<!-- 定时器初始化 -->
 	<bean id="quartzCommonInit" class="com.iqmkj.config.QuartzCommonInit" init-method="executeInit"/>
