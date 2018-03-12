@@ -1,6 +1,5 @@
 package com.jydp.service;
 
-import com.jydp.entity.DO.transaction.TransactionUserDealDO;
 import com.jydp.entity.VO.TransactionUserDealVO;
 
 import java.sql.Timestamp;
@@ -20,7 +19,7 @@ public interface ITransactionUserDealService {
      * @param pageSize  每页条数
      * @return 查询成功：返回用户成交记录；查询失败：返回null
      */
-    List<TransactionUserDealDO> getTransactionUserDeallist(int userId, int pageNumber, int pageSize);
+    List<TransactionUserDealVO> getTransactionUserDeallist(int userId, int pageNumber, int pageSize);
 
     /**
      * 新增成交记录
@@ -89,7 +88,7 @@ public interface ITransactionUserDealService {
      * @param pageSize  每页条数
      * @return  操作成功：返回成交记录集合，操作失败:返回null
      */
-    List<TransactionUserDealDO> listTransactionUserDealByPendNo(String pendNo, int pageNumber, int pageSize);
+    List<TransactionUserDealVO> listTransactionUserDealByPendNo(String pendNo, int pageNumber, int pageSize);
 
     /**
      * 查询用户成交记录总数

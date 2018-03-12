@@ -3,7 +3,6 @@ package com.jydp.service.impl.transaction;
 import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.ITransactionUserDealDao;
 import com.jydp.entity.DO.transaction.TransactionUserDealDO;
-import com.jydp.entity.DO.user.UserBalanceDO;
 import com.jydp.entity.VO.TransactionUserDealVO;
 import com.jydp.service.ITransactionUserDealService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,14 +31,15 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
      * @return 查询成功：返回用户成交记录；查询失败：返回null
      */
     @Override
-    public List<TransactionUserDealDO> getTransactionUserDeallist(int userId, int pageNumber, int pageSize) {
+    public List<TransactionUserDealVO> getTransactionUserDeallist(int userId, int pageNumber, int pageSize) {
 
-        List<TransactionUserDealDO> transactionUserDealDOList = transactionUserDealDao.getTransactionUserDeallist(userId, pageNumber, pageSize);
+        List<TransactionUserDealVO> transactionUserDealDOList = transactionUserDealDao.getTransactionUserDeallist(userId, pageNumber, pageSize);
 
         if (transactionUserDealDOList != null) {
-            for (TransactionUserDealDO transactionUserDeal:transactionUserDealDOList) {
+            for (TransactionUserDealVO transactionUserDeal:transactionUserDealDOList) {
                 transactionUserDeal.setCurrencyNumber(NumberUtil.doubleFormat(transactionUserDeal.getCurrencyNumber(),4));
                 transactionUserDeal.setCurrencyTotalPrice(NumberUtil.doubleFormat(transactionUserDeal.getCurrencyTotalPrice(),6));
+                transactionUserDeal.setFee(NumberUtil.doubleFormat(transactionUserDeal.getFee(),6));
             }
         }
 
@@ -137,7 +137,7 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
      * @param pageSize  每页条数
      * @return  操作成功：返回成交记录集合，操作失败:返回null
      */
-    public List<TransactionUserDealDO> listTransactionUserDealByPendNo(String pendNo, int pageNumber, int pageSize){
+    public List<TransactionUserDealVO> listTransactionUserDealByPendNo(String pendNo, int pageNumber, int pageSize){
         return transactionUserDealDao.listTransactionUserDealByPendNo(pendNo, pageNumber, pageSize);
     }
 

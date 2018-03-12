@@ -46,7 +46,7 @@
         </p>
 
         <ul class="levelTwo">
-            <li class="menuInfo"><a id="accountRecord" href="<%=path %>/userWeb/accountRecord/show.htm">账户记录</a></li>
+            <%--<li class="menuInfo"><a id="accountRecord" href="<%=path %>/userWeb/accountRecord/show.htm">账户记录</a></li>--%>
             <li class="menuInfo"><a id="transactionPendOrderController" href="<%=path%>/userWeb/transactionPendOrderController/show.htm">委托记录</a></li>
             <li class="menuInfo"><a id="dealRecord" href="<%=path %>/userWeb/dealRecord/show.htm">成交记录</a></li>
             <li class="menuInfo"><a href="#">充值记录</a></li>
