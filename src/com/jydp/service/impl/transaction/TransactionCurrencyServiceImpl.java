@@ -370,14 +370,14 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
         }
 
         //昨日收盘价
-        String yesterdayPriceStr = redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + currencyId).toString();
+        String yesterdayPriceStr = (String) redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + currencyId);
         if(StringUtil.isNotNull(yesterdayPriceStr)){
             double yesterdayPrice = Double.parseDouble(yesterdayPriceStr);
             standardParameter.setYesterdayPrice(yesterdayPrice);
         }
 
         //今日小时成交量
-        String dayTurnoverStr = redisService.getValue(RedisKeyConfig.DAY_TURNOVER + currencyId).toString();
+        String dayTurnoverStr = (String) redisService.getValue(RedisKeyConfig.DAY_TURNOVER + currencyId);
         if(StringUtil.isNotNull(dayTurnoverStr)){
             double dayTurnove = Double.parseDouble(dayTurnoverStr);
             standardParameter.setDayTurnove(dayTurnove);
