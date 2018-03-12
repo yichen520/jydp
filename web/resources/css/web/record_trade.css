@@ -5,10 +5,19 @@
     width: 100px;
 }
 .type{
-    width: 70px;
+    width: 90px;
 }
 .amount{
-    width: 220px;
+    width: 180px;
+}
+.deal{
+    width: 241px;
+}
+.tableInfo .deal,.tableInfo .amount{
+    text-align: left;
+}
+.deal p{
+    line-height: 20px;
 }
 .in{
     color: #e83a33;

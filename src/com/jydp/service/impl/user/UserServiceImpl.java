@@ -237,10 +237,11 @@ public class UserServiceImpl implements IUserService {
      *  验证用户信息合法性
      * @param userAccount 用户名
      * @param password 密码
+     * @param payPassword 支付密码
      * @return 查询成功：返回验证结果; 查询失败：返回null
      */
     @Override
-    public JsonObjectBO validateUserInfo(String userAccount, String password) {
+    public JsonObjectBO validateUserInfo(String userAccount, String password, String payPassword) {
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         String accountReg ="^[A-Za-z0-9]{6,16}$";
         String passwordReg = "^[A-Za-z0-9]{6,16}$";
@@ -257,6 +258,11 @@ public class UserServiceImpl implements IUserService {
             return jsonObjectBO;
         }
 
+        if (payPassword.equals(password)) {
+            jsonObjectBO.setCode(2);
+            jsonObjectBO.setMessage("支付密码不能与登录密码一样");
+            return jsonObjectBO;
+        }
         jsonObjectBO.setCode(1);
         jsonObjectBO.setMessage("用户信息合法");
         return jsonObjectBO;

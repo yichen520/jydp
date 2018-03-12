@@ -1,25 +1,20 @@
 package com.jydp.controller.web;
 
 import com.google.code.kaptcha.Constants;
-import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.MD5Util;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.UserSessionBO;
-import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DO.user.UserIdentificationDO;
 import com.jydp.entity.DO.user.UserIdentificationImageDO;
-import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.*;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
