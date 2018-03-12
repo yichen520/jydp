@@ -10,6 +10,8 @@ import com.jydp.entity.VO.StandardParameterVO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.service.IRedisService;
 import com.jydp.service.ITransactionCurrencyService;
+import com.jydp.service.ITransactionDealRedisService;
+import com.jydp.service.ITransactionRedisDealCommonService;
 import config.RedisKeyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,9 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
     @Autowired
     private IRedisService redisService;
 
+    /** redis成交记录 */
+    @Autowired
+    private ITransactionDealRedisService transactionDealRedisService;
     /**
      * 新增交易币种
      * @param currencyShortName 货币简称
@@ -110,16 +115,19 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
         transactionCurrency.setBackerAccount(backerAccount);
         transactionCurrency.setIpAddress(ipAddresse);
         transactionCurrency.setAddTime(addTime);
+
+        boolean addBoo = true;
+        int currencyId = 0;
         if (upTime == null) {
             transactionCurrency.setUpTime(DateUtil.getCurrentTime());
             transactionCurrency.setPaymentType(1);
             transactionCurrency.setUpStatus(2);
+
+            addBoo = redisService.addValue(RedisKeyConfig.YESTERDAY_PRICE + transactionCurrency.getCurrencyId(),
+                    transactionCurrency.getGuidancePrice());
         } else {
             transactionCurrency.setUpTime(upTime);
         }
-
-        boolean addBoo = true;
-        int currencyId = 0;
 
         int maxNum = transactionCurrencyDao.countTransactionCurrencyForBack(null,0, 0, null, null, null,null, null);
         //降位
@@ -132,12 +140,6 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
         }
         if (currencyId <= 0){
             addBoo = false;
-        }
-
-        //存入redis上市指导价
-        if (addBoo) {
-            redisService.addValue(RedisKeyConfig.YESTERDAY_PRICE + transactionCurrency.getCurrencyId(),
-                    transactionCurrency.getGuidancePrice());
         }
 
         // 数据回滚
@@ -252,8 +254,20 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      */
     public List<TransactionCurrencyVO> listTransactionCurrencyForBack(String currencyName, int paymentType, int upStatus, String backAccount,
                                                                       Timestamp startAddTime, Timestamp endAddTime, Timestamp startUpTime, Timestamp endUpTime, int pageNumber, int pageSize){
-        return transactionCurrencyDao.listTransactionCurrencyForBack(currencyName, paymentType, upStatus, backAccount,
+
+        List<TransactionCurrencyVO> transactionCurrencyVOS = transactionCurrencyDao.listTransactionCurrencyForBack(currencyName, paymentType, upStatus, backAccount,
                 startAddTime, endAddTime, startUpTime, endUpTime, pageNumber, pageSize);
+
+        for (TransactionCurrencyVO currency: transactionCurrencyVOS) {
+            boolean resultBoo = transactionDealRedisService.validateGuidancePrice(currency.getCurrencyId());
+            if (resultBoo){
+                currency.setReCode(2);
+            } else {
+                currency.setReCode(1);
+            }
+        }
+
+        return transactionCurrencyVOS;
     }
 
     /**
@@ -296,6 +310,11 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      */
     @Transactional
     public boolean updateUpStatus(int currencyId, int upStatus,  String backerAccount, String ipAddress, Timestamp upTime){
+        TransactionCurrencyVO currency = transactionCurrencyDao.getTransactionCurrencyByCurrencyId(currencyId);
+        if (currency == null) {
+            return false;
+        }
+
         //修改上线状态
         boolean upBoo = transactionCurrencyDao.updateUpStatus(currencyId, upStatus, backerAccount, ipAddress, upTime);
 
@@ -305,6 +324,13 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
         }
         if (upStatus == 4) {
             upBoo = transactionCurrencyDao.updatePaymentType(currencyId, 2, backerAccount, ipAddress);
+        }
+        if (upStatus == 2 && upBoo) {
+            boolean resultBoo = transactionDealRedisService.validateGuidancePrice(currencyId);
+            if (!resultBoo) {
+                upBoo = redisService.addValue(RedisKeyConfig.YESTERDAY_PRICE + currency.getCurrencyId(),
+                        currency.getGuidancePrice());
+            }
         }
 
         //数据回滚

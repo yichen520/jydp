@@ -106,6 +106,7 @@
                         <td class="coin">
                             <p>名称：${item.currencyName}</p>
                             <p>英文标识：${item.currencyShortName}</p>
+                            <p>上市指导价：$${item.guidancePrice}</p>
                         </td>
                         <td class="coinLogo"><img src="${item.currencyImgUrl}" /></td>
                         <td class="service">
@@ -160,7 +161,7 @@
                                 <input type="text" value="复&nbsp;牌" class="start" onfocus="this.blur()" onclick="goPayType('${item.currencyId}', 1)"/>
                             </c:if>
                                 <input type="text" value="修&nbsp;改" class="change" onfocus="this.blur()"
-                                   onclick="goUpdate('${item.currencyId}', '${item.currencyName}','${item.currencyShortName}', '${item.buyFee}', '${item.sellFee}', '${item.upTimeStr}', '${item.upStatus}')"/>
+                                   onclick="goUpdate('${item.currencyId}', '${item.currencyName}','${item.currencyShortName}', '${item.buyFee}', '${item.sellFee}', '${item.upTimeStr}', '${item.upStatus}', '${item.guidancePrice}', '${item.reCode}')"/>
                         </td>
                     </tr>
                 </c:forEach>
@@ -231,6 +232,12 @@
                            maxlength="10" onkeyup="matchUtil(this, 'ENumber', 6)" onblur="matchUtil(this, 'ENumber', 6)"/>
                 </p>
                 <p class="popInput">
+                    <label class="popName">上市指导价<span class="star">*</span></label>
+                    <input type="text" class="entry" placeholder="币种的上市指导价格，单位：$"
+                           id="guidAd" name="guidAd" maxlength="18"
+                           onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)"/>
+                </p>
+                <p class="popInput">
                     <label class="popName">币种徽标<span class="star">*</span></label>
 
                     <span class="popPic">
@@ -282,6 +289,11 @@
                     <label class="popName">英文标识<span class="star">*</span></label>
                     <input type="text" class="entry" placeholder="币种的英文缩写标识" id="currencyShortNameUp" name="currencyShortNameUp"
                            maxlength="10" onkeyup="matchUtil(this, 'ENumber', 6)" onblur="matchUtil(this, 'ENumber', 6)"/>
+                </p>
+                <p class="popInput" id="inGuid">
+                    <label class="popName">上市指导价<span class="star">*</span></label>
+                    <input type="text" class="entry" placeholder="币种的上市指导价格，单位：$" id="guidUp" name="guidUp"
+                           maxlength="18" onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)"/>
                 </p>
                 <p class="popInput">
                     <label class="popName">币种徽标</label>
@@ -540,6 +552,7 @@
         var currencyShortNameAd = document.getElementById("currencyShortNameAd").value;
         var buyFeeAd = document.getElementById("buyFeeAd").value;
         var sellFeeAd = document.getElementById("sellFeeAd").value;
+        var guidAd = document.getElementById("guidAd").value;
         var changead_t1 = document.getElementById("changead_t1").value;
         var adsImageUrl = document.getElementById("changead_a1").files[0];
         var status = $('input:radio:checked').val();
@@ -562,6 +575,12 @@
         if (sellFeeAd == null || sellFeeAd == "") {
             addBoo = false;
             openTips("请输入卖出手续费");
+            return;
+        }
+        if (guidAd == null || guidAd == "" || parseInt(guidAd) <= 0
+                || parseInt(guidAd) == null || parseInt(guidAd) == "") {
+            addBoo = false;
+            openTips("请确认上市指导价大于0");
             return;
         }
         if (changead_t1 == null || changead_t1 == '') {
@@ -592,6 +611,7 @@
         formData.append("currencyShortNameAd", currencyShortNameAd);
         formData.append("buyFeeAd", buyFeeAd);
         formData.append("sellFeeAd", sellFeeAd);
+        formData.append("guidAd", guidAd);
         formData.append("adsImageUrl", adsImageUrl);
         formData.append("status", staNum);
         if (staNum == 2) {
@@ -629,7 +649,7 @@
     }
 
     //去修改页面
-    function goUpdate(currencId, currencyName, currencyShortName, buyFee, sellFee, upTime, upStatus){
+    function goUpdate(currencId, currencyName, currencyShortName, buyFee, sellFee, upTime, upStatus, price, reCode){
 
         currencyId = currencId;
 
@@ -638,10 +658,17 @@
         document.getElementById("buyFeeUp").value = buyFee * 100;
         document.getElementById("sellFeeUp").value = sellFee * 100;
         document.getElementById("c_onlineTime").value = upTime;
+        document.getElementById("guidUp").value = price;
+
         if (upStatus == 2) {
             $("#inTime").hide();
         } else {
             $("#inTime").show();
+        }
+        if (reCode == 1 && upStatus != 2) {
+            $("#inGuid").show();
+        } else {
+            $("#inGuid").hide();
         }
 
         $(".mask").fadeIn();
@@ -662,6 +689,7 @@
         var currencyShortNameUp = document.getElementById("currencyShortNameUp").value;
         var buyFeeUp = document.getElementById("buyFeeUp").value;
         var sellFeeUp = document.getElementById("sellFeeUp").value;
+        var guidUp = document.getElementById("guidUp").value;
         var changead_t2 = document.getElementById("changead_t2").value;
 
         var upTimeUp = document.getElementById("c_onlineTime").value;
@@ -691,6 +719,11 @@
             openTips("请输入卖出手续费");
             return;
         }
+        if (guidUp == null || guidUp == "") {
+            updateBoo = false;
+            openTips("请确认上市指导价");
+            return;
+        }
         if (upTimeUp == null || upTimeUp == "") {
             updateBoo = false;
             openTips("请选择正确的时间");
@@ -706,6 +739,7 @@
         formData.append("currencyShortNameUp", currencyShortNameUp);
         formData.append("buyFeeUp", buyFeeUp);
         formData.append("sellFeeUp", sellFeeUp);
+        formData.append("guidUp", guidUp);
         formData.append("imgUrl", adsImageUrl);
         formData.append("upTimeUp", upTimeUp);
 

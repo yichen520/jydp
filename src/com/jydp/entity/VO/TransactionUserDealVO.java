@@ -14,7 +14,6 @@ public class TransactionUserDealVO extends TransactionUserDealDO {
 
     private String userAccount;  //用户账号
     private Timestamp pendTime;  //挂单时间
-    private double fee; //手续费
 
     /**
      * 用户账号
@@ -48,20 +47,4 @@ public class TransactionUserDealVO extends TransactionUserDealDO {
         this.pendTime = pendTime;
     }
 
-    /**
-     * 获取 手续费
-     * @return fee 手续费
-     */
-    public double getFee() {
-        fee = NumberUtil.doubleFormat(this.getTransactionPrice() * this.getFeeNumber() * this.getCurrencyNumber(),6);
-        return fee;
-    }
-
-    /**
-     * 设置 手续费
-     * @param fee 手续费
-     */
-    public void setFee(double fee) {
-        this.fee = fee;
-    }
 }

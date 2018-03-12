@@ -74,4 +74,10 @@ public interface ITransactionDealRedisService {
      */
     List<TransactionDealPriceDTO> getNowLastPrice(Timestamp getDate);
 
+    /**
+     * 验证币种是否有历史交易
+     * @param currencyId  币种Id
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    boolean validateGuidancePrice(int currencyId);
 }

@@ -18,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
@@ -101,11 +100,12 @@ public class RegisterController {
 
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
         String password = StringUtil.stringNullHandle(request.getParameter("password"));
+        String payPassword = StringUtil.stringNullHandle(request.getParameter("payPassword"));
         String validateCode = StringUtil.stringNullHandle(request.getParameter("validateCode"));
         String phoneAreaCode = StringUtil.stringNullHandle(request.getParameter("phoneAreaCode"));
         String phoneNumber = StringUtil.stringNullHandle(request.getParameter("phoneNumber"));
         if (!StringUtil.isNotNull(userAccount) || !StringUtil.isNotNull(password) || !StringUtil.isNotNull(phoneAreaCode) ||
-                !StringUtil.isNotNull(validateCode) || !StringUtil.isNotNull(phoneNumber)) {
+                !StringUtil.isNotNull(validateCode) || !StringUtil.isNotNull(phoneNumber) || !StringUtil.isNotNull(payPassword)) {
             responseJson.setCode(2);
             responseJson.setMessage("用户注册信息不能为空");
             return responseJson;
@@ -126,7 +126,7 @@ public class RegisterController {
         }
 
         //校验用户注册信息合法性
-        responseJson = userService.validateUserInfo(userAccount,password);
+        responseJson = userService.validateUserInfo(userAccount,password,payPassword);
 
         if (responseJson.getCode() != 1) {
             return responseJson;
@@ -142,7 +142,7 @@ public class RegisterController {
         userDO.setPassword(MD5Util.toMd5(password));
         userDO.setPhoneAreaCode(phoneAreaCode);
         userDO.setPhoneNumber(phoneNumber);
-        userDO.setPayPassword(MD5Util.toMd5("123456"));
+        userDO.setPayPassword(MD5Util.toMd5(payPassword));
         userDO.setAccountStatus(2);
         userDO.setAddTime(DateUtil.getCurrentTime());
         userDO.setAuthenticationStatus(4);

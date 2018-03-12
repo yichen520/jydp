@@ -69,12 +69,7 @@
 
             <ul class="safetyList">
                 <li class="safetyInfo">
-                    <c:if test="${userMessage.payPassword != '1'}">
                     <img src="<%=path %>/resources/image/web/pass.png" class="pass" id="payPass"/>
-                    </c:if>
-                    <c:if test="${userMessage.payPassword == '1'}">
-                        <img src="<%=path %>/resources/image/web/error.png" class="error" id="payPass" />
-                    </c:if>
                     <span class="safetyTitle">支付密码</span>
                     <span class="state">已设置</span>
                     <span class="explain">为保证账号安全，建议设置与登录密码不同的密码组合</span>
@@ -96,7 +91,7 @@
                     <span class="explain">可以通过该手机号找回密码</span>
                     <input type="text" value="修&nbsp;改" class="changePhone" onfocus="this.blur()" />
                 </li>
-                <li class="listTips">提示：为保证您的账户安全，初始支付密码为“123456”，请及时修改您的支付密码方可进行交易操作</li>
+                <li class="listTips">提示：为保证您的账户安全，登录密码与支付密码设置不相同的密码</li>
             </ul>
         </div>
     </div>
@@ -135,7 +130,18 @@
                     <input type="password" class="entry" placeholder="再次输入新密码" maxlength="16" id="repPasswordPop"
                            onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')" />
                 </p>
-                <p class="tips">提示：初始支付密码为“123456”，修改初始密码后方可交易</p>
+                <p class="popInput">
+                    <label class="popName">手机号：</label>
+                    <span class="popTel"><span id="showAreaCode1">${userMessage.phoneAreaCode }</span><span id="showPhone1">${userMessage.phoneNumber }</span></span>
+                </p>
+                <p class="popInput">
+                    <label class="popName">手机验证码<span class="star">*</span>：</label>
+                    <span class="popCode">
+                        <input type="text" class="code" placeholder="6位短信验证码" id="payVerifyCode" maxlength="6"
+                               onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')" />
+                        <input type="text" id="telBtn" class="message" value="获取验证码" onfocus="this.blur()" />
+                    </span>
+                </p>
             </div>
 
             <div class="tel_pop">
@@ -158,10 +164,9 @@
                     <span class="popCode">
                         <input type="text" class="code" placeholder="6位短信验证码" maxlength="6" id="validateCodeTel"
                                onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
-                        <input type="text" id="passwordBtn" class="message" value="获取验证码" onfocus="this.blur()" onclick="payNoteVerify()"  />
+                        <input type="text" id="passwordBtn" class="message" value="获取验证码" onfocus="this.blur()" />
                     </span>
                 </p>
-                <p class="tips">提示：初始支付密码为“123456”，修改初始密码后方可交易</p>
             </div>
 
             <div class="buttons">
@@ -188,6 +193,18 @@
                        onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
             </p>
 
+            <p class="popInput">
+                <label class="popName">手机号：</label>
+                <span class="popTel"><span id="showAreaCode2">${userMessage.phoneAreaCode }</span><span id="showPhone2">${userMessage.phoneNumber }</span></span>
+            </p>
+            <p class="popInput">
+                <label class="popName">手机验证码<span class="star">*</span>：</label>
+                <span class="popCode">
+                        <input type="text" class="code" placeholder="6位短信验证码" id="pasVerifyCode" maxlength="6"
+                               onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
+                        <input type="text" id="changeBtn" class="message" value="获取验证码" onfocus="this.blur()" />
+                    </span>
+            </p>
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
                 <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="updateLogPassword()" />
@@ -195,23 +212,34 @@
         </div>
 
         <div class="changePhone_pop">
-            <p class="popTitle">绑定手机</p>
+            <p class="popTitle">修改手机</p>
             <p class="popInput">
-                <label class="popName">手机号<span class="star">*</span>：</label>
+                <label class="popName">原手机号：</label>
+                <span class="popTel"><span id="showAreaCode3">${userMessage.phoneAreaCode }</span><span id="showPhone3">${userMessage.phoneNumber }</span></span>
+            </p>
+            <p class="popInput">
+                <label class="popName">手机验证码<span class="star">*</span>：</label>
+                <span class="popCode">
+                    <input type="text" class="code" placeholder="原手机接收6位短信验证码" id="verifyCode" maxlength="6"
+                           onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
+                    <input type="text" id="changeTel_btn" class="message" value="获取验证码" onfocus="this.blur()" />
+                </span>
+            </p>
+            <p class="popInput">
+                <label class="popName">新手机号<span class="star">*</span>：</label>
                 <span class="popCode">
                     <span class="select">
-                    <span class="selectCont" id="areaCode">+86</span>
-                    <img src="<%=path %>/resources/image/web/area.png" alt=""/>
-                    <span class="selectUl">
-                        <c:forEach items="${phoneAreaMap}" var="phoneArea">
-                           <span class="selectLi">
-                               <span class="selectName">${phoneArea.value }</span>
-                               <span class="selectNumber">${phoneArea.key }</span>
-                           </span>
-                        </c:forEach>
+                        <span class="selectCont" id="areaCode">+86</span>
+                        <img src="<%=path %>/resources/image/web/area.png" alt=""/>
+                        <span class="selectUl">
+                            <c:forEach items="${phoneAreaMap}" var="phoneArea">
+                               <span class="selectLi">
+                                   <span class="selectName">${phoneArea.value }</span>
+                                   <span class="selectNumber">${phoneArea.key }</span>
+                               </span>
+                            </c:forEach>
+                        </span>
                     </span>
-                </span>
-
                     <input type="text" class="telNumber" placeholder="请输入您的手机号" maxlength="11" id="bindingMobile"
                            onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
                 </span>
@@ -219,7 +247,7 @@
             <p class="popInput">
                 <label class="popName">手机验证码<span class="star">*</span>：</label>
                 <span class="popCode">
-                    <input type="text" class="code" placeholder="6位短信验证码" maxlength="6" id="verifyCode"
+                    <input type="text" class="code" placeholder="新手机接收6位短信验证码" maxlength="6" id="newVerifyCode"
                            onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
                     <input type="text" style="width: 0;height: 0;border: none"/>
                     <input type="text" id="phoneBtn" class="message" value="获取验证码" onfocus="this.blur()" />
@@ -248,9 +276,6 @@
         $('#phonePassword').attr("type", "password");
         var code = '${code}';
         var message = '${message}';
-        var payPassword = '${userMessage.payPassword }';
-        var payPass = document.getElementById("payPass");
-        var payError = document.getElementById("payError");
         if (code != 1 && message != "") {
             openTips(message);
             return false;
@@ -266,6 +291,7 @@
             var passwordPop = $("#passwordPop").val();
             var newPasswordPop = $("#newPasswordPop").val();
             var repPasswordPop = $("#repPasswordPop").val();
+            var payVerifyCode = $("#payVerifyCode").val();
 
             if(passwordPop == ""){
                 openTips("请输入原密码");
@@ -286,11 +312,6 @@
                 openTips("新密码长度不足！");
                 return;
             }
-            
-            if(newPasswordPop == "123456"){
-                openTips("不可设为初始密码");
-                return;
-            }
 
             if(repPasswordPop == ""){
                 openTips("请您输入确认密码");
@@ -299,6 +320,16 @@
 
             if(newPasswordPop != repPasswordPop){
                 openTips("两次密码不一致");
+                return;
+            }
+
+            if(payVerifyCode == ""){
+                openTips("请输入验证码");
+                return;
+            }
+
+            if(payVerifyCode.length != 6){
+                openTips("验证码为6位");
                 return;
             }
 
@@ -317,10 +348,12 @@
                 data:{
                     password : passwordPop,
                     newPassword : newPasswordPop,
-                    repetitionPassword : repPasswordPop
+                    repetitionPassword : repPasswordPop,
+                    payVerifyCode : payVerifyCode
                 },
                 success:function(result){
                     updatePayPasswordBoo = false;
+                    openTips(result.message);
                     if(result.code == 1) {
                         $("#payPass").attr('src',"<%=path %>" + "/resources/image/web/pass.png");
                         $(".mask").fadeOut("fast");
@@ -328,9 +361,8 @@
                         $("#passwordPop").val("");
                         $("#newPasswordPop").val("");
                         $("#repPasswordPop").val("");
+                        $("#payVerifyCode").val("");
 
-                    } else {
-                        openTips(result.message);
                     }
                 }, error:function(){
                     updatePayPasswordBoo = false;
@@ -350,11 +382,6 @@
 
             if(newPasswordTel.length <6){
                 openTips("新密码长度不足！");
-                return;
-            }
-            
-            if(newPasswordTel == "123456"){
-                openTips("不可设为初始密码");
                 return;
             }
 
@@ -421,6 +448,7 @@
         var password = $("#password").val();
         var newPassword = $("#newPassword").val();
         var repPassword = $("#repPassword").val();
+        var pasVerifyCode = $("#pasVerifyCode").val();
 
         if(password == ""){
             openTips("请输入原密码");
@@ -452,6 +480,16 @@
             return;
         }
 
+        if(pasVerifyCode == ""){
+            openTips("请输入验证码");
+            return;
+        }
+
+        if(pasVerifyCode.length != 6){
+            openTips("验证码为6位");
+            return;
+        }
+
         if(updateLogPasswordBoo){
             openTips("系统正在更新登录密码，请稍后");
             return;
@@ -467,7 +505,8 @@
             data:{
                 password : password,
                 newPassword : newPassword,
-                repetitionPassword : repPassword
+                repetitionPassword : repPassword,
+                pasVerifyCode : pasVerifyCode
             },
             success:function(result){
                 openTips(result.message);
@@ -478,6 +517,7 @@
                     $("#password").val("");
                     $("#newPassword").val("");
                     $("#repPassword").val("");
+                    $("#pasVerifyCode").val("");
                     setTimeout("webLogin()",1000 );
                 }
             }, error:function(){
@@ -494,8 +534,10 @@
         var regPos = /^\d+(\.\d+)?$/; //非负浮点数
         var bindingMobile = $("#bindingMobile").val();
         var verifyCode = $("#verifyCode").val();
+        var newVerifyCode = $("#newVerifyCode").val();
         var areaCode = $("#areaCode").html();
         var phonePassword = $("#phonePassword").val();
+
         if(bindingMobile == ""){
             openTips("请输入手机号");
             return;
@@ -514,15 +556,25 @@
         }
         
         if(verifyCode == ""){
-            openTips("请输入验证码");
+            openTips("请输入原手机验证码");
             return;
         }
 
         if(verifyCode.length < 6){
-            openTips("验证码为六位");
+            openTips("原手机验证码为六位");
             return;
         }
-        
+
+        if(newVerifyCode == ""){
+            openTips("请输入新手机验证码");
+            return;
+        }
+
+        if(newVerifyCode.length < 6){
+            openTips("新手机验证码为六位");
+            return;
+        }
+
         if(phonePassword == ""){
             openTips("请输入登录密码");
             return;
@@ -549,6 +601,7 @@
                 phone : bindingMobile,
                 areaCode : areaCode,
                 validateCode : verifyCode,
+                newVerifyCode : newVerifyCode,
                 password : phonePassword
             },
             success:function(result){
@@ -557,14 +610,21 @@
                     openTips(result.message);
                     var phone = bindingMobile.substring(0,3) + "***" + bindingMobile.substring(bindingMobile.length - 3);
                     $("#showPhone").text(phone);
-                    $("#showMobilePhone ").text(phone);
+                    $("#showMobilePhone").text(phone);
                     $("#showAreaCode").text(areaCode);
+                    $("#showPhone1").text(phone);
+                    $("#showAreaCode1").text(areaCode);
+                    $("#showPhone2").text(phone);
+                    $("#showAreaCode2").text(areaCode);
+                    $("#showPhone3").text(phone);
+                    $("#showAreaCode3").text(areaCode);
                     $(".mask").fadeOut("fast");
                     $(".changePhone_pop").fadeOut("fast");
                     $("#bindingMobile").val("");
                     $("#verifyCode").val("");
                     $("#areaCode").val("+86");
                     $("#phonePassword").val("");
+                    $("#newVerifyCode").val("");
                 } else {
                     openTips(result.message);
                 }
@@ -577,7 +637,7 @@
 
     //返回登陆页
     function webLogin(){
-        window.location.href = "<%=path%>" + "/userWeb/userLogin/show";
+        window.location.href = "<%=path%>" + "/userWeb/userLogin/loginOut.htm";
     }
 
     //去交易
@@ -701,39 +761,45 @@
         }
     }
 
-    var payWait=60;
-    function payTime(o) {
-        if (payWait == 0) {
-            o.removeAttribute("disabled");
-            o.value="获取验证码";
-            payWait = 60;
-        } else {
-            if( payWait == 60){
-                $.ajax({
-                    url: '<%=path %>' + "/userWeb/userMessage/payNoteVerify.htm",
-                    type:'post',
-                    dataType:'json',
-                    async:true,
-                    data:{
-                    },
-                    success:function(result){
-                        openTips(result.message);
-                    }, error:function(){
-                        openTips("系统错误！");
-                    }
-                });
+    function countDown(o, times) {
+        var timer=null;
+        o.setAttribute("disabled", true);
+        o.value="重新发送(" + times + ")";
+
+        timer=setInterval(function(){
+            if(times > 1){
+                times--;
+                o.value="重新发送(" + times + ")";
+                if( times == 59){
+
+                    $.ajax({
+                        url: '<%=path %>' + "/userWeb/userMessage/payNoteVerify.htm",
+                        type:'post',
+                        dataType:'json',
+                        async:true,
+                        data:{
+                        },
+                        success:function(result){
+                            openTips(result.message);
+                        }, error:function(){
+                            openTips("系统错误！");
+                        }
+                    });
+                }
+            }else{
+                o.removeAttribute("disabled");
+                o.value="获取验证码";
+                clearInterval(timer);
             }
-            o.setAttribute("disabled", true);
-            o.value="重新发送(" + payWait + ")";
-            payWait--;
-            setTimeout(function() {
-                    payTime(o)
-                },
-                1000)
-        }
+
+        },1000);
     }
+
+    document.getElementById("telBtn").onclick=function(){countDown(this, 60);};
+    document.getElementById("changeBtn").onclick=function(){countDown(this, 60);};
+    document.getElementById("changeTel_btn").onclick=function(){countDown(this, 60);};
     document.getElementById("phoneBtn").onclick=function(){time(this);};
-    document.getElementById("passwordBtn").onclick=function(){payTime(this);};
+    document.getElementById("passwordBtn").onclick=function(){countDown(this, 60);};
 </script>
 
 </body>

@@ -45,10 +45,24 @@
                 <input type="password" class="password entry" id="password" name="password" placeholder="字母、数字，6~16个字符" maxLength="16"
                        onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
                        onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                <span class="warmTips">该项为登录账号时所用密码</span>
             </p>
             <p class="registerInput">
                 <label class="popName">重复密码<span class="star">*</span></label>
                 <input type="password" class="password entry" id="repeatPassword" placeholder="请再次输入登录密码" maxLength="16"
+                       onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
+                       onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+            </p>
+            <p class="registerInput">
+                <label class="popName">支付密码<span class="star">*</span></label>
+                <input type="password" class="password entry" id="payPassword" name="payPassword" placeholder="字母、数字，6~16个字符" maxlength="16"
+                       onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
+                       onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                <span class="warmTips">该项为交易时所用密码</span>
+            </p>
+            <p class="registerInput">
+                <label class="popName">重复密码<span class="star">*</span></label>
+                <input type="password" class="password entry" id="repeatPayPassword" placeholder="请再次输入支付密码" maxLength="16"
                        onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
                        onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
             </p>
@@ -242,12 +256,16 @@
         var userAccountEle = $("#userAccount");
         var passwordEle = $("#password");
         var repeatPasswordEle = $("#repeatPassword");
+        var payPasswordEle = $("#payPassword");
+        var repeatPayPasswordEle = $("#repeatPayPassword");
         var phoneEle = $("#phone");
         var validateCodeEle = $("#validateCode");
 
         var userAccount = userAccountEle.val();
         var password = passwordEle.val();
         var repeatPassword = repeatPasswordEle.val();
+        var payPassword = payPasswordEle.val();
+        var repeatPayPassword = repeatPayPasswordEle.val();
         var phone = phoneEle.val();
         var validateCode = validateCodeEle.val();
 
@@ -256,7 +274,7 @@
         var chinaArea = '${selectedArea}';
         var area =  $(".selectCont").html();
 
-        if ($("#userAccount").hasClass("error")) {
+        if (userAccountEle.hasClass("error")) {
             return;
         } else if (!userAccount) {
             changeValue(userAccountEle, "请输入账号，字母、数字，6~16个字符");
@@ -269,7 +287,7 @@
             return;
         }
 
-        if ($("#password").hasClass("error")) {
+        if (passwordEle.hasClass("error")) {
             return;
         } else if (!password) {
             changeValue(passwordEle, "请输入登录密码，字母、数字，6~16个字符");
@@ -282,7 +300,7 @@
             return;
         }
 
-        if ($("#repeatPassword").hasClass("error")) {
+        if (repeatPasswordEle.hasClass("error")) {
             return;
         } else if (!repeatPassword) {
             changeValue(repeatPasswordEle, "请输入重复密码，字母、数字，6~16个字符");
@@ -298,6 +316,41 @@
         if (repeatPassword != password) {
             changeValue(repeatPasswordEle, "两次密码不匹配");
             changeValue(passwordEle, "两次密码不匹配");
+            return;
+        }
+
+        if (payPasswordEle.hasClass("error")) {
+            return;
+        } else if (!payPassword) {
+            changeValue(payPasswordEle,"请输入支付密码，字母、数字，6~16个字符");
+            return;
+        } else if (payPassword.length < 6 || payPassword.length > 16) {
+            changeValue(payPasswordEle, "密码长度在6~16个字符之间");
+            return;
+        } else if (payPassword == password) {
+            changeValue(payPasswordEle, "支付密码不能与登录密码一样");
+            return;
+        } else if (!commonReg.test(payPassword)) {
+            changeValue(payPasswordEle,"支付密码格式不正确");
+            return;
+        }
+
+        if (repeatPayPasswordEle.hasClass("error")) {
+            return;
+        } else if (!repeatPayPassword) {
+            changeValue(repeatPayPasswordEle, "请输入重复密码，字母、数字，6~16个字符");
+            return;
+        } else if (repeatPayPassword.length < 6 || repeatPayPassword.length > 16) {
+            changeValue(repeatPayPasswordEle, "密码长度在6~16个字符之间");
+            return;
+        } else if (!commonReg.test(repeatPayPassword)) {
+            changeValue(repeatPayPasswordEle, "重复密码格式不正确");
+            return;
+        }
+
+        if (repeatPayPassword != payPassword) {
+            changeValue(repeatPayPasswordEle, "两次密码不匹配");
+            changeValue(payPasswordEle, "两次密码不匹配");
             return;
         }
 
@@ -395,6 +448,31 @@
         }
     });
 
+    $("#payPassword").focus(function(){
+        if ($(this).hasClass("error")){
+            $(this).removeClass("error");
+            $(this).val('');
+            $(this).parent().children("img").remove();
+            $(this).attr("type","password");
+
+            if ($("#repeatPayPassword").hasClass("error")){
+                $("#repeatPayPassword").removeClass("error");
+                $("#repeatPayPassword").val('');
+                $("#repeatPayPassword").parent().children("img").remove();
+                $("#repeatPayPassword").attr("type","password");
+            }
+        }
+    });
+
+    $("#repeatPayPassword").focus(function(){
+        if ($(this).hasClass("error")){
+            $(this).removeClass("error");
+            $(this).val('');
+            $(this).parent().children("img").remove();
+            $(this).attr("type","password");
+        }
+    });
+
     $("#phone").focus(function(){
         if ($(this).hasClass("error")){
             $(this).removeClass("error");
@@ -422,6 +500,8 @@
             str = "<img class='delete' id='delete_code' style='right: 100px;' src='<%=path %>/resources/image/web/register.png' />";
         } else if ('password' == id || 'repeatPassword' == id) {
             str = "<img class='delete' id='delete_password' src='<%=path %>/resources/image/web/register.png' />";
+        } else if ('payPassword' == id || 'repeatPayPassword' == id) {
+            str = "<img class='delete' id='delete_payPassword' src='<%=path %>/resources/image/web/register.png' />";
         } else if ('phone' == id) {
             str = "<img class='delete' id='delete_phone' src='<%=path %>/resources/image/web/register.png' />";
         }
@@ -433,10 +513,24 @@
             if ('delete_code' == id) {
                 $(this).parent().find(".code").val("");
                 $(this).parent().find(".code").removeClass("error");
-            } else if ('delete_password' == id || 'repeatPassword' == id) {
-                $(".password").removeClass("error");
-                $(".password").attr("type","password");
-                $(".password").val("");
+            } else if ('delete_password' == id) {
+                $("#password").removeClass("error");
+                $("#password").val('');
+                $("#password").parent().children("img").remove();
+                $("#password").attr("type","password");
+                $("#repeatPassword").removeClass("error");
+                $("#repeatPassword").val('');
+                $("#repeatPassword").parent().children("img").remove();
+                $("#repeatPassword").attr("type","password");
+            }  else if ('delete_payPassword' == id || 'repeatPayPassword' == id) {
+                $("#payPassword").removeClass("error");
+                $("#payPassword").val('');
+                $("#payPassword").parent().children("img").remove();
+                $("#payPassword").attr("type","password");
+                $("#repeatPayPassword").removeClass("error");
+                $("#repeatPayPassword").val('');
+                $("#repeatPayPassword").parent().children("img").remove();
+                $("#repeatPayPassword").attr("type","password");
             } else if('delete_phone' == id){
                 $(this).parent().find(".phone").val("");
                 $(this).parent().find(".phone").removeClass("error");

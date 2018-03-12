@@ -61,7 +61,7 @@ public class SystemValidatePhoneServiceImpl implements ISystemValidatePhoneServi
 
 		todayNumber = systemValidatePhoneDao.getTodayValidateNumber(phoneNumber, todayTime);
 		// 超过发送验证码次数限制
-		if (todayNumber >= 10) {
+		if (todayNumber >= 3) {
 			jsonObjectBO.setCode(103002);
 			jsonObjectBO.setMessage("今日发送验证码次数已超限");
 			return jsonObjectBO;

@@ -1,11 +1,11 @@
 .time{
-    width: 140px;
+    width: 150px;
 }
 .coin{
-    width: 70px;
+    width: 131px;
 }
 .type{
-    width: 50px;
+    width: 80px;
 }
 .pay{
     color: #4dac7b;
@@ -14,13 +14,19 @@
     color: #e83a33;
 }
 .amount{
-    width: 115px;
+    width: 180px;
+}
+.tableInfo .amount{
+    text-align: left;
+}
+.amount p{
+    line-height: 20px;
 }
 .state{
-    width: 70px;
+    width: 80px;
 }
 .operate{
-    width: 120px;
+    width: 130px;
 }
 .revoke{
     width: 55px;

@@ -82,6 +82,10 @@
                     <label class="tradeName">可用美金：</label>
                     <span class="buyAmount rise" id="usableUserBalance">$<fmt:formatNumber type="number" value="${userDealCapitalMessage.userBalance }" groupingUsed="FALSE" maxFractionDigits="6"/></span>
                 </p>
+                <p class="serviceInput">
+                    <label class="tradeName">最佳买价：</label>
+                    <span class="service" id="optimumBuy" >$<fmt:formatNumber type="number" value="${standardParameter.sellOne }" groupingUsed="FALSE" maxFractionDigits="6"/></span>
+                </p>
                 <p class="buyInput">
                     <label class="tradeName">买入价格：</label>
                     <input type="text" class="entry" placeholder="请输入单个币买入价" id="buyPrice" name="buyPrice"
@@ -122,6 +126,10 @@
                     <span class="sellAmount fall" id="usableCurrencyNumber"><fmt:formatNumber type="number"
                            value="${userDealCapitalMessage.currencyNumber }" groupingUsed="FALSE" maxFractionDigits="4"/></span>
                 </p>
+                <p class="serviceInput">
+                    <label class="tradeName">最佳卖价：</label>
+                    <span class="service" id="optimumSell">$<fmt:formatNumber type="number" value="${standardParameter.buyOne }" groupingUsed="FALSE" maxFractionDigits="6"/></span>
+                </p>
                 <p class="buyInput">
                     <label class="tradeName">卖出价格：</label>
                     <input type="text" class="entry" placeholder="请输入单个币的卖出价" id="sellPrice" name="sellPrice"
@@ -131,7 +139,7 @@
                     <label class="tradeName">卖出数量：</label>
                     <input type="text" class="entry" placeholder="请输入您要卖出的该币种数量" id="sellNum" name="sellNum"
                            onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="11"/>
-                    <span class="max">当前最大可卖：$<span id="sellMax">0</span></span>
+                    <span class="max">最大可获得：$<span id="sellMax">0</span></span>
                 </p>
                 <p class="phoneInput">
                     <label class="tradeName">支付密码：</label>
@@ -561,7 +569,8 @@
                 buyPrice = ((buyPrice * 1000000) + (number)) / 1000000
                 var total = userBalance / buyPrice;
                 var tota = mulMaxNumber(total);
-                $("#buyMax").html(tota);
+
+                $("#buyMax").html(Math.floor(tota * 1000000) / 1000000);
             }else{
                 $("#buyMax").html("0");
             }
@@ -1246,11 +1255,12 @@
                     }
                     $("#todayMax").html(standardParameter.todayMax);
                     $("#hintTodayMax").html("$" + standardParameter.todayMax);
-
                     $("#todayMin").html(standardParameter.todayMin);
                     $("#hintTodayMin").html("$" + standardParameter.todayMin);
                     $("#buyOne").html(standardParameter.buyOne);
+                    $("#optimumSell").html("$" + standardParameter.buyOne);
                     $("#sellOne").html(standardParameter.sellOne);
+                    $("#optimumBuy").html("$" + standardParameter.sellOne);
                     $("#dayTurnove").html(standardParameter.dayTurnove);
                 }
             },

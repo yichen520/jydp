@@ -117,19 +117,28 @@ public class TradeCenterController {
         StandardParameterVO standardParameter = transactionCurrencyService.listTransactionCurrencyAll(currencyId);
         //获取成交记录
         List<TransactionDealRedisDO> dealList = null;
-        dealList = (List<TransactionDealRedisDO>) redisService.getValue(RedisKeyConfig.CURRENCY_DEAL_KEY + transactionCurrency.getCurrencyId());
+        Object dealListStr = redisService.getValue(RedisKeyConfig.CURRENCY_DEAL_KEY + currencyId);
+        if (dealListStr != null && StringUtil.isNotNull(dealListStr.toString())) {
+            dealList = (List<TransactionDealRedisDO>) dealListStr;
+        }
         if (dealList == null || dealList.isEmpty()) {
             dealList = transactionDealRedisService.listTransactionDealRedis(50, transactionCurrency.getCurrencyId());
         }
         //获取挂单记录
         List<TransactionPendOrderDTO> transactionPendOrderBuyList = null;
-        transactionPendOrderBuyList = (List<TransactionPendOrderDTO>) redisService.getValue(RedisKeyConfig.BUY_KEY + transactionCurrency.getCurrencyId());
+        Object transactionPendOrderBuyListStr = redisService.getValue(RedisKeyConfig.BUY_KEY + transactionCurrency.getCurrencyId());
+        if (transactionPendOrderBuyListStr != null && StringUtil.isNotNull(transactionPendOrderBuyListStr.toString())) {
+            transactionPendOrderBuyList = (List<TransactionPendOrderDTO>) transactionPendOrderBuyListStr;
+        }
         if (transactionPendOrderBuyList == null || transactionPendOrderBuyList.isEmpty()) {
             transactionPendOrderBuyList = transactionPendOrderService.listLatestRecords(1,transactionCurrency.getCurrencyId(),15);
         }
 
         List<TransactionPendOrderDTO> transactionPendOrderSellList = null;
-        transactionPendOrderSellList = (List<TransactionPendOrderDTO>) redisService.getValue(RedisKeyConfig.SELL_KEY + transactionCurrency.getCurrencyId());
+        Object transactionPendOrderSellListStr = redisService.getValue(RedisKeyConfig.SELL_KEY + transactionCurrency.getCurrencyId());
+        if (transactionPendOrderSellListStr != null && StringUtil.isNotNull(transactionPendOrderSellListStr.toString())) {
+            transactionPendOrderSellList = (List<TransactionPendOrderDTO>) transactionPendOrderSellListStr;
+        }
         if (transactionPendOrderSellList == null || transactionPendOrderSellList.isEmpty()) {
             transactionPendOrderSellList = transactionPendOrderService.listLatestRecords(2,transactionCurrency.getCurrencyId(),15);
         }
@@ -474,7 +483,10 @@ public class TradeCenterController {
         }
 
         List<TransactionDealRedisDO> dealList = null;
-        dealList = (List<TransactionDealRedisDO>) redisService.getValue(RedisKeyConfig.CURRENCY_DEAL_KEY + currencyId);
+        Object dealListStr = redisService.getValue(RedisKeyConfig.CURRENCY_DEAL_KEY + currencyId);
+        if (dealListStr != null && StringUtil.isNotNull(dealListStr.toString())) {
+            dealList = (List<TransactionDealRedisDO>) dealListStr;
+        }
         if (dealList == null || dealList.isEmpty()) {
             dealList = transactionDealRedisService.listTransactionDealRedis(50, currencyId);
         }
@@ -518,15 +530,21 @@ public class TradeCenterController {
         }
 
         List<TransactionPendOrderDTO> transactionPendOrderBuyList = null;
-        transactionPendOrderBuyList = (List<TransactionPendOrderDTO>) redisService.getValue(RedisKeyConfig.BUY_KEY + currencyId);
+        Object transactionPendOrderBuyListStr = redisService.getValue(RedisKeyConfig.BUY_KEY + transactionCurrency.getCurrencyId());
+        if (transactionPendOrderBuyListStr != null && StringUtil.isNotNull(transactionPendOrderBuyListStr.toString())) {
+            transactionPendOrderBuyList = (List<TransactionPendOrderDTO>) transactionPendOrderBuyListStr;
+        }
         if (transactionPendOrderBuyList == null || transactionPendOrderBuyList.isEmpty()) {
-            transactionPendOrderBuyList = transactionPendOrderService.listLatestRecords(1,currencyId,15);
+            transactionPendOrderBuyList = transactionPendOrderService.listLatestRecords(1,transactionCurrency.getCurrencyId(),15);
         }
 
         List<TransactionPendOrderDTO> transactionPendOrderSellList = null;
-        transactionPendOrderSellList = (List<TransactionPendOrderDTO>) redisService.getValue(RedisKeyConfig.SELL_KEY + currencyId);
+        Object transactionPendOrderSellListStr = redisService.getValue(RedisKeyConfig.SELL_KEY + transactionCurrency.getCurrencyId());
+        if (transactionPendOrderSellListStr != null && StringUtil.isNotNull(transactionPendOrderSellListStr.toString())) {
+            transactionPendOrderSellList = (List<TransactionPendOrderDTO>) transactionPendOrderSellListStr;
+        }
         if (transactionPendOrderSellList == null || transactionPendOrderSellList.isEmpty()) {
-            transactionPendOrderSellList = transactionPendOrderService.listLatestRecords(2,currencyId,15);
+            transactionPendOrderSellList = transactionPendOrderService.listLatestRecords(2,transactionCurrency.getCurrencyId(),15);
         }
 
         JSONObject jsonObject = new JSONObject();

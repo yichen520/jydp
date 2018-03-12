@@ -11,7 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="icon" href="<%=path %>/resources/image/web/icon.ico" type="image/x-ico" />
-    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/record_trade.css" />
+    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/recordTrade.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/public.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/simpleTips.css" />
     <title>成交记录</title>
@@ -33,10 +33,8 @@
                     <td class="order">交易订单号</td>
                     <td class="coin">币种</td>
                     <td class="type">类型</td>
-                    <td class="amount">单价</td>
                     <td class="amount">数量</td>
-                    <td class="amount">手续费</td>
-                    <td class="amount">成交总价</td>
+                    <td class="deal">成交详情</td>
                     <td class="time">完成时间</td>
                 </tr>
                 <c:forEach items="${dealRecordList}" var="dealRecord">
@@ -52,10 +50,22 @@
                     <c:if test="${dealRecord.paymentType == 3}">
                         <td class="type back">撤销</td>
                     </c:if>
-                    <td class="amount">$<fmt:formatNumber type="number" value="${dealRecord.transactionPrice}" maxFractionDigits="2"/></td>
-                    <td class="amount"><fmt:formatNumber type="number" value="${dealRecord.currencyNumber}" maxFractionDigits="4"/></td>
-                    <td class="amount">$<fmt:formatNumber type="number" value="${dealRecord.fee}" maxFractionDigits="6"/></td>
-                    <td class="amount">$<fmt:formatNumber type="number" value="${dealRecord.currencyTotalPrice}" maxFractionDigits="6"/></td>
+                    <td class="amount">
+                        <p>数量：<fmt:formatNumber type="number" value="${dealRecord.currencyNumber}" maxFractionDigits="4"/></p>
+                        <p>单价：$<fmt:formatNumber type="number" value="${dealRecord.transactionPrice}" maxFractionDigits="2"/></p>
+                    </td>
+                    <td class="deal">
+                        <c:if test="${dealRecord.paymentType != 3}">
+                            <p>成交总额：$<fmt:formatNumber type="number" value="${dealRecord.currencyTotalPrice}" maxFractionDigits="6"/></p>
+                            <p>手续费：$<fmt:formatNumber type="number" value="${dealRecord.feeNumber * dealRecord.currencyTotalPrice}" maxFractionDigits="8"/></p>
+                        </c:if>
+                        <c:if test="${dealRecord.paymentType == 1}">
+                            <p>实际到账：$<fmt:formatNumber type="number" value="${dealRecord.feeNumber * dealRecord.currencyTotalPrice + dealRecord.currencyTotalPrice}" maxFractionDigits="6"/></p>
+                        </c:if>
+                        <c:if test="${dealRecord.paymentType == 2}">
+                            <p>实际到账：$<fmt:formatNumber type="number" value="${dealRecord.currencyTotalPrice - dealRecord.feeNumber * dealRecord.currencyTotalPrice }" maxFractionDigits="6"/></p>
+                        </c:if>
+                    </td>
                     <td class="time"><fmt:formatDate type="time" value="${dealRecord.addTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
                 </tr>
                 </c:forEach>
