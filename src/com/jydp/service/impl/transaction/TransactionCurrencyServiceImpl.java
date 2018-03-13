@@ -123,9 +123,6 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
             transactionCurrency.setUpTime(DateUtil.getCurrentTime());
             transactionCurrency.setPaymentType(1);
             transactionCurrency.setUpStatus(2);
-
-            addBoo = redisService.addValue(RedisKeyConfig.YESTERDAY_PRICE + transactionCurrency.getCurrencyId(),
-                    transactionCurrency.getGuidancePrice());
         } else {
             transactionCurrency.setUpTime(upTime);
         }
@@ -141,6 +138,10 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
         }
         if (currencyId <= 0){
             addBoo = false;
+        }
+        if (upTime == null && addBoo) {
+            addBoo = redisService.addValue(RedisKeyConfig.YESTERDAY_PRICE + transactionCurrency.getCurrencyId(),
+                    transactionCurrency.getGuidancePrice());
         }
 
         // 数据回滚
