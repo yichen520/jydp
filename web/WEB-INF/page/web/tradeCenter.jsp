@@ -1042,29 +1042,31 @@
                 var dealList = data.dealList;
                 var newChild= "";
 
-                for (var i=0;i<=dealList.length-1;i++) {
-                    var deal = dealList[i];
-                    var addTime = formatDateTime(deal.addTime);
-                    var paymentType = "";
-                    var type = ""
-                    if (deal.paymentType == 1) {
-                        paymentType = "买入";
-                        type = "rise";
-                    }
-                    if (deal.paymentType == 2) {
-                        paymentType = "卖出";
-                        type = "fall";
-                    }
-                    var transactionPrice = Math.floor(deal.transactionPrice * 1000) / 1000;
-                    var currencyNumber = Math.floor(deal.currencyNumber * 100000) / 100000;
+                if (dealList != null && dealList.length > 0) {
+                    for (var i=0;i<=dealList.length-1;i++) {
+                        var deal = dealList[i];
+                        var addTime = formatDateTime(deal.addTime);
+                        var paymentType = "";
+                        var type = ""
+                        if (deal.paymentType == 1) {
+                            paymentType = "买入";
+                            type = "rise";
+                        }
+                        if (deal.paymentType == 2) {
+                            paymentType = "卖出";
+                            type = "fall";
+                        }
+                        var transactionPrice = Math.floor(deal.transactionPrice * 1000) / 1000;
+                        var currencyNumber = Math.floor(deal.currencyNumber * 100000) / 100000;
 
-                    newChild += "<tr class='tableInfo'>" +
-                                    "<td class='dealTime'>"+ addTime +"</td>" +
-                                    "<td class='type " + type + "'>" + paymentType + "</td>" +
-                                    "<td class='dealAmount'>" + "$"+ transactionPrice + "</td>" +
-                                    "<td class='dealAmount'>" + currencyNumber +"</td>" +
-                                "</tr>";
+                        newChild += "<tr class='tableInfo'>" +
+                            "<td class='dealTime'>"+ addTime +"</td>" +
+                            "<td class='type " + type + "'>" + paymentType + "</td>" +
+                            "<td class='dealAmount'>" + "$"+ transactionPrice + "</td>" +
+                            "<td class='dealAmount'>" + currencyNumber +"</td>" +
+                            "</tr>";
 
+                    }
                 }
                 document.getElementById("dealOrder").innerHTML = newChild;
                 dealBoo = false;
