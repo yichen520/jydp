@@ -3,6 +3,7 @@ package com.jydp.dao.impl.transaction;
 import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.ITransactionDealRedisDao;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
+import com.jydp.entity.DTO.TransactionBottomPriceDTO;
 import com.jydp.entity.DTO.TransactionDealPriceDTO;
 import com.jydp.entity.DTO.TransactionDealRedisDTO;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -214,6 +215,46 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
         } else {
             return  false;
         }
+    }
+
+    /**
+     * 获取交易大盘 保底价
+     * @param currencyId 币种Id
+     * @param orderNoPrefix 批次号前缀
+     * @return 操作成功：返回数据集合，操作失败:返回null
+     */
+    public TransactionBottomPriceDTO getBottomPrice(int currencyId, String orderNoPrefix){
+        Map<String,Object> map = new HashMap<>();
+        map.put("currencyId", currencyId);
+        map.put("orderNoPrefix", orderNoPrefix);
+
+        TransactionBottomPriceDTO result = null;
+        try {
+            result = sqlSessionTemplate.selectOne("TransactionDealRedis_getBottomPrice", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return result;
+    }
+
+    /**
+     * 获取交易大盘 当前价
+     * @param currencyId 币种Id
+     * @param orderNoPrefix 批次号前缀
+     * @return 查询成功：返回当前价格，查询失败或当前价格为0：返回0
+     */
+    public double getCurrentPrice(int currencyId, String orderNoPrefix){
+        Map<String,Object> map = new HashMap<>();
+        map.put("currencyId", currencyId);
+        map.put("orderNoPrefix", orderNoPrefix);
+
+        double result = 0;
+        try {
+            result = sqlSessionTemplate.selectOne("TransactionDealRedis_getCurrentPrice", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return result;
     }
 
     /**

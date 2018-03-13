@@ -3,6 +3,7 @@ package com.jydp.service.impl.transaction;
 import com.iqmkj.utils.DateUtil;
 import com.jydp.dao.ITransactionDealRedisDao;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
+import com.jydp.entity.DTO.TransactionBottomPriceDTO;
 import com.jydp.entity.DTO.TransactionDealPriceDTO;
 import com.jydp.entity.DTO.TransactionDealRedisDTO;
 import com.jydp.service.ITransactionDealRedisService;
@@ -204,6 +205,26 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
      */
     public boolean deleteDealByOrderNo(String orderNo){
         return transactionDealRedisDao.deleteDealByOrderNo(orderNo);
+    }
+
+    /**
+     * 获取交易大盘 保底价
+     * @param currencyId 币种Id
+     * @param orderNoPrefix 批次号前缀
+     * @return 操作成功：返回数据集合，操作失败:返回null
+     */
+    public TransactionBottomPriceDTO getBottomPrice(int currencyId, String orderNoPrefix){
+        return transactionDealRedisDao.getBottomPrice(currencyId, orderNoPrefix);
+    }
+
+    /**
+     * 获取交易大盘 当前价
+     * @param currencyId 币种Id
+     * @param orderNoPrefix 批次号前缀
+     * @return 查询成功：返回当前价格，查询失败或当前价格为0：返回0
+     */
+    public double getCurrentPrice(int currencyId, String orderNoPrefix){
+        return transactionDealRedisDao.getCurrentPrice(currencyId, orderNoPrefix);
     }
 
     /**
