@@ -105,6 +105,8 @@ public class TradeCenterController {
                 userCurrencyNumDOList.add(userCurrencyNumDO);
                 userCurrencyNumService.insertUserCurrencyForWeb(userCurrencyNumDOList);
             }
+
+            request.setAttribute("userIsPwd", user.getIsPwd());
         }
 
         //获取币种信息
@@ -254,12 +256,16 @@ public class TradeCenterController {
                 resultJson.setMessage("支付密码错误");
                 return resultJson;
             }
-        }
 
-        //修改session中是否输入过密码标识
-        if(payPasswordStatus == 2 && isPwd == 1){
-            userSession.setIsPwd(2);
-            request.getSession().setAttribute("userSession", userSession);
+            //修改session中是否输入过密码标识
+            if(payPasswordStatus == 2 && isPwd == 1){
+                userSession.setIsPwd(2);
+                request.getSession().setAttribute("userSession", userSession);
+
+                JSONObject data = new JSONObject();
+                data.put("userIdPwd",2);
+                resultJson.setData(data);
+            }
         }
 
         //计算手续费及总价
@@ -411,12 +417,16 @@ public class TradeCenterController {
                 resultJson.setMessage("支付密码错误");
                 return resultJson;
             }
-        }
 
-        //修改session中是否输入过密码标识
-        if(payPasswordStatus == 2 && isPwd == 1){
-            userSession.setIsPwd(2);
-            request.getSession().setAttribute("userSession", userSession);
+            //修改session中是否输入过密码标识
+            if(payPasswordStatus == 2 && isPwd == 1){
+                userSession.setIsPwd(2);
+                request.getSession().setAttribute("userSession", userSession);
+
+                JSONObject data = new JSONObject();
+                data.put("userIdPwd",2);
+                resultJson.setData(data);
+            }
         }
 
         if(userCurrencyNum.getCurrencyNumber() < sellNum){
@@ -690,16 +700,20 @@ public class TradeCenterController {
         }
 
         //修改session中是否输入过密码标识
+        JSONObject data = new JSONObject();
         if(payPasswordStatus == 2){
             user.setIsPwd(2);
             request.getSession().setAttribute("userSession", user);
+            data.put("userIsPwd", 2);
         }else if(payPasswordStatus == 1){
             user.setIsPwd(1);
             request.getSession().setAttribute("userSession", user);
+            data.put("userIsPwd", 1);
         }
 
         resultJson.setCode(1);
         resultJson.setMessage("修改成功");
+        resultJson.setData(data);
         return resultJson;
     }
 
