@@ -101,12 +101,15 @@ public class TradeCenterController {
                 userCurrencyNumDO.setCurrencyNumberLock(0);
                 userCurrencyNumDO.setAddTime(DateUtil.getCurrentTime());
 
-                List<UserCurrencyNumDO> userCurrencyNumDOList = new ArrayList<UserCurrencyNumDO>();
+                List<UserCurrencyNumDO> userCurrencyNumDOList = new ArrayList<>();
                 userCurrencyNumDOList.add(userCurrencyNumDO);
                 userCurrencyNumService.insertUserCurrencyForWeb(userCurrencyNumDOList);
             }
 
+            UserDO userDO = userService.getUserByUserId(user.getUserId());
+
             request.setAttribute("userIsPwd", user.getIsPwd());
+            request.setAttribute("payPasswordStatus", userDO.getPayPasswordStatus());
         }
 
         //获取币种信息

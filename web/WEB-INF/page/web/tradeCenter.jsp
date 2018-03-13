@@ -377,8 +377,8 @@
         <div class="password_pop">
             <p class="popTitle">记住密码提示</p>
             <p class="popTips">
-                <label><input type="radio" class="choose" name="password" onclick="isPwds(2);">每次登录只输入一次交易密码</label>
-                <label><input type="radio" class="choose" name="password" onclick="isPwds(1);" checked>每笔交易都输入交易密码</label>
+                <label><input type="radio" class="choose" name="password" id="onlyOneTrade" onclick="isPwds(2);">每次登录只输入一次交易密码</label>
+                <label><input type="radio" class="choose" name="password" id="everyTrade" onclick="isPwds(1);">每笔交易都输入交易密码</label>
             </p>
             <p class="popInput">
                 <label class="popName">支付密码<span class="star">*</span>：</label>
@@ -387,7 +387,7 @@
             </p>
 
             <div class="buttons">
-                <input type="hidden" id="payPasswordStatus" name="payPasswordStatus" value="1"/>
+                <input type="hidden" id="payPasswordStatus" name="payPasswordStatus" value="${payPasswordStatus}"/>
                 <input type="hidden" id="userIsPwd" name="userIsPwd" value="${userIsPwd}"/>
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
                 <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="updatePayPwd();" />
@@ -417,6 +417,14 @@
         var message = '${message}';
         var transactionPendOrderList = '${transactionPendOrderList}';
         var userSession = '${userSession}';
+        var payPasswordStatus = parseInt('${payPasswordStatus}');
+
+        if(payPasswordStatus == 1){
+            document.getElementById("everyTrade").checked = true;
+        }else if(payPasswordStatus == 2){
+            document.getElementById("onlyOneTrade").checked = true;
+        }
+
         if(transactionPendOrderList != null && transactionPendOrderList.length > 0 && userSession != null
              && transactionPendOrderList != "" && transactionPendOrderList != "[]"){
             //$("#tableId").style.display="inline";
