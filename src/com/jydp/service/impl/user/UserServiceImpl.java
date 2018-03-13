@@ -278,7 +278,7 @@ public class UserServiceImpl implements IUserService {
     public UserDO register(UserDO userDO){
         //用戶信息新增
         UserDO user = userDao.insertUser(userDO);
-        boolean executeStatus = true;
+        boolean excuteSuccess = true;
 
         if (user != null) {
             //查询所有币种
@@ -295,10 +295,10 @@ public class UserServiceImpl implements IUserService {
                     userCurrencyNumDOList.add(userCurrencyNum);
                 }
                 //新增用户币数量记录
-                executeStatus = userCurrencyNumService.insertUserCurrencyForWeb(userCurrencyNumDOList);
+                excuteSuccess = userCurrencyNumService.insertUserCurrencyForWeb(userCurrencyNumDOList);
             }
 
-            if (!executeStatus) {
+            if (!excuteSuccess) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return null;
             }
