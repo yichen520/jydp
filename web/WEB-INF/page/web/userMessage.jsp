@@ -130,18 +130,6 @@
                     <input type="password" class="entry" placeholder="再次输入新密码" maxlength="16" id="repPasswordPop"
                            onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')" />
                 </p>
-                <p class="popInput">
-                    <label class="popName">手机号：</label>
-                    <span class="popTel"><span id="showAreaCode1">${userMessage.phoneAreaCode }</span><span id="showPhone1">${userMessage.phoneNumber }</span></span>
-                </p>
-                <p class="popInput">
-                    <label class="popName">手机验证码<span class="star">*</span>：</label>
-                    <span class="popCode">
-                        <input type="text" class="code" placeholder="6位短信验证码" id="payVerifyCode" maxlength="6"
-                               onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')" />
-                        <input type="text" id="telBtn" class="message" value="获取验证码" onfocus="this.blur()" />
-                    </span>
-                </p>
             </div>
 
             <div class="tel_pop">
@@ -291,7 +279,6 @@
             var passwordPop = $("#passwordPop").val();
             var newPasswordPop = $("#newPasswordPop").val();
             var repPasswordPop = $("#repPasswordPop").val();
-            var payVerifyCode = $("#payVerifyCode").val();
 
             if(passwordPop == ""){
                 openTips("请输入原密码");
@@ -323,16 +310,6 @@
                 return;
             }
 
-            if(payVerifyCode == ""){
-                openTips("请输入验证码");
-                return;
-            }
-
-            if(payVerifyCode.length != 6){
-                openTips("验证码为6位");
-                return;
-            }
-
             if(updatePayPasswordBoo){
                 openTips("系统正在更新支付密码，请稍后");
                 return;
@@ -348,8 +325,7 @@
                 data:{
                     password : passwordPop,
                     newPassword : newPasswordPop,
-                    repetitionPassword : repPasswordPop,
-                    payVerifyCode : payVerifyCode
+                    repetitionPassword : repPasswordPop
                 },
                 success:function(result){
                     updatePayPasswordBoo = false;
@@ -361,7 +337,6 @@
                         $("#passwordPop").val("");
                         $("#newPasswordPop").val("");
                         $("#repPasswordPop").val("");
-                        $("#payVerifyCode").val("");
 
                     }
                 }, error:function(){
@@ -612,8 +587,6 @@
                     $("#showPhone").text(phone);
                     $("#showMobilePhone").text(phone);
                     $("#showAreaCode").text(areaCode);
-                    $("#showPhone1").text(phone);
-                    $("#showAreaCode1").text(areaCode);
                     $("#showPhone2").text(phone);
                     $("#showAreaCode2").text(areaCode);
                     $("#showPhone3").text(phone);
@@ -795,7 +768,6 @@
         },1000);
     }
 
-    document.getElementById("telBtn").onclick=function(){countDown(this, 60);};
     document.getElementById("changeBtn").onclick=function(){countDown(this, 60);};
     document.getElementById("changeTel_btn").onclick=function(){countDown(this, 60);};
     document.getElementById("phoneBtn").onclick=function(){time(this);};
