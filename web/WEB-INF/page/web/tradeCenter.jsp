@@ -1057,14 +1057,12 @@
                     }
                     var transactionPrice = Math.floor(deal.transactionPrice * 1000) / 1000;
                     var currencyNumber = Math.floor(deal.currencyNumber * 100000) / 100000;
-                    var currencyTotalPrice = Math.floor(deal.currencyTotalPrice * 1000000) / 1000000;
 
                     newChild += "<tr class='tableInfo'>" +
                                     "<td class='dealTime'>"+ addTime +"</td>" +
                                     "<td class='type " + type + "'>" + paymentType + "</td>" +
                                     "<td class='dealAmount'>" + "$"+ transactionPrice + "</td>" +
                                     "<td class='dealAmount'>" + currencyNumber +"</td>" +
-                                    "<td class='dealAmount rise'>$" + currencyTotalPrice + "</td>" +
                                 "</tr>";
 
                 }
