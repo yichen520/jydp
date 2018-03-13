@@ -117,10 +117,11 @@ public class TransactionMakeOrderServiceImpl implements ITransactionMakeOrderSer
      * 修改记录执行状态
      * @param orderNo  记录号
      * @param executeStatus  执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败
+     * @param olExecuteStatus  执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败
      * @return  操作成功，返回true，操作失败，返回false
      */
-    public boolean updateOrderExecuteStatusByOrderNo(String orderNo, int executeStatus){
-        return transactionMakeOrderDao.updateOrderExecuteStatusByOrderNo(orderNo, executeStatus);
+    public boolean updateOrderExecuteStatusByOrderNo(String orderNo, int executeStatus, int olExecuteStatus){
+        return transactionMakeOrderDao.updateOrderExecuteStatusByOrderNo(orderNo, executeStatus, olExecuteStatus);
     }
 
 
@@ -139,7 +140,7 @@ public class TransactionMakeOrderServiceImpl implements ITransactionMakeOrderSer
         }
 
         //批量修改为执行中
-        executeBoo = transactionMakeOrderDao.updateMakeOrderExecuteStatusByOrderNoList(orderNoList, 2);
+        executeBoo = transactionMakeOrderDao.updateMakeOrderExecuteStatusByOrderNoList(orderNoList, 2, 1);
         List<TransactionDealRedisDO> transactionDealRedisDOS = new ArrayList<TransactionDealRedisDO>();
 
         for (TransactionMakeOrderDO order : resultList) {
@@ -210,7 +211,7 @@ public class TransactionMakeOrderServiceImpl implements ITransactionMakeOrderSer
         }
         //修改做单记录状态
         if (executeBoo) {
-            executeBoo = transactionMakeOrderDao.updateMakeOrderExecuteStatusByOrderNoList(orderNoList, 3);
+            executeBoo = transactionMakeOrderDao.updateMakeOrderExecuteStatusByOrderNoList(orderNoList, 3, 2);
         }
 
         //数据回滚
@@ -220,15 +221,16 @@ public class TransactionMakeOrderServiceImpl implements ITransactionMakeOrderSer
 
         return executeBoo;
     }
-    
+
     /**
      * 批量修改记录号状态
      * @param orderNoList  记录号集合
      * @param executeStatus  执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败
+     * @param olExecuteStatus  执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败
      * @return  操作成功：true，操作失败：返回false
      */
-    public boolean updateMakeOrderExecuteStatusByOrderNoList(List<String> orderNoList, int executeStatus){
-        return transactionMakeOrderDao.updateMakeOrderExecuteStatusByOrderNoList(orderNoList, executeStatus);
+    public boolean updateMakeOrderExecuteStatusByOrderNoList(List<String> orderNoList, int executeStatus, int olExecuteStatus){
+        return transactionMakeOrderDao.updateMakeOrderExecuteStatusByOrderNoList(orderNoList, executeStatus, olExecuteStatus);
     }
 
     /**

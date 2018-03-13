@@ -43,9 +43,9 @@
                     <td class="amount">成交数量</td>
                     <td class="time">执行时间</td>
                 </tr>
-                <c:forEach items="${resultList}" var="item">
+                <c:forEach items="${resultList}" var="item" varStatus="index">
                     <tr class="tableInfo">
-                        <td class="number">${item.id}</td>
+                        <td class="number">${index.index + 1}</td>
                         <c:if test="${item.paymentType == 1}">
                             <td class="type">买入</td>
                         </c:if>

@@ -62,17 +62,19 @@ public interface ITransactionMakeOrderDao {
      * 修改记录执行状态
      * @param orderNo  记录号
      * @param executeStatus  执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败
+     * @param olExecuteStatus  执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败
      * @return  操作成功，返回true，操作失败，返回false
      */
-    boolean updateOrderExecuteStatusByOrderNo(String orderNo, int executeStatus);
+    boolean updateOrderExecuteStatusByOrderNo(String orderNo, int executeStatus, int olExecuteStatus);
 
     /**
      * 批量修改记录号状态
      * @param orderNoList  记录号集合
      * @param executeStatus  执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败
+     * @param olExecuteStatus  执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败
      * @return  操作成功：true，操作失败：返回false
      */
-    boolean updateMakeOrderExecuteStatusByOrderNoList(List<String> orderNoList, int executeStatus);
+    boolean updateMakeOrderExecuteStatusByOrderNoList(List<String> orderNoList, int executeStatus, int olExecuteStatus);
 
     /**
      * 批量根据记录号查询做单记录

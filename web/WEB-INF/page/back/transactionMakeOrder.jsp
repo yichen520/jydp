@@ -30,7 +30,7 @@
 
         <div class="top">
             <c:if test="${backer_rolePower['103002'] == 103002}">
-                <a href="<%=path %>/backerWeb/transactionMakeOrder/goAdd.htm" class="add" target="_blank">新增交易</a>
+                <a href="<%=path %>/backerWeb/transactionMakeOrder/goAdd.htm" class="add">新增交易</a>
             </c:if>
 
             <form id="queryForm" action="<%=path %>/backerWeb/transactionMakeOrder/show.htm" method="post">
@@ -108,7 +108,7 @@
                         <td class="time"><fmt:formatDate type="time" value="${item.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                         <td class="operate">
                             <c:if test="${backer_rolePower['103004'] == 103004}">
-                                <a href="<%=path %>/backerWeb/transactionMakeOrder/showDetail.htm?orderNo=${item.orderNo}" class="details">查看详情</a>
+                                <a href="<%=path %>/backerWeb/transactionMakeOrder/showDetail.htm?orderNo=${item.orderNo}" class="details" target="_blank">查看详情</a>
                             </c:if>
                             <c:if test="${item.executeStatus == 3 || item.executeStatus == 4}">
                                 <c:if test="${backer_rolePower['103003'] == 103003}">

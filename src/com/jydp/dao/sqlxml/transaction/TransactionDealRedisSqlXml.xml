@@ -81,7 +81,6 @@
 		SELECT id, orderNo, paymentType, currencyId, transactionPrice, currencyNumber, currencyTotalPrice, addTime
 		FROM transaction_deal_redis_tab
 		WHERE orderNo = #{orderNo}
-			  AND addTime <![CDATA[ <= ]]> NOW()
 		ORDER BY addTime DESC, orderNo
 	</select>
 

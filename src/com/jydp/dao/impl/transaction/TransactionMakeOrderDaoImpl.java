@@ -147,14 +147,16 @@ public class TransactionMakeOrderDaoImpl implements ITransactionMakeOrderDao{
      * 修改记录执行状态
      * @param orderNo  记录号
      * @param executeStatus  执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败
+     * @param olExecuteStatus  执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败
      * @return  操作成功，返回true，操作失败，返回false
      */
-    public boolean updateOrderExecuteStatusByOrderNo(String orderNo, int executeStatus){
+    public boolean updateOrderExecuteStatusByOrderNo(String orderNo, int executeStatus, int olExecuteStatus){
         int result = 0;
 
         Map<String, Object> map = new HashMap<>();
         map.put("orderNo", orderNo);
         map.put("executeStatus", executeStatus);
+        map.put("olExecuteStatus", olExecuteStatus);
 
         try {
             result = sqlSessionTemplate.update("TransactionMakeOrder_updateOrderExecuteStatusByOrderNo", map);
@@ -173,14 +175,16 @@ public class TransactionMakeOrderDaoImpl implements ITransactionMakeOrderDao{
      * 批量修改记录号状态
      * @param orderNoList  记录号集合
      * @param executeStatus  执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败
+     * @param olExecuteStatus  执行状态,1：待执行,2:执行中,3:执行完成,4:执行失败
      * @return  操作成功：true，操作失败：返回false
      */
-    public boolean updateMakeOrderExecuteStatusByOrderNoList(List<String> orderNoList, int executeStatus){
+    public boolean updateMakeOrderExecuteStatusByOrderNoList(List<String> orderNoList, int executeStatus, int olExecuteStatus){
         int result = 0;
 
         Map<String, Object> map = new HashMap<>();
         map.put("orderNoList", orderNoList);
         map.put("executeStatus", executeStatus);
+        map.put("olExecuteStatus", olExecuteStatus);
         try {
             result = sqlSessionTemplate.update("TransactionMakeOrder_updateMakeOrderExecuteStatusByOrderNoList", map);
         } catch (Exception e) {

@@ -83,7 +83,8 @@
     <update id="TransactionMakeOrder_updateOrderExecuteStatusByOrderNo" parameterType="java.util.Map">
         UPDATE transaction_make_order_tab
         SET executeStatus = #{executeStatus}
-        WHERE orderNo = #{orderNo}
+        WHERE orderNo  = #{orderNo}
+              AND executeStatus = #{olExecuteStatus}
     </update>
 
     <update id="TransactionMakeOrder_updateMakeOrderExecuteStatusByOrderNoList" parameterType="java.util.Map">
@@ -94,7 +95,8 @@
                 ,executeTime = NOW()
             </if>
         </set>
-        WHERE orderNo IN
+        WHERE executeStatus = #{olExecuteStatus}
+          AND orderNo IN
                 <foreach collection="orderNoList" item="item" index="index" open="(" separator="," close=")">
                     #{item}
                 </foreach>
