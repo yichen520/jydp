@@ -4,6 +4,7 @@ import com.iqmkj.utils.DateUtil;
 import com.jydp.dao.ITransactionDealRedisDao;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.DTO.TransactionDealPriceDTO;
+import com.jydp.entity.DTO.TransactionDealRedisDTO;
 import com.jydp.service.ITransactionDealRedisService;
 import config.RedisKeyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -203,5 +204,14 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
      */
     public boolean deleteDealByOrderNo(String orderNo){
         return transactionDealRedisDao.deleteDealByOrderNo(orderNo);
+    }
+
+    /**
+     * k线图数据拉取
+     * @param currencyId 币种Id
+     * @return 操作成功：返回数据集合，操作失败:返回null
+     */
+    public List<TransactionDealRedisDTO> listTransactionUserDealForKline(int currencyId){
+        return transactionDealRedisDao.listTransactionUserDealForKline(currencyId);
     }
 }
