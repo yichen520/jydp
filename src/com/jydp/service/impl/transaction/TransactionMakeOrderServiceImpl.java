@@ -168,11 +168,11 @@ public class TransactionMakeOrderServiceImpl implements ITransactionMakeOrderSer
             for (int a = 0; a < nList.size(); a++) {
                 double currNum = 0;
                 if (a == 0) {
-                    currNum = NumberUtil.doubleFormat(BigDecimalUtil.mul(nList.get(a) - 0, order.getCurrencyNumber()), 8);
+                    currNum = NumberUtil.doubleFormat(BigDecimalUtil.mul(nList.get(a) - 0, order.getCurrencyNumber()), 4);
                 } else if (a == nList.size() - 1){
                     currNum = currNumForLast;
                 } else {
-                    currNum = NumberUtil.doubleFormat(BigDecimalUtil.mul(nList.get(a+1) - nList.get(a), order.getCurrencyNumber()), 8);
+                    currNum = NumberUtil.doubleFormat(BigDecimalUtil.mul(nList.get(a+1) - nList.get(a), order.getCurrencyNumber()), 4);
                 }
                 currNumForLast -= currNum;
                 numList.add(currNum);

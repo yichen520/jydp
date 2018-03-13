@@ -1,6 +1,7 @@
 package com.jydp.service.impl.transaction;
 
 import com.iqmkj.utils.DateUtil;
+import com.iqmkj.utils.NumberUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.dao.ITransactionCurrencyDao;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
@@ -359,6 +360,7 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
         Object nowPriceStr = redisService.getValue(RedisKeyConfig.NOW_PRICE + currencyId);
         if(nowPriceStr != null){
             double nowPrice = Double.parseDouble(nowPriceStr.toString());
+            nowPrice = NumberUtil.doubleFormat(nowPrice, 2);
             standardParameter.setNowPrice(nowPrice);
         }
 
@@ -366,6 +368,7 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
         Object buyOneKeyStr = redisService.getValue(RedisKeyConfig.BUY_ONE_KEY + currencyId);
         if(buyOneKeyStr != null){
             double buyOne = Double.parseDouble(buyOneKeyStr.toString());
+            buyOne = NumberUtil.doubleFormat(buyOne, 2);
             standardParameter.setBuyOne(buyOne);
 
         }
@@ -374,6 +377,7 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
         Object sellOneKeyStr = redisService.getValue(RedisKeyConfig.SELL_ONE_KEY + currencyId);
         if(sellOneKeyStr != null){
             double sellOne = Double.parseDouble(sellOneKeyStr.toString());
+            sellOne = NumberUtil.doubleFormat(sellOne, 2);
             standardParameter.setSellOne(sellOne);
 
         }
@@ -382,6 +386,7 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
         Object todayMaxPriceStr = redisService.getValue(RedisKeyConfig.TODAY_MAX_PRICE + currencyId);
         if(todayMaxPriceStr != null){
             double todayMax = Double.parseDouble(todayMaxPriceStr.toString());
+            todayMax = NumberUtil.doubleFormat(todayMax, 2);
             standardParameter.setTodayMax(todayMax);
 
         }
@@ -390,6 +395,7 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
         Object todayMinpriceStr = redisService.getValue(RedisKeyConfig.TODAY_MIN_PRICE + currencyId);
         if(todayMinpriceStr != null){
             double todayMin = Double.parseDouble(todayMinpriceStr.toString());
+            todayMin = NumberUtil.doubleFormat(todayMin, 2);
             standardParameter.setTodayMin(todayMin);
         }
 
@@ -412,6 +418,7 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
         Object dayTurnoverStr = redisService.getValue(RedisKeyConfig.DAY_TURNOVER + currencyId);
         if(dayTurnoverStr != null){
             double dayTurnove = Double.parseDouble(dayTurnoverStr.toString());
+            dayTurnove = NumberUtil.doubleFormat(dayTurnove, 4);
             standardParameter.setDayTurnove(dayTurnove);
         }
 
