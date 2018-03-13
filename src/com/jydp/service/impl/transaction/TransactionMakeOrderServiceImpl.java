@@ -238,7 +238,18 @@ public class TransactionMakeOrderServiceImpl implements ITransactionMakeOrderSer
      * @param orderNo 记录号
      * @return  操作成功：返回true，操作失败：返回false
      */
+    @Transactional
     public boolean deleteMakeOrderByOrderNo(String orderNo){
-        return transactionMakeOrderDao.deleteMakeOrderByOrderNo(orderNo);
+        boolean resultBoo = transactionMakeOrderDao.deleteMakeOrderByOrderNo(orderNo);
+
+        if (resultBoo) {
+            resultBoo = transactionDealRedisService.deleteDealByOrderNo(orderNo);
+        }
+
+        //数据回滚
+        if(!resultBoo){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return resultBoo;
     }
 }
