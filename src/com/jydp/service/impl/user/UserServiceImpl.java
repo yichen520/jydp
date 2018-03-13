@@ -282,7 +282,7 @@ public class UserServiceImpl implements IUserService {
             List<TransactionCurrencyVO> transactionCurrencyDOList = transactionCurrencyService.getAllCurrencylistForWeb();
 
             if (transactionCurrencyDOList != null && transactionCurrencyDOList.size() > 0) {
-                List<UserCurrencyNumDO> userCurrencyNumDOList = new ArrayList<UserCurrencyNumDO>();
+                List<UserCurrencyNumDO> userCurrencyNumDOList = new ArrayList<>();
                 for (int i = 0; i < transactionCurrencyDOList.size(); i ++) {
                     //注册时添加用户所有币种默认数量为0的记录
                     UserCurrencyNumDO userCurrencyNum =  new UserCurrencyNumDO();
