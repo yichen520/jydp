@@ -225,13 +225,6 @@ public class BackerTransactionMakeOrderController {
             response.setMessage("ip地址不能为空");
             return response;
         }
-        //判断日期
-        executeDate = DateUtil.stringToTimestampByFormatStr(executeTimeStr, DateUtil.dateFormat4);
-        if (executeDate.getTime() < curTimel) {
-            response.setCode(3);
-            response.setMessage("执行日期不能小于今日");
-            return response;
-        }
         //判断币种
         TransactionCurrencyDO currency = transactionCurrencyService.getTransactionCurrencyByCurrencyName(currencyNameStr);
         if (currency == null) {
@@ -255,6 +248,8 @@ public class BackerTransactionMakeOrderController {
             if (timeArr.length < 2){
                 continue;
             }
+
+            executeDate = DateUtil.stringToTimestampByFormatStr(executeTimeStr, DateUtil.dateFormat4);
             long hour = Integer.parseInt(StringUtil.stringNullHandle(timeArr[0])) * 1000L * 60 * 60;
             long minu = Integer.parseInt(StringUtil.stringNullHandle(timeArr[1])) * 1000L * 60;
             long execTimeL = hour + minu;

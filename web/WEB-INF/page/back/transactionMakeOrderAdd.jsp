@@ -35,7 +35,7 @@
                 </p>
                 <p class="popInput">
                     <span class="popName">币种<span class="star">*</span>：</span>
-                    <select class="popSelected" id="addCurrencyName" name="addCurrencyName">
+                    <select class="popSelect" id="addCurrencyName" name="addCurrencyName">
                         <option disabled selected value="">请选择币种</option>
                         <c:forEach items="${transactionCurrencyList}" var="item">
                             <option value="${item.currencyName}">${item.currencyName}</option>
