@@ -36,7 +36,7 @@
                 <label class="popName">账号<span class="star">*</span></label>
                 <input type="text" class="entry" id="userAccount" name="userAccount" placeholder="字母或数字，6~16个字符"
                        onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
-                       maxLength="16" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                       maxLength="16" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="validateUser(this)"/>
                 <span class="warmTips">该项一经注册不可更改，请谨慎填写</span>
             </p>
 
