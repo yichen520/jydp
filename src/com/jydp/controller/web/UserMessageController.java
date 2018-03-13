@@ -217,10 +217,9 @@ public class UserMessageController {
         String password = StringUtil.stringNullHandle(request.getParameter("password"));
         String newPassword = StringUtil.stringNullHandle(request.getParameter("newPassword"));
         String repetitionPassword = StringUtil.stringNullHandle(request.getParameter("repetitionPassword"));
-        String payVerifyCode = StringUtil.stringNullHandle(request.getParameter("payVerifyCode"));
 
         if (!StringUtil.isNotNull(password) || !StringUtil.isNotNull(newPassword)
-                || !StringUtil.isNotNull(repetitionPassword) || !StringUtil.isNotNull(payVerifyCode)) {
+                || !StringUtil.isNotNull(repetitionPassword)) {
             responseJson.setCode(3);
             responseJson.setMessage("未接受到参数");
             return responseJson;
@@ -238,14 +237,6 @@ public class UserMessageController {
         if(userMessage == null){
             responseJson.setCode(3);
             responseJson.setMessage("用户信息查询失败，请稍后重试");
-            return responseJson;
-        }
-
-        //验证码判定
-        JsonObjectBO validatePhone = systemValidatePhoneService.validatePhone(userMessage.getPhoneNumber(), payVerifyCode);
-        if(validatePhone.getCode() != 1){
-            responseJson.setCode(validatePhone.getCode());
-            responseJson.setMessage(validatePhone.getMessage());
             return responseJson;
         }
 
