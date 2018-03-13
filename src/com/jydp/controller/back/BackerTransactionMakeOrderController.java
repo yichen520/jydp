@@ -320,7 +320,7 @@ public class BackerTransactionMakeOrderController {
             return "page/back/index";
         }
 
-        String orderNoStr = StringUtil.stringNullHandle(request.getParameter("orderNo"));
+        String orderNoStr = StringUtil.stringNullHandle(request.getParameter("detailNo"));
 
         if (!StringUtil.isNotNull(orderNoStr)) {
             List(request);
