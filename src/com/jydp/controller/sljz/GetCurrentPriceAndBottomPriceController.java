@@ -2,10 +2,10 @@ package com.jydp.controller.sljz;
 
 import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.BigDecimalUtil;
+import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.DTO.TransactionBottomCurrentPriceDTO;
 import com.jydp.entity.DTO.TransactionBottomPriceDTO;
 import com.jydp.service.ITransactionDealRedisService;
-import config.SljzConfig;
 import config.SystemCommonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -55,9 +55,16 @@ public class GetCurrentPriceAndBottomPriceController {
             responseJson.put("message", "签名错误");
             return responseJson;
         }*/
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+        if (!StringUtil.isNotNull(currencyIdStr)) {
+            responseJson.put("code", 2);
+            responseJson.put("message", "参数错误");
+            return responseJson;
+        }
+        int currencyId = Integer.parseInt(currencyIdStr);
 
         TransactionBottomPriceDTO bottomPriceDTO = transactionDealRedisService.
-                getBottomPrice(SljzConfig.CURRENCY_ID, SystemCommonConfig.TRANSACTION_MAKE_ORDER);
+                getBottomPrice(currencyId, SystemCommonConfig.TRANSACTION_MAKE_ORDER);
         if (bottomPriceDTO == null) {
             responseJson.put("code", 5);
             responseJson.put("message", "查询失败");
@@ -71,7 +78,7 @@ public class GetCurrentPriceAndBottomPriceController {
 
 
         double currentPrice = transactionDealRedisService.
-                getCurrentPrice(SljzConfig.CURRENCY_ID, SystemCommonConfig.TRANSACTION_MAKE_ORDER);
+                getCurrentPrice(currencyId, SystemCommonConfig.TRANSACTION_MAKE_ORDER);
 
         TransactionBottomCurrentPriceDTO bottomCurrentPrice = new TransactionBottomCurrentPriceDTO();
         bottomCurrentPrice.setCurrencyId(bottomPriceDTO.getCurrencyId());
