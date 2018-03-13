@@ -985,9 +985,9 @@
                 for (var i=0;i<=orderSellList.length-1;i++) {
                     var orderSell = orderSellList[i];
 
-                    var pendingPrice = Math.floor(orderSell.pendingPrice * 100) / 100;  //单价
-                    var pendingNumber = Math.floor(orderSell.restNumber * 100000) / 100000;  //数量
-                    var sumPrice = Math.floor(orderSell.sumPrice * 1000000) / 1000000;  //总额
+                    var pendingPrice = orderSell.pendingPrice;  //单价
+                    var pendingNumber = orderSell.restNumber;  //数量
+                    var sumPrice = orderSell.sumPrice;  //总额
 
                     newChildSell += '<li class="recordInfo">' +
                                         '<span class="rangeType">卖' + (orderSellList.length-i) + '</span>' +
@@ -1004,9 +1004,9 @@
                 for (var i=0;i<=orderBuyList.length-1;i++) {
                     var orderBuy = orderBuyList[i];
 
-                    var pendingPrice = Math.floor(orderBuy.pendingPrice * 100) / 100;  //单价
-                    var pendingNumber = Math.floor(orderBuy.restNumber * 100000) / 100000;  //数量
-                    var sumPrice = Math.floor(orderBuy.sumPrice * 1000000) / 1000000;  //总额
+                    var pendingPrice = orderBuy.pendingPrice;  //单价
+                    var pendingNumber = orderBuy.restNumber;  //数量
+                    var sumPrice = orderBuy.sumPrice;  //总额
 
                     newChildBuy += '<li class="recordInfo">' +
                                         '<span class="rangeType">买' + (i+1) + '</span>' +
@@ -1078,8 +1078,8 @@
                             paymentType = "卖出";
                             type = "fall";
                         }
-                        var transactionPrice = Math.floor(deal.transactionPrice * 1000) / 1000;
-                        var currencyNumber = Math.floor(deal.currencyNumber * 100000) / 100000;
+                        var transactionPrice = deal.transactionPrice;
+                        var currencyNumber = deal.currencyNumber;
 
                         newChild += "<tr class='tableInfo'>" +
                             "<td class='dealTime'>"+ addTime +"</td>" +
