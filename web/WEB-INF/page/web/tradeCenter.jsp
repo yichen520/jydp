@@ -880,14 +880,28 @@
 
         var rememberPwd = $("#rememberPwd").val();
         var payPasswordStatus = parseInt($("#payPasswordStatus").val());
+        $("#rememberPwd").val("");
+
+        var user = '${userSession}';
+        if (user == null || user == "") {
+            $(".mask").fadeOut("fast");
+            $(popObj).fadeOut("fast");
+            openTips("请先登录再操作");
+            PayPwdBoo = false;
+            return;
+        }
 
         if(payPasswordStatus != 1 && payPasswordStatus != 2){
+            $(".mask").fadeOut("fast");
+            $(popObj).fadeOut("fast");
             openTips("参数错误，请刷新页面重试");
             PayPwdBoo = false;
             return;
         }
 
         if(rememberPwd == null || rememberPwd == ""){
+            $(".mask").fadeOut("fast");
+            $(popObj).fadeOut("fast");
             openTips("交易密码不能为空");
             PayPwdBoo = false;
             return;
