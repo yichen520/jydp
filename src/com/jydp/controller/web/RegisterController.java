@@ -143,6 +143,7 @@ public class RegisterController {
         userDO.setPhoneAreaCode(phoneAreaCode);
         userDO.setPhoneNumber(phoneNumber);
         userDO.setPayPassword(MD5Util.toMd5(payPassword));
+        userDO.setPayPasswordStatus(1);
         userDO.setAccountStatus(2);
         userDO.setAddTime(DateUtil.getCurrentTime());
         userDO.setAuthenticationStatus(4);

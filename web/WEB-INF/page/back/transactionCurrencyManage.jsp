@@ -577,8 +577,8 @@
             openTips("请输入卖出手续费");
             return;
         }
-        if (guidAd == null || guidAd == "" || parseInt(guidAd) <= 0
-                || parseInt(guidAd) == null || parseInt(guidAd) == "") {
+        if (guidAd == null || guidAd == "" || parseFloat(guidAd) <= 0
+                || parseFloat(guidAd) == null || parseFloat(guidAd) == "") {
             addBoo = false;
             openTips("请确认上市指导价大于0");
             return;
@@ -811,8 +811,8 @@
             success: function (resultData) {
                 var code = resultData.code;
                 var message = resultData.message;
+                extBoo = false;
                 if (code != 1 && message != "") {
-                    extBoo = false;
                     openTips(message);
                     return;
                 }

@@ -90,6 +90,23 @@
 		WHERE orderNo = #{transaction_deal_redis_tab}
 	</delete>
 
+	<select id="TransactionDealRedis_getBottomPrice" parameterType="java.util.Map" resultType="TransactionBottomPriceDTO">
+		SELECT SUM(currencyTotalPrice) AS totalPrice, SUM(currencyNumber) AS totalNumber, currencyId
+		FROM transaction_deal_redis_tab
+		WHERE currencyId = #{currencyId}
+		  AND orderNo LIKE CONCAT(#{orderNoPrefix}, '%')
+	</select>
+
+	<select id="TransactionDealRedis_getCurrentPrice" parameterType="java.util.Map" resultType="double">
+		SELECT transactionPrice
+		FROM transaction_deal_redis_tab
+		WHERE currencyId = #{currencyId}
+		  AND orderNo LIKE CONCAT(#{orderNoPrefix}, '%')
+		  AND addTime <![CDATA[ <= ]]> NOW()
+		ORDER BY addTime DESC
+		LIMIT 0,1
+	</select>
+
 	<select id="TransactionUserDeal_listTransactionUserDealForKline" parameterType="int" resultType="TransactionDealRedisDTO">
 		SELECT transactionPrice, currencyNumber, addTime
 		FROM transaction_deal_redis_tab
