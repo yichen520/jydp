@@ -388,6 +388,7 @@
 
             <div class="buttons">
                 <input type="hidden" id="payPasswordStatus" name="payPasswordStatus" value="1"/>
+                <input type="hidden" id="userIsPwd" name="userIsPwd" value="${userIsPwd}"/>
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
                 <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="updatePayPwd();" />
             </div>
@@ -410,14 +411,12 @@
 <script type="text/javascript" src="<%=path %>/resources/js/loadPageWeb.js"></script>
 <script type="text/javascript" src="<%=path %>/resources/js/simpleTips.js"></script>
 <script type="text/javascript">
-    var isPwd = 0;
     window.onload = function() {
         count();
         var code = '${code}';
         var message = '${message}';
         var transactionPendOrderList = '${transactionPendOrderList}';
         var userSession = '${userSession}';
-        isPwd = parseInt('${userSession.isPwd}');
         if(transactionPendOrderList != null && transactionPendOrderList.length > 0 && userSession != null
              && transactionPendOrderList != "" && transactionPendOrderList != "[]"){
             //$("#tableId").style.display="inline";
@@ -469,6 +468,12 @@
                 openTips(result.message);
                 if(result.code == 1){
                     entrust();
+
+                    var data = result.data;
+                    if(data != "" && data != null){
+                        var isPwd = data.userIsPwd;
+                        $("#userIsPwd").val(isPwd);
+                    }
                 }
                 resultBoo = false;
             }, error: function () {
@@ -509,6 +514,12 @@
                 openTips(result.message);
                 if(result.code == 1){
                     entrust();
+
+                    var data = result.data;
+                    if(data != "" && data != null){
+                        var isPwd = data.userIsPwd;
+                        $("#userIsPwd").val(isPwd);
+                    }
                 }
                 resultBoo = false;
             }, error: function () {
@@ -680,6 +691,7 @@
             var buyTotal = $("#buyTotal").html();
             var buyPwd = $("#buyPwd").val();
             var currencyId = $("#cucyId").val();
+            var isPwd = $("#userIsPwd").val();
 
             $("#buyPriceConfirm").val(buyPrice);
             $("#buyNumConfirm").val(buyNum);
@@ -747,6 +759,7 @@
             var sellTotal = $("#sellTotal").html();
             var sellPwd = $("#sellPwd").val();
             var currencyId = $("#cucyId").val();
+            var isPwd = $("#userIsPwd").val();
 
             $("#sellPriceConfirm").val(sellPrice);
             $("#sellNumConfirm").val(sellNum);
@@ -890,13 +903,16 @@
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (result) {
-                resultBoo = false;
+                PayPwdBoo = false;
                 $(".mask").fadeOut("fast");
                 $(popObj).fadeOut("fast");
                 openTips(result.message);
-                setTimeout("location.reload()",1000 );
+
+                var data = result.data;
+                var isPwd = data.userIsPwd;
+                $("#userIsPwd").val(isPwd);
             }, error: function () {
-                resultBoo = false;
+                PayPwdBoo = false;
                 $(".mask").fadeOut("fast");
                 $(popObj).fadeOut("fast");
                 openTips("修改失败,请重新刷新页面后重试");
