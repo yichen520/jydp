@@ -567,6 +567,17 @@
             openTips("请输入币种简称");
             return;
         }
+        if (guidAd == null || guidAd == "" || parseFloat(guidAd) <= 0
+            || parseFloat(guidAd) == null || parseFloat(guidAd) == "") {
+            addBoo = false;
+            openTips("请确认上市指导价大于0");
+            return;
+        }
+        if (changead_t1 == null || changead_t1 == '') {
+            addBoo = false;
+            openTips("请上传徽标");
+            return;
+        }
         if (buyFeeAd == null || buyFeeAd == "") {
             addBoo = false;
             openTips("请输入买入手续费");
@@ -575,17 +586,6 @@
         if (sellFeeAd == null || sellFeeAd == "") {
             addBoo = false;
             openTips("请输入卖出手续费");
-            return;
-        }
-        if (guidAd == null || guidAd == "" || parseFloat(guidAd) <= 0
-                || parseFloat(guidAd) == null || parseFloat(guidAd) == "") {
-            addBoo = false;
-            openTips("请确认上市指导价大于0");
-            return;
-        }
-        if (changead_t1 == null || changead_t1 == '') {
-            addBoo = false;
-            openTips("请上传徽标");
             return;
         }
         if (status == null || status == "") {

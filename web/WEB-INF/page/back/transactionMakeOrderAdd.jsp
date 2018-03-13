@@ -91,7 +91,7 @@
         var excTime = $("#addExecuteTime").val();
         var textAr = $("#textAr").val();
 
-        if (excTime == null){
+        if (excTime == null || excTime == ""){
             addBoo = false;
             openTips("请选择日期");
             return;
