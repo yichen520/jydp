@@ -115,7 +115,7 @@
                     <input type="hidden" id="buyFee" value="${transactionCurrency.buyFee }">
                 </p>
 
-                <input type="text" class="buyBtn" value="买&nbsp;入" onfocus="this.blur()" onclick="buy();"/>
+                <input type="text" class="buyBtn" value="买&nbsp;入" onfocus="this.blur()" />
             </div>
 
             <div class="sell">
@@ -158,7 +158,7 @@
                     <span class="service">${transactionCurrency.sellFee }%</span>
                 </p>
 
-                <input type="text" class="sellBtn" value="卖&nbsp;出" onfocus="this.blur()" onclick="sell();"/>
+                <input type="text" class="sellBtn" value="卖&nbsp;出" onfocus="this.blur()" />
             </div>
         </div>
     </div>
@@ -377,8 +377,8 @@
         <div class="password_pop">
             <p class="popTitle">记住密码提示</p>
             <p class="popTips">
-                <label><input type="radio" class="choose" name="password" onclick="isPwd(2);">每次登录只输入一次交易密码</label>
-                <label><input type="radio" class="choose" name="password" onclick="isPwd(1);" checked>每笔交易都输入交易密码</label>
+                <label><input type="radio" class="choose" name="password" onclick="isPwds(2);">每次登录只输入一次交易密码</label>
+                <label><input type="radio" class="choose" name="password" onclick="isPwds(1);" checked>每笔交易都输入交易密码</label>
             </p>
             <p class="popInput">
                 <label class="popName">支付密码<span class="star">*</span>：</label>
@@ -853,7 +853,7 @@
     }
 
     //更改交易密码状态
-    function isPwd(type) {
+    function isPwds(type) {
         $("#payPasswordStatus").val(type);
     }
 

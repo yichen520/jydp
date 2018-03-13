@@ -2,6 +2,7 @@ package com.jydp.dao;
 
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.DTO.TransactionDealPriceDTO;
+import com.jydp.entity.DTO.TransactionDealRedisDTO;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -85,4 +86,11 @@ public interface ITransactionDealRedisDao {
      * @return 操作成功：返回true，操作失败：返回false
      */
     boolean deleteDealByOrderNo(String orderNo);
+
+    /**
+     * k线图数据拉取
+     * @param currencyId 币种Id
+     * @return 操作成功：返回数据集合，操作失败:返回null
+     */
+    List<TransactionDealRedisDTO> listTransactionUserDealForKline(int currencyId);
 }

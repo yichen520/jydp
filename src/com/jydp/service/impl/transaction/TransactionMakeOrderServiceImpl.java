@@ -3,13 +3,11 @@ package com.jydp.service.impl.transaction;
 import com.iqmkj.utils.BigDecimalUtil;
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.NumberUtil;
-import com.iqmkj.utils.StringUtil;
 import com.jydp.dao.ITransactionMakeOrderDao;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.DO.transaction.TransactionMakeOrderDO;
 import com.jydp.service.ITransactionDealRedisService;
 import com.jydp.service.ITransactionMakeOrderService;
-import config.SystemCommonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -125,6 +123,7 @@ public class TransactionMakeOrderServiceImpl implements ITransactionMakeOrderSer
         return transactionMakeOrderDao.updateOrderExecuteStatusByOrderNo(orderNo, executeStatus);
     }
 
+
     /**
      * 执行多条做单
      * @param orderNoList 记录号集合
@@ -237,18 +236,7 @@ public class TransactionMakeOrderServiceImpl implements ITransactionMakeOrderSer
      * @param orderNo 记录号
      * @return  操作成功：返回true，操作失败：返回false
      */
-    @Transactional
     public boolean deleteMakeOrderByOrderNo(String orderNo){
-        boolean resultBoo = transactionMakeOrderDao.deleteMakeOrderByOrderNo(orderNo);
-
-        if (resultBoo) {
-            resultBoo = transactionDealRedisService.deleteDealByOrderNo(orderNo);
-        }
-
-        //数据回滚
-        if(!resultBoo){
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-        }
-        return resultBoo;
+        return transactionMakeOrderDao.deleteMakeOrderByOrderNo(orderNo);
     }
 }
