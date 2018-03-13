@@ -125,6 +125,7 @@ public class TransactionMakeOrderServiceImpl implements ITransactionMakeOrderSer
         return transactionMakeOrderDao.updateOrderExecuteStatusByOrderNo(orderNo, executeStatus);
     }
 
+
     /**
      * 执行多条做单
      * @param orderNoList 记录号集合

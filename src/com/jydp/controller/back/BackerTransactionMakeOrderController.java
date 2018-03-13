@@ -251,10 +251,17 @@ public class BackerTransactionMakeOrderController {
                 continue;
             }
 
-            Timestamp execTime = DateUtil.stringToTimestampByFormatStr(StringUtil.stringNullHandle(twoArr[0]), "hh:mm");
+            String[] timeArr = twoArr[0].split(":");
+            if (timeArr.length < 2){
+                continue;
+            }
+            long hour = Integer.parseInt(StringUtil.stringNullHandle(timeArr[0])) * 1000L * 60 * 60;
+            long minu = Integer.parseInt(StringUtil.stringNullHandle(timeArr[1])) * 1000L * 60;
+            long execTimeL = hour + minu;
+
             double currencyPrice = Double.parseDouble(StringUtil.stringNullHandle(twoArr[1]));
             double currencyNumber = Double.parseDouble(StringUtil.stringNullHandle(twoArr[2]));
-            if (execTime == null || currencyPrice <= 0 || currencyNumber <= 0) {
+            if (execTimeL <= 0 || currencyPrice <= 0 || currencyNumber <= 0) {
                 response.setCode(5);
                 response.setMessage("执行命令内容错误");
                 return response;
@@ -264,7 +271,7 @@ public class BackerTransactionMakeOrderController {
             String orderNo = SystemCommonConfig.TRANSACTION_MAKE_ORDER
                     + DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10)
                     + NumberUtil.createNumberStr(10);
-            Timestamp executeTime = DateUtil.longToTimestamp(executeDate.getTime() + execTime.getTime() + (8 * 60 * 60 * 1000L));
+            Timestamp executeTime = DateUtil.longToTimestamp(executeDate.getTime() + execTimeL);
 
             TransactionMakeOrderDO makeOrder = new TransactionMakeOrderDO();
             makeOrder.setOrderNo(orderNo);
