@@ -1,6 +1,7 @@
 package com.jydp.service;
 
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
+import com.jydp.entity.DTO.TransactionBottomPriceDTO;
 import com.jydp.entity.DTO.TransactionDealPriceDTO;
 import com.jydp.entity.DTO.TransactionDealRedisDTO;
 
@@ -95,6 +96,22 @@ public interface ITransactionDealRedisService {
      * @return 操作成功：返回true，操作失败：返回false
      */
     boolean deleteDealByOrderNo(String orderNo);
+
+    /**
+     * 获取交易大盘 保底价
+     * @param currencyId 币种Id
+     * @param orderNoPrefix 批次号前缀
+     * @return 操作成功：返回数据，操作失败:返回null
+     */
+    TransactionBottomPriceDTO getBottomPrice(int currencyId, String orderNoPrefix);
+
+    /**
+     * 获取交易大盘 当前价
+     * @param currencyId 币种Id
+     * @param orderNoPrefix 批次号前缀
+     * @return 查询成功：返回当前价格，查询失败或当前价格为0：返回0
+     */
+    double getCurrentPrice(int currencyId, String orderNoPrefix);
 
     /**
      * k线图数据拉取
