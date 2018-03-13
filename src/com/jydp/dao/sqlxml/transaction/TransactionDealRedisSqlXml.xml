@@ -112,7 +112,7 @@
 		FROM transaction_deal_redis_tab
 		WHERE currencyId = #{currencyId}
 		AND addTime <![CDATA[ <= ]]> NOW()
-		ORDER BY addTime DESC, id
+		ORDER BY addTime, id
 	</select>
 
 </mapper>

@@ -132,7 +132,7 @@ public class BackerAdsHomepagesController {
         systemAdsHomepagesDO.setAdsTitle(adsTitle);
         systemAdsHomepagesDO.setWebLinkUrl(webLinkUrl);
         systemAdsHomepagesDO.setWapLinkUrl(wapLinkUrl);
-        systemAdsHomepagesDO.setRankNumber(maxRankNumber + 1);
+        systemAdsHomepagesDO.setRankNumber(1);
         systemAdsHomepagesDO.setAddTime(DateUtil.getCurrentTime());
         systemAdsHomepagesDO.setAdsImageUrl(imageUrl);
 

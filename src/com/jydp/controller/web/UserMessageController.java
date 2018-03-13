@@ -443,7 +443,7 @@ public class UserMessageController {
         JsonObjectBO validatePhone = systemValidatePhoneService.validatePhone(userMessage.getPhoneNumber(), validateCode);
         if(validatePhone.getCode() != 1){
             responseJson.setCode(validatePhone.getCode());
-            responseJson.setMessage(validatePhone.getMessage());
+            responseJson.setMessage("原手机" + validatePhone.getMessage());
             return responseJson;
         }
 
@@ -451,7 +451,7 @@ public class UserMessageController {
         validatePhone = systemValidatePhoneService.validatePhone(phone, newVerifyCode);
         if(validatePhone.getCode() != 1){
             responseJson.setCode(validatePhone.getCode());
-            responseJson.setMessage(validatePhone.getMessage());
+            responseJson.setMessage("新手机" + validatePhone.getMessage());
             return responseJson;
         }
 
