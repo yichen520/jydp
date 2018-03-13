@@ -78,10 +78,11 @@ public interface IUserDao {
 
     /**
      * 修改用户信息
-     * @param user 用户信息
+     * @param userAccount 用户账户
+     * @param password 新密码
      * @return 修改成功：返回true，修改失败：返回false
     */
-    boolean updateUser (UserDTO user);
+    boolean updateUser (String userAccount, String password);
 
     /**
      * 忘记支付密码

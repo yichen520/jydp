@@ -164,10 +164,7 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public boolean forgetPwd(String userAccount, String password) {
-        UserDTO user = new UserDTO();
-        user.setUserAccount(userAccount);
-        user.setPassword(password);
-        return userDao.updateUser(user);
+        return userDao.updateUser(userAccount, password);
     }
 
     /**
