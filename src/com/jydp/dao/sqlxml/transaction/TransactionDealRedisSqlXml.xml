@@ -89,4 +89,13 @@
 		DELETE  FROM  transaction_deal_redis_tab
 		WHERE orderNo = #{transaction_deal_redis_tab}
 	</delete>
+
+	<select id="TransactionUserDeal_listTransactionUserDealForKline" parameterType="int" resultType="TransactionDealRedisDTO">
+		SELECT transactionPrice, currencyNumber, addTime
+		FROM transaction_deal_redis_tab
+		WHERE currencyId = #{currencyId}
+		AND addTime <![CDATA[ <= ]]> NOW()
+		ORDER BY addTime DESC, id
+	</select>
+
 </mapper>

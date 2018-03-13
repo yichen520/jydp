@@ -4,6 +4,7 @@ import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.ITransactionDealRedisDao;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.DTO.TransactionDealPriceDTO;
+import com.jydp.entity.DTO.TransactionDealRedisDTO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -213,5 +214,22 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
         } else {
             return  false;
         }
+    }
+
+    /**
+     * k线图数据拉取
+     * @param currencyId 币种Id
+     * @return 操作成功：返回数据集合，操作失败:返回null
+     */
+    public List<TransactionDealRedisDTO> listTransactionUserDealForKline(int currencyId){
+        List<TransactionDealRedisDTO> resultList = null;
+
+        try {
+            resultList = sqlSessionTemplate.selectList("TransactionUserDeal_listTransactionUserDealForKline", currencyId);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return resultList;
     }
 }
