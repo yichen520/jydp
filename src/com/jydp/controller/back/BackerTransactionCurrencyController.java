@@ -562,6 +562,7 @@ public class BackerTransactionCurrencyController {
             sheet1.setColumnWidth(5, 5000);
             sheet1.setColumnWidth(6, 5000);
             sheet1.setColumnWidth(7, 5000);
+            sheet1.setColumnWidth(8, 5000);
 
             int rowNumber = 0;// 行
             // 先列出表头
@@ -583,6 +584,8 @@ public class BackerTransactionCurrencyController {
             cell.setCellValue("上线时间");
             cell = row.createCell(7);
             cell.setCellValue("上线状态");
+            cell = row.createCell(8);
+            cell.setCellValue("上市指导价");
 
             rowNumber++;
 
@@ -618,6 +621,8 @@ public class BackerTransactionCurrencyController {
                 } else if (transactionCurrency.getUpStatus() == 4) {
                     cell.setCellValue("已下线");
                 }
+                cell = row.createCell(8);
+                cell.setCellValue(transactionCurrency.getGuidancePrice());
 
                 rowNumber++;
             }

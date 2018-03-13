@@ -126,7 +126,7 @@ public class UserMessageController {
         return "page/web/userMessage";
     }
 
-    /** 用户登陆密码修改 */
+    /** 用户登录密码修改 */
     @RequestMapping(value = "/updateLogPassword.htm", method= RequestMethod.POST)
     public @ResponseBody JsonObjectBO updateLogPassword(HttpServletRequest request) {
         JsonObjectBO responseJson = new JsonObjectBO();
@@ -154,6 +154,13 @@ public class UserMessageController {
         if(!newPassword.equals(repetitionPassword)){
             responseJson.setCode(3);
             responseJson.setMessage("密码输入不一致！");
+            return responseJson;
+        }
+
+        //新密码与原密码对比
+        if(newPassword.equals(password)){
+            responseJson.setCode(3);
+            responseJson.setMessage("新密码不可与原密码相同");
             return responseJson;
         }
 
@@ -232,6 +239,13 @@ public class UserMessageController {
             return responseJson;
         }
 
+        //新密码与原密码对比
+        if(newPassword.equals(password)){
+            responseJson.setCode(3);
+            responseJson.setMessage("新密码不可与原密码相同");
+            return responseJson;
+        }
+
         //获取用户信息
         UserDO userMessage = userService.getUserByUserId(user.getUserId());
         if(userMessage == null){
@@ -254,7 +268,7 @@ public class UserMessageController {
         UserDO userLog = userService.validateUserLogin(user.getUserAccount(), newPassword);
         if(userLog != null){
             responseJson.setCode(3);
-            responseJson.setMessage("不可与登陆密码相同！");
+            responseJson.setMessage("不可与登录密码相同！");
             return responseJson;
         }
 
@@ -371,7 +385,7 @@ public class UserMessageController {
         UserDO userLog = userService.validateUserLogin(user.getUserAccount(), newPassword);
         if(userLog != null){
             responseJson.setCode(3);
-            responseJson.setMessage("不可与登陆密码相同！");
+            responseJson.setMessage("不可与登录密码相同！");
             return responseJson;
         }
 
@@ -387,7 +401,7 @@ public class UserMessageController {
         return responseJson;
     }
 
-    /** 根据登陆密码修改手机号 */
+    /** 根据登录密码修改手机号 */
     @RequestMapping(value = "/updatePasswordByPhone.htm", method= RequestMethod.POST)
     public @ResponseBody JsonObjectBO updatePasswordByPhone(HttpServletRequest request) {
         JsonObjectBO responseJson = new JsonObjectBO();
@@ -420,9 +434,9 @@ public class UserMessageController {
             return responseJson;
         }
 
-        if(phone.equals(userMessage.getPhoneNumber())){
+        if((areaCode + phone).equals(userMessage.getPhoneAreaCode() + userMessage.getPhoneNumber())){
             responseJson.setCode(3);
-            responseJson.setMessage("新密码不可与原密码相同");
+            responseJson.setMessage("新手机号不可与原手机号相同");
             return responseJson;
         }
         //验证码判定
@@ -441,12 +455,20 @@ public class UserMessageController {
             return responseJson;
         }
 
-        //登陆密码判定
+        //登录密码判定
         password = MD5Util.toMd5(password);
         UserDO userLog = userService.validateUserLogin(user.getUserAccount(), password);
         if(userLog == null){
             responseJson.setCode(3);
             responseJson.setMessage("登录密码错误！");
+            return responseJson;
+        }
+
+        //判定当前手机是否存在重复绑定
+        UserDO userPhone = userService.getUserByPhone(phone);
+        if(userPhone != null){
+            responseJson.setCode(3);
+            responseJson.setMessage("该手机已被绑定");
             return responseJson;
         }
 

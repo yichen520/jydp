@@ -550,6 +550,11 @@
             return;
         }
 
+
+
+
+
+
         if(phonePassword == ""){
             openTips("请输入登录密码");
             return;
