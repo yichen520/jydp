@@ -89,12 +89,7 @@
 
     <update id="TransactionMakeOrder_updateMakeOrderExecuteStatusByOrderNoList" parameterType="java.util.Map">
         UPDATE transaction_make_order_tab
-        <set>
-            executeStatus = #{executeStatus}
-            <if test="executeStatus == 3">
-                ,executeTime = NOW()
-            </if>
-        </set>
+        SET executeStatus = #{executeStatus}
         WHERE executeStatus = #{olExecuteStatus}
           AND orderNo IN
                 <foreach collection="orderNoList" item="item" index="index" open="(" separator="," close=")">
