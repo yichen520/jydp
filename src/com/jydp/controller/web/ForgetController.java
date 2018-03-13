@@ -84,7 +84,14 @@ public class ForgetController {
             return responseJson;
         }
 
-        boolean resetResult = userService.forgetPwd(userAccount, MD5Util.toMd5(password));
+        String pwdEncrypt = MD5Util.toMd5(password);
+        if (pwdEncrypt != null && pwdEncrypt.equals(user.getPayPassword())) {
+            responseJson.setCode(2);
+            responseJson.setMessage("不可与支付密码相同！");
+            return responseJson;
+        }
+
+        boolean resetResult = userService.forgetPwd(userAccount, pwdEncrypt);
         if (resetResult) {
             responseJson.setCode(1);
             responseJson.setMessage("找回密码成功");

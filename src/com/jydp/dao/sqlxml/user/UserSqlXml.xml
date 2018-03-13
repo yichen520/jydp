@@ -137,7 +137,7 @@
 
 	<select id="User_getUserByPhone" parameterType="String" resultType="UserDO">
 		SELECT userId, userAccount, phoneAreaCode, phoneNumber, userBalance,
-			userBalanceLock, accountStatus, payPasswordStatus, addTime
+			userBalanceLock, accountStatus, payPassword, payPasswordStatus, addTime
 		FROM user_tab
 		WHERE phoneNumber = #{phoneNumber}
 	</select>
