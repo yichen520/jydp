@@ -99,4 +99,10 @@ public interface ISystemAdsHomepagesDao {
      * @return 操作成功：返回true，操作失败：返回false
      */
     boolean updateRankNumber(int rank);
+
+    /**
+     * 修改首页广告排位位置（全部后移一位）
+     * @return 修改成功：返回true，修改失败：返回false
+     */
+    boolean updateAdsHomepagesRankNumber();
 }

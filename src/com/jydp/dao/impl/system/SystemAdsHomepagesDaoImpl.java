@@ -266,4 +266,25 @@ public class SystemAdsHomepagesDaoImpl implements ISystemAdsHomepagesDao {
             return true;
         }
     }
+
+    /**
+     * 修改首页广告排位位置（全部后移一位）
+     * @return 修改成功：返回true，修改失败：返回false
+     */
+    public boolean updateAdsHomepagesRankNumber(){
+        int changeNumber = 0;
+
+        try {
+            changeNumber = sqlSessionTemplate.update("SystemAdsHomepages_updateAdsHomepagesRankNumber");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (changeNumber == 0) {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
 }

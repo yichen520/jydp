@@ -44,8 +44,25 @@ public class SystemAdsHomepagesServiceImpl implements ISystemAdsHomepagesService
      * @param systemAdsHomepagesDO 待新增的 首页广告
      * @return 新增成功：返回true，新增失败：返回false
      */
+    @Transactional
     public boolean insertSystemAdsHomePages(SystemAdsHomepagesDO systemAdsHomepagesDO){
-        return systemAdsHomepagesDao.insertSystemAdsHomePages(systemAdsHomepagesDO);
+        int result = systemAdsHomepagesDao.getMaxRankForBack();
+        boolean executeSuccess = false;
+        if(result != 0){
+            executeSuccess = systemAdsHomepagesDao.updateAdsHomepagesRankNumber();
+            if(executeSuccess){
+                executeSuccess = systemAdsHomepagesDao.insertSystemAdsHomePages(systemAdsHomepagesDO);
+            }
+
+        }else{
+            executeSuccess = systemAdsHomepagesDao.insertSystemAdsHomePages(systemAdsHomepagesDO);
+        }
+
+        if (!executeSuccess) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+
+        return executeSuccess;
     }
 
     /**
