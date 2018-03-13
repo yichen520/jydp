@@ -61,15 +61,15 @@
             <label class="popName">证件号</label>
             <span class="number">${identification.userCertNo}</span>
         </p>
-        <p class="phoneInput phoneInputB">
-            <label class="popName" style="line-height: 14px">证件照</label>
+        <p class="phoneInput">
+            <label class="popName">证件照</label>
             <span class="auditImg">
                 <c:forEach items="${identificationImageList}" var="item">
                     <img src="${item.imageUrlFormat}" alt=""/>
                 </c:forEach>
             </span>
         </p>
-        <p class="phoneInput phoneInput_mark">
+        <p class="phoneInput">
             <label class="popName">审核备注</label>
             <span class="mark">${identification.remark}</span>
         </p>
