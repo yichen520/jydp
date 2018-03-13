@@ -45,28 +45,9 @@
         WHERE userId = #{userId}
     </update>
 
-	<update id="User_updateUser" parameterType="UserDO">
+	<update id="User_updateUser" parameterType="java.util.Map">
 		UPDATE user_tab
-		<set>
-			<if test="password != null and password !=''">
-				password = #{password},
-			</if>
-			<if test="payPassword != null and payPassword != ''">
-				payPassword = #{payPassword},
-			</if>
-			<if test="phoneAreaCode != null and phoneAreaCode != ''">
-				phoneAreaCode = #{phoneAreaCode},
-			</if>
-			<if test="phoneNumber != null and phoneNumber != ''">
-				phoneNumber = #{phoneNumber},
-			</if>
-			<if test="userBalance != null">
-				userBalance = #{userBalance},
-			</if>
-			<if test="userBalanceLock != null">
-				userBalanceLock = #{userBalanceLock},
-			</if>
-		</set>
+		SET password = #{password}
 		WHERE userAccount = #{userAccount}
 			  AND accountStatus <![CDATA[ > ]]> 0
 	</update>

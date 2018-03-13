@@ -77,11 +77,6 @@ public class HomePageController {
         //查询所有币行情信息
         List<TransactionUserDealDTO> transactionUserDealDTOList = (List<TransactionUserDealDTO>)redisService.getValue(RedisKeyConfig.HOMEPAGE_CURRENCYMARKET);
 
-        if (transactionUserDealDTOList == null) {
-            //查询所有币行情信息
-            transactionUserDealDTOList = homePageService.getTransactionCurrencyMarketList();
-        }
-
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("transactionUserDealDTOList",transactionUserDealDTOList);
 

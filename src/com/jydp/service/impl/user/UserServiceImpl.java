@@ -164,10 +164,7 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public boolean forgetPwd(String userAccount, String password) {
-        UserDTO user = new UserDTO();
-        user.setUserAccount(userAccount);
-        user.setPassword(password);
-        return userDao.updateUser(user);
+        return userDao.updateUser(userAccount, password);
     }
 
     /**
@@ -278,7 +275,7 @@ public class UserServiceImpl implements IUserService {
     public UserDO register(UserDO userDO){
         //用戶信息新增
         UserDO user = userDao.insertUser(userDO);
-        boolean result = true;
+        boolean excuteSuccess = true;
 
         if (user != null) {
             //查询所有币种
@@ -295,10 +292,10 @@ public class UserServiceImpl implements IUserService {
                     userCurrencyNumDOList.add(userCurrencyNum);
                 }
                 //新增用户币数量记录
-                result = userCurrencyNumService.insertUserCurrencyForWeb(userCurrencyNumDOList);
+                excuteSuccess = userCurrencyNumService.insertUserCurrencyForWeb(userCurrencyNumDOList);
             }
 
-            if (!result) {
+            if (!excuteSuccess) {
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 return null;
             }

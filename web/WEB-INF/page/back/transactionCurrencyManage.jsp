@@ -811,8 +811,8 @@
             success: function (resultData) {
                 var code = resultData.code;
                 var message = resultData.message;
+                extBoo = false;
                 if (code != 1 && message != "") {
-                    extBoo = false;
                     openTips(message);
                     return;
                 }
