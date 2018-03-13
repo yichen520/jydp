@@ -257,7 +257,7 @@ public class TradeCenterController {
         }
 
         //修改session中是否输入过密码标识
-        if(isPwd == 2){
+        if(payPasswordStatus == 2 && isPwd == 1){
             userSession.setIsPwd(2);
             request.getSession().setAttribute("userSession", userSession);
         }
@@ -414,7 +414,7 @@ public class TradeCenterController {
         }
 
         //修改session中是否输入过密码标识
-        if(isPwd == 2){
+        if(payPasswordStatus == 2 && isPwd == 1){
             userSession.setIsPwd(2);
             request.getSession().setAttribute("userSession", userSession);
         }
