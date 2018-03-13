@@ -38,7 +38,8 @@
 
         <p class="phoneInput phoneInputName">
             <label class="popName">姓名<span class="star">*</span></label>
-            <input type="text" id="userName" class="entry" placeholder="您的证件姓名" maxlength="16"/>
+            <input type="text" id="userName" class="entry" placeholder="您的证件姓名" maxlength="16"
+                onkeyup="matchUtil(this, 'rightful')" onblur="matchUtil(this, 'rightful')"/>
         </p>
 
         <p class="phoneInput">
@@ -146,11 +147,6 @@
         userName = userName.replace(regEx, ' ');
         //证件类型是身份证
         if (userCertType == 1) {
-            /*if (userName.length > 8) {
-                addBoo = false;
-                return openTips("身份证姓名最大8位");
-            }*/
-
             var reg = /[^\u4e00-\u9fa5]/.test(userName);
             if(!userName || reg){
                 addBoo = false;
@@ -159,6 +155,14 @@
             if (!IdentityCodeValid(userCertNo)) {
                 addBoo = false;
                 return ;
+            }
+        }
+
+        //证件类型是护照
+        if (userCertType == 2) {
+            if (userCertNo.length < 6) {
+                addBoo = false;
+                return openTips("护照号长度必须大于6位");
             }
         }
         $("#userName").val(userName);
@@ -302,22 +306,9 @@
 
     var mapMatch = {};
     mapMatch['ENumber'] = /[^\a-\z\A-\Z\d]/g;
+    mapMatch['rightful'] = /[%-`~!@#$^&*()=|{}':;",\\\[\].<>/?！￥…（）—【】‘；：”“。，、？]/g;
     function matchUtil(o, str) {
-        mapMatch[str] === true ? matchDouble(o, 2) : o.value = o.value.replace(mapMatch[str], '');
-    }
-    function matchDouble(o, num){
-        var matchStr = /^-?\d+\.?\d{0,num}$/;
-        if(!matchStr.test(o.value)){
-            if(isNaN(o.value)){
-                o.value = '';
-            }else{
-                var n = o.value.indexOf('.');
-                var m = n + num + 1;
-                if(n > -1 && o.value.length > m){
-                    o.value = o.value.substring(0, m);
-                }
-            }
-        }
+        o.value = o.value.replace(mapMatch[str], '');
     }
 </script>
 <script type="text/javascript">

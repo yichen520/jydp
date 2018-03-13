@@ -2,6 +2,7 @@ package com.jydp.controller.web;
 
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.FileDataEntity;
+import com.iqmkj.utils.FileFomat;
 import com.iqmkj.utils.FileWriteLocalUtil;
 import com.iqmkj.utils.FileWriteRemoteUtil;
 import com.iqmkj.utils.LogUtil;
@@ -127,22 +128,29 @@ public class IdentificationController {
             responseJson.setMessage("参数为空！");
             return responseJson;
         }
-        if (userName.length() > 16 || userCertNo.length() > 18) {
+        if (userName.length() > 16 || userCertNo.length() < 6 || userCertNo.length() > 18) {
             responseJson.setCode(3);
             responseJson.setMessage("参数错误！");
             return responseJson;
         }
 
-
         int userCertType = Integer.parseInt(userCertTypeStr);
         if (userCertType == 1) {
-            //姓名，身份证 格式判断
+            //证件类型为身份证：姓名，身份证 格式判断
             JsonObjectBO validateJson = validateNameAndCertNo(userName, userCertNo);
             if (validateJson.getCode() != 1) {
                 responseJson.setCode(validateJson.getCode());
                 responseJson.setMessage(validateJson.getMessage());
                 return responseJson;
             }
+        } else if (userCertType == 2) {
+            //证件类型为护照：非法字符过滤
+            userName = rightfulString(userName);
+            userCertNo = rightfulString(userCertNo);
+        } else {
+            responseJson.setCode(3);
+            responseJson.setMessage("参数错误！");
+            return responseJson;
         }
 
         // 转型为MultipartHttpRequest：图片处理
@@ -351,10 +359,8 @@ public class IdentificationController {
         JsonObjectBO responseJson = new JsonObjectBO();
 
         String fileName = uploadImg.getOriginalFilename();
-        String extUpp = fileName.substring(fileName.lastIndexOf(".") + 1);
-
-        //根据扩展名判断是否为要求的图片
-        if (!extUpp.matches("^[(jpg)|(jpeg)|(png)|(JPG)|(JPEG)|(PNG)]+$")) {
+        boolean isImage = FileFomat.isImage(fileName);
+        if (!isImage) {
             responseJson.setCode(3);
             responseJson.setMessage("请上传jpg、jpeg、png格式的图片");
             return responseJson;
@@ -435,5 +441,61 @@ public class IdentificationController {
         responseJson.setCode(1);
         responseJson.setMessage("验证通过");
         return responseJson;
+    }
+
+    /**
+     * 处理页面传递的特殊字符，将<>()&;:/\'"替换为" "
+     * @param source 处理前的字符串
+     * @return 处理后的字符串
+     */
+    private String rightfulString(String source) {
+        if (source == null) {
+            return "";
+        }
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < source.length(); i++) {
+            char c = source.charAt(i);
+            switch (c) {
+                case '<':
+                    buffer.append(" ");
+                    break;
+                case '>':
+                    buffer.append(" ");
+                    break;
+                case '(':
+                    buffer.append(" ");
+                    break;
+                case ')':
+                    buffer.append(" ");
+                    break;
+                case '&':
+                    buffer.append(" ");
+                    break;
+                case ':':
+                    buffer.append(" ");
+                    break;
+                case ';':
+                    buffer.append(" ");
+                    break;
+                case '\'':
+                    buffer.append(" ");
+                    break;
+                case '\"':
+                    buffer.append(" ");
+                    break;
+                case '\\':
+                    buffer.append(" ");
+                    break;
+                case '/':
+                    buffer.append(" ");
+                    break;
+                case '*':
+                    buffer.append(" ");
+                    break;
+                default:
+                    buffer.append(c);
+            }
+        }
+        return buffer.toString();
     }
 }
