@@ -250,13 +250,13 @@
                     <label class="popName">买入手续费<span class="star">*</span></label>
                     <input type="text" class=" percentage" placeholder="买入手续费，无手续费则填“0”"
                            id="buyFeeAd" name="buyFeeAd" maxlength="18"
-                           onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)"/>%
+                           onkeyup="matchUtil(this, 'double', 1)" onblur="matchUtil(this, 'double', 1)"/>%
                 </p>
                 <p class="popInput">
                     <label class="popName">卖出手续费<span class="star">*</span></label>
                     <input type="text" class="percentage" placeholder="卖出手续费，无手续费则填“0”"
                            id="sellFeeAd" name="sellFeeAd"maxlength="18"
-                           onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)"/>%
+                           onkeyup="matchUtil(this, 'double', 1)" onblur="matchUtil(this, 'double', 1)"/>%
                 </p>
                 <p class="popInput">
                     <label class="popName">上线时间<span class="star">*</span></label>
@@ -307,12 +307,12 @@
                 <p class="popInput">
                     <label class="popName">买入手续费<span class="star">*</span></label>
                     <input type="text" class=" percentage" placeholder="买入手续费，无手续费则填“0”" id="buyFeeUp" name="buyFeeUp"
-                           maxlength="18" onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)"/>%
+                           maxlength="18" onkeyup="matchUtil(this, 'double', 1)" onblur="matchUtil(this, 'double', 1)"/>%
                 </p>
                 <p class="popInput">
                     <label class="popName">卖出手续费<span class="star">*</span></label>
                     <input type="text" class="percentage" placeholder="卖出手续费，无手续费则填“0”" id="sellFeeUp" name="sellFeeUp"
-                           maxlength="18" onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)"/>%
+                           maxlength="18" onkeyup="matchUtil(this, 'double', 1)" onblur="matchUtil(this, 'double', 1)"/>%
                 </p>
                 <p class="popInput" id="inTime">
                     <label class="popName">上线时间<span class="star">*</span></label>
