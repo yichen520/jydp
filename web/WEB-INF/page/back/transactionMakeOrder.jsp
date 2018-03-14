@@ -110,7 +110,7 @@
                             <c:if test="${backer_rolePower['103004'] == 103004}">
                                 <a href="javascript:void(0)" onclick="goDetail('${item.orderNo}')" class="details">查看详情</a>
                             </c:if>
-                            <c:if test="${item.executeStatus == 3 || item.executeStatus == 4}">
+                            <c:if test="${item.executeStatus != 2}">
                                 <c:if test="${backer_rolePower['103003'] == 103003}">
                                     <input type="text" value="删&nbsp;除" class="delete" onfocus="this.blur()" onclick="goDel('${item.orderNo}')"/>
                                 </c:if>
