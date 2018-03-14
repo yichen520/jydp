@@ -24,9 +24,9 @@
             <p class="menuTitle">关于我们</p>
 
             <ul class="levelTwo">
-                <li class="menuInfo"><a href="javascript:;" onclick="showHelpDetail(this)" id="101014">公司简介</a></li>
-                <li class="menuInfo"><a href="javascript:;" onclick="showHelpDetail(this)" id="101013">联系我们</a></li>
-                <li class="menuInfo"><a href="javascript:;" onclick="showHelpDetail(this)" id="101015">充值流程</a></li>
+                <li class="menuInfo"><a href="<%=path %>/userWeb/webHelpCenter/show/101014" id="101014">公司简介</a></li>
+                <li class="menuInfo"><a href="<%=path %>/userWeb/webHelpCenter/show/101013" id="101013">联系我们</a></li>
+                <li class="menuInfo"><a href="<%=path %>/userWeb/webHelpCenter/show/101015" id="101015">充值流程</a></li>
             </ul>
         </li>
 
@@ -34,9 +34,9 @@
             <p class="menuTitle">新手指南</p>
 
             <ul class="levelTwo">
-                <li class="menuInfo"><a href="javascript:;" onclick="showHelpDetail(this)" id="101016">注册指南</a></li>
-                <li class="menuInfo"><a href="javascript:;" onclick="showHelpDetail(this)" id="101017">交易指南</a></li>
-                <li class="menuInfo"><a href="javascript:;" onclick="showHelpDetail(this)" id="101010">注册协议</a></li>
+                <li class="menuInfo"><a href="<%=path %>/userWeb/webHelpCenter/show/101016" id="101016">注册指南</a></li>
+                <li class="menuInfo"><a href="<%=path %>/userWeb/webHelpCenter/show/101017" id="101017">交易指南</a></li>
+                <li class="menuInfo"><a href="<%=path %>/userWeb/webHelpCenter/show/101010" id="101010">注册协议</a></li>
             </ul>
         </li>
     </ul>
@@ -45,10 +45,6 @@
         ${systemHelpDO.content}
     </div>
 </div>
-
-<form id="helpForm" action="<%=path %>/userWeb/webHelpCenter/show" method="post">
-    <input type="hidden" id="helpId" name="helpId">
-</form>
 
 <div id="helpFooter"></div>
 <div id="footer"></div>
@@ -74,10 +70,6 @@
         }
     }
 
-    function showHelpDetail(obj) {
-        $("#helpId").val(obj.id);
-        $("#helpForm").submit();
-    }
 </script>
 
 </body>

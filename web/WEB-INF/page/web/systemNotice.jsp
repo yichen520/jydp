@@ -29,7 +29,7 @@
         <div class="main">
             <div class="list">
                 <c:forEach items="${systemNoticeList}" var="item">
-                    <a href="javascript:;" class="notice" onclick="showDetail('${item.id}')">
+                    <a href="<%=path %>/userWeb/webSystemNotice/showNoticeDetail/${item.id}" class="notice" >
                         <c:if test="${item.noticeUrl != '1'}">
                             <img src="${item.noticeUrlFormat}" class="noticeImg" />
                         </c:if>
@@ -49,12 +49,6 @@
             <form id="queryForm" action="<%=path %>/userWeb/webSystemNotice/show" method="post">
                 <input type="hidden" id="queryPageNumber" name="pageNumber">
             </form>
-
-            <form id="detailForm" action="<%=path %>/userWeb/webSystemNotice/showNoticeDetail" method="post">
-                <input type="hidden" id="noticeId" name="noticeId">
-                <input type="hidden" id="detailPageNumber" name="pageNumber">
-            </form>
-
         </div>
     </div>
 </div>
@@ -74,13 +68,6 @@
             openTips(message);
             return false;
         }
-    }
-
-    //详情
-    function showDetail(id) {
-        $("#noticeId").val(id);
-        $("#detailPageNumber").val('${pageNumber}');
-        $("#detailForm").submit();
     }
 </script>
 </body>

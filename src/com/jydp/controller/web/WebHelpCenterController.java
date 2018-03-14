@@ -7,7 +7,9 @@ import com.jydp.service.ISystemHelpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,10 +27,8 @@ public class WebHelpCenterController {
     private ISystemHelpService systemHelpService;
 
     /** 显示帮助中心页面 */
-    @RequestMapping("/show")
-    public String show(HttpServletRequest request) {
-        String helpIdStr = StringUtil.stringNullHandle(request.getParameter("helpId"));
-
+    @RequestMapping(value = "/show/{helpIdStr}", method = RequestMethod.GET)
+    public String show(HttpServletRequest request, @PathVariable String helpIdStr) {
         int helpId = SystemHelpConfig.COMPANY_SYNOPSIS;
         if (StringUtil.isNotNull(helpIdStr)) {
             helpId = Integer.parseInt(helpIdStr);
