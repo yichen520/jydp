@@ -32,8 +32,7 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
      */
     @Override
     public List<TransactionUserDealVO> getTransactionUserDeallist(int userId, int pageNumber, int pageSize) {
-        List<TransactionUserDealVO> transactionUserDealDOList = transactionUserDealDao.getTransactionUserDeallist(userId, pageNumber, pageSize);
-        return transactionUserDealDOList;
+        return transactionUserDealDao.getTransactionUserDeallist(userId, pageNumber, pageSize);
     }
 
     /**
