@@ -183,7 +183,7 @@
                                     '<td class="money">' + parseFloat(transactionUserDeal.sellOnePrice).toString() + '</td>' +
                                     '<td class="money">' + parseFloat(transactionUserDeal.volume).toString() + '</td>' +
                                     '<td class="uplift '+classStyle+'">' + symbol + parseFloat(transactionUserDeal.change).toString() + '%</td>' +
-                                    '<td class="operate"><a href="javascript:void(0)" onclick="toTradeCenter('+transactionUserDeal.currencyId+')">去交易</a></td>' +
+                                    '<td class="operate"><a href="<%=path%>/userWeb/tradeCenter/show/'+transactionUserDeal.currencyId+'">去交易</a></td>' +
                                     '</tr>');
                             }
                         }
