@@ -22,7 +22,6 @@
 <header id="header"></header>
 <div id="menu"></div>
 
-
 <div class="content">
     <div class="top">
         <!-------轮播图----------->
@@ -66,7 +65,7 @@
                 <c:if test="${transactionUserDeal.change < 0 }">
                     <td class="uplift minus"><fmt:formatNumber type="number" value="${transactionUserDeal.change}" groupingUsed="FALSE" maxFractionDigits="2"/>%</td>
                 </c:if>
-                <td class="operate"><a href="javascript:void(0)" onclick="toTradeCenter(${transactionUserDeal.currencyId})">去交易</a></td>
+                <td class="operate"><a href="<%=path%>/userWeb/tradeCenter/show/${transactionUserDeal.currencyId}">去交易</a></td>
             </tr>
         </c:forEach>
     </table>
@@ -80,7 +79,7 @@
             <ul class="list">
                 <c:forEach items="${systemNoticeDOList}" var="systemNotice">
                     <li class="listInfo">
-                        <a href="javascript:void(0)" onclick="noticeSubmit(${systemNotice.id})" class="link">
+                        <a href="<%=path%>/userWeb/webSystemNotice/showNoticeDetail/${systemNotice.id}" class="link">
                             <span class="noticeTitle">【<span>公告</span>】${systemNotice.noticeTitle}</span>
                             <span class="time"><fmt:formatDate type="time" value="${systemNotice.addTime}" pattern="yyyy-MM-dd"></fmt:formatDate></span>
                         </a>
@@ -97,7 +96,7 @@
             <ul class="list">
                 <c:forEach items="${systemHotDOList}" var="hotTopic">
                     <li class="listInfo">
-                        <a href="javascript:void(0)" onclick="hotTopicSubmit(${hotTopic.id})" class="link">
+                        <a href="<%=path%>/userWeb/webSystemHot/showHotDetail/${hotTopic.id}" class="link">
                             <span class="noticeTitle">【<span>热门</span>】${hotTopic.noticeTitle}</span>
                             <span class="time"><fmt:formatDate type="time" value="${hotTopic.addTime}" pattern="yyyy-MM-dd"></fmt:formatDate></span>
                         </a>
@@ -117,23 +116,15 @@
             </c:if>
             <c:if test="${partner.webLinkUrl == ''}">
                 <a class="link">
-                    <p class="company"><img src="${partner.businessesImageUrlFormat}" /><span>${partner.businessesName}</span></p>
+                    <p class="company" style="cursor:default">
+                        <img src="${partner.businessesImageUrlFormat}" /><span>${partner.businessesName}</span>
+                    </p>
                 </a>
             </c:if>
         </c:forEach>
     </div>
 </div>
-<form target="_blank" id="noticeForm" action="<%=path %>/userWeb/webSystemNotice/showNoticeDetail" method="post">
-    <input type="hidden" name="noticeId" id="noticeId">
-</form>
 
-<form target="_blank" id="hotTopicForm" action="<%=path %>/userWeb/webSystemHot/showHotDetail" method="post">
-    <input type="hidden" name="hotId" id="hotId">
-</form>
-
-<form id="tradeCenterForm" action="<%=path %>/userWeb/tradeCenter/show" method="post">
-    <input id="currencyId" name="currencyId" type="hidden"/>
-</form>
 <div id="helpFooter"></div>
 <div id="footer"></div>
 
@@ -202,23 +193,6 @@
         });
     }
 
-    //跳转至系统公告
-    function noticeSubmit(noticeId){
-        $("#noticeId").val(noticeId);
-        $("#noticeForm").submit();
-    }
-
-    //跳转至热门话题
-    function hotTopicSubmit(hotId) {
-        $("#hotId").val(hotId);
-        $("#hotTopicForm").submit();
-    }
-
-    //跳转至交易中心
-    function toTradeCenter(currencyId) {
-        $("#currencyId").val(currencyId);
-        $("#tradeCenterForm").submit();
-    }
 </script>
 
 </body>
