@@ -8,7 +8,7 @@ package config;
 public class SljzConfig {
 
     /** 签名秘钥 */
-    public static final String SIGN_SECRET_KEY = "123456";
+    public static final String SIGN_SECRET_KEY = "syjys@123456";
 
     /** 提供当前价和保底价的币种Id */
     public static final int CURRENCY_ID = 45;

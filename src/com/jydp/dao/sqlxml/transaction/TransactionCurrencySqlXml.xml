@@ -84,6 +84,13 @@
         WHERE currencyName = #{currencyName}
     </select>
 
+    <select id="TransactionCurrency_getTransactionCurrencyByCurrencyShortName" parameterType="java.lang.String" resultType="TransactionCurrencyVO">
+        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, guidancePrice,
+            paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
+        FROM transaction_currency_tab
+        WHERE currencyShortName = #{currencyShortName}
+    </select>
+
     <select id="TransactionCurrency_countTransactionCurrencyForBack" parameterType="java.util.Map" resultType="int">
         SELECT  COUNT(currencyId)
         FROM transaction_currency_tab
