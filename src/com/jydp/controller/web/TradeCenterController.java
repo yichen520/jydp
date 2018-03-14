@@ -20,6 +20,7 @@ import config.RedisKeyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -68,13 +69,10 @@ public class TradeCenterController {
 
 
     /** 展示 交易中心页面 */
-    @RequestMapping(value = "/show")
-    public String show(HttpServletRequest request) {
+    @RequestMapping(value = "/show/{currencyIdStr}", method = RequestMethod.GET)
+    public String show(HttpServletRequest request, @PathVariable String currencyIdStr) {
         UserDealCapitalMessageVO userDealCapitalMessage = new UserDealCapitalMessageVO();
         List<TransactionPendOrderVO> transactionPendOrderList = null;
-
-        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
-
         if (!StringUtil.isNotNull(currencyIdStr)) {
             List<TransactionCurrencyVO> transactionCurrency = transactionCurrencyService.getOnlineAndSuspensionCurrencyForWeb();
             if(transactionCurrency == null || transactionCurrency.size() <= 0 ){
@@ -84,6 +82,14 @@ public class TradeCenterController {
         }
 
         int currencyId = Integer.parseInt(currencyIdStr);
+
+        //获取币种信息
+        TransactionCurrencyVO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
+        if(transactionCurrency == null) {
+            return "redirect:/userWeb/homePage/show";
+        }
+        transactionCurrency.setBuyFee(transactionCurrency.getBuyFee() * 100);
+        transactionCurrency.setSellFee(transactionCurrency.getSellFee() * 100);
 
         //获取用户交易中心相关资产信息
         UserSessionBO user = UserWebInterceptor.getUser(request);
@@ -112,12 +118,7 @@ public class TradeCenterController {
             request.setAttribute("payPasswordStatus", userDO.getPayPasswordStatus());
         }
 
-        //获取币种信息
-        TransactionCurrencyVO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
-        if(transactionCurrency != null){
-            transactionCurrency.setBuyFee(transactionCurrency.getBuyFee() * 100);
-            transactionCurrency.setSellFee(transactionCurrency.getSellFee() * 100);
-        }
+
         //获取币种基准信息
         StandardParameterVO standardParameter = transactionCurrencyService.listTransactionCurrencyAll(currencyId);
         //获取成交记录
