@@ -117,7 +117,9 @@
             </c:if>
             <c:if test="${partner.webLinkUrl == ''}">
                 <a class="link">
-                    <p class="company"><img src="${partner.businessesImageUrlFormat}" /><span>${partner.businessesName}</span></p>
+                    <p class="company" style="cursor:default">
+                        <img src="${partner.businessesImageUrlFormat}" /><span>${partner.businessesName}</span>
+                    </p>
                 </a>
             </c:if>
         </c:forEach>
