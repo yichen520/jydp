@@ -541,9 +541,9 @@
             exportDataBoo = true;
         }
 
-        var pageNumber = $("#pageNumber").val();
-        var startTime = $("#startTime").val();
-        var endTime = $("#endTime").val();
+        var pageNumber = $("#queryPageNumber").val();
+        var startTime = $("#start").val();
+        var endTime = $("#end").val();
         var userAccount = $("#userAccount").val();
         var phoneAreaCode = $("#phoneAreaCode").val();
         var phoneNumber = $("#phoneNumber").val();
