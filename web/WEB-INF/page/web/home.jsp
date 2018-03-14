@@ -29,7 +29,12 @@
         <div class="swiper-container">
             <div class="swiper-wrapper">
                 <c:forEach items="${systemAdsHomepagesDOList}" var="homePageAds">
-                    <a target="_blank" href="${homePageAds.webLinkUrl}" class="swiper-slide"><img src="${homePageAds.adsImageUrlFormat}" /></a>
+                    <c:if test="${homePageAds.webLinkUrl != ''}">
+                        <a target="_blank" href="${homePageAds.webLinkUrl}" class="swiper-slide"><img src="${homePageAds.adsImageUrlFormat}" /></a>
+                    </c:if>
+                    <c:if test="${homePageAds.webLinkUrl == ''}">
+                        <a class="swiper-slide"><img src="${homePageAds.adsImageUrlFormat}" /></a>
+                    </c:if>
                 </c:forEach>
             </div>
             <div class="swiper-pagination"></div>

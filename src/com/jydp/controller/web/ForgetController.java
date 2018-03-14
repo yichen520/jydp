@@ -4,6 +4,7 @@ import com.iqmkj.utils.MD5Util;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.user.UserDO;
+import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.ISystemValidatePhoneService;
 import com.jydp.service.IUserService;
 import config.PhoneAreaConfig;
@@ -95,6 +96,7 @@ public class ForgetController {
         if (resetResult) {
             responseJson.setCode(1);
             responseJson.setMessage("找回密码成功");
+            UserWebInterceptor.loginOut(request);
         } else {
             responseJson.setCode(2);
             responseJson.setMessage("找回密码失败");
