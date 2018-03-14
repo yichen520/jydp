@@ -955,7 +955,7 @@
         var currencyId = $("#cucyId").val();
         if (currencyId == null || currencyId == "") {
             pendBoo = false;
-            openTips("参数获取错误，请刷新页面重试");
+            //openTips("参数获取错误，请刷新页面重试");
             return;
         }
 
@@ -970,7 +970,7 @@
             success: function (result) {
                 if(result.code != 1 && result.message != null) {
                     pendBoo = false;
-                    openTips(result.message);
+                    //openTips(result.message);
                     if(result.code == 5){
                         setTimeout("returnWebHome()",2000 );
                     }
@@ -1019,7 +1019,7 @@
                 pendBoo = false;
             }, error: function () {
                 pendBoo = false;
-                openTips("获取失败,请重新刷新页面后重试");
+                //openTips("获取失败,请重新刷新页面后重试");
             }
         });
 
@@ -1038,7 +1038,7 @@
         var currencyId = $("#cucyId").val();
         if (currencyId == null || currencyId == "") {
             dealBoo = false;
-            openTips("参数获取错误，请刷新页面重试")
+            //openTips("参数获取错误，请刷新页面重试")
             return;
         }
 
@@ -1053,7 +1053,7 @@
             success: function (result) {
                 if(result.code != 1 && result.message != null) {
                     dealBoo = false;
-                    openTips(result.message);
+                    //openTips(result.message);
                     if(result.code == 5){
                         setTimeout("returnWebHome()",2000 );
                     }
@@ -1094,7 +1094,7 @@
                 dealBoo = false;
             }, error: function () {
                 dealBoo = false;
-                openTips("获取失败,请重新刷新页面后重试");
+                //openTips("获取失败,请重新刷新页面后重试");
             }
         });
 
@@ -1193,7 +1193,7 @@
         var cucyId = $("#cucyId").val();
         if (cucyId == null || cucyId == "") {
             entrustBoo = false;
-            openTips("参数获取错误，请刷新页面重试")
+            //openTips("参数获取错误，请刷新页面重试")
             return;
         }
 
@@ -1209,7 +1209,7 @@
             success: function (result) {
                 if (result.code != 1 && result.message != null) {
                     entrustBoo = false;
-                    openTips(result.message);
+                    //openTips(result.message);
                     return;
                 }
                 var data = result.data;
@@ -1255,7 +1255,7 @@
                 entrustBoo = false;
             }, error: function () {
                 entrustBoo = false;
-                openTips("获取失败,请重新刷新页面后重试");
+                //openTips("获取失败,请重新刷新页面后重试");
             }
         });
     }
@@ -1284,7 +1284,7 @@
                 var code = resultData.code;
                 var message = resultData.message;
                 if (code != 1 && message != "") {
-                    openTips(message);
+                    //openTips(message);
                     return;
                 }
 
@@ -1316,7 +1316,7 @@
 
             error: function () {
                 gainDealPriceBoo = false;
-                openTips("数据加载出错，请稍候重试");
+                //openTips("数据加载出错，请稍候重试");
             }
         });
 
@@ -1345,7 +1345,7 @@
                 var code = resultData.code;
                 var message = resultData.message;
                 if (code != 1 && message != "") {
-                    openTips(message);
+                    //openTips(message);
                     return;
                 }
 
@@ -1366,7 +1366,7 @@
 
             error: function () {
                 userMessageBoo = false;
-                openTips("数据加载出错，请稍候重试");
+                //openTips("数据加载出错，请稍候重试");
             }
         });
     }

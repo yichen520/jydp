@@ -102,22 +102,10 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
         }
     }
 
-    /** 每日开盘基准信息重置(今日涨跌,今日最高价,今日最低价,昨日收盘价，当日成交量)*/
+    /** 每日开盘基准信息重置(昨日收盘价)*/  //今日涨跌,今日最高价,今日最低价,当日成交量(待定)
     public void updateWeeHoursBasisOfPrice(){
         Timestamp date;
         double quantity = 0;
-        //最高最低价取昨日收盘价
-/*        Timestamp nowDate = DateUtil.getCurrentTime();
-        List<TransactionDealPriceDTO> nowLastPrice = transactionDealRedisService.getNowLastPrice(nowDate);  //昨日收盘价
-        if(nowLastPrice != null && nowLastPrice.size() > 0){
-            for(TransactionDealPriceDTO transactionDealPrice : nowLastPrice){
-                redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE + transactionDealPrice.getCurrencyShortName(),
-                        transactionDealPrice.getTransactionPrice());
-                redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE + transactionDealPrice.getCurrencyShortName(),
-                        transactionDealPrice.getTransactionPrice());
-            }
-
-        }*/
 
         Timestamp getDate = DateUtil.getCurrentTime();
         List<TransactionDealPriceDTO> closing = transactionDealRedisService.getNowLastPrice(getDate);
@@ -144,7 +132,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
         }
 
         //获取币种信息
-        List<TransactionCurrencyVO> transactionUserDeal= transactionCurrencyService.getTransactionCurrencyListForWeb();
+/*        List<TransactionCurrencyVO> transactionUserDeal= transactionCurrencyService.getTransactionCurrencyListForWeb();
         if(transactionUserDeal != null && transactionUserDeal.size() > 0) {
             if(closing == null || closing.size() <= 0){
                 for(TransactionCurrencyDO transactionUser : transactionUserDeal){
@@ -165,6 +153,6 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                     }
                 }
             }
-        }
+        }*/
     }
 }

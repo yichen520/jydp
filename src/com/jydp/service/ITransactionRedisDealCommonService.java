@@ -11,7 +11,7 @@ public interface ITransactionRedisDealCommonService {
     /** 将成交记录放进redis */
     void userDealForRedis();
 
-    /** 组装基准信息参数并存入redis (当前交易价,今日涨跌,今日最高价,今日最低价,今日成交量)*/
+    /** 每日开盘基准信息重置(昨日收盘价)*/  //今日涨跌,今日最高价,今日最低价,当日成交量(待定)
     void standardMessageForRedis();
 
     /** 每日凌晨更新最高与最低价更新 */
