@@ -800,6 +800,11 @@
                 return;
             }
 
+            if(sellNum <= 0){
+                openTips("数量不能小于等于0");
+                return;
+            }
+
             if((sellPwd == null || sellPwd == "") && isPwd == 1){
                 openTips("交易密码不能为空");
                 return;
