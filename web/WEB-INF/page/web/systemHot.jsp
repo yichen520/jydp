@@ -29,7 +29,7 @@
         <div class="main">
             <div class="list">
                 <c:forEach items="${systemHotList}" var="item">
-                    <a href="javascript:;" class="notice" onclick="showDetail('${item.id}')">
+                    <a href="<%=path %>/userWeb/webSystemHot/showHotDetail/${item.id}" class="notice" >
                         <c:if test="${item.noticeUrl != '1'}">
                             <img src="${item.noticeUrlFormat}" class="noticeImg" />
                         </c:if>
@@ -48,11 +48,6 @@
 
             <form id="queryForm" action="<%=path %>/userWeb/webSystemHot/show" method="post">
                 <input type="hidden" id="queryPageNumber" name="pageNumber">
-            </form>
-
-            <form id="detailForm" action="<%=path %>/userWeb/webSystemHot/showHotDetail" method="post">
-                <input type="hidden" id="hotId" name="hotId">
-                <input type="hidden" id="detailPageNumber" name="pageNumber">
             </form>
         </div>
     </div>
@@ -74,13 +69,6 @@
             openTips(message);
             return false;
         }
-    }
-
-    //详情
-    function showDetail(id) {
-        $("#hotId").val(id);
-        $("#detailPageNumber").val('${pageNumber}');
-        $("#detailForm").submit();
     }
 </script>
 

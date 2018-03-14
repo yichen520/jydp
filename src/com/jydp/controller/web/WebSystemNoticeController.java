@@ -6,7 +6,9 @@ import com.jydp.service.ISystemNoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -64,10 +66,8 @@ public class WebSystemNoticeController {
     }
 
     /**  打开系统公告详情页面 */
-    @RequestMapping(value = "/showNoticeDetail")
-    public String showNoticeDetail(HttpServletRequest request) {
-        String idStr = StringUtil.stringNullHandle(request.getParameter("noticeId"));
-
+    @RequestMapping(value = "/showNoticeDetail/{idStr}", method = RequestMethod.GET)
+    public String showNoticeDetail(HttpServletRequest request, @PathVariable String idStr) {
         if(!StringUtil.isNotNull(idStr)){
             showList(request);
             request.setAttribute("code", 3);

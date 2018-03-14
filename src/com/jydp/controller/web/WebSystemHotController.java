@@ -6,7 +6,9 @@ import com.jydp.service.ISystemHotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -64,10 +66,8 @@ public class WebSystemHotController {
     }
 
     /**  打开热门话题详情页面 */
-    @RequestMapping("/showHotDetail")
-    public String showHotDetail(HttpServletRequest request) {
-        String idStr = StringUtil.stringNullHandle(request.getParameter("hotId"));
-
+    @RequestMapping(value = "/showHotDetail/{idStr}", method = RequestMethod.GET)
+    public String showHotDetail(HttpServletRequest request, @PathVariable String idStr) {
         if(!StringUtil.isNotNull(idStr)){
             showList(request);
             request.setAttribute("code", 3);
