@@ -94,6 +94,7 @@
 		FROM transaction_deal_redis_tab
 		WHERE currencyId = #{currencyId}
 		  AND orderNo LIKE CONCAT(#{orderNoPrefix}, '%')
+		  AND addTime <![CDATA[ <= ]]> NOW()
 	</select>
 
 	<select id="TransactionDealRedis_getCurrentPrice" parameterType="java.util.Map" resultType="double">
