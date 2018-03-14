@@ -58,12 +58,13 @@
                        $(".coinLink").empty();
                        $.each(transactionCurrencyList,function (index,currency) {
                            $(".coinLink").append(
-                                           '<li class="link_trade">'+
-                                               '<a href="javascript:void(0)" onclick="toTradeCenter('+currency.currencyId+')">'+
-                                               '<img src="'+currency.currencyImgUrl+'" class="tradeIcon" />'+
-                                               '<span class="menu_coin">'+currency.currencyName+'('+currency.currencyShortName+')'+'</span>'+
-                                               '</a>'+
-                                           '</li>'
+                               '<li class="link_trade">'+
+                               '<a href="<%=path %>/userWeb/tradeCenter/show/' + currency.currencyId + '">'+
+                               '<img src="'+currency.currencyImgUrl+'" class="tradeIcon" />'+
+                               '<span class="menu_coin">'+currency.currencyName+'('+currency.currencyShortName+')'+'</span>'+
+                               '</a>'+
+                               '</li>'
+
                            );
                        })
                    }
