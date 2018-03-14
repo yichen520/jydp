@@ -84,7 +84,7 @@
                         <c:if test="${item.typeHandle == 2}">
                             <td class="type">减少</td>
                         </c:if>
-                        <td class="money"><fmt:formatNumber type="number" value="${item.userBalance }" maxFractionDigits="2"/></td>
+                        <td class="money"><fmt:formatNumber type="number" value="${item.userBalance }" maxFractionDigits="4"/></td>
                         <td class="mark">${item.remarks }</td>
                         <td class="account">${item.backerAccount }</td>
                         <td class="ip">${item.ipAddress }</td>
