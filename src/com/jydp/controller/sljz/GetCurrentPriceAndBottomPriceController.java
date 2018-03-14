@@ -2,6 +2,7 @@ package com.jydp.controller.sljz;
 
 import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.BigDecimalUtil;
+import com.iqmkj.utils.NumberUtil;
 import com.iqmkj.utils.SignatureUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.DTO.TransactionBottomCurrentPriceDTO;
@@ -93,10 +94,11 @@ public class GetCurrentPriceAndBottomPriceController {
         String div = BigDecimalUtil.div(bottomPriceDTO.getTotalPrice(), bottomPriceDTO.getTotalNumber(), 4);
         double v = Double.parseDouble(div);
         double bottomPrice = BigDecimalUtil.mul(v, 0.7);
-
+        bottomPrice = NumberUtil.doubleFormat(bottomPrice, 4);
 
         double currentPrice = transactionDealRedisService.
                 getCurrentPrice(transactionCurrency.getCurrencyId(), SystemCommonConfig.TRANSACTION_MAKE_ORDER);
+        currentPrice = NumberUtil.doubleFormat(currentPrice, 4);
 
         TransactionBottomCurrentPriceDTO bottomCurrentPrice = new TransactionBottomCurrentPriceDTO();
         bottomCurrentPrice.setCurrencyShortName(transactionCurrency.getCurrencyShortName());
