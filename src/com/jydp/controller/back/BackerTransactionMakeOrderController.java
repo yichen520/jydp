@@ -23,6 +23,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -303,8 +304,8 @@ public class BackerTransactionMakeOrderController {
     /**
      * 查看详情
      */
-    @RequestMapping("/showDetail.htm")
-    public String showDetail(HttpServletRequest request) {
+    @RequestMapping("/showDetail/{detailNo}")
+    public String showDetail(HttpServletRequest request, @PathVariable("detailNo") String orderNoStr) {
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
         if (backerSession == null) {
             request.setAttribute("code", 4);
@@ -319,8 +320,6 @@ public class BackerTransactionMakeOrderController {
             request.getSession().setAttribute("backer_rolePowerId", 0);
             return "page/back/index";
         }
-
-        String orderNoStr = StringUtil.stringNullHandle(request.getParameter("detailNo"));
 
         if (!StringUtil.isNotNull(orderNoStr)) {
             List(request);
