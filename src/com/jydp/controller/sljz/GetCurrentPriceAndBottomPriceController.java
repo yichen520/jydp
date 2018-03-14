@@ -90,7 +90,7 @@ public class GetCurrentPriceAndBottomPriceController {
             return responseJson;
         }
 
-        //保底价=总价/总数量*0.7
+        //保底价=总价/总数量*0.8
         String div = BigDecimalUtil.div(bottomPriceDTO.getTotalPrice(), bottomPriceDTO.getTotalNumber(), 8);
         double v = Double.parseDouble(div);
         double bottomPrice = BigDecimalUtil.mul(v, 0.8);
