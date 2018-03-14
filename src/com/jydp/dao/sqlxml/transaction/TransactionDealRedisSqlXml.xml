@@ -90,7 +90,7 @@
 	</delete>
 
 	<select id="TransactionDealRedis_getBottomPrice" parameterType="java.util.Map" resultType="TransactionBottomPriceDTO">
-		SELECT SUM(currencyTotalPrice) AS totalPrice, SUM(currencyNumber) AS totalNumber, currencyId
+		SELECT SUM(transactionPrice * currencyNumber) AS totalPrice, SUM(currencyNumber) AS totalNumber, currencyId
 		FROM transaction_deal_redis_tab
 		WHERE currencyId = #{currencyId}
 		  AND orderNo LIKE CONCAT(#{orderNoPrefix}, '%')
