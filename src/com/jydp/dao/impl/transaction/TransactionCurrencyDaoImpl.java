@@ -136,6 +136,23 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
     }
 
     /**
+     * 根据币种简称获取交易币种
+     * @param currencyShortName  货币简称
+     * @return  操作成功：返回交易币种，操作失败：返回null
+     */
+    public TransactionCurrencyVO getTransactionCurrencyByCurrencyShortName(String currencyShortName){
+        TransactionCurrencyVO transactionCurrency = null;
+
+        try {
+            transactionCurrency = sqlSessionTemplate.selectOne("TransactionCurrency_getTransactionCurrencyByCurrencyShortName", currencyShortName);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return  transactionCurrency;
+    }
+
+    /**
      * 查询币种个数（后台）
      * @param currencyName  货币名称(币种)
      * @param paymentType  交易状态,1:正常，2:涨停，3:跌停，4:停牌

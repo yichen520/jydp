@@ -212,12 +212,13 @@
 
                     <div class="scroll">
                         <ul class="sellRecord fall" id="orderSellReId">
+                            <c:set var="startIndex" value="${fn:length(transactionPendOrderSellList)-1 }"></c:set>
                             <c:forEach items="${transactionPendOrderSellList}" var="item" varStatus="status">
                                 <li class="recordInfo">
                                     <span class="rangeType">卖${fn:length(transactionPendOrderSellList) - status.index}</span>
-                                    <span class="rangePrice"><fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2" groupingUsed="FALSE"/></span>
-                                    <span class="rangeNum"><fmt:formatNumber type="number" value="${item.restNumber}" maxFractionDigits="4" groupingUsed="FALSE"/></span>
-                                    <span class="rangeAmount"><fmt:formatNumber type="number" value="${item.sumPrice}" maxFractionDigits="6" groupingUsed="FALSE"/></span>
+                                    <span class="rangePrice"><fmt:formatNumber type="number" value="${transactionPendOrderSellList[startIndex - status.index].pendingPrice}" maxFractionDigits="2" groupingUsed="FALSE"/></span>
+                                    <span class="rangeNum"><fmt:formatNumber type="number" value="${transactionPendOrderSellList[startIndex - status.index].restNumber}" maxFractionDigits="4" groupingUsed="FALSE"/></span>
+                                    <span class="rangeAmount"><fmt:formatNumber type="number" value="${transactionPendOrderSellList[startIndex - status.index].sumPrice}" maxFractionDigits="6" groupingUsed="FALSE"/></span>
                                 </li>
                             </c:forEach>
                         </ul>
@@ -987,7 +988,7 @@
                 //卖出挂单
                 var newChildSell= "";
                 $("#orderSellReId").empty() ;
-                for (var i=0;i<=orderSellList.length-1;i++) {
+                for (var i=orderSellList.length-1;i>=0;i--) {
                     var orderSell = orderSellList[i];
 
                     var pendingPrice = orderSell.pendingPrice;  //单价
@@ -995,7 +996,7 @@
                     var sumPrice = orderSell.sumPrice;  //总额
 
                     newChildSell += '<li class="recordInfo">' +
-                                        '<span class="rangeType">卖' + (orderSellList.length-i) + '</span>' +
+                                        '<span class="rangeType">卖' + (i+1) + '</span>' +
                                         '<span class="rangePrice">' + pendingPrice + '</span>' +
                                         '<span class="rangeNum">' + pendingNumber + '</span>' +
                                         '<span class="rangeAmount">' + sumPrice + '</span>' +

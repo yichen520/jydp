@@ -129,6 +129,7 @@ input:-webkit-autofill{
 }
 .mark{
     display: inline-block;
+    vertical-align: top;
     width: 260px;
     font-size: 14px;
     color: #999999;

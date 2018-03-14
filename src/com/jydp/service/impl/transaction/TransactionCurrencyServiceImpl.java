@@ -2,7 +2,6 @@ package com.jydp.service.impl.transaction;
 
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.NumberUtil;
-import com.iqmkj.utils.StringUtil;
 import com.jydp.dao.ITransactionCurrencyDao;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DTO.TransactionCurrencyBasicDTO;
@@ -12,7 +11,6 @@ import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.service.IRedisService;
 import com.jydp.service.ITransactionCurrencyService;
 import com.jydp.service.ITransactionDealRedisService;
-import com.jydp.service.ITransactionRedisDealCommonService;
 import config.RedisKeyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.List;
 
 /**
  * 交易币种
@@ -194,6 +192,15 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      */
     public TransactionCurrencyVO getTransactionCurrencyByCurrencyName(String currencyName){
         return transactionCurrencyDao.getTransactionCurrencyByCurrencyName(currencyName);
+    }
+
+    /**
+     * 根据币种简称获取交易币种
+     * @param currencyShortName  货币简称
+     * @return  操作成功：返回交易币种，操作失败：返回null
+     */
+    public TransactionCurrencyVO getTransactionCurrencyByCurrencyShortName(String currencyShortName){
+        return transactionCurrencyDao.getTransactionCurrencyByCurrencyShortName(currencyShortName);
     }
 
     /**
