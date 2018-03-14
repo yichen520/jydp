@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -43,6 +44,21 @@ public class WebCustomerServiceController {
         List<UserFeedbackDO> userFeedbackList = null;
         if (totalNumber > 0) {
             userFeedbackList = userFeedbackService.listUserFeedbackForUser(pageNumber, pageSize);
+        }
+
+        if (userFeedbackList != null && userFeedbackList.size() > 0) {
+            for (UserFeedbackDO userFeedback : userFeedbackList) {
+                String feedbackContent = userFeedback.getFeedbackContent();
+                String handleContent = userFeedback.getHandleContent();
+                if (StringUtil.isNotNull(handleContent)) {
+                    handleContent = HtmlUtils.htmlEscape(handleContent);
+                    userFeedback.setFeedbackTitle(handleContent);
+                }
+                if (StringUtil.isNotNull(feedbackContent)) {
+                    feedbackContent = HtmlUtils.htmlEscape(feedbackContent);
+                    userFeedback.setFeedbackContent(feedbackContent);
+                }
+            }
         }
 
         int totalPageNumber = (int) Math.ceil(totalNumber / (pageSize * 1.0));

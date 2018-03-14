@@ -9,8 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -53,6 +55,16 @@ public class WebSystemHotController {
             systemHotList = systemHotService.listSystemHotForUser(pageNumber, pageSize);
         }
 
+        if (systemHotList != null && systemHotList.size() > 0) {
+            for (SystemHotDO systemHot : systemHotList) {
+                String noticeTitle = systemHot.getNoticeTitle();
+                if (StringUtil.isNotNull(noticeTitle)) {
+                    noticeTitle = HtmlUtils.htmlEscape(noticeTitle);
+                    systemHot.setNoticeTitle(noticeTitle);
+                }
+            }
+        }
+
         int totalPageNumber = (int)Math.ceil(totalNumber / (pageSize * 1.0));
         if (totalPageNumber <= 0) {
             totalPageNumber = 1;
@@ -77,6 +89,13 @@ public class WebSystemHotController {
 
         int id = Integer.parseInt(idStr);
         SystemHotDO systemHot = systemHotService.getSystemHotById(id);
+        if (systemHot != null) {
+            String noticeTitle = systemHot.getNoticeTitle();
+            if (StringUtil.isNotNull(noticeTitle)) {
+                noticeTitle = HtmlUtils.htmlEscape(noticeTitle);
+                systemHot.setNoticeTitle(noticeTitle);
+            }
+        }
 
         request.setAttribute("systemHot",systemHot);
         return "page/web/systemHotDetail";
