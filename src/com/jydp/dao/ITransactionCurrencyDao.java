@@ -57,6 +57,13 @@ public interface ITransactionCurrencyDao {
     TransactionCurrencyVO getTransactionCurrencyByCurrencyName(String currencyName);
 
     /**
+     * 根据币种简称获取交易币种
+     * @param currencyShortName  货币简称
+     * @return  操作成功：返回交易币种，操作失败：返回null
+     */
+    TransactionCurrencyVO getTransactionCurrencyByCurrencyShortName(String currencyShortName);
+
+    /**
      * 查询币种个数（后台）
      * @param currencyName  货币名称(币种)
      * @param paymentType  交易状态,1:正常，2:涨停，3:跌停，4:停牌

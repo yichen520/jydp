@@ -5,7 +5,6 @@ import com.jydp.entity.DTO.TransactionCurrencyBasicDTO;
 import com.jydp.entity.DTO.TransactionUserDealDTO;
 import com.jydp.entity.VO.StandardParameterVO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -90,6 +89,13 @@ public interface ITransactionCurrencyService {
      * @return  操作成功：返回交易币种，操作失败：返回null
      */
     TransactionCurrencyVO getTransactionCurrencyByCurrencyName(String currencyName);
+
+    /**
+     * 根据币种简称获取交易币种
+     * @param currencyShortName  货币简称
+     * @return  操作成功：返回交易币种，操作失败：返回null
+     */
+    TransactionCurrencyVO getTransactionCurrencyByCurrencyShortName(String currencyShortName);
 
     /**
      * 获取所有币种行情信息(web端)

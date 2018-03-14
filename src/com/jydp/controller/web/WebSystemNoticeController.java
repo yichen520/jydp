@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -53,6 +54,16 @@ public class WebSystemNoticeController {
             systemNoticeList = systemNoticeService.listSystemNoticeForUser(pageNumber, pageSize);
         }
 
+        if (systemNoticeList != null && systemNoticeList.size() > 0) {
+            for (SystemNoticeDO systemNotice : systemNoticeList) {
+                String noticeTitle = systemNotice.getNoticeTitle();
+                if (StringUtil.isNotNull(noticeTitle)) {
+                    noticeTitle = HtmlUtils.htmlEscape(noticeTitle);
+                    systemNotice.setNoticeTitle(noticeTitle);
+                }
+            }
+        }
+
         int totalPageNumber = (int)Math.ceil(totalNumber / (pageSize * 1.0));
         if (totalPageNumber <= 0) {
             totalPageNumber = 1;
@@ -75,8 +86,18 @@ public class WebSystemNoticeController {
             return  "page/web/systemNotice";
         }
 
-        int id = Integer.parseInt(idStr);
+        int id = 0;
+        if (idStr.length() < 11) {
+            id = Integer.parseInt(idStr);
+        }
         SystemNoticeDO systemNotice = systemNoticeService.getSystemNoticeById(id);
+        if (systemNotice != null) {
+            String noticeTitle = systemNotice.getNoticeTitle();
+            if (StringUtil.isNotNull(noticeTitle)) {
+                noticeTitle = HtmlUtils.htmlEscape(noticeTitle);
+                systemNotice.setNoticeTitle(noticeTitle);
+            }
+        }
 
         request.setAttribute("systemNotice",systemNotice);
         return  "page/web/systemNoticeDetail";

@@ -6,44 +6,44 @@ package com.jydp.entity.DTO;
  * Date: 2018-03-13 15:30
  */
 public class TransactionBottomCurrentPriceDTO {
-    private int currencyId;  //币种Id
-    private double bottomPrice;  //保底价
+    private String currencyShortName;  //货币简称
+    private double keepPrice;  //保底价
     private double currentPrice;  //当前价
 
     /**
-     * 币种Id
+     * 货币简称
      *
-     * @return the currency id
+     * @return the currency short name
      */
-    public int getCurrencyId() {
-        return currencyId;
+    public String getCurrencyShortName() {
+        return currencyShortName;
     }
 
     /**
-     * 币种Id
+     * 货币简称
      *
-     * @param currencyId the currency id
+     * @param currencyShortName the currency short name
      */
-    public void setCurrencyId(int currencyId) {
-        this.currencyId = currencyId;
-    }
-
-    /**
-     * 保底价
-     *
-     * @return the bottom price
-     */
-    public double getBottomPrice() {
-        return bottomPrice;
+    public void setCurrencyShortName(String currencyShortName) {
+        this.currencyShortName = currencyShortName;
     }
 
     /**
      * 保底价
      *
-     * @param bottomPrice the bottom price
+     * @return the keep price
      */
-    public void setBottomPrice(double bottomPrice) {
-        this.bottomPrice = bottomPrice;
+    public double getKeepPrice() {
+        return keepPrice;
+    }
+
+    /**
+     * 保底价
+     *
+     * @param keepPrice the keep price
+     */
+    public void setKeepPrice(double keepPrice) {
+        this.keepPrice = keepPrice;
     }
 
     /**

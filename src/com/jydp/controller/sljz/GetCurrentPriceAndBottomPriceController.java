@@ -2,6 +2,7 @@ package com.jydp.controller.sljz;
 
 import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.BigDecimalUtil;
+import com.iqmkj.utils.NumberUtil;
 import com.iqmkj.utils.SignatureUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.DTO.TransactionBottomCurrentPriceDTO;
@@ -45,9 +46,9 @@ public class GetCurrentPriceAndBottomPriceController {
         JSONObject responseJson = new JSONObject();
         responseJson.put("data", null);
 
-        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+        String currencyShortName = StringUtil.stringNullHandle(request.getParameter("currencyShortName"));
         String receiveSign = StringUtil.stringNullHandle(request.getParameter("sign"));
-        if (!StringUtil.isNotNull(currencyIdStr) || !StringUtil.isNotNull(receiveSign)) {
+        if (!StringUtil.isNotNull(currencyShortName) || !StringUtil.isNotNull(receiveSign)) {
             responseJson.put("code", 2);
             responseJson.put("message", "参数错误");
             return responseJson;
@@ -55,7 +56,7 @@ public class GetCurrentPriceAndBottomPriceController {
 
         //验签
         TreeMap<String, String> receiveMap = new TreeMap<>();
-        receiveMap.put("currencyId", currencyIdStr);
+        receiveMap.put("currencyShortName", currencyShortName);
         String receiveSignValidate = SignatureUtil.getSign(receiveMap, SljzConfig.SIGN_SECRET_KEY);
         if(!receiveSign.equals(receiveSignValidate)){
             responseJson.put("code", 3);
@@ -63,10 +64,8 @@ public class GetCurrentPriceAndBottomPriceController {
             return responseJson;
         }
 
-        int currencyId = Integer.parseInt(currencyIdStr);
-
         TransactionCurrencyVO transactionCurrency =
-                transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
+                transactionCurrencyService.getTransactionCurrencyByCurrencyShortName(currencyShortName);
         if (transactionCurrency == null) {
             responseJson.put("code", 3);
             responseJson.put("message", "该交易币种不存在");
@@ -84,7 +83,7 @@ public class GetCurrentPriceAndBottomPriceController {
         }
 
         TransactionBottomPriceDTO bottomPriceDTO = transactionDealRedisService.
-                getBottomPrice(currencyId, SystemCommonConfig.TRANSACTION_MAKE_ORDER);
+                getBottomPrice(transactionCurrency.getCurrencyId(), SystemCommonConfig.TRANSACTION_MAKE_ORDER);
         if (bottomPriceDTO == null) {
             responseJson.put("code", 5);
             responseJson.put("message", "查询失败");
@@ -95,14 +94,15 @@ public class GetCurrentPriceAndBottomPriceController {
         String div = BigDecimalUtil.div(bottomPriceDTO.getTotalPrice(), bottomPriceDTO.getTotalNumber(), 4);
         double v = Double.parseDouble(div);
         double bottomPrice = BigDecimalUtil.mul(v, 0.7);
-
+        bottomPrice = NumberUtil.doubleFormat(bottomPrice, 4);
 
         double currentPrice = transactionDealRedisService.
-                getCurrentPrice(currencyId, SystemCommonConfig.TRANSACTION_MAKE_ORDER);
+                getCurrentPrice(transactionCurrency.getCurrencyId(), SystemCommonConfig.TRANSACTION_MAKE_ORDER);
+        currentPrice = NumberUtil.doubleFormat(currentPrice, 4);
 
         TransactionBottomCurrentPriceDTO bottomCurrentPrice = new TransactionBottomCurrentPriceDTO();
-        bottomCurrentPrice.setCurrencyId(bottomPriceDTO.getCurrencyId());
-        bottomCurrentPrice.setBottomPrice(bottomPrice);
+        bottomCurrentPrice.setCurrencyShortName(transactionCurrency.getCurrencyShortName());
+        bottomCurrentPrice.setKeepPrice(bottomPrice);
         bottomCurrentPrice.setCurrentPrice(currentPrice);
 
         responseJson.put("code", 1);

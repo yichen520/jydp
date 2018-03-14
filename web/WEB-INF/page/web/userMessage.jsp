@@ -57,7 +57,7 @@
                             <td class="amount">${userCurrency.currencyNumber }</td>
                             <td class="amount">${userCurrency.currencyNumberLock }</td>
                             <td class="amount">${userCurrency.currencyNumberSum }</td>
-                            <td><a href="javascript:;" class="link" onclick="dealSkip('${userCurrency.currencyId }')" >去交易</a></td>
+                            <td><a href="<%=path %>/userWeb/tradeCenter/show/${userCurrency.currencyId }" class="link">去交易</a></td>
                         </tr>
                     </c:forEach>
                 </table>
@@ -618,11 +618,6 @@
         window.location.href = "<%=path%>" + "/userWeb/userLogin/loginOut.htm";
     }
 
-    //去交易
-    function dealSkip (currencyId){
-        $("#currencyIds").val(currencyId);
-        $("#tradeCenters").submit();
-    }
 </script>
 <script type="text/javascript">
     var popObj;
