@@ -110,9 +110,16 @@
     <div class="cooperation">
         <p class="cTitle">合作伙伴</p>
         <c:forEach items="${systemBusinessesPartnerDOList}" var="partner">
-            <a target="_blank" href="${partner.webLinkUrl}" class="link">
-              <p class="company"><img src="${partner.businessesImageUrlFormat}" /><span>${partner.businessesName}</span></p>
-            </a>
+            <c:if test="${partner.webLinkUrl != ''}">
+                <a target="_blank" href="${partner.webLinkUrl}" class="link">
+                    <p class="company"><img src="${partner.businessesImageUrlFormat}" /><span>${partner.businessesName}</span></p>
+                </a>
+            </c:if>
+            <c:if test="${partner.webLinkUrl == ''}">
+                <a class="link">
+                    <p class="company"><img src="${partner.businessesImageUrlFormat}" /><span>${partner.businessesName}</span></p>
+                </a>
+            </c:if>
         </c:forEach>
     </div>
 </div>

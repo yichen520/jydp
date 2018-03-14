@@ -96,7 +96,6 @@ public class ForgetController {
         if (resetResult) {
             responseJson.setCode(1);
             responseJson.setMessage("找回密码成功");
-            UserWebInterceptor.loginOut(request);
         } else {
             responseJson.setCode(2);
             responseJson.setMessage("找回密码失败");
