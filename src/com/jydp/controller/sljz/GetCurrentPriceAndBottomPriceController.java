@@ -91,7 +91,7 @@ public class GetCurrentPriceAndBottomPriceController {
         }
 
         //保底价=总价/总数量*0.7
-        String div = BigDecimalUtil.div(bottomPriceDTO.getTotalPrice(), bottomPriceDTO.getTotalNumber(), 4);
+        String div = BigDecimalUtil.div(bottomPriceDTO.getTotalPrice(), bottomPriceDTO.getTotalNumber(), 8);
         double v = Double.parseDouble(div);
         double bottomPrice = BigDecimalUtil.mul(v, 0.7);
         bottomPrice = NumberUtil.doubleFormat(bottomPrice, 4);
