@@ -436,8 +436,8 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
 
             excuteSuccess = transactionUserDealService.insertTransactionUserDeal(orderNo,
                     transactionPendOrder.getPendingOrderNo(), userId, user.getUserAccount(),
-                    3, currencyId, transactionPendOrder.getCurrencyName(), 0, num,0,
-                    0,"撤销挂单", transactionPendOrder.getAddTime(), curTime);
+                    3, currencyId, transactionPendOrder.getCurrencyName(), transactionPendOrder.getPendingPrice(),
+                    num,0, 0,"撤销挂单", transactionPendOrder.getAddTime(), curTime);
         }
 
         if(!excuteSuccess){

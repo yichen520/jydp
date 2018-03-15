@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.List;
+import java.util.*;
 
 /**
  * 从数据库拉取 成交记录 到redis
@@ -130,29 +130,46 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                         transaction.getTransactionPrice());
             }
         }
+    }
 
-        //获取币种信息
-/*        List<TransactionCurrencyVO> transactionUserDeal= transactionCurrencyService.getTransactionCurrencyListForWeb();
-        if(transactionUserDeal != null && transactionUserDeal.size() > 0) {
-            if(closing == null || closing.size() <= 0){
-                for(TransactionCurrencyDO transactionUser : transactionUserDeal){
-                    redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE + transactionUser.getCurrencyId(), quantity);
-                    redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE + transactionUser.getCurrencyId(), quantity);
-                    redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionUser.getCurrencyId(), quantity);
-                    redisService.addValue(RedisKeyConfig.DAY_TURNOVER + transactionUser.getCurrencyId(), quantity);
-                }
-            } else {
-                for (TransactionCurrencyDO transactionUser : transactionUserDeal) {
-                    for(TransactionDealPriceDTO transactionDealPrice : closing){
-                        if (transactionUser.getCurrencyId() != transactionDealPrice.getCurrencyId()) {
-                            redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE + transactionUser.getCurrencyId(), quantity);
-                            redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE + transactionUser.getCurrencyId(), quantity);
-                            redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionUser.getCurrencyId(), quantity);
-                            redisService.addValue(RedisKeyConfig.DAY_TURNOVER + transactionUser.getCurrencyId(), quantity);
-                        }
-                    }
-                }
+    /** 刷新交易指导价(昨日收盘价) */
+    public void gruidPriceForYesterdayPrice(){
+        //判断当前时间是否是凌晨至开盘之前
+        long dateLon = DateUtil.lingchenLong();
+        long nowDate = DateUtil.getCurrentTime().getTime() - RedisKeyConfig.OPENING_TIME;
+        if(nowDate >= dateLon){
+            //八点至凌晨
+            dateLon = dateLon + RedisKeyConfig.OPENING_TIME;
+        } else {
+            //凌晨至八点
+            dateLon = dateLon - RedisKeyConfig.DAY_TIME + RedisKeyConfig.OPENING_TIME;
+        }
+
+        //昨日收盘价计算
+        dateLon = dateLon - 1;
+        Timestamp date = DateUtil.longToTimestamp(dateLon);
+
+        List<TransactionDealPriceDTO> nowLastPrice = transactionDealRedisService.getNowLastPrice(date);
+        List<TransactionCurrencyDO> transactionCurrencyDOS = transactionCurrencyService.listTransactionCurrencyAll();
+        if (nowLastPrice != null && !nowLastPrice.isEmpty()  && transactionCurrencyDOS != null && !transactionCurrencyDOS.isEmpty()) {
+            List<Integer> lowInt = new ArrayList<>();
+            List<Integer> powInt = new ArrayList<>();
+            Map<Integer, Double> map = new HashMap<>();
+
+            for (TransactionDealPriceDTO currDTO: nowLastPrice) {
+                lowInt.add(currDTO.getCurrencyId());
             }
-        }*/
+            for (TransactionCurrencyDO curr: transactionCurrencyDOS) {
+                powInt.add(curr.getCurrencyId());
+                map.put(curr.getCurrencyId(), curr.getGuidancePrice());
+            }
+
+            powInt.removeAll(lowInt);
+
+            for (Integer cuId: powInt) {
+                Double guidPrice = map.get(cuId);
+                redisService.addValue(RedisKeyConfig.YESTERDAY_PRICE + cuId, guidPrice);
+            }
+        }
     }
 }
