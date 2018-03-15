@@ -253,7 +253,7 @@ public class BackerIdentificationController {
             return responseJson;
         }
 
-        String messageContent = "您在交易大盘中提交的实名认证信息审核已通过。";
+        String messageContent = "您在盛源交易所中提交的实名认证信息审核已通过。";
         passResult = SendMessage.send(userIdentification.getUserPhone(), messageContent);
         if (!passResult) {
             responseJson.setCode(5);
@@ -320,7 +320,7 @@ public class BackerIdentificationController {
             return responseJson;
         }
 
-        String messageContent = "您在交易大盘中提交的实名认证信息审核被拒绝。";
+        String messageContent = "您在盛源交易所中提交的实名认证信息审核被拒绝。";
         passResult = SendMessage.send(userIdentification.getUserPhone(), messageContent);
         if (!passResult) {
             responseJson.setCode(5);

@@ -20,7 +20,7 @@
     <div class="headerInfo">
         <a href="<%=path%>/userWeb/homePage/show">
             <img src="<%=path %>/resources/image/web/trade_logo.png" class="logo"/>
-            交易大盘
+            盛源交易所
         </a>
     </div>
 </div>

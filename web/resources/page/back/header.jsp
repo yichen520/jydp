@@ -14,7 +14,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <div class="header">
     <p class="h_title">
         <img src="<%=path %>/resources/image/back/logo_trade.png" class="logo" />
-        <span class="logo_title">交易大盘后台管理系统</span>
+        <span class="logo_title">盛源交易所后台管理系统</span>
     </p>
     <p class="h_side">
         <span class="user">您好，${backerSession.backerAccount }</span>

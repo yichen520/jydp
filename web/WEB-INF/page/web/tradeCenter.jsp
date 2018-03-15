@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/public.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/simpleTips.css" />
 
-    <title>交易大盘</title>
+    <title>盛源交易所</title>
 </head>
 <body>
 <header id="header"></header>

@@ -1,7 +1,7 @@
 package com.jydp.entity.VO;
 
 /**
- * 交易大盘基准信息
+ * 盛源交易所基准信息
  *
  * @author sy
  */

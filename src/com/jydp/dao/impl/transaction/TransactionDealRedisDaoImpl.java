@@ -218,7 +218,7 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
     }
 
     /**
-     * 获取交易大盘 保底价
+     * 获取盛源交易所 保底价
      * @param currencyId 币种Id
      * @param orderNoPrefix 批次号前缀
      * @return 操作成功：返回数据集合，操作失败:返回null
@@ -238,7 +238,7 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
     }
 
     /**
-     * 获取交易大盘 当前价
+     * 获取盛源交易所 当前价
      * @param currencyId 币种Id
      * @param orderNoPrefix 批次号前缀
      * @return 查询成功：返回当前价格，查询失败或当前价格为0：返回0

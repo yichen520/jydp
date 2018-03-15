@@ -19,7 +19,7 @@
     <div class="main">
         <div class="logo">
             <a href="<%=path %>/userWeb/homePage/show">
-                <p class="trade">交易大盘</p>
+                <p class="trade">盛源交易所</p>
                 <img src="<%=path %>/resources/image/web/loginLogo.png" class="loginLogo" />
             </a>
         </div>

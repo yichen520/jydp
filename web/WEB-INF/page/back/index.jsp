@@ -19,7 +19,7 @@
 <div class="content">
     <div id="menu"></div>
 
-    <div class="contentRight" style="color: #333333;font-size: 20px;">欢迎登录交易大盘后台管理系统</div>
+    <div class="contentRight" style="color: #333333;font-size: 20px;">欢迎登录盛源交易所后台管理系统</div>
 </div>
 
 

@@ -29,7 +29,7 @@ public class CheckUserAmountConfig {
     /** 用户账户异常时通知手机号 */
     public static final String NOTICE_PHONE_TWO = "17858850509";
     /** 用户美金账户异常通知内容 */
-    public static final String MESSAGE_USD = "警告：交易大盘用户美金账户异常，请尽快处理。";
+    public static final String MESSAGE_USD = "警告：盛源交易所用户美金账户异常，请尽快处理。";
     /** 用户数字货币账户异常通知内容 */
-    public static final String MESSAGE_COIN= "警告：交易大盘用户数字货币账户异常，请尽快处理。";
+    public static final String MESSAGE_COIN= "警告：盛源交易所用户数字货币账户异常，请尽快处理。";
 }
