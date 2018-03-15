@@ -87,7 +87,10 @@ public class WebSystemHotController {
             return  "page/web/systemHot";
         }
 
-        int id = Integer.parseInt(idStr);
+        int id = 0;
+        if (idStr.length() < 11) {
+            id = Integer.parseInt(idStr);
+        }
         SystemHotDO systemHot = systemHotService.getSystemHotById(id);
         if (systemHot != null) {
             String noticeTitle = systemHot.getNoticeTitle();
