@@ -117,4 +117,19 @@
 		ORDER BY addTime, id
 	</select>
 
+	<select id="TransactionUserDeal_listTransactionDealForPending" parameterType="java.util.Map" resultType="TransactionDealRedisDO">
+		SELECT id, orderNo, paymentType, currencyId, transactionPrice, currencyNumber, currencyTotalPrice, addTime
+		FROM transaction_deal_redis_tab
+		WHERE currencyId = #{currencyId}
+			AND paymentType = #{paymentType}
+			AND addTime <![CDATA[ >= ]]> #{date}
+		ORDER BY transactionPrice
+		<if test="paymentType == 1 ">
+			DESC
+		</if>
+		<if test="paymentType == 2 ">
+			ASC
+		</if>
+		LIMIT #{num}
+	</select>
 </mapper>

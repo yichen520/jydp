@@ -110,4 +110,14 @@ public interface ITransactionDealRedisDao {
      * @return 操作成功：返回数据集合，操作失败:返回null
      */
     List<TransactionDealRedisDTO> listTransactionUserDealForKline(int currencyId);
+
+    /**
+     * 查询未来num条redis成交记录
+     * @param paymentType  交易类型
+     * @param currencyId  币种Id
+     * @param date  查询时间
+     * @param num  查询条数
+     * @return  操作成功：返回数据集合，操作失败:返回null
+     */
+    List<TransactionDealRedisDO> listTransactionDealForPending(int paymentType, int currencyId, Timestamp date, int num);
 }

@@ -106,7 +106,7 @@
                         <td class="coin">
                             <p>名称：${item.currencyName}</p>
                             <p>英文标识：${item.currencyShortName}</p>
-                            <p>上市指导价：$${item.guidancePrice}</p>
+                            <p>上市指导价：$<fmt:formatNumber type="number" value="${item.guidancePrice}" maxFractionDigits="6"/></p>
                         </td>
                         <td class="coinLogo"><img src="${item.currencyImgUrl}" /></td>
                         <td class="service">
@@ -235,7 +235,7 @@
                     <label class="popName">上市指导价<span class="star">*</span></label>
                     <input type="text" class="entry" placeholder="币种的上市指导价格，单位：$"
                            id="guidAd" name="guidAd" maxlength="18"
-                           onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)"/>
+                           onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)"/>
                 </p>
                 <p class="popInput">
                     <label class="popName">币种徽标<span class="star">*</span></label>
@@ -293,7 +293,7 @@
                 <p class="popInput" id="inGuid">
                     <label class="popName">上市指导价<span class="star">*</span></label>
                     <input type="text" class="entry" placeholder="币种的上市指导价格，单位：$" id="guidUp" name="guidUp"
-                           maxlength="18" onkeyup="matchUtil(this, 'double', 6)" onblur="matchUtil(this, 'double', 6)"/>
+                           maxlength="18" onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)"/>
                 </p>
                 <p class="popInput">
                     <label class="popName">币种徽标</label>

@@ -92,9 +92,13 @@
                             <p>单价：$<fmt:formatNumber type="number" value="${item.transactionPrice }" maxFractionDigits="6"/></p>
                         </td>
                         <td class="amount">
-                            <c:if test="${item.paymentType != 3}">
+                            <c:if test="${item.paymentType == 1}">
                                 <p>总计：$<fmt:formatNumber type="number" value="${item.currencyTotalPrice}" maxFractionDigits="6"/></p>
                                 <p>实际：$<fmt:formatNumber type="number" value="${item.currencyTotalPrice + item.feeNumber * item.currencyTotalPrice }" maxFractionDigits="6"/></p>
+                            </c:if>
+                            <c:if test="${item.paymentType == 2}">
+                                <p>总计：$<fmt:formatNumber type="number" value="${item.currencyTotalPrice}" maxFractionDigits="6"/></p>
+                                <p>实际：$<fmt:formatNumber type="number" value="${item.currencyTotalPrice - item.feeNumber * item.currencyTotalPrice }" maxFractionDigits="6"/></p>
                             </c:if>
                             <c:if test="${item.paymentType == 3}">
                                 <p>总计：$<fmt:formatNumber type="number" value="${item.currencyTotalPrice }" maxFractionDigits="6"/></p>
