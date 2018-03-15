@@ -224,7 +224,7 @@
                 <p class="popInput">
                     <label class="popName">币种名称<span class="star">*</span></label>
                     <input type="text" class="entry" placeholder="币种名称" id="currencyNameAd" name="currencyNameAd"
-                           maxlength="32"/>
+                           maxlength="10"/>
                 </p>
                 <p class="popInput">
                     <label class="popName">英文标识<span class="star">*</span></label>
@@ -283,7 +283,7 @@
                 <p class="popInput">
                     <label class="popName">币种名称<span class="star">*</span></label>
                     <input type="text" class="entry" placeholder="币种名称" id="currencyNameUp" name="currencyNameUp"
-                           maxlength="32"/>
+                           maxlength="10"/>
                 </p>
                 <p class="popInput">
                     <label class="popName">英文标识<span class="star">*</span></label>
