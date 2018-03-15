@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/public.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/simpleTips.css" />
 
-    <title>合作企业</title>
+    <title>合作伙伴</title>
 </head>
 <body>
 <div id="header"></div>
