@@ -257,7 +257,7 @@ public class BackerTransactionMakeOrderController {
 
             double currencyPrice = Double.parseDouble(StringUtil.stringNullHandle(twoArr[1]));
             double currencyNumber = Double.parseDouble(StringUtil.stringNullHandle(twoArr[2]));
-            if (execTimeL <= 0 || currencyPrice <= 0 || currencyNumber <= 0) {
+            if (execTimeL < 0 || currencyPrice < 0 || currencyNumber < 0) {
                 response.setCode(5);
                 response.setMessage("执行命令内容错误");
                 return response;
