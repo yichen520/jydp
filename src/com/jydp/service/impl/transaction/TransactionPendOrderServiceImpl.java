@@ -500,6 +500,6 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
         }
 
         return transactionPendOrderList;
-    };
+    }
 
 }

@@ -273,4 +273,30 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
 
         return resultList;
     }
+
+    /**
+     * 查询未来num条redis成交记录
+     * @param paymentType  交易类型
+     * @param currencyId  币种Id
+     * @param date  查询时间
+     * @param num  查询条数
+     * @return  操作成功：返回数据集合，操作失败:返回null
+     */
+    public List<TransactionDealRedisDO> listTransactionDealForPending(int paymentType, int currencyId, Timestamp date, int num){
+        List<TransactionDealRedisDO> resultList = null;
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("paymentType", paymentType);
+        map.put("currencyId", currencyId);
+        map.put("date", date);
+        map.put("num", num);
+
+        try {
+            resultList = sqlSessionTemplate.selectList("TransactionUserDeal_listTransactionDealForPending", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return  resultList;
+    }
 }
