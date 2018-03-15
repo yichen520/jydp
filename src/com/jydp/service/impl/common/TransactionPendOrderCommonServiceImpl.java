@@ -77,7 +77,7 @@ public class TransactionPendOrderCommonServiceImpl implements ITransactionPendOr
                 //插入最新数据
                 redisService.addValue(sellKey,transactionPendOrderSellList);
                 //插入最新卖一价
-                redisService.addValue(sellOneKey,transactionPendOrderSellList.get(transactionPendOrderSellList.size()).getPendingPrice());
+                redisService.addValue(sellOneKey,transactionPendOrderSellList.get(0).getPendingPrice());
             }else if(transactionPendOrderSellList.size() == 0){
                 //查无数据都存null
                 redisService.addValue(sellKey,null);
