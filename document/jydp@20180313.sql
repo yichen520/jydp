@@ -287,7 +287,7 @@ DROP TABLE IF EXISTS `transaction_currency_tab`;
 CREATE TABLE `transaction_currency_tab` (
   `currencyId` int(11) NOT NULL AUTO_INCREMENT COMMENT '币种Id',
   `currencyShortName` varchar(10) NOT NULL COMMENT '货币简称',
-  `currencyName` varchar(32) NOT NULL COMMENT '货币名称',
+  `currencyName` varchar(10) NOT NULL COMMENT '货币名称',
   `currencyImg` varchar(200) NOT NULL COMMENT '币种徽标',
   `buyFee` decimal(18,8) NOT NULL COMMENT '买入手续费',
   `sellFee` decimal(18,8) NOT NULL COMMENT '卖出手续费',
