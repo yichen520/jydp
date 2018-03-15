@@ -43,8 +43,8 @@ public class HomePageServiceImpl implements IHomePageService{
      */
     @Override
     public List<SystemNoticeDO> getSystemNoticeList(){
-        List<SystemNoticeDO> systemNoticeDOList = systemNoticeService.getSystemNoticlistForWeb();
-        return systemNoticeDOList;
+        List<SystemNoticeDO> systemNoticeList = systemNoticeService.getSystemNoticlistForWeb();
+        return systemNoticeList;
     }
 
     /**
@@ -53,8 +53,8 @@ public class HomePageServiceImpl implements IHomePageService{
      */
     @Override
     public List<SystemAdsHomepagesDO> getSystemAdsHomepageList(){
-        List<SystemAdsHomepagesDO> systemAdsHomepagesDOList = systemAdsHomepagesService.getSystemAdsHomepageslistForWeb();
-        return systemAdsHomepagesDOList;
+        List<SystemAdsHomepagesDO> systemAdsHomepagesList = systemAdsHomepagesService.getSystemAdsHomepageslistForWeb();
+        return systemAdsHomepagesList;
     }
 
     /**
@@ -63,8 +63,8 @@ public class HomePageServiceImpl implements IHomePageService{
      */
     @Override
     public List<SystemHotDO> getSystemHotList(){
-        List<SystemHotDO> systemHotDOList = systemHotService.getSystemHotlistForWeb();
-        return systemHotDOList;
+        List<SystemHotDO> systemHotList = systemHotService.getSystemHotlistForWeb();
+        return systemHotList;
     }
 
     /**
@@ -73,8 +73,8 @@ public class HomePageServiceImpl implements IHomePageService{
      */
     @Override
     public List<SystemBusinessesPartnerDO> getSystemBusinessesPartnerList(){
-        List<SystemBusinessesPartnerDO> systemBusinessesPartnerDOList = systemBusinessesPartnerService.getSystemBusinessesPartnerForWeb();
-        return systemBusinessesPartnerDOList;
+        List<SystemBusinessesPartnerDO> systemBusinessesPartnerList = systemBusinessesPartnerService.getSystemBusinessesPartnerForWeb();
+        return systemBusinessesPartnerList;
     }
 
     /**
@@ -83,7 +83,7 @@ public class HomePageServiceImpl implements IHomePageService{
      */
     @Override
     public List<TransactionUserDealDTO> getTransactionCurrencyMarketList() {
-        List<TransactionUserDealDTO> transactionUserDealDTOList = transactionCurrencyService.getTransactionCurrencyMarketForWeb();
-        return transactionUserDealDTOList;
+        List<TransactionUserDealDTO> transactionUserDealList = transactionCurrencyService.getTransactionCurrencyMarketForWeb();
+        return transactionUserDealList;
     }
 }

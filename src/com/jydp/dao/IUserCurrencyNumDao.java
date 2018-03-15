@@ -51,9 +51,10 @@ public interface IUserCurrencyNumDao {
 
     /**
      * web端添加用户币数量(用户注册时添加记录，默认各币种数量为0)
+     * @param userCurrencyNumList 用户币种信息表
      * @return 操作成功：返回true;操作失败：返回false
      */
-    boolean insertUserCurrencyForWeb(List<UserCurrencyNumDO> userCurrencyNumDOList);
+    boolean insertUserCurrencyForWeb(List<UserCurrencyNumDO> userCurrencyNumList);
 
     /**
      * 增加用户货币数量
@@ -101,11 +102,5 @@ public interface IUserCurrencyNumDao {
      */
     List<UserAmountCheckDTO> listCheckUserAmountForTimer(double checkAmount, double checkAmountLock,
                                                          int pageNumber, int pageSize);
-    /**
-     * 获取当前用户没有的币种
-     * @param userId 用户Id
-     * @return 查询成功：返回用户币种列表，查询失败：返回null
-     */
-    List<Integer> getUserCurrencyNotOwnForWeb(int userId);
 
 }

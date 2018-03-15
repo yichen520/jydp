@@ -196,56 +196,6 @@
         ORDER BY rankNumber ASC
     </select>
 
-    <resultMap id="CurrencyMarketMap" type="TransactionUserDealDTO">
-        <result property="currencyId" column="currencyId" />
-        <result property="latestPrice" column="transactionPrice" />
-    </resultMap>
-
-    <select id="TransactionCurrency_getNewPriceForWeb" resultMap="CurrencyMarketMap">
-        SELECT t.currencyId, MAX(t.transactionPrice) AS latestPrice
-        FROM  transaction_deal_redis_tab t,
-        (SELECT currencyId, MAX(addTime) AS lastTime
-        FROM transaction_deal_redis_tab
-        GROUP BY currencyId) t2
-        WHERE
-        t.currencyId = t2.currencyId
-        AND t.addTime = t2.lastTime
-        GROUP BY currencyId
-    </select>
-
-    <select id="TransactionCurrency_getBuyOneForWeb" resultMap="CurrencyMarketMap">
-        SELECT currencyId, MAX(pendingPrice) AS buyOnePrice
-        FROM transaction_pend_order_tab
-        WHERE paymentType = 1
-        AND pendingStatus IN (1,2)
-        GROUP BY currencyId
-    </select>
-
-    <select id="TransactionCurrency_getSellOneForWeb" resultMap="CurrencyMarketMap">
-        SELECT currencyId, MIN( pendingPrice ) AS sellOnePrice
-        FROM transaction_pend_order_tab
-        WHERE paymentType = 2
-        AND pendingStatus IN (1,2)
-        GROUP BY currencyId
-    </select>
-
-    <select id="TransactionCurrency_getTransactionVolumeForWeb" parameterType="java.sql.Timestamp" resultMap="CurrencyMarketMap">
-        SELECT currencyId, SUM( currencyNumber ) AS volume
-        FROM transaction_deal_redis_tab
-        WHERE addTime >= #{openTime}
-        GROUP BY currencyId
-    </select>
-
-    <select id="TransactionCurrency_getYesterdayLastPriceForWeb" parameterType="java.util.Map" resultMap="CurrencyMarketMap">
-        SELECT t.currencyId,MAX(t.transactionPrice) AS yesterdayLastPrice
-        FROM
-        transaction_deal_redis_tab t, (SELECT currencyId,MAX(addTime) AS lastTime FROM transaction_deal_redis_tab WHERE addTime >= #{startTime} AND addTime <![CDATA[ < ]]> #{openTime} GROUP BY currencyId) t2
-        WHERE
-        t.currencyId = t2.currencyId
-        AND t.addTime = t2.lastTime
-        GROUP BY currencyId
-    </select>
-
     <select id="TransactionCurrency_getAllCurrencylistForWeb" resultType="TransactionCurrencyVO">
         SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, guidancePrice,
             paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime

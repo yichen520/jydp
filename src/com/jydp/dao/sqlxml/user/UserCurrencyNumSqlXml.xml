@@ -124,11 +124,4 @@
         LIMIT #{startNumber}, #{pageSize}
     </select>
 
-    <select id="UserCurrencyNum_getUserCurrencyNotOwnForWeb" parameterType="int" resultType="int">
-        SELECT currencyId
-        FROM
-            transaction_currency_tab
-        WHERE
-            currencyId NOT IN ( SELECT currencyId FROM user_currency_num_tab WHERE userId = #{userId})
-    </select>
 </mapper>

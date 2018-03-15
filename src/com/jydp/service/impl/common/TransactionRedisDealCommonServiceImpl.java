@@ -96,6 +96,9 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                     double transactionPrice = Double.parseDouble(yesterdayPriceStr.toString());
                     double range = BigDecimalUtil.sub(transactionDealPrice.getTransactionPrice(), transactionPrice) * 100;
                     String rangeStr = BigDecimalUtil.div(range, transactionPrice, 2);
+                    if(!StringUtil.isNotNull(rangeStr)){
+                        rangeStr = "0.0";
+                    }
                     redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionDealPrice.getCurrencyId(), Double.parseDouble(rangeStr));
                 }
             }

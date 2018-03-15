@@ -279,20 +279,20 @@ public class UserServiceImpl implements IUserService {
 
         if (user != null) {
             //查询所有币种
-            List<TransactionCurrencyVO> transactionCurrencyDOList = transactionCurrencyService.getAllCurrencylistForWeb();
+            List<TransactionCurrencyVO> transactionCurrencyList = transactionCurrencyService.getAllCurrencylistForWeb();
 
-            if (transactionCurrencyDOList != null && transactionCurrencyDOList.size() > 0) {
-                List<UserCurrencyNumDO> userCurrencyNumDOList = new ArrayList<>();
-                for (int i = 0; i < transactionCurrencyDOList.size(); i ++) {
+            if (transactionCurrencyList != null && transactionCurrencyList.size() > 0) {
+                List<UserCurrencyNumDO> userCurrencyNumList = new ArrayList<>();
+                for (int i = 0; i < transactionCurrencyList.size(); i ++) {
                     //注册时添加用户所有币种默认数量为0的记录
                     UserCurrencyNumDO userCurrencyNum =  new UserCurrencyNumDO();
                     userCurrencyNum.setUserId(user.getUserId());
-                    userCurrencyNum.setCurrencyId(transactionCurrencyDOList.get(i).getCurrencyId());
+                    userCurrencyNum.setCurrencyId(transactionCurrencyList.get(i).getCurrencyId());
                     userCurrencyNum.setAddTime(DateUtil.getCurrentTime());
-                    userCurrencyNumDOList.add(userCurrencyNum);
+                    userCurrencyNumList.add(userCurrencyNum);
                 }
                 //新增用户币数量记录
-                excuteSuccess = userCurrencyNumService.insertUserCurrencyForWeb(userCurrencyNumDOList);
+                excuteSuccess = userCurrencyNumService.insertUserCurrencyForWeb(userCurrencyNumList);
             }
 
             if (!excuteSuccess) {
