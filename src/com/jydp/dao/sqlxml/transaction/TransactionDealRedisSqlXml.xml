@@ -72,7 +72,9 @@
 		WHERE TDRT.addTime IN (SELECT max(addTime)
 									FROM transaction_deal_redis_tab
 									WHERE addTime <![CDATA[ <= ]]> #{date}
-									AND addTime <![CDATA[ >= ]]> #{endDate}
+									<if test="endDate != null">
+										AND addTime <![CDATA[ >= ]]> #{endDate}
+									</if>
 									GROUP BY currencyId)
 		GROUP BY TDRT.addTime,TDRT.currencyId
 	</select>

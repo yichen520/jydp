@@ -27,7 +27,7 @@
         <!-------轮播图----------->
         <div class="swiper-container">
             <div class="swiper-wrapper">
-                <c:forEach items="${systemAdsHomepagesDOList}" var="homePageAds">
+                <c:forEach items="${systemAdsHomepagesList}" var="homePageAds">
                     <c:if test="${homePageAds.webLinkUrl != ''}">
                         <a target="_blank" href="${homePageAds.webLinkUrl}" class="swiper-slide"><img src="${homePageAds.adsImageUrlFormat}" /></a>
                     </c:if>
@@ -50,7 +50,7 @@
             <td class="uplift">今日涨跌</td>
             <td class="operate">操作</td>
         </tr>
-        <c:forEach items="${transactionUserDealDTOList}" var="transactionUserDeal">
+        <c:forEach items="${transactionUserDealList}" var="transactionUserDeal">
             <tr class="coinInfo">
                 <td class="coin"><img src="${transactionUserDeal.currencyImgUrl}" /><span>${transactionUserDeal.currencyName}(${transactionUserDeal.currencyShortName}/USD)</span></td>
                 <td class="new"><fmt:formatNumber type="number" value="${transactionUserDeal.latestPrice}" groupingUsed="FALSE" maxFractionDigits="2"/></td>
@@ -77,7 +77,7 @@
                 <a href="<%=path %>/userWeb/webSystemNotice/show" class="more">查看更多</a>
             </span>
             <ul class="list">
-                <c:forEach items="${systemNoticeDOList}" var="systemNotice">
+                <c:forEach items="${systemNoticeList}" var="systemNotice">
                     <li class="listInfo">
                         <a href="<%=path%>/userWeb/webSystemNotice/showNoticeDetail/${systemNotice.id}" class="link">
                             <span class="noticeTitle">【<span>公告</span>】${systemNotice.noticeTitle}</span>
@@ -94,7 +94,7 @@
                 <a href="<%=path %>/userWeb/webSystemHot/show" class="more">查看更多</a>
             </span>
             <ul class="list">
-                <c:forEach items="${systemHotDOList}" var="hotTopic">
+                <c:forEach items="${systemHotList}" var="hotTopic">
                     <li class="listInfo">
                         <a href="<%=path%>/userWeb/webSystemHot/showHotDetail/${hotTopic.id}" class="link">
                             <span class="noticeTitle">【<span>热门</span>】${hotTopic.noticeTitle}</span>
@@ -108,7 +108,7 @@
 
     <div class="cooperation">
         <p class="cTitle">合作伙伴</p>
-        <c:forEach items="${systemBusinessesPartnerDOList}" var="partner">
+        <c:forEach items="${systemBusinessesPartnerList}" var="partner">
             <c:if test="${partner.webLinkUrl != ''}">
                 <a target="_blank" href="${partner.webLinkUrl}" class="link">
                     <p class="company"><img src="${partner.businessesImageUrlFormat}" /><span>${partner.businessesName}</span></p>
@@ -155,7 +155,7 @@
                 if (result.code == 1) {
                     var currencyMarket = result.data;
                     if (currencyMarket != null) {
-                        var marketList = currencyMarket.transactionUserDealDTOList;
+                        var marketList = currencyMarket.transactionUserDealList;
                         $(".coinInfo").remove();
                         if (marketList != null) {
                             for (var i = marketList.length-1; i >=0; i--) {

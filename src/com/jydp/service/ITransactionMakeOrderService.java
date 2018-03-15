@@ -101,4 +101,12 @@ public interface ITransactionMakeOrderService {
      * @return  操作成功：返回true，操作失败：返回false
      */
     boolean deleteMakeOrderByOrderNo(String orderNo);
+
+    /**
+     * 根据执行状态查询做单记录
+     * @param executeStatus  执行状态
+     * @param size  查询条数
+     * @return  操作成功：返回做单记录集合，操作失败：返回null
+     */
+    List<TransactionMakeOrderDO> listMakeOrderByExecuteStatus(int executeStatus, int size);
 }

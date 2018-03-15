@@ -49,27 +49,38 @@ public class HomePageController {
     public String getHomePageData(HttpServletRequest request){
 
         //查询首页广告列表
-        List<SystemAdsHomepagesDO> systemAdsHomepagesDOList = (List<SystemAdsHomepagesDO>)redisService.getValue(RedisKeyConfig.HOMEPAGE_ADS);
+        List<SystemAdsHomepagesDO> systemAdsHomepagesList = null;
+        Object systemAdsHomepagesListObject = redisService.getValue(RedisKeyConfig.HOMEPAGE_ADS);
+        if (systemAdsHomepagesListObject != null) {
+            systemAdsHomepagesList = (List<SystemAdsHomepagesDO>)systemAdsHomepagesListObject;
+        }
 
-        if (systemAdsHomepagesDOList != null && systemAdsHomepagesDOList.size() > 0) {
-            for (SystemAdsHomepagesDO systemAdsHomepagesDO : systemAdsHomepagesDOList) {
-                String webLinkUrl = systemAdsHomepagesDO.getWebLinkUrl();
+        if (systemAdsHomepagesList != null && systemAdsHomepagesList.size() > 0) {
+            for (SystemAdsHomepagesDO systemAdsHomepages : systemAdsHomepagesList) {
+                String webLinkUrl = systemAdsHomepages.getWebLinkUrl();
                 if (StringUtil.isNotNull(webLinkUrl)) {
                     webLinkUrl = HtmlUtils.htmlEscape(webLinkUrl);
-                    systemAdsHomepagesDO.setWebLinkUrl(webLinkUrl);
+                    systemAdsHomepages.setWebLinkUrl(webLinkUrl);
                 }
             }
         }
 
-
         //查询所有币行情信息
-        List<TransactionUserDealDTO> transactionUserDealDTOList = (List<TransactionUserDealDTO>)redisService.getValue(RedisKeyConfig.HOMEPAGE_CURRENCYMARKET);
+        List<TransactionUserDealDTO> transactionUserDealList = null;
+        Object transactionUserDealListObject = redisService.getValue(RedisKeyConfig.HOMEPAGE_CURRENCY_MARKET);
+        if (transactionUserDealListObject != null) {
+            transactionUserDealList = (List<TransactionUserDealDTO>)transactionUserDealListObject;
+        }
 
         //查询系统公告列表
-        List<SystemNoticeDO> systemNoticeDOList = (List<SystemNoticeDO>)redisService.getValue(RedisKeyConfig.HOMEPAGE_NOTICE);
+        List<SystemNoticeDO> systemNoticeList = null;
+        Object systemNoticListObject = redisService.getValue(RedisKeyConfig.HOMEPAGE_NOTICE);
+        if (systemNoticListObject != null) {
+            systemNoticeList = (List<SystemNoticeDO>)systemNoticListObject;
+        }
 
-        if (systemNoticeDOList != null && systemNoticeDOList.size() > 0) {
-            for (SystemNoticeDO systemNotice : systemNoticeDOList) {
+        if (systemNoticeList != null && systemNoticeList.size() > 0) {
+            for (SystemNoticeDO systemNotice : systemNoticeList) {
                 String noticeTitle = systemNotice.getNoticeTitle();
                 if (StringUtil.isNotNull(noticeTitle)) {
                     noticeTitle = HtmlUtils.htmlEscape(noticeTitle);
@@ -79,10 +90,14 @@ public class HomePageController {
         }
 
         //查询热门话题列表
-        List<SystemHotDO> systemHotDOList = (List<SystemHotDO>)redisService.getValue(RedisKeyConfig.HOMEPAGE_HOTTOPIC);
+        List<SystemHotDO> systemHotList = null;
+        Object systemHotListObject = redisService.getValue(RedisKeyConfig.HOMEPAGE_HOT_TOPIC);
+        if (systemHotListObject != null) {
+            systemHotList = (List<SystemHotDO>)systemHotListObject;
+        }
 
-        if (systemHotDOList != null && systemHotDOList.size() > 0) {
-            for (SystemHotDO systemHot : systemHotDOList) {
+        if (systemHotList != null && systemHotList.size() > 0) {
+            for (SystemHotDO systemHot : systemHotList) {
                 String noticeTitle = systemHot.getNoticeTitle();
                 if (StringUtil.isNotNull(noticeTitle)) {
                     noticeTitle = HtmlUtils.htmlEscape(noticeTitle);
@@ -92,23 +107,27 @@ public class HomePageController {
         }
 
         //查询合作商家列表
-        List<SystemBusinessesPartnerDO> systemBusinessesPartnerDOList = (List<SystemBusinessesPartnerDO>)redisService.getValue(RedisKeyConfig.HOMEPAGE_PARTNER);
+        List<SystemBusinessesPartnerDO> systemBusinessesPartnerList = null;
+        Object systemBusinessesPartnerListObject = redisService.getValue(RedisKeyConfig.HOMEPAGE_PARTNER);
+        if (systemBusinessesPartnerListObject != null) {
+            systemBusinessesPartnerList = (List<SystemBusinessesPartnerDO>)systemBusinessesPartnerListObject;
+        }
 
-        if (systemBusinessesPartnerDOList != null && systemBusinessesPartnerDOList.size() > 0) {
-            for (SystemBusinessesPartnerDO systemBusinessesPartnerDO : systemBusinessesPartnerDOList) {
-                String webLinkUrl = systemBusinessesPartnerDO.getWebLinkUrl();
+        if (systemBusinessesPartnerList != null && systemBusinessesPartnerList.size() > 0) {
+            for (SystemBusinessesPartnerDO systemBusinessesPartner : systemBusinessesPartnerList) {
+                String webLinkUrl = systemBusinessesPartner.getWebLinkUrl();
                 if (StringUtil.isNotNull(webLinkUrl)) {
                     webLinkUrl = HtmlUtils.htmlEscape(webLinkUrl);
-                    systemBusinessesPartnerDO.setWebLinkUrl(webLinkUrl);
+                    systemBusinessesPartner.setWebLinkUrl(webLinkUrl);
                 }
             }
         }
 
-        request.setAttribute("systemAdsHomepagesDOList",systemAdsHomepagesDOList);
-        request.setAttribute("systemNoticeDOList",systemNoticeDOList);
-        request.setAttribute("systemHotDOList",systemHotDOList);
-        request.setAttribute("systemBusinessesPartnerDOList",systemBusinessesPartnerDOList);
-        request.setAttribute("transactionUserDealDTOList",transactionUserDealDTOList);
+        request.setAttribute("systemAdsHomepagesList",systemAdsHomepagesList);
+        request.setAttribute("systemNoticeList",systemNoticeList);
+        request.setAttribute("systemHotList",systemHotList);
+        request.setAttribute("systemBusinessesPartnerList",systemBusinessesPartnerList);
+        request.setAttribute("transactionUserDealList",transactionUserDealList);
 
         return "page/web/home";
     }
@@ -119,10 +138,14 @@ public class HomePageController {
 
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         //查询所有币行情信息
-        List<TransactionUserDealDTO> transactionUserDealDTOList = (List<TransactionUserDealDTO>)redisService.getValue(RedisKeyConfig.HOMEPAGE_CURRENCYMARKET);
+        List<TransactionUserDealDTO> transactionUserDealList = null;
+        Object transactionUserDealListObject = redisService.getValue(RedisKeyConfig.HOMEPAGE_CURRENCY_MARKET);
+        if (transactionUserDealListObject != null) {
+            transactionUserDealList = (List<TransactionUserDealDTO>)transactionUserDealListObject;
+        }
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("transactionUserDealDTOList",transactionUserDealDTOList);
+        jsonObject.put("transactionUserDealList",transactionUserDealList);
 
         jsonObjectBO.setCode(1);
         jsonObjectBO.setMessage("查询成功");
@@ -136,9 +159,9 @@ public class HomePageController {
 
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
 
-        List<TransactionCurrencyVO> transactionCurrencyVOList = transactionCurrencyService.getOnlineAndSuspensionCurrencyForWeb();
+        List<TransactionCurrencyVO> transactionCurrencyList = transactionCurrencyService.getOnlineAndSuspensionCurrencyForWeb();
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("transactionCurrencyList",transactionCurrencyVOList);
+        jsonObject.put("transactionCurrencyList",transactionCurrencyList);
 
         jsonObjectBO.setCode(1);
         jsonObjectBO.setMessage("查询成功");

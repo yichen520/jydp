@@ -33,41 +33,41 @@ public class HomePageRedisServiceImpl implements IHomePageRedisService{
     @Override
     public void getHomePageData() {
         //查询首页广告列表
-        List<SystemAdsHomepagesDO> systemAdsHomepagesDOList = homePageService.getSystemAdsHomepageList();
+        List<SystemAdsHomepagesDO> systemAdsHomepagesList = homePageService.getSystemAdsHomepageList();
         String adsKey = RedisKeyConfig.HOMEPAGE_ADS;
 
-        if (systemAdsHomepagesDOList != null && systemAdsHomepagesDOList.size() > 0) {
-            redisService.addValue(adsKey,systemAdsHomepagesDOList);
+        if (systemAdsHomepagesList != null && systemAdsHomepagesList.size() > 0) {
+            redisService.addValue(adsKey,systemAdsHomepagesList);
         } else {
             redisService.addValue(adsKey,null);
         }
 
         //查询系统公告列表
-        List<SystemNoticeDO> systemNoticeDOList = homePageService.getSystemNoticeList();
+        List<SystemNoticeDO> systemNoticeList = homePageService.getSystemNoticeList();
         String noticeKey = RedisKeyConfig.HOMEPAGE_NOTICE;
 
-        if (systemNoticeDOList != null && systemNoticeDOList.size() > 0) {
-            redisService.addValue(noticeKey,systemNoticeDOList);
+        if (systemNoticeList != null && systemNoticeList.size() > 0) {
+            redisService.addValue(noticeKey,systemNoticeList);
         } else {
             redisService.addValue(noticeKey,null);
         }
 
         //查询热门话题列表
-        List<SystemHotDO> systemHotDOList = homePageService.getSystemHotList();
-        String hotTopicKey = RedisKeyConfig.HOMEPAGE_HOTTOPIC;
+        List<SystemHotDO> systemHotList = homePageService.getSystemHotList();
+        String hotTopicKey = RedisKeyConfig.HOMEPAGE_HOT_TOPIC;
 
-        if (systemHotDOList != null && systemHotDOList.size() > 0) {
-            redisService.addValue(hotTopicKey,systemHotDOList);
+        if (systemHotList != null && systemHotList.size() > 0) {
+            redisService.addValue(hotTopicKey,systemHotList);
         } else {
             redisService.addValue(hotTopicKey,null);
         }
 
         //查询合作商家列表
-        List<SystemBusinessesPartnerDO> systemBusinessesPartnerDOList = homePageService.getSystemBusinessesPartnerList();
+        List<SystemBusinessesPartnerDO> systemBusinessesPartnerList = homePageService.getSystemBusinessesPartnerList();
         String partnerKey = RedisKeyConfig.HOMEPAGE_PARTNER;
 
-        if (systemBusinessesPartnerDOList != null && systemBusinessesPartnerDOList.size() > 0) {
-            redisService.addValue(partnerKey,systemBusinessesPartnerDOList);
+        if (systemBusinessesPartnerList != null && systemBusinessesPartnerList.size() > 0) {
+            redisService.addValue(partnerKey,systemBusinessesPartnerList);
         } else {
             redisService.addValue(partnerKey,null);
         }
@@ -79,11 +79,11 @@ public class HomePageRedisServiceImpl implements IHomePageRedisService{
     @Override
     public void getCurrencyMarketData() {
         //查询所有币行情信息
-        List<TransactionUserDealDTO> transactionUserDealDTOList = homePageService.getTransactionCurrencyMarketList();
-        String marketKey = RedisKeyConfig.HOMEPAGE_CURRENCYMARKET;
+        List<TransactionUserDealDTO> transactionUserDealList = homePageService.getTransactionCurrencyMarketList();
+        String marketKey = RedisKeyConfig.HOMEPAGE_CURRENCY_MARKET;
 
-        if (transactionUserDealDTOList != null && transactionUserDealDTOList.size() > 0) {
-            redisService.addValue(marketKey,transactionUserDealDTOList);
+        if (transactionUserDealList != null && transactionUserDealList.size() > 0) {
+            redisService.addValue(marketKey,transactionUserDealList);
         } else {
             redisService.addValue(marketKey,null);
         }

@@ -115,11 +115,11 @@ public class UserCurrencyNumDaoImpl implements IUserCurrencyNumDao {
      * @return 操作成功：返回true;操作失败：返回false
      */
     @Override
-    public boolean insertUserCurrencyForWeb(List<UserCurrencyNumDO> userCurrencyNumDOList) {
+    public boolean insertUserCurrencyForWeb(List<UserCurrencyNumDO> userCurrencyNumList) {
         int result = 0;
 
         try {
-            result = sqlSessionTemplate.insert("UserCurrencyNum_insertUserCurrencyForWeb",userCurrencyNumDOList);
+            result = sqlSessionTemplate.insert("UserCurrencyNum_insertUserCurrencyForWeb",userCurrencyNumList);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
@@ -258,24 +258,6 @@ public class UserCurrencyNumDaoImpl implements IUserCurrencyNumDao {
             LogUtil.printErrorLog(e);
         }
         return result;
-    }
-
-    /**
-     * 获取当前用户所没有的币种
-     * @param userId 用户Id
-     * @return 查询成功：返回用户币种列表，查询失败：返回null
-     */
-    @Override
-    public List<Integer> getUserCurrencyNotOwnForWeb(int userId) {
-
-        List<Integer> userCurrencyNumDOList = null;
-
-        try {
-            userCurrencyNumDOList = sqlSessionTemplate.selectList("UserCurrencyNum_getUserCurrencyNotOwnForWeb",userId);
-        } catch (Exception e) {
-            LogUtil.printErrorLog(e);
-        }
-        return userCurrencyNumDOList;
     }
 
 }

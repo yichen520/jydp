@@ -71,13 +71,13 @@ public class UserBalanceDaoImpl implements IUserBalanceDao {
         map.put("startNumber", pageNumber * pageSize);
         map.put("pageSize", pageSize);
 
-        List<UserBalanceDO> userBalanceDOList = null;
+        List<UserBalanceDO> userBalanceList = null;
         try {
-            userBalanceDOList = sqlSessionTemplate.selectList("UserBalance_getUserBalancelistForWeb",map);
+            userBalanceList = sqlSessionTemplate.selectList("UserBalance_getUserBalancelistForWeb",map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
-        return userBalanceDOList;
+        return userBalanceList;
     }
 
     /**
