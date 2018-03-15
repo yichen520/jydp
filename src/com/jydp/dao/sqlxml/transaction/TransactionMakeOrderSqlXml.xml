@@ -64,7 +64,7 @@
             <if test="endExecuteTime != null">
                 AND executeTime <![CDATA[ <= ]]> #{endExecuteTime}
             </if>
-        ORDER BY executeTimeDESC, addTime DESC
+        ORDER BY executeTime DESC, addTime DESC
         LIMIT #{startNumber}, #{pageSize}
     </select>
 
