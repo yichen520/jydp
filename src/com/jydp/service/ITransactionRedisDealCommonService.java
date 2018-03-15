@@ -16,4 +16,7 @@ public interface ITransactionRedisDealCommonService {
 
     /** 每日凌晨更新最高与最低价更新 */
     void updateWeeHoursBasisOfPrice();
+
+    /** 刷新交易指导价(昨日收盘价) */
+    void gruidPriceForYesterdayPrice();
 }
