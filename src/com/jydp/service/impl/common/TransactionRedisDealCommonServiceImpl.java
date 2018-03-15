@@ -130,29 +130,5 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                         transaction.getTransactionPrice());
             }
         }
-
-        //获取币种信息
-/*        List<TransactionCurrencyVO> transactionUserDeal= transactionCurrencyService.getTransactionCurrencyListForWeb();
-        if(transactionUserDeal != null && transactionUserDeal.size() > 0) {
-            if(closing == null || closing.size() <= 0){
-                for(TransactionCurrencyDO transactionUser : transactionUserDeal){
-                    redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE + transactionUser.getCurrencyId(), quantity);
-                    redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE + transactionUser.getCurrencyId(), quantity);
-                    redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionUser.getCurrencyId(), quantity);
-                    redisService.addValue(RedisKeyConfig.DAY_TURNOVER + transactionUser.getCurrencyId(), quantity);
-                }
-            } else {
-                for (TransactionCurrencyDO transactionUser : transactionUserDeal) {
-                    for(TransactionDealPriceDTO transactionDealPrice : closing){
-                        if (transactionUser.getCurrencyId() != transactionDealPrice.getCurrencyId()) {
-                            redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE + transactionUser.getCurrencyId(), quantity);
-                            redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE + transactionUser.getCurrencyId(), quantity);
-                            redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionUser.getCurrencyId(), quantity);
-                            redisService.addValue(RedisKeyConfig.DAY_TURNOVER + transactionUser.getCurrencyId(), quantity);
-                        }
-                    }
-                }
-            }
-        }*/
     }
 }
