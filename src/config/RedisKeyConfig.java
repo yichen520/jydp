@@ -35,13 +35,13 @@ public class RedisKeyConfig {
     /** 卖出挂单记录key（后面需跟上币种id） */
     public static final String SELL_KEY = "transactionPendOrderSellList_";
     /** 首页广告列表 */
-    public static final String HOMEPAGE_ADS = "homepgeAdvertisementList";
+    public static final String HOMEPAGE_ADS = "homepageAdvertisementList";
     /** 首页系统公告列表 */
     public static final String HOMEPAGE_NOTICE = "homepageSystemNoticeList";
     /** 首页热门话题列表 */
-    public static final String HOMEPAGE_HOTTOPIC = "homepageHotTopicList";
+    public static final String HOMEPAGE_HOT_TOPIC = "homepageHotTopicList";
     /** 首页合作商家列表 */
     public static final String HOMEPAGE_PARTNER = "homepageBusinessesPartnerList";
     /** 首页币种行情列表 */
-    public static final String HOMEPAGE_CURRENCYMARKET = "homepageCurrencyMarketList";
+    public static final String HOMEPAGE_CURRENCY_MARKET = "homepageCurrencyMarketList";
 }

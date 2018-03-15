@@ -211,10 +211,10 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
     public List<TransactionUserDealDTO> getTransactionCurrencyMarketForWeb() {
 
         //查询所有币种
-        List<TransactionUserDealDTO> transactionUserDealDTOList = transactionCurrencyDao.getTransactionCurrencyMarketForWeb();
+        List<TransactionUserDealDTO> transactionUserDealList = transactionCurrencyDao.getTransactionCurrencyMarketForWeb();
 
-        if (transactionUserDealDTOList != null) {
-            for (TransactionUserDealDTO transactionUserDeal:transactionUserDealDTOList) {
+        if (transactionUserDealList != null) {
+            for (TransactionUserDealDTO transactionUserDeal:transactionUserDealList) {
                 int currencyId = transactionUserDeal.getCurrencyId();
                 StandardParameterVO standardParameterVO = listTransactionCurrencyAll(currencyId);
 
@@ -226,7 +226,7 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
             }
         }
         long endTime = System.currentTimeMillis();
-        return transactionUserDealDTOList;
+        return transactionUserDealList;
     }
 
     /**

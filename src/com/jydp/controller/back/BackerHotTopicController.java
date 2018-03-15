@@ -375,7 +375,7 @@ public class BackerHotTopicController {
         }
 
         List<SystemHotDO> systemHotDOList = homePageService.getSystemHotList();
-        String hotTopicKey = RedisKeyConfig.HOMEPAGE_HOTTOPIC;
+        String hotTopicKey = RedisKeyConfig.HOMEPAGE_HOT_TOPIC;
 
         if (systemHotDOList != null && systemHotDOList.size() > 0) {
             redisService.addValue(hotTopicKey,systemHotDOList);

@@ -108,14 +108,14 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
      */
     @Override
     public List<TransactionCurrencyVO> getTransactionCurrencyListForWeb() {
-        List<TransactionCurrencyVO> TransactionCurrencyVOList = null;
+        List<TransactionCurrencyVO> TransactionCurrencyList = null;
 
         try {
-            TransactionCurrencyVOList = sqlSessionTemplate.selectList("TransactionCurrency_getTransactionCurrencyListForWeb");
+            TransactionCurrencyList = sqlSessionTemplate.selectList("TransactionCurrency_getTransactionCurrencyListForWeb");
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
-        return TransactionCurrencyVOList;
+        return TransactionCurrencyList;
     }
 
     /**
@@ -310,101 +310,14 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
      */
     @Override
     public List<TransactionUserDealDTO> getTransactionCurrencyMarketForWeb() {
-        List<TransactionUserDealDTO> transactionUserDealDTOList = null;
+        List<TransactionUserDealDTO> transactionUserDealList = null;
 
         try {
-            transactionUserDealDTOList = sqlSessionTemplate.selectList("TransactionCurrency_getTransactionCurrencyMarketForWeb");
+            transactionUserDealList = sqlSessionTemplate.selectList("TransactionCurrency_getTransactionCurrencyMarketForWeb");
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
-        return transactionUserDealDTOList;
-    }
-
-    /**
-     * 获取各币种最新价
-     * @return 查询成功：返回币种信息；查询失败：返回null
-     */
-    @Override
-    public Map<Integer,TransactionUserDealDTO> getNewPriceForWeb() {
-        Map<Integer,TransactionUserDealDTO> newPriceMap = null;
-
-        try {
-            newPriceMap = sqlSessionTemplate.selectMap("TransactionCurrency_getNewPriceForWeb","currencyId");
-        } catch (Exception e) {
-            LogUtil.printErrorLog(e);
-        }
-        return newPriceMap;
-    }
-
-    /**
-     * 查询各币种买一价信息
-     * @return 查询成功：返回各币种买一价信息；查询失败：返回null
-     */
-    @Override
-    public Map<Integer,TransactionUserDealDTO> getBuyOneForWeb() {
-        Map<Integer,TransactionUserDealDTO> buyOneMap = null;
-
-        try {
-            buyOneMap = sqlSessionTemplate.selectMap("TransactionCurrency_getBuyOneForWeb","currencyId");
-        } catch (Exception e) {
-            LogUtil.printErrorLog(e);
-        }
-        return buyOneMap;
-    }
-
-    /**
-     * 查询各币种卖一价信息
-     * @return 查询成功：返回各币种信息；查询失败：返回null
-     */
-    @Override
-    public Map<Integer,TransactionUserDealDTO> getSellOneForWeb() {
-        Map<Integer,TransactionUserDealDTO> sellOneMap = null;
-
-        try {
-            sellOneMap = sqlSessionTemplate.selectMap("TransactionCurrency_getSellOneForWeb","currencyId");
-        } catch (Exception e) {
-            LogUtil.printErrorLog(e);
-        }
-        return sellOneMap;
-    }
-
-    /**
-     * 查询各币种今日成交量
-     * @param openTime 今日开盘时间
-     * @return 查询成功：返回各币种信息；查询失败：返回null
-     */
-    @Override
-    public Map<Integer,TransactionUserDealDTO> getTransactionVolumeForWeb(Timestamp openTime) {
-        Map<Integer,TransactionUserDealDTO> volumeMap = null;
-
-        try {
-            volumeMap = sqlSessionTemplate.selectMap("TransactionCurrency_getTransactionVolumeForWeb",openTime,"currencyId");
-        } catch (Exception e) {
-            LogUtil.printErrorLog(e);
-        }
-        return volumeMap;
-    }
-
-    /**
-     * 获取昨日最新成交价
-     * @param openTime 今日开盘时间
-     * @param startTime 昨日开盘时间
-     * @return 查询成功：返回各币种信息；查询失败：返回null
-     */
-    @Override
-    public Map<Integer,TransactionUserDealDTO> getYesterdayLastPriceForWeb(Timestamp openTime, Timestamp startTime) {
-        Map<Integer,TransactionUserDealDTO> yesterdayPriceMap = null;
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("openTime", openTime);
-        map.put("startTime", startTime);
-
-        try {
-            yesterdayPriceMap = sqlSessionTemplate.selectMap("TransactionCurrency_getYesterdayLastPriceForWeb",map,"currencyId");
-        } catch (Exception e) {
-            LogUtil.printErrorLog(e);
-        }
-        return yesterdayPriceMap;
+        return transactionUserDealList;
     }
 
     /**
@@ -413,14 +326,14 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
      */
     @Override
     public List<TransactionCurrencyVO> getAllCurrencylistForWeb() {
-        List<TransactionCurrencyVO> transactionCurrencyVOList = null;
+        List<TransactionCurrencyVO> transactionCurrencyList = null;
 
         try {
-            transactionCurrencyVOList = sqlSessionTemplate.selectList("TransactionCurrency_getAllCurrencylistForWeb");
+            transactionCurrencyList = sqlSessionTemplate.selectList("TransactionCurrency_getAllCurrencylistForWeb");
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
-        return transactionCurrencyVOList;
+        return transactionCurrencyList;
     }
 
     /**
@@ -429,14 +342,14 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
      */
     @Override
     public List<TransactionCurrencyVO> getOnlineAndSuspensionCurrencyForWeb() {
-        List<TransactionCurrencyVO> transactionCurrencyVOList = null;
+        List<TransactionCurrencyVO> transactionCurrencyList = null;
 
         try {
-            transactionCurrencyVOList = sqlSessionTemplate.selectList("TransactionCurrency_getOnlineAndSuspensionCurrencyForWeb");
+            transactionCurrencyList = sqlSessionTemplate.selectList("TransactionCurrency_getOnlineAndSuspensionCurrencyForWeb");
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
-        return transactionCurrencyVOList;
+        return transactionCurrencyList;
     }
 
     /**

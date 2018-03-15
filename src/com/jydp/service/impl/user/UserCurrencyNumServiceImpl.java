@@ -77,8 +77,8 @@ public class UserCurrencyNumServiceImpl implements IUserCurrencyNumService {
      * @return 操作成功：返回true;操作失败：返回false
      */
     @Override
-    public boolean insertUserCurrencyForWeb(List<UserCurrencyNumDO> userCurrencyNumDOList) {
-        return userCurrencyNumDao.insertUserCurrencyForWeb(userCurrencyNumDOList);
+    public boolean insertUserCurrencyForWeb(List<UserCurrencyNumDO> userCurrencyNumList) {
+        return userCurrencyNumDao.insertUserCurrencyForWeb(userCurrencyNumList);
     }
 
     /**
@@ -166,41 +166,6 @@ public class UserCurrencyNumServiceImpl implements IUserCurrencyNumService {
     public List<UserAmountCheckDTO> listCheckUserAmountForTimer(double checkAmount, double checkAmountLock,
                                                          int pageNumber, int pageSize) {
         return userCurrencyNumDao.listCheckUserAmountForTimer(checkAmount, checkAmountLock, pageNumber, pageSize);
-    }
-
-    /**
-     * 获取当前用户没有的币种
-     * @param userId 用户Id
-     * @return 查询成功：返回用户币种列表，查询失败：返回null
-     */
-    @Override
-    public List<Integer> getUserCurrencyNotOwnForWeb(int userId){
-        return userCurrencyNumDao.getUserCurrencyNotOwnForWeb(userId);
-    }
-
-    /**
-     * 增加用户没有的所有币种账户
-     * @param userId 用户id
-     * @return 操作成功：返回true，操作失败：返回false（如果该用户币种账户已全部存在返回true）
-     */
-    public boolean addUserCurrencyNotOwn(int userId) {
-        //获取当前用户没有的币种，为null说明所有币种都存在
-        List<Integer> userCurrencyNumDOList =  getUserCurrencyNotOwnForWeb(userId);
-        if (CollectionUtils.isEmpty(userCurrencyNumDOList)){
-            return true;
-        }
-
-        List<UserCurrencyNumDO> userCurrencyNumDOList1 = new ArrayList<UserCurrencyNumDO>();
-        for (Integer currencyId:userCurrencyNumDOList) {
-            UserCurrencyNumDO userCurrencyNumDO = new UserCurrencyNumDO();
-            userCurrencyNumDO.setUserId(userId);
-            userCurrencyNumDO.setCurrencyId(currencyId);
-            userCurrencyNumDO.setCurrencyNumber(0);
-            userCurrencyNumDO.setCurrencyNumberLock(0);
-            userCurrencyNumDO.setAddTime(DateUtil.getCurrentTime());
-            userCurrencyNumDOList1.add(userCurrencyNumDO);
-        }
-        return insertUserCurrencyForWeb(userCurrencyNumDOList1);
     }
 
 }
