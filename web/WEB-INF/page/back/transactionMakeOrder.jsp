@@ -52,7 +52,7 @@
                             <option value="0">全部</option>
                             <option value="1">待执行</option>
                             <option value="2">执行中</option>
-                            <option value="3">执行完成</option>
+                            <option value="3">执行成功</option>
                             <option value="4">执行失败</option>
                         </select>
                     </p>
