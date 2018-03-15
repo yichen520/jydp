@@ -235,4 +235,26 @@ public class TransactionMakeOrderDaoImpl implements ITransactionMakeOrderDao{
             return false;
         }
     }
+
+    /**
+     * 根据执行状态查询做单记录
+     * @param executeStatus  执行状态
+     * @param size  查询条数
+     * @return  操作成功：返回做单记录集合，操作失败：返回null
+     */
+    public List<TransactionMakeOrderDO> listMakeOrderByExecuteStatus(int executeStatus, int size){
+        List<TransactionMakeOrderDO> resultList = null;
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("executeStatus", executeStatus);
+        map.put("size", size);
+
+        try {
+            resultList = sqlSessionTemplate.selectList("TransactionMakeOrder_listMakeOrderByExecuteStatus", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return  resultList;
+    }
 }
