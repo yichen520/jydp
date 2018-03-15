@@ -160,7 +160,7 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
      * @return 查询成功：返回上一个价格，查询失败或上一个价格为0：返回0
      */
     public List<TransactionDealPriceDTO> getNowLastPrice(Timestamp getDate){
-        long dateLon = DateUtil.lingchenLong();
+/*        long dateLon = DateUtil.lingchenLong();
         Timestamp date;
 
         //判断当前时间是否是凌晨至开盘之前
@@ -171,8 +171,8 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
         } else {
             dateLon = dateLon - RedisKeyConfig.DAY_TIME + RedisKeyConfig.OPENING_TIME;
             date = DateUtil.longToTimestamp(dateLon);
-        }
-        return transactionDealRedisDao.getNowLastPrice(getDate, date);
+        } */
+        return transactionDealRedisDao.getNowLastPrice(getDate, null);
     }
 
     /**
