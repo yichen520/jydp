@@ -118,12 +118,12 @@
 	</select>
 
 	<select id="TransactionUserDeal_listTransactionDealForPending" parameterType="java.util.Map" resultType="TransactionDealRedisDO">
-		SELECT id, orderNo, paymentType, currencyId, transactionPrice, currencyNumber, currencyTotalPrice, addTime
+		SELECT transactionPrice, SUM(currencyNumber) AS currencyNumber, SUM(currencyTotalPrice) AS currencyTotalPrice
 		FROM transaction_deal_redis_tab
 		WHERE currencyId = #{currencyId}
 			AND paymentType = #{paymentType}
 			AND addTime <![CDATA[ >= ]]> #{date}
-		ORDER BY transactionPrice
+		GROUP BY transactionPrice
 		<if test="paymentType == 1 ">
 			DESC
 		</if>
