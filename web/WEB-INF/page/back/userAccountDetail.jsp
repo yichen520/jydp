@@ -240,7 +240,8 @@
                     $(".mask").fadeOut("fast");
                     $(popObj).fadeOut("fast");
                     openTips(result.message)
-                    setTimeout(function (){$("#detailForm").submit();}, 1000);
+
+                    setTimeout(function (){window.location.href="<%=path %>/backerWeb/backerUserAccountDetail/showDetail.htm/"+addId;}, 1000);
                 } else {
                     openTips(result.message);
                 }
@@ -298,7 +299,8 @@
                     $(".mask").fadeOut("fast");
                     $(popObj).fadeOut("fast");
                     openTips(result.message)
-                    setTimeout(function (){$("#detailForm").submit();}, 1000);
+
+                    setTimeout(function (){window.location.href="<%=path %>/backerWeb/backerUserAccountDetail/showDetail.htm/"+reduceId;}, 1000);
                 } else {
                     openTips(result.message);
                 }
@@ -373,7 +375,7 @@
                     $(".mask").fadeOut("fast");
                     $(popObj).fadeOut("fast");
                     openTips(result.message)
-                    setTimeout(function (){$("#detailForm").submit();}, 1000);
+                    setTimeout(function (){window.location.href="<%=path %>/backerWeb/backerUserAccountDetail/showDetail.htm/"+addId;}, 1000);
                 } else {
                     openTips(result.message);
                 }
@@ -431,7 +433,7 @@
                     $(".mask").fadeOut("fast");
                     $(popObj).fadeOut("fast");
                     openTips(result.message)
-                    setTimeout(function (){$("#detailForm").submit();}, 1000);
+                    setTimeout(function (){window.location.href="<%=path %>/backerWeb/backerUserAccountDetail/showDetail.htm/"+reduceId;}, 1000);
                 } else {
                     openTips(result.message);
                 }
