@@ -208,13 +208,13 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
     }
 
     /**
-     * 获取盛源交易所 保底价
+     * 获取盛源交易所 当日成交总价，当日成交总数量
      * @param currencyId 币种Id
      * @param orderNoPrefix 批次号前缀
      * @return 操作成功：返回数据集合，操作失败:返回null
      */
-    public TransactionBottomPriceDTO getBottomPrice(int currencyId, String orderNoPrefix){
-        return transactionDealRedisDao.getBottomPrice(currencyId, orderNoPrefix);
+    public TransactionBottomPriceDTO getBottomPriceToday(int currencyId, String orderNoPrefix){
+        return transactionDealRedisDao.getBottomPriceToday(currencyId, orderNoPrefix);
     }
 
     /**
