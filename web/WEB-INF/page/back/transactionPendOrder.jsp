@@ -218,9 +218,9 @@
             async: true, //默认异步调用 (false：同步)
             success: function (result) {
                 if (result.message != "") {
-                    openTips(message);
+                    openTips(result.message);
                 }
-                if (code == 1){
+                if (result.code == 1){
                     $(".mask").fadeOut("fast");
                     document.getElementById("queryPageNumber").value = ${pageNumber };
                     setTimeout(function (){queryForm();}, 1000);
