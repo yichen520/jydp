@@ -14,12 +14,10 @@ public class PhoneAreaConfig {
     public static final Map<String, String> phoneAreaMap = new LinkedHashMap<String, String>(){
         private static final long serialVersionUID = 1L;{
             put("+86", "中国");
-            put("+1", "美国");
+            put("+1", "美国/加拿大");
             put("+886", "中国台湾");
             put("+853", "中国澳门");
             put("+852", "中国香港");
-
-
             put("+971", "阿拉伯联合酋长国");
             put("+93", "阿富汗");
             put("+1268", "安提瓜和巴布达");
@@ -38,7 +36,6 @@ public class PhoneAreaConfig {
             put("+880", "孟加拉国");
             put("+32", "比利时");
             put("+226", "布基纳法索");
-
             put("+359", "保加利亚");
             put("+973", "巴林");
             put("+257", "布隆迪");
@@ -53,7 +50,6 @@ public class PhoneAreaConfig {
             put("+267", "博茨瓦纳");
             put("+375", "白俄罗斯");
             put("+501", "伯利兹");
-            put("+1", "加拿大");
             put("+243", "刚果民主共和国");
             put("+236", "中非共和国");
             put("+242", "刚果共和国");
@@ -103,7 +99,6 @@ public class PhoneAreaConfig {
             put("+1671", "关岛");
             put("+245", "几内亚比绍共和国");
             put("+592", "圭亚那");
-            put("+852", "中国香港");
             put("+504", "洪都拉斯");
             put("+385", "克罗地亚");
             put("+509", "海地");
@@ -151,7 +146,6 @@ public class PhoneAreaConfig {
             put("+223", "马里");
             put("+95", "缅甸");
             put("+976", "蒙古");
-            put("+853", "中国澳门");
             put("+222", "毛里塔尼亚");
             put("+1664", "蒙特塞拉特岛");
             put("+356", "马耳他");
@@ -218,11 +212,9 @@ public class PhoneAreaConfig {
             put("+676", "汤加");
             put("+90", "土耳其");
             put("+1868", "特立尼达和多巴哥");
-            put("+886", "中国台湾");
             put("+255", "坦桑尼亚");
             put("+380", "乌克兰");
             put("+256", "乌干达");
-            put("+1", "美国");
             put("+598", "乌拉圭");
             put("+998", "乌兹别克斯坦");
             put("+1784", "圣文森特和格林纳丁斯");
