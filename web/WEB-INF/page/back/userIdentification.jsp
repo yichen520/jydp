@@ -104,7 +104,7 @@
                         </c:if>
                         <td class="mark">${item.remark}</td>
                         <c:if test="${backer_rolePower['141002'] == 141002}">
-                            <td class="operate"><a href="#" class="details" onclick="showDetail('${item.id}')">查看详情</a></td>
+                            <td class="operate"><a href="<%=path %>/backerWeb/backerIdentification/detail.htm/${item.id}" target="_blank" class="details">查看详情</a></td>
                         </c:if>
                     </tr>
                 </c:forEach>

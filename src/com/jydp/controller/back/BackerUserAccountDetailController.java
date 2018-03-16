@@ -17,6 +17,7 @@ import com.jydp.service.IUserSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -58,8 +59,8 @@ public class BackerUserAccountDetailController {
     private ITransactionCurrencyService transactionCurrencyService;
 
     /** 展示账户明细页面 */
-    @RequestMapping(value = "/showDetail.htm", method = RequestMethod.POST)
-    public String showDetail(HttpServletRequest request, RedirectAttributes attributes) {
+    @RequestMapping(value = "/showDetail.htm/{userIdStr}", method = RequestMethod.GET)
+    public String showDetail(HttpServletRequest request, RedirectAttributes attributes, @PathVariable String userIdStr) {
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
         if (backerSession == null) {
             request.setAttribute("code", 4);
@@ -75,7 +76,7 @@ public class BackerUserAccountDetailController {
             return "page/back/index";
         }
 
-        String userIdStr = StringUtil.stringNullHandle(request.getParameter("userId"));
+        //String userIdStr = StringUtil.stringNullHandle(request.getParameter("userId"));
         if (!StringUtil.isNotNull(userIdStr)) {
             attributes.addFlashAttribute("code", 2);
             attributes.addFlashAttribute("message", "参数为空");

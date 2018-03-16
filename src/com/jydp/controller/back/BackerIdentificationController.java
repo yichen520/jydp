@@ -15,6 +15,7 @@ import config.PhoneAreaConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -139,8 +140,8 @@ public class BackerIdentificationController {
     }
 
     /** 实名认证详情页面 */
-    @RequestMapping(value = "/detail.htm", method = RequestMethod.POST)
-    public String detail(HttpServletRequest request) {
+    @RequestMapping(value = "/detail.htm/{idStr}", method = RequestMethod.GET)
+    public String detail(HttpServletRequest request, @PathVariable String idStr) {
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
         if (backerSession == null) {
             request.setAttribute("code", 4);
@@ -174,7 +175,7 @@ public class BackerIdentificationController {
         request.setAttribute("identificationStatus", identificationStatusStr);
         request.setAttribute("userCertType", userCertTypeStr);
 
-        String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
+        //String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
         if (!StringUtil.isNotNull(idStr)) {
             request.setAttribute("code", 2);
             request.setAttribute("message", "未接收到参数！");
