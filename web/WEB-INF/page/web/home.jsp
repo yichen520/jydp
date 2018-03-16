@@ -74,12 +74,12 @@
         <div class="notice">
             <span class="bTitle">
                 <img src="<%=path %>/resources/image/web/notice.png" />系统公告
-                <a href="<%=path %>/userWeb/webSystemNotice/show" class="more">查看更多</a>
+                <a target="_blank" href="<%=path %>/userWeb/webSystemNotice/show" class="more">查看更多</a>
             </span>
             <ul class="list">
                 <c:forEach items="${systemNoticeList}" var="systemNotice">
                     <li class="listInfo">
-                        <a href="<%=path%>/userWeb/webSystemNotice/showNoticeDetail/${systemNotice.id}" class="link">
+                        <a target="_blank" href="<%=path%>/userWeb/webSystemNotice/showNoticeDetail/${systemNotice.id}" class="link">
                             <span class="noticeTitle">【<span>公告</span>】${systemNotice.noticeTitle}</span>
                             <span class="time"><fmt:formatDate type="time" value="${systemNotice.addTime}" pattern="yyyy-MM-dd"></fmt:formatDate></span>
                         </a>
@@ -91,12 +91,12 @@
         <div class="hot">
             <span class="bTitle">
                 <img src="<%=path %>/resources/image/web/hot.png" />热门话题
-                <a href="<%=path %>/userWeb/webSystemHot/show" class="more">查看更多</a>
+                <a target="_blank" href="<%=path %>/userWeb/webSystemHot/show" class="more">查看更多</a>
             </span>
             <ul class="list">
                 <c:forEach items="${systemHotList}" var="hotTopic">
                     <li class="listInfo">
-                        <a href="<%=path%>/userWeb/webSystemHot/showHotDetail/${hotTopic.id}" class="link">
+                        <a target="_blank" href="<%=path%>/userWeb/webSystemHot/showHotDetail/${hotTopic.id}" class="link">
                             <span class="noticeTitle">【<span>热门</span>】${hotTopic.noticeTitle}</span>
                             <span class="time"><fmt:formatDate type="time" value="${hotTopic.addTime}" pattern="yyyy-MM-dd"></fmt:formatDate></span>
                         </a>

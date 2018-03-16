@@ -128,7 +128,7 @@
                             </c:if>
 
                             <c:if test="${backer_rolePower['141103'] == 141103}">
-                                <a href="#" onclick="showDetail('${user.userId}')" class="details">账户明细</a>
+                                <a href="<%=path %>/backerWeb/backerUserAccountDetail/showDetail.htm/${user.userId}" target="_blank" class="details">账户明细</a>
                             </c:if>
                             <c:if test="${backer_rolePower['141106'] == 141106}">
                                 <input type="text" class="addMoney" value="增加可用余额" onfocus="this.blur()" onclick="addAmount('${user.userId }', '${user.userAccount }')"/>

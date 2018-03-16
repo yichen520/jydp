@@ -196,6 +196,9 @@ p,span{
     background: url("../../image/back/line.png") #ffffff no-repeat 15px 0;
     width: 1200px;
 }
+#edui1_iframeholder{
+    max-height: 490px !important;
+}
 .askArea{
     padding-top: 15px;
     width: 1200px;
