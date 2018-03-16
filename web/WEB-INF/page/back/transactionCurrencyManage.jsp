@@ -234,7 +234,7 @@
                 <p class="popInput">
                     <label class="popName">上市指导价<span class="star">*</span></label>
                     <input type="text" class="entry" placeholder="币种的上市指导价格，单位：$"
-                           id="guidAd" name="guidAd" maxlength="18"
+                           id="guidAd" name="guidAd" maxlength="10"
                            onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)"/>
                 </p>
                 <p class="popInput">
@@ -293,7 +293,7 @@
                 <p class="popInput" id="inGuid">
                     <label class="popName">上市指导价<span class="star">*</span></label>
                     <input type="text" class="entry" placeholder="币种的上市指导价格，单位：$" id="guidUp" name="guidUp"
-                           maxlength="18" onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)"/>
+                           maxlength="10" onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)"/>
                 </p>
                 <p class="popInput">
                     <label class="popName">币种徽标</label>

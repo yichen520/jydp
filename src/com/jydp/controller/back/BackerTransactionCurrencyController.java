@@ -214,6 +214,14 @@ public class BackerTransactionCurrencyController {
             return response;
         }
 
+        TransactionCurrencyVO currurrencyName = transactionCurrencyService.getTransactionCurrencyByCurrencyName(currencyNameStr);
+        TransactionCurrencyVO currencyByshortName = transactionCurrencyService.getTransactionCurrencyByCurrencyShortName(currencyShortNameStr);
+        if (currurrencyName != null || currencyByshortName != null) {
+            response.setCode(3);
+            response.setMessage("该币种已存在");
+            return response;
+        }
+
         String imageUrl = "";
         try {
             imageUrl = FileWriteRemoteUtil.uploadFile(adsImageUrl.getOriginalFilename(),
