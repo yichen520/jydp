@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Description: 用户账户币种余额
@@ -80,15 +81,20 @@ public class BackerUserAccountDetailController {
         if (!StringUtil.isNotNull(userIdStr)) {
             attributes.addFlashAttribute("code", 2);
             attributes.addFlashAttribute("message", "参数为空");
-            return "redirect:/backer/backerUserAccount/show.htm";
+            return "redirect:/backerWeb/backerUserAccount/show.htm";
         }
 
-        int userId = Integer.parseInt(userIdStr);
+        int userId = 0;
+        String reg = "[0-9]*";
+        if (userIdStr.length() < 11 && Pattern.matches(reg,userIdStr)) {
+            userId = Integer.parseInt(userIdStr);
+        }
+
         UserDO userDO = userService.getUserByUserId(userId);
         if (userDO == null || userDO.getAccountStatus() <= 0) {
             attributes.addFlashAttribute("code", 3);
             attributes.addFlashAttribute("message", "用户不存在");
-            return "redirect:/backer/backerUserAccount/show.htm";
+            return "redirect:/backerWeb/backerUserAccount/show.htm";
         }
         //查询用户币数量，带货币名称
         List<BackerUserCurrencyNumDTO> userCurrencyNumList = userCurrencyNumService.getUserCurrencyNumByUserIdForBacker(userId);

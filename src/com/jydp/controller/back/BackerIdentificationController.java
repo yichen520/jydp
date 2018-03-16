@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Description: 用户实名认证
@@ -158,22 +159,22 @@ public class BackerIdentificationController {
         }
 
         //查询条件 回显
-        String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
-        String startTimeStr = StringUtil.stringNullHandle(request.getParameter("startTime"));
-        String endTimeStr = StringUtil.stringNullHandle(request.getParameter("endTime"));
-        String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
-        String userPhone = StringUtil.stringNullHandle(request.getParameter("userPhone"));
-        String phoneAreaCode = StringUtil.stringNullHandle(request.getParameter("phoneAreaCode"));
-        String identificationStatusStr = StringUtil.stringNullHandle(request.getParameter("identificationStatus"));
-        String userCertTypeStr = StringUtil.stringNullHandle(request.getParameter("userCertType"));
-        request.setAttribute("pageNumber", pageNumberStr);
-        request.setAttribute("startTime", startTimeStr);
-        request.setAttribute("endTime", endTimeStr);
-        request.setAttribute("userAccount", userAccount);
-        request.setAttribute("userPhone", userPhone);
-        request.setAttribute("phoneAreaCode", phoneAreaCode);
-        request.setAttribute("identificationStatus", identificationStatusStr);
-        request.setAttribute("userCertType", userCertTypeStr);
+//        String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
+//        String startTimeStr = StringUtil.stringNullHandle(request.getParameter("startTime"));
+//        String endTimeStr = StringUtil.stringNullHandle(request.getParameter("endTime"));
+//        String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
+//        String userPhone = StringUtil.stringNullHandle(request.getParameter("userPhone"));
+//        String phoneAreaCode = StringUtil.stringNullHandle(request.getParameter("phoneAreaCode"));
+//        String identificationStatusStr = StringUtil.stringNullHandle(request.getParameter("identificationStatus"));
+//        String userCertTypeStr = StringUtil.stringNullHandle(request.getParameter("userCertType"));
+//        request.setAttribute("pageNumber", pageNumberStr);
+//        request.setAttribute("startTime", startTimeStr);
+//        request.setAttribute("endTime", endTimeStr);
+//        request.setAttribute("userAccount", userAccount);
+//        request.setAttribute("userPhone", userPhone);
+//        request.setAttribute("phoneAreaCode", phoneAreaCode);
+//        request.setAttribute("identificationStatus", identificationStatusStr);
+//        request.setAttribute("userCertType", userCertTypeStr);
 
         //String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
         if (!StringUtil.isNotNull(idStr)) {
@@ -182,8 +183,12 @@ public class BackerIdentificationController {
             showList(request);
             return "page/back/userIdentification";
         }
+        long id = 0L;
+        String reg = "[0-9]*";
+        if (idStr.length() < 18 && Pattern.matches(reg,idStr)) {
+            id = Long.parseLong(idStr);
+        }
 
-        long id = Long.parseLong(idStr);
         UserIdentificationDO userIdentification = userIdentificationService.getUserIdentificationById(id);
         if (userIdentification == null) {
             request.setAttribute("code", 3);
