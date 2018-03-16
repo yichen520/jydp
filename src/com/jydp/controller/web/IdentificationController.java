@@ -5,8 +5,8 @@ import com.iqmkj.utils.FileDataEntity;
 import com.iqmkj.utils.FileFomat;
 import com.iqmkj.utils.FileWriteLocalUtil;
 import com.iqmkj.utils.FileWriteRemoteUtil;
+import com.iqmkj.utils.ImageReduceUtil;
 import com.iqmkj.utils.LogUtil;
-import com.iqmkj.utils.NumberUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.user.UserDO;
@@ -17,7 +17,6 @@ import com.jydp.service.IUserIdentificationImageService;
 import com.jydp.service.IUserIdentificationService;
 import com.jydp.service.IUserService;
 import config.FileUrlConfig;
-import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -225,11 +224,11 @@ public class IdentificationController {
         //图片大于400k，压缩图片到本地缓存目录，再上传至图片服务器，最后删除缓存文件
         String frontImgSrc = "";
         if (frontImg.getSize() > 400*1024 ) {
-            frontImgSrc = reduceImage(frontImg, path);
+            frontImgSrc = ImageReduceUtil.reduceImage(frontImg, path);
         }
         String backImgSrc = "";
         if (backImg.getSize() > 400*1024 ) {
-            backImgSrc = reduceImage(backImg, path);
+            backImgSrc = ImageReduceUtil.reduceImage(backImg, path);
         }
 
         //上传图片到图片服务器
@@ -302,52 +301,6 @@ public class IdentificationController {
             responseJson.setMessage("提交失败");
         }
         return responseJson;
-    }
-
-    /**
-     * 压缩图片，400K到5M以内的图片压缩至400K以内，5M-10M压缩到700k以内
-     * @param img 图片文件
-     * @param path 缓存文件夹
-     * @return 压缩成功：返回图片路径，压缩失败：返回null
-     */
-    private String reduceImage(MultipartFile img, String path) {
-        StringBuffer url = new StringBuffer();
-        url.append(path);
-        url.append(NumberUtil.createNumberStr(6));
-        url.append(".jpg");
-
-        long size = img.getSize()/1024;
-        try {
-            //400K-1M 0.4
-            if (400 <= size && size <= 1024) {
-                Thumbnails.of(img.getInputStream())
-                        .scale(1)
-                        .outputQuality(0.4)
-                        .outputFormat("jpg")
-                        .toFile(url.toString());
-            }
-            //1M-5M  0.2
-            if (1024 < size && size <= 5*1024) {
-                Thumbnails.of(img.getInputStream())
-                        .scale(1)
-                        .outputQuality(0.2)
-                        .outputFormat("jpg")
-                        .toFile(url.toString());
-            }
-            //5M-10M  0.1
-            if (5*1024 < size && size <= 10*1024) {
-                Thumbnails.of(img.getInputStream())
-                        .scale(1)
-                        .outputQuality(0.1)
-                        .outputFormat("jpg")
-                        .toFile(url.toString());
-            }
-        } catch (Exception ex) {
-            LogUtil.printErrorLog(ex);
-            FileWriteLocalUtil.deleteFileRealPath(url.toString());
-            return null;
-        }
-        return url.toString();
     }
 
     /**

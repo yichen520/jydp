@@ -3,7 +3,7 @@ package com.jydp.controller.back;
 import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.FileWriteRemoteUtil;
-import com.iqmkj.utils.LogUtil;
+import com.iqmkj.utils.ImageReduceUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.system.SystemBusinessesPartnerDO;
@@ -22,8 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -138,12 +136,14 @@ public class BackerBusinessesPartnerController {
 
         //图片上传
         String imgUrl = null;
-        try {
+        /*try {
             imgUrl = FileWriteRemoteUtil.uploadFile(businessesPartnerImageUrl.getOriginalFilename(),
                     businessesPartnerImageUrl.getInputStream(), FileUrlConfig.file_remote_systemBusinessesPartner_url);
         } catch (IOException e) {
             LogUtil.printErrorLog(e);
-        }
+        }*/
+        imgUrl = ImageReduceUtil.reduceImageUploadRemote
+                (businessesPartnerImageUrl, request, FileUrlConfig.file_remote_systemBusinessesPartner_url);
         if (!StringUtil.isNotNull(imgUrl)) {
             responsJson.setCode(-1);
             responsJson.setMessage("文件服务器未响应，请稍后重试");
@@ -324,12 +324,14 @@ public class BackerBusinessesPartnerController {
         //获取用户上传的图片
         String imgUrl = null;
         if (businessesPartnerImageUrl != null && !businessesPartnerImageUrl.isEmpty()) {
-            try {
+            /*try {
                 imgUrl = FileWriteRemoteUtil.uploadFile(businessesPartnerImageUrl.getOriginalFilename(),
                         businessesPartnerImageUrl.getInputStream(), FileUrlConfig.file_remote_systemBusinessesPartner_url);
             } catch (IOException e) {
                 LogUtil.printErrorLog(e);
-            }
+            }*/
+            imgUrl = ImageReduceUtil.reduceImageUploadRemote
+                    (businessesPartnerImageUrl, request, FileUrlConfig.file_remote_systemBusinessesPartner_url);
         }
         if (businessesPartnerImageUrl != null && !businessesPartnerImageUrl.isEmpty() && !StringUtil.isNotNull(imgUrl)) {
             responsJson.setCode(5);
