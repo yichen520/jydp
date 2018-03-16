@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/public.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/simpleTips.css" />
 
-    <title>合作企业</title>
+    <title>合作伙伴</title>
 </head>
 <body>
 <div id="header"></div>
@@ -24,10 +24,10 @@
 
     <div class="contentRight">
         <div class="caption">
-            <span class="title">合作企业</span>
+            <span class="title">合作伙伴</span>
         </div>
         <c:if test="${backer_rolePower['112002'] == 112002}">
-            <p class="add">新增合作企业</p>
+            <p class="add">新增合作伙伴</p>
         </c:if>
 
         <form id="queryForm" action="<%=path %>/backerWeb/backerBusinessesPartner/show.htm" method="post">
@@ -98,7 +98,7 @@
         </div>
 
         <div class="add_pop">
-            <p class="popTitle">新增合作企业</p>
+            <p class="popTitle">新增合作伙伴</p>
             <p class="popInput">
                 <label class="popName">企业图片<span class="star">*</span></label>
 
@@ -128,7 +128,7 @@
         </div>
 
         <div class="change_pop">
-            <p class="popTitle">修改合作企业</p>
+            <p class="popTitle">修改合作伙伴</p>
             <p class="popInput">
                 <label class="popName">企业图片</label>
 

@@ -17,7 +17,7 @@
     <p class="h_side">
         <c:choose>
             <c:when test="${userSession.userAccount != null}">
-                <span class="h_info">您好，<span>${userSession.userAccount}</span>&nbsp;&nbsp;&nbsp;欢迎登录交易大盘</span>
+                <span class="h_info">您好，<span>${userSession.userAccount}</span>&nbsp;&nbsp;&nbsp;欢迎登录盛源交易所</span>
                 <a href="<%=path %>/userWeb/userLogin/loginOut.htm" class="out"><img src="<%=path %>/resources/image/web/out.png" />退出登录</a>
             </c:when>
             <c:otherwise>

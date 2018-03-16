@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/public.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/simpleTips.css" />
 
-    <title>后台做单</title>
+    <title>后台挂单</title>
 </head>
 <body>
 <div id="header"></div>
@@ -25,7 +25,7 @@
 
     <div class="contentRight">
         <div class="caption">
-            <span class="title">后台做单</span>
+            <span class="title">后台挂单</span>
         </div>
 
         <div class="top">
@@ -52,7 +52,7 @@
                             <option value="0">全部</option>
                             <option value="1">待执行</option>
                             <option value="2">执行中</option>
-                            <option value="3">执行完成</option>
+                            <option value="3">执行成功</option>
                             <option value="4">执行失败</option>
                         </select>
                     </p>

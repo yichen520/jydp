@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/public.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/simpleTips.css" />
 
-    <title>交易大盘</title>
+    <title>盛源交易所</title>
 </head>
 <body>
 <header id="header"></header>
@@ -166,12 +166,12 @@
     <div class="right">
         <ul class="account">
             <li class="accountList">
-                <span class="listName">可用${transactionCurrency.currencyName }</span>
+                <span class="listName">可用币</span>
                 <span class="listMoney rise" id="currencyNumberShow"><fmt:formatNumber type="number" value="${userDealCapitalMessage.currencyNumber }" groupingUsed="FALSE" maxFractionDigits="4"/></span>
                 <input type="hidden" id="currencyNumber" value="<fmt:formatNumber type="number" value="${userDealCapitalMessage.currencyNumber }" groupingUsed="FALSE" maxFractionDigits="4"/>">
             </li>
             <li class="accountList">
-                <span class="listName" >冻结${transactionCurrency.currencyName }</span>
+                <span class="listName" >冻结币</span>
                 <span class="listMoney fall" id="currencyNumberLockShow"><fmt:formatNumber type="number" value="${userDealCapitalMessage.currencyNumberLock }" groupingUsed="FALSE" maxFractionDigits="4"/></span>
             </li>
             <li class="accountList">

@@ -13,7 +13,7 @@
 <body>
 <div class="menu">
     <span class="logo">
-        <a id="meunlogo" href="<%=path %>/userWeb/homePage/show" class="m_logo"><img src="<%=path %>/resources/image/web/trade_logo.png" /></a><span onclick="document.getElementById('meunlogo').click();" style="cursor:pointer" >交易大盘</span>
+        <a id="meunlogo" href="<%=path %>/userWeb/homePage/show" class="m_logo"><img src="<%=path %>/resources/image/web/trade_logo.png" /></a><span onclick="document.getElementById('meunlogo').click();" style="cursor:pointer" >盛源交易所</span>
     </span>
 
     <ul class="nav">

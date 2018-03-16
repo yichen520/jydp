@@ -76,7 +76,7 @@ public class CheckUserAmountTimer {
         List<UserAmountCheckDTO> userAmountCheckList = userService.listCheckUserAmountForTimer(CheckUserAmountConfig.USD_CURRENCYID,
                 CheckUserAmountConfig.USD_BEYOND_MAX, CheckUserAmountConfig.USD_BEYOND_LOCK_MAX, 0, 100);
         if (CollectionUtils.isNotEmpty(userAmountCheckList)) {
-            LogUtil.printInfoLog("交易大盘用户账户异常");
+            LogUtil.printInfoLog("盛源交易所用户账户异常");
             for (UserAmountCheckDTO userAmountCheck: userAmountCheckList
                     ) {
                 LogUtil.printInfoLog("userId:" + userAmountCheck.getUserId() + ", currencyId:" + userAmountCheck.getCurrencyId() +
@@ -99,7 +99,7 @@ public class CheckUserAmountTimer {
         List<UserAmountCheckDTO> userAmountCheckList = userCurrencyNumService.listCheckUserAmountForTimer(CheckUserAmountConfig.COIN_BEYOND_MAX,
                 CheckUserAmountConfig.COIN_BEYOND_LOCK_MAX, 0, 100);
         if (CollectionUtils.isNotEmpty(userAmountCheckList)) {
-            LogUtil.printInfoLog("交易大盘用户数字货币账户异常");
+            LogUtil.printInfoLog("盛源交易所用户数字货币账户异常");
             for (UserAmountCheckDTO userAmountCheck: userAmountCheckList
                  ) {
                 LogUtil.printInfoLog("userId:" + userAmountCheck.getUserId() + ", currencyId:" + userAmountCheck.getCurrencyId() +

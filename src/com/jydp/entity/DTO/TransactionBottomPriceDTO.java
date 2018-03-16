@@ -1,7 +1,7 @@
 package com.jydp.entity.DTO;
 
 /**
- * Description: 交易大盘保底价
+ * Description: 盛源交易所保底价
  * Author: hht
  * Date: 2018-03-13 14:56
  */

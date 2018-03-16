@@ -280,6 +280,9 @@ public class UserMessageController {
             return responseJson;
         }
 
+        user.setIsPwd(1);
+        request.getSession().setAttribute("userSession", user);
+
         responseJson.setCode(1);
         responseJson.setMessage("修改成功");
         return responseJson;
@@ -395,6 +398,9 @@ public class UserMessageController {
             responseJson.setMessage("修改失败，请重试");
             return responseJson;
         }
+
+        user.setIsPwd(1);
+        request.getSession().setAttribute("userSession", user);
 
         responseJson.setCode(1);
         responseJson.setMessage("修改成功");

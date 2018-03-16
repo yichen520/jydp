@@ -32,7 +32,7 @@
         </ul>
     </div>
 
-    <span class="f_logo"><img src="<%=path %>/resources/image/web/footer_logo.png" />交易大盘</span>
+    <span class="f_logo"><img src="<%=path %>/resources/image/web/footer_logo.png" />盛源交易所</span>
 </div>
 
 <script type="text/javascript">

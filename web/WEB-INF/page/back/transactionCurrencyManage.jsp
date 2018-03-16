@@ -224,7 +224,7 @@
                 <p class="popInput">
                     <label class="popName">币种名称<span class="star">*</span></label>
                     <input type="text" class="entry" placeholder="币种名称" id="currencyNameAd" name="currencyNameAd"
-                           maxlength="32"/>
+                           maxlength="10"/>
                 </p>
                 <p class="popInput">
                     <label class="popName">英文标识<span class="star">*</span></label>
@@ -283,7 +283,7 @@
                 <p class="popInput">
                     <label class="popName">币种名称<span class="star">*</span></label>
                     <input type="text" class="entry" placeholder="币种名称" id="currencyNameUp" name="currencyNameUp"
-                           maxlength="32"/>
+                           maxlength="10"/>
                 </p>
                 <p class="popInput">
                     <label class="popName">英文标识<span class="star">*</span></label>
@@ -564,7 +564,7 @@
         }
         if (currencyShortNameAd == null || currencyShortNameAd == "") {
             addBoo = false;
-            openTips("请输入币种简称");
+            openTips("请输入英文标识");
             return;
         }
         if (guidAd == null || guidAd == "" || parseFloat(guidAd) <= 0
@@ -706,7 +706,7 @@
         }
         if (currencyShortNameUp == null || currencyShortNameUp == "") {
             updateBoo = false;
-            openTips("请输入币种简称");
+            openTips("请输入英文标识");
             return;
         }
         if (buyFeeUp == null || buyFeeUp == "") {
