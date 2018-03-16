@@ -13,6 +13,7 @@ import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * 系统公告
@@ -87,7 +88,8 @@ public class WebSystemNoticeController {
         }
 
         int id = 0;
-        if (idStr.length() < 11) {
+        String reg = "[0-9]*";
+        if (idStr.length() < 11 && Pattern.matches(reg,idStr)) {
             id = Integer.parseInt(idStr);
         }
         SystemNoticeDO systemNotice = systemNoticeService.getSystemNoticeById(id);
