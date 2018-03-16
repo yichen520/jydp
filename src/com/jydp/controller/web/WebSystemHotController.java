@@ -14,6 +14,7 @@ import org.springframework.web.util.HtmlUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * 热门话题
@@ -88,7 +89,8 @@ public class WebSystemHotController {
         }
 
         int id = 0;
-        if (idStr.length() < 11) {
+        String reg = "[0-9]*";
+        if (idStr.length() < 11 && Pattern.matches(reg,idStr)) {
             id = Integer.parseInt(idStr);
         }
         SystemHotDO systemHot = systemHotService.getSystemHotById(id);
