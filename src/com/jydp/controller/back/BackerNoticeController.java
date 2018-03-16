@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -82,6 +83,15 @@ public class BackerNoticeController {
 
         List<SystemNoticeDO> systemNoticeList = null;
         int pageSize = 20;
+
+        int totalPageNumber = (int) Math.ceil(totalNumber / (pageSize * 1.0));
+        if (totalPageNumber <= 0) {
+            totalPageNumber = 1;
+        }
+        if(pageNumber >= totalPageNumber){
+            pageNumber = totalPageNumber - 1;
+        }
+
         if (totalNumber > 0) {
             systemNoticeList = systemNoticeService.getNoticeForBack(noticeType, noticeTitle, pageNumber, pageSize);
         }
@@ -93,16 +103,14 @@ public class BackerNoticeController {
             if (length > 0) {
                 maxRankNumber = systemNoticeList.get(length - 1).getRankNumber();
             }
-        }
+            for (SystemNoticeDO systemNotice:systemNoticeList) {
+                String noticeTypes = HtmlUtils.htmlEscape(systemNotice.getNoticeType());
+                systemNotice.setNoticeType(noticeTypes);
 
-        int totalPageNumber = (int) Math.ceil(totalNumber / (pageSize * 1.0));
-        if (totalPageNumber <= 0) {
-            totalPageNumber = 1;
+                String noticeTitles = HtmlUtils.htmlEscape(systemNotice.getNoticeTitle());
+                systemNotice.setNoticeTitle(noticeTitles);
+            }
         }
-        if(pageNumber >= totalPageNumber){
-            pageNumber = totalPageNumber - 1;
-        }
-
         // 返回数据
         request.setAttribute("noticeType", noticeType);
         request.setAttribute("noticeTitle", noticeTitle);
@@ -336,6 +344,13 @@ public class BackerNoticeController {
         }
 
         SystemNoticeDO systemNoticeDO = systemNoticeService.getSystemNoticeById(id);
+
+        String noticeTypes = HtmlUtils.htmlEscape(systemNoticeDO.getNoticeType());
+        systemNoticeDO.setNoticeType(noticeTypes);
+
+        String noticeTitles = HtmlUtils.htmlEscape(systemNoticeDO.getNoticeTitle());
+        systemNoticeDO.setNoticeTitle(noticeTitles);
+
         request.setAttribute("noticeType", noticeType);
         request.setAttribute("noticeTitle", noticeTitle);
         request.setAttribute("pageNumber", pageNumberStr);

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -78,27 +79,37 @@ public class BackerBusinessesPartnerController {
 
         List<SystemBusinessesPartnerDO> systemBusinessesPartnerList = null;
         int pageSize = 20;
-        if (totalNumber > 0) {
-            systemBusinessesPartnerList = systemBusinessesPartnerService.listSystemBusinessesPartnerByPage(pageNumber, pageSize);
-        }
-
-        int maxRankNumber = 0;
-
-        if (systemBusinessesPartnerList != null) {
-            int length = systemBusinessesPartnerList.size();
-            if (length > 0) {
-                maxRankNumber = systemBusinessesPartnerList.get(length - 1).getRankNumber();
-            }
-        }
 
         int totalPageNumber = (int) Math.ceil(totalNumber/(pageSize*1.0));
         if (totalPageNumber <= 0) {
             totalPageNumber = 1;
         }
+
         if(pageNumber >= totalPageNumber){
             pageNumber = totalPageNumber - 1;
         }
+        if (totalNumber > 0) {
+            systemBusinessesPartnerList = systemBusinessesPartnerService.listSystemBusinessesPartnerByPage(pageNumber, pageSize);
+        }
 
+        int maxRankNumber = 0;
+        if (systemBusinessesPartnerList != null) {
+            int length = systemBusinessesPartnerList.size();
+            if (length > 0) {
+                maxRankNumber = systemBusinessesPartnerList.get(length - 1).getRankNumber();
+            }
+            for (SystemBusinessesPartnerDO systemBusinessesPartner:systemBusinessesPartnerList) {
+                String businessesName = HtmlUtils.htmlEscape(systemBusinessesPartner.getBusinessesName());
+                systemBusinessesPartner.setBusinessesName(businessesName);
+
+                String webLinkUrl = HtmlUtils.htmlEscape(systemBusinessesPartner.getWebLinkUrl());
+                systemBusinessesPartner.setWebLinkUrl(webLinkUrl);
+
+                String wapLinkUrl = HtmlUtils.htmlEscape(systemBusinessesPartner.getWapLinkUrl());
+                systemBusinessesPartner.setWapLinkUrl(wapLinkUrl);
+            }
+
+        }
         //返回数据
         request.setAttribute("pageNumber",pageNumber);
         request.setAttribute("totalNumber",totalNumber);

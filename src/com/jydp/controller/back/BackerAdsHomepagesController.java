@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -75,6 +76,17 @@ public class BackerAdsHomepagesController {
         List<SystemAdsHomepagesDO> homeAdList = systemAdsHomepagesService.getAdsHomepagesForBack();
         if (homeAdList.size() != 0) {
             maxRankNumber = systemAdsHomepagesService.getMaxRankForBack();
+
+            for (SystemAdsHomepagesDO homeAd:homeAdList) {
+                String adsTitle = HtmlUtils.htmlEscape(homeAd.getAdsTitle());
+                homeAd.setAdsTitle(adsTitle);
+
+                String webLinkUrl = HtmlUtils.htmlEscape(homeAd.getWebLinkUrl());
+                homeAd.setWebLinkUrl(webLinkUrl);
+
+                String wapLinkUrl = HtmlUtils.htmlEscape(homeAd.getWapLinkUrl());
+                homeAd.setWapLinkUrl(wapLinkUrl);
+            }
         }
 
         request.setAttribute("homeAdList", homeAdList);

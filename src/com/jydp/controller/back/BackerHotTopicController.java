@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
@@ -80,6 +81,15 @@ public class BackerHotTopicController {
 
         List<SystemHotDO> systemHotList = null;
         int pageSize = 20;
+
+        int totalPageNumber = (int) Math.ceil(totalNumber / (pageSize * 1.0));
+        if (totalPageNumber <= 0) {
+            totalPageNumber = 1;
+        }
+        if(pageNumber >= totalPageNumber){
+            pageNumber = totalPageNumber - 1;
+        }
+
         if (totalNumber > 0) {
             systemHotList = systemHotService.listSystemHotForBack(noticeTitle, noticeType, pageNumber, pageSize);
         }
@@ -91,16 +101,16 @@ public class BackerHotTopicController {
             if (length > 0) {
                 maxRankNumber = systemHotList.get(length - 1).getRankNumber();
             }
-        }
 
-        int totalPageNumber = (int) Math.ceil(totalNumber / (pageSize * 1.0));
-        if (totalPageNumber <= 0) {
-            totalPageNumber = 1;
-        }
-        if(pageNumber >= totalPageNumber){
-            pageNumber = totalPageNumber - 1;
-        }
+            for (SystemHotDO systemHot:systemHotList) {
+                String noticeTypes = HtmlUtils.htmlEscape(systemHot.getNoticeType());
+                systemHot.setNoticeType(noticeTypes);
 
+                String noticeTitles = HtmlUtils.htmlEscape(systemHot.getNoticeTitle());
+                systemHot.setNoticeTitle(noticeTitles);
+            }
+
+        }
         //返回数据
         request.setAttribute("noticeTitle", noticeTitle);
         request.setAttribute("noticeType", noticeType);
@@ -324,6 +334,12 @@ public class BackerHotTopicController {
         }
 
         SystemHotDO systemHotDO  = systemHotService.getSystemHotById(id);
+
+        String noticeTypes = HtmlUtils.htmlEscape(systemHotDO.getNoticeType());
+        systemHotDO.setNoticeType(noticeTypes);
+
+        String noticeTitles = HtmlUtils.htmlEscape(systemHotDO.getNoticeTitle());
+        systemHotDO.setNoticeTitle(noticeTitles);
 
         request.setAttribute("systemHotDO", systemHotDO);
         request.setAttribute("noticeType", noticeType);
