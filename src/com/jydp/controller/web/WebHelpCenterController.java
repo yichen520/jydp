@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.regex.Pattern;
 
 /**
  * 帮助中心
@@ -30,8 +31,12 @@ public class WebHelpCenterController {
     @RequestMapping(value = "/show/{helpIdStr}", method = RequestMethod.GET)
     public String show(HttpServletRequest request, @PathVariable String helpIdStr) {
         int helpId = SystemHelpConfig.COMPANY_SYNOPSIS;
-        if (StringUtil.isNotNull(helpIdStr)) {
-            helpId = Integer.parseInt(helpIdStr);
+        String reg = "[0-9]*";
+        if (helpIdStr.length() < 11 && Pattern.matches(reg,helpIdStr)) {
+            int help = Integer.parseInt(helpIdStr);
+            if (SystemHelpConfig.userHelpMap.containsKey(help)) {
+                helpId = Integer.parseInt(helpIdStr);
+            }
         }
 
         SystemHelpDO systemHelpDO = systemHelpService.getSystemHelpById(helpId);
