@@ -117,7 +117,7 @@
             backerAccount, ipAddress, executeStatus, remark, executeTime, addTime
         FROM transaction_make_order_tab
         WHERE executeStatus = #{executeStatus}
-            ORDER BY addTime ASC
+            ORDER BY executeTime ASC
         LIMIT #{size}
     </select>
 </mapper>
