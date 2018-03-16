@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/public.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/simpleTips.css" />
 
-    <title>公告详情</title>
+    <title>话题详情</title>
 </head>
 <body>
 <div id="header"></div>
@@ -26,7 +26,7 @@
 
     <div class="contentRight">
         <div class="caption">
-            <span class="title">公告详情</span>
+            <span class="title">话题详情</span>
         </div>
 
         <div class="notice">
@@ -38,17 +38,12 @@
             <div class="editor">${systemHotDO.content }</div>
 
             <div class="operate">
-                <a href="javascript:;" class="back" onclick="backList()">返&nbsp;回</a>
+                <a href="<%=path %>/backerWeb/hotTopic/show.htm" class="back">返&nbsp;回</a>
             </div>
         </div>
     </div>
 </div>
 
-<form id="openDetailsForm" action="<%=path %>/backerWeb/hotTopic/show.htm" method="post">
-    <input type="hidden" id="open_pageNumber" name="pageNumber" value="${pageNumber }">
-    <input type="hidden" id="open_noticeType" name="noticeType" value="${noticeType }">
-    <input type="hidden" id="open_noticeTitle" name="noticeTitle" value="${noticeTitle }">
-</form>
 <div id="footer"></div>
 
 <script type="text/javascript" src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>

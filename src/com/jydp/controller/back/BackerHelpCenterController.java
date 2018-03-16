@@ -10,12 +10,14 @@ import com.jydp.service.ISystemHelpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * 帮助中心
@@ -32,13 +34,7 @@ public class BackerHelpCenterController {
     private ISystemHelpService systemHelpService;
 
     /** 查询帮助信息 */
-    public void selectOne(HttpServletRequest request) {
-        String helpIdStr = StringUtil.stringNullHandle(request.getParameter("helpId"));
-        int helpId = SystemHelpConfig.REGISTER_AGREEMENT;
-        if (StringUtil.isNotNull(helpIdStr)) {
-            helpId = Integer.parseInt(helpIdStr);
-        }
-
+    public void selectOne(HttpServletRequest request, int helpId) {
         SystemHelpDO systemHelp = systemHelpService.getSystemHelpById(helpId);
         // 通过ArrayList构造函数把map.entrySet()转换成list
         List<Map.Entry<Integer, String>> helpTitleList =
@@ -58,8 +54,8 @@ public class BackerHelpCenterController {
     }
 
     /** 展示帮助中心页面 */
-    @RequestMapping(value = "/show.htm")
-    public String show(HttpServletRequest request) {
+    @RequestMapping(value = "/show.htm/{helpIdStr}", method = RequestMethod.GET)
+    public String show(HttpServletRequest request, @PathVariable String helpIdStr) {
         //业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 115001);
         if (!havePower) {
@@ -69,7 +65,15 @@ public class BackerHelpCenterController {
             return "page/back/index";
         }
 
-        selectOne(request);
+        int helpId = SystemHelpConfig.REGISTER_AGREEMENT;
+        String reg = "[0-9]*";
+        if (helpIdStr.length() < 11 && Pattern.matches(reg,helpIdStr)) {
+            int help = Integer.parseInt(helpIdStr);
+            if (SystemHelpConfig.userHelpMap.containsKey(help)) {
+                helpId = Integer.parseInt(helpIdStr);
+            }
+        }
+        selectOne(request, helpId);
         return "page/back/helpCenter";
     }
 

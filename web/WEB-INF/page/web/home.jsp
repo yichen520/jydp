@@ -65,7 +65,7 @@
                 <c:if test="${transactionUserDeal.change < 0 }">
                     <td class="uplift minus"><fmt:formatNumber type="number" value="${transactionUserDeal.change}" groupingUsed="FALSE" maxFractionDigits="2"/>%</td>
                 </c:if>
-                <td class="operate"><a target="_blank" href="<%=path%>/userWeb/tradeCenter/show/${transactionUserDeal.currencyId}">去交易</a></td>
+                <td class="operate"><a href="<%=path%>/userWeb/tradeCenter/show/${transactionUserDeal.currencyId}">去交易</a></td>
             </tr>
         </c:forEach>
     </table>
@@ -183,7 +183,7 @@
                                     '<td class="money">' + parseFloat(transactionUserDeal.sellOnePrice).toString() + '</td>' +
                                     '<td class="money">' + parseFloat(transactionUserDeal.volume).toString() + '</td>' +
                                     '<td class="uplift '+classStyle+'">' + symbol + parseFloat(transactionUserDeal.change).toString() + '%</td>' +
-                                    '<td class="operate"><a target="_blank" href="<%=path%>/userWeb/tradeCenter/show/'+transactionUserDeal.currencyId+'">去交易</a></td>' +
+                                    '<td class="operate"><a href="<%=path%>/userWeb/tradeCenter/show/'+transactionUserDeal.currencyId+'">去交易</a></td>' +
                                     '</tr>');
                             }
                         }

@@ -72,7 +72,7 @@
             $(".helpMenu li").removeClass("chooseState");
             $(this).addClass(".chooseState")
             var helpId = this.value;
-            window.location.href = '<%=path%>' + "/backerWeb/helpCenter/show.htm?helpId=" + helpId;
+            window.location.href = '<%=path%>' + "/backerWeb/helpCenter/show.htm/" + helpId;
         })
     });
 
@@ -109,7 +109,7 @@
             },
             success:function (result) {
                 if (result.code == 1) {
-                    window.location.href = '<%=path%>' + "/backerWeb/helpCenter/show.htm?helpId="+helpId;
+                    window.location.href = '<%=path%>' + "/backerWeb/helpCenter/show.htm/"+helpId;
                 } else {
                     openTips(result.message);
                 }

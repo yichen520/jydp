@@ -78,7 +78,7 @@
             </div>
 
             <div class="operate">
-                <a href="#" class="back" onclick="goBack()">返&nbsp;回</a>
+                <a href="<%=path %>/backerWeb/backerIdentification/show.htm" class="back">返&nbsp;回</a>
                 <c:if test="${userIdentification.identificationStatus == 1}">
                     <c:if test="${backer_rolePower['141003'] == 141003}">
                         <input type="text" value="审核通过" class="pass" onfocus="this.blur()" />
