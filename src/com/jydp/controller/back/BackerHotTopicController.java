@@ -3,7 +3,7 @@ package com.jydp.controller.back;
 import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.FileWriteRemoteUtil;
-import com.iqmkj.utils.LogUtil;
+import com.iqmkj.utils.ImageReduceUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.DO.system.SystemHotDO;
 import com.jydp.interceptor.BackerWebInterceptor;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -158,12 +157,14 @@ public class BackerHotTopicController {
         if(noticeUrl == null){
             imageUrl = FileUrlConfig.notice_hotTopic_defaultImage;
         }else{
-            try {
+            /*try {
                 imageUrl = FileWriteRemoteUtil.uploadFile(noticeUrl.getOriginalFilename(),
                         noticeUrl.getInputStream(), FileUrlConfig.file_remote_noticeImage_url);
             } catch (IOException e) {
                 LogUtil.printErrorLog(e);
-            }
+            }*/
+            imageUrl = ImageReduceUtil.reduceImageUploadRemote
+                    (noticeUrl, request, FileUrlConfig.file_remote_noticeImage_url);
         }
 
         Timestamp addTime = DateUtil.getCurrentTime();
@@ -257,14 +258,16 @@ public class BackerHotTopicController {
         if (noticeUrl != null && !noticeUrl.isEmpty()) {
             SystemHotDO systemHotDO  = systemHotService.getSystemHotById(id);
 
-            try {
+            /*try {
                 imageUrl = FileWriteRemoteUtil.uploadFile(noticeUrl.getOriginalFilename(),
                         noticeUrl.getInputStream(), FileUrlConfig.file_remote_noticeImage_url);
             } catch (IOException e) {
                 LogUtil.printErrorLog(e);
-            }
+            }*/
+            imageUrl = ImageReduceUtil.reduceImageUploadRemote
+                    (noticeUrl, request, FileUrlConfig.file_remote_noticeImage_url);
 
-            if (imageUrl != null && imageUrl != "") {
+            if (imageUrl != null && !imageUrl.equals("")) {
                 if(!systemHotDO.getNoticeUrl().equals(FileUrlConfig.notice_hotTopic_defaultImage)){
                     FileWriteRemoteUtil.deleteFile(systemHotDO.getNoticeUrl());
                 }
