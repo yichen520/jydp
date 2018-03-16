@@ -12,9 +12,11 @@ import com.jydp.service.IRedisService;
 import com.jydp.service.ISystemNoticeService;
 import config.FileUrlConfig;
 import config.RedisKeyConfig;
+import config.SystemHelpConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * 用户公告管理
@@ -296,8 +299,8 @@ public class BackerNoticeController {
     }
 
     /** 打开用户公告详情页面 */
-    @RequestMapping(value = "/details.htm", method = RequestMethod.POST)
-    public String details(HttpServletRequest request) {
+    @RequestMapping(value = "/details.htm/{idStr}", method = RequestMethod.GET)
+    public String details(HttpServletRequest request, @PathVariable String idStr) {
         // 业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 113005);
         if (!havePower) {
@@ -308,7 +311,6 @@ public class BackerNoticeController {
             return "page/back/systemNotice";
         }
 
-        String idStr = StringUtil.stringNullHandle(request.getParameter("id"));
         String noticeType = StringUtil.stringNullHandle(request.getParameter("query_noticeType"));
         String noticeTitle = StringUtil.stringNullHandle(request.getParameter("query_noticeTitle"));
         String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
@@ -319,9 +321,14 @@ public class BackerNoticeController {
             return "page/back/systemNotice";
         }
 
-        int id = Integer.parseInt(idStr);
+        int id = 0;
+        String reg = "[0-9]*";
+        if (idStr.length() < 11 && Pattern.matches(reg,idStr)) {
+            id = Integer.parseInt(idStr);
+        }
+
         // 处理页面参数
-        if (id <= 0) {
+        if (id < 0) {
             list(request);
             request.setAttribute("code", 3);
             request.setAttribute("message", "参数错误！");

@@ -90,7 +90,7 @@
                             <a href="javascript:;" class="change" onclick="updateHandle(${systemNotice.id });">修&nbsp;改</a>
                         </c:if>
                         <c:if test="${backer_rolePower['113005'] == 113005}">
-                            <a href="javascript:;" class="details" onclick="openDetails(${systemNotice.id });">详&nbsp;情</a>
+                            <a href="<%=path %>/backerWeb/backerNotice/details.htm/${systemNotice.id }" class="details" >详&nbsp;情</a>
                         </c:if>
                         <c:if test="${backer_rolePower['113006'] == 113006}">
                             <input type="text" value="删&nbsp;除" class="delete" onfocus="this.blur()" onclick="deleteHandle(${systemNotice.id });"/>
@@ -104,13 +104,6 @@
         </div>
     </div>
 </div>
-
-<form id="openDetailsForm" action="<%=path %>/backerWeb/backerNotice/details.htm" method="post">
-    <input type="hidden" id="open_pageNumber" name="pageNumber">
-    <input type="hidden" id="open_noticeType" name="query_noticeType">
-    <input type="hidden" id="open_noticeTitle" name="query_noticeTitle">
-    <input type="hidden" id="open_id" name="id">
-</form>
 
 <form id="openUpdateForm" action="<%=path %>/backerWeb/backerNotice/openModifyPage.htm" method="post">
     <input type="hidden" id="update_pageNumber" name="pageNumber">
@@ -333,19 +326,6 @@
             }
         });
 
-    }
-
-    function openDetails(id){
-        var pageNumber = $("#queryPageNumber").val();
-        var noticeType = $("#query_noticeType").val();
-        var noticeTitle = $("#query_noticeTitle").val();
-
-        $("#open_pageNumber").val(pageNumber);
-        $("#open_noticeType").val(noticeType);
-        $("#open_noticeTitle").val(noticeTitle);
-        $("#open_id").val(id);
-
-        $("#openDetailsForm").submit();
     }
 
     function updateHandle(id){
