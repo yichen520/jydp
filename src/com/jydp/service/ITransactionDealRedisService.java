@@ -98,12 +98,12 @@ public interface ITransactionDealRedisService {
     boolean deleteDealByOrderNo(String orderNo);
 
     /**
-     * 获取盛源交易所 保底价
+     * 获取盛源交易所 当日成交总价，当日成交总数量
      * @param currencyId 币种Id
      * @param orderNoPrefix 批次号前缀
      * @return 操作成功：返回数据，操作失败:返回null
      */
-    TransactionBottomPriceDTO getBottomPrice(int currencyId, String orderNoPrefix);
+    TransactionBottomPriceDTO getBottomPriceToday(int currencyId, String orderNoPrefix);
 
     /**
      * 获取盛源交易所 当前价

@@ -2,7 +2,11 @@ package com.jydp.controller.back;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.iqmkj.utils.*;
+import com.iqmkj.utils.DateUtil;
+import com.iqmkj.utils.FileWriteLocalUtil;
+import com.iqmkj.utils.FileWriteRemoteUtil;
+import com.iqmkj.utils.ImageReduceUtil;
+import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.DO.system.SystemAdsHomepagesDO;
 import com.jydp.interceptor.BackerWebInterceptor;
 import com.jydp.service.IHomePageService;
@@ -15,17 +19,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 首页广告
@@ -116,14 +114,15 @@ public class BackerAdsHomepagesController {
         }
 
         String imageUrl = "";
-        try {
+        /*try {
             imageUrl = FileWriteRemoteUtil.uploadFile(adsImageUrl.getOriginalFilename(),
                     adsImageUrl.getInputStream(), FileUrlConfig.file_remote_adImage_url);
-        } catch (IOException e) {
+        } catch (Exception e) {
             LogUtil.printErrorLog(e);
-         }
+        }*/
 
-         if(imageUrl == "" || imageUrl == null){
+        imageUrl = ImageReduceUtil.reduceImageUploadRemote(adsImageUrl, request, FileUrlConfig.file_remote_adImage_url);
+        if (imageUrl.equals("") || imageUrl == null) {
              response.put("code", 3);
              response.put("message", "新增失败！");
              return response;
@@ -190,14 +189,15 @@ public class BackerAdsHomepagesController {
         if (adsImageUrl != null && !adsImageUrl.isEmpty()) {
             SystemAdsHomepagesDO systemAdsHomePagesDO = systemAdsHomepagesService.getSystemAdsHomePagesById(id);
             String imageUrl = "";
-            try {
+            /*try {
                 imageUrl = FileWriteRemoteUtil.uploadFile(adsImageUrl.getOriginalFilename(),
                         adsImageUrl.getInputStream(), FileUrlConfig.file_remote_adImage_url);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 LogUtil.printErrorLog(e);
-            }
+            }*/
+            imageUrl = ImageReduceUtil.reduceImageUploadRemote(adsImageUrl, request, FileUrlConfig.file_remote_adImage_url);
 
-            if (imageUrl != null && imageUrl != "") {
+            if (imageUrl != null && !imageUrl.equals("")) {
                 FileWriteRemoteUtil.deleteFile(systemAdsHomePagesDO.getAdsImageUrl());
             }
             updateDO.setAdsImageUrl(imageUrl);

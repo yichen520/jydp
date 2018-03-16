@@ -109,7 +109,7 @@
 
     <delete id="TransactionMakeOrder_deleteMakeOrderByOrderNo" parameterType="java.lang.String">
         DELETE FROM transaction_make_order_tab
-        WHERE orderNo = #{transaction_make_order_tab}
+        WHERE orderNo = #{orderNo}
     </delete>
 
     <select id="TransactionMakeOrder_listMakeOrderByExecuteStatus" parameterType="java.util.Map" resultType="TransactionMakeOrderDO">
@@ -117,7 +117,7 @@
             backerAccount, ipAddress, executeStatus, remark, executeTime, addTime
         FROM transaction_make_order_tab
         WHERE executeStatus = #{executeStatus}
-            ORDER BY addTime ASC
+            ORDER BY executeTime ASC
         LIMIT #{size}
     </select>
 </mapper>

@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/public.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/back/simpleTips.css" />
 
-    <title>后台做单</title>
+    <title>后台挂单</title>
 </head>
 <body>
 <div id="header"></div>
@@ -25,7 +25,7 @@
 
     <div class="contentRight">
         <div class="caption">
-            <span class="title">后台做单</span>
+            <span class="title">后台挂单</span>
         </div>
 
         <div class="top">
