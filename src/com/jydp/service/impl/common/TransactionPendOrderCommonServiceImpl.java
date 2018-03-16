@@ -56,6 +56,7 @@ public class TransactionPendOrderCommonServiceImpl implements ITransactionPendOr
             List<TransactionPendOrderDTO> transactionPendOrderBuyList =
                     transactionPendOrderService.listLatestRecords(1, currencyId,15);
 
+            //未来做单记录
             Timestamp curTime = DateUtil.getCurrentTime();
             List<TransactionDealRedisDO> transactionDealBuyRedisList =
                     transactionDealRedisService.listTransactionDealForPending(2, currencyId, curTime,15);
@@ -63,13 +64,28 @@ public class TransactionPendOrderCommonServiceImpl implements ITransactionPendOr
 
             //组装数据
             if(transactionDealBuyRedisList.size() > 0 && transactionDealBuyRedisList != null){
-                for (TransactionDealRedisDO transactionDealRedis: transactionDealBuyRedisList) {
-                    TransactionPendOrderDTO transactionPendOrderDTO = new TransactionPendOrderDTO();
-                    transactionPendOrderDTO.setPendingPrice(transactionDealRedis.getTransactionPrice());
-                    transactionPendOrderDTO.setRestNumber(transactionDealRedis.getCurrencyNumber());
-                    transactionPendOrderDTO.setSumPrice(transactionDealRedis.getCurrencyTotalPrice());
+                List<TransactionDealRedisDO> removeList = new ArrayList<>();
+                for (TransactionDealRedisDO transactionDealRedisDO: transactionDealBuyRedisList) {
+                    for (TransactionPendOrderDTO transactionPendOrderDTO: transactionPendOrderBuyList) {
+                        if(transactionDealRedisDO.getTransactionPrice() == transactionPendOrderDTO.getPendingPrice()){
+                            transactionPendOrderDTO.setRestNumber(transactionPendOrderDTO.getRestNumber() + transactionDealRedisDO.getCurrencyNumber());
+                            removeList.add(transactionDealRedisDO);
+                            break;
+                        }
+                    }
+                }
+                //移除已经加过的
+                transactionDealBuyRedisList.removeAll(removeList);
 
-                    transactionPendOrderBuyList.add(transactionPendOrderDTO);
+                if(transactionDealBuyRedisList.size() > 0 && transactionDealBuyRedisList != null){
+                    for (TransactionDealRedisDO transactionDealRedis: transactionDealBuyRedisList) {
+                                TransactionPendOrderDTO transactionPendOrderDTO = new TransactionPendOrderDTO();
+                                transactionPendOrderDTO.setPendingPrice(transactionDealRedis.getTransactionPrice());
+                                transactionPendOrderDTO.setRestNumber(transactionDealRedis.getCurrencyNumber());
+                                transactionPendOrderDTO.setSumPrice(transactionDealRedis.getCurrencyTotalPrice());
+
+                                transactionPendOrderBuyList.add(transactionPendOrderDTO);
+                    }
                 }
 
                 //按价格排序并返回前15条记录
@@ -96,19 +112,35 @@ public class TransactionPendOrderCommonServiceImpl implements ITransactionPendOr
             List<TransactionPendOrderDTO> transactionPendOrderSellList =
                     transactionPendOrderService.listLatestRecords(2,currencyId,15);
 
+            //未来做单
             List<TransactionDealRedisDO> transactionDealRedisSellList =
                     transactionDealRedisService.listTransactionDealForPending(1, currencyId, curTime,15);
             transactionDealRedisSellList.removeAll(Collections.singleton(null)); //移除所有的null元素
 
             //组装数据
             if(transactionDealRedisSellList.size() > 0 && transactionDealRedisSellList != null){
-                for (TransactionDealRedisDO transactionDealRedis: transactionDealRedisSellList) {
-                    TransactionPendOrderDTO transactionPendOrderDTO = new TransactionPendOrderDTO();
-                    transactionPendOrderDTO.setPendingPrice(transactionDealRedis.getTransactionPrice());
-                    transactionPendOrderDTO.setRestNumber(transactionDealRedis.getCurrencyNumber());
-                    transactionPendOrderDTO.setSumPrice(transactionDealRedis.getCurrencyTotalPrice());
+                List<TransactionDealRedisDO> removeList = new ArrayList<>();
+                for (TransactionDealRedisDO transactionDealRedisDO: transactionDealRedisSellList) {
+                    for (TransactionPendOrderDTO transactionPendOrderDTO: transactionPendOrderSellList) {
+                        if(transactionDealRedisDO.getTransactionPrice() == transactionPendOrderDTO.getPendingPrice()){
+                            transactionPendOrderDTO.setRestNumber(transactionPendOrderDTO.getRestNumber() + transactionDealRedisDO.getCurrencyNumber());
+                            removeList.add(transactionDealRedisDO);
+                            break;
+                        }
+                    }
+                }
+                //移除已经加过的
+                transactionDealRedisSellList.removeAll(removeList);
 
-                    transactionPendOrderSellList.add(transactionPendOrderDTO);
+                if(transactionDealBuyRedisList.size() > 0 && transactionDealBuyRedisList != null){
+                    for (TransactionDealRedisDO transactionDealRedis: transactionDealRedisSellList) {
+                        TransactionPendOrderDTO transactionPendOrderDTO = new TransactionPendOrderDTO();
+                        transactionPendOrderDTO.setPendingPrice(transactionDealRedis.getTransactionPrice());
+                        transactionPendOrderDTO.setRestNumber(transactionDealRedis.getCurrencyNumber());
+                        transactionPendOrderDTO.setSumPrice(transactionDealRedis.getCurrencyTotalPrice());
+
+                        transactionPendOrderSellList.add(transactionPendOrderDTO);
+                    }
                 }
 
                 //按价格排序并返回前15条记录
