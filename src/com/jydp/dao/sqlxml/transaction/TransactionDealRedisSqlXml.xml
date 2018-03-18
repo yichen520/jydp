@@ -88,7 +88,7 @@
 
 	<delete id="TransactionDealRedis_deleteDealByOrderNo" parameterType="java.lang.String">
 		DELETE  FROM  transaction_deal_redis_tab
-		WHERE orderNo = #{transaction_deal_redis_tab}
+		WHERE orderNo = #{orderNo}
 	</delete>
 
 	<select id="TransactionDealRedis_getBottomPriceToday" parameterType="java.util.Map" resultType="TransactionBottomPriceDTO">
