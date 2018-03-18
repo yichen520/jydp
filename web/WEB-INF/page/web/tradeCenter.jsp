@@ -872,7 +872,6 @@
     var t = "";
     function gainGraphData(time) {
         clearTimeout(t);
-        console.log(time);
         var currencyName = $("#currencyName").val();
 
             Highcharts.setOptions({
