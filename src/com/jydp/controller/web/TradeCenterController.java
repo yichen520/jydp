@@ -741,7 +741,7 @@ public class TradeCenterController {
         currencyId = Integer.parseInt(currencyIdStr);
         List<TransactionGraphVO> transactionGraph = transactionDealRedisService.gainGraphData(currencyId, node);
         if(transactionGraph != null && transactionGraph.size() > 0){
-            if(transactionGraph.size() > 200){
+            if(transactionGraph.size() > 100){
                 transactionGraphList.addAll(transactionGraph.subList(transactionGraph.size() - 100, transactionGraph.size()));
             } else {
                 transactionGraphList = transactionGraph;
