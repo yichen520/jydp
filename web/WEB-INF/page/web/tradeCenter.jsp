@@ -27,6 +27,7 @@
         <p class="coin">
             <img src="${transactionCurrency.currencyImgUrl }" class="coinLogo" /><br>
             <span class="coinName">${transactionCurrency.currencyName }(${transactionCurrency.currencyShortName }/USD)</span>
+            <input type="hidden" id="currencyName" value="${transactionCurrency.currencyName }" >
         </p>
 
         <div class="coinInfo">
@@ -65,7 +66,18 @@
     </div>
 
     <div class="left">
-        <div class="charts">蜡烛图</div>
+        <div class="wrapper">
+            <div id="chart" class="chart"></div>
+            <ul>
+                <li  class="chose" style="width:38px;margin:0" onclick="gainGraphData('5m')">5分钟</li>
+                <li onclick="gainGraphData('15m')">15分钟</li>
+                <li onclick="gainGraphData('30m')">30分钟</li>
+                <li onclick="gainGraphData('1h')">1小时</li>
+                <li onclick="gainGraphData('4h')">4小时</li>
+                <li onclick="gainGraphData('1d')">1天</li>
+                <li onclick="gainGraphData('1w')">1周</li>
+            </ul>
+        </div>
 
         <p class="promt">
             <span class="promtText"> 重要提示：今日最高价格：<span id="hintTodayMax">$<fmt:formatNumber type="number" value="${standardParameter.todayMax }" groupingUsed="FALSE" maxFractionDigits="6"/></span>，
@@ -411,6 +423,12 @@
 <script type="text/javascript" src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" src="<%=path %>/resources/js/loadPageWeb.js"></script>
 <script type="text/javascript" src="<%=path %>/resources/js/simpleTips.js"></script>
+<script src="https://img.hcharts.cn/highstock/highstock.js"></script>
+<script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
+<script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+<script src="https://img.hcharts.cn/highcharts/themes/dark-unica.js"></script>
+
+
 <script type="text/javascript">
     window.onload = function() {
         count();
@@ -431,6 +449,8 @@
             //$("#tableId").style.display="inline";
             $("#tableId").css("display","inline-block");
         }
+
+        gainGraphData("5m", 7);
 
         if (code != 1 && message != "") {
             openTips(message);
@@ -848,6 +868,248 @@
             // $(popObj).fadeOut("fast");
         });
     });
+    var newTime = "5m";
+    var t = "";
+    function gainGraphData(time) {
+        clearTimeout(t);
+        console.log(time);
+        var currencyName = $("#currencyName").val();
+
+            Highcharts.setOptions({
+            lang: {
+                rangeSelectorZoom: ''
+            }
+        });
+        $.ajax({
+            url: '<%=path%>' + "/userWeb/tradeCenter/gainGraphData", //方法路径URL
+            data:{
+                currencyId : 79,
+                node : time
+            },//参数
+            dataType: 'json',
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (result) {
+                if(result.code != 1 && result.message != null) {
+                    openTips(result.message);
+                    return;
+                }
+                //数据遍历
+                data = result.data.transactionGraphList;
+                var ohlc = [],
+                    volume = [],
+                    res = [],
+                    dataLength = data.length,
+                    // set the allowed units for data grouping
+
+                    i = 0
+                if(time == "5m"){
+                    newTime = "5m";
+                    groupingUnits = [[
+                        'minute',                         // unit name
+                        [5]                             // allowed multiples
+                    ]]
+                }
+                if(time == "15m"){
+                    newTime = "15m";
+                    groupingUnits = [[
+                        'minute',                         // unit name
+                        [15]                             // allowed multiples
+                    ]]
+                }
+                if(time == "30m"){
+                    newTime = "30m";
+                    groupingUnits = [[
+                        'minute',                         // unit name
+                        [30]                             // allowed multiples
+                    ]]
+                }
+                if(time == "1h"){
+                    newTime = "1h";
+                    groupingUnits = [[
+                        'hour',                         // unit name
+                        [1]                             // allowed multiples
+                    ]]
+                }
+                if(time == "4h"){
+                    newTime = "4h";
+                    groupingUnits = [[
+                        'hour',                         // unit name
+                        [4]                             // allowed multiples
+                    ]]
+                }
+                if(time == "1d"){
+                    newTime = "1d";
+                    groupingUnits = [[
+                        'day',                         // unit name
+                        [1]                             // allowed multiples
+                    ]]
+                }
+                if(time == "1w"){
+                    newTime = "1w";
+                    groupingUnits = [[
+                        'week',                         // unit name
+                        [1]                             // allowed multiples
+                    ]]
+                }
+
+                for (i; i < dataLength; i += 1) {
+                    ohlc.push([
+                        data[i].dealDate, // 时间节点
+                        data[i].openPrice, // 开盘价
+                        data[i].maxPrice, // 最高价
+                        data[i].minPrice, // 最低价
+                        data[i].closPrice // 收盘价
+                    ]);
+                    res.push([
+                        data[i].dealDate, // 时间节点
+                        data[i].countPrice // 成交量
+
+                    ]);
+                }
+                // 使用框架
+                $('#chart').highcharts('StockChart', {
+                    exporting:{
+                        enabled:false //用来设置是否显示‘打印’,'导出'等功能按钮，不设置时默认为显示
+                    },
+                    credits: {
+                        text: '',
+                        href:''
+                    },
+
+                    plotOptions: {
+                        column: {
+                            pointWidth:5
+
+                        }
+                    },
+                    tooltip: {
+                        split: false,
+                        shared: true,
+                    },
+                    xAxis: {
+
+                    },
+                    rangeSelector : {
+                        buttons : [{
+                            type : 'minute',
+                            count : 5,
+                            text : '5分钟'
+                        }, {
+                            type : 'minute',
+                            count : 30,
+                            text : '30分钟'
+                        },
+                            {
+                                type : 'hour',
+                                count : 1,
+                                text : '1小时'
+                            },{
+                                type : 'hour',
+                                count : 4,
+                                text : '4小时'
+                            },
+                            {
+                                type : 'week',
+                                count : 1,
+                                text : '1周'
+                            },
+                            {
+                                type : 'all',
+                                count : 1,
+                                text : 'all'
+                            }],
+                        selected : 5,
+                        inputEnabled :
+                            false
+
+                    },
+                    yAxis: [{
+                        allowDecimals: 'false',
+                        min: 0,
+                        labels: {
+                            format: '{value}',
+
+                        },
+                        title: {
+                            text: '价格'
+                        },
+                        height: '80%',
+                        resize: {
+                            enabled: true
+                        },
+                        lineWidth: 2
+                    }, {
+                        labels: {
+                            format: '{value}',
+
+                        },
+                        resize: {
+                            enabled: true
+                        },
+                        title: {
+                            text: '成交量'
+                        },
+                        top: '80%',
+                        height: '20%',
+                        offset: 0,
+                        lineWidth: 2
+                    }],
+                    series : [
+
+                        {
+                            name : currencyName,
+                            type: 'candlestick',
+                            data : ohlc,
+                            tooltip: {
+
+                            },
+                            data: ohlc,
+                            dataGrouping: {
+                                units: groupingUnits
+                            },
+                            yAxis: 0,
+
+                        },
+                        {
+                            name : '成交量',
+                            type: 'column',
+                            data : res,
+                            yAxis: 1,
+                            dataGrouping: {
+                                units: groupingUnits
+                            },
+                            tooltip: {
+
+                            },
+
+                        }
+                    ]
+                });
+            },error: function () {
+                pendBoo = false;
+                openTips("获取失败,请重新刷新页面后重试");
+            }
+        });
+        t = setTimeout("gainGraphData(newTime)", 1000 * 5 * 60);
+    };
+
+    $(function () {
+        Highcharts.setOptions({global: {useUTC: false}});
+    });
+
+    $(function () {
+        changeClass();
+        function changeClass() {
+            $("ul li").click(function() {
+
+                $(this).siblings('li').removeClass('chose');
+
+                $(this).addClass('chose');
+
+            });
+        }
+    })
 
     var start = 5;
     var step = -1;

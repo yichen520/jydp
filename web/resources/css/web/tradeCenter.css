@@ -73,9 +73,38 @@ body{
     float: left;
     width: 765px;
 }
-.charts{
+.chart{
     width: 765px;
     height: 370px;
+}
+.wrapper{
+    position: relative;
+    width:765px;
+    height:370px;
+    margin:0 auto
+}
+.wrapper ul{
+    position: absolute;
+    top: 9px;
+    height: 25px;
+    background: #303031;
+    left:10px;
+    z-index: 99;
+    font-size: 12px;
+    color: #fff
+}
+.wrapper ul li{
+    padding: 0 5px;
+    cursor: pointer;
+    float: left;
+    list-style: none;
+    line-height: 23px;
+    text-align: center;
+    margin-left: 4px;
+    border-radius: 5px;
+}
+.chose{
+    background: #000000;
 }
 .promt{
     height: 35px;

@@ -1,17 +1,22 @@
 package com.jydp.service.impl.transaction;
 
+import com.iqmkj.utils.BigDecimalUtil;
 import com.iqmkj.utils.DateUtil;
 import com.jydp.dao.ITransactionDealRedisDao;
+import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.DTO.TransactionBottomPriceDTO;
 import com.jydp.entity.DTO.TransactionDealPriceDTO;
+import com.jydp.entity.VO.TransactionGraphVO;
 import com.jydp.entity.DTO.TransactionDealRedisDTO;
+import com.jydp.service.IRedisService;
 import com.jydp.service.ITransactionDealRedisService;
 import config.RedisKeyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +30,10 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
     /** redis成交记录 */
     @Autowired
     private ITransactionDealRedisDao transactionDealRedisDao;
+
+    /** redis服务 */
+    @Autowired
+    private IRedisService redisService;
 
     /**
      * 查询前num条成交记录
@@ -247,4 +256,123 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
     public List<TransactionDealRedisDO> listTransactionDealForPending(int paymentType, int currencyId, Timestamp date, int num){
         return transactionDealRedisDao.listTransactionDealForPending(paymentType, currencyId, date, num);
     }
+
+    /**
+     * k线图数据拼接
+     * @param currencyId  币种Id
+     * @param minute  分钟数
+     * @param transactionDealRedisList  成交记录
+     * @return 操作成功:返回k线图数据, 操作失败:返回null
+     */
+    public List<TransactionGraphVO> jointGraphData(int currencyId, int minute, List<TransactionDealRedisDTO> transactionDealRedisList){
+        JsonObjectBO responseJson = new JsonObjectBO();
+        List<TransactionGraphVO> transactionGraphList = new ArrayList<>();
+        long nodeDate = 1L * minute * 60 * 1000;  //节点时间
+        int length = 0;  //长度值
+        int subscript = 0;  //下标值
+        long initialDate = 0;  //初始时间
+        double openPrice = 0;  //开盘价
+        double closPrice = 0;  //收盘价
+        double maxPrice = 0;  //最高价
+        double minPrice = 0;  //最低价
+        double countPrice = 0;  //成交量
+
+        //获取list长度
+        if(transactionDealRedisList == null || transactionDealRedisList.size() <= 0){
+            return transactionGraphList;
+        } else {
+            length = transactionDealRedisList.size();
+            initialDate = transactionDealRedisList.get(0).getAddTime().getTime();
+        }
+
+        //获得截止时间点
+        long nowDate = 1L * DateUtil.getCurrentTime().getTime();
+        //判定当前拼接时间节点是否大于截止时间节点
+        while (initialDate < nowDate){
+            TransactionGraphVO transactionGraphVO = new TransactionGraphVO();
+
+            //判断下标是否越界
+            if(length > subscript){
+                //时间节点判断
+                TransactionDealRedisDTO transactionDealRedis =  transactionDealRedisList.get(subscript);
+                if (initialDate <= transactionDealRedis.getAddTime().getTime() &&
+                        transactionDealRedis.getAddTime().getTime() < (initialDate + nodeDate)){
+                    //开盘价放入
+                    if(openPrice == 0){
+                        openPrice =  transactionDealRedis.getTransactionPrice();
+                    }
+
+                    //收盘价放入
+                    closPrice = transactionDealRedis.getTransactionPrice();
+
+                    //最高价放入
+                    if(maxPrice < transactionDealRedis.getTransactionPrice()){
+                        maxPrice = transactionDealRedis.getTransactionPrice();
+                    }
+
+                    //最低价放入
+                    if(minPrice > transactionDealRedis.getTransactionPrice() || minPrice == 0){
+                        minPrice = transactionDealRedis.getTransactionPrice();
+                    }
+
+                    //成交量计算
+                    countPrice = BigDecimalUtil.add(countPrice,transactionDealRedis.getCurrencyNumber());
+                    subscript++;
+                } else {
+
+                    transactionGraphVO.setOpenPrice(openPrice);
+                    transactionGraphVO.setClosPrice(closPrice);
+                    transactionGraphVO.setMaxPrice(maxPrice);
+                    transactionGraphVO.setMinPrice(minPrice);
+                    transactionGraphVO.setCountPrice(countPrice);
+                    transactionGraphVO.setDealDate(DateUtil.longToTimestamp(initialDate));
+                    transactionGraphList.add(transactionGraphVO);
+
+                    //节点参数格式化
+                    openPrice = 0;  //开盘价
+                    closPrice = 0;  //收盘价
+                    maxPrice = 0;  //最高价
+                    minPrice = 0;  //最低价
+                    countPrice = 0;  //成交量
+                    initialDate += nodeDate;
+                }
+            } else {
+
+                transactionGraphVO.setOpenPrice(openPrice);
+                transactionGraphVO.setClosPrice(closPrice);
+                transactionGraphVO.setMaxPrice(maxPrice);
+                transactionGraphVO.setMinPrice(minPrice);
+                transactionGraphVO.setCountPrice(countPrice);
+                transactionGraphVO.setDealDate(DateUtil.longToTimestamp(initialDate));
+                transactionGraphList.add(transactionGraphVO);
+
+                //节点参数格式化
+                openPrice = 0;  //开盘价
+                closPrice = 0;  //收盘价
+                maxPrice = 0;  //最高价
+                minPrice = 0;  //最低价
+                countPrice = 0;  //成交量
+                initialDate += nodeDate;
+            }
+        }
+
+        return transactionGraphList;
+    }
+
+    /**
+     * 从redis获取k线图数据
+     * @param currencyId  币种Id
+     * @param node  时间节点 ：5分钟 5m、15分钟 15m、30分钟 30m、1小时 1h、4小时 4h、1天 1d 、1周 1w
+     * @return 操作成功:返回k线图数据, 操作失败:返回null
+     */
+    public List<TransactionGraphVO> gainGraphData(int currencyId,String node){
+        List<TransactionGraphVO> transactionGraphList = new ArrayList<TransactionGraphVO>();
+        //当前价
+        Object graphData = redisService.getValue(RedisKeyConfig.GRAPH_DATA + currencyId + node);
+        if(graphData != null){
+            transactionGraphList = (List<TransactionGraphVO>) graphData;
+        }
+        return transactionGraphList;
+    }
+
 }

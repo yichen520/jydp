@@ -43,5 +43,11 @@ public class TransactionPageTimer {
     public void updateWeeHoursBasisOfPrice(){
         transactionRedisDealCommonService.updateWeeHoursBasisOfPrice();
     }
+
+	/** k线图参数存入redis （五分钟一次） */
+	@Scheduled(cron="0 0/5 *  * * ? ")
+	public void graphDataForRedis(){
+		transactionRedisDealCommonService.graphDataForRedis();
+	}
 	
 }

@@ -4,6 +4,7 @@ import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.DTO.TransactionBottomPriceDTO;
 import com.jydp.entity.DTO.TransactionDealPriceDTO;
 import com.jydp.entity.DTO.TransactionDealRedisDTO;
+import com.jydp.entity.VO.TransactionGraphVO;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -129,4 +130,21 @@ public interface ITransactionDealRedisService {
      * @return  操作成功：返回数据集合，操作失败:返回null
      */
     List<TransactionDealRedisDO> listTransactionDealForPending(int paymentType, int currencyId, Timestamp date, int num);
+
+    /**
+     * k线图数据拼接
+     * @param currencyId  币种Id
+     * @param minute  分钟数
+     * @param transactionDealRedisList  成交记录
+     * @return 操作成功:返回k线图数据, 操作失败:返回null
+     */
+    List<TransactionGraphVO> jointGraphData(int currencyId, int minute, List<TransactionDealRedisDTO> transactionDealRedisList);
+
+    /**
+     * 从redis获取k线图数据
+     * @param currencyId  币种Id
+     * @param node  时间节点 ：5分钟 5m、15分钟 15m、30分钟 30m、1小时 1h、4小时 4h、1天 1d 、1周 1w
+     * @return 操作成功:返回k线图数据, 操作失败:返回null
+     */
+    List<TransactionGraphVO> gainGraphData(int currencyId, String node);
 }

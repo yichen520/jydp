@@ -46,6 +46,8 @@ public class QuartzCommonInit {
         ITransactionPendOrderCommonService.getPendOrder();
         //从数据库拉取首页数据到redis
         homePageRedisService.getHomePageData();
+        //k线图参数存入redis
+        transactionRedisDealCommonService.graphDataForRedis();
         //启动刷新是否需要上市指导价
         transactionRedisDealCommonService.gruidPriceForYesterdayPrice();
     }

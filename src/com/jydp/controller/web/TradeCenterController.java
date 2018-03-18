@@ -12,6 +12,7 @@ import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DTO.TransactionPendOrderDTO;
 import com.jydp.entity.VO.StandardParameterVO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
+import com.jydp.entity.VO.TransactionGraphVO;
 import com.jydp.entity.VO.TransactionPendOrderVO;
 import com.jydp.entity.VO.UserDealCapitalMessageVO;
 import com.jydp.interceptor.UserWebInterceptor;
@@ -721,4 +722,45 @@ public class TradeCenterController {
         return resultJson;
     }
 
+    /** k线图参数获取 */
+    @RequestMapping(value = "/gainGraphData", method = RequestMethod.POST)
+    public @ResponseBody JsonObjectBO gainGraphData(HttpServletRequest request) {
+        JsonObjectBO resultJson = new JsonObjectBO();
+        List<TransactionGraphVO> transactionGraphList =  new ArrayList<TransactionGraphVO>();
+
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+        String node = StringUtil.stringNullHandle(request.getParameter("node"));
+
+        if (!StringUtil.isNotNull(currencyIdStr) || !StringUtil.isNotNull(node)) {
+            resultJson.setCode(3);
+            resultJson.setMessage("参数获取错误");
+            return resultJson;
+        }
+
+        int currencyId = 0;
+        currencyId = Integer.parseInt(currencyIdStr);
+        List<TransactionGraphVO> transactionGraph = transactionDealRedisService.gainGraphData(currencyId, node);
+        if(transactionGraph != null && transactionGraph.size() > 0){
+            if(transactionGraph.size() > 200){
+                transactionGraphList.addAll(transactionGraph.subList(transactionGraph.size() - 100, transactionGraph.size()));
+            } else {
+                transactionGraphList = transactionGraph;
+            }
+        }
+
+        JSONObject data = new JSONObject();
+        data.put("transactionGraphList", transactionGraphList);
+
+        resultJson.setCode(1);
+        resultJson.setMessage("查询成功");
+        resultJson.setData(data);
+
+        return resultJson;
+    }
+
+    /** k线图参数获取 */
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public String test(HttpServletRequest request) {
+        return "page/web/test";
+    }
 }

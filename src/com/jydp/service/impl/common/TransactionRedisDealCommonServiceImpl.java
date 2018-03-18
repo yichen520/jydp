@@ -6,7 +6,9 @@ import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.DTO.TransactionDealPriceDTO;
+import com.jydp.entity.DTO.TransactionDealRedisDTO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
+import com.jydp.entity.VO.TransactionGraphVO;
 import com.jydp.service.IRedisService;
 import com.jydp.service.ITransactionCurrencyService;
 import com.jydp.service.ITransactionDealRedisService;
@@ -16,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.*;
 
 /**
@@ -172,6 +176,58 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
             for (Integer cuId: powInt) {
                 Double guidPrice = map.get(cuId);
                 redisService.addValue(RedisKeyConfig.YESTERDAY_PRICE + cuId, guidPrice);
+            }
+        }
+    }
+
+    /** k线图参数存入redis (时间节点：5分钟 5m、15分钟 15m、30分钟 30m、1小时 1h、4小时 4h、1天 1d 、1周 1w)*/
+    public void graphDataForRedis(){
+        //获取币种信息
+        List<TransactionCurrencyVO> transactionUserDeal= transactionCurrencyService.getOnlineAndSuspensionCurrencyForWeb();
+
+        if(transactionUserDeal != null && transactionUserDeal.size() > 0) {
+            for(TransactionCurrencyVO transactionUser : transactionUserDeal){
+                List<TransactionDealRedisDTO> transactionDealRedisList = transactionDealRedisService.listTransactionUserDealForKline(transactionUser.getCurrencyId());  //成交记录
+                for(int i= 0 ;  i < 7; i++){
+                    List<TransactionGraphVO> transactionGraphList = new ArrayList<TransactionGraphVO>();
+                    switch (i) {
+                        case 0:
+                            transactionGraphList = transactionDealRedisService.jointGraphData(transactionUser.getCurrencyId(),5, transactionDealRedisList);
+                            redisService.addValue(RedisKeyConfig.GRAPH_DATA + transactionUser.getCurrencyId() + "5m",
+                                    transactionGraphList);
+                            break;
+                        case 1:
+                            transactionGraphList = transactionDealRedisService.jointGraphData(transactionUser.getCurrencyId(),15, transactionDealRedisList);
+                            redisService.addValue(RedisKeyConfig.GRAPH_DATA + transactionUser.getCurrencyId() + "15m",
+                                    transactionGraphList);
+                            break;
+                        case 2:
+                            transactionGraphList = transactionDealRedisService.jointGraphData(transactionUser.getCurrencyId(),30, transactionDealRedisList);
+                            redisService.addValue(RedisKeyConfig.GRAPH_DATA + transactionUser.getCurrencyId() + "30m",
+                                    transactionGraphList);
+                            break;
+                        case 3:
+                            transactionGraphList = transactionDealRedisService.jointGraphData(transactionUser.getCurrencyId(),60, transactionDealRedisList);
+                            redisService.addValue(RedisKeyConfig.GRAPH_DATA + transactionUser.getCurrencyId() + "1h",
+                                    transactionGraphList);
+                            break;
+                        case 4:
+                            transactionGraphList = transactionDealRedisService.jointGraphData(transactionUser.getCurrencyId(),240, transactionDealRedisList);
+                            redisService.addValue(RedisKeyConfig.GRAPH_DATA + transactionUser.getCurrencyId() + "4h",
+                                    transactionGraphList);
+                            break;
+                        case 5:
+                            transactionGraphList = transactionDealRedisService.jointGraphData(transactionUser.getCurrencyId(),1440, transactionDealRedisList);
+                            redisService.addValue(RedisKeyConfig.GRAPH_DATA + transactionUser.getCurrencyId() + "1d",
+                                    transactionGraphList);
+                            break;
+                        case 6:
+                            transactionGraphList = transactionDealRedisService.jointGraphData(transactionUser.getCurrencyId(),10080, transactionDealRedisList);
+                            redisService.addValue(RedisKeyConfig.GRAPH_DATA + transactionUser.getCurrencyId() + "1w",
+                                    transactionGraphList);
+                            break;
+                    }
+                }
             }
         }
     }
