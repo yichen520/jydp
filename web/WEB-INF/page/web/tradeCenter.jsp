@@ -991,7 +991,7 @@
                     },
                     tooltip: {
                         split: false,
-                        shared: true,
+                        shared: true
                     },
                     xAxis: {
 
@@ -1107,7 +1107,7 @@
     $(function () {
         changeClass();
         function changeClass() {
-            $("ul li").click(function() {
+            $(".wrapper li").click(function() {
 
                 $(this).siblings('li').removeClass('chose');
 
