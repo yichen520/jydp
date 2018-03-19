@@ -10,7 +10,7 @@
 	  	FROM transaction_deal_redis_tab
 	  	WHERE currencyId = #{currencyId}
 			AND addTime <![CDATA[ <= ]]> NOW()
-	  	ORDER BY addTime DESC, orderNo
+	  	ORDER BY id DESC
 		LIMIT #{num}
 	</select>
 
@@ -83,7 +83,7 @@
 		SELECT id, orderNo, paymentType, currencyId, transactionPrice, currencyNumber, currencyTotalPrice, addTime
 		FROM transaction_deal_redis_tab
 		WHERE orderNo = #{orderNo}
-		ORDER BY addTime DESC, orderNo
+		ORDER BY id DESC
 	</select>
 
 	<delete id="TransactionDealRedis_deleteDealByOrderNo" parameterType="java.lang.String">
