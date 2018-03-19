@@ -76,16 +76,25 @@ public class IdentificationController {
             return "page/web/login";
         }
 
-        UserIdentificationDO existIdentification = userIdentificationService.getUserIdentificationByUserIdLately(userId);
-        if (existIdentification != null) {
+        //待审核，审核拒绝，进入查看实名认证信息页
+        if (userDO.getAuthenticationStatus() == 1 || userDO.getAuthenticationStatus() == 3) {
+            UserIdentificationDO existIdentification = userIdentificationService.getUserIdentificationByUserIdLately(userId);
+            if (existIdentification == null) {
+                return "page/web/identificationAfresh";
+            }
+
             List<UserIdentificationImageDO> userIdentificationImageList =
                     userIdentificationImageService.listUserIdentificationImageByIdentificationId(existIdentification.getId());
 
             request.setAttribute("identification", existIdentification);
             request.setAttribute("identificationImageList", userIdentificationImageList);
-            return "page/web/identificationAfresh";
         }
-        return "page/web/identification";
+        //审核通过，进入登录页
+        if (userDO.getAuthenticationStatus() == 2) {
+            return "page/web/login";
+        }
+        //未提交，进入提交实名认证信息页
+        return "page/web/identificationAfresh";
     }
 
     /** 重新认证，新增实名认证 */
