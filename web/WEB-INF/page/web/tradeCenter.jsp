@@ -31,7 +31,7 @@
         </p>
 
         <div class="coinInfo">
-            <span class="priceNow" id="nowPrice"><fmt:formatNumber type="number" value="${standardParameter.nowPrice}" maxFractionDigits="8"/></span>
+            <span class="priceNow" id="nowPrice"><fmt:formatNumber type="number" value="${standardParameter.nowPrice}" maxFractionDigits="8" groupingUsed="FALSE"/></span>
 
             <p class="increase">
                 <c:if test="${standardParameter.todayRange >= 0}">
