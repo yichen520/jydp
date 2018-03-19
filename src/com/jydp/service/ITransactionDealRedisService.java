@@ -136,7 +136,7 @@ public interface ITransactionDealRedisService {
      * @param currencyId  币种Id
      * @param minute  分钟数
      * @param transactionDealRedisList  成交记录
-     * @return 操作成功:返回k线图数据, 操作失败:返回null
+     * @return 操作成功:返回k线图数据(前一百条), 操作失败:返回null
      */
     List<TransactionGraphVO> jointGraphData(int currencyId, int minute, List<TransactionDealRedisDTO> transactionDealRedisList);
 

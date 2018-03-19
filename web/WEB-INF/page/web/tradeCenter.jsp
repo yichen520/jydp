@@ -870,9 +870,15 @@
     });
     var newTime = "5m";
     var t = "";
+    gainGraphBoo = false;
     function gainGraphData(time) {
+        if (gainGraphBoo) {
+            return;
+        } else {
+            gainGraphBoo = true;
+        }
         clearTimeout(t);
-        console.log(time);
+
         var currencyName = $("#currencyName").val();
 
             Highcharts.setOptions({
@@ -890,8 +896,8 @@
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (result) {
+                gainGraphBoo = false;
                 if(result.code != 1 && result.message != null) {
-                    openTips(result.message);
                     return;
                 }
                 //数据遍历
@@ -985,7 +991,7 @@
                     },
                     tooltip: {
                         split: false,
-                        shared: true,
+                        shared: true
                     },
                     xAxis: {
 
@@ -1087,10 +1093,10 @@
                     ]
                 });
             },error: function () {
-                pendBoo = false;
-                openTips("获取失败,请重新刷新页面后重试");
+                gainGraphBoo = false;
             }
         });
+        gainGraphBoo = false;
         t = setTimeout("gainGraphData(newTime)", 1000 * 5 * 60);
     };
 
@@ -1101,7 +1107,7 @@
     $(function () {
         changeClass();
         function changeClass() {
-            $("ul li").click(function() {
+            $(".wrapper li").click(function() {
 
                 $(this).siblings('li').removeClass('chose');
 
