@@ -104,6 +104,7 @@
         }
         var check = checkFileImage(this);
         if(!check){
+            $(this).next().attr('src', pic);
             return;
         }
         var objUrl = getObjectURL(this.files[0]) ;
