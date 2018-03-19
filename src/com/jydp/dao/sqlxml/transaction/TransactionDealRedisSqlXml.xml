@@ -10,7 +10,7 @@
 	  	FROM transaction_deal_redis_tab
 	  	WHERE currencyId = #{currencyId}
 			AND addTime <![CDATA[ <= ]]> NOW()
-	  	ORDER BY addTime DESC, orderNo
+		ORDER BY addTime DESC, id DESC
 		LIMIT #{num}
 	</select>
 
@@ -83,7 +83,7 @@
 		SELECT id, orderNo, paymentType, currencyId, transactionPrice, currencyNumber, currencyTotalPrice, addTime
 		FROM transaction_deal_redis_tab
 		WHERE orderNo = #{orderNo}
-		ORDER BY addTime DESC, orderNo
+		ORDER BY addTime DESC, id DESC
 	</select>
 
 	<delete id="TransactionDealRedis_deleteDealByOrderNo" parameterType="java.lang.String">
@@ -106,7 +106,7 @@
 		WHERE currencyId = #{currencyId}
 		  AND orderNo LIKE CONCAT(#{orderNoPrefix}, '%')
 		  AND addTime <![CDATA[ <= ]]> NOW()
-		ORDER BY addTime DESC
+		ORDER BY addTime DESC, id DESC
 		LIMIT 0,1
 	</select>
 
@@ -115,7 +115,7 @@
 		FROM transaction_deal_redis_tab
 		WHERE currencyId = #{currencyId}
 		AND addTime <![CDATA[ <= ]]> NOW()
-		ORDER BY addTime, id
+		ORDER BY addTime DESC, id DESC
 	</select>
 
 	<select id="TransactionUserDeal_listTransactionDealForPending" parameterType="java.util.Map" resultType="TransactionDealRedisDO">
