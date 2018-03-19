@@ -306,7 +306,7 @@
 
     var mapMatch = {};
     mapMatch['ENumber'] = /[^\a-\z\A-\Z\d]/g;
-    mapMatch['rightful'] = /[%-`~!@#$^&*()=|{}':;",\\\[\].<>/?！￥…（）—【】‘；：”“。，、？]/g;
+    mapMatch['rightful'] = /[%`~!@#$^&*()=|{}':;",_+\-\\\[\].<>/?！￥…（）—【】《》；：‘’”“。，、？]/g;
     function matchUtil(o, str) {
         o.value = o.value.replace(mapMatch[str], '');
     }
