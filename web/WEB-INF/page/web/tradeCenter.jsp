@@ -877,6 +877,7 @@
         } else {
             gainGraphBoo = true;
         }
+        var currencyId = $("#cucyId").val();
         clearTimeout(t);
 
         var currencyName = $("#currencyName").val();
@@ -889,7 +890,7 @@
         $.ajax({
             url: '<%=path%>' + "/userWeb/tradeCenter/gainGraphData", //方法路径URL
             data:{
-                currencyId : 79,
+                currencyId : currencyId,
                 node : time
             },//参数
             dataType: 'json',
