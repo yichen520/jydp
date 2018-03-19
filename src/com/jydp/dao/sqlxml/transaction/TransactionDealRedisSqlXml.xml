@@ -115,7 +115,7 @@
 		FROM transaction_deal_redis_tab
 		WHERE currencyId = #{currencyId}
 		AND addTime <![CDATA[ <= ]]> NOW()
-		ORDER BY addTime DESC, id DESC
+		ORDER BY addTime, id DESC
 	</select>
 
 	<select id="TransactionUserDeal_listTransactionDealForPending" parameterType="java.util.Map" resultType="TransactionDealRedisDO">
