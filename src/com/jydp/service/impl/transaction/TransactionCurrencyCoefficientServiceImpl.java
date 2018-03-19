@@ -58,20 +58,26 @@ public class TransactionCurrencyCoefficientServiceImpl implements ITransactionCu
 
     /**
      * 查询币种系数条数
+     * @param currencyName  币种名称
+     * @param startAddTime  起始添加时间
+     * @param endAddTime  结束添加时间
      * @return  操作成功：返回币种系数条数，操作失败：返回0
      */
-    public int countTransactionCurrencyCoeffieientForBack(){
-        return  transactionCurrencyCoefficientDao.countTransactionCurrencyCoeffieientForBack();
+    public int countTransactionCurrencyCoeffieientForBack(String currencyName, Timestamp startAddTime, Timestamp endAddTime){
+        return  transactionCurrencyCoefficientDao.countTransactionCurrencyCoeffieientForBack(currencyName, startAddTime, endAddTime);
     }
 
     /**
      * 查询币种系数集合
+     * @param currencyName  币种名称
+     * @param startAddTime  起始添加时间
+     * @param endAddTime  结束添加时间
      * @param pageNumber  当前页数
      * @param pageSize  每页条数
      * @return  操作成功：返回币种系数集合，操作失败：返回null
      */
-    public List<TransactionCurrencyCoefficientDO> listTransactionCurrencyCoefficientForBack(int pageNumber, int pageSize){
-        return transactionCurrencyCoefficientDao.listTransactionCurrencyCoefficientForBack(pageNumber, pageSize);
+    public List<TransactionCurrencyCoefficientDO> listTransactionCurrencyCoefficientForBack(String currencyName, Timestamp startAddTime, Timestamp endAddTime, int pageNumber, int pageSize){
+        return transactionCurrencyCoefficientDao.listTransactionCurrencyCoefficientForBack(currencyName, startAddTime, endAddTime, pageNumber, pageSize);
     }
 
     /**

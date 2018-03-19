@@ -54,18 +54,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         </ul>
     </li>
 
-    <li class="levelOne" id="li_100000">
+    <li class="levelOne" id="li_150000">
         <p class="menuTitle">
-            交易管理
+            后台做单
             <img src="<%=path %>/resources/image/back/down.png" class="menu_down" />
             <img src="<%=path %>/resources/image/back/up.png" class="menu_up" />
         </p>
 
         <ul class="levelTwo">
+            <li class="menuInfo" id="li_151000"><a id="a_151000" href="<%=path%>/backerWeb/transactionMakeOrder/show.htm">后台做单</a></li>
+            <li class="menuInfo" id="li_152000"><a id="a_152000" href="<%=path%>/backerWeb/transactionCurrencyCoefficient/show.htm">系数管理</a></li>
+            <li class="menuInfo" id="li_153000"><a id="a_153000" href="#">当日统计</a></li>
+        </ul>
+    </li>
+
+    <li class="levelOne" id="li_100000">
+    <p class="menuTitle">
+            交易管理
+            <img src="<%=path %>/resources/image/back/down.png" class="menu_down" />
+            <img src="<%=path %>/resources/image/back/up.png" class="menu_up" />
+        </p>
+
+    <ul class="levelTwo">
             <li class="menuInfo" id="li_104000"><a id="a_104000" href="<%=path%>/backerWeb/transactionCurrency/show.htm">币种管理</a></li>
             <li class="menuInfo" id="li_101000"><a id="a_101000" href="<%=path%>/backerWeb/backerTransactionPendOrder/show.htm">挂单记录</a></li>
             <li class="menuInfo" id="li_102000"><a id="a_102000" href="<%=path%>/backerWeb/transactionUserDeal/show.htm">成交记录</a></li>
-            <li class="menuInfo" id="li_103000"><a id="a_103000" href="<%=path%>/backerWeb/transactionMakeOrder/show.htm">后台挂单</a></li>
         </ul>
     </li>
 

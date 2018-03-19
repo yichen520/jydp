@@ -76,7 +76,7 @@ public class BackerTransactionMakeOrderController {
             return "page/back/login";
         }
         //业务功能权限
-        boolean havePower = BackerWebInterceptor.validatePower(request, 103001);
+        boolean havePower = BackerWebInterceptor.validatePower(request, 151001);
         if (!havePower) {
             request.setAttribute("code", 5);
             request.setAttribute("message", "您没有此权限");
@@ -152,7 +152,7 @@ public class BackerTransactionMakeOrderController {
         request.setAttribute("transactionMakeOrderList", transactionMakeOrderList);
         request.setAttribute("transactionCurrencyList", transactionCurrencyList);
         //当前页面的权限标识
-        request.getSession().setAttribute("backer_pagePowerId", 103000);
+        request.getSession().setAttribute("backer_pagePowerId", 151000);
     }
 
     /**
@@ -167,7 +167,7 @@ public class BackerTransactionMakeOrderController {
             return "page/back/login";
         }
         //业务功能权限
-        boolean havePower = BackerWebInterceptor.validatePower(request, 103002);
+        boolean havePower = BackerWebInterceptor.validatePower(request, 151002);
         if (!havePower) {
             request.setAttribute("code", 5);
             request.setAttribute("message", "您没有此功能权限");
@@ -198,7 +198,7 @@ public class BackerTransactionMakeOrderController {
             return response;
         }
         //业务功能权限
-        boolean havePower = BackerWebInterceptor.validatePower(request, 103002);
+        boolean havePower = BackerWebInterceptor.validatePower(request, 151002);
         if (!havePower) {
             response.setCode(5);
             response.setMessage("您没有该权限");
@@ -313,7 +313,7 @@ public class BackerTransactionMakeOrderController {
             return "page/back/login";
         }
         //业务功能权限
-        boolean havePower = BackerWebInterceptor.validatePower(request, 103004);
+        boolean havePower = BackerWebInterceptor.validatePower(request, 151004);
         if (!havePower) {
             request.setAttribute("code", 5);
             request.setAttribute("message", "您没有权限");
@@ -366,7 +366,7 @@ public class BackerTransactionMakeOrderController {
             return response;
         }
         //业务功能权限
-        boolean havePower = BackerWebInterceptor.validatePower(request, 103003);
+        boolean havePower = BackerWebInterceptor.validatePower(request, 151003);
         if (!havePower) {
             response.setCode(5);
             response.setMessage("您没有该权限");

@@ -1,0 +1,70 @@
+.add{
+    margin-left: 15px !important;
+}
+.askSelect{
+    width: 120px;
+}
+.askTime{
+    width: 180px;
+}
+.time{
+    width: 240px;
+}
+.coin{
+    width: 120px;
+}
+.coefficient{
+    width: 130px;
+}
+.account{
+    width: 296px;
+}
+.ip{
+    width: 200px;
+}
+.operate{
+    width: 135px;
+}
+.delete{
+    margin-right: 5px;
+    width: 40px;
+    text-align: center;
+    border: none;
+    color: #ff0000;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 12px;
+}
+.delete:hover{
+    opacity: 0.8;
+}
+
+.delete_pop,.add_Pop{
+    display: none;
+}
+.popName{
+    display: inline-block;
+    width: 50px;
+    height: 35px;
+    line-height: 35px;
+    text-align: left;
+    color: #666666;
+    font-size: 14px;
+}
+.star{
+    color: #ff0000;
+}
+.popSelected{
+    float: right;
+    padding-left: 5px;
+    border: 1px solid #ececec;
+    width: 305px;
+    height: 35px;
+}
+.entry{
+    float: right;
+    padding-left: 5px;
+    border: 1px solid #ececec;
+    width: 298px;
+    height: 35px;
+}
