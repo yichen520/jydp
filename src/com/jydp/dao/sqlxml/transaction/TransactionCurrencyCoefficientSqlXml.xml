@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC
+		"-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jydp.dao.impl.transaction.TransactionCurrencyCoefficientDaoImpl">
+
+	<insert id="CurrencyCoefficient_insertTransactionCurrencyCoefficient" parameterType="TransactionCurrencyCoefficientDO">
+        INSERT INTO transaction_currency_coefficient_tab
+            (orderNo, currencyId, currencyName, currencyCoefficient,
+             backerAccount, ipAddress, addTime)
+        VALUES
+            (#{orderNo}, #{currencyId}, #{currencyName}, #{currencyCoefficient},
+              #{backerAccount}, #{ipAddress}, #{addTime})
+	</insert>
+
+	<select id="CurrencyCoefficient_getTransactionCurrencyCoefficientByOrderNo" parameterType="java.lang.String" resultType="TransactionCurrencyCoefficientDO">
+        SELECT orderNo, currencyId, currencyName, currencyCoefficient,
+            backerAccount, ipAddress, addTime
+        FROM transaction_currency_coefficient_tab
+        WHERE orderNo = #{orderNo}
+	</select>
+
+    <select id="CurrencyCoefficient_countTransactionCurrencyCoeffieientForBack" resultType="int">
+        SELECT COUNT(orderNo)
+        FROM transaction_currency_coefficient_tab
+        WHERE
+            1 = 1
+
+    </select>
+
+    <select id="CurrencyCoefficient_listTransactionCurrencyCoefficientForBack" parameterType="java.util.Map" resultType="TransactionCurrencyCoefficientDO">
+        SELECT orderNo, currencyId, currencyName, currencyCoefficient,
+            backerAccount, ipAddress, addTime
+        FROM transaction_currency_coefficient_tab
+
+          ORDER BY addTime DESC
+        LIMIT #{startNumber}, #{pageSize}
+    </select>
+
+    <select id="CurrencyCoefficient_getCurrencyCoefficientByCurrencyId" parameterType="int" resultType="TransactionCurrencyCoefficientDO">
+        SELECT orderNo, currencyId, currencyName, currencyCoefficient,
+            backerAccount, ipAddress, addTime
+        FROM transaction_currency_coefficient_tab
+        WHERE currencyId = #{currencyId}
+          ORDER BY addTime DESC
+    </select>
+
+    <delete id="CurrencyCoefficient_deleteTransactionCurrencyCoefficientByOrderNo" parameterType="java.lang.String">
+        DELETE FROM transaction_currency_coefficient_tab
+        WHERE orderNo = #{orderNo}
+    </delete>
+
+</mapper>
