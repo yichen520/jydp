@@ -44,7 +44,7 @@
                         <span class="pic">
                             <input type="text" id="changead_t1"  class="choosePic" placeholder="请选择文件" onfocus="this.blur()" />
                             <input type="text"  onclick="document.getElementById('changead_a1').click();"  value="选择文件" class="choose_button" onfocus="this.blur();" />
-                            <input type="file" class="file" name="noticeUrl" id="changead_a1" onchange="document.getElementById('changead_t1').value = this.value;" />
+                            <input type="file" class="file" name="noticeUrl" id="changead_a1" onchange="checkFileImageTwo(this, 'changead_t1');" />
                         </span>
                     </p>
 
@@ -138,6 +138,69 @@
             }
         });
 
+    }
+
+    //判断图片格式
+    function checkFileImageTwo(target, id){
+        var flag = false;
+        flag = checkFileImage(target);
+        document.getElementById(id).value = target.value;
+        if(flag == true){
+            document.getElementById(id).value = target.value;
+        }
+    }
+
+    //判断图片格式
+    function checkFileImage(target) {
+        var fileSize = 0;
+        var filetypes = [".jpg", ".jpeg", ".png", ".JPG", ".JPEG", ".PNG"];
+        var filepath = target.value;
+        var filemaxsize = 1024 * 10;//10M
+        if (filepath) {
+            var isnext = false;
+            var fileend = filepath.substring(filepath.indexOf("."));
+            if (filetypes && filetypes.length > 0) {
+                for (var i = 0; i < filetypes.length; i++) {
+                    if (filetypes[i] == fileend) {
+                        isnext = true;
+                        break;
+                    }
+                }
+            }
+            if (!isnext) {
+                openTips("图片格式必须是,jpeg,jpg,png中的一种！");
+                target.value = "";
+                return false;
+            }
+        } else {
+            return false;
+        }
+        if (!target.files) {
+            var filePath = target.value;
+            var fileSystem = new ActiveXObject("Scripting.FileSystemObject");
+            if (!fileSystem.FileExists(filePath)) {
+                openTips("图片不存在，请重新输入！");
+                return false;
+            }
+            var file = fileSystem.GetFile(filePath);
+            fileSize = file.Size;
+        } else {
+            fileSize = target.files[0].size;
+        }
+
+        var size = fileSize / 1024;
+        if (size > filemaxsize) {
+            openTips("图片大小不能大于" + filemaxsize / 1024 + "M！");
+            target.value = "";
+            return false;
+        }
+        if (size <= 0) {
+            openTips("图片大小不能为0M！");
+            target.value = "";
+            return false;
+        }
+
+        return true;
     }
 </script>
 
