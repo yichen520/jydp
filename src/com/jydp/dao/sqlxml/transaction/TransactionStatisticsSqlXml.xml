@@ -6,9 +6,44 @@
 <mapper namespace="com.jydp.dao.impl.transaction.TransactionStatisticsDaoImpl">
 
 	<select id="TransactionStatistics_getBottomPricePast" parameterType="java.util.Map" resultType="TransactionBottomPriceDTO">
-		SELECT SUM(transactionTotalNumber * transactionTotalPrice * currencyCoefficient) AS totalPrice, SUM(transactionTotalNumber) AS totalNumber, currencyId
+        SELECT SUM(transactionTotalPrice * currencyCoefficient) AS totalPrice, SUM(transactionTotalNumber) AS
+        totalNumber, currencyId
 		FROM transaction_statistics_tab
 		WHERE currencyId = #{currencyId}
 		  AND addTime <![CDATA[ <= ]]> #{todayData}
 	</select>
+
+    <select id="TransactionStatistics_countTransactionStatisticsForBack" parameterType="java.util.Map" resultType="int">
+        SELECT COUNT(orderNo)
+        FROM transaction_statistics_tab
+        WHERE 1=1
+        <if test="currencyId != 0">
+            AND currencyId = #{currencyId}
+        </if>
+        <if test="startTime != null">
+            AND addTime <![CDATA[ >= ]]> #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND addTime <![CDATA[ <= ]]> #{endTime}
+        </if>
+    </select>
+
+    <select id="TransactionStatistics_listTransactionStatisticsForBack" parameterType="java.util.Map"
+            resultType="TransactionStatisticsDO">
+        SELECT orderNo, currencyId, currencyName, transactionTotalNumber, transactionTotalPrice, currencyCoefficient,
+        addTime
+        FROM transaction_statistics_tab
+        WHERE 1=1
+        <if test="currencyId != 0">
+            AND currencyId = #{currencyId}
+        </if>
+        <if test="startTime != null">
+            AND addTime <![CDATA[ >= ]]> #{startTime}
+        </if>
+        <if test="endTime != null">
+            AND addTime <![CDATA[ <= ]]> #{endTime}
+        </if>
+        ORDER BY addTime DESC, orderNo
+        LIMIT #{startNumber}, #{pageSize}
+    </select>
 </mapper>

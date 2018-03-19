@@ -229,7 +229,7 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
         map.put("currencyId", currencyId);
         map.put("orderNoPrefix", orderNoPrefix);
         long lingchenLong = DateUtil.lingchenLong();
-        String todayData = DateUtil.longToTimeStr(lingchenLong, DateUtil.dateFormat10);
+        String todayData = DateUtil.longToTimeStr(lingchenLong, DateUtil.dateFormat2);
         map.put("todayData", todayData);
 
         TransactionBottomPriceDTO result = null;

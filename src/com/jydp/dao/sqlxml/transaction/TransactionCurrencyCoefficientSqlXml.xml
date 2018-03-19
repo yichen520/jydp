@@ -62,6 +62,7 @@
         FROM transaction_currency_coefficient_tab
         WHERE currencyId = #{currencyId}
           ORDER BY addTime DESC
+        LIMIT 0,1
     </select>
 
     <delete id="CurrencyCoefficient_deleteTransactionCurrencyCoefficientByOrderNo" parameterType="java.lang.String">
