@@ -708,7 +708,7 @@
                         return;
                     }
                 }
-                //bindingMobile = areaCode + bindingMobile;
+                bindingMobile = areaCode + bindingMobile;
                 $.ajax({
                     url: '<%=path %>' + "/sendCode/sendPhoneCode",
                     type:'post',
