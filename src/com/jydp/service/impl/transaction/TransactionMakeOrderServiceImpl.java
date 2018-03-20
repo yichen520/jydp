@@ -241,8 +241,11 @@ public class TransactionMakeOrderServiceImpl implements ITransactionMakeOrderSer
     @Transactional
     public boolean deleteMakeOrderByOrderNo(String orderNo){
         TransactionMakeOrderDO order = transactionMakeOrderDao.getTransactionMakeOrderByOrderNo(orderNo);
-        boolean resultBoo = transactionMakeOrderDao.deleteMakeOrderByOrderNo(orderNo);
+        if (order == null) {
+            return false;
+        }
 
+        boolean resultBoo = transactionMakeOrderDao.deleteMakeOrderByOrderNo(orderNo);
         if (order.getExecuteStatus() > 2 && resultBoo) {
             resultBoo = transactionDealRedisService.deleteDealByOrderNo(orderNo);
         }
