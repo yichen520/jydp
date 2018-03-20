@@ -51,7 +51,14 @@ public class SendCodeController {
 		
 		JsonObjectBO addValidatePhone = validatePhoneService.addValidatePhone(phoneNumber, messageCode, ipAddress);
 		if(addValidatePhone.getCode() == 1){
-			boolean sendBoo = SendMessage.send(phoneNumber, SendMessage.getMessageCodeContent(messageCode, 1));
+            boolean sendBoo = false;
+
+            if (phoneNumber.substring(0, 3).equals("+86")) {
+                sendBoo = SendMessage.sendChina(phoneNumber, SendMessage.getMessageCodeContent(messageCode, 1));
+            } else {
+                sendBoo = SendMessage.sendInternational(phoneNumber, SendMessage.getEnMessageCodeContent(messageCode, 1));
+            }
+
 			if(sendBoo == false){
 				resultJson.put("code", 5);
 				resultJson.put("message", "短信验证码发送失败！");
