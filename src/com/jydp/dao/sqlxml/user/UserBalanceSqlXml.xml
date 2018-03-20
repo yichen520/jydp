@@ -22,7 +22,7 @@
 		SELECT orderNo, userId, fromType, currencyId, currencyName, balanceNumber,frozenNumber, remark, addTime
 		FROM user_balance_tab
 		WHERE userId = #{userId}
-		ORDER BY addTime DESC
+		ORDER BY addTime DESC,orderNo
 		LIMIT #{startNumber}, #{pageSize}
 	</select>
 
