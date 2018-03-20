@@ -133,4 +133,14 @@
 		</if>
 		LIMIT #{num}
 	</select>
+
+	<select id="TransactionUserDeal_listStatistics" parameterType="java.util.Map" resultType="TransactionBottomPriceDTO">
+		SELECT currencyId, SUM(currencyNumber) totalNumber, SUM(currencyNumber * transactionPrice) totalPrice
+		FROM transaction_deal_redis_tab
+		WHERE
+			orderNo LIKE CONCAT(#{orderNoPrefix}, '%')
+			AND addTime > #{date}
+			AND addTime <![CDATA[ <= ]]> #{endDate}
+			GROUP BY currencyId
+	</select>
 </mapper>

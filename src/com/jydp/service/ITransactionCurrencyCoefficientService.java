@@ -67,4 +67,10 @@ public interface ITransactionCurrencyCoefficientService {
      * @return  操作成功：返回true，操作失败：返回false
      */
     boolean deleteTransactionCurrencyCoefficientByOrderNo(String orderNo);
+
+    /**
+     * 查询每个币种最近的系数
+     * @return  操作成功：返回币种系数集合，操作失败：返回null
+     */
+    List<TransactionCurrencyCoefficientDO> listTransactionCurrencyCoefficientForNew();
 }

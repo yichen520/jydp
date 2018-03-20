@@ -46,4 +46,21 @@
         ORDER BY addTime DESC, orderNo
         LIMIT #{startNumber}, #{pageSize}
     </select>
+
+    <insert id="TransactionStatistics_insertTransactionStatisticsList" parameterType="java.util.List">
+        INSERT INTO transaction_statistics_tab
+        (orderNo, currencyId, currencyName, transactionTotalNumber, transactionTotalPrice, currencyCoefficient, addTime)
+        VALUES
+            <foreach collection="list" item="item" separator=",">
+                (#{item.orderNo}, #{item.currencyId}, #{item.currencyName}, #{item.transactionTotalNumber},
+                #{item.transactionTotalPrice}, #{item.currencyCoefficient}, #{item.addTime})
+            </foreach>
+    </insert>
+
+    <select id="TransactionStatistics_getLastAddTime" resultType="java.sql.Timestamp">
+        SELECT addTime
+        FROM transaction_statistics_tab
+        ORDER BY addTime DESC
+        LIMIT 1
+    </select>
 </mapper>

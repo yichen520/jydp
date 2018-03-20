@@ -98,4 +98,41 @@ public class TransactionStatisticsDaoImpl implements ITransactionStatisticsDao {
 
         return resultList;
     }
+
+    /**
+     * 批量新增交易统计
+     * @param transactionStatisticsDOS  交易统计集合
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    public boolean insertTransactionStatisticsList(List<TransactionStatisticsDO> transactionStatisticsDOS){
+        int result = 0;
+
+        try {
+            result = sqlSessionTemplate.insert("TransactionStatistics_insertTransactionStatisticsList", transactionStatisticsDOS);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 获取最后一条添加的时间
+     * @return  操作成功：返回添加的时间，操作失败：返回null
+     */
+    public Timestamp getLastAddTime(){
+        Timestamp date = null;
+
+        try {
+            date = sqlSessionTemplate.selectOne("TransactionStatistics_getLastAddTime");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return date;
+    }
 }

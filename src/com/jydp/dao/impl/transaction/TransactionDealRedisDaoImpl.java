@@ -303,4 +303,28 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
 
         return  resultList;
     }
+
+    /**
+     * 每日交易统计
+     * @param orderNoPrefix  订单号开头
+     * @param date  昨日凌晨
+     * @param endDate  今日凌晨
+     * @return  操作成功：返回统计集合，操作失败：返回null
+     */
+    public List<TransactionBottomPriceDTO> listStatistics(String orderNoPrefix, Timestamp date, Timestamp endDate){
+        List<TransactionBottomPriceDTO> resultList = null;
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("endDate", endDate);
+        map.put("orderNoPrefix", orderNoPrefix);
+        map.put("date", date);
+
+        try {
+            resultList = sqlSessionTemplate.selectList("TransactionUserDeal_listStatistics", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return  resultList;
+    }
 }

@@ -320,6 +320,28 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
                     subscript++;
                 } else {
 
+                    if(openPrice != 0){
+                        transactionGraphVO.setOpenPrice(openPrice);
+                        transactionGraphVO.setClosPrice(closPrice);
+                        transactionGraphVO.setMaxPrice(maxPrice);
+                        transactionGraphVO.setMinPrice(minPrice);
+                        transactionGraphVO.setCountPrice(countPrice);
+                        transactionGraphVO.setDealDate(DateUtil.longToTimestamp(initialDate));
+                        transactionGraphList.add(transactionGraphVO);
+
+                        //节点参数格式化
+                        openPrice = 0;  //开盘价
+                        closPrice = 0;  //收盘价
+                        maxPrice = 0;  //最高价
+                        minPrice = 0;  //最低价
+                        countPrice = 0;  //成交量
+                    }
+
+                    initialDate += nodeDate;
+                }
+            } else {
+
+                if(openPrice != 0) {
                     transactionGraphVO.setOpenPrice(openPrice);
                     transactionGraphVO.setClosPrice(closPrice);
                     transactionGraphVO.setMaxPrice(maxPrice);
@@ -334,24 +356,7 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
                     maxPrice = 0;  //最高价
                     minPrice = 0;  //最低价
                     countPrice = 0;  //成交量
-                    initialDate += nodeDate;
                 }
-            } else {
-
-                transactionGraphVO.setOpenPrice(openPrice);
-                transactionGraphVO.setClosPrice(closPrice);
-                transactionGraphVO.setMaxPrice(maxPrice);
-                transactionGraphVO.setMinPrice(minPrice);
-                transactionGraphVO.setCountPrice(countPrice);
-                transactionGraphVO.setDealDate(DateUtil.longToTimestamp(initialDate));
-                transactionGraphList.add(transactionGraphVO);
-
-                //节点参数格式化
-                openPrice = 0;  //开盘价
-                closPrice = 0;  //收盘价
-                maxPrice = 0;  //最高价
-                minPrice = 0;  //最低价
-                countPrice = 0;  //成交量
                 initialDate += nodeDate;
             }
         }
@@ -383,4 +388,14 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
         return transactionGraphList;
     }
 
+    /**
+     * 每日交易统计
+     * @param orderNoPrefix  订单号开头
+     * @param date  昨日凌晨
+     * @param endDate  今日凌晨
+     * @return  操作成功：返回统计集合，操作失败：返回null
+     */
+    public List<TransactionBottomPriceDTO> listStatistics(String orderNoPrefix, Timestamp date, Timestamp endDate){
+        return  transactionDealRedisDao.listStatistics(orderNoPrefix, date, endDate);
+    }
 }

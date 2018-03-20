@@ -97,4 +97,12 @@ public class TransactionCurrencyCoefficientServiceImpl implements ITransactionCu
     public boolean deleteTransactionCurrencyCoefficientByOrderNo(String orderNo){
         return transactionCurrencyCoefficientDao.deleteTransactionCurrencyCoefficientByOrderNo(orderNo);
     }
+
+    /**
+     * 查询每个币种最近的系数
+     * @return  操作成功：返回币种系数集合，操作失败：返回null
+     */
+    public List<TransactionCurrencyCoefficientDO> listTransactionCurrencyCoefficientForNew(){
+        return transactionCurrencyCoefficientDao.listTransactionCurrencyCoefficientForNew();
+    }
 }

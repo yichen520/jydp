@@ -50,6 +50,8 @@ public class QuartzCommonInit {
         transactionRedisDealCommonService.graphDataForRedis();
         //启动刷新是否需要上市指导价
         transactionRedisDealCommonService.gruidPriceForYesterdayPrice();
+        //启动统计交易
+        transactionRedisDealCommonService.statistics();
     }
 
 }

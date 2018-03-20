@@ -120,4 +120,13 @@ public interface ITransactionDealRedisDao {
      * @return  操作成功：返回数据集合，操作失败:返回null
      */
     List<TransactionDealRedisDO> listTransactionDealForPending(int paymentType, int currencyId, Timestamp date, int num);
+
+    /**
+     * 每日交易统计
+     * @param orderNoPrefix  订单号开头
+     * @param date  昨日凌晨
+     * @param endDate  今日凌晨
+     * @return  操作成功：返回统计集合，操作失败：返回null
+     */
+    List<TransactionBottomPriceDTO> listStatistics(String orderNoPrefix, Timestamp date, Timestamp endDate);
 }
