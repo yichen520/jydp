@@ -2,6 +2,7 @@ package com.jydp.other;
 
 import com.iqmkj.utils.LogUtil;
 import com.iqmkj.utils.StringUtil;
+import config.PhoneAreaConfig;
 import org.springframework.util.StringUtils;
 
 import java.io.BufferedReader;
@@ -97,17 +98,17 @@ public class SendMessage {
         }
 
         //国内短信
-        if (phoneNumber.substring(0, 3).equals("+86")) {
+        if (phoneNumber.substring(0, 3).equals(PhoneAreaConfig.PHONE_AREA_CHINA)) {
             executeSuccess = sendChina(phoneNumber.substring(3), messageContent);
             return executeSuccess;
         }
 
-        executeSuccess = sendInternational(phoneNumber.substring(1), messageContent);
+        executeSuccess = sendInternational(phoneNumber, messageContent);
         return executeSuccess;
     }
 
     /**
-     * 向手机发送短信(国内+86)
+     * 向手机发送短信(国内短信)
      *
      * @param phoneNumber    接收的手机号码，如13276717926
      * @param messageContent 短信实际下发内容（中文）
@@ -190,7 +191,7 @@ public class SendMessage {
     }
 
     /**
-     * 向手机发送国际短信
+     * 向手机发送短信（国际短信，前缀加上国际区号）
      *
      * @param phoneNumber    接收的手机号码, 如+41754179108
      * @param messageContent 短信实际下发内容（英文）
@@ -213,7 +214,7 @@ public class SendMessage {
             String pwd = "shenglinjiuzhou123";
 
             String content = "src=" + src + "&pwd=" + pwd + "&ServiceID=SEND" +
-                    "&dest=" + phoneNumber.substring(1) + "&msg=" + message + "&codec=8";
+                    "&dest=" + phoneNumber.substring(1) + "&msg=" + message + "&codec=3";
 
             URL url = new URL(messageUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();

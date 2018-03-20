@@ -6,6 +6,7 @@ import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.other.SendMessage;
 import com.jydp.service.ISystemValidatePhoneService;
+import config.PhoneAreaConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -53,11 +54,11 @@ public class SendCodeController {
 		if(addValidatePhone.getCode() == 1){
             boolean sendBoo = false;
 
-            if (phoneNumber.substring(0, 3).equals("+86")) {
-                sendBoo = SendMessage.sendChina(phoneNumber, SendMessage.getMessageCodeContent(messageCode, 1));
-            } else {
-                sendBoo = SendMessage.sendInternational(phoneNumber, SendMessage.getEnMessageCodeContent(messageCode, 1));
-            }
+			if (phoneNumber.substring(0, 3).equals(PhoneAreaConfig.PHONE_AREA_CHINA)) {
+				sendBoo = SendMessage.send(phoneNumber, SendMessage.getMessageCodeContent(messageCode, 1));
+			} else {
+				sendBoo = SendMessage.send(phoneNumber, SendMessage.getEnMessageCodeContent(messageCode, 1));
+			}
 
 			if(sendBoo == false){
 				resultJson.put("code", 5);

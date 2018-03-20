@@ -25,9 +25,9 @@ public class CheckUserAmountConfig {
     public static final String IP_ADDRESS = "127.0.0.1";
 
     /** 用户账户异常时通知手机号 */
-    public static final String NOTICE_PHONE_ONE = "15954134739";
+    public static final String NOTICE_PHONE_ONE = "+8615954134739";
     /** 用户账户异常时通知手机号 */
-    public static final String NOTICE_PHONE_TWO = "17858850509";
+    public static final String NOTICE_PHONE_TWO = "+8617858850509";
     /** 用户美金账户异常通知内容 */
     public static final String MESSAGE_USD = "警告：盛源交易所用户美金账户异常，请尽快处理。";
     /** 用户数字货币账户异常通知内容 */

@@ -199,19 +199,18 @@ public class UserIdentificationServiceImpl implements IUserIdentificationService
     @Transactional
     public boolean passUserIdentification (long id, int userId, String remark, int status) {
         boolean executeSuccess = false;
+        UserDO userDO = userService.getUserByUserId(userId);
+        if (userDO == null) {
+            return false;
+        }
 
         //通过
         if (status == 1) {
-            UserDO userDO = userService.getUserByUserId(userId);
-            if (userDO == null) {
-                return executeSuccess;
-            }
-
             //修改审核认证状态
             executeSuccess = updateUserIdentificationStatus(id, 2, DateUtil.getCurrentTime(), remark);
 
             //修改账号认证状态
-            if (executeSuccess) {
+            if (executeSuccess && userDO.getAuthenticationStatus() == 1) {
                 executeSuccess = userService.updateUserAuthenticationStatus(userId, 2, 1);
             }
 
@@ -227,7 +226,7 @@ public class UserIdentificationServiceImpl implements IUserIdentificationService
             executeSuccess = updateUserIdentificationStatus(id, 3, DateUtil.getCurrentTime(), remark);
 
             //修改账号认证状态
-            if (executeSuccess) {
+            if (executeSuccess && userDO.getAuthenticationStatus() == 1) {
                 executeSuccess = userService.updateUserAuthenticationStatus(userId, 3, 1);
             }
         }
