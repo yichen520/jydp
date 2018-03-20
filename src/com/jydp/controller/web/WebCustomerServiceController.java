@@ -30,7 +30,7 @@ public class WebCustomerServiceController {
     private IUserFeedbackService userFeedbackService;
 
     /**  查询意见反馈列表 */
-    public void showList(HttpServletRequest request) {
+    public void showList(HttpServletRequest request, int userId) {
         String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
 
         int pageNumber = 0;
@@ -38,12 +38,12 @@ public class WebCustomerServiceController {
             pageNumber = Integer.parseInt(pageNumberStr);
         }
 
-        int totalNumber = userFeedbackService.countUserFeedbackForUser();
+        int totalNumber = userFeedbackService.countUserFeedbackForUser(userId);
         int pageSize = 20;
 
         List<UserFeedbackDO> userFeedbackList = null;
         if (totalNumber > 0) {
-            userFeedbackList = userFeedbackService.listUserFeedbackForUser(pageNumber, pageSize);
+            userFeedbackList = userFeedbackService.listUserFeedbackForUser(userId, pageNumber, pageSize);
         }
 
         if (userFeedbackList != null && userFeedbackList.size() > 0) {
@@ -83,7 +83,7 @@ public class WebCustomerServiceController {
             return "page/web/login";
         }
 
-        showList(request);
+        showList(request, userBo.getUserId());
         request.setAttribute("code", 1);
         request.setAttribute("message","查询成功!");
         return "page/web/customerService";

@@ -70,15 +70,17 @@
         AND #{handleStatus} <![CDATA[ > ]]> handleStatus
     </update>
 
-    <select id="UserFeedback_countUserFeedbackForUser" resultType="int">
+    <select id="UserFeedback_countUserFeedbackForUser" parameterType="int" resultType="int">
         SELECT COUNT(id)
         FROM user_feedback_tab
+        WHERE userId = #{userId}
     </select>
 
     <select id="UserFeedback_listUserFeedbackForUser" parameterType="java.util.Map" resultType="UserFeedbackDO">
         SELECT id, userId, userAccount, feedbackTitle, feedbackContent, addTime, handleStatus, handleContent,
         backerAccount, handleTime
         FROM user_feedback_tab
+        WHERE userId = #{userId}
         ORDER BY addTime DESC
         LIMIT #{startNumber}, #{pageSize}
     </select>
