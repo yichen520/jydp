@@ -173,7 +173,7 @@ public class UserMessageController {
         }
 
         //验证码判定
-        JsonObjectBO validatePhone = systemValidatePhoneService.validatePhone(userMessage.getPhoneNumber(), pasVerifyCode);
+        JsonObjectBO validatePhone = systemValidatePhoneService.validatePhone(userMessage.getPhoneAreaCode() + userMessage.getPhoneNumber(), pasVerifyCode);
         if(validatePhone.getCode() != 1){
             responseJson.setCode(validatePhone.getCode());
             responseJson.setMessage(validatePhone.getMessage());
@@ -308,7 +308,7 @@ public class UserMessageController {
             return responseJson;
         }
 
-        String phoneNumber = userMessage.getPhoneNumber();
+        String phoneNumber = userMessage.getPhoneAreaCode() + userMessage.getPhoneNumber();
         String ipAddress = IpAddressUtil.getIpAddress(request);
         if(!StringUtil.isNotNull(phoneNumber) || !StringUtil.isNotNull(ipAddress)){
             responseJson.setCode(3);
@@ -320,7 +320,12 @@ public class UserMessageController {
 
         JsonObjectBO addValidatePhone = validatePhoneService.addValidatePhone(phoneNumber, messageCode, ipAddress);
         if(addValidatePhone.getCode() == 1){
-            boolean sendBoo = SendMessage.send(phoneNumber, SendMessage.getMessageCodeContent(messageCode, 1));
+            boolean sendBoo = false;
+            if (phoneNumber.substring(0, 3).equals(PhoneAreaConfig.PHONE_AREA_CHINA)) {
+                sendBoo = SendMessage.send(phoneNumber, SendMessage.getMessageCodeContent(messageCode, 1));
+            } else {
+                sendBoo = SendMessage.send(phoneNumber, SendMessage.getEnMessageCodeContent(messageCode, 1));
+            }
             if(sendBoo){
                 responseJson.setCode(1);
                 responseJson.setMessage("短信验证码发送成功！");
@@ -376,7 +381,7 @@ public class UserMessageController {
         }
 
         //验证码判定
-        JsonObjectBO validatePhone = systemValidatePhoneService.validatePhone(userMessage.getPhoneNumber(), validateCode);
+        JsonObjectBO validatePhone = systemValidatePhoneService.validatePhone(userMessage.getPhoneAreaCode() + userMessage.getPhoneNumber(), validateCode);
         if(validatePhone.getCode() != 1){
             responseJson.setCode(validatePhone.getCode());
             responseJson.setMessage(validatePhone.getMessage());
@@ -446,7 +451,7 @@ public class UserMessageController {
             return responseJson;
         }
         //验证码判定
-        JsonObjectBO validatePhone = systemValidatePhoneService.validatePhone(userMessage.getPhoneNumber(), validateCode);
+        JsonObjectBO validatePhone = systemValidatePhoneService.validatePhone(userMessage.getPhoneAreaCode() + userMessage.getPhoneNumber(), validateCode);
         if(validatePhone.getCode() != 1){
             responseJson.setCode(validatePhone.getCode());
             responseJson.setMessage("原手机" + validatePhone.getMessage());
@@ -454,7 +459,7 @@ public class UserMessageController {
         }
 
         //验证码判定
-        validatePhone = systemValidatePhoneService.validatePhone(phone, newVerifyCode);
+        validatePhone = systemValidatePhoneService.validatePhone(areaCode + phone, newVerifyCode);
         if(validatePhone.getCode() != 1){
             responseJson.setCode(validatePhone.getCode());
             responseJson.setMessage("新手机" + validatePhone.getMessage());

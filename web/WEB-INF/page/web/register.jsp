@@ -236,7 +236,7 @@
             dataType:'json',
             async:true,
             data:{
-                phoneNumber : phone
+                phoneNumber :area+phone
             },
             success:function(result){
                 phoneBoo = false;
