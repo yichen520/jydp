@@ -5,9 +5,11 @@ import com.iqmkj.utils.BigDecimalUtil;
 import com.iqmkj.utils.NumberUtil;
 import com.iqmkj.utils.SignatureUtil;
 import com.iqmkj.utils.StringUtil;
+import com.jydp.entity.DO.transaction.TransactionCurrencyCoefficientDO;
 import com.jydp.entity.DTO.TransactionBottomCurrentPriceDTO;
 import com.jydp.entity.DTO.TransactionBottomPriceDTO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
+import com.jydp.service.ITransactionCurrencyCoefficientService;
 import com.jydp.service.ITransactionCurrencyService;
 import com.jydp.service.ITransactionDealRedisService;
 import com.jydp.service.ITransactionStatisticsService;
@@ -44,6 +46,12 @@ public class GetCurrentPriceAndBottomPriceController {
     /** 交易统计记录表 */
     @Autowired
     private ITransactionStatisticsService transactionStatisticsService;
+
+    /**
+     * 币种系数
+     */
+    @Autowired
+    private ITransactionCurrencyCoefficientService transactionCurrencyCoefficientService;
 
     /** 查询当前价和保底价 */
     @RequestMapping(value = "/transfer", method = RequestMethod.POST)
@@ -88,16 +96,12 @@ public class GetCurrentPriceAndBottomPriceController {
         }
 
         //获取该币种最近的系数
-        double todayRatio = 0.8;
+        TransactionCurrencyCoefficientDO currencyCoefficientByCurrencyId = transactionCurrencyCoefficientService.getCurrencyCoefficientByCurrencyId(transactionCurrency.getCurrencyId());
+        double todayRatio = currencyCoefficientByCurrencyId.getCurrencyCoefficient();
 
         //查询当日成交总价，当日成交总数量
         TransactionBottomPriceDTO bottomPriceToday = transactionDealRedisService.
                 getBottomPriceToday(transactionCurrency.getCurrencyId(), SystemCommonConfig.TRANSACTION_MAKE_ORDER);
-        if (bottomPriceToday == null) {
-            responseJson.put("code", 5);
-            responseJson.put("message", "查询失败");
-            return responseJson;
-        }
 
         //查询历史当日总价 * 历史当日系数，历史当日成交总数量
         TransactionBottomPriceDTO bottomPricePast = transactionStatisticsService.getBottomPricePast(transactionCurrency.getCurrencyId());
@@ -107,13 +111,13 @@ public class GetCurrentPriceAndBottomPriceController {
             return responseJson;
         }
 
-        //总价
+        //总价:(历史当日总价 * 历史当日系数 + 当日总价*当日总系数)
         double totalPrice = BigDecimalUtil.add(bottomPricePast.getTotalPrice(), BigDecimalUtil.mul(bottomPriceToday.getTotalPrice(), todayRatio));
-        //总数量
-        double totalNumber = BigDecimalUtil.add(bottomPriceToday.getTotalNumber(), bottomPricePast.getTotalNumber());
-        String bottomPriceStr = BigDecimalUtil.div(totalPrice, totalNumber, 8);
+        //总数量:(历史成交总数量 + 当日成交总数量)
+        double totalNumber = BigDecimalUtil.add(bottomPricePast.getTotalNumber(), bottomPriceToday.getTotalNumber());
 
         //保底价 = (历史当日总价 * 历史当日系数 + 当日总价*当日总系数)/(历史成交总数量 + 当日成交总数量)
+        String bottomPriceStr = BigDecimalUtil.div(totalPrice, totalNumber, 8);
         double bottomPrice = Double.parseDouble(bottomPriceStr);
         bottomPrice = NumberUtil.doubleFormat(bottomPrice, 4);
 

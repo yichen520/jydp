@@ -3,7 +3,7 @@ package com.jydp.entity.VO;
 import com.jydp.entity.DO.transaction.TransactionMakeOrderDO;
 
 /**
- * 后台挂单
+ * 后台做单
  * @author fk
  *
  */

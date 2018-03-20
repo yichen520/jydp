@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,13 +63,21 @@ public class TransactionCurrencyCoefficientDaoImpl implements ITransactionCurren
 
     /**
      * 查询币种系数条数
+     * @param currencyName  币种名称
+     * @param startAddTime  起始添加时间
+     * @param endAddTime  结束添加时间
      * @return  操作成功：返回币种系数条数，操作失败：返回0
      */
-    public int countTransactionCurrencyCoeffieientForBack(){
+    public int countTransactionCurrencyCoeffieientForBack(String currencyName, Timestamp startAddTime, Timestamp endAddTime){
         int result = 0;
 
+        Map<String, Object> map = new HashMap<>();
+        map.put("currencyName", currencyName);
+        map.put("startAddTime", startAddTime);
+        map.put("endAddTime", endAddTime);
+
         try {
-            result = sqlSessionTemplate.selectOne("CurrencyCoefficient_countTransactionCurrencyCoeffieientForBack");
+            result = sqlSessionTemplate.selectOne("CurrencyCoefficient_countTransactionCurrencyCoeffieientForBack", map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
@@ -78,14 +87,20 @@ public class TransactionCurrencyCoefficientDaoImpl implements ITransactionCurren
 
     /**
      * 查询币种系数集合
+     * @param currencyName  币种名称
+     * @param startAddTime  起始添加时间
+     * @param endAddTime  结束添加时间
      * @param pageNumber  当前页数
      * @param pageSize  每页条数
      * @return  操作成功：返回币种系数集合，操作失败：返回null
      */
-    public List<TransactionCurrencyCoefficientDO> listTransactionCurrencyCoefficientForBack(int pageNumber, int pageSize){
+    public List<TransactionCurrencyCoefficientDO> listTransactionCurrencyCoefficientForBack(String currencyName, Timestamp startAddTime, Timestamp endAddTime, int pageNumber, int pageSize){
         List<TransactionCurrencyCoefficientDO> resultList = null;
 
         Map<String, Object> map = new HashMap<>();
+        map.put("currencyName", currencyName);
+        map.put("startAddTime", startAddTime);
+        map.put("endAddTime", endAddTime);
         map.put("startNumber", pageNumber * pageSize);
         map.put("pageSize", pageSize);
 
