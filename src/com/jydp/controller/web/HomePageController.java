@@ -63,6 +63,10 @@ public class HomePageController {
                     systemAdsHomepages.setWebLinkUrl(webLinkUrl);
                 }
             }
+        } else {
+            //redis中没有，从数据库中查询并添加至redis中
+            systemAdsHomepagesList = homePageService.getSystemAdsHomepageList();
+            redisService.addValue(RedisKeyConfig.HOMEPAGE_ADS,systemAdsHomepagesList);
         }
 
         //查询所有币行情信息
@@ -87,6 +91,10 @@ public class HomePageController {
                     systemNotice.setNoticeTitle(noticeTitle);
                 }
             }
+        } else {
+            //redis中没有，从数据库中查询并添加至redis中
+            systemNoticeList = homePageService.getSystemNoticeList();
+            redisService.addValue(RedisKeyConfig.HOMEPAGE_NOTICE,systemNoticeList);
         }
 
         //查询热门话题列表
@@ -104,6 +112,10 @@ public class HomePageController {
                     systemHot.setNoticeTitle(noticeTitle);
                 }
             }
+        } else {
+            //redis中没有，从数据库中查询并添加至redis中
+            systemHotList = homePageService.getSystemHotList();
+            redisService.addValue(RedisKeyConfig.HOMEPAGE_HOT_TOPIC,systemHotList);
         }
 
         //查询合作商家列表
@@ -121,6 +133,10 @@ public class HomePageController {
                     systemBusinessesPartner.setWebLinkUrl(webLinkUrl);
                 }
             }
+        } else {
+            //redis中没有，从数据库中查询并添加至redis中
+            systemBusinessesPartnerList = homePageService.getSystemBusinessesPartnerList();
+            redisService.addValue(RedisKeyConfig.HOMEPAGE_PARTNER,systemBusinessesPartnerList);
         }
 
         request.setAttribute("systemAdsHomepagesList",systemAdsHomepagesList);
