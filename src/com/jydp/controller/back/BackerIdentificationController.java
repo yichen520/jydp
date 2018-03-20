@@ -259,8 +259,15 @@ public class BackerIdentificationController {
             return responseJson;
         }
 
-        String messageContent = "您在盛源交易所中提交的实名认证信息审核已通过。";
-        passResult = SendMessage.send(userIdentification.getUserPhone(), messageContent);
+        String messageContent = "";
+        if (userIdentification.getPhoneAreaCode().equals(PhoneAreaConfig.PHONE_AREA_CHINA)) {
+            messageContent = "您在盛源交易所中提交的实名认证信息审核已通过。";
+        } else {
+            messageContent = "The verification of your identity information " +
+                    "submitted by Monetary Union Exchange has passed.";
+        }
+
+        passResult = SendMessage.send(userIdentification.getPhoneAreaCode() + userIdentification.getUserPhone(), messageContent);
         if (!passResult) {
             responseJson.setCode(5);
             responseJson.setMessage("短信发送失败，请拨打电话或发送短信通知用户");
@@ -326,8 +333,15 @@ public class BackerIdentificationController {
             return responseJson;
         }
 
-        String messageContent = "您在盛源交易所中提交的实名认证信息审核被拒绝。";
-        passResult = SendMessage.send(userIdentification.getUserPhone(), messageContent);
+        String messageContent = "";
+        if (userIdentification.getPhoneAreaCode().equals(PhoneAreaConfig.PHONE_AREA_CHINA)) {
+            messageContent = "您在盛源交易所中提交的实名认证信息审核被拒绝。";
+        } else {
+            messageContent = "The verification of your identity information " +
+                    "submitted by Monetary Union Exchange has unaccepted.";
+        }
+
+        passResult = SendMessage.send(userIdentification.getPhoneAreaCode() + userIdentification.getUserPhone(), messageContent);
         if (!passResult) {
             responseJson.setCode(5);
             responseJson.setMessage("短信发送失败，请拨打电话或发送短信通知用户");

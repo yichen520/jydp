@@ -96,19 +96,29 @@ public class GetCurrentPriceAndBottomPriceController {
         }
 
         //获取该币种最近的系数
-        TransactionCurrencyCoefficientDO currencyCoefficientByCurrencyId = transactionCurrencyCoefficientService.getCurrencyCoefficientByCurrencyId(transactionCurrency.getCurrencyId());
-        double todayRatio = currencyCoefficientByCurrencyId.getCurrencyCoefficient();
+        double todayRatio = 0.8;
+        TransactionCurrencyCoefficientDO currencyCoefficient = transactionCurrencyCoefficientService.getCurrencyCoefficientByCurrencyId(transactionCurrency.getCurrencyId());
+        if (currencyCoefficient != null && currencyCoefficient.getCurrencyCoefficient() > 0) {
+            todayRatio = currencyCoefficient.getCurrencyCoefficient();
+        }
 
         //查询当日成交总价，当日成交总数量
         TransactionBottomPriceDTO bottomPriceToday = transactionDealRedisService.
                 getBottomPriceToday(transactionCurrency.getCurrencyId(), SystemCommonConfig.TRANSACTION_MAKE_ORDER);
+        if (bottomPriceToday == null) {
+            bottomPriceToday = new TransactionBottomPriceDTO();
+            bottomPriceToday.setCurrencyId(transactionCurrency.getCurrencyId());
+            bottomPriceToday.setTotalNumber(0);
+            bottomPriceToday.setTotalPrice(0);
+        }
 
         //查询历史当日总价 * 历史当日系数，历史当日成交总数量
         TransactionBottomPriceDTO bottomPricePast = transactionStatisticsService.getBottomPricePast(transactionCurrency.getCurrencyId());
         if (bottomPricePast == null) {
-            responseJson.put("code", 5);
-            responseJson.put("message", "查询失败");
-            return responseJson;
+            bottomPricePast = new TransactionBottomPriceDTO();
+            bottomPricePast.setCurrencyId(transactionCurrency.getCurrencyId());
+            bottomPricePast.setTotalNumber(0);
+            bottomPricePast.setTotalPrice(0);
         }
 
         //总价:(历史当日总价 * 历史当日系数 + 当日总价*当日总系数)
@@ -117,9 +127,12 @@ public class GetCurrentPriceAndBottomPriceController {
         double totalNumber = BigDecimalUtil.add(bottomPricePast.getTotalNumber(), bottomPriceToday.getTotalNumber());
 
         //保底价 = (历史当日总价 * 历史当日系数 + 当日总价*当日总系数)/(历史成交总数量 + 当日成交总数量)
+        double bottomPrice = 0;
         String bottomPriceStr = BigDecimalUtil.div(totalPrice, totalNumber, 8);
-        double bottomPrice = Double.parseDouble(bottomPriceStr);
-        bottomPrice = NumberUtil.doubleFormat(bottomPrice, 4);
+        if (StringUtil.isNotNull(bottomPriceStr)) {
+            bottomPrice = Double.parseDouble(bottomPriceStr);
+            bottomPrice = NumberUtil.doubleFormat(bottomPrice, 4);
+        }
 
         //当前价
         double currentPrice = transactionDealRedisService.

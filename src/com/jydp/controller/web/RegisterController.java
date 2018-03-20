@@ -132,7 +132,7 @@ public class RegisterController {
             return responseJson;
         }
 
-        responseJson = systemValidatePhoneService.validatePhone(phoneNumber, validateCode);
+        responseJson = systemValidatePhoneService.validatePhone(phoneAreaCode+phoneNumber, validateCode);
         if (responseJson.getCode() != 1) {
             return responseJson;
         }

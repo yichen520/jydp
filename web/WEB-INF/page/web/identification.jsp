@@ -117,6 +117,7 @@
     var addBoo = false;
     function add() {
         if(addBoo){
+            openTips("图片上传中......");
             return false;
         }else{
             addBoo = true;

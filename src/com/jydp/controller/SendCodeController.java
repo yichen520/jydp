@@ -6,6 +6,7 @@ import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.other.SendMessage;
 import com.jydp.service.ISystemValidatePhoneService;
+import config.PhoneAreaConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -51,7 +52,14 @@ public class SendCodeController {
 		
 		JsonObjectBO addValidatePhone = validatePhoneService.addValidatePhone(phoneNumber, messageCode, ipAddress);
 		if(addValidatePhone.getCode() == 1){
-			boolean sendBoo = SendMessage.send(phoneNumber, SendMessage.getMessageCodeContent(messageCode, 1));
+            boolean sendBoo = false;
+
+			if (phoneNumber.substring(0, 3).equals(PhoneAreaConfig.PHONE_AREA_CHINA)) {
+				sendBoo = SendMessage.send(phoneNumber, SendMessage.getMessageCodeContent(messageCode, 1));
+			} else {
+				sendBoo = SendMessage.send(phoneNumber, SendMessage.getEnMessageCodeContent(messageCode, 1));
+			}
+
 			if(sendBoo == false){
 				resultJson.put("code", 5);
 				resultJson.put("message", "短信验证码发送失败！");
