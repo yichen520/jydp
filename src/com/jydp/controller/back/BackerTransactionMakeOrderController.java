@@ -263,6 +263,12 @@ public class BackerTransactionMakeOrderController {
             }
 
             double currencyNumber = Double.parseDouble(StringUtil.stringNullHandle(twoArr[2]));
+            if (currencyNumber * 10000 % 1 > 0){
+                response.setCode(5);
+                response.setMessage("数量最多四位小数");
+                return response;
+            }
+
             if (execTimeL < 0 || currencyPrice < 0 || currencyNumber < 0) {
                 response.setCode(5);
                 response.setMessage("执行命令内容错误");
