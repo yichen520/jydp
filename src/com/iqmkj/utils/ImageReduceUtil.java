@@ -134,11 +134,11 @@ public class ImageReduceUtil {
             inputStream.close();
         } catch (IOException e) {
             LogUtil.printErrorLog(e);
+        } finally {
+            //删除本地缓存文件
             FileWriteLocalUtil.deleteFileRealPath(url.toString());
         }
 
-        //删除本地缓存文件
-        FileWriteLocalUtil.deleteFileRealPath(url.toString());
         return remoteImageUrl;
     }
 }
