@@ -118,13 +118,14 @@ public class UserFeedbackDaoImpl implements IUserFeedbackDao {
 
     /**
      * 查询意见反馈总数 (web端)
+     * @param userId 用户id
      * @return 查询成功:返回意见反馈总数, 查询失败:返回0
      */
-    public int countUserFeedbackForUser() {
+    public int countUserFeedbackForUser(int userId) {
         int result = 0;
 
         try {
-            result = sqlSessionTemplate.selectOne("UserFeedback_countUserFeedbackForUser");
+            result = sqlSessionTemplate.selectOne("UserFeedback_countUserFeedbackForUser", userId);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
@@ -134,14 +135,16 @@ public class UserFeedbackDaoImpl implements IUserFeedbackDao {
 
     /**
      * 分页查询意见反馈 (web端)
+     * @param userId 用户id
      * @param pageNumber 当前页数
      * @param pageSize 每页大小
      * @return 查询成功:返回当前页的意见反馈列表, 查询失败:返回null
      */
-    public List<UserFeedbackDO> listUserFeedbackForUser(int pageNumber, int pageSize) {
+    public List<UserFeedbackDO> listUserFeedbackForUser(int userId, int pageNumber, int pageSize) {
         List<UserFeedbackDO> resultList = null;
 
         Map<String, Object> map = new HashedMap<String, Object>();
+        map.put("userId", userId);
         map.put("startNumber", pageNumber * pageSize);
         map.put("pageSize", pageSize);
 

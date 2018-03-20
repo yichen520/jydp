@@ -78,20 +78,26 @@ body{
     height: 370px;
 }
 .wrapper{
-    position: relative;
     width:765px;
     height:370px;
     margin:0 auto
 }
 .wrapper ul{
-    position: absolute;
-    top: 9px;
+    display: none;
+    padding: 10px;
+    width: 745px;
     height: 25px;
     background: #303031;
-    left:10px;
-    z-index: 99;
     font-size: 12px;
     color: #fff
+}
+.highcharts-point-up {
+    fill: #fd6a64;
+    stroke: #fd6a64;
+}
+.highcharts-point-down {
+    fill: #1ebd97;
+    stroke: #1ebd97;
 }
 .wrapper ul li{
     padding: 0 5px;
@@ -103,7 +109,7 @@ body{
     margin-left: 4px;
     border-radius: 5px;
 }
-.chose{
+.choose{
     background: #000000;
 }
 .promt{
@@ -540,7 +546,4 @@ body{
 .password_pop .popName{
     height: 35px;
     line-height: 35px;
-}
-.choose{
-    margin-right: 5px;
 }
