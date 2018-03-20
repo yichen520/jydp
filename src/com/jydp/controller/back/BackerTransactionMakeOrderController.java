@@ -256,6 +256,12 @@ public class BackerTransactionMakeOrderController {
             long execTimeL = hour + minu;
 
             double currencyPrice = Double.parseDouble(StringUtil.stringNullHandle(twoArr[1]));
+            if (currencyPrice * 100 % 1 > 0){
+                response.setCode(5);
+                response.setMessage("单价最多两位小数");
+                return response;
+            }
+
             double currencyNumber = Double.parseDouble(StringUtil.stringNullHandle(twoArr[2]));
             if (execTimeL < 0 || currencyPrice < 0 || currencyNumber < 0) {
                 response.setCode(5);
