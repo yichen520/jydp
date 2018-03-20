@@ -1,6 +1,8 @@
 package com.jydp.service;
 
 
+import java.sql.Timestamp;
+
 /**
  * 从数据库拉取 成交记录 到redis
  * @author fk
@@ -22,4 +24,7 @@ public interface ITransactionRedisDealCommonService {
 
     /** 刷新交易指导价(昨日收盘价) */
     void gruidPriceForYesterdayPrice();
+
+    /** 每日交易统计 */
+    boolean statistics();
 }

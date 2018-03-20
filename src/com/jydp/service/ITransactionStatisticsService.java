@@ -43,4 +43,17 @@ public interface ITransactionStatisticsService {
      */
     List<TransactionStatisticsDO> listTransactionStatisticsForBack(int currencyId, Timestamp startTime,
                                                                    Timestamp endTime, int pageNumber, int pageSize);
+
+    /**
+     * 批量新增交易统计
+     * @param transactionStatisticsDOS  交易统计集合
+     * @return  操作成功：返回true，操作失败：返回false
+     */
+    boolean insertTransactionStatisticsList(List<TransactionStatisticsDO> transactionStatisticsDOS);
+
+    /**
+     * 获取最后一条添加的时间
+     * @return  操作成功：返回添加的时间，操作失败：返回null
+     */
+    Timestamp getLastAddTime();
 }

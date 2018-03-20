@@ -151,4 +151,20 @@ public class TransactionCurrencyCoefficientDaoImpl implements ITransactionCurren
         }
     }
 
+    /**
+     * 查询每个币种最近的系数
+     * @return  操作成功：返回币种系数集合，操作失败：返回null
+     */
+    public List<TransactionCurrencyCoefficientDO> listTransactionCurrencyCoefficientForNew(){
+        List<TransactionCurrencyCoefficientDO> resultList = null;
+
+        try {
+            resultList = sqlSessionTemplate.selectList("CurrencyCoefficient_listTransactionCurrencyCoefficientForNew");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return  resultList;
+    }
+
 }

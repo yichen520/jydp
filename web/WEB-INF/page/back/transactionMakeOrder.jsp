@@ -29,7 +29,7 @@
         </div>
 
         <div class="top">
-            <c:if test="${backer_rolePower['103002'] == 103002}">
+            <c:if test="${backer_rolePower['151002'] == 151002}">
                 <a href="<%=path %>/backerWeb/transactionMakeOrder/goAdd.htm" class="add">新增交易</a>
             </c:if>
 
@@ -107,11 +107,11 @@
                         <td class="ip">${item.ipAddress}</td>
                         <td class="time"><fmt:formatDate type="time" value="${item.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                         <td class="operate">
-                            <c:if test="${backer_rolePower['103004'] == 103004}">
+                            <c:if test="${backer_rolePower['151004'] == 151004}">
                                 <a href="<%=path %>/backerWeb/transactionMakeOrder/showDetail/${item.orderNo}"  class="details" target="_blank">查看详情</a>
                             </c:if>
                             <c:if test="${item.executeStatus != 2}">
-                                <c:if test="${backer_rolePower['103003'] == 103003}">
+                                <c:if test="${backer_rolePower['151003'] == 151003}">
                                     <input type="text" value="删&nbsp;除" class="delete" onfocus="this.blur()" onclick="goDel('${item.orderNo}')"/>
                                 </c:if>
                             </c:if>
