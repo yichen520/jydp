@@ -250,6 +250,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
 
         Map<Integer, Double> coefficMap = new HashMap<>();
         Map<Integer, String> currencyMap = new HashMap<>();
+        List<TransactionStatisticsDO> transactionStatisticsDOS = new ArrayList<>();
 
         Timestamp lastAddTime = transactionStatisticsService.getLastAddTime();
         String day = null;
@@ -263,8 +264,78 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                 dayNum += 1;
             }
             if (dayNum > 1){
-                date = DateUtil.longToTimestamp(dateLon - dayNum * 24 * 60 * 60 * 1000L);
+                Timestamp tempDate = null;
+                for (int i = 1;i <= dayNum; i++){
+
+                    if (i == 1) {
+                        tempDate = DateUtil.longToTimestamp(dateLon);
+                    }
+
+                    date = DateUtil.longToTimestamp(dateLon - i * 24 * 60 * 60 * 1000L);
+
+                    //获取所有币种信息
+                    List<TransactionCurrencyDO> transactionCurrencyDOS = transactionCurrencyService.listTransactionCurrencyAll();
+                    if (transactionCurrencyDOS != null && !transactionCurrencyDOS.isEmpty()) {
+                        for (TransactionCurrencyDO curr: transactionCurrencyDOS) {
+                            currencyMap.put(curr.getCurrencyId(), curr.getCurrencyName());
+                        }
+                    }
+                    //获取所有币种最后的系数
+                    List<TransactionCurrencyCoefficientDO> transactionCurrencyCoefficientDOS = transactionCurrencyCoefficientService.listTransactionCurrencyCoefficientForNew();
+                    if (transactionCurrencyCoefficientDOS != null && !transactionCurrencyCoefficientDOS.isEmpty()) {
+                        for (TransactionCurrencyCoefficientDO coeffic: transactionCurrencyCoefficientDOS) {
+                            coefficMap.put(coeffic.getCurrencyId(), coeffic.getCurrencyCoefficient());
+                        }
+                    }
+
+                    List<TransactionBottomPriceDTO> transactionBottomPriceS = transactionDealRedisService.listStatistics(SystemCommonConfig.TRANSACTION_MAKE_ORDER, date, tempDate);
+                    if (transactionBottomPriceS != null && !transactionBottomPriceS.isEmpty()) {
+                        for (TransactionBottomPriceDTO bottom: transactionBottomPriceS) {
+                            TransactionStatisticsDO transactionStatistics = new TransactionStatisticsDO();
+
+                            String ordernNo = SystemCommonConfig.TRANSACTION_STATISTICS +
+                                    DateUtil.longToTimeStr(date.getTime(), DateUtil.dateFormat10) +
+                                    NumberUtil.createNumberStr(10);
+
+                            transactionStatistics.setOrderNo(ordernNo);
+                            transactionStatistics.setCurrencyId(bottom.getCurrencyId());
+                            transactionStatistics.setCurrencyName(currencyMap.get(bottom.getCurrencyId()));
+                            transactionStatistics.setTransactionTotalNumber(bottom.getTotalNumber());
+                            transactionStatistics.setTransactionTotalPrice(bottom.getTotalPrice());
+                            if (coefficMap.containsKey(bottom.getCurrencyId())) {
+                                transactionStatistics.setCurrencyCoefficient(coefficMap.get(bottom.getCurrencyId()));
+                            } else {
+                                transactionStatistics.setCurrencyCoefficient(0);
+                            }
+                            transactionStatistics.setAddTime(DateUtil.getCurrentTime());
+                            transactionStatisticsDOS.add(transactionStatistics);
+                        }
+                    } else if(transactionCurrencyDOS != null && !transactionCurrencyDOS.isEmpty()){
+                        for (TransactionCurrencyDO curr: transactionCurrencyDOS) {
+                            TransactionStatisticsDO transactionStatistics = new TransactionStatisticsDO();
+
+                            String ordernNo = SystemCommonConfig.TRANSACTION_STATISTICS +
+                                    DateUtil.longToTimeStr(date.getTime(), DateUtil.dateFormat10) +
+                                    NumberUtil.createNumberStr(10);
+
+                            transactionStatistics.setOrderNo(ordernNo);
+                            transactionStatistics.setCurrencyId(curr.getCurrencyId());
+                            transactionStatistics.setCurrencyName(curr.getCurrencyName());
+                            transactionStatistics.setTransactionTotalNumber(0);
+                            transactionStatistics.setTransactionTotalPrice(0);
+                            transactionStatistics.setCurrencyCoefficient(0);
+                            transactionStatistics.setAddTime(DateUtil.getCurrentTime());
+                            transactionStatisticsDOS.add(transactionStatistics);
+                        }
+                    }
+                    tempDate = date;
+                }
+
+                return transactionStatisticsService.insertTransactionStatisticsList(transactionStatisticsDOS);
             }
+
+
+
         } else if (day != null && StringUtil.isNotNull(day) && Double.parseDouble(day) < 0) {
             return false;
         }
@@ -284,7 +355,6 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
             }
         }
 
-        List<TransactionStatisticsDO> transactionStatisticsDOS = new ArrayList<>();
         List<TransactionBottomPriceDTO> transactionBottomPriceS = transactionDealRedisService.listStatistics(SystemCommonConfig.TRANSACTION_MAKE_ORDER, date, DateUtil.longToTimestamp(dateLon));
         if (transactionBottomPriceS != null && !transactionBottomPriceS.isEmpty()) {
             for (TransactionBottomPriceDTO bottom: transactionBottomPriceS) {
