@@ -307,7 +307,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                             } else {
                                 transactionStatistics.setCurrencyCoefficient(0);
                             }
-                            transactionStatistics.setAddTime(DateUtil.getCurrentTime());
+                            transactionStatistics.setAddTime(tempDate);
                             transactionStatisticsDOS.add(transactionStatistics);
                         }
                     } else if(transactionCurrencyDOS != null && !transactionCurrencyDOS.isEmpty()){
@@ -324,7 +324,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                             transactionStatistics.setTransactionTotalNumber(0);
                             transactionStatistics.setTransactionTotalPrice(0);
                             transactionStatistics.setCurrencyCoefficient(0);
-                            transactionStatistics.setAddTime(DateUtil.getCurrentTime());
+                            transactionStatistics.setAddTime(tempDate);
                             transactionStatisticsDOS.add(transactionStatistics);
                         }
                     }
