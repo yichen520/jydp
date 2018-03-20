@@ -67,16 +67,16 @@
 
     <div class="left">
         <div class="wrapper">
-            <div id="chart" class="chart"></div>
             <ul>
-                <li  class="chose" style="width:38px;margin:0" onclick="gainGraphData('5m')">5分钟</li>
-                <li onclick="gainGraphData('15m')">15分钟</li>
-                <li onclick="gainGraphData('30m')">30分钟</li>
-                <li onclick="gainGraphData('1h')">1小时</li>
-                <li onclick="gainGraphData('4h')">4小时</li>
-                <li onclick="gainGraphData('1d')">1天</li>
-                <li onclick="gainGraphData('1w')">1周</li>
+                <li class="chose">5分钟</li>
+                <li>15分钟</li>
+                <li>30分钟</li>
+                <li>1小时</li>
+                <li>4小时</li>
+                <li>1天</li>
+                <li>1周</li>
             </ul>
+            <div id="chart" class="chart"></div>
         </div>
 
         <p class="promt">
@@ -976,6 +976,14 @@
                 }
                 // 使用框架
                 $('#chart').highcharts('StockChart', {
+                    chart: {
+                        events: {
+                            // 第一次加载的时候触发事件
+                            load: function () {
+                                $('.wrapper ul').css('display','block');
+                            }
+                        }
+                    },
                     exporting:{
                         enabled:false //用来设置是否显示‘打印’,'导出'等功能按钮，不设置时默认为显示
                     },
@@ -992,48 +1000,26 @@
                     },
                     tooltip: {
                         split: false,
-                        shared: true
+                        xDateFormat: '%A %Y-%m-%d',  //  显示星期
+                        shared: true,
+                        valueDecimals: 4 // 小数点后几位
                     },
                     xAxis: {
-
+                        crosshair: {
+                            width: 1,
+                            color: '#cccccc'
+                        }
                     },
                     rangeSelector : {
-                        buttons : [{
-                            type : 'minute',
-                            count : 5,
-                            text : '5分钟'
-                        }, {
-                            type : 'minute',
-                            count : 30,
-                            text : '30分钟'
-                        },
-                            {
-                                type : 'hour',
-                                count : 1,
-                                text : '1小时'
-                            },{
-                                type : 'hour',
-                                count : 4,
-                                text : '4小时'
-                            },
-                            {
-                                type : 'week',
-                                count : 1,
-                                text : '1周'
-                            },
-                            {
-                                type : 'all',
-                                count : 1,
-                                text : 'all'
-                            }],
-                        selected : 5,
-                        inputEnabled :
-                            false
-
+                        enabled: false
                     },
                     yAxis: [{
                         allowDecimals: 'false',
-                        min: 0,
+                        crosshair: {
+                            width: 1,
+                            color: '#cccccc'
+                        },
+                        floor: 0,  //  最低数据大于0，
                         labels: {
                             format: '{value}',
 
@@ -1041,6 +1027,7 @@
                         title: {
                             text: '价格'
                         },
+                        opposite: false,
                         height: '80%',
                         resize: {
                             enabled: true
@@ -1054,6 +1041,7 @@
                         resize: {
                             enabled: true
                         },
+                        opposite: false,
                         title: {
                             text: '成交量'
                         },
@@ -1075,7 +1063,7 @@
                             dataGrouping: {
                                 units: groupingUnits
                             },
-                            yAxis: 0,
+                            yAxis: 0
 
                         },
                         {
@@ -1086,6 +1074,7 @@
                             dataGrouping: {
                                 units: groupingUnits
                             },
+                            color: "#68a8ee",
                             tooltip: {
 
                             },
@@ -1102,21 +1091,18 @@
     };
 
     $(function () {
-        Highcharts.setOptions({global: {useUTC: false}});
+        // gainGraphData()的映射
+        function gainMatch(i) {
+            var gainHash = ['5m','15m','30m','1h','4h','1d','1w'];
+            gainGraphData(gainHash[i], 7);
+        };
+
+        $(".wrapper ul").on('click','li',function() {
+            $('.choose').removeClass('choose');
+            $(this).addClass('choose');
+            gainMatch($(this).index());
+        });
     });
-
-    $(function () {
-        changeClass();
-        function changeClass() {
-            $(".wrapper li").click(function() {
-
-                $(this).siblings('li').removeClass('chose');
-
-                $(this).addClass('chose');
-
-            });
-        }
-    })
 
     var start = 5;
     var step = -1;
