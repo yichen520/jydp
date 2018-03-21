@@ -60,7 +60,10 @@ public class TransactionPendOrderCommonServiceImpl implements ITransactionPendOr
             Timestamp curTime = DateUtil.getCurrentTime();
             List<TransactionDealRedisDO> transactionDealBuyRedisList =
                     transactionDealRedisService.listTransactionDealForPending(2, currencyId, curTime,15);
-            transactionDealBuyRedisList.removeAll(Collections.singleton(null)); //移除所有的null元素
+            if(transactionDealBuyRedisList.size() > 0 && transactionDealBuyRedisList != null){
+                //移除所有的null元素
+                transactionDealBuyRedisList.removeAll(Collections.singleton(null));
+            }
 
             //组装数据
             if(transactionDealBuyRedisList.size() > 0 && transactionDealBuyRedisList != null){
@@ -115,7 +118,10 @@ public class TransactionPendOrderCommonServiceImpl implements ITransactionPendOr
             //未来做单
             List<TransactionDealRedisDO> transactionDealRedisSellList =
                     transactionDealRedisService.listTransactionDealForPending(1, currencyId, curTime,15);
-            transactionDealRedisSellList.removeAll(Collections.singleton(null)); //移除所有的null元素
+            if(transactionDealRedisSellList.size() > 0 && transactionDealRedisSellList != null){
+                //移除所有的null元素
+                transactionDealRedisSellList.removeAll(Collections.singleton(null));
+            }
 
             //组装数据
             if(transactionDealRedisSellList.size() > 0 && transactionDealRedisSellList != null){
