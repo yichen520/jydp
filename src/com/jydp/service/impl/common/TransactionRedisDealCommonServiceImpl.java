@@ -334,8 +334,6 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                 return transactionStatisticsService.insertTransactionStatisticsList(transactionStatisticsDOS);
             }
 
-
-
         } else if (day != null && StringUtil.isNotNull(day) && Double.parseDouble(day) < 0) {
             return false;
         }
@@ -374,6 +372,23 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                 } else {
                     transactionStatistics.setCurrencyCoefficient(0);
                 }
+                transactionStatistics.setAddTime(DateUtil.getCurrentTime());
+                transactionStatisticsDOS.add(transactionStatistics);
+            }
+        } else if(transactionCurrencyDOS != null && !transactionCurrencyDOS.isEmpty()){
+            for (TransactionCurrencyDO curr: transactionCurrencyDOS) {
+                TransactionStatisticsDO transactionStatistics = new TransactionStatisticsDO();
+
+                String ordernNo = SystemCommonConfig.TRANSACTION_STATISTICS +
+                        DateUtil.longToTimeStr(date.getTime(), DateUtil.dateFormat10) +
+                        NumberUtil.createNumberStr(10);
+
+                transactionStatistics.setOrderNo(ordernNo);
+                transactionStatistics.setCurrencyId(curr.getCurrencyId());
+                transactionStatistics.setCurrencyName(curr.getCurrencyName());
+                transactionStatistics.setTransactionTotalNumber(0);
+                transactionStatistics.setTransactionTotalPrice(0);
+                transactionStatistics.setCurrencyCoefficient(0);
                 transactionStatistics.setAddTime(DateUtil.getCurrentTime());
                 transactionStatisticsDOS.add(transactionStatistics);
             }
