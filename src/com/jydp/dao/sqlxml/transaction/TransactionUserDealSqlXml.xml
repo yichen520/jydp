@@ -10,7 +10,7 @@
 				currencyNumber, feeNumber, currencyTotalPrice, remark, pendTime, addTime
 	  	FROM transaction_user_deal_tab
 	  	WHERE userId = #{userId}
-	  	ORDER BY addTime DESC
+	  	ORDER BY addTime DESC, orderNo
 		LIMIT #{startNumber}, #{pageSize}
 	</select>
 
@@ -103,7 +103,7 @@
 		currencyNumber, feeNumber, currencyTotalPrice, remark, pendTime, addTime
 		FROM transaction_user_deal_tab
 		WHERE pendingOrderNo = #{pendNo}
-		ORDER BY addTime DESC
+		ORDER BY addTime DESC,orderNo
 		LIMIT #{startNumber}, #{pageSize}
 	</select>
 </mapper>

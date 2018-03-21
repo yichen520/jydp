@@ -51,17 +51,19 @@ public interface IUserFeedbackService {
 
     /**
      * 查询意见反馈总数 (web端)
+     * @param userId 用户id
      * @return 查询成功:返回意见反馈总数, 查询失败:返回0
      */
-    int countUserFeedbackForUser();
+    int countUserFeedbackForUser(int userId);
 
     /**
      * 分页查询意见反馈 (web端)
+     * @param userId 用户id
      * @param pageNumber 当前页数
      * @param pageSize 每页大小
      * @return 查询成功:返回当前页的意见反馈列表, 查询失败:返回null
      */
-    List<UserFeedbackDO> listUserFeedbackForUser(int pageNumber, int pageSize);
+    List<UserFeedbackDO> listUserFeedbackForUser(int userId, int pageNumber, int pageSize);
 
     /**
      * 新增意见反馈
