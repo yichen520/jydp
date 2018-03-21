@@ -932,4 +932,16 @@ public class UserServiceImpl implements IUserService {
         return userDao.updateUserPayPasswordStatus(userId, payPasswordStatus);
     }
 
+    /**
+     * 验证用户账号和手机号是否匹配
+     * @param userAccount 用户账号
+     * @param phoneAreaCode 区域号
+     * @param phoneNumber 手机号
+     * @return 查询成功：返回用户信息，查询失败：返回null
+     */
+    @Override
+    public UserDO validateUserPhoneNumber(String userAccount, String phoneAreaCode, String phoneNumber) {
+        return userDao.validateUserPhoneNumber(userAccount,phoneAreaCode,phoneNumber);
+    }
+
 }

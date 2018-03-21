@@ -207,4 +207,13 @@
 		WHERE userId = #{userId}
 	</update>
 
+	<select id="User_validateUserPhoneNumber" parameterType="java.util.Map" resultType="UserDO">
+		SELECT userId, userAccount, phoneAreaCode, phoneNumber, userBalance,
+			userBalanceLock, accountStatus, addTime
+		FROM user_tab
+		WHERE userAccount = #{userAccount}
+		AND phoneAreaCode = #{phoneAreaCode}
+		AND phoneNumber = #{phoneNumber}
+	</select>
+
 </mapper>

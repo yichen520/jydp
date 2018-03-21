@@ -73,8 +73,8 @@ public class ForgetController {
             return responseJson;
         }
 
-        UserDO user = userService.getUserByPhone(phoneNumber);
-        if (user == null || !(phoneAreaCode.equals(user.getPhoneAreaCode()) && userAccount.equals(user.getUserAccount()))) {
+        UserDO user = userService.validateUserPhoneNumber(userAccount,phoneAreaCode,phoneNumber);
+        if (user == null) {
             responseJson.setCode(2);
             responseJson.setMessage("手机号与用户所绑手机号不匹配");
             return responseJson;
