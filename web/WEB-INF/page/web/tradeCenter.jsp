@@ -68,7 +68,7 @@
     <div class="left">
         <div class="wrapper">
             <ul>
-                <li class="chose">5分钟</li>
+                <li class="choose">5分钟</li>
                 <li>15分钟</li>
                 <li>30分钟</li>
                 <li>1小时</li>
