@@ -228,6 +228,26 @@ public class TradeCenterController {
             return resultJson;
         }
 
+        //获取用户币信息
+        UserCurrencyNumDO userCurrencyNum = userCurrencyNumService.getUserCurrencyNumByUserIdAndCurrencyId(user.getUserId(),
+                currencyId);
+        Boolean insertBoo = true;
+        if(userCurrencyNum == null){
+            UserCurrencyNumDO userCurrencyNumDO = new UserCurrencyNumDO();
+            userCurrencyNumDO.setUserId(user.getUserId());
+            userCurrencyNumDO.setCurrencyId(currencyId);
+            userCurrencyNumDO.setCurrencyNumber(0);
+            userCurrencyNumDO.setCurrencyNumberLock(0);
+            userCurrencyNumDO.setAddTime(DateUtil.getCurrentTime());
+
+            insertBoo = userCurrencyNumService.insertUserCurrencyNum(userCurrencyNumDO);
+        }
+        if(!insertBoo){
+            resultJson.setCode(3);
+            resultJson.setMessage("参数错误");
+            return resultJson;
+        }
+
         //判断交易时间限制
         boolean timeBoo = DateUtil.isTradeTime();
         if(timeBoo){
@@ -383,7 +403,18 @@ public class TradeCenterController {
         //获取用户币信息
         UserCurrencyNumDO userCurrencyNum = userCurrencyNumService.getUserCurrencyNumByUserIdAndCurrencyId(user.getUserId(),
                 currencyId);
+        Boolean insertBoo = true;
         if(userCurrencyNum == null){
+            UserCurrencyNumDO userCurrencyNumDO = new UserCurrencyNumDO();
+            userCurrencyNumDO.setUserId(user.getUserId());
+            userCurrencyNumDO.setCurrencyId(currencyId);
+            userCurrencyNumDO.setCurrencyNumber(0);
+            userCurrencyNumDO.setCurrencyNumberLock(0);
+            userCurrencyNumDO.setAddTime(DateUtil.getCurrentTime());
+
+            insertBoo = userCurrencyNumService.insertUserCurrencyNum(userCurrencyNumDO);
+        }
+        if(!insertBoo){
             resultJson.setCode(3);
             resultJson.setMessage("参数错误");
             return resultJson;

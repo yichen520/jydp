@@ -1,6 +1,5 @@
 package com.jydp.dao.impl.transaction;
 
-import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.ITransactionDealRedisDao;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
@@ -219,22 +218,24 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
     }
 
     /**
-     * 获取盛源交易所 当日成交总价，当日成交总数量
+     * 获取盛源交易所 日成交总价，日成交总数量
      * @param currencyId 币种Id
      * @param orderNoPrefix 批次号前缀
+     * @param startTime   开始时间
+     * @param endTime     结束时间
      * @return 操作成功：返回数据集合，操作失败:返回null
      */
-    public TransactionBottomPriceDTO getBottomPriceToday(int currencyId, String orderNoPrefix){
+    public TransactionBottomPriceDTO getBottomPrice(int currencyId, String orderNoPrefix,
+                                                    Timestamp startTime, Timestamp endTime) {
         Map<String,Object> map = new HashMap<>();
         map.put("currencyId", currencyId);
         map.put("orderNoPrefix", orderNoPrefix);
-        long lingchenLong = DateUtil.lingchenLong();
-        String todayData = DateUtil.longToTimeStr(lingchenLong, DateUtil.dateFormat2);
-        map.put("todayData", todayData);
+        map.put("startTime", startTime);
+        map.put("endTime", endTime);
 
         TransactionBottomPriceDTO result = null;
         try {
-            result = sqlSessionTemplate.selectOne("TransactionDealRedis_getBottomPriceToday", map);
+            result = sqlSessionTemplate.selectOne("TransactionDealRedis_getBottomPrice", map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }

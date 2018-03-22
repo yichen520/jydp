@@ -2,6 +2,7 @@ package com.jydp.controller.sljz;
 
 import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.BigDecimalUtil;
+import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.NumberUtil;
 import com.iqmkj.utils.SignatureUtil;
 import com.iqmkj.utils.StringUtil;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.TreeMap;
 
 /**
@@ -95,16 +97,18 @@ public class GetCurrentPriceAndBottomPriceController {
             return responseJson;
         }
 
-        //获取该币种最近的系数
-        double todayRatio = 0.8;
+        //获取该币种最近的系数,默认为0
+        double todayRatio = 0;
         TransactionCurrencyCoefficientDO currencyCoefficient = transactionCurrencyCoefficientService.getCurrencyCoefficientByCurrencyId(transactionCurrency.getCurrencyId());
         if (currencyCoefficient != null && currencyCoefficient.getCurrencyCoefficient() > 0) {
             todayRatio = currencyCoefficient.getCurrencyCoefficient();
         }
 
+        Timestamp lingchenTime = DateUtil.longToTimestamp(DateUtil.lingchenLong());
+        Timestamp currentTime = DateUtil.getCurrentTime();
         //查询当日成交总价，当日成交总数量
         TransactionBottomPriceDTO bottomPriceToday = transactionDealRedisService.
-                getBottomPriceToday(transactionCurrency.getCurrencyId(), SystemCommonConfig.TRANSACTION_MAKE_ORDER);
+                getBottomPrice(transactionCurrency.getCurrencyId(), SystemCommonConfig.TRANSACTION_MAKE_ORDER, lingchenTime, currentTime);
         if (bottomPriceToday == null) {
             bottomPriceToday = new TransactionBottomPriceDTO();
             bottomPriceToday.setCurrencyId(transactionCurrency.getCurrencyId());
@@ -119,6 +123,19 @@ public class GetCurrentPriceAndBottomPriceController {
             bottomPricePast.setCurrencyId(transactionCurrency.getCurrencyId());
             bottomPricePast.setTotalNumber(0);
             bottomPricePast.setTotalPrice(0);
+        }
+
+        //查询最后一条统计数据添加时间, 与当前时间相差大于22小时，统计昨日历史总价和总成交量
+        Timestamp lastAddTime = transactionStatisticsService.getLastAddTimeByCurrencyId(transactionCurrency.getCurrencyId());
+        if (lastAddTime != null && currentTime.getTime() - lastAddTime.getTime() > 1000 * 60 * 60 * 22) {
+            Timestamp lingchenYesterday = DateUtil.longToTimestamp(DateUtil.lingchenLong() - 1000 * 60 * 60 * 24);
+            TransactionBottomPriceDTO bottomPriceYesterday = transactionDealRedisService.
+                    getBottomPrice(transactionCurrency.getCurrencyId(), SystemCommonConfig.TRANSACTION_MAKE_ORDER, lingchenYesterday, lingchenTime);
+
+            double yesterdayPrice = BigDecimalUtil.add(bottomPricePast.getTotalPrice(), BigDecimalUtil.mul(bottomPriceYesterday.getTotalPrice(), todayRatio));
+            double yesterdayNumber = BigDecimalUtil.add(bottomPricePast.getTotalNumber(), bottomPriceYesterday.getTotalNumber());
+            bottomPricePast.setTotalPrice(yesterdayPrice);
+            bottomPricePast.setTotalNumber(yesterdayNumber);
         }
 
         //总价:(历史当日总价 * 历史当日系数 + 当日总价*当日总系数)

@@ -68,7 +68,7 @@
     <div class="left">
         <div class="wrapper">
             <ul>
-                <li class="chose">5分钟</li>
+                <li class="choose">5分钟</li>
                 <li>15分钟</li>
                 <li>30分钟</li>
                 <li>1小时</li>
@@ -1000,7 +1000,7 @@
                     },
                     tooltip: {
                         split: false,
-                        xDateFormat: '%A %Y-%m-%d',  //  显示星期
+                        xDateFormat: '%A %Y-%m-%d %H:%M:%S',  //  显示星期
                         shared: true,
                         valueDecimals: 4 // 小数点后几位
                     },
@@ -1028,7 +1028,7 @@
                             text: '价格'
                         },
                         opposite: false,
-                        height: '80%',
+                        height: '72%',
                         resize: {
                             enabled: true
                         },
@@ -1036,7 +1036,7 @@
                     }, {
                         labels: {
                             format: '{value}',
-
+                            enabled: false
                         },
                         resize: {
                             enabled: true
