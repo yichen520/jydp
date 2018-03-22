@@ -1028,7 +1028,7 @@
                             text: '价格'
                         },
                         opposite: false,
-                        height: '78%',
+                        height: '72%',
                         resize: {
                             enabled: true
                         },
