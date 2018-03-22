@@ -105,7 +105,6 @@ public class WapLoginController {
         userSessionBO.setUserAccount(user.getUserAccount());
         userSessionBO.setIsPwd(1);
         UserWapInterceptor.loginSuccess(request, userSessionBO);
-        System.out.println("success");
         return "redirect:/userWap/homePage/show";
     }
 
