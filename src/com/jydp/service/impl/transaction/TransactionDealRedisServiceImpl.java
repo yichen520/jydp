@@ -217,13 +217,16 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
     }
 
     /**
-     * 获取盛源交易所 当日成交总价，当日成交总数量
+     * 获取盛源交易所 日成交总价，日成交总数量
      * @param currencyId 币种Id
      * @param orderNoPrefix 批次号前缀
+     * @param startTime   开始时间
+     * @param endTime     结束时间
      * @return 操作成功：返回数据集合，操作失败:返回null
      */
-    public TransactionBottomPriceDTO getBottomPriceToday(int currencyId, String orderNoPrefix){
-        return transactionDealRedisDao.getBottomPriceToday(currencyId, orderNoPrefix);
+    public TransactionBottomPriceDTO getBottomPrice(int currencyId, String orderNoPrefix,
+                                                    Timestamp startTime, Timestamp endTime) {
+        return transactionDealRedisDao.getBottomPrice(currencyId, orderNoPrefix, startTime, endTime);
     }
 
     /**

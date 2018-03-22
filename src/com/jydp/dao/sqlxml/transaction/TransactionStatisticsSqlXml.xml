@@ -63,4 +63,12 @@
         ORDER BY addTime DESC
         LIMIT 1
     </select>
+
+    <select id="TransactionStatistics_getLastAddTimeByCurrencyId" resultType="java.sql.Timestamp" parameterType="int">
+        SELECT addTime
+        FROM transaction_statistics_tab
+        WHERE currencyId = #{currencyId}
+        ORDER BY addTime DESC
+        LIMIT 1
+    </select>
 </mapper>

@@ -54,4 +54,12 @@ public interface ITransactionStatisticsDao {
      * @return  操作成功：返回添加的时间，操作失败：返回null
      */
     Timestamp getLastAddTime();
+
+    /**
+     * 获取最后一条添加的时间
+     *
+     * @param currencyId 币种Id
+     * @return 操作成功：返回添加的时间，操作失败：返回null
+     */
+    Timestamp getLastAddTimeByCurrencyId(int currencyId);
 }

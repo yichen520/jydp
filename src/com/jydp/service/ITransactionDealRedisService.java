@@ -99,12 +99,15 @@ public interface ITransactionDealRedisService {
     boolean deleteDealByOrderNo(String orderNo);
 
     /**
-     * 获取盛源交易所 当日成交总价，当日成交总数量
+     * 获取盛源交易所 日成交总价，日成交总数量
      * @param currencyId 币种Id
      * @param orderNoPrefix 批次号前缀
-     * @return 操作成功：返回数据，操作失败:返回null
+     * @param startTime   开始时间
+     * @param endTime     结束时间
+     * @return 操作成功：返回数据集合，操作失败:返回null
      */
-    TransactionBottomPriceDTO getBottomPriceToday(int currencyId, String orderNoPrefix);
+    TransactionBottomPriceDTO getBottomPrice(int currencyId, String orderNoPrefix,
+                                             Timestamp startTime, Timestamp endTime);
 
     /**
      * 获取盛源交易所 当前价

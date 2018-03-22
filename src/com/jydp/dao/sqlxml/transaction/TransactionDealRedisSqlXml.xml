@@ -94,13 +94,14 @@
 		WHERE orderNo = #{orderNo}
 	</delete>
 
-	<select id="TransactionDealRedis_getBottomPriceToday" parameterType="java.util.Map" resultType="TransactionBottomPriceDTO">
+    <select id="TransactionDealRedis_getBottomPrice" parameterType="java.util.Map"
+            resultType="TransactionBottomPriceDTO">
 		SELECT SUM(transactionPrice * currencyNumber) AS totalPrice, SUM(currencyNumber) AS totalNumber, currencyId
 		FROM transaction_deal_redis_tab
 		WHERE currencyId = #{currencyId}
 		  AND orderNo LIKE CONCAT(#{orderNoPrefix}, '%')
-		  AND addTime <![CDATA[ <= ]]> NOW()
-		  AND addTime <![CDATA[ >= ]]>#{todayData}
+        AND addTime <![CDATA[ <= ]]> #{endTime}
+        AND addTime <![CDATA[ >= ]]> #{startTime}
 	</select>
 
 	<select id="TransactionDealRedis_getCurrentPrice" parameterType="java.util.Map" resultType="double">
