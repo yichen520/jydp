@@ -169,6 +169,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
             transactionPendOrder.setPendingNumber(pendingNumber);
             transactionPendOrder.setDealNumber(0);
             transactionPendOrder.setBuyFee(buyFee);
+            transactionPendOrder.setRestBalanceLock(tradePriceSum);
             transactionPendOrder.setPendingStatus(1);
             transactionPendOrder.setRemark("");
             transactionPendOrder.setFeeRemark(feeRemark);
@@ -339,8 +340,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
 
         if(paymentType == 1){ //如果是买入
             //计算撤销的美金数量
-            double balanceRevoke = NumberUtil.doubleUpFormat(BigDecimalUtil.mul(BigDecimalUtil.mul(num, transactionPendOrder.getPendingPrice()),
-                    BigDecimalUtil.add(1,transactionPendOrder.getBuyFee())),8);
+            double balanceRevoke = transactionPendOrder.getRestBalanceLock();
             //判断冻结金额是否大于等于balanceRevoke
             if(user.getUserBalanceLock() < balanceRevoke){
                 return false;
@@ -462,11 +462,12 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
      * 修改挂单状态为部分成交（仅用于匹配交易）
      * @param pendingOrderNo 记录号,业务类型（2）+日期（6）+随机位（10）
      * @param dealNumber 成交数量
+     * @param restBalanceLock 剩余冻结美金
      * @param endTime 完成时间
      * @return 操作成功：返回true，操作失败：返回false
      */
-    public boolean updatePartDeal(String pendingOrderNo, double dealNumber, Timestamp endTime){
-        return transactionPendOrderDao.updatePartDeal(pendingOrderNo, dealNumber, endTime);
+    public boolean updatePartDeal(String pendingOrderNo, double dealNumber, double restBalanceLock, Timestamp endTime){
+        return transactionPendOrderDao.updatePartDeal(pendingOrderNo, dealNumber, restBalanceLock, endTime);
     }
 
     /**
