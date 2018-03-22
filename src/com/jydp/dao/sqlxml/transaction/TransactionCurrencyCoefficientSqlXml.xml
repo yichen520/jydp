@@ -70,12 +70,13 @@
         WHERE orderNo = #{orderNo}
     </delete>
 
-    <select id="CurrencyCoefficient_listTransactionCurrencyCoefficientForNew" resultType="TransactionCurrencyCoefficientDO">
+    <select id="CurrencyCoefficient_listTransactionCurrencyCoefficientForNew" parameterType="java.sql.Timestamp" resultType="TransactionCurrencyCoefficientDO">
         SELECT orderNo, currencyId, currencyName, currencyCoefficient,
             backerAccount, ipAddress, addTime
         FROM (SELECT orderNo, currencyId, currencyName, currencyCoefficient,
                   backerAccount, ipAddress, addTime
               FROM transaction_currency_coefficient_tab
+              WHERE addTime <![CDATA[ <= ]]> #{date}
               ORDER BY addTime DESC) staTab
         GROUP BY currencyId
     </select>

@@ -100,9 +100,10 @@ public class TransactionCurrencyCoefficientServiceImpl implements ITransactionCu
 
     /**
      * 查询每个币种最近的系数
+     * @param date  起始时间  非null则这个时间点之前最近的一条
      * @return  操作成功：返回币种系数集合，操作失败：返回null
      */
-    public List<TransactionCurrencyCoefficientDO> listTransactionCurrencyCoefficientForNew(){
-        return transactionCurrencyCoefficientDao.listTransactionCurrencyCoefficientForNew();
+    public List<TransactionCurrencyCoefficientDO> listTransactionCurrencyCoefficientForNew(Timestamp date){
+        return transactionCurrencyCoefficientDao.listTransactionCurrencyCoefficientForNew(date);
     }
 }
