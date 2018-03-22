@@ -181,7 +181,7 @@ public class TradeServiceImpl implements ITradeService {
             }
             if(excuteSuccess){
                 double restBalanceLock = 0;
-                if(matchOrder.getPaymentType() == 1){
+                if(order.getPaymentType() == 1){
                     restBalanceLock = buyPrice;
                 }
                 excuteSuccess = transactionPendOrderService.updatePartDeal(order.getPendingOrderNo(), tradeNum, restBalanceLock, curTime);
