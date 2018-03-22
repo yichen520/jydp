@@ -62,6 +62,9 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
         }
         for (TransactionCurrencyDO currency: currencyList) {
             List<TransactionDealRedisDO> dealList = transactionDealRedisService.listTransactionDealRedis(50, currency.getCurrencyId());
+            if (dealList != null && !dealList.isEmpty()) {
+                redisService.addValue(RedisKeyConfig.NOW_PRICE + currency.getCurrencyId(), dealList.get(0).getTransactionPrice());
+            }
             redisService.addValue(RedisKeyConfig.CURRENCY_DEAL_KEY + currency.getCurrencyId(), dealList);
         }
     }
