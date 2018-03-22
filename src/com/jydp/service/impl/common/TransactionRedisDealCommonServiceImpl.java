@@ -280,7 +280,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                         }
                     }
                     //获取所有币种最后的系数
-                    List<TransactionCurrencyCoefficientDO> transactionCurrencyCoefficientDOS = transactionCurrencyCoefficientService.listTransactionCurrencyCoefficientForNew();
+                    List<TransactionCurrencyCoefficientDO> transactionCurrencyCoefficientDOS = transactionCurrencyCoefficientService.listTransactionCurrencyCoefficientForNew(tempDate);
                     if (transactionCurrencyCoefficientDOS != null && !transactionCurrencyCoefficientDOS.isEmpty()) {
                         for (TransactionCurrencyCoefficientDO coeffic: transactionCurrencyCoefficientDOS) {
                             coefficMap.put(coeffic.getCurrencyId(), coeffic.getCurrencyCoefficient());
@@ -345,7 +345,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
             }
         }
         //获取所有币种最后的系数
-        List<TransactionCurrencyCoefficientDO> transactionCurrencyCoefficientDOS = transactionCurrencyCoefficientService.listTransactionCurrencyCoefficientForNew();
+        List<TransactionCurrencyCoefficientDO> transactionCurrencyCoefficientDOS = transactionCurrencyCoefficientService.listTransactionCurrencyCoefficientForNew(DateUtil.longToTimestamp(dateLon));
         if (transactionCurrencyCoefficientDOS != null && !transactionCurrencyCoefficientDOS.isEmpty()) {
             for (TransactionCurrencyCoefficientDO coeffic: transactionCurrencyCoefficientDOS) {
                 coefficMap.put(coeffic.getCurrencyId(), coeffic.getCurrencyCoefficient());
@@ -371,7 +371,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                 } else {
                     transactionStatistics.setCurrencyCoefficient(0);
                 }
-                transactionStatistics.setAddTime(DateUtil.getCurrentTime());
+                transactionStatistics.setAddTime(DateUtil.longToTimestamp(dateLon));
                 transactionStatisticsDOS.add(transactionStatistics);
             }
         } else if(transactionCurrencyDOS != null && !transactionCurrencyDOS.isEmpty()){
@@ -388,7 +388,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                 transactionStatistics.setTransactionTotalNumber(0);
                 transactionStatistics.setTransactionTotalPrice(0);
                 transactionStatistics.setCurrencyCoefficient(0);
-                transactionStatistics.setAddTime(DateUtil.getCurrentTime());
+                transactionStatistics.setAddTime(DateUtil.longToTimestamp(dateLon));
                 transactionStatisticsDOS.add(transactionStatistics);
             }
         }

@@ -114,15 +114,19 @@ public class TransactionCurrencyCoefficientDaoImpl implements ITransactionCurren
     }
 
     /**
-     * 根据币种Id查询最新的币种系数
+     * 根据币种Id查询之前最新的币种系数
      * @param currencyId  币种Id
+     * @param date 要查询的时间
      * @return  操作成功：返回币种系数，操作失败：返回null
      */
-    public TransactionCurrencyCoefficientDO getCurrencyCoefficientByCurrencyId(int currencyId){
-        TransactionCurrencyCoefficientDO transactionCurrencyCoefficient = null;
+    public TransactionCurrencyCoefficientDO getCurrencyCoefficientByCurrencyId(int currencyId, Timestamp date) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("currencyId", currencyId);
+        map.put("date", date);
 
+        TransactionCurrencyCoefficientDO transactionCurrencyCoefficient = null;
         try {
-            transactionCurrencyCoefficient = sqlSessionTemplate.selectOne("CurrencyCoefficient_getCurrencyCoefficientByCurrencyId", currencyId);
+            transactionCurrencyCoefficient = sqlSessionTemplate.selectOne("CurrencyCoefficient_getCurrencyCoefficientByCurrencyId", map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
@@ -153,13 +157,14 @@ public class TransactionCurrencyCoefficientDaoImpl implements ITransactionCurren
 
     /**
      * 查询每个币种最近的系数
+     * @param date  起始时间  非null则这个时间点之前最近的一条
      * @return  操作成功：返回币种系数集合，操作失败：返回null
      */
-    public List<TransactionCurrencyCoefficientDO> listTransactionCurrencyCoefficientForNew(){
+    public List<TransactionCurrencyCoefficientDO> listTransactionCurrencyCoefficientForNew(Timestamp date){
         List<TransactionCurrencyCoefficientDO> resultList = null;
 
         try {
-            resultList = sqlSessionTemplate.selectList("CurrencyCoefficient_listTransactionCurrencyCoefficientForNew");
+            resultList = sqlSessionTemplate.selectList("CurrencyCoefficient_listTransactionCurrencyCoefficientForNew", date);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }

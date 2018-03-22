@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC
+		"-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jydp.dao.impl.syl.SylUserAmountRecordChainDaoImpl">
+
+	<insert id="SylUserAmountRecordChain_insertSylUserAmountRecordChain" parameterType="SylUserAmountRecordChainDO">
+		INSERT INTO syl_user_bound_tab
+		(recordNo, userAccount, userSylAccount, chainAddress, chainAddressName, shengyuanCoin, tranRatio, handleMark, addTime)
+		VALUES
+		(#{recordNo}, #{userAccount}, #{userSylAccount}, #{chainAddress}, #{chainAddressName}, #{shengyuanCoin}, #{tranRatio}, #{handleMark}, #{addTime})
+	</insert>
+
+</mapper>
