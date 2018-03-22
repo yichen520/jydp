@@ -1,5 +1,6 @@
 package com.jydp.dao.impl.transaction;
 
+import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.ITransactionDealRedisDao;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
@@ -328,4 +329,28 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
 
         return  resultList;
     }
+
+    /**
+     * 验证币种是否已存在交易
+     * @param currencyId 币种id
+     * @return 已存在交易：返回true，不存在交易：返回false
+     */
+    public boolean validateGuidancePrice(int currencyId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("currencyId", currencyId);
+        map.put("addTime", DateUtil.getCurrentTime());
+
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.selectOne("TransactionDealRedis_validateGuidancePrice", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        }
+        return false;
+    }
+
 }
