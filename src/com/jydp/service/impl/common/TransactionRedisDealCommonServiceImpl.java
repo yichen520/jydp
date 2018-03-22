@@ -99,28 +99,24 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
 
         }
 
-        Timestamp nowDate = DateUtil.getCurrentTime();
-        List<TransactionDealPriceDTO> nowLastPrice = transactionDealRedisService.getNowLastPrice(nowDate);  //当前价
-        if(nowLastPrice != null && nowLastPrice.size() > 0){
-            for(TransactionDealPriceDTO transactionDealPrice : nowLastPrice){
-                redisService.addValue(RedisKeyConfig.NOW_PRICE + transactionDealPrice.getCurrencyId(),
-                        transactionDealPrice.getTransactionPrice());
-            }
-
-            //涨跌幅度计算
-            for(TransactionDealPriceDTO transactionDealPrice : nowLastPrice){
-                Object yesterdayPriceStr = redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + transactionDealPrice.getCurrencyId());
-                if(yesterdayPriceStr != null){
-                    double transactionPrice = Double.parseDouble(yesterdayPriceStr.toString());
-                    double range = BigDecimalUtil.sub(transactionDealPrice.getTransactionPrice(), transactionPrice) * 100;
-                    String rangeStr = BigDecimalUtil.div(range, transactionPrice, 2);
-                    if(!StringUtil.isNotNull(rangeStr)){
-                        rangeStr = "0.0";
-                    }
-                    redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionDealPrice.getCurrencyId(), Double.parseDouble(rangeStr));
+        //获取币种信息
+        List<TransactionCurrencyVO> transactionUserDeal= transactionCurrencyService.getOnlineAndSuspensionCurrencyForWeb();
+        //涨跌幅度计算
+        for(TransactionCurrencyVO transactionDealPrice : transactionUserDeal){
+            Object yesterdayPriceStr = redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + transactionDealPrice.getCurrencyId());
+            Object nowPriceStr = redisService.getValue(RedisKeyConfig.NOW_PRICE + transactionDealPrice.getCurrencyId());
+            if(yesterdayPriceStr != null && nowPriceStr != null){
+                double transactionPrice = Double.parseDouble(yesterdayPriceStr.toString());
+                double nowPrice = Double.parseDouble(nowPriceStr.toString());
+                double range = BigDecimalUtil.sub(nowPrice, transactionPrice) * 100;
+                String rangeStr = BigDecimalUtil.div(range, transactionPrice, 2);
+                if(!StringUtil.isNotNull(rangeStr)){
+                    rangeStr = "0.0";
                 }
+                redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionDealPrice.getCurrencyId(), Double.parseDouble(rangeStr));
             }
         }
+
     }
 
     /** 每日开盘基准信息重置(昨日收盘价)*/  //今日涨跌,今日最高价,今日最低价,当日成交量(待定)
