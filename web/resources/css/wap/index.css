@@ -1,0 +1,171 @@
+header img{
+    position: absolute;
+    top: 0.24rem;
+    left: 0.3rem;
+    width: 0.5rem;
+    height: 0.5rem;
+}
+
+/* 内容区域 */
+#wrapper{
+    margin-bottom: 0.98rem;
+    width: 100%;
+    position: relative;
+    top: 0.9rem;
+    left: 0;
+}
+.banner{
+    margin-bottom: 0.2rem;
+}
+.notice{
+    
+    width: 92%;
+    border-radius: 1rem;
+    padding-left: 0.15rem;
+    padding-right: 0.15rem;
+    margin: 0 auto;
+    background: #f6f6f6;
+    height: 0.5rem;
+    margin-bottom: 0.24rem;
+}
+.notice img{
+    float: left;
+    margin-top: 0.14rem; 
+    margin-left: 0.15rem;
+    width: 0.24rem;
+    height: 0.2rem;
+}
+.noticeContent{
+    float: left;
+    color: #333;
+    width: 80%;
+    height: 0.5rem;
+    line-height: 0.5rem;
+    font-size: 0.26rem;
+    padding-right: 0.2rem;
+    overflow: hidden;
+}
+.noticeContent .noticebox span{
+    float: right;
+    color: #999;
+}
+.more{
+    float: right;
+    margin-right: 0.15rem;
+    line-height: 0.5rem;
+    color: #999;
+    font-size: 0.26rem
+}
+.noticeContent p{
+    float: left;
+    color: #333;
+}
+
+/* 列表 */
+.content-list{
+    margin-top: 0.36rem;
+    width: 92%;
+    margin: 0 auto;
+    height: 4.75rem;
+    overflow: hidden;
+    overflow-y:scroll;
+}
+.str{
+    background:  #f5f5f5;
+    height: 0.2rem;
+    width: 100%
+}
+.content-list ul{
+    padding-top: 0.14rem;
+    height: 0.8rem;
+    position: relative;
+    display: flex;
+    border-bottom: 1px solid #ececec
+}
+.content-list ul:last-of-type{
+    border-bottom: 0
+}
+.content-list ul li{
+    text-align: center;
+    flex: 1;
+    font-size: 0.24rem;
+    color: #666;
+}
+.content-list ul li:nth-of-type(1){
+    text-align: center;
+}
+.content-list ul:nth-of-type(odd) li:nth-of-type(1) div p:nth-of-type(2){
+    color: #e83a33
+}
+.content-list ul:nth-of-type(even) li:nth-of-type(1) div p:nth-of-type(2){
+    color: #0ca98c
+}
+.content-list ul li:nth-of-type(2) div p:nth-of-type(2){
+    color: #333
+}
+.content-list ul:nth-of-type(odd) li:nth-of-type(3) div p:nth-of-type(2){
+    color: #e83a33
+}
+.content-list ul:nth-of-type(even) li:nth-of-type(3) div p:nth-of-type(2){
+    color: #0ca98c
+}
+.content-list ul li:nth-of-type(3){
+    text-align: right;
+}
+.content-list ul li:nth-of-type(2){
+    padding-left: 8%
+}
+.content-list ul li img{
+    width: 0.5rem;
+    height: 0.5rem;
+    position: absolute;
+    left: 0;
+    top: 0.2rem
+}
+.content-list ul li div{
+    float: left;
+    width: 100%;
+}
+
+/* 合作商家 */
+.seller{
+    margin-top: 0.3rem;
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+}
+.border{
+    height: 0.18rem;
+    width: 0.06rem;
+    background: #e83a33;
+    float: left;
+    margin-top: 0.12rem;
+    margin-right: 0.2rem;
+}
+.sellerTitle{
+    margin-left: 0.2rem;
+    font-size: 0.3rem;
+    color: #333;
+}
+.sellerTitle p{
+    float: left;
+}
+.sellerContent{
+    margin-top: 0.3rem;
+    display: flex;
+    padding-bottom: 0.3rem;
+}
+.iconBox{
+    flex: 1;
+}
+.iconBox img{
+    display: block;
+    width: 0.68rem;
+    height: 0.68rem;
+    margin: 0 auto;
+}
+.iconBox p{
+    margin-top: 0.2rem;
+    text-align: center;
+    color: #333;
+    font-size: 0.26rem;
+}
