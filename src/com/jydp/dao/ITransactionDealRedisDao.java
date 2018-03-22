@@ -132,4 +132,12 @@ public interface ITransactionDealRedisDao {
      * @return  操作成功：返回统计集合，操作失败：返回null
      */
     List<TransactionBottomPriceDTO> listStatistics(String orderNoPrefix, Timestamp date, Timestamp endDate);
+
+    /**
+     * 验证币种是否已存在交易
+     * @param currencyId 币种id
+     * @return 已存在交易：返回true，不存在交易：返回false
+     */
+    boolean validateGuidancePrice(int currencyId);
+
 }

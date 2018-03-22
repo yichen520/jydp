@@ -147,4 +147,12 @@
 			AND addTime <![CDATA[ <= ]]> #{endDate}
 			GROUP BY currencyId
 	</select>
+
+	<select id="TransactionDealRedis_validateGuidancePrice" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(id)
+		FROM transaction_deal_redis_tab
+		WHERE currencyId = #{currencyId}
+		AND addTime <![CDATA[ <= ]]> #{addTime}
+	</select>
+
 </mapper>

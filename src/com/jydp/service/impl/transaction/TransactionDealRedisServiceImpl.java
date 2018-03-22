@@ -190,12 +190,7 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
      * @return  操作成功：返回true，操作失败：返回false
      */
     public boolean validateGuidancePrice(int currencyId){
-        List<TransactionDealRedisDO> redisDO = transactionDealRedisDao.listTransactionDealRedis(1, currencyId);
-        if (redisDO != null && !redisDO.isEmpty()){
-            return true;
-        } else {
-            return false;
-        }
+        return transactionDealRedisDao.validateGuidancePrice(currencyId);
     }
 
     /**
