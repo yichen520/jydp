@@ -142,7 +142,7 @@
 	</update>
 
 	<select id="TransactionPendOrder_getLastTransactionPendOrder" parameterType="java.util.Map" resultType="TransactionPendOrderDO">
-		SELECT pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingPrice, buyFee,
+		SELECT pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingPrice, buyFee, restBalanceLock,
 		pendingNumber, dealNumber, pendingStatus, remark, addTime, endTime
 		FROM transaction_pend_order_tab
 		WHERE currencyId = #{currencyId}

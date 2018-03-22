@@ -169,14 +169,22 @@ public class TradeServiceImpl implements ITradeService {
                 excuteSuccess = transactionPendOrderService.updateAllDeal(order.getPendingOrderNo(), tradeNum, curTime);
             }
             if(excuteSuccess){
-                excuteSuccess = transactionPendOrderService.updatePartDeal(matchOrder.getPendingOrderNo(), tradeNum, buyPrice, curTime);
+                double restBalanceLock = 0;
+                if(matchOrder.getPaymentType() == 1){
+                    restBalanceLock = buyPrice;
+                }
+                excuteSuccess = transactionPendOrderService.updatePartDeal(matchOrder.getPendingOrderNo(), tradeNum, restBalanceLock, curTime);
             }
         }else if (tradeNum == matchOrderNum && orderNum != matchOrderNum){
             if(excuteSuccess){
                 excuteSuccess = transactionPendOrderService.updateAllDeal(matchOrder.getPendingOrderNo(), tradeNum, curTime);
             }
             if(excuteSuccess){
-                excuteSuccess = transactionPendOrderService.updatePartDeal(order.getPendingOrderNo(), tradeNum, buyPrice, curTime);
+                double restBalanceLock = 0;
+                if(matchOrder.getPaymentType() == 1){
+                    restBalanceLock = buyPrice;
+                }
+                excuteSuccess = transactionPendOrderService.updatePartDeal(order.getPendingOrderNo(), tradeNum, restBalanceLock, curTime);
             }
         }else if (orderNum == matchOrderNum){
             if(excuteSuccess){
