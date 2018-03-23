@@ -20,7 +20,7 @@ import java.io.PrintWriter;
 import java.sql.Timestamp;
 
 /**
- * 用户拦截器(WEB端访问)
+ * 用户拦截器(WAP端访问)
  * @author yqz
  *
  */
