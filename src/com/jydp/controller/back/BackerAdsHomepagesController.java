@@ -267,7 +267,7 @@ public class BackerAdsHomepagesController {
         boolean deleteResult = systemAdsHomepagesService.deleteSystemAdsHomePages(id);
         if (deleteResult) {
             // 删除图片
-            FileWriteLocalUtil.deleteFile(systemAdsHomepagesDO.getAdsImageUrl());
+            FileWriteRemoteUtil.deleteFile(systemAdsHomepagesDO.getAdsImageUrl());
 
             response.put("code", 1);
             response.put("message", "删除成功！");
