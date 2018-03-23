@@ -161,9 +161,11 @@ public class GetCurrentPriceAndBottomPriceController {
         }
 
         //当前价
-        double currentPrice = transactionDealRedisService.
-                getCurrentPrice(transactionCurrency.getCurrencyId(), SystemCommonConfig.TRANSACTION_MAKE_ORDER);
-        currentPrice = NumberUtil.doubleFormat(currentPrice, 4);
+        double currentPrice = 0;
+        currentPrice = transactionDealRedisService.getCurrentPrice(transactionCurrency.getCurrencyId(), SystemCommonConfig.TRANSACTION_MAKE_ORDER);
+        if (currentPrice > 0) {
+            currentPrice = NumberUtil.doubleFormat(currentPrice, 4);
+        }
 
         TransactionBottomCurrentPriceDTO bottomCurrentPrice = new TransactionBottomCurrentPriceDTO();
         bottomCurrentPrice.setCurrencyShortName(transactionCurrency.getCurrencyShortName());
