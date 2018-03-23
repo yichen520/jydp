@@ -1,8 +1,8 @@
 
 $(function () {
-        // 首页轮播图
+    // 首页轮播图
     banner();
-    notice();
+    //notice();
     function banner() {  
         var mySwiper = new Swiper('.banner', {
             autoplay: 3000,//可选选项，自动滑动
@@ -11,15 +11,44 @@ $(function () {
         })
     };
     //公告
-    function notice() {  
-		setInterval("noticeUp('.noticeContent .noticebox','-0.5rem',500)", 2500);   
-    };
+    setInterval('AutoScroll(".notice")', 2500)
     
 });
-function noticeUp(obj,top,time) {
-    $(obj).animate({
-    marginTop: top
-    }, time, function () {
-    $(this).css({marginTop:"0"}).find(".noticebox").appendTo(this);
-    })
+    function AutoScroll(obj) {
+        $(obj).find("ul:first").animate({
+            marginTop: "-0.48rem"
+        },
+        600,
+        function() {
+            $(this).css({
+                marginTop: "0px"
+            }).find("li:first").appendTo(this);
+        });
+    }
+    // 弹出货币选择
+    open()
+    function open() {
+        var bgHeight = $(document).height();
+        $('.open').on('click',function(){
+            $('.closeAnthoer').css("height",bgHeight +"px");
+            $('.choseBz').css("height",bgHeight +"px");
+            $('.choseBzBox').css("height",bgHeight +"px");
+            $('.choseBzBox').show();
+            $('.choseBzBox').animate({left:'0'},"500");
+        });
+         $('.closeBox').on('click',function(){
+            setTimeout(function(){
+                $('.closeAnthoer').css("height","0");
+                $('.choseBz').css("height","0");
+                $('.choseBzBox').css("height","0");
+            },450);
+            $('.choseBzBox').animate({left:'-82%'},"500");
+    });  
+    //选择货币进入交易页面
+    choseHb();
+    function choseHb() {  
+        $('.choseBzBox-content ul').on('click','li',function(){
+            window.location.href = "deal.html"
+        })
+    };        
 }
