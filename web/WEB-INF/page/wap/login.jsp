@@ -9,12 +9,8 @@
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/wap/common.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/wap/login.css">
-
-
     <%--
-
     到时候把这里换成wap的
-
     --%>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/web/simpleTips.css" />
     <title>登录</title>
@@ -32,7 +28,7 @@
                 <div class="usernameBox">
                     <div class="box">
                         <img src="${pageContext.request.contextPath}/resources/image/wap/iconUser.png" />
-                        <input type="number" placeholder="您的登录帐号" id="userAccount" name="userAccount" value="${userAccount}"
+                        <input type="text" placeholder="您的登录帐号" id="userAccount" name="userAccount" value="${userAccount}"
                                onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
                                maxLength="16" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
                     </div>
