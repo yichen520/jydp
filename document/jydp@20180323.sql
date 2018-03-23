@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50635
 File Encoding         : 65001
 
-Date: 2018-03-23 11:02:48
+Date: 2018-03-23 11:22:59
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -165,6 +165,7 @@ CREATE TABLE `syl_to_jydp_chain_tab` (
   `sylRecordNo` varchar(15) NOT NULL COMMENT '盛源链记录号',
   `userAccount` varchar(16) NOT NULL COMMENT '用户账号',
   `shengyuanCoin` decimal(18,8) NOT NULL COMMENT '盛源币',
+  `coinType` varchar(15) NOT NULL COMMENT '币种类型',
   `handleMark` varchar(200) DEFAULT NULL COMMENT '操作说明',
   `addTime` datetime NOT NULL COMMENT '添加时间,系统生成时间',
   PRIMARY KEY (`sylRecordNo`),
@@ -180,6 +181,7 @@ CREATE TABLE `syl_user_amount_record_chain_tab` (
   `sylRecordNo` varchar(15) DEFAULT NULL COMMENT '盛源链记录号',
   `userAccount` varchar(16) NOT NULL COMMENT '用户账号',
   `shengyuanCoin` decimal(18,8) NOT NULL COMMENT '盛源币',
+  `coinType` varchar(15) NOT NULL COMMENT '币种类型',
   `handleStatus` tinyint(1) NOT NULL DEFAULT '1' COMMENT '操作状态,1：操作中，2：操作成功，3：操作失败',
   `handleMark` varchar(200) DEFAULT NULL COMMENT '操作说明',
   `handleTime` datetime DEFAULT NULL COMMENT '操作时间,盛源链app完成时间',
@@ -328,7 +330,7 @@ CREATE TABLE `system_validate_phone_tab` (
   `validateTime` datetime DEFAULT NULL COMMENT '验证时间',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `phoneNo` (`phoneNo`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=42492 DEFAULT CHARSET=utf8 COMMENT='系统手机验证';
+) ENGINE=InnoDB AUTO_INCREMENT=42493 DEFAULT CHARSET=utf8 COMMENT='系统手机验证';
 
 -- ----------------------------
 -- Table structure for transaction_currency_coefficient_tab
@@ -390,7 +392,7 @@ CREATE TABLE `transaction_deal_redis_tab` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `addTime` (`addTime`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=769727 DEFAULT CHARSET=utf8 COMMENT='redis成交记录';
+) ENGINE=InnoDB AUTO_INCREMENT=769742 DEFAULT CHARSET=utf8 COMMENT='redis成交记录';
 
 -- ----------------------------
 -- Table structure for transaction_make_order_tab
@@ -610,4 +612,4 @@ CREATE TABLE `user_tab` (
   PRIMARY KEY (`userId`) USING BTREE,
   UNIQUE KEY `userAccount` (`userAccount`) USING BTREE,
   UNIQUE KEY `phoneAreaCode, phoneNumber` (`phoneAreaCode`,`phoneNumber`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=272 DEFAULT CHARSET=utf8 COMMENT='用户账号';
+) ENGINE=InnoDB AUTO_INCREMENT=273 DEFAULT CHARSET=utf8 COMMENT='用户账号';
