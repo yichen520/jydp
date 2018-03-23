@@ -5,6 +5,7 @@ import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.ITransactionCurrencyDao;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DTO.TransactionCurrencyBasicDTO;
+import com.jydp.entity.DTO.TransactionDealPriceDTO;
 import com.jydp.entity.DTO.TransactionUserDealDTO;
 import com.jydp.entity.VO.StandardParameterVO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
@@ -18,7 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 交易币种
@@ -335,10 +339,32 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
             upBoo = transactionCurrencyDao.updatePaymentType(currencyId, 2, backerAccount, ipAddress);
         }
         if (upStatus == 2 && upBoo) {
-            boolean resultBoo = transactionDealRedisService.validateGuidancePrice(currencyId);
-            if (!resultBoo) {
-                upBoo = redisService.addValue(RedisKeyConfig.YESTERDAY_PRICE + currency.getCurrencyId(),
-                        currency.getGuidancePrice());
+            //判断当前时间是否是凌晨至开盘之前
+            long dateLon = DateUtil.lingchenLong();
+            long nowDate = DateUtil.getCurrentTime().getTime() - RedisKeyConfig.OPENING_TIME;
+            if(nowDate >= dateLon){
+                //八点至凌晨
+                dateLon = dateLon + RedisKeyConfig.OPENING_TIME;
+            } else {
+                //凌晨至八点
+                dateLon = dateLon - RedisKeyConfig.DAY_TIME + RedisKeyConfig.OPENING_TIME;
+            }
+
+            //昨日收盘价计算
+            dateLon = dateLon - 1;
+            Timestamp date = DateUtil.longToTimestamp(dateLon);
+
+            List<TransactionDealPriceDTO> nowLastPrice = transactionDealRedisService.getNowLastPrice(date);
+            TransactionCurrencyDO transactionCurrency = transactionCurrencyDao.getTransactionCurrencyByCurrencyId(currencyId);
+            if (nowLastPrice != null && !nowLastPrice.isEmpty()  && transactionCurrency != null) {
+                List<Integer> lowInt = new ArrayList<>();
+                for (TransactionDealPriceDTO currDTO: nowLastPrice) {
+                    lowInt.add(currDTO.getCurrencyId());
+                }
+
+                if (!lowInt.contains(currencyId)) {
+                    upBoo = redisService.addValue(RedisKeyConfig.YESTERDAY_PRICE + currencyId, currency.getGuidancePrice());
+                }
             }
         }
 
