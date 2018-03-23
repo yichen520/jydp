@@ -33,7 +33,22 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
      */
     @Override
     public List<TransactionUserDealVO> getTransactionUserDeallist(int userId, int pageNumber, int pageSize) {
-        return transactionUserDealDao.getTransactionUserDeallist(userId, pageNumber, pageSize);
+        List<TransactionUserDealVO>  transactionUserDealList = transactionUserDealDao.getTransactionUserDeallist(userId, pageNumber, pageSize);
+
+        for (TransactionUserDealVO userDeal: transactionUserDealList) {
+            double fee = BigDecimalUtil.mul(userDeal.getCurrencyTotalPrice(), userDeal.getFeeNumber());
+
+            double actualPrice = 0;
+            if (userDeal.getPaymentType() == 1) {
+                actualPrice = BigDecimalUtil.add(userDeal.getCurrencyTotalPrice(), fee);
+            } else if (userDeal.getPaymentType() == 2) {
+                actualPrice = BigDecimalUtil.sub(userDeal.getCurrencyTotalPrice(), fee);
+            }
+
+            userDeal.setActualPrice(actualPrice);
+            userDeal.setFee(NumberUtil.doubleUpFormat(fee, 8));
+        }
+        return transactionUserDealList;
     }
 
     /**
