@@ -42,7 +42,8 @@
                         <img src="${pageContext.request.contextPath}/resources/image/wap/iconPassword.png" />
                         <input type="password" placeholder="您的登录密码" id="password" name="password"
                                onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
-                               maxLength="16" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                               maxLength="16" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"
+                               onkeypress="keypressHandle(event);"/>
                     </div>
                 </div>
                 <div class="button" onclick="loginSubmit();" >登录</div>
