@@ -177,6 +177,7 @@ public class TradeCenterController {
         String buyPriceStr = StringUtil.stringNullHandle(request.getParameter("buyPrice"));
         String buyNumStr = StringUtil.stringNullHandle(request.getParameter("buyNum"));
         String buyPwd = StringUtil.stringNullHandle(request.getParameter("buyPwd"));
+        buyPwd = Base64Util.decode(buyPwd);
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
 
         double buyPrice = 0;
@@ -349,6 +350,7 @@ public class TradeCenterController {
         String sellPriceStr = StringUtil.stringNullHandle(request.getParameter("sellPrice"));
         String sellNumStr = StringUtil.stringNullHandle(request.getParameter("sellNum"));
         String sellPwd = StringUtil.stringNullHandle(request.getParameter("sellPwd"));
+        sellPwd = Base64Util.decode(sellPwd);
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
 
         double sellPrice = 0;
@@ -706,6 +708,7 @@ public class TradeCenterController {
 
         //获取参数
         String rememberPwd = StringUtil.stringNullHandle(request.getParameter("rememberPwd"));
+        rememberPwd = Base64Util.decode(rememberPwd);
         String payPasswordStatusStr = StringUtil.stringNullHandle(request.getParameter("payPasswordStatus"));
         if (!StringUtil.isNotNull(rememberPwd)) {
             resultJson.setCode(3);
