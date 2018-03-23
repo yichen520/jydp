@@ -54,9 +54,9 @@
                     <c:forEach items="${userCurrencyList }" var="userCurrency">
                         <tr class="coinInfo">
                             <td class="coin">${userCurrency.currencyName }</td>
-                            <td class="amount">${userCurrency.currencyNumber }</td>
-                            <td class="amount">${userCurrency.currencyNumberLock }</td>
-                            <td class="amount">${userCurrency.currencyNumberSum }</td>
+                            <td class="amount"><fmt:formatNumber type="number" value="${userCurrency.currencyNumber }" maxFractionDigits="4"/></td>
+                            <td class="amount"><fmt:formatNumber type="number" value="${userCurrency.currencyNumberLock }" maxFractionDigits="4"/></td>
+                            <td class="amount"><fmt:formatNumber type="number" value="${userCurrency.currencyNumberSum }" maxFractionDigits="6"/></td>
                             <td><a href="<%=path %>/userWeb/tradeCenter/show/${userCurrency.currencyId }" class="link">去交易</a></td>
                         </tr>
                     </c:forEach>
