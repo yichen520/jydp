@@ -1,3 +1,11 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,96 +13,115 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta http-equiv="Cache-Control" content="no-cache" />
 
-    <link rel="stylesheet" href="css/common.css">
-    <link rel="stylesheet" href="css/mine.css">
+    <link rel="stylesheet" href="<%=path%>/resources/css/wap/common.css">
+    <link rel="stylesheet" href="<%=path%>/resources/css/wap/mine.css">
 
     <title>我的</title>
 </head>
 <body>
     <!-- 内容区域 -->
     <div id="wrapper">
-        <!-- 未登录状态 -->
-        <div class="noLogin">
-            <div class="title">
-                <img src="images/mine-user.png" />
-                <p>您还未登录，请先登录</p>
-                <div class="clear"></div>
-            </div>
-        </div>
-        <!-- 登录状态 -->
-        <div class="login">
-            <div class="title">
-                <img src="images/mine-user.png" />
-                <p>Your name</p>
-                <div class="clear"></div>
-            </div>
-            <div class="userBox">
-                <div class="usertitle">
-                    <p>账户总资产（$）</p>
-                    <p>12345.00</p>
-                </div>
-                <div class="usercontent">
-                    <div class="canuserBox">
-                        <p>可用资产（$）</p>
-                        <p>12345.00</p>
-                    </div>
-                    <div class="unuserBox">
-                        <p>冻结资产（$）</p>
-                        <p>12345.00</p>
-                    </div>
-                    <div class="recharge">充值</div>
+
+        <c:if test="${code==4}">
+            <!-- 未登录状态 -->
+            <div class="noLogin">
+                <div class="title">
+                    <img src="<%=path%>/resources/image/wap/mine-user.png" />
+                    <p style="text-decoration: underline"><a href="<%=path%>/wapLogin">您还未登录，请先登录</a></p>
+                    <div class="clear"></div>
                 </div>
             </div>
-        </div>
+        </c:if>
+
+        <c:if test="${code==2}">
+            <!-- 未登录状态 -->
+            <div class="noLogin">
+                <div class="title">
+                    <img src="<%=path%>/resources/image/wap/mine-user.png" />
+                    <p>${message}</p>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </c:if>
+
+        <c:if test="${code==1}">
+            <!-- 登录状态 -->
+            <div class="login">
+                <div class="title">
+                    <img src="<%=path%>/resources/image/wap/mine-user.png" />
+                    <p>${userInfo.userAccount}</p>
+                    <div class="clear"></div>
+                </div>
+                <c:if test="${code==1}">
+                    <div class="userBox">
+                        <div class="usertitle">
+                            <p>账户总资产（$）</p>
+                            <p><fmt:formatNumber type="number" maxFractionDigits="6" value="${userInfo.userBalance+userInfo.userBalanceLock}"></fmt:formatNumber></p>
+                        </div>
+                        <div class="usercontent">
+                            <div class="canuserBox">
+                                <p>可用资产（$）</p>
+                                <p><fmt:formatNumber type="number" maxFractionDigits="6" value="${userInfo.userBalance}"></fmt:formatNumber></p>
+                            </div>
+                            <div class="unuserBox">
+                                <p>冻结资产（$）</p>
+                                <p><fmt:formatNumber type="number" maxFractionDigits="6" value="${userInfo.userBalanceLock}"></fmt:formatNumber></p>
+                            </div>
+                            <div class="recharge">充值</div>
+                        </div>
+                    </div>
+                    </div>
+                </c:if>
+        </c:if>
         <!-- 列表 -->
         <div class="mine-list">
             <ul>
                 <li>
-                    <img src="./images/userIcon.png" class="icon"/>
+                    <img src="<%=path%>/resources/image/wap/userIcon.png" class="icon"/>
                     <p>个人中心
-                        <img src="./images/nextIcon.png" class="next" />
+                        <img src="<%=path%>/resources/image/wap/nextIcon.png" class="next" />
                     </p>
                     <div class="clear"></div>
                 </li>
                 <li>
-                    <img src="./images/moneyIcon.png" class="icon"/>
+                    <img src="<%=path%>/resources/image/wap/moneyIcon.png" class="icon"/>
                     <p>币种资产
-                        <img src="./images/nextIcon.png" class="next" />
+                        <img src="<%=path%>/resources/image/wap/nextIcon.png" class="next" />
                     </p>
                     <div class="clear"></div>
                 </li>
                 <li>
-                    <img src="./images/myrecordIco.png" class="icon"/>
+                    <img src="<%=path%>/resources/image/wap/myrecordIco.png" class="icon"/>
                     <p>我的记录
-                        <img src="./images/nextIcon.png" class="next" />
+                        <img src="<%=path%>/resources/image/wap/nextIcon.png" class="next" />
                     </p>
                     <div class="clear"></div>
                 </li>
                 <li>
-                    <img src="./images/cashIcon.png" class="icon"/>
+                    <img src="<%=path%>/resources/image/wap//cashIcon.png" class="icon"/>
                     <p>立即提现
-                        <img src="./images/nextIcon.png" class="next" />
+                        <img src="<%=path%>/resources/image/wap/nextIcon.png" class="next" />
                     </p>
                     <div class="clear"></div>
                 </li>
                 <li>
-                    <img src="./images/noticeIcon.png" class="icon"/>
+                    <img src="<%=path%>/resources/image/wap/noticeIcon.png" class="icon"/>
                     <p>系统公告
-                        <img src="./images/nextIcon.png" class="next" />
+                        <img src="<%=path%>/resources/image/wap/nextIcon.png" class="next" />
                     </p>
                     <div class="clear"></div>
                 </li>
                 <li>
-                    <img src="./images/helpIcon.png" class="icon"/>
+                    <img src="<%=path%>/resources/image/wap/helpIcon.png" class="icon"/>
                     <p>帮助中心
-                        <img src="./images/nextIcon.png" class="next" />
+                        <img src="<%=path%>/resources/image/wap/nextIcon.png" class="next" />
                     </p>
                     <div class="clear"></div>
                 </li>
                 <li>
-                    <img src="./images/serviceIcon.png" class="icon"/>
+                    <img src="<%=path%>/resources/image/wap/serviceIcon.png" class="icon"/>
                     <p>联系客服
-                        <img src="./images/nextIcon.png" class="next" />
+                        <img src="<%=path%>/resources/image/wap/nextIcon.png" class="next" />
                     </p>
                     <div class="clear"></div>
                 </li>
@@ -104,21 +131,25 @@
     <!-- 底部tabBar -->
     <footer>
         <a href="index.html" class="home">
-            <img src="images/home-nochose.png"  class="home-icon"/>
+            <img src="<%=path%>/resources/image/wap/home-nochose.png"  class="home-icon"/>
             <p>首页</p>
         </a>
         <a  href="deal.html" class="deal">
-            <img src="images/deal-nochose.png"  class="deal-icon"/>
+            <img src="<%=path%>/resources/image/wap/deal-nochose.png"  class="deal-icon"/>
             <p>交易</p>
         </a>
         <a href="#" class="mine">
-            <img src="images/mine-chose.png"  class="mine-icon"/>
+            <img src="<%=path%>/resources/image/wap/mine-chose.png"  class="mine-icon"/>
             <p class="chose">我的</p>
         </a>
     </footer>
 </body>
 
-<script src="js/common.js"></script>
-<script src="js/zepto.min.js"></script>
-<script src="js/jquery-2.1.4.min.js"></script>
+<script src="<%=path%>/resources/js/wap/common.js"></script>
+<script src="<%=path%>/resources/js/wap/zepto.min.js"></script>
+<script src="<%=path%>/resources/js/wap/jquery-2.1.4.min.js"></script>
+
+<script type="text/javascript">
+
+</script>
 </html>
