@@ -28,6 +28,12 @@ public class VisitCotroller {
 		return "page/web/login";
 	}
 
+	/** wap端根目录访问 */
+	@RequestMapping(value = "/wapLogin")
+	public String wapLogin(HttpServletRequest request) {
+		return "page/wap/login";
+	}
+
 	/** 后台根目录访问 */
 	@RequestMapping(value = "/backLogin")
 	public String backLogin(HttpServletRequest request) {

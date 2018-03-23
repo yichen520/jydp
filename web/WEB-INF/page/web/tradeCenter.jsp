@@ -1000,7 +1000,7 @@
                     },
                     tooltip: {
                         split: false,
-                        xDateFormat: '%A %Y-%m-%d',  //  显示星期
+                        xDateFormat: '%A %Y-%m-%d %H:%M:%S',  //  显示星期
                         shared: true,
                         valueDecimals: 4 // 小数点后几位
                     },
@@ -1028,7 +1028,7 @@
                             text: '价格'
                         },
                         opposite: false,
-                        height: '80%',
+                        height: '78%',
                         resize: {
                             enabled: true
                         },
@@ -1036,7 +1036,7 @@
                     }, {
                         labels: {
                             format: '{value}',
-
+                            enabled: false
                         },
                         resize: {
                             enabled: true
