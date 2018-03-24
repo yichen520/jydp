@@ -16,8 +16,7 @@ public class JydpCoinConfigDO {
     private String ipAddress; //操作时的ip地址
     private int backerId; //后台管理员Id
     private String backerAccount; //后台管理员帐号
-    private String remark; //备注
-    private int status; //状态 1:正常, 2:已删除
+    private int configStatus; //状态 1:正常, 2:已删除
     private Timestamp addTime; //添加时间
 
     /**
@@ -149,35 +148,19 @@ public class JydpCoinConfigDO {
     }
 
     /**
-     * 备注
-     * @return the remark
-     */
-    public String getRemark() {
-        return remark;
-    }
-
-    /**
-     * 备注
-     * @param remark the remark to set
-     */
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    /**
      * 状态 1:正常, 2:已删除
      * @return the status
      */
-    public int getStatus() {
-        return status;
+    public int getConfigStatus() {
+        return configStatus;
     }
 
     /**
      * 状态 1:正常, 2:已删除
      * @param status the status to set
      */
-    public void setStatus(int status) {
-        this.status = status;
+    public void setConfigStatus(int status) {
+        this.configStatus = status;
     }
 
     /**
