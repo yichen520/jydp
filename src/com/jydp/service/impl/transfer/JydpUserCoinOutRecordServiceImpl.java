@@ -69,7 +69,7 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
      * 撤销用户币种转出记录
      * @param userId 用户Id
      * @param coinRecordNo 转出记录流水号
-     * @return 操作成功：返回true；操作失败：返回false；
+     * @return 操作成功：返回true；操作失败：返回false
      */
     @Override
     @Transactional
@@ -80,7 +80,7 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
         if(user == null){
             return false;
         }
-
+        //根据转出流水号查询记录信息
         JydpUserCoinOutRecordDO jydpUserCoinOutRecord = jydpUserCoinOutRecordDao.getJydpUserCoinOutRecordByRecordNo(coinRecordNo);
 
         if (jydpUserCoinOutRecord == null || jydpUserCoinOutRecord.getHandleStatus() != 1) {
