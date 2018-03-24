@@ -40,4 +40,11 @@ public interface IUserBalanceService {
      * @return 查询成功：返回用户账户记录总数；查询失败：返回0
      */
     int countUserBalanceForWeb(int userId);
+
+    /**
+     * 根据userBalanceList批量插入用户记录
+     * @param userBalanceList 用户记录集合
+     * @return 成功：true；查询失败：false
+     */
+    boolean insertUserBalanceList(List<UserBalanceDO>userBalanceList);
 }

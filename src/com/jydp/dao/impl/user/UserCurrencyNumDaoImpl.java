@@ -260,4 +260,26 @@ public class UserCurrencyNumDaoImpl implements IUserCurrencyNumDao {
         return result;
     }
 
+    /**
+     * 批量修改用户币数量
+     * @param userCurrencyNumList 用户币数量集合
+     * @return 成功：true，查询失败：返回false
+     */
+    public boolean updateUserCurrencyNumList(List<UserCurrencyNumDO> userCurrencyNumList){
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("userCurrencyNumList", userCurrencyNumList);
+        int result = 0;
+
+        try {
+            result = sqlSessionTemplate.update("UserCurrencyNum_updateUserCurrencyNumList", userCurrencyNumList);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        if(result == userCurrencyNumList.size()){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }

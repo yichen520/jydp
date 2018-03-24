@@ -31,4 +31,14 @@
 		FROM user_balance_tab
 		WHERE userId = #{userId}
 	</select>
+
+	<insert id="UserBalance_insertUserBalanceList" parameterType="java.util.Map">
+		INSERT INTO user_balance_tab (orderNo, userId, fromType, currencyId, currencyName, balanceNumber,
+		frozenNumber, remark, addTime)
+		VALUES
+		<foreach collection="userBalanceList" item="item" index="index" separator=",">
+			(#{item.orderNo}, #{item.userId}, #{item.fromType}, #{item.currencyId}, #{item.currencyName}, #{item.balanceNumber},
+			#{item.frozenNumber}, #{item.remark}, #{item.addTime})
+		</foreach>
+	</insert>
 </mapper>

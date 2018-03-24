@@ -5,6 +5,47 @@
 
 <mapper namespace="com.jydp.dao.impl.transfer.JydpCoinConfigDaoImpl">
 
+    <select id="JydpCoinConfig_getJydpCoinConfigServiceList" parameterType="java.util.Map" resultType="JydpCoinConfigDO">
+        SELECT  recordNo, currencyId, currencyName, freeCurrencyNumber, minCurrencyNumber,
+        ipAddress, backerId, backerAccount, configStatus, addTime
+        FROM jydp_coin_config_tab
+        WHERE configStatus = 1
+            <if test="backerAccount != null and backerAccount != '' ">
+                AND backerAccount LIKE CONCAT('%', #{backerAccount}, '%')
+            </if>
+            <if test="currencyName != null and currencyName != '' ">
+                AND currencyName = #{currencyName}
+            </if>
+            <if test="startAddTime != null">
+                AND addTime <![CDATA[ >= ]]> #{startAddTime}
+            </if>
+            <if test="endAddTime != null">
+                AND addTime <![CDATA[ <= ]]> #{endAddTime}
+            </if>
+        ORDER BY addTime DESC
+    </select>
+
+    <insert id="JydpCoinConfig_insertJydpCoinConfig" parameterType="JydpCoinConfigDO">
+        INSERT INTO jydp_coin_config_tab(recordNo, currencyId, currencyName, freeCurrencyNumber, minCurrencyNumber,
+        ipAddress, backerId, backerAccount, configStatus, addTime)
+        VALUES (#{recordNo}, #{currencyId}, #{currencyName}, #{freeCurrencyNumber}, #{minCurrencyNumber},
+        #{ipAddress}, #{backerId}, #{backerAccount}, #{configStatus}, #{addTime})
+    </insert>
+
+    <select id="JydpCoinConfig_getJydpCoinConfig" parameterType="String" resultType="JydpCoinConfigDO">
+        SELECT  recordNo, currencyId, currencyName, freeCurrencyNumber, minCurrencyNumber,
+        ipAddress, backerId, backerAccount, configStatus, addTime
+        FROM jydp_coin_config_tab
+        WHERE configStatus = 1
+        AND recordNo = #{recordNo}
+    </select>
+
+    <update id="JydpCoinConfig_deleteJydpCoinConfig" parameterType="String">
+        UPDATE jydp_coin_config_tab
+        SET configStatus = 2
+        WHERE recordNo = #{recordNo}
+        AND configStatus = 1
+    </update>
     <select id="JydpCoinConfig_listUserCoinConfigByUserId" parameterType="int" resultType="UserCoinConfigVO">
 
         SELECT NTB.userId, NTB.currencyNumber, CTB.currencyId, CTB.currencyName, CTB.freeCurrencyNumber, CTB.minCurrencyNumber

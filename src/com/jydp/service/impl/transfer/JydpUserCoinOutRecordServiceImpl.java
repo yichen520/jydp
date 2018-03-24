@@ -6,10 +6,13 @@ import com.jydp.dao.IJydpUserCoinOutRecordDao;
 import com.jydp.entity.DO.transfer.JydpCoinConfigDO;
 import com.jydp.entity.DO.transfer.JydpUserCoinOutRecordDO;
 import com.jydp.entity.DO.user.UserBalanceDO;
+import com.jydp.service.IJydpUserCoinOutRecordService;
+import com.jydp.service.IUserBalanceService;
+import com.jydp.service.IUserCurrencyNumService;
+import config.SystemCommonConfig;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.service.*;
-import config.SystemCommonConfig;
 import config.UserBalanceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,17 +34,17 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
     @Autowired
     private IJydpUserCoinOutRecordDao jydpUserCoinOutRecordDao;
 
-    /** 用户账号 */
-    @Autowired
-    private IUserService userService;
-
     /** 用户账户记录 */
     @Autowired
     private IUserBalanceService userBalanceService;
 
     /** 用户币数量 */
     @Autowired
-    private IUserCurrencyNumService userCurrencyNumService;
+    IUserCurrencyNumService userCurrencyNumService;
+
+    /** 用户账号 */
+    @Autowired
+    private IUserService userService;
 
     /** JYDP币种转出管理 */
     @Autowired
@@ -213,5 +217,132 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
         }
 
         return excuteSuccess;
+    }
+
+    /**
+     * 根据条件查询币种转出记录数
+     * @param coinRecordNo 记录号，没有填null
+     * @param userAccount 用户账号，没有填null
+     * @param walletAccount 转入账号，没有填null
+     * @param currencyName 币种名称，没有填null
+     * @param handleStatus 审核状态，没有填0
+     * @param startAddTime 申请开始时间，没有填null
+     * @param endAddTime 申请结束时间，没有填null
+     * @param startFinishTime 完成开始时间，没有填null
+     * @param endFinishTime 完成结束时间 ，没有填null
+     * @return 查询成功：返回用户转出记录数；查询失败：返回0
+     */
+    public int countJydpUserCoinOutRecord(String coinRecordNo, String userAccount, String walletAccount, String currencyName, int handleStatus,
+                                   Timestamp startAddTime, Timestamp endAddTime, Timestamp startFinishTime, Timestamp endFinishTime){
+        return jydpUserCoinOutRecordDao.countJydpUserCoinOutRecord(coinRecordNo, userAccount, walletAccount, currencyName, handleStatus,
+                                                                startAddTime, endAddTime, startFinishTime, endFinishTime);
+    }
+
+    /**
+     * 根据条件查询币种转出记录
+     * @param coinRecordNo 记录号，没有填null
+     * @param userAccount 用户账号，没有填null
+     * @param walletAccount 转入账号，没有填null
+     * @param currencyName 币种名称，没有填null
+     * @param handleStatus 审核状态，没有填0
+     * @param startAddTime 申请开始时间，没有填null
+     * @param endAddTime 申请结束时间，没有填null
+     * @param startFinishTime 完成开始时间，没有填null
+     * @param endFinishTime 完成结束时间 ，没有填null
+     * @return 查询成功：返回用户转出记录集合；查询失败：返回null
+     */
+    public List<JydpUserCoinOutRecordDO> listJydpUserCoinOutRecord(String coinRecordNo, String userAccount, String walletAccount, String currencyName, int handleStatus,
+                                                            Timestamp startAddTime, Timestamp endAddTime, Timestamp startFinishTime, Timestamp endFinishTime,
+                                                            int pageNumber, int pageSize){
+        return jydpUserCoinOutRecordDao.listJydpUserCoinOutRecord(coinRecordNo, userAccount, walletAccount, currencyName, handleStatus, startAddTime, endAddTime,
+                                                            startFinishTime, endFinishTime, pageNumber, pageSize);
+
+    }
+
+    /**
+     * 批量审核通过用户用户币种转出记录
+     * @param coinRecordNoList 记录号集合
+     * @return 操作成功：true；查询失败：false
+     */
+    public boolean updateHandleStatus(List<String> coinRecordNoList, String remark){
+        return jydpUserCoinOutRecordDao.updateHandleStatus(coinRecordNoList, remark);
+    }
+
+    /**
+     * 批量审核拒绝用户用户币种转出记录
+     * @param coinRecordNoList 记录号集合
+     * @return 操作成功：true；查询失败：false
+     */
+    @Transactional
+    public boolean updateRefuseHandleStatus(List<String> coinRecordNoList, String remarks){
+        boolean executeSuccess = jydpUserCoinOutRecordDao.updateRefuseHandleStatus(coinRecordNoList, remarks);
+        List<JydpUserCoinOutRecordDO> jydpUserCoinOutRecordList = null;
+        List<UserBalanceDO> userBalanceList = new ArrayList<>();
+        List<UserCurrencyNumDO> userCurrencyNumList = new ArrayList<>();
+        if(executeSuccess){
+            jydpUserCoinOutRecordList = jydpUserCoinOutRecordDao.listJydpUserCoinOutRecordByCoinRecordNo(coinRecordNoList);
+            if(jydpUserCoinOutRecordList == null){
+                executeSuccess = false;
+            }
+        }
+
+        if(executeSuccess){
+            for (JydpUserCoinOutRecordDO jydpUserCoinOutRecordDO : jydpUserCoinOutRecordList){
+                UserBalanceDO userBalanceDO = new UserBalanceDO();
+                UserCurrencyNumDO userCurrencyNumDO = new UserCurrencyNumDO();
+
+                Timestamp curTime = DateUtil.getCurrentTime();
+                String orderNo = SystemCommonConfig.USER_BALANCE + DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
+                                   NumberUtil.createNumberStr(10);
+                int id = jydpUserCoinOutRecordDO.getUserId();
+                String fromType = "币种提现";
+                int currencyId = jydpUserCoinOutRecordDO.getCurrencyId();
+                String currencyName = jydpUserCoinOutRecordDO.getCurrencyName();
+                double balanceNumber = jydpUserCoinOutRecordDO.getCurrencyNumber();
+                double frozenNumber= 0;
+                String remark = "币种提现返还扣除币数量" + balanceNumber;
+
+                userBalanceDO.setOrderNo(orderNo);
+                userBalanceDO.setUserId(id);
+                userBalanceDO.setFromType(fromType);
+                userBalanceDO.setCurrencyId(currencyId);
+                userBalanceDO.setCurrencyName(currencyName);
+                userBalanceDO.setBalanceNumber(balanceNumber);
+                userBalanceDO.setFrozenNumber(frozenNumber);
+                userBalanceDO.setRemark(remark);
+                userBalanceDO.setAddTime(curTime);
+
+                userBalanceList.add(userBalanceDO);
+
+                userCurrencyNumDO.setUserId(id);
+                userCurrencyNumDO.setCurrencyId(currencyId);
+                userCurrencyNumDO.setCurrencyNumber(balanceNumber);
+                userCurrencyNumDO.setCurrencyNumberLock(0);
+                userCurrencyNumDO.setAddTime(curTime);
+
+                userCurrencyNumList.add(userCurrencyNumDO);
+            }
+            executeSuccess = userBalanceService.insertUserBalanceList(userBalanceList);
+
+            if(executeSuccess){
+                //executeSuccess = userCurrencyNumService.updateUserCurrencyNumList(userCurrencyNumList);
+                for (int i= 0;i <userCurrencyNumList.size(); i++){
+                    UserCurrencyNumDO userCurrencyNumDO = userCurrencyNumList.get(i);
+                    executeSuccess = userCurrencyNumService.increaseCurrencyNumber(userCurrencyNumDO.getUserId(), userCurrencyNumDO.getCurrencyId(),
+                            userCurrencyNumDO.getCurrencyNumber());
+
+                    if(!executeSuccess){
+                        break;
+                    }
+                }
+            }
+        }
+
+        //数据回滚
+        if(!executeSuccess){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return executeSuccess;
+
     }
 }
