@@ -9,10 +9,7 @@
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/wap/common.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/wap/login.css">
-    <%--
-    到时候把这里换成wap的
-    --%>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/web/simpleTips.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/wap/simpleTips_wap.css" />
     <title>登录</title>
 </head>
 <body>
@@ -104,5 +101,5 @@
 <script src="${pageContext.request.contextPath}/resources/js/wap/common.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/wap/zepto.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/wap/jquery-2.1.4.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/simpleTips.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/wap/simpleTips_wap.js"></script>
 </html>
