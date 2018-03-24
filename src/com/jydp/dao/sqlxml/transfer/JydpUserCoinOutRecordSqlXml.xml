@@ -5,4 +5,16 @@
 
 <mapper namespace="com.jydp.dao.impl.transfer.JydpUserCoinOutRecordDaoImpl">
 
+    <select id="JydpUserCoinOutRecord_getJydpUserCoinOutRecordlist" parameterType="String" resultType="JydpUserCoinOutRecordDO">
+        SELECT coinRecordNo, currencyId, userId, userAccount, walletAccount, currencyName, currencyNumber, handleStatus, handleTime,
+               outStatus, finishTime, remark, addTime
+        FROM jydp_user_coin_out_record_tab
+        WHERE userAccount = #{userAccount}
+    </select>
+
+    <select id="JydpUserCoinOutRecord_countJydpUserCoinOutRecord" parameterType="String" resultType="JydpUserCoinOutRecordDO">
+        SELECT COUNT(coinRecordNo)
+        FROM jydp_user_coin_out_record_tab
+        WHERE userAccount = #{userAccount}
+    </select>
 </mapper>

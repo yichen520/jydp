@@ -36,4 +36,22 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
         }
         return jydpUserCoinOutRecordList;
     }
+
+    /**
+     * 查询用户币种转出记录总数
+     * @param userAccount 用户账号
+     * @return 查询成功：返回记录总数；查询失败：返回0
+     */
+    @Override
+    public int countJydpUserCoinOutRecord(String userAccount) {
+
+        int count = 0;
+
+        try {
+            count = sqlSessionTemplate.selectOne("JydpUserCoinOutRecord_countJydpUserCoinOutRecord",userAccount);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return count;
+    }
 }

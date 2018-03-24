@@ -28,4 +28,14 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
     public List<JydpUserCoinOutRecordDO> getJydpUserCoinOutRecordlist(String userAccount) {
         return jydpUserCoinOutRecordDao.getJydpUserCoinOutRecordlist(userAccount);
     }
+
+    /**
+     * 查询用户币种转出记录总数
+     * @param userAccount 用户账号
+     * @return 查询成功：返回记录总数；查询失败：返回0
+     */
+    @Override
+    public int countJydpUserCoinOutRecord(String userAccount) {
+        return jydpUserCoinOutRecordDao.countJydpUserCoinOutRecord(userAccount);
+    }
 }
