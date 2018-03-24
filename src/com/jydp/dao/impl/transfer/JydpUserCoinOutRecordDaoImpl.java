@@ -7,7 +7,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * JYDP用户币种转出记录
@@ -25,12 +27,16 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
      * @return 查询成功：返回用户转出记录；查询失败：返回null
      */
     @Override
-    public List<JydpUserCoinOutRecordDO> getJydpUserCoinOutRecordlist(String userAccount) {
+    public List<JydpUserCoinOutRecordDO> getJydpUserCoinOutRecordlist(String userAccount,int pageNumber, int pageSize) {
 
         List<JydpUserCoinOutRecordDO> jydpUserCoinOutRecordList = null;
+        Map<String, Object> map = new HashMap<>();
+        map.put("userAccount", userAccount);
+        map.put("startNumber", pageNumber * pageSize);
+        map.put("pageSize", pageSize);
 
         try {
-            jydpUserCoinOutRecordList = sqlSessionTemplate.selectList("JydpUserCoinOutRecord_getJydpUserCoinOutRecordlist",userAccount);
+            jydpUserCoinOutRecordList = sqlSessionTemplate.selectList("JydpUserCoinOutRecord_getJydpUserCoinOutRecordlist",map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }

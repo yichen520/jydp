@@ -13,9 +13,11 @@ public interface IJydpUserCoinOutRecordDao {
     /**
      * 根据用户账号查询用户币种转出记录
      * @param userAccount 用户账号
+     * @param pageNumber 起始页数
+     * @param pageSize 每页条数
      * @return 查询成功：返回用户转出记录；查询失败：返回null
      */
-    List<JydpUserCoinOutRecordDO> getJydpUserCoinOutRecordlist(String userAccount);
+    List<JydpUserCoinOutRecordDO> getJydpUserCoinOutRecordlist(String userAccount, int pageNumber, int pageSize);
 
     /**
      * 查询用户币种转出记录总数

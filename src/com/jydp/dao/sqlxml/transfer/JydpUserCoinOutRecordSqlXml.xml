@@ -5,11 +5,13 @@
 
 <mapper namespace="com.jydp.dao.impl.transfer.JydpUserCoinOutRecordDaoImpl">
 
-    <select id="JydpUserCoinOutRecord_getJydpUserCoinOutRecordlist" parameterType="java.lang.String" resultType="JydpUserCoinOutRecordDO">
+    <select id="JydpUserCoinOutRecord_getJydpUserCoinOutRecordlist" parameterType="java.util.Map" resultType="JydpUserCoinOutRecordDO">
         SELECT coinRecordNo, currencyId, userId, userAccount, walletAccount, currencyName, currencyNumber, handleStatus, handleTime,
                outStatus, finishTime, remark, addTime
         FROM jydp_user_coin_out_record_tab
         WHERE userAccount = #{userAccount}
+        ORDER BY addTime DESC
+        LIMIT #{startNumber}, #{pageSize}
     </select>
 
     <select id="JydpUserCoinOutRecord_countJydpUserCoinOutRecord" parameterType="java.lang.String" resultType="int">
@@ -23,4 +25,11 @@
         SET handleStatus = 4
         WHERE coinRecordNo = #{coinRecordNo} AND handleStatus = 1
     </update>
+
+    <select id="JydpUserCoinOutRecord_getJydpUserCoinOutRecordByRecordNo" parameterType="java.lang.String" resultType="JydpUserCoinOutRecordDO">
+        SELECT coinRecordNo, currencyId, userId, userAccount, walletAccount, currencyName, currencyNumber, handleStatus, handleTime,
+               outStatus, finishTime, remark, addTime
+        FROM jydp_user_coin_out_record_tab
+        WHERE coinRecordNo = #{coinRecordNo}
+    </select>
 </mapper>

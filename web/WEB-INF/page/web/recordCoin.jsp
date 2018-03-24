@@ -61,7 +61,7 @@
                     <td class="mark">${coinOutRecord.remark}</td>
                     <td class="operate">
                         <c:if test="${coinOutRecord.handleStatus == 1}">
-                            <input type="text" value="撤&nbsp;回" class="recall" onfocus="this.blur()" />
+                            <input type="text" value="撤&nbsp;回" class="recall" onfocus="this.blur()" onclick="showDialog('${coinOutRecord.coinRecordNo}')"/>
                         </c:if>
                     </td>
                 </tr>
@@ -71,8 +71,9 @@
             <jsp:include page="/resources/page/common/paging.jsp"></jsp:include>
 
             <form id="queryForm" action="<%=path %>/userWeb/jydpUserCoinOutRecord/show.htm" method="post">
-                <input type="hidden" id="queryPageNumber" name="pageNumber">
+                <input type="hidden" id="queryPageNumber" name="pageNumber" value="${pageNumber}">
             </form>
+            <input type="hidden" id="recallRecordNo">
         </div>
     </div>
 </div>
@@ -90,7 +91,7 @@
 
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="openTip()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="withdraw()" />
             </div>
         </div>
     </div>
@@ -99,11 +100,6 @@
 <script type="text/javascript">
     var popObj;
     $(function(){
-        $(".recall").click(function(){
-            $(".mask").fadeIn();
-            $(".recall_pop").fadeIn();
-            popObj = ".recall_pop"
-        });
         $(".cancel").click(function(){
             $(".mask").fadeOut("fast");
             $(popObj).fadeOut("fast");
@@ -114,11 +110,47 @@
         });
     });
 
-    function openTip()
-    {
-        openTips("阿萨德芳");
+    function showDialog(coinRecordNo) {
+        $(".mask").fadeIn();
+        $(".recall_pop").fadeIn();
+        popObj = ".recall_pop";
+        $("#recallRecordNo").val(coinRecordNo);
     }
-</script>
 
+    var withdrawBoo = false;
+    //撤销操作
+    function withdraw() {
+
+        if(withdrawBoo){
+            openTips("正在撤销，请稍后！");
+            return;
+        }else{
+            withdrawBoo = true;
+        }
+
+        var coinRecordNo = $("#recallRecordNo").val();
+        $.ajax({
+            url: '<%=path %>/userWeb/jydpUserCoinOutRecord/withdrawCoinOutRecord.htm',
+            type:'post',
+            data:{
+                coinRecordNo:coinRecordNo
+            },
+            dataType:'json',
+            success:function (result) {
+                if (result.code == 1) {
+                  $("#queryForm").submit();
+                } else {
+                    openTips(result.message);
+                }
+                withdrawBoo = false;
+            },
+            error:function () {
+                withdrawBoo = false;
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+    }
+
+</script>
 </body>
 </html>

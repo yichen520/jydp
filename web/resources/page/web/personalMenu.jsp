@@ -35,7 +35,7 @@
         <ul class="levelTwo">
             <li class="menuInfo"><a href="#">我要充值</a></li>
             <li class="menuInfo"><a href="#">立即提现</a></li>
-            <li class="menuInfo"><a href="<%=path %>/userWeb/jydpUserCoinOutRecord/show.htm">币种提现</a></li>
+            <li class="menuInfo"><a id="jydpUserCoinOutRecord" href="<%=path %>/userWeb/jydpUserCoinOutRecord/show.htm">币种提现</a></li>
         </ul>
     </li>
 
