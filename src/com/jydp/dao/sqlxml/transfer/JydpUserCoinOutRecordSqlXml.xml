@@ -4,7 +4,66 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jydp.dao.impl.transfer.JydpUserCoinOutRecordDaoImpl">
-    <select id="JydpUserCoinOutRecord_countJydpUserCoinOutRecord" parameterType="java.util.Map" resultType="int">
+
+    <select id="JydpUserCoinOutRecord_getJydpUserCoinOutRecordlist" parameterType="java.util.Map" resultType="JydpUserCoinOutRecordDO">
+        SELECT coinRecordNo, currencyId, userId, userAccount, walletAccount, currencyName, currencyNumber, handleStatus, handleTime,
+        outStatus, finishTime, remark, addTime
+        FROM jydp_user_coin_out_record_tab
+        WHERE userAccount = #{userAccount}
+        ORDER BY addTime DESC
+        LIMIT #{startNumber}, #{pageSize}
+    </select>
+
+    <select id="JydpUserCoinOutRecord_countJydpUserCoinOutRecord" parameterType="java.lang.String" resultType="int">
+        SELECT COUNT(coinRecordNo)
+        FROM jydp_user_coin_out_record_tab
+        WHERE userAccount = #{userAccount}
+    </select>
+
+    <update id="JydpUserCoinOutRecord_withdrawUserCoinOutRecord" parameterType="java.lang.String">
+        UPDATE jydp_user_coin_out_record_tab
+        SET handleStatus = 4
+        WHERE coinRecordNo = #{coinRecordNo} AND handleStatus = 1
+    </update>
+
+    <select id="JydpUserCoinOutRecord_getJydpUserCoinOutRecordByRecordNo" parameterType="java.lang.String" resultType="JydpUserCoinOutRecordDO">
+        SELECT coinRecordNo, currencyId, userId, userAccount, walletAccount, currencyName, currencyNumber, handleStatus, handleTime,
+        outStatus, finishTime, remark, addTime
+        FROM jydp_user_coin_out_record_tab
+        WHERE coinRecordNo = #{coinRecordNo}
+    </select>
+
+    <insert id="JydpUserCoinOutRecord_inesertJydpUserCoinOutRecord" parameterType="JydpUserCoinOutRecordDO">
+        INSERT INTO jydp_user_coin_out_record_tab (
+        coinRecordNo,	currencyId,	userId,	userAccount,	walletAccount,	currencyName,	currencyNumber,
+        handleStatus,	outStatus,	addTime
+        <if test="handleTime != null ">
+            ,handleTime
+        </if>
+        <if test="finishTime != null ">
+            ,finishTime
+        </if>
+        <if test="remark != null and remark !=''">
+            ,remark
+        </if>
+        )
+        VALUES
+        (
+        #{coinRecordNo}, #{currencyId}, #{userId}, #{userAccount}, #{walletAccount}, #{currencyName},
+        #{currencyNumber}, #{handleStatus}, #{outStatus}, #{addTime}
+        <if test="handleTime != null ">
+            , #{handleTime}
+        </if>
+        <if test="finishTime != null ">
+            , #{finishTime}
+        </if>
+        <if test="remark != null and remark !=''">
+            , #{remark}
+        </if>
+        )
+    </insert>
+
+    <select id="JydpUserCoinOutRecord_countJydpUserCoinOutRecordForBack" parameterType="java.util.Map" resultType="int">
         SELECT COUNT(coinRecordNo)
         FROM jydp_user_coin_out_record_tab
         <where>
@@ -71,7 +130,7 @@
                 AND finishTime <![CDATA[ <= ]]> #{endFinishTime}
             </if>
         </where>
-        ORDER BY userId DESC
+        ORDER BY addTime DESC
         LIMIT #{startNumber}, #{pageSize}
     </select>
 

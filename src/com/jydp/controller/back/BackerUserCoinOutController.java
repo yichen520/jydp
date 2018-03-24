@@ -81,7 +81,7 @@ public class BackerUserCoinOutController {
         }
 
         //查询数据
-        int totalNumber = jydpUserCoinOutRecordService.countJydpUserCoinOutRecord(coinRecordNo, userAccount, walletAccount, currencyName, handleStatus,
+        int totalNumber = jydpUserCoinOutRecordService.countJydpUserCoinOutRecordForBack(coinRecordNo, userAccount, walletAccount, currencyName, handleStatus,
                                                                                     startAddTime, endAddTime, startFinishTime, endFinishTime);
 
         List<JydpUserCoinOutRecordDO> jydpUserCoinOutRecordList = null;

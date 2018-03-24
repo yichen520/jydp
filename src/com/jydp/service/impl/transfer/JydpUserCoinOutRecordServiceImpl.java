@@ -40,7 +40,7 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
 
     /** 用户币数量 */
     @Autowired
-    IUserCurrencyNumService userCurrencyNumService;
+    private IUserCurrencyNumService userCurrencyNumService;
 
     /** 用户账号 */
     @Autowired
@@ -232,9 +232,9 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
      * @param endFinishTime 完成结束时间 ，没有填null
      * @return 查询成功：返回用户转出记录数；查询失败：返回0
      */
-    public int countJydpUserCoinOutRecord(String coinRecordNo, String userAccount, String walletAccount, String currencyName, int handleStatus,
+    public int countJydpUserCoinOutRecordForBack(String coinRecordNo, String userAccount, String walletAccount, String currencyName, int handleStatus,
                                    Timestamp startAddTime, Timestamp endAddTime, Timestamp startFinishTime, Timestamp endFinishTime){
-        return jydpUserCoinOutRecordDao.countJydpUserCoinOutRecord(coinRecordNo, userAccount, walletAccount, currencyName, handleStatus,
+        return jydpUserCoinOutRecordDao.countJydpUserCoinOutRecordForBack(coinRecordNo, userAccount, walletAccount, currencyName, handleStatus,
                                                                 startAddTime, endAddTime, startFinishTime, endFinishTime);
     }
 

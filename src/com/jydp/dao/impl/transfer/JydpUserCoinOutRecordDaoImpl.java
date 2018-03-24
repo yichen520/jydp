@@ -37,7 +37,7 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
         map.put("pageSize", pageSize);
 
         try {
-            jydpUserCoinOutRecordList = sqlSessionTemplate.selectList("JydpUserCoinOutRecord_getJydpUserCoinOutRecordlist",userAccount);
+            jydpUserCoinOutRecordList = sqlSessionTemplate.selectList("JydpUserCoinOutRecord_getJydpUserCoinOutRecordlist",map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
@@ -57,7 +57,7 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
      * @param endFinishTime 完成结束时间 ，没有填null
      * @return 查询成功：返回用户转出记录数；查询失败：返回0
      */
-    public int countJydpUserCoinOutRecord(String coinRecordNo, String userAccount, String walletAccount, String currencyName, int handleStatus,
+    public int countJydpUserCoinOutRecordForBack(String coinRecordNo, String userAccount, String walletAccount, String currencyName, int handleStatus,
                                           Timestamp startAddTime, Timestamp endAddTime, Timestamp startFinishTime, Timestamp endFinishTime){
 
         Map<String, Object> map = new HashMap<>();
@@ -73,7 +73,7 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
 
         int result = 0;
         try {
-            result = sqlSessionTemplate.selectOne("JydpUserCoinOutRecord_countJydpUserCoinOutRecord", map);
+            result = sqlSessionTemplate.selectOne("JydpUserCoinOutRecord_countJydpUserCoinOutRecordForBack", map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
