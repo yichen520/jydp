@@ -23,4 +23,12 @@ public interface IJydpUserCoinOutRecordService {
      * @return 查询成功：返回记录总数；查询失败：返回0
      */
     int countJydpUserCoinOutRecord(String userAccount);
+
+    /**
+     * 撤销用户币种转出记录
+     * @param userId 用户Id
+     * @param coinRecordNo 转出记录流水号
+     * @return 操作成功：返回true；操作失败：返回false；
+     */
+    boolean withdrawUserCoinOutRecord(int userId,String coinRecordNo);
 }
