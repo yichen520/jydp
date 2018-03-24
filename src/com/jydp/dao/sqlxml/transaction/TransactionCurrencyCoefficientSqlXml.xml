@@ -79,7 +79,8 @@
                   backerAccount, ipAddress, addTime
               FROM transaction_currency_coefficient_tab
               WHERE addTime <![CDATA[ <= ]]> #{date}
-              ORDER BY addTime DESC) staTab
+              ORDER BY addTime DESC
+              LIMIT 1000) staTab
         GROUP BY currencyId
     </select>
 </mapper>
