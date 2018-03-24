@@ -38,4 +38,21 @@ public class SylUserBoundDaoImpl implements ISylUserBoundDao {
             return false;
         }
     }
+
+    /**
+     * 查询用户盛源链账号,根据用户id
+     * @param userId 用户id
+     * @return 查询成功:返回用户盛源链信息, 查询失败:返回null
+     */
+    public SylUserBoundDO getSylUserBoundByUserId(int userId) {
+        SylUserBoundDO result = null;
+
+        try {
+            result = sqlSessionTemplate.selectOne("SylUserBound_getSylUserBoundByUserId", userId);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return result;
+    }
 }

@@ -5,4 +5,33 @@
 
 <mapper namespace="com.jydp.dao.impl.transfer.JydpUserCoinOutRecordDaoImpl">
 
+    <insert id="JydpUserCoinOutRecord_inesertJydpUserCoinOutRecord" parameterType="JydpUserCoinOutRecordDO">
+        INSERT INTO jydp_user_coin_out_record_tab (
+            coinRecordNo,	currencyId,	userId,	userAccount,	walletAccount,	currencyName,	currencyNumber,
+            handleStatus,	outStatus,	addTime
+                <if test="handleTime != null ">
+                    ,handleTime
+                </if>
+                <if test="finishTime != null ">
+                    ,finishTime
+                </if>
+                <if test="remark != null and remark !=''">
+                    ,remark
+                </if>
+          )
+        VALUES
+            (
+                #{coinRecordNo}, #{currencyId}, #{userId}, #{userAccount}, #{walletAccount}, #{currencyName},
+                #{currencyNumber}, #{handleStatus}, #{outStatus}, #{addTime}
+                    <if test="handleTime != null ">
+                        , #{handleTime}
+                    </if>
+                    <if test="finishTime != null ">
+                        , #{finishTime}
+                    </if>
+                    <if test="remark != null and remark !=''">
+                        , #{remark}
+                    </if>
+            )
+    </insert>
 </mapper>

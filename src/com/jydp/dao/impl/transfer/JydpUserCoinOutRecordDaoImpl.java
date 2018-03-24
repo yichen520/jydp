@@ -36,4 +36,25 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
         }
         return jydpUserCoinOutRecordList;
     }
+
+    /**
+     * 添加用户币种转出记录
+     * @param jydpUserCoinOutRecord 币种转出记录
+     * @return 操作成功:返回true, 操作失败:返回false
+     */
+    public boolean inesertJydpUserCoinOutRecord(JydpUserCoinOutRecordDO jydpUserCoinOutRecord) {
+        int result = 0;
+
+        try {
+            result = sqlSessionTemplate.insert("JydpUserCoinOutRecord_inesertJydpUserCoinOutRecord", jydpUserCoinOutRecord);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

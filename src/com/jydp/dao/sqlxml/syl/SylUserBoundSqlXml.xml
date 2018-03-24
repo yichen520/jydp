@@ -11,4 +11,10 @@
 		VALUES
 		(#{userId}, #{userAccount}, #{userSylAccount}, #{addTime})
 	</insert>
+
+	<select id="SylUserBound_getSylUserBoundByUserId" parameterType="int" resultType="SylUserBoundDO">
+		SELECT userId, userAccount, userSylAccount, addTime
+		FROM syl_user_bound_tab
+		WHERE userId = #{userId}
+	</select>
 </mapper>
