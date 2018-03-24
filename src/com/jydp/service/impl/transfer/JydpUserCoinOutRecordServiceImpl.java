@@ -8,10 +8,7 @@ import com.jydp.entity.DO.transfer.JydpUserCoinOutRecordDO;
 import com.jydp.entity.DO.user.UserBalanceDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
-import com.jydp.service.IJydpUserCoinOutRecordService;
-import com.jydp.service.IUserBalanceService;
-import com.jydp.service.IUserCurrencyNumService;
-import com.jydp.service.IUserService;
+import com.jydp.service.*;
 import config.SystemCommonConfig;
 import config.UserBalanceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +41,10 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
     /** 用户币数量 */
     @Autowired
     private IUserCurrencyNumService userCurrencyNumService;
+
+    /** JYDP币种转出管理 */
+    @Autowired
+    private IJydpCoinConfigService jydpCoinConfigService;
 
     /**
      * 根据用户账号查询用户币种转出记录
@@ -105,7 +106,7 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
             String orderNo = SystemCommonConfig.USER_BALANCE +
                     DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
                     NumberUtil.createNumberStr(10);
-            String remark = "撤销" + currencyName + "提币申请，返还冻结币";
+            String remark = "撤销" + currencyName + "提币申请，返还申请币";
 
             UserBalanceDO userBalance = new UserBalanceDO();
             userBalance.setOrderNo(orderNo);
@@ -114,7 +115,7 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
             userBalance.setCurrencyName(currencyName);
             userBalance.setFromType(UserBalanceConfig.COIN_WITHDRAWAL);
             userBalance.setBalanceNumber(tradePriceSum);
-            userBalance.setFrozenNumber(-tradePriceSum);
+            userBalance.setFrozenNumber(0);
             userBalance.setRemark(remark);
             userBalance.setAddTime(curTime);
             excuteSuccess = userBalanceService.insertUserBalance(userBalance);
@@ -123,10 +124,6 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
         if (excuteSuccess) {
             //增加用户币数量
             excuteSuccess = userCurrencyNumService.increaseCurrencyNumber(userId,currencyId,tradePriceSum);
-        }
-        if (excuteSuccess) {
-            //减少用户锁定币数量
-            excuteSuccess = userCurrencyNumService.reduceCurrencyNumberLock(userId,currencyId,tradePriceSum);
         }
 
         if(!excuteSuccess){
@@ -173,20 +170,13 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
         jydpUserCoinOutRecord.setRemark(remark);
         jydpUserCoinOutRecord.setAddTime(curTime);
 
-        if (jydpCoinConfig.getFreeCurrencyNumber() <= number) {
-            jydpUserCoinOutRecord.setHandleStatus(1);
-            jydpUserCoinOutRecord.setOutStatus(1);
-            return jydpUserCoinOutRecordDao.inesertJydpUserCoinOutRecord(jydpUserCoinOutRecord);
-        }
-
-        //减少用户币种数量
         boolean excuteSuccess = userCurrencyNumService.reduceCurrencyNumber(userId, currencyId, number);
 
         if (excuteSuccess) {
-             orderNo = SystemCommonConfig.USER_BALANCE +
+            orderNo = SystemCommonConfig.USER_BALANCE +
                     DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
                     NumberUtil.createNumberStr(10);
-             remark = "币种提现" + number + "，扣除数量";
+            remark = "币种提现" + number + "，扣除数量";
 
             UserBalanceDO userBalance = new UserBalanceDO();
             userBalance.setOrderNo(orderNo);
@@ -201,13 +191,20 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
 
             excuteSuccess = userBalanceService.insertUserBalance(userBalance);
         }
+        if (jydpCoinConfig.getFreeCurrencyNumber() <= number) {
+            if (excuteSuccess) {
+                jydpUserCoinOutRecord.setHandleStatus(1);
+                jydpUserCoinOutRecord.setOutStatus(1);
+                excuteSuccess = jydpUserCoinOutRecordDao.inesertJydpUserCoinOutRecord(jydpUserCoinOutRecord);
+            }
 
-        if (excuteSuccess) {
-            jydpUserCoinOutRecord.setHandleStatus(2);
-            jydpUserCoinOutRecord.setHandleTime(curTime);
-            jydpUserCoinOutRecord.setOutStatus(2);
-
-            excuteSuccess = jydpUserCoinOutRecordDao.inesertJydpUserCoinOutRecord(jydpUserCoinOutRecord);
+        } else {
+            if (excuteSuccess) {
+                jydpUserCoinOutRecord.setHandleStatus(2);
+                jydpUserCoinOutRecord.setHandleTime(curTime);
+                jydpUserCoinOutRecord.setOutStatus(2);
+                excuteSuccess = jydpUserCoinOutRecordDao.inesertJydpUserCoinOutRecord(jydpUserCoinOutRecord);
+            }
         }
 
         if(!excuteSuccess){

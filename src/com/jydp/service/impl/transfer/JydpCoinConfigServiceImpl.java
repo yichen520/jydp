@@ -13,7 +13,7 @@ import java.util.List;
  * JYDP币种转出管理
  * @Author: wqq
  */
-@Service("IJydpCoinConfigService")
+@Service("jydpCoinConfigService")
 public class JydpCoinConfigServiceImpl implements IJydpCoinConfigService {
 
     /**  JYDP币种转出管理 */
