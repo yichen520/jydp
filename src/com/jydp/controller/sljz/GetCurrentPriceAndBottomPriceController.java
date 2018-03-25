@@ -97,6 +97,14 @@ public class GetCurrentPriceAndBottomPriceController {
             return responseJson;
         }
 
+        //当前价
+        double currentPrice = transactionDealRedisService.getCurrentPrice(transactionCurrency.getCurrencyId(), SystemCommonConfig.TRANSACTION_MAKE_ORDER);
+        if (currentPrice <= 0) {
+            responseJson.put("code", 5);
+            responseJson.put("message", "最近无成交记录");
+        }
+        currentPrice = NumberUtil.doubleFormat(currentPrice, 4);
+
         Timestamp lingchenTime = DateUtil.longToTimestamp(DateUtil.lingchenLong());
         Timestamp currentTime = DateUtil.getCurrentTime();
 
@@ -158,13 +166,6 @@ public class GetCurrentPriceAndBottomPriceController {
         if (StringUtil.isNotNull(bottomPriceStr)) {
             bottomPrice = Double.parseDouble(bottomPriceStr);
             bottomPrice = NumberUtil.doubleFormat(bottomPrice, 4);
-        }
-
-        //当前价
-        double currentPrice = 0;
-        currentPrice = transactionDealRedisService.getCurrentPrice(transactionCurrency.getCurrencyId(), SystemCommonConfig.TRANSACTION_MAKE_ORDER);
-        if (currentPrice > 0) {
-            currentPrice = NumberUtil.doubleFormat(currentPrice, 4);
         }
 
         TransactionBottomCurrentPriceDTO bottomCurrentPrice = new TransactionBottomCurrentPriceDTO();
