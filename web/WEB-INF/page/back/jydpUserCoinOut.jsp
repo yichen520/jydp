@@ -30,12 +30,12 @@
         <div class="top">
             <form id="queryForm" action="<%=path %>/backerWeb/backerUserCoinOut/show.htm" method="post">
                 <div class="askArea">
-                    <p class="condition">申请流水号：<input type="text" class="askInput"
-                                                      id="coinRecordNo" name="coinRecordNo" value="${coinRecordNo}" maxlength="15"/></p>
-                    <p class="condition">申请账号：<input type="text" class="askInput"
-                                                     id="userAccount" name="userAccount" value="${userAccount}" maxlength="16"/></p>
-                    <p class="condition">转入账号：<input type="text" class="askInput"
-                                                     id="walletAccount" name="walletAccount" value="${walletAccount}" maxlength="16"/></p>
+                    <p class="condition">申请流水号：<input type="text" class="askInput" id="coinRecordNo" name="coinRecordNo" value="${coinRecordNo}"
+                                                      maxlength="15" onkeyup="matchUtil(this, 'ENumber')" onblur="matchUtil(this, 'ENumber')"/></p>
+                    <p class="condition">申请账号：<input type="text" class="askInput" id="userAccount" name="userAccount" value="${userAccount}"
+                                                     maxlength="16" onkeyup="matchUtil(this, 'ENumber')" onblur="matchUtil(this, 'ENumber')"/></p>
+                    <p class="condition">转入账号：<input type="text" class="askInput" id="walletAccount" name="walletAccount" value="${walletAccount}"
+                                                     maxlength="16" onkeyup="matchUtil(this, 'ENumber')" onblur="matchUtil(this, 'ENumber')"/></p>
                     <p class="condition">币种：
                         <select class="askSelect" id="currencyName" name="currencyName">
                             <option value="">全部</option>
@@ -48,7 +48,7 @@
                         <select class="askSelect" id="handleStatus" name="handleStatus">
                             <option value="0">全部</option>
                             <option value="1">待审核</option>
-                            <option> value="2"审核通过</option>
+                            <option value="2">审核通过</option>
                             <option value="3">审核拒绝</option>
                             <option value="4">已撤回</option>
                         </select>
@@ -56,16 +56,16 @@
                     <p class="condition">
                         申请时间：
                         从&nbsp;<input placeholder="请选择起始时间" class="askTime" name="startAddTime"
-                                      value="${startAddTime }"/>
+                                      value="${startAddTime }" onfocus="this.blur()"/>
                         到&nbsp;<input placeholder="请选择结束时间" class="askTime" name="endAddTime"
-                                      value="${endAddTime }"/>
+                                      value="${endAddTime }" onfocus="this.blur()"/>
                     </p>
                     <p class="condition">
                         完成时间：
                         从&nbsp;<input placeholder="请选择起始时间" class="askTime" name="startFinishTime"
-                                      value="${startFinishTime }"/>
+                                      value="${startFinishTime }" onfocus="this.blur()"/>
                         到&nbsp;<input placeholder="请选择结束时间" class="askTime" name="endFinishTime"
-                                      value="${endFinishTime }"/>
+                                      value="${endFinishTime }" onfocus="this.blur()"/>
                     </p>
                     <input type="hidden" id="queryPageNumber" name="pageNumber" value="${pageNumber}">
                     <c:if test="${backer_rolePower['162001'] == 162001}">
@@ -371,31 +371,27 @@
         });
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    var mapMatch = {};
+    mapMatch['ENumber'] = /[^\a-\z\A-\Z\d]/g;
+    mapMatch['number'] = /[^\d]/g;
+    mapMatch['double'] = true;
+    function matchUtil(o, str) {
+        mapMatch[str] === true ? matchDouble(o, 4) : o.value = o.value.replace(mapMatch[str], '');
+    }
+    function matchDouble(o, num){
+        var matchStr = /^-?\d+\.?\d{0,num}$/;
+        if(!matchStr.test(o.value)){
+            if(isNaN(o.value)){
+                o.value = '';
+            }else{
+                var n = o.value.indexOf('.');
+                var m = n + num + 1;
+                if(n > -1 && o.value.length > m){
+                    o.value = o.value.substring(0, m);
+                }
+            }
+        }
+    }
 </script>
 
 </body>

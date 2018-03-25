@@ -35,11 +35,11 @@
                 <div class="askArea">
                     <p class="condition">
                         添加时间：
-                        从&nbsp;<input placeholder="请选择起始时间" id="start" name="startAddTime" class="askTime" value="${addTime }"/>
-                        到&nbsp;<input placeholder="请选择结束时间" id="end" name="endAddTime" class="askTime" value="${endTime }"/>
+                        从&nbsp;<input placeholder="请选择起始时间" id="start" name="startAddTime" class="askTime" value="${addTime }" onfocus="this.blur()"/>
+                        到&nbsp;<input placeholder="请选择结束时间" id="end" name="endAddTime" class="askTime" value="${endTime }" onfocus="this.blur()"/>
                     </p>
-                    <p class="condition">管理员账号：<input type="text" class="askInput" value="${backerAccount}"
-                                                      id="backerAccount" name="backerAccount"/></p>
+                    <p class="condition">管理员账号：<input type="text" class="askInput" value="${backerAccount}" id="backerAccount" name="backerAccount"
+                                                      onkeyup="matchUtil(this, 'ENumber')" onblur="matchUtil(this, 'ENumber')" maxlength="16"/></p>
                     <p class="condition">币种：
                         <select class="askSelect" id="currencyName" name="currencyName">
                             <option value ="">全部</option>
@@ -322,7 +322,6 @@
         });
 
     }
-
 </script>
 
 </body>
