@@ -102,6 +102,7 @@ public class GetCurrentPriceAndBottomPriceController {
         if (currentPrice <= 0) {
             responseJson.put("code", 5);
             responseJson.put("message", "最近无成交记录");
+            return responseJson;
         }
         currentPrice = NumberUtil.doubleFormat(currentPrice, 4);
 
@@ -172,6 +173,13 @@ public class GetCurrentPriceAndBottomPriceController {
         bottomCurrentPrice.setCurrencyShortName(transactionCurrency.getCurrencyShortName());
         bottomCurrentPrice.setKeepPrice(bottomPrice);
         bottomCurrentPrice.setCurrentPrice(currentPrice);
+
+        //防止异常数据
+        if (bottomCurrentPrice.getKeepPrice() <= 0) {
+            responseJson.put("code", 5);
+            responseJson.put("message", "系统数据异常");
+            return responseJson;
+        }
 
         responseJson.put("code", 1);
         responseJson.put("message", "查询成功");
