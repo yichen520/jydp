@@ -30,7 +30,7 @@
         <div class="main">
             <p class="coinInput">
                 <label class="popName">当前可提现数量</label>
-                <span class="amount" id="coinNumber">${userCoinConfigList[0].currencyNumber}</span>
+                <span class="amount" id="coinNumber"><fmt:formatNumber type="number" value="${userCoinConfigList[0].currencyNumber}" maxFractionDigits="8" groupingUsed="false"/></span>
             </p>
             <p class="coinInput">
                 <label class="popName">选择币种<span class="star">*</span></label>
@@ -50,7 +50,7 @@
                 <label class="popName">短信验证码<span class="star">*</span></label>
                 <span class="popCode">
                     <input type="text" class="code" placeholder="6位短信验证码" id="validateCode" maxlength="6"
-                           onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
+                           onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
                     <input type="text" id="message" class="message" value="获取验证码"
                            onfocus="this.blur()" />
                 </span>
@@ -161,9 +161,12 @@
             coinBoo = true;
         }
 
+        var coinNumber = $("#coinNumber").html();
+        coinNumber = parseFloat(coinNumber);
         var currencyId = $("#coinCurrencyId").val();
         var number = $("#number").val();
-        var validateCode = $("#validateCode").val();
+        number = parseFloat(number);
+       var validateCode = $("#validateCode").val();
         var buyPwd = $("#buypwd").val();
 
         if (!currencyId ) {
@@ -172,16 +175,30 @@
         }
         if (!number || number < 0) {
             coinBoo = false;
-            return openTips("请输入体现数量");
+            return openTips("请输入提现数量");
         }
-        if (!validateCode || validateCode.length != 6) {
+        if (number > coinNumber) {
+            coinBoo = false;
+            return openTips("提现数量不能大于" + coinNumber);
+        }
+        if (!validateCode) {
             coinBoo = false;
             return openTips("请输入验证码!");
         }
         if (validateCode.length != 6) {
             coinBoo = false;
-            return openTips("验证码为6位!");
+            return openTips("验证码为6位数字!");
         }
+        if (!buyPwd) {
+            coinBoo = false;
+            return openTips("请输入交易密码!");
+        }
+        if (buyPwd.length != 6) {
+            coinBoo = false;
+            return openTips("交易密码为6位,请检查!");
+        }
+        buyPwd = encode64(buyPwd);
+
         $.ajax({
             url: '<%=path %>' + "/userWeb/userCoinWithdrawal/mentionCoin.htm",
             type:'post',
@@ -196,7 +213,9 @@
             success:function (result) {
                 if (result.code == 1) {
                     openTips("操作成功!");
-                    window.location.href='<%=path %>' + "/userWeb/userCoinWithdrawal/show.htm";
+                    setTimeout(function () {
+                        window.location.href='<%=path %>' + "/userWeb/userCoinWithdrawal/show.htm";
+                    }, 1000);
                 } else {
                     openTips(result.message);
                 }
@@ -208,6 +227,37 @@
             }
         });
     }
+
+    // base64加密开始
+    var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+    function encode64(input) {
+        var output = "";
+        var chr1, chr2, chr3 = "";
+        var enc1, enc2, enc3, enc4 = "";
+        var i = 0;
+        do {
+            chr1 = input.charCodeAt(i++);
+            chr2 = input.charCodeAt(i++);
+            chr3 = input.charCodeAt(i++);
+            enc1 = chr1 >> 2;
+            enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+            enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+            enc4 = chr3 & 63;
+            if (isNaN(chr2)) {
+                enc3 = enc4 = 64;
+            } else if (isNaN(chr3)) {
+                enc4 = 64;
+            }
+            output = output + keyStr.charAt(enc1) + keyStr.charAt(enc2)
+                + keyStr.charAt(enc3) + keyStr.charAt(enc4);
+            chr1 = chr2 = chr3 = "";
+            enc1 = enc2 = enc3 = enc4 = "";
+        } while (i < input.length);
+
+        return output;
+    }
+    // base64加密结束
 
     var mapMatch = {};
     mapMatch['number'] = /[^\d]/g;

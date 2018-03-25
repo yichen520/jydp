@@ -138,7 +138,7 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
     }
 
     /**
-     * 用户币种提现记录(提币数量小于免审数量)
+     * 用户币种提现记录
      * @param currencyId 币种id
      * @param currencyName 币种名称
      * @param userId 用户id
@@ -157,23 +157,10 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
         }
 
         Timestamp curTime = DateUtil.getCurrentTime();
+        String orderNo = "";
+        String remark = "";
 
-        String orderNo = SystemCommonConfig.COIN_OUT +
-                DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
-                NumberUtil.createNumberStr(7);
-        String remark = currencyName + ": 币种提现" + number;
-
-        JydpUserCoinOutRecordDO  jydpUserCoinOutRecord = new JydpUserCoinOutRecordDO();
-        jydpUserCoinOutRecord.setCoinRecordNo(orderNo );
-        jydpUserCoinOutRecord.setCurrencyId(currencyId);
-        jydpUserCoinOutRecord.setUserId(userId );
-        jydpUserCoinOutRecord.setUserAccount(userAccount);
-        jydpUserCoinOutRecord.setWalletAccount(userSylAccount);
-        jydpUserCoinOutRecord.setCurrencyName(currencyName);
-        jydpUserCoinOutRecord.setCurrencyNumber(number);
-        jydpUserCoinOutRecord.setRemark(remark);
-        jydpUserCoinOutRecord.setAddTime(curTime);
-
+        //减少用户币种数量
         boolean excuteSuccess = userCurrencyNumService.reduceCurrencyNumber(userId, currencyId, number);
 
         if (excuteSuccess) {
@@ -193,20 +180,37 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
             userBalance.setRemark(remark);
             userBalance.setAddTime(curTime);
 
+            //新增用户帐户记录
             excuteSuccess = userBalanceService.insertUserBalance(userBalance);
         }
-        if (jydpCoinConfig.getFreeCurrencyNumber() <= number) {
-            if (excuteSuccess) {
+
+        orderNo = SystemCommonConfig.COIN_OUT +
+                DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
+                NumberUtil.createNumberStr(7);
+        remark = currencyName + ": 币种提现" + number;
+
+        JydpUserCoinOutRecordDO  jydpUserCoinOutRecord = new JydpUserCoinOutRecordDO();
+        jydpUserCoinOutRecord.setCoinRecordNo(orderNo );
+        jydpUserCoinOutRecord.setCurrencyId(currencyId);
+        jydpUserCoinOutRecord.setUserId(userId );
+        jydpUserCoinOutRecord.setUserAccount(userAccount);
+        jydpUserCoinOutRecord.setWalletAccount(userSylAccount);
+        jydpUserCoinOutRecord.setCurrencyName(currencyName);
+        jydpUserCoinOutRecord.setCurrencyNumber(number);
+        jydpUserCoinOutRecord.setRemark(remark);
+        jydpUserCoinOutRecord.setAddTime(curTime);
+
+        if (excuteSuccess) {    //添加用户币种转出记录
+            if (jydpCoinConfig.getFreeCurrencyNumber() <= number) {
                 jydpUserCoinOutRecord.setHandleStatus(1);
                 jydpUserCoinOutRecord.setOutStatus(1);
-                excuteSuccess = jydpUserCoinOutRecordDao.inesertJydpUserCoinOutRecord(jydpUserCoinOutRecord);
-            }
 
-        } else {
-            if (excuteSuccess) {
+                excuteSuccess = jydpUserCoinOutRecordDao.inesertJydpUserCoinOutRecord(jydpUserCoinOutRecord);
+            } else {
                 jydpUserCoinOutRecord.setHandleStatus(2);
                 jydpUserCoinOutRecord.setHandleTime(curTime);
                 jydpUserCoinOutRecord.setOutStatus(2);
+
                 excuteSuccess = jydpUserCoinOutRecordDao.inesertJydpUserCoinOutRecord(jydpUserCoinOutRecord);
             }
         }

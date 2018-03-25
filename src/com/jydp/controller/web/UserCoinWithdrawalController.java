@@ -6,13 +6,9 @@ import com.iqmkj.utils.MD5Util;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
-import com.jydp.entity.DO.syl.SylUserBoundDO;
-import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.transfer.JydpCoinConfigDO;
-import com.jydp.entity.DO.transfer.JydpUserCoinOutRecordDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
-import com.jydp.entity.DTO.BackerUserCurrencyNumDTO;
 import com.jydp.entity.VO.UserCoinConfigVO;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.*;
@@ -23,9 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 用户币种提现
@@ -153,7 +147,7 @@ public class UserCoinWithdrawalController {
         String numberStr = StringUtil.stringNullHandle(request.getParameter("number"));
         String validateCode = StringUtil.stringNullHandle(request.getParameter("validateCode"));
         String buyPwd = StringUtil.stringNullHandle(request.getParameter("buyPwd"));
-//        buyPwd = Base64Util.decode(buyPwd);
+        buyPwd = Base64Util.decode(buyPwd);
 
         if (!StringUtil.isNotNull(currencyIdStr) || !StringUtil.isNotNull(numberStr)
                 || !StringUtil.isNotNull(validateCode) || !StringUtil.isNotNull(buyPwd)) {

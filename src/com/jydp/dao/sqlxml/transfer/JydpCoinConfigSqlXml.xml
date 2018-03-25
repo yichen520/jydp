@@ -4,7 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jydp.dao.impl.transfer.JydpCoinConfigDaoImpl">
-
     <select id="JydpCoinConfig_getJydpCoinConfigServiceList" parameterType="java.util.Map" resultType="JydpCoinConfigDO">
         SELECT  recordNo, currencyId, currencyName, freeCurrencyNumber, minCurrencyNumber,
         ipAddress, backerId, backerAccount, configStatus, addTime
@@ -55,19 +54,20 @@
                     ( SELECT currencyId
                         FROM transaction_currency_tab
                         WHERE upStatus = 2 OR upStatus = 3
-                    )) NTB
-        JOIN  (SELECT recordNo, currencyId, currencyName, freeCurrencyNumber, minCurrencyNumber, addTime, configStatus
+                    )
+                AND userId = #{userId}
+                ) NTB
+        JOIN  (SELECT currencyId, currencyName, freeCurrencyNumber, minCurrencyNumber
                 FROM(
-                    SELECT recordNo, currencyId, currencyName, freeCurrencyNumber, minCurrencyNumber, addTime, configStatus
+                    SELECT currencyId, currencyName, freeCurrencyNumber, minCurrencyNumber
                     FROM jydp_coin_config_tab
                     WHERE addTime <![CDATA[ <= ]]> NOW()
+                    AND configStatus = 1
+                    GROUP BY currencyId, addTime
                     ORDER BY addTime DESC
-                    LIMIT 1000
                     ) JYDPCTB
                GROUP BY currencyId) CTB
         ON CTB.currencyId = NTB.currencyId
-        WHERE NTB.userId = #{userId}
-        AND CTB.configStatus = 1
     </select>
 
     <select id="JydpCoinConfig_getJydpCoinConfigByCurrencyId" parameterType="int" resultType="JydpCoinConfigDO">

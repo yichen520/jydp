@@ -36,7 +36,7 @@ public interface IJydpUserCoinOutRecordService {
     boolean withdrawUserCoinOutRecord(int userId,String coinRecordNo);
 
     /**
-     * 用户币种提现记录(提币数量小于免审数量)
+     * 用户币种提现记录
      * @param currencyId 币种id
      * @param currencyName 币种名称
      * @param userId 用户id
