@@ -10,6 +10,7 @@ import java.sql.Timestamp;
  */
 public class SylToJydpChainDO {
     private String sylRecordNo;  //盛源链记录号
+    private int userId;  //用户id
     private String userAccount;  //用户账号
     private String userSylAccount;  //盛源链APP用户帐号
     private String chainAddress;  //盛源链地址
@@ -18,6 +19,7 @@ public class SylToJydpChainDO {
     private double tranRatio;  //交易费率
     private String handleMark;  //操作说明
     private Timestamp addTime;  //添加时间
+
 
     /**
      * 盛源链记录号
@@ -35,6 +37,24 @@ public class SylToJydpChainDO {
      */
     public void setSylRecordNo(String sylRecordNo) {
         this.sylRecordNo = sylRecordNo;
+    }
+
+    /**
+     * 用户id
+     *
+     * @return the userId
+     */
+    public int getUserId() {
+        return userId;
+    }
+
+    /**
+     * 用户id
+     *
+     * @param userId the userId
+     */
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     /**

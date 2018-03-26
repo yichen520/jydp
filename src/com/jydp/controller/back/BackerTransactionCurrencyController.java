@@ -130,6 +130,8 @@ public class BackerTransactionCurrencyController {
             transactionCurrencyVOList = transactionCurrencyService.listTransactionCurrencyForBack(currencyNameStr, paymentType,
                     upStatus, backAccount, startAddTime, endAddTime,  startUpTime, endUpTime, pageNumber, pageSize);
         }
+        int totalCurrNumber = transactionCurrencyService.countTransactionCurrencyForBack(null, 0, 0,
+                null, null, null, null, null);
 
         List<TransactionCurrencyDO> transactionCurrencyList = transactionCurrencyService.listTransactionCurrencyAll();
 
@@ -144,6 +146,7 @@ public class BackerTransactionCurrencyController {
         request.setAttribute("currencyName", currencyNameStr);
 
         request.setAttribute("totalNumber", totalNumber);
+        request.setAttribute("totalCurrNumber", totalCurrNumber);
         request.setAttribute("totalPageNumber", totalPageNumber);
         request.setAttribute("transactionCurrencyVOList", transactionCurrencyVOList);
         request.setAttribute("transactionCurrencyList", transactionCurrencyList);

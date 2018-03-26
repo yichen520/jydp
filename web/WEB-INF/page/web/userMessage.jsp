@@ -54,9 +54,9 @@
                     <c:forEach items="${userCurrencyList }" var="userCurrency">
                         <tr class="coinInfo">
                             <td class="coin">${userCurrency.currencyName }</td>
-                            <td class="amount">${userCurrency.currencyNumber }</td>
-                            <td class="amount">${userCurrency.currencyNumberLock }</td>
-                            <td class="amount">${userCurrency.currencyNumberSum }</td>
+                            <td class="amount"><fmt:formatNumber type="number" value="${userCurrency.currencyNumber }" groupingUsed="FALSE" maxFractionDigits="4"/></td>
+                            <td class="amount"><fmt:formatNumber type="number" value="${userCurrency.currencyNumberLock }" groupingUsed="FALSE" maxFractionDigits="4"/></td>
+                            <td class="amount"><fmt:formatNumber type="number" value="${userCurrency.currencyNumberSum }" groupingUsed="FALSE" maxFractionDigits="6"/></td>
                             <td><a href="<%=path %>/userWeb/tradeCenter/show/${userCurrency.currencyId }" class="link">去交易</a></td>
                         </tr>
                     </c:forEach>
@@ -317,6 +317,10 @@
                 updatePayPasswordBoo = true;
             }
 
+            passwordPop = encode64(passwordPop);
+            newPasswordPop = encode64(newPasswordPop);
+            repPasswordPop = encode64(repPasswordPop);
+
             $.ajax({
                 url: '<%=path %>' + "/userWeb/userMessage/updatePayPasswordByPassword.htm",
                 type:'post',
@@ -386,6 +390,9 @@
             } else {
                 updatePayPasswordBoo = true;
             }
+
+            newPasswordTel = encode64(newPasswordTel);
+            repPasswordTel = encode64(repPasswordTel);
             $.ajax({
                 url: '<%=path %>' + "/userWeb/userMessage/updatePhoneByPassword.htm",
                 type:'post',
@@ -471,6 +478,10 @@
         } else {
             updateLogPasswordBoo = true;
         }
+
+        password = encode64(password);
+        newPassword = encode64(newPassword);
+        repPassword = encode64(repPassword);
 
         $.ajax({
             url: '<%=path %>' + "/userWeb/userMessage/updateLogPassword.htm",
@@ -571,6 +582,8 @@
         } else {
             updatePhoneNumberBoo = true;
         }
+
+        phonePassword = encode64(phonePassword);
 
         $.ajax({
             url: '<%=path %>' + "/userWeb/userMessage/updatePasswordByPhone.htm",
@@ -767,6 +780,37 @@
 
         },1000);
     }
+
+    // base64加密开始
+    var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+    function encode64(input) {
+        var output = "";
+        var chr1, chr2, chr3 = "";
+        var enc1, enc2, enc3, enc4 = "";
+        var i = 0;
+        do {
+            chr1 = input.charCodeAt(i++);
+            chr2 = input.charCodeAt(i++);
+            chr3 = input.charCodeAt(i++);
+            enc1 = chr1 >> 2;
+            enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+            enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+            enc4 = chr3 & 63;
+            if (isNaN(chr2)) {
+                enc3 = enc4 = 64;
+            } else if (isNaN(chr3)) {
+                enc4 = 64;
+            }
+            output = output + keyStr.charAt(enc1) + keyStr.charAt(enc2)
+                + keyStr.charAt(enc3) + keyStr.charAt(enc4);
+            chr1 = chr2 = chr3 = "";
+            enc1 = enc2 = enc3 = enc4 = "";
+        } while (i < input.length);
+
+        return output;
+    }
+    // base64加密结束
 
     document.getElementById("changeBtn").onclick=function(){countDown(this, 60);};
     document.getElementById("changeTel_btn").onclick=function(){countDown(this, 60);};

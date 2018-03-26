@@ -102,6 +102,9 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
 
         //获取币种信息
         List<TransactionCurrencyVO> transactionUserDeal= transactionCurrencyService.getOnlineAndSuspensionCurrencyForWeb();
+        if(transactionUserDeal == null || transactionUserDeal.size() <= 0){
+            return ;
+        }
         //涨跌幅度计算
         for(TransactionCurrencyVO transactionDealPrice : transactionUserDeal){
             Object yesterdayPriceStr = redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + transactionDealPrice.getCurrencyId());

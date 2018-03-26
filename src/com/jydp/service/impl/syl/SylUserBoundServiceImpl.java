@@ -27,4 +27,13 @@ public class SylUserBoundServiceImpl implements ISylUserBoundService {
     public boolean insertSylUserBound(SylUserBoundDO sylUserBound){
         return sylUserBoundDao.insertSylUserBound(sylUserBound);
     }
+
+    /**
+     * 查询用户盛源链账号,根据用户id
+     * @param userId 用户id
+     * @return 查询成功:返回用户盛源链信息, 查询失败:返回null
+     */
+    public SylUserBoundDO getSylUserBoundByUserId(int userId) {
+        return sylUserBoundDao.getSylUserBoundByUserId(userId);
+    }
 }

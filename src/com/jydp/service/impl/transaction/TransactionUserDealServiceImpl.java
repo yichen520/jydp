@@ -1,5 +1,6 @@
 package com.jydp.service.impl.transaction;
 
+import com.iqmkj.utils.BigDecimalUtil;
 import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.ITransactionUserDealDao;
 import com.jydp.entity.DO.transaction.TransactionUserDealDO;
@@ -32,7 +33,22 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
      */
     @Override
     public List<TransactionUserDealVO> getTransactionUserDeallist(int userId, int pageNumber, int pageSize) {
-        return transactionUserDealDao.getTransactionUserDeallist(userId, pageNumber, pageSize);
+        List<TransactionUserDealVO>  transactionUserDealList = transactionUserDealDao.getTransactionUserDeallist(userId, pageNumber, pageSize);
+
+        for (TransactionUserDealVO userDeal: transactionUserDealList) {
+            double fee = BigDecimalUtil.mul(userDeal.getCurrencyTotalPrice(), userDeal.getFeeNumber());
+
+            double actualPrice = 0;
+            if (userDeal.getPaymentType() == 1) {
+                actualPrice = BigDecimalUtil.add(userDeal.getCurrencyTotalPrice(), fee);
+            } else if (userDeal.getPaymentType() == 2) {
+                actualPrice = BigDecimalUtil.sub(userDeal.getCurrencyTotalPrice(), fee);
+            }
+
+            userDeal.setActualPrice(actualPrice);
+            userDeal.setFee(NumberUtil.doubleUpFormat(fee, 8));
+        }
+        return transactionUserDealList;
     }
 
     /**
@@ -107,7 +123,22 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
     public List<TransactionUserDealVO> listTransactionUserDealForBack(String userAccount, int paymentType, String currencyName,
                                                                       Timestamp startAddTime, Timestamp endAddTime, Timestamp startPendTime, Timestamp endPendTime,
                                                                       int pageNumber, int pageSize){
-        return transactionUserDealDao.listTransactionUserDealForBack(userAccount, paymentType, currencyName, startAddTime, endAddTime, startPendTime, endPendTime, pageNumber, pageSize);
+        List<TransactionUserDealVO> transactionUserDealVOS = transactionUserDealDao.listTransactionUserDealForBack(userAccount, paymentType, currencyName, startAddTime, endAddTime, startPendTime, endPendTime, pageNumber, pageSize);
+        for (TransactionUserDealVO userDeal: transactionUserDealVOS) {
+            double fee = BigDecimalUtil.mul(userDeal.getCurrencyTotalPrice(), userDeal.getFeeNumber());
+
+            double actualPrice = 0;
+            if (userDeal.getPaymentType() == 1) {
+                actualPrice = BigDecimalUtil.add(userDeal.getCurrencyTotalPrice(), fee);
+            } else if (userDeal.getPaymentType() == 2) {
+                actualPrice = BigDecimalUtil.sub(userDeal.getCurrencyTotalPrice(), fee);
+            }
+
+            userDeal.setActualPrice(actualPrice);
+            userDeal.setFee(NumberUtil.doubleUpFormat(fee, 8));
+        }
+
+        return transactionUserDealVOS;
     }
 
     /**
@@ -127,7 +158,22 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
      * @return  操作成功：返回成交记录集合，操作失败:返回null
      */
     public List<TransactionUserDealVO> listTransactionUserDealByPendNo(String pendNo, int pageNumber, int pageSize){
-        return transactionUserDealDao.listTransactionUserDealByPendNo(pendNo, pageNumber, pageSize);
+        List<TransactionUserDealVO> transactionUserDealVOS = transactionUserDealDao.listTransactionUserDealByPendNo(pendNo, pageNumber, pageSize);
+        for (TransactionUserDealVO userDeal: transactionUserDealVOS) {
+            double fee = BigDecimalUtil.mul(userDeal.getCurrencyTotalPrice(), userDeal.getFeeNumber());
+
+            double actualPrice = 0;
+            if (userDeal.getPaymentType() == 1) {
+                actualPrice = BigDecimalUtil.add(userDeal.getCurrencyTotalPrice(), fee);
+            } else if (userDeal.getPaymentType() == 2) {
+                actualPrice = BigDecimalUtil.sub(userDeal.getCurrencyTotalPrice(), fee);
+            }
+
+            userDeal.setActualPrice(actualPrice);
+            userDeal.setFee(NumberUtil.doubleUpFormat(fee, 8));
+        }
+
+        return transactionUserDealVOS;
     }
 
     /**

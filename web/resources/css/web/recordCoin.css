@@ -1,0 +1,47 @@
+.time{
+    width: 130px;
+}
+.number{
+    width: 150px;
+}
+.coin{
+    width: 90px;
+}
+.amount{
+    width: 100px;
+}
+.state{
+    width: 70px;
+}
+.wait{
+    color: #999999;
+}
+.refuse{
+    color: #e83a33;
+}
+.pass{
+    color: #4dac7b;
+}
+.mark{
+    width: 195px;
+}
+.operate{
+    width: 75px;
+}
+.recall{
+    width: 55px;
+    text-align: center;
+    font-size: 13px;
+    color: #68adfa;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+}
+.recall:hover{
+    color: #52a1f9;
+}
+
+
+.recall_pop{
+    display: none;
+}
