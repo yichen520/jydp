@@ -141,6 +141,9 @@
                   $("#queryForm").submit();
                 } else {
                     openTips(result.message);
+                    setTimeout(function () {
+                        $("#queryForm").submit();
+                    }, 1000);
                 }
                 withdrawBoo = false;
             },
