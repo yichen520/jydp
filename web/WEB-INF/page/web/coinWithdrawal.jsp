@@ -30,7 +30,7 @@
         <div class="main">
             <p class="coinInput">
                 <label class="popName">当前可提现数量</label>
-                <span class="amount" id="coinNumber"><fmt:formatNumber type="number" value="${userCoinConfigList[0].currencyNumber}" maxFractionDigits="8" groupingUsed="false"/></span>
+                <span class="amount" id="coinNumber"><fmt:formatNumber type="number" value="${userCoinConfigList[0].currencyNumber}" maxFractionDigits="4" groupingUsed="false"/></span>
             </p>
             <p class="coinInput">
                 <label class="popName">选择币种<span class="star">*</span></label>
@@ -44,8 +44,8 @@
                 <label class="popName">提现数量<span class="star">*</span></label>
                 <input type="text" class="entry" placeholder="您要提现的数量"  id="number" autocomplete="off"
                        onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="11"/>
-                <span class="tips" id="tip">提示：当前币种最低提现<fmt:formatNumber type="number" value="${userCoinConfigList[0].minCurrencyNumber}" maxFractionDigits="8" groupingUsed="false"/>个，
-                        超过<fmt:formatNumber type="number" value="${userCoinConfigList[0].freeCurrencyNumber}" maxFractionDigits="8" groupingUsed="false"/>个需人工审核</span>
+                <span class="tips" id="tip">提示：当前币种最低提现<fmt:formatNumber type="number" value="${userCoinConfigList[0].minCurrencyNumber}" maxFractionDigits="4" groupingUsed="false"/>个，
+                        超过<fmt:formatNumber type="number" value="${userCoinConfigList[0].freeCurrencyNumber}" maxFractionDigits="4" groupingUsed="false"/>个需人工审核</span>
                 <input type="hidden" id="minNumber">
             </p>
             <p class="coinInput">
