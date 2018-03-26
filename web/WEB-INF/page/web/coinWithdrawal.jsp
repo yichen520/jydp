@@ -34,7 +34,7 @@
             </p>
             <p class="coinInput">
                 <label class="popName">选择币种<span class="star">*</span></label>
-                <select class="coinSelect" id="coinCurrencyId" onchange="chooseNumber()">
+                <select class="coinSelect" id="coinCurrencyId" onchange="chooseNumber()" autocomplete="off">
                     <c:forEach items="${userCoinConfigList}" var="item">
                         <option value="${item.currencyId}">${item.currencyName}</option>
                     </c:forEach>
@@ -77,7 +77,6 @@
 <script type="text/javascript" src="<%=path %>/resources/js/simpleTips.js"></script>
 
 <script type="text/javascript">
-
     window.onload = function() {
         var code = '${code}';
         var message = '${message}';
