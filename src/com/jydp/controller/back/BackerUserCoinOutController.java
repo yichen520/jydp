@@ -140,14 +140,12 @@ public class BackerUserCoinOutController {
     @RequestMapping(value = "/auditPassed.htm", method = RequestMethod.POST)
     public @ResponseBody JSONObject auditPassed(HttpServletRequest request) {
         JSONObject response = new JSONObject();
-
         //业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 162002);
         if (!havePower) {
             response.put("code", 6);
             response.put("message", "您没有该权限");
             return response;
-
         }
 
         BackerSessionBO backerSession = BackerWebInterceptor.getBacker(request);
@@ -168,6 +166,12 @@ public class BackerUserCoinOutController {
             }
             coinRecordNoList.add(coinRecordNo);
         }
+        if(coinRecordNoList == null || coinRecordNoList.size() == 0){
+            response.put("code", 3);
+            response.put("message", "请选择审核订单！");
+            return response;
+        }
+
         Timestamp handleTime = DateUtil.getCurrentTime();
         boolean resultBoo = jydpUserCoinOutRecordService.updateHandleStatus(coinRecordNoList, remark, handleTime);
         if (resultBoo) {
@@ -185,7 +189,6 @@ public class BackerUserCoinOutController {
     @RequestMapping(value = "/auditRefuse.htm", method = RequestMethod.POST)
     public @ResponseBody JSONObject auditRefuse(HttpServletRequest request) {
         JSONObject response = new JSONObject();
-
         //业务功能权限
         boolean havePower = BackerWebInterceptor.validatePower(request, 162003);
         if (!havePower) {
@@ -211,6 +214,12 @@ public class BackerUserCoinOutController {
                 continue;
             }
             coinRecordNoList.add(coinRecordNo);
+        }
+
+        if(coinRecordNoList == null || coinRecordNoList.size() == 0){
+            response.put("code", 3);
+            response.put("message", "请选择审核订单！");
+            return response;
         }
 
         Timestamp handleTime = DateUtil.getCurrentTime();
