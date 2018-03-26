@@ -75,6 +75,7 @@
 				ipAddress, backerId, backerAccount, configStatus, addTime
         FROM jydp_coin_config_tab
         WHERE currencyId = #{currencyId}
+        AND configStatus = 1
         ORDER BY addTime DESC
         LIMIT 1
     </select>

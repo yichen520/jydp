@@ -117,12 +117,12 @@
             </p>
             <p class="popInput">
                 <label class="popName">免审数量<span class="star">*</span></label>
-                <input type="text" class="entry" placeholder="币种转出的免审数量，无则填“0" id="addFreeCurrencyNumber" name="addFreeCurrencyNumber"
+                <input type="text" class="entry" placeholder="币种转出的免审数量，无则填“0”" id="addFreeCurrencyNumber" name="addFreeCurrencyNumber"
                        onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="18"/>
             </p>
             <p class="popInput">
                 <label class="popName">最低数量<span class="star">*</span></label>
-                <input type="text" class="entry" placeholder="币种转出的最低数量，无则填“0" id="addMinCurrencyNumber" name="addMinCurrencyNumber"
+                <input type="text" class="entry" placeholder="币种转出的最低数量，无则填“0”" id="addMinCurrencyNumber" name="addMinCurrencyNumber"
                        onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="18"/>
             </p>
 

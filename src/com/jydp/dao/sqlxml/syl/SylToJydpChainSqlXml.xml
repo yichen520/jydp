@@ -7,9 +7,9 @@
 
 	<insert id="SylToJydpChain_insertSylToJydpChain" parameterType="SylToJydpChainDO">
 		INSERT INTO syl_user_bound_tab
-		(sylRecordNo, userAccount, userSylAccount, chainAddress, chainAddressName, shengyuanCoin, tranRatio, handleMark, addTime)
+		(sylRecordNo, userAccount, coinType, shengyuanCoin, handleMark, addTime)
 		VALUES
-		(#{sylRecordNo}, #{userAccount}, #{userSylAccount}, #{chainAddress}, #{chainAddressName}, #{shengyuanCoin}, #{tranRatio}, #{handleMark}, #{addTime})
+		(#{sylRecordNo}, #{userAccount}, #{coinType} #{shengyuanCoin}, #{handleMark}, #{addTime})
 	</insert>
 
 </mapper>

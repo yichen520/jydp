@@ -123,6 +123,8 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
     /**
      * 批量审核通过用户用户币种转出记录
      * @param coinRecordNoList 记录号集合
+     * @param remark 备注
+     * @param handleTime 审核时间
      * @return 操作成功：true；查询失败：false
      */
     public boolean updateHandleStatus(List<String> coinRecordNoList, String remark, Timestamp handleTime){
@@ -148,6 +150,8 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
     /**
      * 批量审核拒绝用户用户币种转出记录
      * @param coinRecordNoList 记录号集合
+     * @param remarks 备注
+     * @param handleTime 审核时间
      * @return 操作成功：true；查询失败：false
      */
     public boolean updateRefuseHandleStatus(List<String> coinRecordNoList, String remarks, Timestamp handleTime){
@@ -271,24 +275,90 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
     /**
      * 根据记录号查询记录批量修改转出状态
      * @param coinRecordNoList 转出记录流水号集合
-     * @param outStatus 转出状态，1:待转出, 2:转出中, 3:转出成功, 4:转出失败
-     * @param finishTime 转完成时间
-     * @return 查询成功：true；查询失败：false
+     * @return 修改成功：true；修改失败：false
      */
-    public int updateJydpUserCoinOutRecordOutStatus(List<String> coinRecordNoList, int outStatus, Timestamp finishTime){
-        Map<String, Object> map = new HashMap<>();
-        map.put("coinRecordNoList", coinRecordNoList);
-        map.put("outStatus", outStatus);
-        map.put("finishTime", finishTime);
+    public boolean updateJydpUserCoinOutRecordOutStatus(List<String> coinRecordNoList){
         int result = 0;
 
         try {
-            result = sqlSessionTemplate.update("JydpUserCoinOutRecord_updateJydpUserCoinOutRecordOutStatus", map);
+            result = sqlSessionTemplate.update("JydpUserCoinOutRecord_updateJydpUserCoinOutRecordOutStatus", coinRecordNoList);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
 
-        return result;
+        if(result > 0){
+            return true;
+        }else{
+            return false;
+        }
     }
 
+    /**
+     * 查询审核通过且未推送的列表
+     * @return 查询成功：返回列表；查询失败，返回null
+     */
+    public List<JydpUserCoinOutRecordDO> listNotPushRecord(){
+        List<JydpUserCoinOutRecordDO> resultList = null;
+
+        try {
+            resultList = sqlSessionTemplate.selectList("JydpUserCoinOutRecord_listNotPushRecord");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return resultList;
+    }
+
+    /**
+     * 根据币种及电子钱包操作记录号查询记录
+     * @param recordNo 电子钱包操作记录号
+     * @param coinId 币种Id
+     * @return 查询成功：返回记录信息；查询失败或者没有相关记录：返回null
+     */
+    public JydpUserCoinOutRecordDO getJydpUserCoinOutRecordByRecordNoAndCoinType(String recordNo, int coinId){
+        JydpUserCoinOutRecordDO jydpUserCoinOutRecord = null;
+        Map<String, Object> map = new HashMap<>();
+        map.put("coinId", coinId);
+        map.put("sylRecordNo", recordNo);
+
+
+        try {
+            jydpUserCoinOutRecord = sqlSessionTemplate.selectOne("JydpUserCoinOutRecord_getJydpUserCoinOutRecordByRecordNoAndCoinType",map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return jydpUserCoinOutRecord;
+    }
+
+    /**
+     * Syl回调接收参数修改
+     * @param orderNo 转出记录流水号
+     * @param recordNo 盛源链记录号
+     * @param coinId 币种Id
+     * @param code 状态 （1表示交易成功，2表示交易失败）
+     * @param receiveTime 完成时间
+     * @return 查询成功：返回记录信息；查询失败：返回null
+     */
+    public boolean updateJydpUserCoinOutRecordBySyl(String orderNo, String recordNo, int coinId, int code, Timestamp receiveTime){
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("orderNo", orderNo);
+        map.put("sylRecordNo", recordNo);
+        map.put("coinId", coinId);
+        map.put("code", code);
+        map.put("receiveTime", receiveTime);
+
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.selectOne("JydpUserCoinOutRecord_updateJydpUserCoinOutRecordBySyl", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

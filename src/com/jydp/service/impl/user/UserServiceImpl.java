@@ -12,6 +12,7 @@ import com.jydp.entity.DO.back.BackerHandleUserRecordBalanceFreezeDO;
 import com.jydp.entity.DO.user.UserBalanceDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
+import com.jydp.entity.DTO.SylUserDO;
 import com.jydp.entity.DTO.UserAmountCheckDTO;
 import com.jydp.entity.DTO.UserDTO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
@@ -230,6 +231,16 @@ public class UserServiceImpl implements IUserService {
         return userDao.getUserByPhone(phoneNumber);
     }
 
+    /**
+     * 根据手机号及密码查询用户信息
+     * @param phoneAreaCode 用户手机区号
+     * @param phoneNumber 用户手机号
+     * @param password 用户手机号
+     * @return 查询成功：返回用户信息；查询失败：返回null
+     */
+    public SylUserDO getUserByPhoneAndPassword(String phoneAreaCode, String phoneNumber, String password){
+        return userDao.getUserByPhoneAndPassword(phoneAreaCode, phoneNumber, password);
+    }
     /**
      *  验证用户信息合法性
      * @param userAccount 用户名

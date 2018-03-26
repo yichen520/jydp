@@ -2,6 +2,7 @@ package com.jydp.service;
 
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.user.UserDO;
+import com.jydp.entity.DTO.SylUserDO;
 import com.jydp.entity.DTO.UserAmountCheckDTO;
 import com.jydp.entity.VO.UserDealCapitalMessageVO;
 
@@ -130,6 +131,15 @@ public interface IUserService {
      * @return 查询成功：返回用户信息；查询失败：返回null
      */
     UserDO getUserByPhone(String phoneNumber);
+
+    /**
+     * 根据手机号及密码查询用户信息
+     * @param phoneAreaCode 用户手机区号
+     * @param phoneNumber 用户手机号
+     * @param password 用户密码
+     * @return 查询成功：返回用户信息；查询失败：返回null
+     */
+    SylUserDO getUserByPhoneAndPassword(String phoneAreaCode, String phoneNumber, String password);
 
     /**
      * 验证用户信息合法性
