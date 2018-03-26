@@ -102,7 +102,6 @@ public class WapTradeCenterController {
         //参数获取和判断
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyIdStr"));
         List<TransactionCurrencyVO> transactionCurrencyList = transactionCurrencyService.getOnlineAndSuspensionCurrencyForWap();
-        //response.put("transactionCurrencyList", transactionCurrencyList);
         if (StringUtil.isNull(currencyIdStr)) {
             if (transactionCurrencyList == null || transactionCurrencyList.size() <= 0) {
                 //这里返回到哪里
@@ -156,6 +155,7 @@ public class WapTradeCenterController {
             UserDO userDO = userService.getUserByUserId(user.getUserId());
             response.put("userIdPwd", user.getIsPwd());
             response.put("payPasswordStatus", userDO.getPayPasswordStatus());
+            response.put("userSession", user);
         }
 
         //该币种基准信息 买一价 买一价 今日最高 今日最低 今日涨幅 昨日收盘 今日成交量

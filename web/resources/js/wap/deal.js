@@ -209,7 +209,7 @@ var ParamsAndInit = {
         $("#buyMax").html("最大可买: " + "0");
         $buyTotal.val("$0");
 
-        var user = $("#userSession");
+        var user = $("#userSession").val();
         if (user == undefined || user == null || user == "") {
             openTips("请先登录再操作");
             return;
@@ -266,7 +266,7 @@ var ParamsAndInit = {
         $("#sellMax").html("最大可获得: " + "$" + "0");
         $sellTotal.val("$0");
 
-        var user = $("#userSession");
+        var user = $("#userSession").val();
         if (user == undefined || user == null || user == "") {
             openTips("请先登录再操作");
             return;
