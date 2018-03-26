@@ -125,10 +125,11 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
      * @param coinRecordNoList 记录号集合
      * @return 操作成功：true；查询失败：false
      */
-    public boolean updateHandleStatus(List<String> coinRecordNoList, String remark){
+    public boolean updateHandleStatus(List<String> coinRecordNoList, String remark, Timestamp handleTime){
         Map<String, Object> map = new HashMap<>();
         map.put("coinRecordNoList", coinRecordNoList);
         map.put("remark", remark);
+        map.put("handleTime", handleTime);
         int result = 0;
         try {
             result = sqlSessionTemplate.update("JydpUserCoinOutRecord_updateHandleStatus", map);
@@ -149,10 +150,11 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
      * @param coinRecordNoList 记录号集合
      * @return 操作成功：true；查询失败：false
      */
-    public boolean updateRefuseHandleStatus(List<String> coinRecordNoList, String remarks){
+    public boolean updateRefuseHandleStatus(List<String> coinRecordNoList, String remarks, Timestamp handleTime){
         Map<String, Object> map = new HashMap<>();
         map.put("coinRecordNoList", coinRecordNoList);
         map.put("remark", remarks);
+        map.put("handleTime", handleTime);
         int result = 0;
         try {
             result = sqlSessionTemplate.update("JydpUserCoinOutRecord_updateRefuseHandleStatus", map);
@@ -265,4 +267,5 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
             return false;
         }
     }
+
 }

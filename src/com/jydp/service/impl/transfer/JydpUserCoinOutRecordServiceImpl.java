@@ -21,7 +21,9 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * JYDP用户币种转出记录
@@ -268,8 +270,8 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
      * @param coinRecordNoList 记录号集合
      * @return 操作成功：true；查询失败：false
      */
-    public boolean updateHandleStatus(List<String> coinRecordNoList, String remark){
-        return jydpUserCoinOutRecordDao.updateHandleStatus(coinRecordNoList, remark);
+    public boolean updateHandleStatus(List<String> coinRecordNoList, String remark, Timestamp handleTime){
+        return jydpUserCoinOutRecordDao.updateHandleStatus(coinRecordNoList, remark, handleTime);
     }
 
     /**
@@ -278,11 +280,13 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
      * @return 操作成功：true；查询失败：false
      */
     @Transactional
-    public boolean updateRefuseHandleStatus(List<String> coinRecordNoList, String remarks){
-        boolean executeSuccess = jydpUserCoinOutRecordDao.updateRefuseHandleStatus(coinRecordNoList, remarks);
+    public boolean updateRefuseHandleStatus(List<String> coinRecordNoList, String remarks, Timestamp handleTime){
+        boolean executeSuccess = jydpUserCoinOutRecordDao.updateRefuseHandleStatus(coinRecordNoList, remarks, handleTime);
         List<JydpUserCoinOutRecordDO> jydpUserCoinOutRecordList = null;
         List<UserBalanceDO> userBalanceList = new ArrayList<>();
         List<UserCurrencyNumDO> userCurrencyNumList = new ArrayList<>();
+        Map<String,UserCurrencyNumDO> userCurrencyNumMap = new HashMap<String,UserCurrencyNumDO>();
+
         if(executeSuccess){
             jydpUserCoinOutRecordList = jydpUserCoinOutRecordDao.listJydpUserCoinOutRecordByCoinRecordNo(coinRecordNoList);
             if(jydpUserCoinOutRecordList == null){
@@ -321,23 +325,30 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
                 userCurrencyNumDO.setUserId(id);
                 userCurrencyNumDO.setCurrencyId(currencyId);
                 userCurrencyNumDO.setCurrencyNumber(balanceNumber);
-                userCurrencyNumDO.setCurrencyNumberLock(0);
-                userCurrencyNumDO.setAddTime(curTime);
 
-                userCurrencyNumList.add(userCurrencyNumDO);
+                String key = id + "," + currencyId;
+
+                if(userCurrencyNumMap.containsKey(key)){
+                    double currencyNumber = userCurrencyNumMap.get(key).getCurrencyNumber();
+                    currencyNumber = currencyNumber + balanceNumber;
+                    userCurrencyNumMap.get(key).setCurrencyNumber(currencyNumber);
+                }
+                userCurrencyNumMap.put(key, userCurrencyNumDO);
+
             }
+
+            userCurrencyNumList = (List<UserCurrencyNumDO>)userCurrencyNumMap.values();
             executeSuccess = userBalanceService.insertUserBalanceList(userBalanceList);
 
-            if(executeSuccess){
-                //executeSuccess = userCurrencyNumService.updateUserCurrencyNumList(userCurrencyNumList);
-                for (int i= 0;i <userCurrencyNumList.size(); i++){
-                    UserCurrencyNumDO userCurrencyNumDO = userCurrencyNumList.get(i);
-                    executeSuccess = userCurrencyNumService.increaseCurrencyNumber(userCurrencyNumDO.getUserId(), userCurrencyNumDO.getCurrencyId(),
-                            userCurrencyNumDO.getCurrencyNumber());
+        }
 
-                    if(!executeSuccess){
-                        break;
-                    }
+        if(executeSuccess){
+            for (int i= 0;i <userCurrencyNumList.size(); i++){
+                UserCurrencyNumDO userCurrencyNumDO = userCurrencyNumList.get(i);
+                executeSuccess = userCurrencyNumService.increaseCurrencyNumber(userCurrencyNumDO.getUserId(), userCurrencyNumDO.getCurrencyId(),
+                        userCurrencyNumDO.getCurrencyNumber());
+                if(!executeSuccess){
+                    break;
                 }
             }
         }
@@ -348,5 +359,14 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
         }
         return executeSuccess;
 
+    }
+
+    /**
+     * 根据记录号查询记录
+     * @param coinRecordNo 转出记录流水号
+     * @return 查询成功：返回记录信息；查询失败：返回null
+     */
+    public JydpUserCoinOutRecordDO getJydpUserCoinOutRecordByRecordNo(String coinRecordNo){
+        return jydpUserCoinOutRecordDao.getJydpUserCoinOutRecordByRecordNo(coinRecordNo);
     }
 }

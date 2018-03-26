@@ -168,8 +168,8 @@ public class BackerUserCoinOutController {
             }
             coinRecordNoList.add(coinRecordNo);
         }
-
-        boolean resultBoo = jydpUserCoinOutRecordService.updateHandleStatus(coinRecordNoList, remark);
+        Timestamp handleTime = DateUtil.getCurrentTime();
+        boolean resultBoo = jydpUserCoinOutRecordService.updateHandleStatus(coinRecordNoList, remark, handleTime);
         if (resultBoo) {
             response.put("code", 1);
             response.put("message", "审核成功！");
@@ -213,7 +213,8 @@ public class BackerUserCoinOutController {
             coinRecordNoList.add(coinRecordNo);
         }
 
-        boolean resultBoo = jydpUserCoinOutRecordService.updateRefuseHandleStatus(coinRecordNoList, remarks);
+        Timestamp handleTime = DateUtil.getCurrentTime();
+        boolean resultBoo = jydpUserCoinOutRecordService.updateRefuseHandleStatus(coinRecordNoList, remarks, handleTime);
         if (resultBoo) {
             response.put("code", 1);
             response.put("message", "审核成功！");
@@ -224,13 +225,4 @@ public class BackerUserCoinOutController {
 
         return response;
     }
-
-
-
-
-
-
-
-
-
 }
