@@ -63,8 +63,8 @@
                 </tr>
                 <c:forEach items="${statisticsList}" var="item">
                     <tr class="tableInfo">
-                        <td class="time"><fmt:formatDate type="time" value="${item.addTime}"
-                                                         pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                        <td class="time"><fmt:formatDate type="time" value="${item.statisticsDate}"
+                                                         pattern="yyyy-MM-dd"/></td>
                         <td class="coin">${item.currencyName}</td>
                         <td class="amount"><fmt:formatNumber type="number" value="${item.transactionTotalNumber }"
                                                              maxFractionDigits="4"/></td>
