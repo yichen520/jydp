@@ -213,7 +213,7 @@
         var fileSize = 0;
         var filetypes = [".jpg", ".jpeg", ".png", ".JPG", ".JPEG", ".PNG"];
         var filepath = target.value;
-        var filemaxsize = 1024 * 10;//10M
+        var filemaxsize = 1024 * 8;//8M
         if (filepath) {
             var isnext = false;
             var fileend = filepath.substring(filepath.lastIndexOf("."));

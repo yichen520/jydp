@@ -232,11 +232,11 @@ public class IdentificationController {
         //图片大于400k，压缩图片到本地缓存目录，再上传至图片服务器，最后删除缓存文件
         String frontImgSrc = "";
         if (frontImg.getSize() > 400*1024 ) {
-            frontImgSrc = ImageReduceUtil.reducePicForScale(frontImg, path, 400, 0.3);
+            frontImgSrc = ImageReduceUtil.reduceImage(frontImg, path);
         }
         String backImgSrc = "";
         if (backImg.getSize() > 400*1024 ) {
-            backImgSrc = ImageReduceUtil.reducePicForScale(backImg, path, 400, 0.3);
+            backImgSrc = ImageReduceUtil.reduceImage(backImg, path);
         }
 
         //上传图片到图片服务器
