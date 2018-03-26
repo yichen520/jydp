@@ -42,7 +42,7 @@
             </p>
             <p class="coinInput">
                 <label class="popName">提现数量<span class="star">*</span></label>
-                <input type="text" class="entry" placeholder="您要提现的数量"  id="number"
+                <input type="text" class="entry" placeholder="您要提现的数量"  id="number" autocomplete="off"
                        onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="11"/>
                 <span class="tips" id="tip">提示：当前币种最低提现<fmt:formatNumber type="number" value="${userCoinConfigList[0].minCurrencyNumber}" maxFractionDigits="8" groupingUsed="false"/>个，
                         超过<fmt:formatNumber type="number" value="${userCoinConfigList[0].freeCurrencyNumber}" maxFractionDigits="8" groupingUsed="false"/>个需人工审核</span>
@@ -51,7 +51,7 @@
             <p class="coinInput">
                 <label class="popName">短信验证码<span class="star">*</span></label>
                 <span class="popCode">
-                    <input type="text" class="code" placeholder="6位短信验证码" id="validateCode" maxlength="6"
+                    <input type="text" class="code" placeholder="6位短信验证码" id="validateCode" maxlength="6" autocomplete="off"
                            onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
                     <input type="text" id="message" class="message" value="获取验证码"
                            onfocus="this.blur()" />
@@ -60,7 +60,7 @@
             </p>
             <p class="coinInput">
                 <label class="popName">交易密码<span class="star">*</span></label>
-                <input type="password" class="entry" placeholder="您的交易密码"  id="buypwd" maxlength="16"
+                <input type="password" class="entry" placeholder="您的交易密码"  id="buypwd" maxlength="16" autocomplete="off"
                        onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
             </p>
 
