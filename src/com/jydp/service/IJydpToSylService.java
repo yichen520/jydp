@@ -15,6 +15,6 @@ public interface IJydpToSylService {
     /**
      * 交易大盘向盛源链钱包转币申请
      */
-    void jydpTosylApply();
+    void jydpToSylApply();
 
 }

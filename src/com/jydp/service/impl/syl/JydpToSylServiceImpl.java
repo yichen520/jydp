@@ -28,7 +28,7 @@ public class JydpToSylServiceImpl implements IJydpToSylService {
     /**
      * 交易大盘向盛源链钱包转币申请
      */
-    public void jydpTosylApply(){
+    public void jydpToSylApply(){
         //查询审核通过但未推送的
         List<JydpUserCoinOutRecordDO> jydpUserCoinOutRecordList = jydpUserCoinOutRecordService.listNotPushRecord();
         if(jydpUserCoinOutRecordList == null){
@@ -74,6 +74,8 @@ public class JydpToSylServiceImpl implements IJydpToSylService {
             }
         }
         //批量修改状态
-        jydpUserCoinOutRecordService.updateJydpUserCoinOutRecordOutStatus(coinRecordNoList);
+        if(coinRecordNoList != null){
+            jydpUserCoinOutRecordService.updateJydpUserCoinOutRecordOutStatus(coinRecordNoList);
+        }
     }
 }
