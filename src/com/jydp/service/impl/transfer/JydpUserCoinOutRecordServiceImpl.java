@@ -337,7 +337,11 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
 
             }
 
-            userCurrencyNumList = (List<UserCurrencyNumDO>)userCurrencyNumMap.values();
+            for (Map.Entry<String, UserCurrencyNumDO> entry: userCurrencyNumMap.entrySet()) {
+                UserCurrencyNumDO value = entry.getValue();
+                userCurrencyNumList.add(value);
+            }
+
             executeSuccess = userBalanceService.insertUserBalanceList(userBalanceList);
 
         }
@@ -368,5 +372,31 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
      */
     public JydpUserCoinOutRecordDO getJydpUserCoinOutRecordByRecordNo(String coinRecordNo){
         return jydpUserCoinOutRecordDao.getJydpUserCoinOutRecordByRecordNo(coinRecordNo);
+    }
+
+    /**
+     * 根据记录号查询记录批量修改转出状态
+     * @param coinRecordNoList 转出记录流水号集合
+     * @param outStatus 转出状态，1:待转出, 2:转出中, 3:转出成功, 4:转出失败
+     * @param finishTime 转完成时间
+     * @return 查询成功：true；查询失败：false
+     */
+    @Transactional
+    public boolean updateJydpUserCoinOutRecordOutStatus(List<String> coinRecordNoList, int outStatus, Timestamp finishTime){
+        boolean executeSuccess = false;
+        int result = jydpUserCoinOutRecordDao.updateJydpUserCoinOutRecordOutStatus(coinRecordNoList, outStatus, finishTime);
+        if(result <= 0){
+            return false;
+        }
+
+        if(result < coinRecordNoList.size()){
+            executeSuccess = false;
+        }
+
+        //数据回滚
+        if(!executeSuccess){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return executeSuccess;
     }
 }
