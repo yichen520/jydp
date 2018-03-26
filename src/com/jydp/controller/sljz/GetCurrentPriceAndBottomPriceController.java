@@ -104,7 +104,7 @@ public class GetCurrentPriceAndBottomPriceController {
             responseJson.put("message", "最近无成交记录");
             return responseJson;
         }
-        currentPrice = NumberUtil.doubleFormat(currentPrice, 4);
+        currentPrice = NumberUtil.doubleFormat(currentPrice, 2);
 
         Timestamp lingchenTime = DateUtil.longToTimestamp(DateUtil.lingchenLong());
         Timestamp currentTime = DateUtil.getCurrentTime();
@@ -172,7 +172,7 @@ public class GetCurrentPriceAndBottomPriceController {
         String bottomPriceStr = BigDecimalUtil.div(totalPrice, totalNumber, 8);
         if (StringUtil.isNotNull(bottomPriceStr)) {
             bottomPrice = Double.parseDouble(bottomPriceStr);
-            bottomPrice = NumberUtil.doubleFormat(bottomPrice, 4);
+            bottomPrice = NumberUtil.doubleFormat(bottomPrice, 2);
         }
 
         TransactionBottomCurrentPriceDTO bottomCurrentPrice = new TransactionBottomCurrentPriceDTO();
