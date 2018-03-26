@@ -167,8 +167,10 @@
         var coinNumber = $("#coinNumber").html();
         coinNumber = parseFloat(coinNumber);
         var minNumber =$("#minNumber").val();
+        minNumber = parseFloat(minNumber);
         var currencyId = $("#coinCurrencyId").val();
         var number = $("#number").val();
+        number = parseFloat(number);
        var validateCode = $("#validateCode").val();
         var buyPwd = $("#buypwd").val();
 
