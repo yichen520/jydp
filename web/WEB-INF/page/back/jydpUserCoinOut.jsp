@@ -110,7 +110,7 @@
                         <td class="number">${jydpUserCoinOutRecord.coinRecordNo}</td>
                         <td class="account">${jydpUserCoinOutRecord.userAccount}</td>
                         <td class="coin">${jydpUserCoinOutRecord.currencyName}</td>
-                        <td class="amount">${jydpUserCoinOutRecord.currencyNumber}</td>
+                        <td class="amount"><fmt:formatNumber type="number" value="${jydpUserCoinOutRecord.currencyNumber}" groupingUsed="FALSE" maxFractionDigits="4"/></td>
                         <td class="account">${jydpUserCoinOutRecord.walletAccount}</td>
                         <td class="time"><fmt:formatDate type="time" value="${jydpUserCoinOutRecord.finishTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
                         <c:if test="${jydpUserCoinOutRecord.handleStatus == '1'}">
@@ -147,7 +147,7 @@
 <div class="mask">
     <div class="mask_content">
         <div class="pass_pop">
-            <p class="popTitle">通过申请</p>
+            <p class="popTitle">审核通过</p>
             <p class="popInput">
                 <label class="popName" style="line-height: 20px">备注</label>
                 <textarea class="txt" placeholder="回复内容，非必填，最多100个字符" id="passRemark" name="passRemark" maxlength="100"></textarea>

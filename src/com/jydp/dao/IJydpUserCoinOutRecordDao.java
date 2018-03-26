@@ -103,11 +103,15 @@ public interface IJydpUserCoinOutRecordDao {
     List<JydpUserCoinOutRecordDO> listJydpUserCoinOutRecordByCoinRecordNo(List<String> coinRecordNoList);
 
     /**
-     * 根据记录号查询记录批量修改转出状态
+     * 根据记录号查询记录批量修改转出状态(jydp向syl提币申请)
      * @param coinRecordNoList 转出记录流水号集合
-     * @param outStatus 转出状态，1:待转出, 2:转出中, 3:转出成功, 4:转出失败
-     * @param finishTime 转完成时间
-     * @return 查询成功：true；查询失败：false
+     * @return 修改成功：true；修改失败：false
      */
-    int updateJydpUserCoinOutRecordOutStatus(List<String> coinRecordNoList, int outStatus, Timestamp finishTime);
+    boolean updateJydpUserCoinOutRecordOutStatus(List<String> coinRecordNoList);
+
+    /**
+     * 查询审核通过且未推送的列表
+     * @return 查询成功：返回列表；查询失败，返回null
+     */
+    List<JydpUserCoinOutRecordDO> listNotPushRecord();
 }

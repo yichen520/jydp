@@ -170,9 +170,9 @@
         </foreach>
     </select>
 
-    <update id="JydpUserCoinOutRecord_updateJydpUserCoinOutRecordOutStatus" parameterType="java.util.Map">
+    <update id="JydpUserCoinOutRecord_updateJydpUserCoinOutRecordOutStatus" parameterType="java.lang.String">
         UPDATE jydp_user_coin_out_record_tab
-        SET outStatus = #{outStatus}, finishTime = #{finishTime}
+        SET outStatus = 2
         WHERE handleStatus = 2
         AND outStatus = 1
         AND coinRecordNo IN
@@ -180,4 +180,12 @@
             #{item}
         </foreach>
     </update>
+
+    <select id="JydpUserCoinOutRecord_listNotPushRecord" resultType="JydpUserCoinOutRecordDO">
+        SELECT coinRecordNo, currencyId, userId, userAccount, walletAccount, currencyName, currencyNumber,
+        handleStatus, handleTime, outStatus, finishTime, remark, addTime
+        FROM jydp_user_coin_out_record_tab
+        WHERE handleStatus = 2
+          AND outStatus = 1
+    </select>
 </mapper>

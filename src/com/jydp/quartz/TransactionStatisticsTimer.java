@@ -30,7 +30,7 @@ public class TransactionStatisticsTimer {
             if (execuBoo){
                 break;
             }
-            execuBoo = transactionRedisDealCommonService.statistics();
+            execuBoo = transactionRedisDealCommonService.exeStatistics();
         }
     }
 

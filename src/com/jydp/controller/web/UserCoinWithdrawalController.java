@@ -216,7 +216,7 @@ public class UserCoinWithdrawalController {
         }
         if (jydpCoinConfig.getMinCurrencyNumber() > number) {
             response.setCode(3);
-            response.setMessage("该币种体现数量不能小于" + jydpCoinConfig.getMinCurrencyNumber());
+            response.setMessage("币种提现数量不能小于币种最低提现数量");
             return response;
         }
 

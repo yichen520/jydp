@@ -34,7 +34,7 @@
             </p>
             <p class="coinInput">
                 <label class="popName">选择币种<span class="star">*</span></label>
-                <select class="coinSelect" id="coinCurrencyId" onchange="chooseNumber()">
+                <select class="coinSelect" id="coinCurrencyId" onchange="chooseNumber()" autocomplete="off">
                     <c:forEach items="${userCoinConfigList}" var="item">
                         <option value="${item.currencyId}">${item.currencyName}</option>
                     </c:forEach>
@@ -42,14 +42,16 @@
             </p>
             <p class="coinInput">
                 <label class="popName">提现数量<span class="star">*</span></label>
-                <input type="text" class="entry" placeholder="您要提现的数量"  id="number"
+                <input type="text" class="entry" placeholder="您要提现的数量"  id="number" autocomplete="off"
                        onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="11"/>
-                <span class="tips" id="tip">提示：当前币种最低提现${userCoinConfigList[0].minCurrencyNumber}个，超过${userCoinConfigList[0].freeCurrencyNumber}需人工审核</span>
+                <span class="tips" id="tip">提示：当前币种最低提现<fmt:formatNumber type="number" value="${userCoinConfigList[0].minCurrencyNumber}" maxFractionDigits="8" groupingUsed="false"/>个，
+                        超过<fmt:formatNumber type="number" value="${userCoinConfigList[0].freeCurrencyNumber}" maxFractionDigits="8" groupingUsed="false"/>个需人工审核</span>
+                <input type="hidden" id="minNumber">
             </p>
             <p class="coinInput">
                 <label class="popName">短信验证码<span class="star">*</span></label>
                 <span class="popCode">
-                    <input type="text" class="code" placeholder="6位短信验证码" id="validateCode" maxlength="6"
+                    <input type="text" class="code" placeholder="6位短信验证码" id="validateCode" maxlength="6" autocomplete="off"
                            onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
                     <input type="text" id="message" class="message" value="获取验证码"
                            onfocus="this.blur()" />
@@ -58,7 +60,7 @@
             </p>
             <p class="coinInput">
                 <label class="popName">交易密码<span class="star">*</span></label>
-                <input type="password" class="entry" placeholder="您的交易密码"  id="buypwd" maxlength="16"
+                <input type="password" class="entry" placeholder="您的交易密码"  id="buypwd" maxlength="16" autocomplete="off"
                        onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
             </p>
 
@@ -76,8 +78,8 @@
 <script type="text/javascript" src="<%=path %>/resources/js/simpleTips.js"></script>
 
 <script type="text/javascript">
-
     window.onload = function() {
+        $("#minNumber").val('${userCoinConfigList[0].minCurrencyNumber}');
         var code = '${code}';
         var message = '${message}';
         if (code != 1 && message != "") {
@@ -105,7 +107,8 @@
                     var data = result.data;
                     var userCoinConfig = data.userCoinConfig;
                     document.getElementById("coinNumber").innerHTML = userCoinConfig.currencyNumber;
-                    document.getElementById("tip").innerHTML = '提示：当前币种最低提现' + userCoinConfig.minCurrencyNumber + '个，超过' + userCoinConfig.freeCurrencyNumber + '需人工审核';
+                    document.getElementById("tip").innerHTML = '提示：当前币种最低提现' + userCoinConfig.minCurrencyNumber + '个，超过' + userCoinConfig.freeCurrencyNumber + '个需人工审核';
+                    $("#minNumber").val(userCoinConfig.minCurrencyNumber);
                 } else {
                     openTips(result.message);
                 }
@@ -163,23 +166,34 @@
 
         var coinNumber = $("#coinNumber").html();
         coinNumber = parseFloat(coinNumber);
+        var minNumber =$("#minNumber").val();
+        minNumber = parseFloat(minNumber);
         var currencyId = $("#coinCurrencyId").val();
         var number = $("#number").val();
         number = parseFloat(number);
        var validateCode = $("#validateCode").val();
         var buyPwd = $("#buypwd").val();
 
+
         if (!currencyId ) {
             coinBoo = false;
             return openTips("币种信息错误");
         }
-        if (!number || number < 0) {
+        if (!number) {
             coinBoo = false;
-            return openTips("请输入提现数量");
+            return openTips("请输入提币数量");
+        }
+        if (number <= 0) {
+            coinBoo = false;
+            return openTips("提币数量不能为0");
         }
         if (number > coinNumber) {
             coinBoo = false;
-            return openTips("提现数量不能大于" + coinNumber);
+            return openTips("币种数量不足");
+        }
+        if (number < minNumber) {
+            coinBoo = false;
+            return openTips("提现数量不能小于最低提现数量");
         }
         if (!validateCode) {
             coinBoo = false;
@@ -192,10 +206,6 @@
         if (!buyPwd) {
             coinBoo = false;
             return openTips("请输入交易密码!");
-        }
-        if (buyPwd.length != 6) {
-            coinBoo = false;
-            return openTips("交易密码为6位,请检查!");
         }
         buyPwd = encode64(buyPwd);
 

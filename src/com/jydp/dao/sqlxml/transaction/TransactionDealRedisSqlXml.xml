@@ -155,4 +155,13 @@
 		AND addTime <![CDATA[ <= ]]> #{addTime}
 	</select>
 
+	<select id="TransactionDealRedis_getEarliestTime" parameterType="java.util.Map" resultType="java.sql.Timestamp">
+		SELECT addTime
+		FROM transaction_deal_redis_tab
+		WHERE currencyId = #{currencyId}
+		AND orderNo LIKE CONCAT(#{prefix}, '%')
+		ORDER BY addTime ASC
+		LIMIT 1
+	</select>
+
 </mapper>

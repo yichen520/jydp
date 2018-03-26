@@ -151,7 +151,7 @@
                     <label class="popName">手机验证码<span class="star">*</span>：</label>
                     <span class="popCode">
                         <input type="text" class="code" placeholder="6位短信验证码" maxlength="6" id="validateCodeTel"
-                               onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
+                               onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
                         <input type="text" id="passwordBtn" class="message" value="获取验证码" onfocus="this.blur()" />
                     </span>
                 </p>
@@ -189,7 +189,7 @@
                 <label class="popName">手机验证码<span class="star">*</span>：</label>
                 <span class="popCode">
                         <input type="text" class="code" placeholder="6位短信验证码" id="pasVerifyCode" maxlength="6"
-                               onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
+                               onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
                         <input type="text" id="changeBtn" class="message" value="获取验证码" onfocus="this.blur()" />
                     </span>
             </p>
@@ -209,7 +209,7 @@
                 <label class="popName">手机验证码<span class="star">*</span>：</label>
                 <span class="popCode">
                     <input type="text" class="code" placeholder="原手机接收6位短信验证码" id="verifyCode" maxlength="6"
-                           onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
+                           onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
                     <input type="text" id="changeTel_btn" class="message" value="获取验证码" onfocus="this.blur()" />
                 </span>
             </p>
@@ -236,7 +236,7 @@
                 <label class="popName">手机验证码<span class="star">*</span>：</label>
                 <span class="popCode">
                     <input type="text" class="code" placeholder="新手机接收6位短信验证码" maxlength="6" id="newVerifyCode"
-                           onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
+                           onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
                     <input type="text" style="width: 0;height: 0;border: none"/>
                     <input type="text" id="phoneBtn" class="message" value="获取验证码" onfocus="this.blur()" />
                 </span>

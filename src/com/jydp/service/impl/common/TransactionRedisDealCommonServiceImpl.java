@@ -16,6 +16,7 @@ import com.jydp.entity.VO.TransactionGraphVO;
 import com.jydp.service.*;
 import config.RedisKeyConfig;
 import config.SystemCommonConfig;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -245,7 +246,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
         }
     }
 
-    /** 每日交易统计 */
+    /** 每日交易统计 (注：该方法暂时停用)*/
     public boolean statistics(){
         long dateLon = DateUtil.lingchenLong();
         Timestamp date = DateUtil.longToTimestamp(dateLon - 24 * 60 * 60 * 1000L);
@@ -398,4 +399,109 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
 
         return transactionStatisticsService.insertTransactionStatisticsList(transactionStatisticsDOS);
     }
+
+    /**
+     * 后台做单执行统计每天总成交量，总成交金额（定时器执行，系统初始化）
+     * @return 执行成功：返回true，执行失败：返回false
+     */
+    public boolean exeStatistics() {
+        //获取所有币种信息
+        List<TransactionCurrencyDO> transactionCurrencyList = transactionCurrencyService.listTransactionCurrencyAll();
+        if (CollectionUtils.isEmpty(transactionCurrencyList)) {
+            return true;
+        }
+
+        Timestamp curTime = DateUtil.getCurrentTime();//当前时间
+        long toDayDawnLong = DateUtil.lingchenLong();//今日凌晨时间戳
+        Timestamp toDayDawnTime = DateUtil.longToTimestamp(toDayDawnLong);//今日凌晨
+        //统计记录号
+        String ordernNoPrefix = SystemCommonConfig.TRANSACTION_STATISTICS +
+                DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10);
+        for (TransactionCurrencyDO transactionCurrency : transactionCurrencyList) {
+            int currencyId = transactionCurrency.getCurrencyId();
+            //获取当前币种今日凌晨之前最近的系数
+            TransactionCurrencyCoefficientDO transactionCurrencyCoefficient = transactionCurrencyCoefficientService.
+                    getCurrencyCoefficientByCurrencyId(currencyId, toDayDawnTime);
+            if (transactionCurrencyCoefficient == null) {
+                continue;
+            }
+            //查询当前币种已有统计记录的统计时间
+            Timestamp statisticsTime = transactionStatisticsService.getLastAddTimeByCurrencyId(currencyId);
+            //当前币种不存在统计记录
+            if (statisticsTime == null) {
+                //查询当前币种后台做单的redis成交记录---最早的记录时间
+                Timestamp redisTime = transactionDealRedisService.getEarliestTime(currencyId, SystemCommonConfig.
+                        TRANSACTION_MAKE_ORDER);
+                long redisTimeLong = redisTime.getTime();
+                if (redisTime == null || redisTimeLong >= toDayDawnLong) {//判定是否为当日的成交记录
+                    continue;
+                }
+                //统计
+                statistics(currencyId, toDayDawnLong, curTime, redisTimeLong, transactionCurrencyCoefficient, ordernNoPrefix);
+            }
+            //当前币种存在统计记录
+            long statisticsTimeLong = statisticsTime.getTime();
+            if (statisticsTimeLong >= toDayDawnLong) {//判定上一次统计时间与当日统计时间
+                continue;
+            }
+            //统计
+            statistics(currencyId, toDayDawnLong, curTime, statisticsTimeLong,  transactionCurrencyCoefficient,
+                    ordernNoPrefix);
+        }
+        return true;
+    }
+
+    /**
+     * 后台做单统计每天总成交量，总成交金额（专用接口，禁止其他接口调用）
+     * @param currencyId 币种id
+     * @param toDayDawnLong 当日凌晨时间戳
+     * @param curTime 当前时间
+     * @param statisticsTimeLong 统计时间戳
+     * @param transactionCurrencyCoefficient 币种系数
+     * @param ordernNoPrefix 记录号前缀
+     * @return 执行成功：返回true，执行失败：返回false
+     */
+    public boolean statistics(int currencyId, long toDayDawnLong, Timestamp curTime, long statisticsTimeLong,
+                              TransactionCurrencyCoefficientDO transactionCurrencyCoefficient, String ordernNoPrefix) {
+        long oneDayLong = 1L * 24 * 60 * 60 * 1000;//24小时时间戳
+        long statisticsDawnLong =  DateUtil.timeStrToLong(DateUtil.longToTimeStr(statisticsTimeLong, DateUtil.dateFormat4) +
+                " 00:00:00.0");
+        long statisticsDay = (toDayDawnLong - statisticsDawnLong) / oneDayLong;//未统计的天数
+        if (statisticsDay <= 0) {
+            return true;
+        }
+
+        List<TransactionStatisticsDO> transactionStatisticsList = new ArrayList<>();
+        for (int i = 1; i <= statisticsDay; i++) {
+            long startTimeLong = toDayDawnLong - i * 24 * 60 * 60 * 1000L;//从当日的前一天开始
+            Timestamp startTime = DateUtil.longToTimestamp(startTimeLong);//开始时间
+            //结束时间，23:59:59秒结束
+            Timestamp endTime = DateUtil.longToTimestamp(startTimeLong + ((23 * 60 + 59) * 60 + 59) * 1000L);
+            //统计
+            TransactionBottomPriceDTO transactionBottomPrice = transactionDealRedisService.
+                    getBottomPrice(currencyId, SystemCommonConfig.TRANSACTION_MAKE_ORDER, startTime, endTime);
+            if (transactionBottomPrice == null) {
+                continue;
+            }
+
+            String ordernNo = ordernNoPrefix + NumberUtil.createNumberStr(10);//记录号
+            TransactionStatisticsDO transactionStatistics = new TransactionStatisticsDO();
+            transactionStatistics.setOrderNo(ordernNo);
+            transactionStatistics.setStatisticsDate(startTime);
+            transactionStatistics.setCurrencyId(currencyId);
+            transactionStatistics.setCurrencyName(transactionCurrencyCoefficient.getCurrencyName());
+            transactionStatistics.setTransactionTotalNumber(transactionBottomPrice.getTotalNumber());
+            transactionStatistics.setTransactionTotalPrice(transactionBottomPrice.getTotalPrice());
+            transactionStatistics.setCurrencyCoefficient(transactionCurrencyCoefficient.getCurrencyCoefficient());
+            transactionStatistics.setAddTime(curTime);
+            transactionStatisticsList.add(transactionStatistics);
+        }
+
+        if (CollectionUtils.isEmpty(transactionStatisticsList)) {
+            return true;
+        }
+        //新增统计记录
+        return transactionStatisticsService.insertTransactionStatisticsList(transactionStatisticsList);
+    }
+
 }
