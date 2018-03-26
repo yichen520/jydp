@@ -46,6 +46,7 @@
                        onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="11"/>
                 <span class="tips" id="tip">提示：当前币种最低提现<fmt:formatNumber type="number" value="${userCoinConfigList[0].minCurrencyNumber}" maxFractionDigits="8" groupingUsed="false"/>个，
                         超过<fmt:formatNumber type="number" value="${userCoinConfigList[0].freeCurrencyNumber}" maxFractionDigits="8" groupingUsed="false"/>个需人工审核</span>
+                <input type="hidden" id="minNumber">
             </p>
             <p class="coinInput">
                 <label class="popName">短信验证码<span class="star">*</span></label>
@@ -78,6 +79,7 @@
 
 <script type="text/javascript">
     window.onload = function() {
+        $("#minNumber").val('${userCoinConfigList[0].minCurrencyNumber}');
         var code = '${code}';
         var message = '${message}';
         if (code != 1 && message != "") {
@@ -106,6 +108,7 @@
                     var userCoinConfig = data.userCoinConfig;
                     document.getElementById("coinNumber").innerHTML = userCoinConfig.currencyNumber;
                     document.getElementById("tip").innerHTML = '提示：当前币种最低提现' + userCoinConfig.minCurrencyNumber + '个，超过' + userCoinConfig.freeCurrencyNumber + '个需人工审核';
+                    $("#minNumber").val(userCoinConfig.minCurrencyNumber);
                 } else {
                     openTips(result.message);
                 }
@@ -163,10 +166,12 @@
 
         var coinNumber = $("#coinNumber").html();
         coinNumber = parseFloat(coinNumber);
+        var minNumber =$("#minNumber").val();
         var currencyId = $("#coinCurrencyId").val();
         var number = $("#number").val();
        var validateCode = $("#validateCode").val();
         var buyPwd = $("#buypwd").val();
+
 
         if (!currencyId ) {
             coinBoo = false;
@@ -183,6 +188,10 @@
         if (number > coinNumber) {
             coinBoo = false;
             return openTips("币种数量不足");
+        }
+        if (number < minNumber) {
+            coinBoo = false;
+            return openTips("提现数量不能小于最低提现数量");
         }
         if (!validateCode) {
             coinBoo = false;
