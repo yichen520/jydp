@@ -50,25 +50,25 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
     private IJydpCoinConfigService jydpCoinConfigService;
 
     /**
-     * 根据用户账号查询用户币种转出记录
-     * @param userAccount 用户账号
+     * 根据用户Id查询用户币种转出记录
+     * @param userId 用户Id
      * @param pageNumber 起始页数
      * @param pageSize 每页条数
      * @return 查询成功：返回用户转出记录；查询失败：返回null
      */
     @Override
-    public List<JydpUserCoinOutRecordDO> getJydpUserCoinOutRecordlist(String userAccount, int pageNumber, int pageSize) {
-        return jydpUserCoinOutRecordDao.getJydpUserCoinOutRecordlist(userAccount,pageNumber,pageSize);
+    public List<JydpUserCoinOutRecordDO> getJydpUserCoinOutRecordlist(int userId, int pageNumber, int pageSize) {
+        return jydpUserCoinOutRecordDao.getJydpUserCoinOutRecordlist(userId,pageNumber,pageSize);
     }
 
     /**
      * 查询用户币种转出记录总数
-     * @param userAccount 用户账号
+     * @param userId 用户Id
      * @return 查询成功：返回记录总数；查询失败：返回0
      */
     @Override
-    public int countJydpUserCoinOutRecord(String userAccount) {
-        return jydpUserCoinOutRecordDao.countJydpUserCoinOutRecord(userAccount);
+    public int countJydpUserCoinOutRecord(int userId) {
+        return jydpUserCoinOutRecordDao.countJydpUserCoinOutRecord(userId);
     }
 
     /**
@@ -334,7 +334,11 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
 
             }
 
-            userCurrencyNumList = (List<UserCurrencyNumDO>)userCurrencyNumMap.values();
+            for (Map.Entry<String, UserCurrencyNumDO> entry: userCurrencyNumMap.entrySet()) {
+                UserCurrencyNumDO value = entry.getValue();
+                userCurrencyNumList.add(value);
+            }
+
             executeSuccess = userBalanceService.insertUserBalanceList(userBalanceList);
 
         }
@@ -365,5 +369,31 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
      */
     public JydpUserCoinOutRecordDO getJydpUserCoinOutRecordByRecordNo(String coinRecordNo){
         return jydpUserCoinOutRecordDao.getJydpUserCoinOutRecordByRecordNo(coinRecordNo);
+    }
+
+    /**
+     * 根据记录号查询记录批量修改转出状态
+     * @param coinRecordNoList 转出记录流水号集合
+     * @param outStatus 转出状态，1:待转出, 2:转出中, 3:转出成功, 4:转出失败
+     * @param finishTime 转完成时间
+     * @return 查询成功：true；查询失败：false
+     */
+    @Transactional
+    public boolean updateJydpUserCoinOutRecordOutStatus(List<String> coinRecordNoList, int outStatus, Timestamp finishTime){
+        boolean executeSuccess = false;
+        int result = jydpUserCoinOutRecordDao.updateJydpUserCoinOutRecordOutStatus(coinRecordNoList, outStatus, finishTime);
+        if(result <= 0){
+            return false;
+        }
+
+        if(result < coinRecordNoList.size()){
+            executeSuccess = false;
+        }
+
+        //数据回滚
+        if(!executeSuccess){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return executeSuccess;
     }
 }

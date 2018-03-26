@@ -52,8 +52,8 @@ public class JydpUserCoinOutRecordController {
         }
 
         int pageSize = 20;
-        String userAccount = userSession.getUserAccount();
-        int totalNumber = jydpUserCoinOutRecordService.countJydpUserCoinOutRecord(userAccount);
+        int userId = userSession.getUserId();
+        int totalNumber = jydpUserCoinOutRecordService.countJydpUserCoinOutRecord(userId);
 
         int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
         if (totalPageNumber <= 0) {
@@ -65,7 +65,7 @@ public class JydpUserCoinOutRecordController {
 
         List<JydpUserCoinOutRecordDO> jydpUserCoinOutRecordList = null;
         if (totalNumber > 0) {
-            jydpUserCoinOutRecordList = jydpUserCoinOutRecordService.getJydpUserCoinOutRecordlist(userAccount,pageNumber,pageSize);
+            jydpUserCoinOutRecordList = jydpUserCoinOutRecordService.getJydpUserCoinOutRecordlist(userId,pageNumber,pageSize);
         }
 
         request.setAttribute("pageNumber", pageNumber);

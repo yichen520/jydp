@@ -141,6 +141,12 @@ public class GetCurrentPriceAndBottomPriceController {
             Timestamp lingchenYesterday = DateUtil.longToTimestamp(DateUtil.lingchenLong() - 1000 * 60 * 60 * 24);
             TransactionBottomPriceDTO bottomPriceYesterday = transactionDealRedisService.
                     getBottomPrice(transactionCurrency.getCurrencyId(), SystemCommonConfig.TRANSACTION_MAKE_ORDER, lingchenYesterday, lingchenTime);
+            if (bottomPriceYesterday == null) {
+                bottomPriceYesterday = new TransactionBottomPriceDTO();
+                bottomPriceYesterday.setCurrencyId(transactionCurrency.getCurrencyId());
+                bottomPriceYesterday.setTotalNumber(0);
+                bottomPriceYesterday.setTotalPrice(0);
+            }
 
             //获取该币种 今天0点之前的最新系数,默认为0
             double yesterdayRatio = 0;

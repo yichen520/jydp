@@ -23,16 +23,16 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
     private SqlSessionTemplate sqlSessionTemplate;
 
     /**
-     * 根据用户账号查询用户币种转出记录
-     * @param userAccount 用户账号
+     * 根据用户Id查询用户币种转出记录
+     * @param userId 用户账号
      * @return 查询成功：返回用户转出记录；查询失败：返回null
      */
     @Override
-    public List<JydpUserCoinOutRecordDO> getJydpUserCoinOutRecordlist(String userAccount,int pageNumber, int pageSize) {
+    public List<JydpUserCoinOutRecordDO> getJydpUserCoinOutRecordlist(int userId,int pageNumber, int pageSize) {
 
         List<JydpUserCoinOutRecordDO> jydpUserCoinOutRecordList = null;
         Map<String, Object> map = new HashMap<>();
-        map.put("userAccount", userAccount);
+        map.put("userId", userId);
         map.put("startNumber", pageNumber * pageSize);
         map.put("pageSize", pageSize);
 
@@ -190,16 +190,16 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
 
     /**
      * 查询用户币种转出记录总数
-     * @param userAccount 用户账号
+     * @param userId 用户Id
      * @return 查询成功：返回记录总数；查询失败：返回0
      */
     @Override
-    public int countJydpUserCoinOutRecord(String userAccount) {
+    public int countJydpUserCoinOutRecord(int userId) {
 
         int count = 0;
 
         try {
-            count = sqlSessionTemplate.selectOne("JydpUserCoinOutRecord_countJydpUserCoinOutRecord",userAccount);
+            count = sqlSessionTemplate.selectOne("JydpUserCoinOutRecord_countJydpUserCoinOutRecord",userId);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
@@ -266,6 +266,29 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
         } else {
             return false;
         }
+    }
+
+    /**
+     * 根据记录号查询记录批量修改转出状态
+     * @param coinRecordNoList 转出记录流水号集合
+     * @param outStatus 转出状态，1:待转出, 2:转出中, 3:转出成功, 4:转出失败
+     * @param finishTime 转完成时间
+     * @return 查询成功：true；查询失败：false
+     */
+    public int updateJydpUserCoinOutRecordOutStatus(List<String> coinRecordNoList, int outStatus, Timestamp finishTime){
+        Map<String, Object> map = new HashMap<>();
+        map.put("coinRecordNoList", coinRecordNoList);
+        map.put("outStatus", outStatus);
+        map.put("finishTime", finishTime);
+        int result = 0;
+
+        try {
+            result = sqlSessionTemplate.update("JydpUserCoinOutRecord_updateJydpUserCoinOutRecordOutStatus", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return result;
     }
 
 }
