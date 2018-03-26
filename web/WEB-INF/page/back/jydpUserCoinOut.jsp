@@ -258,7 +258,7 @@
 
             } });
 
-        if(coinRecordNo.length < 1){
+        if(coinRecordNo.length < 1 || coinRecordNo == "" || coinRecordNo == null){
             openTips("请选择审核的记录！");
             return;
         }
@@ -320,7 +320,7 @@
                 coinRecordNo.push(checkVal);
             } });
 
-        if(coinRecordNo.length < 1){
+        if(coinRecordNo.length < 1 || coinRecordNo == "" || coinRecordNo == null){
             openTips("请选择审核的记录！");
             return;
         }
