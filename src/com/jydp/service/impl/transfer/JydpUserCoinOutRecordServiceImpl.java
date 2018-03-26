@@ -198,17 +198,16 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
         jydpUserCoinOutRecord.setCurrencyNumber(number);
         jydpUserCoinOutRecord.setRemark(remark);
         jydpUserCoinOutRecord.setAddTime(curTime);
+        jydpUserCoinOutRecord.setOutStatus(1);
 
         if (excuteSuccess) {    //添加用户币种转出记录
             if (jydpCoinConfig.getFreeCurrencyNumber() < number) {
                 jydpUserCoinOutRecord.setHandleStatus(1);
-                jydpUserCoinOutRecord.setOutStatus(1);
 
                 excuteSuccess = jydpUserCoinOutRecordDao.inesertJydpUserCoinOutRecord(jydpUserCoinOutRecord);
             } else {
                 jydpUserCoinOutRecord.setHandleStatus(2);
                 jydpUserCoinOutRecord.setHandleTime(curTime);
-                jydpUserCoinOutRecord.setOutStatus(2);
 
                 excuteSuccess = jydpUserCoinOutRecordDao.inesertJydpUserCoinOutRecord(jydpUserCoinOutRecord);
             }
