@@ -14,7 +14,7 @@ public class SylConfig {
     /**
      * 盛源链钱包平台服务器根路径
      **/
-    public static final String ROOT_URL = "http://test.oksheng.com.cn/syl/";
+    public static final String ROOT_URL = "http://192.168.12.37:8080/syl/";
 
     /**
      * 绑定用户接口
@@ -24,6 +24,6 @@ public class SylConfig {
     /**
      * 盛源链简称
      */
-    public static final String SHENYUAN_COIN = "XYZ";
+    public static final String SHENYUAN_COIN = "MUC";
 }
 
