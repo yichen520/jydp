@@ -6,13 +6,10 @@ import com.jydp.dao.IJydpUserCoinOutRecordDao;
 import com.jydp.entity.DO.transfer.JydpCoinConfigDO;
 import com.jydp.entity.DO.transfer.JydpUserCoinOutRecordDO;
 import com.jydp.entity.DO.user.UserBalanceDO;
-import com.jydp.service.IJydpUserCoinOutRecordService;
-import com.jydp.service.IUserBalanceService;
-import com.jydp.service.IUserCurrencyNumService;
-import config.SystemCommonConfig;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.service.*;
+import config.SystemCommonConfig;
 import config.UserBalanceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -169,7 +166,7 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
             orderNo = SystemCommonConfig.USER_BALANCE +
                     DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
                     NumberUtil.createNumberStr(10);
-            remark = "币种提现" + number + "，扣除数量";
+            remark = "币种提现,扣除币种数量";
 
             UserBalanceDO userBalance = new UserBalanceDO();
             userBalance.setOrderNo(orderNo);
@@ -189,7 +186,7 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
         orderNo = SystemCommonConfig.COIN_OUT +
                 DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
                 NumberUtil.createNumberStr(7);
-        remark = currencyName + ": 币种提现" + number;
+        remark = currencyName + ": 币种提现";
 
         JydpUserCoinOutRecordDO  jydpUserCoinOutRecord = new JydpUserCoinOutRecordDO();
         jydpUserCoinOutRecord.setCoinRecordNo(orderNo );
@@ -203,7 +200,7 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
         jydpUserCoinOutRecord.setAddTime(curTime);
 
         if (excuteSuccess) {    //添加用户币种转出记录
-            if (jydpCoinConfig.getFreeCurrencyNumber() <= number) {
+            if (jydpCoinConfig.getFreeCurrencyNumber() < number) {
                 jydpUserCoinOutRecord.setHandleStatus(1);
                 jydpUserCoinOutRecord.setOutStatus(1);
 
