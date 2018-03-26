@@ -141,7 +141,7 @@
                                 <c:if test="${item.rankNumber != 1}">
                                     <input type="text" value="上&nbsp;移" class="adUp" onfocus="this.blur()" onclick="upMove('${item.currencyId}')"/>
                                 </c:if>
-                                <c:if test="${item.rankNumber != totalNumber}">
+                                <c:if test="${item.rankNumber != totalCurrNumber}">
                                     <input type="text" value="下&nbsp;移" class="adDown" onfocus="this.blur()" onclick="downMove('${item.currencyId}')"/>
                                 </c:if>
                                 <c:if test="${item.rankNumber != 1}">
