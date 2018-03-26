@@ -121,6 +121,12 @@ public class UserCoinWithdrawalController {
             }
         }
 
+        if (userCoinConfig == null) {
+            response.setCode(3);
+            response.setMessage("网络错误,请刷新页面重试");
+            return  response;
+        }
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("userCoinConfig", userCoinConfig);
 

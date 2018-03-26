@@ -71,8 +71,8 @@
                     <tr class="tableInfo">
                         <td class="time"><fmt:formatDate type="time" value="${jydpCoinConfig.addTime }" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
                         <td class="coin">${jydpCoinConfig.currencyName}</td>
-                        <td class="amount">${jydpCoinConfig.freeCurrencyNumber}</td>
-                        <td class="amount">${jydpCoinConfig.minCurrencyNumber}</td>
+                        <td class="amount"><fmt:formatNumber type="number" value="${jydpCoinConfig.freeCurrencyNumber}" groupingUsed="FALSE" maxFractionDigits="4"/></td>
+                        <td class="amount"><fmt:formatNumber type="number" value="${jydpCoinConfig.minCurrencyNumber}" groupingUsed="FALSE" maxFractionDigits="4"/></td>
                         <td class="account">${jydpCoinConfig.backerAccount}</td>
                         <td class="ip">${jydpCoinConfig.ipAddress}</td>
                         <td class="operate">
@@ -118,12 +118,12 @@
             <p class="popInput">
                 <label class="popName">免审数量<span class="star">*</span></label>
                 <input type="text" class="entry" placeholder="币种转出的免审数量，无则填“0”" id="addFreeCurrencyNumber" name="addFreeCurrencyNumber"
-                       onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="18"/>
+                       onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="10"/>
             </p>
             <p class="popInput">
                 <label class="popName">最低数量<span class="star">*</span></label>
                 <input type="text" class="entry" placeholder="币种转出的最低数量，无则填“0”" id="addMinCurrencyNumber" name="addMinCurrencyNumber"
-                       onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="18"/>
+                       onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="10"/>
             </p>
 
             <div class="buttons">
@@ -181,8 +181,8 @@
             $(popObj).fadeOut("fast");
         });
         $(".yes").click(function(){
-            $(".mask").fadeOut("fast");
-            $(popObj).fadeOut("fast");
+            /*$(".mask").fadeOut("fast");
+            $(popObj).fadeOut("fast");*/
         });
     });
 
@@ -215,7 +215,6 @@
     function queryForm() {
         $("#queryForm").submit();
     }
-
 
     //删除
     function deleteCoin(recordNo) {
@@ -250,6 +249,7 @@
                 if (code != 1 && message != "") {
                     openTips(message);
                     deleteNoticeBoo = false;
+                    setTimeout("queryForm()", 1000);
                     return;
                 }
 
@@ -261,7 +261,6 @@
                 openTips("数据加载出错，请稍候重试");
             }
         });
-
     }
 
     //新增

@@ -298,6 +298,7 @@
                 if (code != 1 && message != "") {
                     auditPassedBoo = false;
                     openTips(message);
+                    setTimeout("queryForm()", 1000);
                     return;
                 }
 
@@ -359,6 +360,7 @@
                 if (code != 1 && message != "") {
                     auditRefuseBoo = false;
                     openTips(message);
+                    setTimeout("queryForm()", 1000);
                     return;
                 }
 
