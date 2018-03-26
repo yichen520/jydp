@@ -174,7 +174,7 @@
                 }
             }
             if (!isnext) {
-                openTips("图片格式必须是,jpeg,jpg,png中的一种！");
+                openTips("图片格式必须是jpeg,jpg,png中的一种！");
                 target.value = "";
                 return false;
             }
