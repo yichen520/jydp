@@ -4,11 +4,13 @@ import java.sql.Timestamp;
 
 /**
  * JYDP用户币种转出记录
+ *
  * @Author: wqq
  */
 public class JydpUserCoinOutRecordDO {
 
     private String coinRecordNo; //币种转出记录号 业务类型（2）+日期（6）+随机位（7）
+    private String sylRecordNo; //电子钱包操作记录号
     private int currencyId; //币种Id
     private int userId; //用户Id
     private String userAccount; //用户帐号
@@ -24,7 +26,8 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 币种转出记录号 业务类型（2）+日期（6）+随机位（7）
-     * @return
+     *
+     * @return coin record no
      */
     public String getCoinRecordNo() {
         return coinRecordNo;
@@ -32,15 +35,35 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 币种转出记录号 业务类型（2）+日期（6）+随机位（7）
-     * @param coinRecordNo
+     *
+     * @param coinRecordNo the coin record no
      */
     public void setCoinRecordNo(String coinRecordNo) {
         this.coinRecordNo = coinRecordNo;
     }
 
     /**
+     * 电子钱包操作记录号
+     *
+     * @return the syl record no
+     */
+    public String getSylRecordNo() {
+        return sylRecordNo;
+    }
+
+    /**
+     * 电子钱包操作记录号
+     *
+     * @param sylRecordNo the syl record no
+     */
+    public void setSylRecordNo(String sylRecordNo) {
+        this.sylRecordNo = sylRecordNo;
+    }
+
+    /**
      * 币种Id
-     * @return
+     *
+     * @return currency id
      */
     public int getCurrencyId() {
         return currencyId;
@@ -48,7 +71,8 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 币种Id
-     * @param currencyId
+     *
+     * @param currencyId the currency id
      */
     public void setCurrencyId(int currencyId) {
         this.currencyId = currencyId;
@@ -56,7 +80,8 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 用户Id
-     * @return
+     *
+     * @return user id
      */
     public int getUserId() {
         return userId;
@@ -64,7 +89,8 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 用户Id
-     * @param userId
+     *
+     * @param userId the user id
      */
     public void setUserId(int userId) {
         this.userId = userId;
@@ -72,7 +98,8 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 用户帐号
-     * @return
+     *
+     * @return user account
      */
     public String getUserAccount() {
         return userAccount;
@@ -80,7 +107,8 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 用户帐号
-     * @param userAccount
+     *
+     * @param userAccount the user account
      */
     public void setUserAccount(String userAccount) {
         this.userAccount = userAccount;
@@ -88,7 +116,8 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 电子钱包帐号
-     * @return
+     *
+     * @return wallet account
      */
     public String getWalletAccount() {
         return walletAccount;
@@ -96,7 +125,8 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 电子钱包帐号
-     * @param walletAccount
+     *
+     * @param walletAccount the wallet account
      */
     public void setWalletAccount(String walletAccount) {
         this.walletAccount = walletAccount;
@@ -104,7 +134,8 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 币种名称
-     * @return
+     *
+     * @return currency name
      */
     public String getCurrencyName() {
         return currencyName;
@@ -112,7 +143,8 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 币种名称
-     * @param currencyName
+     *
+     * @param currencyName the currency name
      */
     public void setCurrencyName(String currencyName) {
         this.currencyName = currencyName;
@@ -120,7 +152,8 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 币种数量
-     * @return
+     *
+     * @return currency number
      */
     public double getCurrencyNumber() {
         return currencyNumber;
@@ -128,7 +161,8 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 币种数量
-     * @param currencyNumber
+     *
+     * @param currencyNumber the currency number
      */
     public void setCurrencyNumber(double currencyNumber) {
         this.currencyNumber = currencyNumber;
@@ -136,7 +170,8 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 审核状态 1：待审核，2：审核通过，3：审核拒绝 4:已撤回
-     * @return
+     *
+     * @return handle status
      */
     public int getHandleStatus() {
         return handleStatus;
@@ -144,7 +179,8 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 审核状态 1：待审核，2：审核通过，3：审核拒绝 4:已撤回
-     * @param handleStatus
+     *
+     * @param handleStatus the handle status
      */
     public void setHandleStatus(int handleStatus) {
         this.handleStatus = handleStatus;
@@ -152,7 +188,8 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 审核时间
-     * @return
+     *
+     * @return handle time
      */
     public Timestamp getHandleTime() {
         return handleTime;
@@ -160,7 +197,8 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 审核时间
-     * @param handleTime
+     *
+     * @param handleTime the handle time
      */
     public void setHandleTime(Timestamp handleTime) {
         this.handleTime = handleTime;
@@ -168,7 +206,8 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 转出状态 1:待转出, 2:转出中, 3:转出成功, 4:转出失败
-     * @return
+     *
+     * @return out status
      */
     public int getOutStatus() {
         return outStatus;
@@ -176,7 +215,8 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 转出状态 1:待转出, 2:转出中, 3:转出成功, 4:转出失败
-     * @param outStatus
+     *
+     * @param outStatus the out status
      */
     public void setOutStatus(int outStatus) {
         this.outStatus = outStatus;
@@ -184,7 +224,8 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 完成时间
-     * @return
+     *
+     * @return finish time
      */
     public Timestamp getFinishTime() {
         return finishTime;
@@ -192,7 +233,8 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 完成时间
-     * @param finishTime
+     *
+     * @param finishTime the finish time
      */
     public void setFinishTime(Timestamp finishTime) {
         this.finishTime = finishTime;
@@ -200,7 +242,8 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 备注
-     * @return
+     *
+     * @return remark
      */
     public String getRemark() {
         return remark;
@@ -208,7 +251,8 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 备注
-     * @param remark
+     *
+     * @param remark the remark
      */
     public void setRemark(String remark) {
         this.remark = remark;
@@ -216,7 +260,8 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 添加时间
-     * @return
+     *
+     * @return add time
      */
     public Timestamp getAddTime() {
         return addTime;
@@ -224,7 +269,8 @@ public class JydpUserCoinOutRecordDO {
 
     /**
      * 添加时间
-     * @param addTime
+     *
+     * @param addTime the add time
      */
     public void setAddTime(Timestamp addTime) {
         this.addTime = addTime;

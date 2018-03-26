@@ -299,7 +299,7 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
                 String orderNo = SystemCommonConfig.USER_BALANCE + DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
                                    NumberUtil.createNumberStr(10);
                 int id = jydpUserCoinOutRecordDO.getUserId();
-
+                String fromType = "币种提现";
                 int currencyId = jydpUserCoinOutRecordDO.getCurrencyId();
                 String currencyName = jydpUserCoinOutRecordDO.getCurrencyName();
                 double balanceNumber = jydpUserCoinOutRecordDO.getCurrencyNumber();
@@ -371,28 +371,42 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
     }
 
     /**
-     * 根据记录号查询记录批量修改转出状态
+     * 根据记录号查询记录批量修改转出状态(jydp向syl提币申请)
      * @param coinRecordNoList 转出记录流水号集合
-     * @param outStatus 转出状态，1:待转出, 2:转出中, 3:转出成功, 4:转出失败
-     * @param finishTime 转完成时间
-     * @return 查询成功：true；查询失败：false
+     * @return 修改成功：true；修改失败：false
      */
-    @Transactional
-    public boolean updateJydpUserCoinOutRecordOutStatus(List<String> coinRecordNoList, int outStatus, Timestamp finishTime){
-        boolean executeSuccess = false;
-        int result = jydpUserCoinOutRecordDao.updateJydpUserCoinOutRecordOutStatus(coinRecordNoList, outStatus, finishTime);
-        if(result <= 0){
-            return false;
-        }
+    public boolean updateJydpUserCoinOutRecordOutStatus(List<String> coinRecordNoList){
+        return jydpUserCoinOutRecordDao.updateJydpUserCoinOutRecordOutStatus(coinRecordNoList);
+    }
 
-        if(result < coinRecordNoList.size()){
-            executeSuccess = false;
-        }
+    /**
+     * 查询审核通过且未推送的列表
+     * @return 查询成功：返回列表；查询失败，返回null
+     */
+    public List<JydpUserCoinOutRecordDO> listNotPushRecord(){
+        return jydpUserCoinOutRecordDao.listNotPushRecord();
+    }
 
-        //数据回滚
-        if(!executeSuccess){
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-        }
-        return executeSuccess;
+    /**
+     * 根据币种及电子钱包操作记录号查询记录
+     * @param recordNo 电子钱包操作记录号
+     * @param coinId 币种Id
+     * @return 查询成功：返回记录信息；查询失败或者没有相关记录：返回null
+     */
+    public JydpUserCoinOutRecordDO getJydpUserCoinOutRecordByRecordNoAndCoinType(String recordNo, int coinId){
+        return jydpUserCoinOutRecordDao.getJydpUserCoinOutRecordByRecordNoAndCoinType(recordNo, coinId);
+    }
+
+    /**
+     * Syl回调接收参数修改
+     * @param orderNo 转出记录流水号
+     * @param recordNo 盛源链记录号
+     * @param coinId 币种Id
+     * @param code 状态 （1表示交易成功，2表示交易失败）
+     * @param receiveTime 完成时间
+     * @return 查询成功：返回记录信息；查询失败：返回null
+     */
+    public boolean updateJydpUserCoinOutRecordBySyl(String orderNo, String recordNo, int coinId, int code, Timestamp receiveTime){
+        return jydpUserCoinOutRecordDao.updateJydpUserCoinOutRecordBySyl(orderNo , recordNo, coinId, code, receiveTime);
     }
 }

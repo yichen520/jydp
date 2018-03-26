@@ -3,6 +3,7 @@ package com.jydp.dao.impl.user;
 import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.IUserDao;
 import com.jydp.entity.DO.user.UserDO;
+import com.jydp.entity.DTO.SylUserDO;
 import com.jydp.entity.DTO.UserAmountCheckDTO;
 import com.jydp.entity.DTO.UserDTO;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -334,6 +335,28 @@ public class UserDaoImpl implements IUserDao {
 
         try {
             user = sqlSessionTemplate.selectOne("User_getUserByPhone",phoneNumber);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return user;
+    }
+
+    /**
+     * 根据手机号及密码查询用户信息
+     * @param phoneAreaCode 用户手机区号
+     * @param phoneNumber 用户手机号
+     * @param password 用户密码
+     * @return 查询成功：返回用户信息；查询失败：返回null
+     */
+    public SylUserDO getUserByPhoneAndPassword(String phoneAreaCode, String phoneNumber, String password){
+        Map<String,Object> map = new HashMap<>();
+        map.put("phoneAreaCode", phoneAreaCode);
+        map.put("phoneNumber", phoneNumber);
+        map.put("password", password);
+
+        SylUserDO user = null;
+        try {
+            user = sqlSessionTemplate.selectOne("User_getUserByPhoneAndPassword",map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }

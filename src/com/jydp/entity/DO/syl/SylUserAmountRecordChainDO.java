@@ -11,11 +11,8 @@ public class SylUserAmountRecordChainDO {
     private String recordNo;  //记录号 : 业务类型（2）+日期（6）+随机位（7）
     private String sylRecordNo;  //盛源链记录号
     private String userAccount;  //用户账号
-    private String userSylAccount;  //盛源链APP用户帐号
-    private String chainAddress;  //盛源链地址
-    private String chainAddressName;  //盛源链地址别名
+    private String coinType;  //币种类型
     private double shengyuanCoin;  //盛源币
-    private double tranRatio;  //交易费率
     private int handleStatus;  //操作状态 1：操作中，2：操作成功，3：操作失败
     private String handleMark;  //操作说明
     private Timestamp handleTime;  //操作时间 : 盛源链app完成时间
@@ -76,57 +73,21 @@ public class SylUserAmountRecordChainDO {
     }
 
     /**
-     * 盛源链APP用户帐号
+     * 币种类型
      *
-     * @return the user syl account
+     * @return the coin type
      */
-    public String getUserSylAccount() {
-        return userSylAccount;
+    public String getCoinType() {
+        return coinType;
     }
 
     /**
-     * 盛源链APP用户帐号
+     * 币种类型
      *
-     * @param userSylAccount the user syl account
+     * @param coinType the coin type
      */
-    public void setUserSylAccount(String userSylAccount) {
-        this.userSylAccount = userSylAccount;
-    }
-
-    /**
-     * 盛源链地址
-     *
-     * @return the chain address
-     */
-    public String getChainAddress() {
-        return chainAddress;
-    }
-
-    /**
-     * 盛源链地址
-     *
-     * @param chainAddress the chain address
-     */
-    public void setChainAddress(String chainAddress) {
-        this.chainAddress = chainAddress;
-    }
-
-    /**
-     * 盛源链地址别名
-     *
-     * @return the chain address name
-     */
-    public String getChainAddressName() {
-        return chainAddressName;
-    }
-
-    /**
-     * 盛源链地址别名
-     *
-     * @param chainAddressName the chain address name
-     */
-    public void setChainAddressName(String chainAddressName) {
-        this.chainAddressName = chainAddressName;
+    public void setCoinType(String coinType) {
+        this.coinType = coinType;
     }
 
     /**
@@ -145,24 +106,6 @@ public class SylUserAmountRecordChainDO {
      */
     public void setShengyuanCoin(double shengyuanCoin) {
         this.shengyuanCoin = shengyuanCoin;
-    }
-
-    /**
-     * 交易费率
-     *
-     * @return the tran ratio
-     */
-    public double getTranRatio() {
-        return tranRatio;
-    }
-
-    /**
-     * 交易费率
-     *
-     * @param tranRatio the tran ratio
-     */
-    public void setTranRatio(double tranRatio) {
-        this.tranRatio = tranRatio;
     }
 
     /**
