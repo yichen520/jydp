@@ -300,16 +300,16 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
                 String orderNo = SystemCommonConfig.USER_BALANCE + DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
                                    NumberUtil.createNumberStr(10);
                 int id = jydpUserCoinOutRecordDO.getUserId();
-                String fromType = "币种提现";
+
                 int currencyId = jydpUserCoinOutRecordDO.getCurrencyId();
                 String currencyName = jydpUserCoinOutRecordDO.getCurrencyName();
                 double balanceNumber = jydpUserCoinOutRecordDO.getCurrencyNumber();
                 double frozenNumber= 0;
-                String remark = "币种提现返还扣除币数量" + balanceNumber;
+                String remark = "币种提现返还扣除币数量";
 
                 userBalanceDO.setOrderNo(orderNo);
                 userBalanceDO.setUserId(id);
-                userBalanceDO.setFromType(fromType);
+                userBalanceDO.setFromType(UserBalanceConfig.COIN_WITHDRAWAL);
                 userBalanceDO.setCurrencyId(currencyId);
                 userBalanceDO.setCurrencyName(currencyName);
                 userBalanceDO.setBalanceNumber(balanceNumber);
