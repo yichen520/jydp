@@ -158,4 +158,14 @@ public interface ITransactionPendOrderDao {
      */
     List<TransactionPendOrderVO> listPendOrderForWeb(int userId, int currencyId, int pageNumber, int pageSize);
 
+    /**
+     * 分页查询委托记录列表（wap交易中心）
+     * @param userId 用户id
+     * @param currencyId 币种id
+     * @param pageNumber 起始页数
+     * @param pageSize 每页条数
+     * @return 操作成功：返回挂单记录列表，操作失败：返回null
+     */
+    List<TransactionPendOrderVO> listPendOrderForWap(int userId, int currencyId, int pageNumber, int pageSize);
+
 }

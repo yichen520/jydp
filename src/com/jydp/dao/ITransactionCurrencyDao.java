@@ -141,6 +141,12 @@ public interface ITransactionCurrencyDao {
     List<TransactionCurrencyVO> getOnlineAndSuspensionCurrencyForWeb();
 
     /**
+     * 获取所有上线和停牌币种信息
+     * @return 操作成功：返回币种信息集合，操作失败：返回null
+     */
+    List<TransactionCurrencyVO> getOnlineAndSuspensionCurrencyForWap();
+
+    /**
      * 根据币种排名位置获取币种信息id
      * @param rankNumber   排名位置
      * @return  操作成功：返回币种Id，操作失败：返回0

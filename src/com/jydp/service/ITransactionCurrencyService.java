@@ -182,6 +182,12 @@ public interface ITransactionCurrencyService {
     List<TransactionCurrencyVO> getOnlineAndSuspensionCurrencyForWeb();
 
     /**
+     * 获取所有上线和停牌币种信息
+     * @return 操作成功：返回币种信息集合，操作失败：返回null
+     */
+    List<TransactionCurrencyVO> getOnlineAndSuspensionCurrencyForWap();
+
+    /**
      * 上移币种
      * @param currencyId  币种Id
      * @return  操作成功：返回true，操作失败：返回false

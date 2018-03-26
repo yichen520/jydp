@@ -353,6 +353,22 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
     }
 
     /**
+     * 获取所有上线和停牌币种信息
+     * @return 操作成功：返回币种信息集合，操作失败：返回null
+     */
+    @Override
+    public List<TransactionCurrencyVO> getOnlineAndSuspensionCurrencyForWap() {
+        List<TransactionCurrencyVO> transactionCurrencyList = null;
+
+        try {
+            transactionCurrencyList = sqlSessionTemplate.selectList("TransactionCurrency_getOnlineAndSuspensionCurrencyForWap");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return transactionCurrencyList;
+    }
+
+    /**
      * 根据币种排名位置获取币种信息id
      * @param rankNumber   排名位置
      * @return  操作成功：返回币种Id，操作失败：返回0

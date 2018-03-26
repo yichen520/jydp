@@ -211,6 +211,14 @@
         ORDER BY rankNumber ASC
     </select>
 
+    <select id="TransactionCurrency_getOnlineAndSuspensionCurrencyForWap" resultType="TransactionCurrencyVO">
+        SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, guidancePrice,
+        paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
+        FROM transaction_currency_tab
+        WHERE upStatus IN (2,3)
+        ORDER BY rankNumber ASC
+    </select>
+
     <select id="TransactionCurrency_getTransactionCurrencyByRankNumber" parameterType="int" resultType="int">
         SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, guidancePrice,
             paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime

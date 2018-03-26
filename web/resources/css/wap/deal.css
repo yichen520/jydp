@@ -473,3 +473,117 @@
 .choseBzBox-content ul li p:nth-of-type(3){
     text-align: right;
 }
+.mask{
+    display: none;
+    position:fixed;
+    width: 100%;
+    min-width: 1400px;
+    height:100%;
+    background-color:rgba(0,0,0,0.6);
+    z-index:10;
+    top:0;
+}
+.mask_content{
+    width:400px;
+    margin:300px  auto;
+    background-color:#ffffff;
+    font-size: 14px;
+    border-radius: 5px;
+}
+.popTitle{
+    position: relative;
+    padding-left: 20px;
+    width: 380px;
+    height: 40px;
+    line-height: 40px;
+    display: inline-block;
+    border-radius: 10px 10px 0 0;
+    font-size: 16px;
+    color: #666666;
+    border-bottom: 1px solid #ececec;
+}
+.popInput{
+    display: inline-block;
+    margin-top: 15px;
+    padding: 0 20px;
+    width: 360px;
+    text-align: left;
+}
+.popTips{
+    margin-top: 15px;
+    padding: 0 20px;
+    width: 360px;
+    font-size: 15px;
+    color: #666666;
+}
+.tipsImg{
+    margin-right: 15px;
+    vertical-align: middle;
+}
+.buttons{
+    padding: 20px 20px 20px 0;
+    width: 380px;
+    text-align: right;
+}
+.yes{
+    width: 65px;
+    height: 30px;
+    border: 1px solid #e83a33;
+    background-color: #e83a33;
+    text-align: center;
+    font-size: 14px;
+    color: #ffffff;
+    cursor: pointer;
+}
+.yes:hover{
+    background-color: #d0342e;
+}
+.cancel{
+    margin-right: 20px;
+    width: 65px;
+    height: 30px;
+    border: 1px solid #cccccc;
+    background-color: #ffffff;
+    text-align: center;
+    font-size: 14px;
+    color: #333333;
+    cursor: pointer;
+}
+.cancel:hover{
+    opacity: 0.8;
+}
+
+.buyConfirm,.sellConfirm,.revoke_pop,.password_pop{
+    display: none;
+}
+.popName{
+    float: left;
+    width: 100px;
+    height: 20px;
+    line-height: 20px;
+    text-align: left;
+    color: #666666;
+    font-size: 14px;
+}
+.popInfo{
+    float: right;
+    text-align: left;
+    width: 250px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 14px;
+    color: #777777;
+    word-break: break-all;
+}
+.star{
+    color: #ff0000;
+}
+.popTips label{
+    float: left;
+    width: 100%;
+    line-height: 35px;
+}
+.password_pop .popName{
+    height: 35px;
+    line-height: 35px;
+}

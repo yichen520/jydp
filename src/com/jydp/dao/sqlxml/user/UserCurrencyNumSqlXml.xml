@@ -52,6 +52,14 @@
         </foreach>
     </insert>
 
+    <insert id="UserCurrencyNum_insertUserCurrencyForWap" parameterType="java.util.List">
+        INSERT INTO user_currency_num_tab(userId, currencyId, addTime)
+        VALUES
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            (#{item.userId}, #{item.currencyId}, #{item.addTime})
+        </foreach>
+    </insert>
+
     <update id="UserCurrencyNum_increaseCurrencyNumber" parameterType="UserCurrencyNumDO">
         UPDATE user_currency_num_tab
         SET currencyNumber = currencyNumber + #{currencyNumber}
