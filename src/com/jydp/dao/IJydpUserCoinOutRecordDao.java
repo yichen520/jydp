@@ -114,4 +114,22 @@ public interface IJydpUserCoinOutRecordDao {
      * @return 查询成功：返回列表；查询失败，返回null
      */
     List<JydpUserCoinOutRecordDO> listNotPushRecord();
+    /**
+     * 根据币种及电子钱包操作记录号查询记录
+     * @param recordNo 电子钱包操作记录号
+     * @param coinId 币种Id
+     * @return 查询成功：返回记录信息；查询失败或者没有相关记录：返回null
+     */
+    JydpUserCoinOutRecordDO getJydpUserCoinOutRecordByRecordNoAndCoinType(String recordNo, int coinId);
+
+    /**
+     * Syl回调接收参数修改
+     * @param orderNo 转出记录流水号
+     * @param recordNo 盛源链记录号
+     * @param coinId 币种Id
+     * @param code 状态 （1表示交易成功，2表示交易失败）
+     * @param receiveTime 完成时间
+     * @return 查询成功：返回记录信息；查询失败：返回null
+     */
+    boolean updateJydpUserCoinOutRecordBySyl(String orderNo, String recordNo, int coinId, int code,Timestamp receiveTime);
 }

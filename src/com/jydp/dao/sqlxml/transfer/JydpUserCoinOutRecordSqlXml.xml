@@ -188,4 +188,23 @@
         WHERE handleStatus = 2
           AND outStatus = 1
     </select>
+
+    <select id="JydpUserCoinOutRecord_getJydpUserCoinOutRecordByRecordNoAndCoinType" parameterType="java.util.Map" resultType="JydpUserCoinOutRecordDO">
+        SELECT coinRecordNo, currencyId, userId, userAccount, walletAccount, currencyName, currencyNumber, handleStatus, handleTime,
+        outStatus, finishTime, remark, addTime
+        FROM jydp_user_coin_out_record_tab
+        WHERE sylRecordNo = #{sylRecordNo}
+        AND currencyId = #{coinId}
+        AND handleStatus = 2
+    </select>
+
+
+    <update id="JydpUserCoinOutRecord_updateJydpUserCoinOutRecordBySyl" parameterType="java.util.Map">
+        UPDATE jydp_user_coin_out_record_tab
+        SET sylRecordNo = #{recordNo}, outStatus = #{code}, finishTime = #{receiveTime},
+        WHERE coinRecordNo = #{orderNo}
+        AND handleStatus = 2
+        AND outStatus = 2
+        AND currencyId = #{coinId}
+    </update>
 </mapper>
