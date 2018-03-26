@@ -27,7 +27,6 @@ import java.util.TreeMap;
  * @author sy
  */
 @Controller
-@RequestMapping("/syl/sylUserBound")
 @Scope(value = "prototype")
 public class SylUserBoundController {
 
@@ -43,11 +42,9 @@ public class SylUserBoundController {
     @Autowired
     private IUserIdentificationService userIdentificationService;
 
-
-
     /** 盛源链账号绑定请求接收 */
-    @RequestMapping(value = "/userBound", method = RequestMethod.POST)
-    public @ResponseBody JSONObject userBound(@RequestBody String requestJsonString) {
+    @RequestMapping(value = "/bindUser", method = RequestMethod.POST)
+    public @ResponseBody JSONObject bindUser(@RequestBody String requestJsonString) {
         JSONObject responseJson = new JSONObject();
         JSONObject requestJson = null;
         try {

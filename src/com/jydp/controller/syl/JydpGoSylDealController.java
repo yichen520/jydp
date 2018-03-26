@@ -23,11 +23,9 @@ import java.util.TreeMap;
 
 /**
  * SYL转账盛源链(JYDP-->SYL)
- *
  * @author sy
  */
 @Controller
-@RequestMapping("/syl/JydpGoSylDeal")
 @Scope(value = "prototype")
 public class JydpGoSylDealController {
 
@@ -44,8 +42,8 @@ public class JydpGoSylDealController {
     private IUserService userService;
 
     /** 接收SYL转账盛源链成功回调请求 */
-    @RequestMapping(value = "/transferReception", method = RequestMethod.POST)
-    public @ResponseBody JSONObject transferReception(@RequestBody String requestJsonString) {
+    @RequestMapping(value = "/getCoinNotify", method = RequestMethod.POST)
+    public @ResponseBody JSONObject getCoinNotify(@RequestBody String requestJsonString) {
         JSONObject responseJson = new JSONObject();
         JSONObject requestJson = null;
         try {

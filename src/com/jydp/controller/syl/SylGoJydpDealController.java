@@ -23,7 +23,6 @@ import java.util.TreeMap;
  * @author sy
  */
 @Controller
-@RequestMapping("/syl/sylGoJydpDeal")
 @Scope(value = "prototype")
 public class SylGoJydpDealController {
 
@@ -36,8 +35,8 @@ public class SylGoJydpDealController {
     private IUserService userService;
 
     /** 接收SYL转账盛源链请求 */
-    @RequestMapping(value = "/transferReception", method = RequestMethod.POST)
-    public @ResponseBody JSONObject transferReception(@RequestBody String requestJsonString) {
+    @RequestMapping(value = "/rechargeCoin", method = RequestMethod.POST)
+    public @ResponseBody JSONObject rechargeCoin(@RequestBody String requestJsonString) {
         JSONObject responseJson = new JSONObject();
         JSONObject requestJson = null;
         try {
