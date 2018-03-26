@@ -81,17 +81,28 @@ public interface IJydpUserCoinOutRecordService {
                                                             int pageNumber, int pageSize);
 
     /**
-     * 批量审核通过用户用户币种转出记录
+     * 批量审核通过用户币种转出记录
      * @param coinRecordNoList 记录号集合
+     * @param remark 备注
+     * @param handleTime 审核时间
      * @return 操作成功：true；查询失败：false
      */
-    boolean updateHandleStatus(List<String> coinRecordNoList, String remark);
+    boolean updateHandleStatus(List<String> coinRecordNoList, String remark, Timestamp handleTime);
 
     /**
-     * 批量审核拒绝用户用户币种转出记录
+     * 批量审核拒绝用户币种转出记录
      * @param coinRecordNoList 记录号集合
+     * @param remarks 备注
+     * @param handleTime 审核时间
      * @return 操作成功：true；查询失败：false
      */
-    boolean updateRefuseHandleStatus(List<String> coinRecordNoList, String remarks);
+    boolean updateRefuseHandleStatus(List<String> coinRecordNoList, String remarks, Timestamp handleTime);
+
+    /**
+     * 根据记录号查询记录
+     * @param coinRecordNo 转出记录流水号
+     * @return 查询成功：返回记录信息；查询失败：返回null
+     */
+    JydpUserCoinOutRecordDO getJydpUserCoinOutRecordByRecordNo(String coinRecordNo);
 
 }

@@ -86,14 +86,14 @@ public interface IJydpUserCoinOutRecordDao {
      * @param coinRecordNoList 记录号集合
      * @return 操作成功：true；查询失败：false
      */
-    boolean updateHandleStatus(List<String> coinRecordNoList, String remark);
+    boolean updateHandleStatus(List<String> coinRecordNoList, String remark, Timestamp handleTime);
 
     /**
      * 批量审核拒绝用户用户币种转出记录
      * @param coinRecordNoList 记录号集合
      * @return 操作成功：true；查询失败：false
      */
-    boolean updateRefuseHandleStatus(List<String> coinRecordNoList, String remarks);
+    boolean updateRefuseHandleStatus(List<String> coinRecordNoList, String remarks, Timestamp handleTime);
 
     /**
      * 批量查询用户币种转出记录
@@ -101,4 +101,5 @@ public interface IJydpUserCoinOutRecordDao {
      * @return 操作成功：用户转出记录集合；查询失败：null
      */
     List<JydpUserCoinOutRecordDO> listJydpUserCoinOutRecordByCoinRecordNo(List<String> coinRecordNoList);
+
 }

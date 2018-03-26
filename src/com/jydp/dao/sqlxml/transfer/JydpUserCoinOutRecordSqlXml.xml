@@ -136,7 +136,7 @@
 
     <update id="JydpUserCoinOutRecord_updateHandleStatus" parameterType="java.util.Map">
         UPDATE jydp_user_coin_out_record_tab
-        SET handleStatus = 2
+        SET handleStatus = 2, handleTime = #{handleTime}
         <if test="remark!= null and remark != ''">
              , remark = #{remark}
         </if>
@@ -149,7 +149,7 @@
 
     <update id="JydpUserCoinOutRecord_updateRefuseHandleStatus" parameterType="java.util.Map">
         UPDATE jydp_user_coin_out_record_tab
-        SET handleStatus = 3
+        SET handleStatus = 3, handleTime = #{handleTime}
         <if test="remark!= null and remark != ''">
             , remark = #{remark}
         </if>
