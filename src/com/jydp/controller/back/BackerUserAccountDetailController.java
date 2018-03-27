@@ -13,7 +13,6 @@ import com.jydp.service.IBackerService;
 import com.jydp.service.ITransactionCurrencyService;
 import com.jydp.service.IUserCurrencyNumService;
 import com.jydp.service.IUserService;
-import com.jydp.service.IUserSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -50,10 +49,6 @@ public class BackerUserAccountDetailController {
     /** 后台管理员 */
     @Autowired
     private IBackerService backerService;
-
-    /** 用户登录记录 */
-    @Autowired
-    private IUserSessionService userSessionService;
 
     /** 交易币种 */
     @Autowired

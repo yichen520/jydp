@@ -105,13 +105,15 @@
 	</select>
 
 	<select id="TransactionDealRedis_getCurrentPrice" parameterType="java.util.Map" resultType="double">
-		SELECT transactionPrice
-		FROM transaction_deal_redis_tab
-		WHERE currencyId = #{currencyId}
-		  AND orderNo LIKE CONCAT(#{orderNoPrefix}, '%')
-		  AND addTime <![CDATA[ <= ]]> #{addTime}
-		ORDER BY addTime DESC, id DESC
-		LIMIT 0,1
+        SELECT IFNULL((
+        SELECT transactionPrice
+        FROM transaction_deal_redis_tab
+        WHERE currencyId = #{currencyId}
+        AND orderNo LIKE CONCAT(#{orderNoPrefix}, '%')
+        AND addTime <![CDATA[ <= ]]> #{addTime}
+        ORDER BY addTime DESC, id DESC
+        LIMIT 0,1
+        ), 0)
 	</select>
 
 	<select id="TransactionUserDeal_listTransactionUserDealForKline" parameterType="java.util.Map" resultType="TransactionDealRedisDTO">

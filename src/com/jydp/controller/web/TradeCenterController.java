@@ -525,13 +525,15 @@ public class TradeCenterController {
 
         //获取币种信息
         TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
-        if(transactionCurrency != null){
-
-            if(transactionCurrency.getUpStatus() == 4){
-                resultJson.setCode(5);
-                resultJson.setMessage("该币种不在上线状态");
-                return resultJson;
-            }
+        if (transactionCurrency == null) {
+            resultJson.setCode(3);
+            resultJson.setMessage("币种信息获取失败,请稍候再试");
+            return resultJson;
+        }
+        if (transactionCurrency.getUpStatus() == 4) {
+            resultJson.setCode(5);
+            resultJson.setMessage("该币种不在上线状态");
+            return resultJson;
         }
 
         List<TransactionDealRedisDO> dealList = null;
@@ -572,13 +574,15 @@ public class TradeCenterController {
 
         //获取币种信息
         TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
-        if(transactionCurrency != null){
-
-            if(transactionCurrency.getUpStatus() == 4){
-                resultJson.setCode(5);
-                resultJson.setMessage("该币种不在上线状态");
-                return resultJson;
-            }
+        if (transactionCurrency == null) {
+            resultJson.setCode(3);
+            resultJson.setMessage("该币种不在上线状态");
+            return resultJson;
+        }
+        if (transactionCurrency.getUpStatus() == 4) {
+            resultJson.setCode(5);
+            resultJson.setMessage("该币种不在上线状态");
+            return resultJson;
         }
 
         List<TransactionPendOrderDTO> transactionPendOrderBuyList = null;
