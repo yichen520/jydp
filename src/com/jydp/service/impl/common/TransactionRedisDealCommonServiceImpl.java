@@ -432,12 +432,11 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                 //查询当前币种后台做单的redis成交记录---最早的记录时间
                 Timestamp redisTime = transactionDealRedisService.getEarliestTime(currencyId, SystemCommonConfig.
                         TRANSACTION_MAKE_ORDER);
-                long redisTimeLong = redisTime.getTime();
-                if (redisTime == null || redisTimeLong >= toDayDawnLong) {//判定是否为当日的成交记录
+                if (redisTime == null || redisTime.getTime() >= toDayDawnLong) {//判定是否为当日的成交记录
                     continue;
                 }
                 //统计
-                statistics(currencyId, toDayDawnLong, curTime, redisTimeLong, transactionCurrencyCoefficient, ordernNoPrefix);
+                statistics(currencyId, toDayDawnLong, curTime, redisTime.getTime(), transactionCurrencyCoefficient, ordernNoPrefix);
                 continue;
             }
             //当前币种存在统计记录
