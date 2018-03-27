@@ -332,6 +332,7 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
                     double currencyNumber = userCurrencyNumMap.get(key).getCurrencyNumber();
                     currencyNumber = currencyNumber + balanceNumber;
                     userCurrencyNumMap.get(key).setCurrencyNumber(currencyNumber);
+                    continue;
                 }
                 userCurrencyNumMap.put(key, userCurrencyNumDO);
 

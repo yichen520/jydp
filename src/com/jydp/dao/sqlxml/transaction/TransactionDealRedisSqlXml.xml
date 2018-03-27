@@ -9,7 +9,7 @@
 		SELECT id, orderNo, paymentType, currencyId, transactionPrice, currencyNumber, currencyTotalPrice, addTime
 	  	FROM transaction_deal_redis_tab
 	  	WHERE currencyId = #{currencyId}
-			AND addTime <![CDATA[ <= ]]> NOW()
+			AND addTime <![CDATA[ <= ]]> #{addTime}
 		ORDER BY addTime DESC, id DESC
 		LIMIT #{num}
 	</select>
@@ -34,35 +34,35 @@
 			</foreach>
 	</insert>
 
-	<select id="TransactionDealRedis_getNowTurnover" parameterType="java.sql.Timestamp" resultType="TransactionDealPriceDTO">
+	<select id="TransactionDealRedis_getNowTurnover" parameterType="java.util.Map" resultType="TransactionDealPriceDTO">
 		SELECT SUM(TDRT.currencyNumber) transactionPrice,TDRT.currencyId
 		FROM transaction_deal_redis_tab  TDRT
 		WHERE TDRT.addTime <![CDATA[ >= ]]> #{date}
-			  AND addTime <![CDATA[ <= ]]> NOW()
+			  AND addTime <![CDATA[ <= ]]> #{addTime}
 		GROUP BY TDRT.currencyId
 	</select>
 
-	<select id="TransactionDealRedis_getNowVolumeOfTransaction" parameterType="java.sql.Timestamp" resultType="TransactionDealPriceDTO">
+	<select id="TransactionDealRedis_getNowVolumeOfTransaction" parameterType="java.util.Map" resultType="TransactionDealPriceDTO">
 		SELECT SUM(TDRT.currencyTotalPrice) transactionPrice,TDRT.currencyId
 		FROM transaction_deal_redis_tab  TDRT
 		WHERE TDRT.addTime <![CDATA[ >= ]]> #{date}
-			  AND addTime <![CDATA[ <= ]]> NOW()
+			  AND addTime <![CDATA[ <= ]]> #{addTime}
 		GROUP BY TDRT.currencyId
 	</select>
 
-	<select id="TransactionDealRedis_getTodayHighestPrice" parameterType="java.sql.Timestamp" resultType="TransactionDealPriceDTO">
+	<select id="TransactionDealRedis_getTodayHighestPrice" parameterType="java.util.Map" resultType="TransactionDealPriceDTO">
 		SELECT MAX(TDRT.transactionPrice) transactionPrice,TDRT.currencyId
 		FROM transaction_deal_redis_tab  TDRT
 		WHERE TDRT.addTime <![CDATA[ >= ]]> #{date}
-			  AND addTime <![CDATA[ <= ]]> NOW()
+			  AND addTime <![CDATA[ <= ]]> #{addTime}
 		GROUP BY TDRT.currencyId
 	</select>
 
-	<select id="TransactionDealRedis_getTodayLowestPrice" parameterType="java.sql.Timestamp" resultType="TransactionDealPriceDTO">
+	<select id="TransactionDealRedis_getTodayLowestPrice" parameterType="java.util.Map" resultType="TransactionDealPriceDTO">
 		SELECT MIN(TDRT.transactionPrice) transactionPrice,TDRT.currencyId
 		FROM transaction_deal_redis_tab  TDRT
 		WHERE TDRT.addTime <![CDATA[ >= ]]> #{date}
-			  AND addTime <![CDATA[ <= ]]> NOW()
+			  AND addTime <![CDATA[ <= ]]> #{addTime}
 		GROUP BY TDRT.currencyId
 	</select>
 
@@ -109,16 +109,16 @@
 		FROM transaction_deal_redis_tab
 		WHERE currencyId = #{currencyId}
 		  AND orderNo LIKE CONCAT(#{orderNoPrefix}, '%')
-		  AND addTime <![CDATA[ <= ]]> NOW()
+		  AND addTime <![CDATA[ <= ]]> #{addTime}
 		ORDER BY addTime DESC, id DESC
 		LIMIT 0,1
 	</select>
 
-	<select id="TransactionUserDeal_listTransactionUserDealForKline" parameterType="int" resultType="TransactionDealRedisDTO">
+	<select id="TransactionUserDeal_listTransactionUserDealForKline" parameterType="java.util.Map" resultType="TransactionDealRedisDTO">
 		SELECT transactionPrice, currencyNumber, addTime
 		FROM transaction_deal_redis_tab
 		WHERE currencyId = #{currencyId}
-		AND addTime <![CDATA[ <= ]]> NOW()
+		AND addTime <![CDATA[ <= ]]> #{addTime}
 		ORDER BY addTime, id DESC
 	</select>
 
