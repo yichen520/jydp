@@ -129,6 +129,13 @@ public class BackerTransactionCurrencyController {
         if (totalNumber > 0) {
             transactionCurrencyVOList = transactionCurrencyService.listTransactionCurrencyForBack(currencyNameStr, paymentType,
                     upStatus, backAccount, startAddTime, endAddTime,  startUpTime, endUpTime, pageNumber, pageSize);
+
+            if (transactionCurrencyVOList != null && transactionCurrencyVOList.size() > 0) {
+                for (TransactionCurrencyVO curr: transactionCurrencyVOList) {
+                    curr.setBuyFee(BigDecimalUtil.mul(curr.getBuyFee(), 100));
+                    curr.setSellFee(BigDecimalUtil.mul(curr.getSellFee(), 100));
+                }
+            }
         }
         int totalCurrNumber = transactionCurrencyService.countTransactionCurrencyForBack(null, 0, 0,
                 null, null, null, null, null);
