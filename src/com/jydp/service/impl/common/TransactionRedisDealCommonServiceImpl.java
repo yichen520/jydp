@@ -438,6 +438,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                 }
                 //统计
                 statistics(currencyId, toDayDawnLong, curTime, redisTimeLong, transactionCurrencyCoefficient, ordernNoPrefix);
+                continue;
             }
             //当前币种存在统计记录
             long statisticsTimeLong = statisticsTime.getTime();
