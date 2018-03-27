@@ -33,7 +33,7 @@
                     <p class="condition">用户账号：<input type="text" class="askInput" id="userAccount" name="userAccount"
                                                      maxlength="16" onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" value="${userAccount}" /></p>
                     <p class="condition">币种：
-                        <select class="askSelect" id="currencyId" name="currencyName">
+                        <select class="askSelect" id="currencyId" name="currencyId">
                             <option value="">全部</option>
                             <c:forEach items="${transactionCurrencyList}" var="item">
                                 <option value="${item.currencyId}">${item.currencyName}</option>
