@@ -23,12 +23,15 @@
 <div id="header">
     <div>
         <input type="hidden" id="currencyIdStr" name="currencyIdStr" value="${currencyIdStr}"/>
-        <input type="hidden" id="userSession" name="userSession" value="${userSession}"/>
+
     </div>
 </div>
 <!-- 头部导航 -->
 <script type="text/x-handlebars-template" id="headerTemplate">
 <header>
+    <div>
+        <input type="hidden" id="userSession" name="userSession" value="{{userSession}}"/>
+    </div>
     <img src="{{webAppPath}}/resources/image/wap/header-open.png" class="open"/>
     <p>{{transactionCurrency.currencyName}}({{transactionCurrency.currencyShortName}}/USD)</p>
     <a href="{{webAppPath}}/userWap/userLogin/show">登录</a>
@@ -58,7 +61,6 @@
     </div>
 </div>
 
-<!-- 内容 -->
 <div id="wrapper">
     <!-- 当前价格 -->
     <div class="nowPrice">
@@ -199,22 +201,28 @@
                 <li>{{formatNumber pendingPrice 2}}</li>
                 <li>{{formatNumber pendingNumber 4}}</li>
                 <li>{{formatNumber dealNumber 4}}</li>
-                <li id="toCancleOrder">撤销<input type="hidden" value="{{pendingOrderNo}}"/></li>
+                <li class="toCancleOrder">撤销<input type="hidden" value="{{pendingOrderNo}}"/></li>
                 <li class="clear"></li>
             </ul>
             {{/each}}
         </div>
     </div>
 </div>
-<div id="revokeDiv" style="display: none;width: 200px;height: 200px;background-color: #C9C9C9;position: absolute">
-    <p>撤销委托</p>
-    <p><img src="{{webAppPath}}/resources/image/wap/tips.png"/>确定撤销该委托内容？</p>
-    <div class="buttons">
-        <input type="hidden" id="pendOrderNoCancle" name="pendOrderNoCancle">
-        <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-        <input type="text" id="cancleOrder" value="确&nbsp;定" class="yes" onfocus="this.blur()" />
+
+<!--false-->
+<div class="mask_order" >
+    <div class="mask_content_order">
+        <div class="orderConfirm">
+            <p class="popTitle">撤销委托</p>
+            <div class="buttons">
+                <input type="hidden" id="pendOrderNoCancle" name="pendOrderNoCancle">
+                <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
+                <input type="text" id="cancleOrder" value="确&nbsp;定" class="yes" onfocus="this.blur()" />
+            </div>
+        </div>
     </div>
 </div>
+
 
 <!-- 底部tabBar -->
 <footer>

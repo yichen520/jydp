@@ -158,6 +158,27 @@ public class UserFeedbackDaoImpl implements IUserFeedbackDao {
     }
 
     /**
+     * 分页查询意见反馈 (wab端)
+     * @param userId 用户id
+     * @param pageNumber 当前页数
+     * @param pageSize 每页大小
+     * @return 查询成功:返回当前页的意见反馈列表, 查询失败:返回null
+     */
+    public List<UserFeedbackDO> listUserFeedbackForWapUser(int userId, int pageNumber, int pageSize) {
+        List<UserFeedbackDO> resultList = null;
+        Map<String, Object> map = new HashedMap<String, Object>();
+        map.put("userId", userId);
+        map.put("startNumber", pageNumber * pageSize);
+        map.put("pageSize", pageSize);
+        try {
+            resultList = sqlSessionTemplate.selectList("UserFeedback_listUserFeedbackForWapUser", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return resultList;
+    }
+
+    /**
      * 新增意见反馈
      * @param userFeedbackDO 待新增的意见反馈
      * @return 操作成功:返回true, 操作失败:返回false

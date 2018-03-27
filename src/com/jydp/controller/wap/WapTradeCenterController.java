@@ -289,7 +289,7 @@ public class WapTradeCenterController {
 
         //判断交易时间
         boolean timeBoo = DateUtil.isTradeTime();
-        if (!timeBoo) {
+        if (timeBoo) {
             response.put("code", 3);
             response.put("message", "不在交易时间段内");
             return response;
@@ -443,7 +443,7 @@ public class WapTradeCenterController {
 
         //判断交易时间
         boolean timeBoo = DateUtil.isTradeTime();
-        if (!timeBoo) {
+        if (timeBoo) {
             response.put("code", 3);
             response.put("message", "不在交易时间段内");
             return response;

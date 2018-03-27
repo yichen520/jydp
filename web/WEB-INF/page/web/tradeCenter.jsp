@@ -565,7 +565,11 @@
     mapMatch['phone'] = /[^\d]/g;
     mapMatch['email'] = /([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
     function matchUtil(o, str, nu) {
-        mapMatch[str] === true ? matchDouble(o, nu) : o.value = o.value.replace(mapMatch[str], '');
+        if(mapMatch[str] === true){
+            matchDouble(o, nu);
+        }else {
+            o.value = o.value.replace(mapMatch[str], '');
+        }
     }
 
     function matchDouble(o, num){
@@ -606,7 +610,9 @@
 
             var userBalance = parseFloat($("#userBalance").val());
             if(buyPrice > 0){
+                //0.002 -> 0.2
                 buyFee = buyFee * 100;
+                //0.002 * 100-> 0.2 * 100 * (1 * 100)
                 var number = buyFee * (buyPrice * 100);
                 buyPrice = ((buyPrice * 1000000) + (number)) / 1000000
                 var total = userBalance / buyPrice;
