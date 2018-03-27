@@ -79,7 +79,12 @@
 
 <script type="text/javascript">
     window.onload = function() {
-        $("#minNumber").val('${userCoinConfigList[0].minCurrencyNumber}');
+        //提现最小数量
+        var minNumber = '${userCoinConfigList[0].minCurrencyNumber}';
+        minNumber = String(minNumber).replace(/^(.*\..{4}).*$/,"$1");
+        minNumber = Number(minNumber);
+        $("#minNumber").val(minNumber);
+
         var code = '${code}';
         var message = '${message}';
         if (code != 1 && message != "") {
@@ -106,9 +111,24 @@
                 if (result.code == 1 ) {
                     var data = result.data;
                     var userCoinConfig = data.userCoinConfig;
-                    document.getElementById("coinNumber").innerHTML = userCoinConfig.currencyNumber;
-                    document.getElementById("tip").innerHTML = '提示：当前币种最低提现' + userCoinConfig.minCurrencyNumber + '个，超过' + userCoinConfig.freeCurrencyNumber + '个需人工审核';
-                    $("#minNumber").val(userCoinConfig.minCurrencyNumber);
+
+                    var reg = /^(.*\..{4}).*$/;
+                    //币种数量
+                    var coinNumber = userCoinConfig.currencyNumber;
+                    coinNumber = String(coinNumber).replace(reg,"$1");
+                    coinNumber = Number(coinNumber);
+                    //提现最小数量
+                    var minNumber = userCoinConfig.minCurrencyNumber;
+                    minNumber = String(minNumber).replace(reg,"$1");
+                    minNumber = Number(minNumber);
+                    //免审数量
+                    var freeNumber = userCoinConfig.freeCurrencyNumber;
+                    freeNumber = String(freeNumber).replace(reg,"$1");
+                    freeNumber = Number(freeNumber);
+
+                    document.getElementById("coinNumber").innerHTML = coinNumber;
+                    document.getElementById("tip").innerHTML = '提示：当前币种最低提现' + minNumber + '个，超过' + freeNumber + '个需人工审核';
+                    $("#minNumber").val(minNumber);
                 } else {
                     openTips(result.message);
                 }
@@ -185,7 +205,7 @@
         }
         if (number <= 0) {
             coinBoo = false;
-            return openTips("提币数量不能为0");
+            return openTips("提币数量必须大于0");
         }
         if (number > coinNumber) {
             coinBoo = false;
