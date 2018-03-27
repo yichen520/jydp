@@ -110,8 +110,8 @@
                         </td>
                         <td class="coinLogo"><img src="${item.currencyImgUrl}" /></td>
                         <td class="service">
-                            <p>买入：<fmt:formatNumber type="number" value="${item.buyFee * 100}" maxFractionDigits="6"/>%</p>
-                            <p>卖出：<fmt:formatNumber type="number" value="${item.sellFee * 100}" maxFractionDigits="6"/>%</p>
+                            <p>买入：<fmt:formatNumber type="number" value="${item.buyFee }" maxFractionDigits="6"/>%</p>
+                            <p>卖出：<fmt:formatNumber type="number" value="${item.sellFee}" maxFractionDigits="6"/>%</p>
                         </td>
                         <c:if test="${item.paymentType == 1}">
                             <td class="state">正常</td>
@@ -655,8 +655,8 @@
 
         document.getElementById("currencyNameUp").value = currencyName;
         document.getElementById("currencyShortNameUp").value = currencyShortName;
-        document.getElementById("buyFeeUp").value = buyFee * 100;
-        document.getElementById("sellFeeUp").value = sellFee * 100;
+        document.getElementById("buyFeeUp").value = buyFee;
+        document.getElementById("sellFeeUp").value = sellFee;
         document.getElementById("c_onlineTime").value = upTime;
         document.getElementById("guidUp").value = price;
 
