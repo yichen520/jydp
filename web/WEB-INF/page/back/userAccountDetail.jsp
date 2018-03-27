@@ -278,7 +278,7 @@
         }
         if (userCurrency < reduceCurrencyNumber) {
             reduceCurrencyNumberBoo = false;
-            return openTips("您输入的金额大于[" + currencyName + "]的可用数量");
+            return openTips("您输入的数量大于[" + currencyName + "]的可用数量");
         }
         $.ajax({
             url: '<%=path %>' + "/backerWeb/backerUserAccountDetail/reduceCurrencyNumber.htm",
@@ -412,7 +412,7 @@
         }
         if (userCurrency < reduceCurrencyNumber) {
             reduceLockCurrencyNumberBoo = false;
-            return openTips("您输入的金额大于[" + currencyName + "]的冻结数量");
+            return openTips("您输入的数量大于[" + currencyName + "]的冻结数量");
         }
         $.ajax({
             url: '<%=path %>' + "/backerWeb/backerUserAccountDetail/reduceLockCurrencyNumber.htm",
