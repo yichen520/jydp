@@ -62,8 +62,6 @@ public class SylUserBoundController {
         String idCard = StringUtil.stringNullHandle(requestJson.getString("idCard"));
         String key = StringUtil.stringNullHandle(requestJson.getString("key"));
 
-
-
         if (!StringUtil.isNotNull(sylUserAccount) || !StringUtil.isNotNull(userAccount) || !StringUtil.isNotNull(password)|| !StringUtil.isNotNull(uname)
                 || !StringUtil.isNotNull(idCard) || !StringUtil.isNotNull(key)) {
             responseJson.put("code", 2);
