@@ -112,7 +112,8 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
             if(yesterdayPriceStr != null && nowPriceStr != null){
                 double transactionPrice = Double.parseDouble(yesterdayPriceStr.toString());
                 double nowPrice = Double.parseDouble(nowPriceStr.toString());
-                double range = BigDecimalUtil.sub(nowPrice, transactionPrice) * 100;
+                double range = BigDecimalUtil.sub(nowPrice, transactionPrice);
+                range = BigDecimalUtil.mul(range, 100);
                 String rangeStr = BigDecimalUtil.div(range, transactionPrice, 2);
                 if(!StringUtil.isNotNull(rangeStr)){
                     rangeStr = "0.0";
