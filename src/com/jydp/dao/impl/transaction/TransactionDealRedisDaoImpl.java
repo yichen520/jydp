@@ -373,4 +373,27 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
         return result;
     }
 
+    /**
+     * 查询成交记录
+     * @param currencyId 币种Id
+     * @param starTime 开始时间
+     * @param endTime 结束时间
+     * @return 操作成功：返回统计集合，操作失败：返回null
+     */
+    public List<TransactionDealRedisDTO> listTransactionDealRedisForTimer(int currencyId, Timestamp starTime,
+                                                                   Timestamp endTime) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("currencyId", currencyId);
+        map.put("startTime", starTime);
+        map.put("endTime", endTime);
+
+        List<TransactionDealRedisDTO> result = null;
+        try {
+            result = sqlSessionTemplate.selectList("TransactionDealRedis_listTransactionDealRedisForTimer", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return result;
+    }
+
 }

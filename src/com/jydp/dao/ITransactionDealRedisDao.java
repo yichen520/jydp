@@ -148,4 +148,14 @@ public interface ITransactionDealRedisDao {
      */
     Timestamp getEarliestTime(int currencyId, String prefix);
 
+    /**
+     * 查询成交记录
+     * @param currencyId 币种Id
+     * @param starTime 开始时间
+     * @param endTime 结束时间
+     * @return 操作成功：返回统计集合，操作失败：返回null
+     */
+    List<TransactionDealRedisDTO> listTransactionDealRedisForTimer(int currencyId, Timestamp starTime,
+                                                                   Timestamp endTime);
+
 }
