@@ -134,7 +134,7 @@
             <img src="<%=path%>/resources/image/wap/home-nochose.png"  class="home-icon"/>
             <p>首页</p>
         </a>
-        <a  href="deal.html" class="deal">
+        <a  href="<%=path%>/userWap/userMine/show.htm" class="deal">
             <img src="<%=path%>/resources/image/wap/deal-nochose.png"  class="deal-icon"/>
             <p>交易</p>
         </a>
