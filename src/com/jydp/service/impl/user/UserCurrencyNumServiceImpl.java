@@ -1,11 +1,15 @@
 package com.jydp.service.impl.user;
 
 import com.iqmkj.utils.DateUtil;
+import com.iqmkj.utils.StringUtil;
 import com.jydp.dao.IUserCurrencyNumDao;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DTO.BackerUserCurrencyNumDTO;
 import com.jydp.entity.DTO.UserAmountCheckDTO;
+import com.jydp.entity.VO.WapUserCurrencyAssetsVO;
+import com.jydp.service.IRedisService;
 import com.jydp.service.IUserCurrencyNumService;
+import config.RedisKeyConfig;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,12 +25,21 @@ import java.util.List;
 @Service("userCurrencyNumService")
 public class UserCurrencyNumServiceImpl implements IUserCurrencyNumService {
 
-    /** 用户币数量 */
+    /**
+     * 用户币数量
+     */
     @Autowired
     private IUserCurrencyNumDao userCurrencyNumDao;
 
     /**
+     * redis服务
+     */
+    @Autowired
+    IRedisService redisService;
+
+    /**
      * 新增用户币账户
+     *
      * @param userCurrencyNum 用户币账户
      * @return 操作成功：返回true，操作失败：返回false
      */
@@ -36,44 +49,78 @@ public class UserCurrencyNumServiceImpl implements IUserCurrencyNumService {
 
     /**
      * 查询用户币数量
+     *
      * @param userId 用户Id
      * @return 查询成功：返回用户币数量，查询失败：返回null
      */
-    public List<UserCurrencyNumDO> getUserCurrencyNumByUserId (int userId){
+    public List<UserCurrencyNumDO> getUserCurrencyNumByUserId(int userId) {
         return userCurrencyNumDao.getUserCurrencyNumByUserId(userId);
     }
 
     /**
      * 查询用户币数量，带货币名称
+     *
      * @param userId 用户Id
      * @return 查询成功：返回用户币数量，查询失败：返回null
      */
-    public List<BackerUserCurrencyNumDTO> getUserCurrencyNumByUserIdForBacker (int userId) {
+    public List<BackerUserCurrencyNumDTO> getUserCurrencyNumByUserIdForBacker(int userId) {
         return userCurrencyNumDao.getUserCurrencyNumByUserIdForBacker(userId);
     }
 
     /**
      * 查询用户币数量，带货币名称带货币名称(用户端)
+     *
      * @param userId 用户Id
      * @return 查询成功：返回用户币数量，查询失败：返回null
      */
-    public List<BackerUserCurrencyNumDTO> getUserCurrencyNumByUserIdForWeb (int userId){
+    public List<BackerUserCurrencyNumDTO> getUserCurrencyNumByUserIdForWeb(int userId) {
         return userCurrencyNumDao.getUserCurrencyNumByUserIdForWeb(userId);
     }
 
+    /**
+     * 查询用户币种资产
+     *
+     * @param userId 用户id
+     * @return 查询成功: 返回用户币种资产, 查询失败: 返回null
+     */
+    @Override
+    public List<WapUserCurrencyAssetsVO> listUserCurrencyAssets(int userId) {
+        List<BackerUserCurrencyNumDTO> userCurrencyNum = userCurrencyNumDao.getUserCurrencyNumByUserIdForWeb(userId);
+        if (userCurrencyNum != null && !userCurrencyNum.isEmpty()) {
+            List<WapUserCurrencyAssetsVO> userCurrencyAssets = new ArrayList<>();
+            for (BackerUserCurrencyNumDTO userCurrencyNumDTO : userCurrencyNum) {
+                WapUserCurrencyAssetsVO userCurrency = new WapUserCurrencyAssetsVO();
+                userCurrency.setCurrencyId(userCurrencyNumDTO.getCurrencyId());
+                userCurrency.setCurrencyName(userCurrencyNumDTO.getCurrencyName());
+                userCurrency.setCurrencyNumber(userCurrencyNumDTO.getCurrencyNumber());
+                userCurrency.setCurrencyNumberLock(userCurrencyNumDTO.getCurrencyNumberLock());
+                // 计算币种总资产
+                Object currencyPrice = redisService.getValue(RedisKeyConfig.NOW_PRICE + userCurrencyNumDTO.getCurrencyId());
+                if (currencyPrice != null && StringUtil.isNotNull(currencyPrice.toString())) {
+                    Double currencyAssets = (userCurrencyNumDTO.getCurrencyNumber() + userCurrencyNumDTO.getCurrencyNumberLock()) * Double.parseDouble(currencyPrice.toString());
+                    userCurrency.setTotalCurrencyAssets(currencyAssets);
+                }
+                userCurrencyAssets.add(userCurrency);
+            }
+            return userCurrencyAssets;
+        }
+        return null;
+    }
 
     /**
      * 根据currencyId查询用户币数量
-     * @param userId 用户Id
+     *
+     * @param userId     用户Id
      * @param currencyId 币种Id
      * @return 查询成功：返回用户币数量，查询失败：返回null
      */
-    public UserCurrencyNumDO getUserCurrencyNumByUserIdAndCurrencyId(int userId, int currencyId){
-        return  userCurrencyNumDao.getUserCurrencyNumByUserIdAndCurrencyId(userId, currencyId);
+    public UserCurrencyNumDO getUserCurrencyNumByUserIdAndCurrencyId(int userId, int currencyId) {
+        return userCurrencyNumDao.getUserCurrencyNumByUserIdAndCurrencyId(userId, currencyId);
     }
 
     /**
      * web端添加用户币数量(用户注册时添加记录，默认各币种数量为0)
+     *
      * @return 操作成功：返回true;操作失败：返回false
      */
     @Override
@@ -92,12 +139,13 @@ public class UserCurrencyNumServiceImpl implements IUserCurrencyNumService {
 
     /**
      * 增加用户货币数量
-     * @param userId 用户Id
-     * @param currencyId 币种Id
+     *
+     * @param userId         用户Id
+     * @param currencyId     币种Id
      * @param currencyNumber 增加的货币数量
      * @return 操作成功：返回true;操作失败：返回false
      */
-    public boolean increaseCurrencyNumber(int userId, int currencyId, double currencyNumber){
+    public boolean increaseCurrencyNumber(int userId, int currencyId, double currencyNumber) {
         UserCurrencyNumDO userCurrencyNum = new UserCurrencyNumDO();
         userCurrencyNum.setUserId(userId);
         userCurrencyNum.setCurrencyId(currencyId);
@@ -108,12 +156,13 @@ public class UserCurrencyNumServiceImpl implements IUserCurrencyNumService {
 
     /**
      * 减少用户货币数量
-     * @param userId 用户Id
-     * @param currencyId 币种Id
+     *
+     * @param userId         用户Id
+     * @param currencyId     币种Id
      * @param currencyNumber 减少的货币数量
      * @return 操作成功：返回true;操作失败：返回false
      */
-    public boolean reduceCurrencyNumber(int userId, int currencyId, double currencyNumber){
+    public boolean reduceCurrencyNumber(int userId, int currencyId, double currencyNumber) {
         UserCurrencyNumDO userCurrencyNum = new UserCurrencyNumDO();
         userCurrencyNum.setUserId(userId);
         userCurrencyNum.setCurrencyId(currencyId);
@@ -124,12 +173,13 @@ public class UserCurrencyNumServiceImpl implements IUserCurrencyNumService {
 
     /**
      * 增加用户货币冻结数量
-     * @param userId 用户Id
-     * @param currencyId 币种Id
+     *
+     * @param userId             用户Id
+     * @param currencyId         币种Id
      * @param currencyNumberLock 增加的冻结货币数量
      * @return 操作成功：返回true;操作失败：返回false
      */
-    public boolean increaseCurrencyNumberLock(int userId, int currencyId, double currencyNumberLock){
+    public boolean increaseCurrencyNumberLock(int userId, int currencyId, double currencyNumberLock) {
         UserCurrencyNumDO userCurrencyNum = new UserCurrencyNumDO();
         userCurrencyNum.setUserId(userId);
         userCurrencyNum.setCurrencyId(currencyId);
@@ -140,12 +190,13 @@ public class UserCurrencyNumServiceImpl implements IUserCurrencyNumService {
 
     /**
      * 减少用户货币冻结数量
-     * @param userId 用户Id
-     * @param currencyId 币种Id
+     *
+     * @param userId             用户Id
+     * @param currencyId         币种Id
      * @param currencyNumberLock 减少的冻结货币数量
      * @return 操作成功：返回true;操作失败：返回false
      */
-    public boolean reduceCurrencyNumberLock(int userId, int currencyId, double currencyNumberLock){
+    public boolean reduceCurrencyNumberLock(int userId, int currencyId, double currencyNumberLock) {
         UserCurrencyNumDO userCurrencyNum = new UserCurrencyNumDO();
         userCurrencyNum.setUserId(userId);
         userCurrencyNum.setCurrencyId(currencyId);
@@ -156,7 +207,8 @@ public class UserCurrencyNumServiceImpl implements IUserCurrencyNumService {
 
     /**
      * 查询用户币种账户错误总数（定时器对账操作）
-     * @param checkAmount 可用资产最大差额（数字货币）
+     *
+     * @param checkAmount     可用资产最大差额（数字货币）
      * @param checkAmountLock 锁定资产最大差额（数字货币）
      * @return 查询成功：返回用户币种账户错误总数，查询失败：返回0
      */
@@ -166,14 +218,15 @@ public class UserCurrencyNumServiceImpl implements IUserCurrencyNumService {
 
     /**
      * 查询用户币种账户错误列表信息（定时器对账操作）
-     * @param checkAmount 可用资产最大差额（数字货币）
+     *
+     * @param checkAmount     可用资产最大差额（数字货币）
      * @param checkAmountLock 锁定资产最大差额（数字货币）
-     * @param pageNumber 当前页数
-     * @param pageSize 每页大小
+     * @param pageNumber      当前页数
+     * @param pageSize        每页大小
      * @return 查询成功：返回用户币种账户错误列表信息，查询失败：返回null
      */
     public List<UserAmountCheckDTO> listCheckUserAmountForTimer(double checkAmount, double checkAmountLock,
-                                                         int pageNumber, int pageSize) {
+                                                                int pageNumber, int pageSize) {
         return userCurrencyNumDao.listCheckUserAmountForTimer(checkAmount, checkAmountLock, pageNumber, pageSize);
     }
 

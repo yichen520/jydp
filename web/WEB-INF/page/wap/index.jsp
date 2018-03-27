@@ -132,7 +132,7 @@
             <img src="<%=path %>/resources/image/wap/deal-nochose.png"  class="deal-icon"/>
             <p>交易</p>
         </a>
-        <a href="mine.html" class="mine">
+        <a href="<%=path %>/userWap/userInfo/show.htm" class="mine">
             <img src="<%=path %>/resources/image/wap/mine-nochose.png"  class="mine-icon"/>
             <p>我的</p>
         </a>
