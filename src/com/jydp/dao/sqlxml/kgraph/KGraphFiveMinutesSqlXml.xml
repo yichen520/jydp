@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+		"-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jydp.dao.impl.kgraph.KGraphFiveMinutesDaoImpl">
+
+	<insert id="KGraphFiveMinutes_insertKGraph" parameterType="KGraphFiveMinutesDO">
+		INSERT INTO k_line_graph_five_minutes_tab(currencyId, nodeTime, openPrice, closePrice, maxPrice, minPrice,
+		transactionTotal)
+		VALUES
+		<foreach collection="kGraphFiveMinutesList" item="item" index="index" separator=",">
+			(#{item.currencyId}, #{item.nodeTime}, #{item.openPrice}, #{item.closePrice}, #{item.maxPrice}, #{item.minPrice},
+			#{item.transactionTotal})
+		</foreach>
+	</insert>
+
+	<select id="KGraphFiveMinutes_getKGraphLatelyTime" parameterType="int" resultType="java.sql.Timestamp">
+		SELECT max(nodeTime)
+		FROM k_line_graph_five_minutes_tab
+	</select>
+
+	<select id="KGraphFiveMinutes_getKGraphLately" parameterType="int" resultType="KGraphFiveMinutesDO">
+		SELECT currencyId, nodeTime, openPrice, closePrice, maxPrice, minPrice, transactionTotal
+		FROM k_line_graph_five_minutes_tab
+		WHERE currencyId = #{currencyId}
+		ORDER BY nodeTime DESC
+		LIMIT 0,1
+	</select>
+
+	<select id="KGraphFiveMinutes_listKGraphLately" parameterType="java.util.Map" resultType="KGraphFiveMinutesDO">
+		SELECT currencyId, nodeTime, openPrice, closePrice, maxPrice, minPrice, transactionTotal
+		FROM k_line_graph_five_minutes_tab
+		WHERE currencyId = #{currencyId}
+		ORDER BY nodeTime DESC
+		LIMIT 0, #{num}
+	</select>
+ 	
+</mapper>
