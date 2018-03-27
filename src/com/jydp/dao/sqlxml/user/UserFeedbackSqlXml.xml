@@ -85,7 +85,16 @@
         LIMIT #{startNumber}, #{pageSize}
     </select>
 
-    <insert id="UserFeedback_insertUserFeedback" parameterType="UserFeedbackDO">
+    <select id="UserFeedback_listUserFeedbackForWapUser" parameterType="java.util.Map" resultType="UserFeedbackDO">
+        SELECT id, userId, userAccount, feedbackTitle, feedbackContent, addTime, handleStatus, handleContent,
+        backerAccount, handleTime
+        FROM user_feedback_tab
+        WHERE userId = #{userId}
+        ORDER BY addTime DESC
+        LIMIT #{startNumber}, #{pageSize}
+    </select>
+
+    <insert id="UserFeedback_insertUserFeedback" parameterType="UserFeedbackDO" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user_feedback_tab
           (userId, userAccount, feedbackTitle, feedbackContent, addTime,
           handleStatus, handleContent, backerAccount, handleTime)

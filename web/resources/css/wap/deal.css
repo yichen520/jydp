@@ -553,7 +553,7 @@
     opacity: 0.8;
 }
 
-.buyConfirm,.sellConfirm,.revoke_pop,.password_pop{
+.buyConfirm,.sellConfirm,.revoke_pop,.password_pop, .revokeConfirm{
     display: none;
 }
 .popName{
@@ -586,4 +586,26 @@
 .password_pop .popName{
     height: 35px;
     line-height: 35px;
+}
+
+
+.mask_order{
+    display: none;
+    position:fixed;
+    width: 100%;
+    min-width: 1400px;
+    height:100%;
+    background-color:rgba(0,0,0,0.6);
+    z-index:10;
+    top:0;
+}
+.mask_content_order {
+    width:400px;
+    margin:300px  auto;
+    background-color:#ffffff;
+    font-size: 14px;
+    border-radius: 5px;
+}
+.orderConfirm{
+    display: none;
 }

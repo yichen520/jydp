@@ -47,6 +47,8 @@ var ParamsAndInit = {
         $(".mask").fadeOut();
         $(".buyConfirm").fadeOut();
         $(".sellConfirm").fadeOut();
+        $(".mask_order").fadeOut();
+        $(".orderConfirm").fadeOut();
     },
     matchUtil: function (e) {
         var matchStr = /^-?\d+\.?\d{0,num}$/;
@@ -246,7 +248,6 @@ var ParamsAndInit = {
         $("#buySumTips").html(buyTotal);
         $(".mask").fadeIn();
         $(".buyConfirm").fadeIn();
-        //$("#buyNow").css("display", "block");
     },
     toSell: function () {
         var sellPrice = $("#sellPrice").val();
@@ -302,7 +303,6 @@ var ParamsAndInit = {
         $("#sellPriceTips").html("$" + sellPrice);
         $("#sellNumTips").html(sellNum);
         $("#sellSumTips").html(sellTotal);
-        //$("#sellNow").css("display", "block");
         $(".mask").fadeIn();
         $(".sellConfirm").fadeIn();
     },
@@ -335,7 +335,7 @@ var ParamsAndInit = {
                     openTips(data.message);
                     return;
                 }
-                window.location.href = webAppPath + "/userWap/tradeCenter/show.htm?currencyIdStr=" + currencyId;
+                window.location.href = webAppPath + "/userWap/tradeCenter/show?currencyIdStr=" + currencyId;
             },
             error: function () {
                 $(".mask").fadeOut();
@@ -369,13 +369,13 @@ var ParamsAndInit = {
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (data) {
-                if (data.code != 0) {
+                if (data.code != "1") {
                     openTips(data.message);
                     $(".mask").fadeOut();
                     $(".buyConfirm").fadeOut();
                     return ;
                 }
-                window.location.href = webAppPath + "/userWap/tradeCenter/show.htm?currencyIdStr=" + currencyId;
+                window.location.href = webAppPath + "/userWap/tradeCenter/show?currencyIdStr=" + currencyId;
             }, error: function () {
                 $(".mask").fadeOut();
                 $(".buyConfirm").fadeOut();
@@ -387,13 +387,16 @@ var ParamsAndInit = {
     toCancel: function () {
         var orderNum = $(this).children("input:hidden").val();
         $("#pendOrderNoCancle").val(orderNum);
-        $("#revokeDiv").css("display","block");
+        $(".mask_order").fadeIn();
+        $(".orderConfirm").fadeIn();
     },
     cancleOrder: function () {
         var pendOrderNo = $("#pendOrderNoCancle").val();
         var webAppPath = $("#webAppPath").val();
         var currencyId = $("#cucyId").val();
         if (pendOrderNo === undefined || pendOrderNo === null || pendOrderNo == "") {
+            $(".mask_order").fadeOut();
+            $(".orderConfirm").fadeOut();
             openTips("单号错误");
             return;
         }
@@ -406,14 +409,17 @@ var ParamsAndInit = {
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (data) {
-                if (data.code != 0) {
+                if (data.code != "1") {
                     openTips(data.message);
-                    $("#revokeDiv").hide();
+                    $(".mask_order").fadeOut();
+                    $(".orderConfirm").fadeOut();
                     return;
                 }
-                window.location.href = webAppPath + "/userWap/tradeCenter/show.htm?currencyIdStr=" + currencyId;
+                window.location.href = webAppPath + "/userWap/tradeCenter/show?currencyIdStr=" + currencyId;
             },
             error: function () {
+                $(".mask_order").fadeOut();
+                $(".orderConfirm").fadeOut();
                 openTips("数据加载出错，请稍候重试");
             }
         });
@@ -450,7 +456,7 @@ $().ready(function () {
     Handlebars.registerHelper("eachFortransactionCurrencyList", function (transactionUserDealList, standardParameter, webAppPath, options) {
         var out = "<ul>";
         for (var i = 0; i < transactionUserDealList.length; i++) {
-            myHref = "<a href='" + webAppPath + "/userWap/tradeCenter/show.htm?currencyIdStr=" + transactionUserDealList[i].currencyId + "'>";
+            myHref = "<a href='" + webAppPath + "/userWap/tradeCenter/show?currencyIdStr=" + transactionUserDealList[i].currencyId + "'>";
             out = out + '<li>' +
                 '<p>' + myHref + transactionUserDealList[i].currencyName + "(" + transactionUserDealList[i].currencyShortName + ")" + "</a></p>"
                 + "<p class='zhang'>" + transactionUserDealList[i].latestPrice + "</p>"
@@ -476,7 +482,6 @@ $().ready(function () {
         openTips("该币种信息无法加载，请联系管理员");
         return;
     }
-    //币种id如何来
     $.ajax({
         url: 'getWapTradeCenterInfo',
         type: 'POST',
@@ -508,14 +513,15 @@ $().ready(function () {
             $("#sellNum").bind("blur", {num : 4}, ParamsAndInit.matchUtil);
             $(".mainButtonBuy").bind('click', ParamsAndInit.toBuy);
             $(".mainButtonSell").bind('click', ParamsAndInit.toSell);
-            $("#toCancleOrder").bind('click', ParamsAndInit.toCancel);
-            $("#cancleOrder").bind('click', ParamsAndInit.cancleOrder);
+            $(".toCancleOrder").bind('click', ParamsAndInit.toCancel);
+            $("#cancleOrder").each(function () {
+                $(this).bind('click', ParamsAndInit.cancleOrder);
+            });
             $(".cancel").bind('click',ParamsAndInit.cancleOpt);
             $("#buyHandler").unbind('click');
             $("#buyHandler").bind('click',ParamsAndInit.buyHandle);
             $("#sellHandler").unbind('click');
             $("#sellHandler").bind('click',ParamsAndInit.buyHandle);
-
         },
         error: function () {
             openTips("服务器异常，请稍后再试！")
