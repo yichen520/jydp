@@ -1241,6 +1241,7 @@
                     pendBoo = false;
                     //openTips(result.message);
                     if(result.code == 5){
+                        openTips("该币种已下线，具体开启情况请留意公告");
                         setTimeout("returnWebHome()",2000 );
                     }
                     return;
@@ -1324,6 +1325,7 @@
                     dealBoo = false;
                     //openTips(result.message);
                     if(result.code == 5){
+                        openTips("该币种已下线，具体开启情况请留意公告");
                         setTimeout("returnWebHome()",2000 );
                     }
 
