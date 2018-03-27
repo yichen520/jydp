@@ -92,10 +92,11 @@
 		WHERE userId = #{userId}
 	</select>
 
-	<select id="TransactionUserDeal_countTransactionUserDealByPendNo" parameterType="java.lang.String" resultType="int">
+	<select id="TransactionUserDeal_countTransactionUserDealByPendNo" parameterType="java.util.Map" resultType="int">
 		SELECT COUNT(orderNo)
 		FROM transaction_user_deal_tab
 		WHERE pendingOrderNo = #{pendNo}
+			   AND userId = #{userId}
 	</select>
 
 	<select id="TransactionUserDeal_listTransactionUserDealByPendNo" parameterType="java.util.Map" resultType="TransactionUserDealVO">
@@ -103,6 +104,7 @@
 		currencyNumber, feeNumber, currencyTotalPrice, remark, pendTime, addTime
 		FROM transaction_user_deal_tab
 		WHERE pendingOrderNo = #{pendNo}
+			  AND userId = #{userId}
 		ORDER BY addTime DESC,orderNo
 		LIMIT #{startNumber}, #{pageSize}
 	</select>

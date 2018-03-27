@@ -273,7 +273,7 @@ public class BackerTransactionMakeOrderController {
                 return response;
             }
 
-            if (execTimeL < 0 || currencyPrice < 0 || currencyNumber < 0) {
+            if (execTimeL <= 0 || currencyPrice <= 0 || currencyNumber <= 0) {
                 response.setCode(5);
                 response.setMessage("执行命令内容错误");
                 return response;
@@ -398,9 +398,10 @@ public class BackerTransactionMakeOrderController {
         }
 
         TransactionMakeOrderDO order = transactionMakeOrderService.getTransactionMakeOrderByOrderNo(orderNoStr);
-        if (order == null || order.getExecuteStatus() != 3 || order.getExecuteStatus() != 4) {
+        if (order == null || order.getExecuteStatus() == 2) {
             response.setCode(3);
-            response.setMessage("该记录不能删除");
+            response.setMessage("该记录暂不能删除");
+            return response;
         }
 
         boolean result = transactionMakeOrderService.deleteMakeOrderByOrderNo(orderNoStr);

@@ -62,18 +62,20 @@ public interface ITransactionUserDealDao {
     /**
      * 根据挂单记录号查询成交记录条数
      * @param pendNo  挂单记录号
+     * @param userId  用户Id
      * @return  操作成功：返回成交记录条数，操作失败:返回0
      */
-    int countTransactionUserDealByPendNo(String pendNo);
+    int countTransactionUserDealByPendNo(String pendNo, int userId);
 
     /**
      * 根据挂单记录号查询成交记录
      * @param pendNo  挂单记录号
+     * @param userId  用户Id
      * @param pageNumber  当前页数
      * @param pageSize  每页条数
      * @return  操作成功：返回成交记录集合，操作失败:返回null
      */
-    List<TransactionUserDealVO> listTransactionUserDealByPendNo(String pendNo, int pageNumber, int pageSize);
+    List<TransactionUserDealVO> listTransactionUserDealByPendNo(String pendNo, int userId, int pageNumber, int pageSize);
 
     /**
      * 查询用户成交记录总数
