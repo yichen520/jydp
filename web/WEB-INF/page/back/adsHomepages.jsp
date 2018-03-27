@@ -261,12 +261,12 @@
         var adsImageUrlStr = document.getElementById("changead_t1").value;
         var adsImageUrl = document.getElementById("changead_a1").files[0];
 
-        if (adsTitle == null || adsTitle == "") {
-            return openTips("标题不能为空");
-        }
-
         if (adsImageUrlStr == null || adsImageUrlStr == '') {
             return openTips("请上传封面图");
+        }
+
+        if (adsTitle == null || adsTitle == "") {
+            return openTips("标题不能为空");
         }
 
         if (adsTitle.length < 2 || adsTitle.length > 16) {
