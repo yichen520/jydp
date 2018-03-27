@@ -26,8 +26,8 @@
         FROM transaction_currency_coefficient_tab
         WHERE
             1 = 1
-            <if test="currencyName != null and currencyName !=''">
-                AND currencyName = #{currencyName}
+            <if test="currencyId != 0">
+                AND currencyId = #{currencyId}
             </if>
             <if test="startAddTime != null">
                 AND addTime <![CDATA[ >= ]]> #{startAddTime}
@@ -43,8 +43,8 @@
         FROM transaction_currency_coefficient_tab
         WHERE
             1 = 1
-            <if test="currencyName != null and currencyName !=''">
-                AND currencyName = #{currencyName}
+            <if test="currencyId != 0">
+                AND currencyId = #{currencyId}
             </if>
             <if test="startAddTime != null">
                 AND addTime <![CDATA[ >= ]]> #{startAddTime}

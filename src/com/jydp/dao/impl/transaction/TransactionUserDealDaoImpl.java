@@ -71,21 +71,21 @@ public class TransactionUserDealDaoImpl implements ITransactionUserDealDao{
      * 查询成交记录条数(后台)
      * @param userAccount  用户账号
      * @param paymentType  收支类型,1：买入，2：卖出
-     * @param currencyName  货币名称
+     * @param currencyId  币种id,查询全部填0
      * @param startAddTime  起始完成时间
      * @param endAddTime  结束完成时间
      * @param startPendTime  起始挂单时间
      * @param endPendTime  结束挂单时间
      * @return  操作成功：返回成交记录条数，操作失败：返回0
      */
-    public int countTransactionUserDealForBack(String userAccount, int paymentType, String currencyName,
+    public int countTransactionUserDealForBack(String userAccount, int paymentType, int currencyId,
                                         Timestamp startAddTime, Timestamp endAddTime, Timestamp startPendTime, Timestamp endPendTime){
         int result = 0;
 
         Map<String, Object> map = new HashMap<>();
         map.put("userAccount", userAccount);
         map.put("paymentType", paymentType);
-        map.put("currencyName", currencyName);
+        map.put("currencyId", currencyId);
         map.put("startAddTime", startAddTime);
         map.put("endAddTime", endAddTime);
         map.put("startPendTime", startPendTime);
@@ -104,7 +104,7 @@ public class TransactionUserDealDaoImpl implements ITransactionUserDealDao{
      * 查询成交记录(后台)
      * @param userAccount  用户账号
      * @param paymentType  收支类型,1：买入，2：卖出
-     * @param currencyName  货币名称
+     * @param currencyId  币种id,查询全部填0
      * @param startAddTime  起始完成时间
      * @param endAddTime  结束完成时间
      * @param startPendTime  起始挂单时间
@@ -113,7 +113,7 @@ public class TransactionUserDealDaoImpl implements ITransactionUserDealDao{
      * @param pageSize  每页条数
      * @return  操作成功：返回成交记录，操作失败：返回null
      */
-    public List<TransactionUserDealVO> listTransactionUserDealForBack(String userAccount, int paymentType, String currencyName,
+    public List<TransactionUserDealVO> listTransactionUserDealForBack(String userAccount, int paymentType, int currencyId,
                                                                       Timestamp startAddTime, Timestamp endAddTime, Timestamp startPendTime, Timestamp endPendTime,
                                                                       int pageNumber, int pageSize){
         List<TransactionUserDealVO> resultList = null;
@@ -121,7 +121,7 @@ public class TransactionUserDealDaoImpl implements ITransactionUserDealDao{
         Map<String, Object> map = new HashMap<>();
         map.put("userAccount", userAccount);
         map.put("paymentType", paymentType);
-        map.put("currencyName", currencyName);
+        map.put("currencyId", currencyId);
         map.put("startAddTime", startAddTime);
         map.put("endAddTime", endAddTime);
         map.put("startPendTime", startPendTime);

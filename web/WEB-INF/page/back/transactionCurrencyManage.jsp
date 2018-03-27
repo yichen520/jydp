@@ -379,7 +379,7 @@
         }
 
         $("#currencyId option").each(function(){
-            if($(this).val()=='${currencyName}'){
+            if($(this).val()=='${currencyId}'){
                 $(this).attr('selected',true);
             }
         });

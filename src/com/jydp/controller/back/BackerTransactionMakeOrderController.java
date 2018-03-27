@@ -98,7 +98,7 @@ public class BackerTransactionMakeOrderController {
     public void List(HttpServletRequest request) {
         String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
         String orderNoStr = StringUtil.stringNullHandle(request.getParameter("orderNo"));
-        String currencyNameStr = StringUtil.stringNullHandle(request.getParameter("currencyName"));
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
         String executeStatusStr = StringUtil.stringNullHandle(request.getParameter("executeStatus"));
         String startExecuteTimeStr = StringUtil.stringNullHandle(request.getParameter("startExecuteTime"));
         String endExecuteTimeStr = StringUtil.stringNullHandle(request.getParameter("endExecuteTime"));
@@ -106,6 +106,7 @@ public class BackerTransactionMakeOrderController {
         Timestamp startExecuteTime = null;
         Timestamp endExecuteTime = null;
         int executeStatus = 0;
+        int currencyId = 0;
         int pageNumber = 0;
 
         if (StringUtil.isNotNull(startExecuteTimeStr)) {
@@ -117,13 +118,16 @@ public class BackerTransactionMakeOrderController {
         if (StringUtil.isNotNull(executeStatusStr)) {
             executeStatus = Integer.parseInt(executeStatusStr);
         }
+        if (StringUtil.isNotNull(currencyIdStr)) {
+            currencyId = Integer.parseInt(currencyIdStr);
+        }
         if (StringUtil.isNotNull(pageNumberStr)) {
             pageNumber = Integer.parseInt(pageNumberStr);
         }
 
         int pageSize = 20;
 
-        int totalNumber = transactionMakeOrderService.countTransactionMakeOrderForBack(orderNoStr, currencyNameStr, executeStatus, startExecuteTime, endExecuteTime);
+        int totalNumber = transactionMakeOrderService.countTransactionMakeOrderForBack(orderNoStr, currencyId, executeStatus, startExecuteTime, endExecuteTime);
 
         int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
         if (totalPageNumber <= 0) {
@@ -135,7 +139,7 @@ public class BackerTransactionMakeOrderController {
 
         List<TransactionMakeOrderDO> transactionMakeOrderList = null;
         if (totalNumber > 0) {
-            transactionMakeOrderList = transactionMakeOrderService.listTransactionMakeOrderForBack(orderNoStr, currencyNameStr, executeStatus, startExecuteTime, endExecuteTime, pageNumber, pageSize);
+            transactionMakeOrderList = transactionMakeOrderService.listTransactionMakeOrderForBack(orderNoStr, currencyId, executeStatus, startExecuteTime, endExecuteTime, pageNumber, pageSize);
         }
 
         List<TransactionCurrencyDO> transactionCurrencyList = transactionCurrencyService.listTransactionCurrencyAll();
@@ -145,7 +149,7 @@ public class BackerTransactionMakeOrderController {
         request.setAttribute("endExecuteTime", endExecuteTimeStr);
         request.setAttribute("orderNo", orderNoStr);
         request.setAttribute("executeStatus", executeStatus);
-        request.setAttribute("currencyName", currencyNameStr);
+        request.setAttribute("currencyId", currencyId);
 
         request.setAttribute("totalNumber", totalNumber);
         request.setAttribute("totalPageNumber", totalPageNumber);

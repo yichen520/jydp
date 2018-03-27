@@ -28,23 +28,23 @@ public interface ITransactionCurrencyCoefficientDao {
 
     /**
      * 查询币种系数条数
-     * @param currencyName  币种名称
+     * @param currencyId 币种Id,查询全部填0
      * @param startAddTime  起始添加时间
      * @param endAddTime  结束添加时间
      * @return  操作成功：返回币种系数条数，操作失败：返回0
      */
-    int countTransactionCurrencyCoeffieientForBack(String currencyName, Timestamp startAddTime, Timestamp endAddTime);
+    int countTransactionCurrencyCoeffieientForBack(int currencyId, Timestamp startAddTime, Timestamp endAddTime);
 
     /**
      * 查询币种系数集合
-     * @param currencyName  币种名称
+     * @param currencyId 币种Id,查询全部填0
      * @param startAddTime  起始添加时间
      * @param endAddTime  结束添加时间
      * @param pageNumber  当前页数
      * @param pageSize  每页条数
      * @return  操作成功：返回币种系数集合，操作失败：返回null
      */
-    List<TransactionCurrencyCoefficientDO> listTransactionCurrencyCoefficientForBack(String currencyName, Timestamp startAddTime, Timestamp endAddTime, int pageNumber, int pageSize);
+    List<TransactionCurrencyCoefficientDO> listTransactionCurrencyCoefficientForBack(int currencyId, Timestamp startAddTime, Timestamp endAddTime, int pageNumber, int pageSize);
 
     /**
      * 根据币种Id查询之前最新的币种系数

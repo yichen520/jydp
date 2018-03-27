@@ -36,7 +36,7 @@
                         <select class="askSelect" id="currencyId" name="currencyName">
                             <option value="">全部</option>
                             <c:forEach items="${transactionCurrencyList}" var="item">
-                                <option value="${item.currencyName}">${item.currencyName}</option>
+                                <option value="${item.currencyId}">${item.currencyName}</option>
                             </c:forEach>
                         </select>
                     </p>
@@ -168,7 +168,7 @@
         }
 
         $("#currencyId option").each(function(){
-            if($(this).val()=='${currencyName}'){
+            if($(this).val()=='${currencyId}'){
                 $(this).attr('selected',true);
             }
         });

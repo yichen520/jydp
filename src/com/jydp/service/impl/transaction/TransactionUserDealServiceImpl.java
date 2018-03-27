@@ -95,23 +95,23 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
      * 查询成交记录条数(后台)
      * @param userAccount  用户账号
      * @param paymentType  收支类型,1：买入，2：卖出
-     * @param currencyName  货币名称
+     * @param currencyId  币种id,查询全部填0
      * @param startAddTime  起始完成时间
      * @param endAddTime  结束完成时间
      * @param startPendTime  起始挂单时间
      * @param endPendTime  结束挂单时间
      * @return  操作成功：返回成交记录条数，操作失败：返回0
      */
-    public int countTransactionUserDealForBack(String userAccount, int paymentType, String currencyName,
+    public int countTransactionUserDealForBack(String userAccount, int paymentType, int currencyId,
                                         Timestamp startAddTime, Timestamp endAddTime, Timestamp startPendTime, Timestamp endPendTime){
-        return transactionUserDealDao.countTransactionUserDealForBack(userAccount, paymentType, currencyName, startAddTime, endAddTime, startPendTime, endPendTime);
+        return transactionUserDealDao.countTransactionUserDealForBack(userAccount, paymentType, currencyId, startAddTime, endAddTime, startPendTime, endPendTime);
     }
 
     /**
      * 查询成交记录(后台)
      * @param userAccount  用户账号
      * @param paymentType  收支类型,1：买入，2：卖出
-     * @param currencyName  货币名称
+     * @param currencyId  币种id,查询全部填0
      * @param startAddTime  起始完成时间
      * @param endAddTime  结束完成时间
      * @param startPendTime  起始挂单时间
@@ -120,10 +120,10 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
      * @param pageSize  每页条数
      * @return  操作成功：返回成交记录，操作失败：返回null
      */
-    public List<TransactionUserDealVO> listTransactionUserDealForBack(String userAccount, int paymentType, String currencyName,
+    public List<TransactionUserDealVO> listTransactionUserDealForBack(String userAccount, int paymentType, int currencyId,
                                                                       Timestamp startAddTime, Timestamp endAddTime, Timestamp startPendTime, Timestamp endPendTime,
                                                                       int pageNumber, int pageSize){
-        List<TransactionUserDealVO> transactionUserDealVOS = transactionUserDealDao.listTransactionUserDealForBack(userAccount, paymentType, currencyName, startAddTime, endAddTime, startPendTime, endPendTime, pageNumber, pageSize);
+        List<TransactionUserDealVO> transactionUserDealVOS = transactionUserDealDao.listTransactionUserDealForBack(userAccount, paymentType, currencyId, startAddTime, endAddTime, startPendTime, endPendTime, pageNumber, pageSize);
         for (TransactionUserDealVO userDeal: transactionUserDealVOS) {
             double fee = BigDecimalUtil.mul(userDeal.getCurrencyTotalPrice(), userDeal.getFeeNumber());
 

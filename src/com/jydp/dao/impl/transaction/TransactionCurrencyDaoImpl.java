@@ -154,7 +154,7 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
 
     /**
      * 查询币种个数（后台）
-     * @param currencyName  货币名称(币种)
+     * @param currencyId  币种Id,查询全部填0
      * @param paymentType  交易状态,1:正常，2:涨停，3:跌停，4:停牌
      * @param upStatus  上线状态,1:待上线,2:上线中,3:禁用,4:已下线
      * @param backAccount  管理员账号
@@ -164,12 +164,12 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
      * @param endUpTime  结束上线时间
      * @return  操作成功：返回交易币种条数，操作失败：返回0
      */
-    public int countTransactionCurrencyForBack(String currencyName, int paymentType, int upStatus, String backAccount,
+    public int countTransactionCurrencyForBack(int currencyId, int paymentType, int upStatus, String backAccount,
                                         Timestamp startAddTime, Timestamp endAddTime, Timestamp startUpTime, Timestamp endUpTime){
         int result = 0;
 
         Map<String, Object> map = new HashMap<>();
-        map.put("currencyName", currencyName);
+        map.put("currencyId", currencyId);
         map.put("paymentType", paymentType);
         map.put("upStatus", upStatus);
         map.put("backerAccount", backAccount);
@@ -189,7 +189,7 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
 
     /**
      * 查询币种集合（后台）
-     * @param currencyName  货币名称(币种)
+     * @param currencyId  币种Id,查询全部填0
      * @param paymentType  交易状态,1:正常，2:涨停，3:跌停，4:停牌
      * @param upStatus  上线状态,1:待上线,2:上线中,3:禁用,4:已下线
      * @param backAccount  管理员账号
@@ -201,12 +201,12 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
      * @param pageSize 每页条数
      * @return  操作成功：返回交易币种条数，操作失败：返回0
      */
-    public List<TransactionCurrencyVO> listTransactionCurrencyForBack(String currencyName, int paymentType, int upStatus, String backAccount,
+    public List<TransactionCurrencyVO> listTransactionCurrencyForBack(int currencyId, int paymentType, int upStatus, String backAccount,
                                                                Timestamp startAddTime, Timestamp endAddTime, Timestamp startUpTime, Timestamp endUpTime, int pageNumber, int pageSize){
         List<TransactionCurrencyVO> resultList = null;
 
         Map<String, Object> map = new HashMap<>();
-        map.put("currencyName", currencyName);
+        map.put("currencyId", currencyId);
         map.put("paymentType", paymentType);
         map.put("upStatus", upStatus);
         map.put("backerAccount", backAccount);

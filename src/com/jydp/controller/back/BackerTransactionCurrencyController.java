@@ -73,7 +73,7 @@ public class BackerTransactionCurrencyController {
     /** 查询数据 */
     public void List(HttpServletRequest request) {
         String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
-        String currencyNameStr = StringUtil.stringNullHandle(request.getParameter("currencyName"));
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
         String paymentTypeStr = StringUtil.stringNullHandle(request.getParameter("paymentType"));
         String backAccount = StringUtil.stringNullHandle(request.getParameter("backerAccount"));
         String upStatusStr = StringUtil.stringNullHandle(request.getParameter("upStatus"));
@@ -88,6 +88,7 @@ public class BackerTransactionCurrencyController {
         Timestamp endUpTime = null;
         int paymentType = 0;
         int upStatus = 0;
+        int currencyId = 0;
         int pageNumber = 0;
 
         if (StringUtil.isNotNull(startAddTimeStr)) {
@@ -108,13 +109,16 @@ public class BackerTransactionCurrencyController {
         if (StringUtil.isNotNull(upStatusStr)) {
             upStatus = Integer.parseInt(upStatusStr);
         }
+        if (StringUtil.isNotNull(currencyIdStr)) {
+            currencyId = Integer.parseInt(currencyIdStr);
+        }
         if (StringUtil.isNotNull(pageNumberStr)) {
             pageNumber = Integer.parseInt(pageNumberStr);
         }
 
         int pageSize = 20;
 
-        int totalNumber = transactionCurrencyService.countTransactionCurrencyForBack(currencyNameStr, paymentType, upStatus,
+        int totalNumber = transactionCurrencyService.countTransactionCurrencyForBack(currencyId, paymentType, upStatus,
                 backAccount, startAddTime, endAddTime, startUpTime, endUpTime);
 
         int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
@@ -127,7 +131,7 @@ public class BackerTransactionCurrencyController {
 
         List<TransactionCurrencyVO> transactionCurrencyVOList = null;
         if (totalNumber > 0) {
-            transactionCurrencyVOList = transactionCurrencyService.listTransactionCurrencyForBack(currencyNameStr, paymentType,
+            transactionCurrencyVOList = transactionCurrencyService.listTransactionCurrencyForBack(currencyId, paymentType,
                     upStatus, backAccount, startAddTime, endAddTime,  startUpTime, endUpTime, pageNumber, pageSize);
 
             if (transactionCurrencyVOList != null && transactionCurrencyVOList.size() > 0) {
@@ -137,7 +141,7 @@ public class BackerTransactionCurrencyController {
                 }
             }
         }
-        int totalCurrNumber = transactionCurrencyService.countTransactionCurrencyForBack(null, 0, 0,
+        int totalCurrNumber = transactionCurrencyService.countTransactionCurrencyForBack(0, 0, 0,
                 null, null, null, null, null);
 
         List<TransactionCurrencyDO> transactionCurrencyList = transactionCurrencyService.listTransactionCurrencyAll();
@@ -150,7 +154,7 @@ public class BackerTransactionCurrencyController {
         request.setAttribute("backAccount", backAccount);
         request.setAttribute("paymentType", paymentType);
         request.setAttribute("upStatus", upStatus);
-        request.setAttribute("currencyName", currencyNameStr);
+        request.setAttribute("currencyId", currencyId);
 
         request.setAttribute("totalNumber", totalNumber);
         request.setAttribute("totalCurrNumber", totalCurrNumber);
@@ -506,7 +510,7 @@ public class BackerTransactionCurrencyController {
         }
 
         String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
-        String currencyNameStr = StringUtil.stringNullHandle(request.getParameter("currencyName"));
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
         String paymentTypeStr = StringUtil.stringNullHandle(request.getParameter("paymentType"));
         String backAccount = StringUtil.stringNullHandle(request.getParameter("backerAccount"));
         String upStatusStr = StringUtil.stringNullHandle(request.getParameter("upStatus"));
@@ -521,6 +525,7 @@ public class BackerTransactionCurrencyController {
         Timestamp endUpTime = null;
         int paymentType = 0;
         int upStatus = 0;
+        int currencyId = 0;
         int pageNumber = 0;
 
         if (StringUtil.isNotNull(startAddTimeStr)) {
@@ -541,13 +546,16 @@ public class BackerTransactionCurrencyController {
         if (StringUtil.isNotNull(upStatusStr)) {
             upStatus = Integer.parseInt(upStatusStr);
         }
+        if (StringUtil.isNotNull(currencyIdStr)) {
+            currencyId = Integer.parseInt(currencyIdStr);
+        }
         if (StringUtil.isNotNull(pageNumberStr)) {
             pageNumber = Integer.parseInt(pageNumberStr);
         }
 
         int pageSize = 20;
 
-        int totalNumber = transactionCurrencyService.countTransactionCurrencyForBack(currencyNameStr, paymentType, upStatus,
+        int totalNumber = transactionCurrencyService.countTransactionCurrencyForBack(currencyId, paymentType, upStatus,
                 backAccount, startAddTime, endAddTime, startUpTime, endUpTime);
 
         int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
@@ -560,7 +568,7 @@ public class BackerTransactionCurrencyController {
 
         List<TransactionCurrencyVO> transactionCurrencyVOList = null;
         if (totalNumber > 0) {
-            transactionCurrencyVOList = transactionCurrencyService.listTransactionCurrencyForBack(currencyNameStr, paymentType,
+            transactionCurrencyVOList = transactionCurrencyService.listTransactionCurrencyForBack(currencyId, paymentType,
                     upStatus, backAccount, startAddTime, endAddTime, startUpTime, endUpTime, pageNumber, pageSize);
         }
 
