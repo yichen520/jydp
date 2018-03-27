@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : test.oksheng.com.cn_3306
+Source Server         : test.oksheng.com.cn
 Source Server Version : 50635
 Source Host           : test.oksheng.com.cn:3306
 Source Database       : jydp
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50635
 File Encoding         : 65001
 
-Date: 2018-03-26 11:44:32
+Date: 2018-03-27 15:04:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -33,7 +33,7 @@ CREATE TABLE `backer_handle_user_balance_freeze_money_tab` (
   `addTime` datetime NOT NULL COMMENT '记录时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=276 DEFAULT CHARSET=utf8 COMMENT='后台管理员增减用户冻结币记录';
+) ENGINE=InnoDB AUTO_INCREMENT=283 DEFAULT CHARSET=utf8 COMMENT='后台管理员增减用户冻结币记录';
 
 -- ----------------------------
 -- Table structure for backer_handle_user_balance_freeze_tab
@@ -52,7 +52,7 @@ CREATE TABLE `backer_handle_user_balance_freeze_tab` (
   `addTime` datetime NOT NULL COMMENT '记录时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=262 DEFAULT CHARSET=utf8 COMMENT='后台管理员增减用户冻结余额记录';
+) ENGINE=InnoDB AUTO_INCREMENT=263 DEFAULT CHARSET=utf8 COMMENT='后台管理员增减用户冻结余额记录';
 
 -- ----------------------------
 -- Table structure for backer_handle_user_balance_money_tab
@@ -72,7 +72,7 @@ CREATE TABLE `backer_handle_user_balance_money_tab` (
   `addTime` datetime NOT NULL COMMENT '记录时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=401 DEFAULT CHARSET=utf8 COMMENT='后台管理员增减用户可用币记录';
+) ENGINE=InnoDB AUTO_INCREMENT=431 DEFAULT CHARSET=utf8 COMMENT='后台管理员增减用户可用币记录';
 
 -- ----------------------------
 -- Table structure for backer_handle_user_balance_tab
@@ -91,7 +91,7 @@ CREATE TABLE `backer_handle_user_balance_tab` (
   `addTime` datetime NOT NULL COMMENT '记录时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=449 DEFAULT CHARSET=utf8 COMMENT='后台管理员增减用户余额记录';
+) ENGINE=InnoDB AUTO_INCREMENT=460 DEFAULT CHARSET=utf8 COMMENT='后台管理员增减用户余额记录';
 
 -- ----------------------------
 -- Table structure for backer_role_power_map_tab
@@ -155,7 +155,7 @@ CREATE TABLE `backer_tab` (
   `addTime` datetime NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`backerId`) USING BTREE,
   UNIQUE KEY `backerAccount` (`backerAccount`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COMMENT='后台管理员';
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 COMMENT='后台管理员';
 
 -- ----------------------------
 -- Table structure for jydp_coin_config_tab
@@ -203,11 +203,109 @@ CREATE TABLE `jydp_user_coin_out_record_tab` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='JYDP用户币种转出记录';
 
 -- ----------------------------
+-- Table structure for k_line_graph_fifteen_minutes_tab
+-- ----------------------------
+DROP TABLE IF EXISTS `k_line_graph_fifteen_minutes_tab`;
+CREATE TABLE `k_line_graph_fifteen_minutes_tab` (
+  `currencyId` int(11) NOT NULL COMMENT '币种id',
+  `nodeTime` datetime NOT NULL COMMENT '时间节点',
+  `openPrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '开盘价',
+  `closePrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '收盘价',
+  `maxPrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '最高价',
+  `minPrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '最低价',
+  `transactionTotal` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '成交量'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='k线图统计数据(十五分钟节点)';
+
+-- ----------------------------
+-- Table structure for k_line_graph_five_minutes_tab
+-- ----------------------------
+DROP TABLE IF EXISTS `k_line_graph_five_minutes_tab`;
+CREATE TABLE `k_line_graph_five_minutes_tab` (
+  `currencyId` int(11) NOT NULL COMMENT '币种id',
+  `nodeTime` datetime NOT NULL COMMENT '时间节点',
+  `openPrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '开盘价',
+  `closePrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '收盘价',
+  `maxPrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '最高价',
+  `minPrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '最低价',
+  `transactionTotal` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '成交量'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='k线图统计数据(五分钟节点)';
+
+-- ----------------------------
+-- Table structure for k_line_graph_four_hours_tab
+-- ----------------------------
+DROP TABLE IF EXISTS `k_line_graph_four_hours_tab`;
+CREATE TABLE `k_line_graph_four_hours_tab` (
+  `currencyId` int(11) NOT NULL COMMENT '币种id',
+  `nodeTime` datetime NOT NULL COMMENT '时间节点',
+  `openPrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '开盘价',
+  `closePrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '收盘价',
+  `maxPrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '最高价',
+  `minPrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '最低价',
+  `transactionTotal` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '成交量'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='k线图统计数据(四小时节点)';
+
+-- ----------------------------
+-- Table structure for k_line_graph_halfhour_tab
+-- ----------------------------
+DROP TABLE IF EXISTS `k_line_graph_halfhour_tab`;
+CREATE TABLE `k_line_graph_halfhour_tab` (
+  `currencyId` int(11) NOT NULL COMMENT '币种id',
+  `nodeTime` datetime NOT NULL COMMENT '时间节点',
+  `openPrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '开盘价',
+  `closePrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '收盘价',
+  `maxPrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '最高价',
+  `minPrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '最低价',
+  `transactionTotal` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '成交量'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='k线图统计数据(三十分钟节点)';
+
+-- ----------------------------
+-- Table structure for k_line_graph_one_day_tab
+-- ----------------------------
+DROP TABLE IF EXISTS `k_line_graph_one_day_tab`;
+CREATE TABLE `k_line_graph_one_day_tab` (
+  `currencyId` int(11) NOT NULL COMMENT '币种id',
+  `nodeTime` datetime NOT NULL COMMENT '时间节点',
+  `openPrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '开盘价',
+  `closePrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '收盘价',
+  `maxPrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '最高价',
+  `minPrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '最低价',
+  `transactionTotal` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '成交量'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='k线图统计数据(一天节点)';
+
+-- ----------------------------
+-- Table structure for k_line_graph_one_hours_tab
+-- ----------------------------
+DROP TABLE IF EXISTS `k_line_graph_one_hours_tab`;
+CREATE TABLE `k_line_graph_one_hours_tab` (
+  `currencyId` int(11) NOT NULL COMMENT '币种id',
+  `nodeTime` datetime NOT NULL COMMENT '时间节点',
+  `openPrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '开盘价',
+  `closePrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '收盘价',
+  `maxPrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '最高价',
+  `minPrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '最低价',
+  `transactionTotal` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '成交量'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='k线图统计数据(一小时节点)';
+
+-- ----------------------------
+-- Table structure for k_line_graph_one_week_tab
+-- ----------------------------
+DROP TABLE IF EXISTS `k_line_graph_one_week_tab`;
+CREATE TABLE `k_line_graph_one_week_tab` (
+  `currencyId` int(11) NOT NULL COMMENT '币种id',
+  `nodeTime` datetime NOT NULL COMMENT '时间节点',
+  `openPrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '开盘价',
+  `closePrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '收盘价',
+  `maxPrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '最高价',
+  `minPrice` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '最低价',
+  `transactionTotal` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '成交量'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='k线图统计数据(一周节点)';
+
+-- ----------------------------
 -- Table structure for syl_to_jydp_chain_tab
 -- ----------------------------
 DROP TABLE IF EXISTS `syl_to_jydp_chain_tab`;
 CREATE TABLE `syl_to_jydp_chain_tab` (
-  `sylRecordNo` varchar(15) NOT NULL COMMENT '盛源链记录号',
+  `sylRecordNo` varchar(20) NOT NULL COMMENT '盛源链记录号',
   `userId` int(11) NOT NULL COMMENT '用户id',
   `userAccount` varchar(16) NOT NULL COMMENT '用户账号',
   `shengyuanCoin` decimal(18,8) NOT NULL COMMENT '盛源币',
@@ -216,7 +314,7 @@ CREATE TABLE `syl_to_jydp_chain_tab` (
   `addTime` datetime NOT NULL COMMENT '添加时间,系统生成时间',
   PRIMARY KEY (`sylRecordNo`),
   UNIQUE KEY `sylRecordNo` (`sylRecordNo`) USING BTREE,
-  UNIQUE KEY `userId` (`userId`) USING BTREE
+  KEY `userId` (`userId`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='SYL转账盛源链记录(SYL-->JYDP)';
 
 -- ----------------------------
@@ -263,7 +361,7 @@ CREATE TABLE `system_ads_homepages_tab` (
   `addTime` datetime NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=175 DEFAULT CHARSET=utf8 COMMENT='首页广告';
+) ENGINE=InnoDB AUTO_INCREMENT=180 DEFAULT CHARSET=utf8 COMMENT='首页广告';
 
 -- ----------------------------
 -- Table structure for system_businesses_partner_tab
@@ -279,7 +377,7 @@ CREATE TABLE `system_businesses_partner_tab` (
   `addTime` datetime NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=146 DEFAULT CHARSET=utf8 COMMENT='合作商家';
+) ENGINE=InnoDB AUTO_INCREMENT=158 DEFAULT CHARSET=utf8 COMMENT='合作商家';
 
 -- ----------------------------
 -- Table structure for system_help_tab
@@ -309,7 +407,7 @@ CREATE TABLE `system_hot_tab` (
   `rankNumber` int(11) NOT NULL COMMENT '排名位置',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8 COMMENT='热门话题';
+) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8 COMMENT='热门话题';
 
 -- ----------------------------
 -- Table structure for system_notice_tab
@@ -325,7 +423,7 @@ CREATE TABLE `system_notice_tab` (
   `addTime` datetime NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=179 DEFAULT CHARSET=utf8 COMMENT='用户公告管理';
+) ENGINE=InnoDB AUTO_INCREMENT=182 DEFAULT CHARSET=utf8 COMMENT='用户公告管理';
 
 -- ----------------------------
 -- Table structure for system_switch_record_tab
@@ -342,7 +440,7 @@ CREATE TABLE `system_switch_record_tab` (
   `addTime` datetime NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `switchCode` (`switchCode`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 COMMENT='系统开关记录';
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8 COMMENT='系统开关记录';
 
 -- ----------------------------
 -- Table structure for system_validate_phone_tab
@@ -358,7 +456,7 @@ CREATE TABLE `system_validate_phone_tab` (
   `validateTime` datetime DEFAULT NULL COMMENT '验证时间',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `phoneNo` (`phoneNo`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=42535 DEFAULT CHARSET=utf8 COMMENT='系统手机验证';
+) ENGINE=InnoDB AUTO_INCREMENT=42651 DEFAULT CHARSET=utf8 COMMENT='系统手机验证';
 
 -- ----------------------------
 -- Table structure for transaction_currency_coefficient_tab
@@ -402,7 +500,7 @@ CREATE TABLE `transaction_currency_tab` (
   UNIQUE KEY `currencyShortName` (`currencyShortName`) USING BTREE,
   KEY `paymentType` (`paymentType`) USING BTREE,
   KEY `upStatus` (`upStatus`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=157 DEFAULT CHARSET=utf8 COMMENT='交易币种';
+) ENGINE=InnoDB AUTO_INCREMENT=172 DEFAULT CHARSET=utf8 COMMENT='交易币种';
 
 -- ----------------------------
 -- Table structure for transaction_deal_redis_tab
@@ -420,7 +518,7 @@ CREATE TABLE `transaction_deal_redis_tab` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `addTime` (`addTime`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=770199 DEFAULT CHARSET=utf8 COMMENT='redis成交记录';
+) ENGINE=InnoDB AUTO_INCREMENT=772044 DEFAULT CHARSET=utf8 COMMENT='redis成交记录';
 
 -- ----------------------------
 -- Table structure for transaction_make_order_tab
@@ -479,6 +577,7 @@ CREATE TABLE `transaction_pend_order_tab` (
 DROP TABLE IF EXISTS `transaction_statistics_tab`;
 CREATE TABLE `transaction_statistics_tab` (
   `orderNo` varchar(18) NOT NULL COMMENT '记录号，业务类型（2）+日期（6）+随机位（10）',
+  `statisticsDate` datetime NOT NULL COMMENT '统计日期',
   `currencyId` int(11) NOT NULL COMMENT '币种Id',
   `currencyName` varchar(32) NOT NULL COMMENT '货币名称',
   `transactionTotalNumber` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '成交总数量',
@@ -486,6 +585,7 @@ CREATE TABLE `transaction_statistics_tab` (
   `currencyCoefficient` decimal(18,8) NOT NULL DEFAULT '0.00000000' COMMENT '币种系数',
   `addTime` datetime NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`orderNo`),
+  UNIQUE KEY `statisticsDate, currencyId` (`statisticsDate`,`currencyId`) USING BTREE,
   KEY `currencyId` (`currencyId`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='交易统计记录表';
 
@@ -569,7 +669,7 @@ CREATE TABLE `user_feedback_tab` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `userId` (`userId`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=utf8 COMMENT='意见反馈';
+) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8 COMMENT='意见反馈';
 
 -- ----------------------------
 -- Table structure for user_identification_image_tab
@@ -582,7 +682,7 @@ CREATE TABLE `user_identification_image_tab` (
   `addTime` datetime NOT NULL COMMENT '添加时间',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `identificationId` (`identificationId`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=351 DEFAULT CHARSET=utf8 COMMENT='用户认证详情图';
+) ENGINE=InnoDB AUTO_INCREMENT=401 DEFAULT CHARSET=utf8 COMMENT='用户认证详情图';
 
 -- ----------------------------
 -- Table structure for user_identification_tab
@@ -604,7 +704,7 @@ CREATE TABLE `user_identification_tab` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `userId` (`userId`) USING BTREE,
   KEY `identificationStatus` (`identificationStatus`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=181 DEFAULT CHARSET=utf8 COMMENT='用户认证';
+) ENGINE=InnoDB AUTO_INCREMENT=206 DEFAULT CHARSET=utf8 COMMENT='用户认证';
 
 -- ----------------------------
 -- Table structure for user_session_tab
@@ -640,4 +740,4 @@ CREATE TABLE `user_tab` (
   PRIMARY KEY (`userId`) USING BTREE,
   UNIQUE KEY `userAccount` (`userAccount`) USING BTREE,
   UNIQUE KEY `phoneAreaCode, phoneNumber` (`phoneAreaCode`,`phoneNumber`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=277 DEFAULT CHARSET=utf8 COMMENT='用户账号';
+) ENGINE=InnoDB AUTO_INCREMENT=289 DEFAULT CHARSET=utf8 COMMENT='用户账号';

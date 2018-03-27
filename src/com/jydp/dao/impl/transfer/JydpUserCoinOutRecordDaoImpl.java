@@ -278,10 +278,12 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
      * @return 修改成功：true；修改失败：false
      */
     public boolean updateJydpUserCoinOutRecordOutStatus(List<String> coinRecordNoList){
+        Map<String, Object> map = new HashMap<>();
+        map.put("coinRecordNoList", coinRecordNoList);
         int result = 0;
 
         try {
-            result = sqlSessionTemplate.update("JydpUserCoinOutRecord_updateJydpUserCoinOutRecordOutStatus", coinRecordNoList);
+            result = sqlSessionTemplate.update("JydpUserCoinOutRecord_updateJydpUserCoinOutRecordOutStatus", map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
@@ -350,7 +352,7 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
 
         int result = 0;
         try {
-            result = sqlSessionTemplate.selectOne("JydpUserCoinOutRecord_updateJydpUserCoinOutRecordBySyl", map);
+            result = sqlSessionTemplate.update("JydpUserCoinOutRecord_updateJydpUserCoinOutRecordBySyl", map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }

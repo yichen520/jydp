@@ -71,7 +71,7 @@ public class SylUserBoundController {
 
         //签名验证
         TreeMap<String, String> map = new TreeMap<String, String>();
-        map.put("sylUserAccount", userAccount);
+        map.put("sylUserAccount", sylUserAccount);
         map.put("userAccount", userAccount);
         map.put("password", password);
         map.put("uname", uname);
@@ -122,7 +122,7 @@ public class SylUserBoundController {
             return responseJson;
         }
 
-        if(!userIdentification.getUserCertNo().equals(idCard)){
+        if(!userIdentification.getUserCertNo().equals(idCard) && !userIdentification.getUserName().equals(uname)){
             responseJson.put("code", 106);
             responseJson.put("message", "绑定账号实名认证信息不匹配,请选择本人身份认证信息账号进行绑定操作");
             return responseJson;

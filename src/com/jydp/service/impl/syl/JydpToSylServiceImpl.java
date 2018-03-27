@@ -11,6 +11,7 @@ import config.SylConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -35,7 +36,7 @@ public class JydpToSylServiceImpl implements IJydpToSylService {
             return;
         }
 
-        List<String> coinRecordNoList = null;
+        List<String> coinRecordNoList = new ArrayList<>();
         for (JydpUserCoinOutRecordDO jydpUserCoinOutRecord: jydpUserCoinOutRecordList) {
             String orderNo = jydpUserCoinOutRecord.getCoinRecordNo();
             String userAccount = jydpUserCoinOutRecord.getUserAccount();
@@ -74,7 +75,7 @@ public class JydpToSylServiceImpl implements IJydpToSylService {
             }
         }
         //批量修改状态
-        if(coinRecordNoList != null){
+        if(coinRecordNoList != null && coinRecordNoList.size() != 0){
             jydpUserCoinOutRecordService.updateJydpUserCoinOutRecordOutStatus(coinRecordNoList);
         }
     }

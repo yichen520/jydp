@@ -23,7 +23,7 @@ public class PushToSylTimer {
     private IJydpToSylService jydpToSylService;
 
     /** 交易大盘向盛源链钱包转币申请推送 */
-    @Scheduled(cron="0 0/5 *  * * ? ")
+    @Scheduled(cron="0/10 * *  * * ? ")
     public void transferMarketRate(){
         jydpToSylService.jydpToSylApply();
     }

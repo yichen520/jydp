@@ -13,7 +13,7 @@ public class SylUserBoundDO {
     private String userAccount;  //用户帐号
     private String userSylAccount;  //盛源链APP用户帐号
     private int status;  //绑定状态 1,绑定2，解绑（预留字段）
-    private Timestamp addtime;  //添加时间
+    private Timestamp addTime;  //添加时间
 
     /**
      * 记录id
@@ -108,18 +108,18 @@ public class SylUserBoundDO {
     /**
      * 添加时间
      *
-     * @return the addtime
+     * @return the addTime
      */
     public Timestamp getAddtime() {
-        return addtime;
+        return addTime;
     }
 
     /**
      * 添加时间
      *
-     * @param addtime the addtime
+     * @param addTime the addTime
      */
-    public void setAddtime(Timestamp addtime) {
-        this.addtime = addtime;
+    public void setAddtime(Timestamp addTime) {
+        this.addTime = addTime;
     }
 }

@@ -67,7 +67,7 @@ public class SylToJydpChainServiceImpl implements ISylToJydpChainService {
 
         TransactionCurrencyVO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyShortName(coinType);//查询币种信息
         Timestamp date = DateUtil.getCurrentTime();
-        if(transactionCurrency != null){
+        if(transactionCurrency == null){
             return false;
         }
 
