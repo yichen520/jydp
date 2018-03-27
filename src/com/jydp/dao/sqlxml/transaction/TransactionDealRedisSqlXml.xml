@@ -164,4 +164,14 @@
 		LIMIT 1
 	</select>
 
+	<select id="TransactionDealRedis_listTransactionDealRedisForTimer" parameterType="java.util.Map"
+			resultType="TransactionDealRedisDTO">
+		SELECT transactionPrice, currencyNumber, addTime
+		FROM transaction_deal_redis_tab
+		WHERE currencyId = #{currencyId}
+		AND addTime <![CDATA[ >= ]]> #{startTime}
+		AND addTime <![CDATA[ <= ]]> #{endTime}
+		ORDER BY addTime DESC
+	</select>
+
 </mapper>

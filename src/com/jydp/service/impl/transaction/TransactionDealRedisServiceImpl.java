@@ -407,4 +407,10 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
         return  transactionDealRedisDao.getEarliestTime(currencyId, prefix);
     }
 
+
+    public List<TransactionDealRedisDTO> listTransactionDealRedisForTimer(int currencyId, Timestamp starTime,
+                                                                          Timestamp endTime) {
+        return  transactionDealRedisDao.listTransactionDealRedisForTimer(currencyId, starTime, endTime);
+    }
+
 }
