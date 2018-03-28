@@ -215,4 +215,9 @@ public interface ITransactionCurrencyService {
      */
     List<TransactionCurrencyBasicDTO> listAllTransactionCurrencyBasicInfor();
 
+    /**
+     * 获取所有上线中和停牌的币种id集合
+     * @return 查询成功:返回币种id集合, 查询失败:返回null
+     */
+    List<Integer> listcurrencyId();
 }

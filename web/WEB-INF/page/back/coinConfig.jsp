@@ -71,8 +71,8 @@
                     <tr class="tableInfo">
                         <td class="time"><fmt:formatDate type="time" value="${jydpCoinConfig.addTime }" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
                         <td class="coin">${jydpCoinConfig.currencyName}</td>
-                        <td class="amount"><fmt:formatNumber type="number" value="${jydpCoinConfig.freeCurrencyNumber}" groupingUsed="FALSE" maxFractionDigits="4"/></td>
-                        <td class="amount"><fmt:formatNumber type="number" value="${jydpCoinConfig.minCurrencyNumber}" groupingUsed="FALSE" maxFractionDigits="4"/></td>
+                        <td class="amount"><fmt:formatNumber type="number" value="${jydpCoinConfig.freeCurrencyNumber}" groupingUsed="FALSE" maxFractionDigits="2"/></td>
+                        <td class="amount"><fmt:formatNumber type="number" value="${jydpCoinConfig.minCurrencyNumber}" groupingUsed="FALSE" maxFractionDigits="2"/></td>
                         <td class="account">${jydpCoinConfig.backerAccount}</td>
                         <td class="ip">${jydpCoinConfig.ipAddress}</td>
                         <td class="operate">
@@ -118,12 +118,12 @@
             <p class="popInput">
                 <label class="popName">免审数量<span class="star">*</span></label>
                 <input type="text" class="entry" placeholder="币种转出的免审数量，无则填“0”" id="addFreeCurrencyNumber" name="addFreeCurrencyNumber"
-                       onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="10"/>
+                       onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)" maxlength="10"/>
             </p>
             <p class="popInput">
                 <label class="popName">最低数量<span class="star">*</span></label>
                 <input type="text" class="entry" placeholder="币种转出的最低数量，无则填“0”" id="addMinCurrencyNumber" name="addMinCurrencyNumber"
-                       onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="10"/>
+                       onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)" maxlength="10"/>
             </p>
 
             <div class="buttons">

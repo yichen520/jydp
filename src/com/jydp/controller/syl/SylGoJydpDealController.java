@@ -4,6 +4,7 @@ package com.jydp.controller.syl;
 import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.SignatureUtil;
 import com.iqmkj.utils.StringUtil;
+import com.jydp.entity.DO.syl.SylToJydpChainDO;
 import com.jydp.entity.DO.syl.SylUserBoundDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.service.ISylToJydpChainService;
@@ -95,10 +96,17 @@ public class SylGoJydpDealController {
             return responseJson;
         }
 
+        SylToJydpChainDO sylToJydpChain = sylToJydpChainService.getSylToJydpChainBysylRecordNo(orderNo);
+        if(sylToJydpChain != null){
+            responseJson.put("code", 203);
+            responseJson.put("message", "该订单已存在");
+            return responseJson;
+        }
+
         double coin = Double.parseDouble(coinStr);
         boolean operation = sylToJydpChainService.operationSylToJydpChain(orderNo, user.getUserId(), userAccount, coin, coinType);
         if(!operation){
-            responseJson.put("code", 203);
+            responseJson.put("code", 204);
             responseJson.put("message", "转账失败");
             return responseJson;
         }

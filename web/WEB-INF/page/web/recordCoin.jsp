@@ -44,7 +44,7 @@
                     <td class="time"><fmt:formatDate type="time" value="${coinOutRecord.addTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
                     <td class="time">${coinOutRecord.coinRecordNo}</td>
                     <td class="coin">${coinOutRecord.currencyName}</td>
-                    <td class="amount"><fmt:formatNumber type="number" value="${coinOutRecord.currencyNumber}" maxFractionDigits="4"></fmt:formatNumber></td>
+                    <td class="amount"><fmt:formatNumber type="number" value="${coinOutRecord.currencyNumber}" maxFractionDigits="2"></fmt:formatNumber></td>
                     <c:if test="${coinOutRecord.handleStatus == 1}">
                         <td class="state wait">待审核</td>
                     </c:if>

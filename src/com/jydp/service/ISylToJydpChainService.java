@@ -25,4 +25,11 @@ public interface ISylToJydpChainService {
      * @return 新增成功：返回true, 新增失败：返回false
      */
     boolean operationSylToJydpChain(String orderNo,int userId, String userAccount, double coin, String coinType);
+
+    /**
+     * 根据订单号查询订单信息
+     * @param sylRecordNo 订单号
+     * @return 查询成功：返回订单信息, 查询失败或者没有相关信息：返回null
+     */
+    SylToJydpChainDO getSylToJydpChainBysylRecordNo(String sylRecordNo);
 }

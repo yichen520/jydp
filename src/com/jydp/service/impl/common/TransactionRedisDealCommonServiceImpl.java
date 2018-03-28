@@ -9,6 +9,7 @@ import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.DO.transaction.TransactionStatisticsDO;
 import com.jydp.entity.DTO.TransactionBottomPriceDTO;
+import com.jydp.entity.DTO.TransactionCurrencyDealPriceDTO;
 import com.jydp.entity.DTO.TransactionDealPriceDTO;
 import com.jydp.entity.DTO.TransactionDealRedisDTO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
@@ -57,58 +58,100 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
     /** 将成交记录放进redis */
     @Override
     public void userDealForRedis() {
-        List<TransactionCurrencyVO> currencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
-        if (currencyList == null || currencyList.isEmpty()) {
+        List<Integer> currencyIdList = transactionCurrencyService.listcurrencyId();
+        if (currencyIdList == null || currencyIdList.isEmpty()) {
             return ;
         }
-        for (TransactionCurrencyDO currency: currencyList) {
-            List<TransactionDealRedisDO> dealList = transactionDealRedisService.listTransactionDealRedis(50, currency.getCurrencyId());
+        for(Integer currencyId : currencyIdList){
+            List<TransactionDealRedisDO> dealList = transactionDealRedisService.listTransactionDealRedis(50, currencyId);
             if (dealList != null && !dealList.isEmpty()) {
-                redisService.addValue(RedisKeyConfig.NOW_PRICE + currency.getCurrencyId(), dealList.get(0).getTransactionPrice());
+                redisService.addValue(RedisKeyConfig.NOW_PRICE + currencyId, dealList.get(0).getTransactionPrice());
             }
-            redisService.addValue(RedisKeyConfig.CURRENCY_DEAL_KEY + currency.getCurrencyId(), dealList);
+            redisService.addValue(RedisKeyConfig.CURRENCY_DEAL_KEY + currencyId, dealList);
         }
     }
 
     /** 组装基准信息参数并存入redis (当前交易价,今日涨跌,今日最高价,今日最低价,当日成交量)*/
+//    public void standardMessageForRedis() {
+//        List<TransactionDealPriceDTO> nowTurnover = transactionDealRedisService.getNowTurnover();  //今日成交量
+//        //double nowTurnover = transactionDealRedisService.getNowVolumeOfTransaction();  今日成交额
+//        if(nowTurnover != null && nowTurnover.size() > 0){
+//            for(TransactionDealPriceDTO transactionDealPrice : nowTurnover){
+//                redisService.addValue(RedisKeyConfig.DAY_TURNOVER + transactionDealPrice.getCurrencyId(),
+//                        transactionDealPrice.getTransactionPrice());
+//            }
+//
+//        }
+//
+//        List<TransactionDealPriceDTO> todayHighestPrice = transactionDealRedisService.getTodayHighestPrice();  //今日最高价
+//        if(todayHighestPrice != null && todayHighestPrice.size() > 0){
+//            for(TransactionDealPriceDTO transactionDealPrice : todayHighestPrice){
+//                redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE + transactionDealPrice.getCurrencyId(),
+//                        transactionDealPrice.getTransactionPrice());
+//            }
+//
+//        }
+//
+//        List<TransactionDealPriceDTO> todayLowestPrice = transactionDealRedisService.getTodayLowestPrice();  //今日最低价
+//        if(todayLowestPrice != null && todayLowestPrice.size() > 0){
+//            for(TransactionDealPriceDTO transactionDealPrice : todayLowestPrice){
+//                redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE + transactionDealPrice.getCurrencyId(),
+//                        transactionDealPrice.getTransactionPrice());
+//            }
+//
+//        }
+//
+//        //获取币种信息
+//        List<TransactionCurrencyVO> transactionUserDeal= transactionCurrencyService.getOnlineAndSuspensionCurrencyForWeb();
+//        if(transactionUserDeal == null || transactionUserDeal.size() <= 0){
+//            return ;
+//        }
+//        //涨跌幅度计算
+//        for(TransactionCurrencyVO transactionDealPrice : transactionUserDeal){
+//            Object yesterdayPriceStr = redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + transactionDealPrice.getCurrencyId());
+//            Object nowPriceStr = redisService.getValue(RedisKeyConfig.NOW_PRICE + transactionDealPrice.getCurrencyId());
+//            if(yesterdayPriceStr != null && nowPriceStr != null){
+//                double transactionPrice = Double.parseDouble(yesterdayPriceStr.toString());
+//                double nowPrice = Double.parseDouble(nowPriceStr.toString());
+//                double range = BigDecimalUtil.sub(nowPrice, transactionPrice);
+//                range = BigDecimalUtil.mul(range, 100);
+//                String rangeStr = BigDecimalUtil.div(range, transactionPrice, 2);
+//                if(!StringUtil.isNotNull(rangeStr)){
+//                    rangeStr = "0.0";
+//                }
+//                redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionDealPrice.getCurrencyId(), Double.parseDouble(rangeStr));
+//            }
+//        }
+//
+//    }
+
+    /** 组装基准信息参数并存入redis (当前交易价,今日涨跌,今日最高价,今日最低价,当日成交量)*/
     public void standardMessageForRedis() {
-        List<TransactionDealPriceDTO> nowTurnover = transactionDealRedisService.getNowTurnover();  //今日成交量
-        //double nowTurnover = transactionDealRedisService.getNowVolumeOfTransaction();  今日成交额
-        if(nowTurnover != null && nowTurnover.size() > 0){
-            for(TransactionDealPriceDTO transactionDealPrice : nowTurnover){
-                redisService.addValue(RedisKeyConfig.DAY_TURNOVER + transactionDealPrice.getCurrencyId(),
-                        transactionDealPrice.getTransactionPrice());
+        List<TransactionCurrencyDealPriceDTO> transactionCurrencyDealPriceList = transactionDealRedisService.getTransactionCurrencyDealPrice();
+        if(transactionCurrencyDealPriceList != null && transactionCurrencyDealPriceList.size() > 0){
+            for(TransactionCurrencyDealPriceDTO transactionCurrencyDealPrice : transactionCurrencyDealPriceList){
+                //今日成交量
+                redisService.addValue(RedisKeyConfig.DAY_TURNOVER + transactionCurrencyDealPrice.getCurrencyId(),
+                        transactionCurrencyDealPrice.getTurnover());
+                //今日最高价
+                redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE + transactionCurrencyDealPrice.getCurrencyId(),
+                        transactionCurrencyDealPrice.getHighestPrice());
+                //今日最低价
+                redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE + transactionCurrencyDealPrice.getCurrencyId(),
+                        transactionCurrencyDealPrice.getLowestPrice());
             }
-
-        }
-
-        List<TransactionDealPriceDTO> todayHighestPrice = transactionDealRedisService.getTodayHighestPrice();  //今日最高价
-        if(todayHighestPrice != null && todayHighestPrice.size() > 0){
-            for(TransactionDealPriceDTO transactionDealPrice : todayHighestPrice){
-                redisService.addValue(RedisKeyConfig.TODAY_MAX_PRICE + transactionDealPrice.getCurrencyId(),
-                        transactionDealPrice.getTransactionPrice());
-            }
-
-        }
-
-        List<TransactionDealPriceDTO> todayLowestPrice = transactionDealRedisService.getTodayLowestPrice();  //今日最低价
-        if(todayLowestPrice != null && todayLowestPrice.size() > 0){
-            for(TransactionDealPriceDTO transactionDealPrice : todayLowestPrice){
-                redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE + transactionDealPrice.getCurrencyId(),
-                        transactionDealPrice.getTransactionPrice());
-            }
-
         }
 
         //获取币种信息
-        List<TransactionCurrencyVO> transactionUserDeal= transactionCurrencyService.getOnlineAndSuspensionCurrencyForWeb();
-        if(transactionUserDeal == null || transactionUserDeal.size() <= 0){
+        List<Integer> currencyIdList = transactionCurrencyService.listcurrencyId();
+        if(currencyIdList == null || currencyIdList.size() <= 0){
             return ;
         }
+
         //涨跌幅度计算
-        for(TransactionCurrencyVO transactionDealPrice : transactionUserDeal){
-            Object yesterdayPriceStr = redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + transactionDealPrice.getCurrencyId());
-            Object nowPriceStr = redisService.getValue(RedisKeyConfig.NOW_PRICE + transactionDealPrice.getCurrencyId());
+        for(Integer currencyId : currencyIdList){
+            Object yesterdayPriceStr = redisService.getValue(RedisKeyConfig.YESTERDAY_PRICE + currencyId);
+            Object nowPriceStr = redisService.getValue(RedisKeyConfig.NOW_PRICE + currencyId);
             if(yesterdayPriceStr != null && nowPriceStr != null){
                 double transactionPrice = Double.parseDouble(yesterdayPriceStr.toString());
                 double nowPrice = Double.parseDouble(nowPriceStr.toString());
@@ -118,7 +161,7 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                 if(!StringUtil.isNotNull(rangeStr)){
                     rangeStr = "0.0";
                 }
-                redisService.addValue(RedisKeyConfig.TODAY_RANGE + transactionDealPrice.getCurrencyId(), Double.parseDouble(rangeStr));
+                redisService.addValue(RedisKeyConfig.TODAY_RANGE + currencyId, Double.parseDouble(rangeStr));
             }
         }
 
@@ -197,47 +240,47 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
     /** k线图参数存入redis (时间节点：5分钟 5m、15分钟 15m、30分钟 30m、1小时 1h、4小时 4h、1天 1d 、1周 1w)*/
     public void graphDataForRedis(){
         //获取币种信息
-        List<TransactionCurrencyVO> transactionUserDeal= transactionCurrencyService.getOnlineAndSuspensionCurrencyForWeb();
+        List<Integer> currencyIdList = transactionCurrencyService.listcurrencyId();
 
-        if(transactionUserDeal != null && transactionUserDeal.size() > 0) {
-            for(TransactionCurrencyVO transactionUser : transactionUserDeal){
-                List<TransactionDealRedisDTO> transactionDealRedisList = transactionDealRedisService.listTransactionUserDealForKline(transactionUser.getCurrencyId());  //成交记录
+        if(currencyIdList != null && currencyIdList.size() > 0) {
+            for(Integer currencyId : currencyIdList){
+                List<TransactionDealRedisDTO> transactionDealRedisList = transactionDealRedisService.listTransactionUserDealForKline(currencyId);  //成交记录
                 for(int i= 0 ;  i < 7; i++){
                     List<TransactionGraphVO> transactionGraphList = new ArrayList<TransactionGraphVO>();
                     switch (i) {
                         case 0:
-                            transactionGraphList = transactionDealRedisService.jointGraphData(transactionUser.getCurrencyId(),5, transactionDealRedisList);
-                            redisService.addValue(RedisKeyConfig.GRAPH_DATA + transactionUser.getCurrencyId() + "5m",
+                            transactionGraphList = transactionDealRedisService.jointGraphData(currencyId,5, transactionDealRedisList);
+                            redisService.addValue(RedisKeyConfig.GRAPH_DATA + currencyId + "5m",
                                     transactionGraphList);
                             break;
                         case 1:
-                            transactionGraphList = transactionDealRedisService.jointGraphData(transactionUser.getCurrencyId(),15, transactionDealRedisList);
-                            redisService.addValue(RedisKeyConfig.GRAPH_DATA + transactionUser.getCurrencyId() + "15m",
+                            transactionGraphList = transactionDealRedisService.jointGraphData(currencyId,15, transactionDealRedisList);
+                            redisService.addValue(RedisKeyConfig.GRAPH_DATA + currencyId + "15m",
                                     transactionGraphList);
                             break;
                         case 2:
-                            transactionGraphList = transactionDealRedisService.jointGraphData(transactionUser.getCurrencyId(),30, transactionDealRedisList);
-                            redisService.addValue(RedisKeyConfig.GRAPH_DATA + transactionUser.getCurrencyId() + "30m",
+                            transactionGraphList = transactionDealRedisService.jointGraphData(currencyId,30, transactionDealRedisList);
+                            redisService.addValue(RedisKeyConfig.GRAPH_DATA + currencyId + "30m",
                                     transactionGraphList);
                             break;
                         case 3:
-                            transactionGraphList = transactionDealRedisService.jointGraphData(transactionUser.getCurrencyId(),60, transactionDealRedisList);
-                            redisService.addValue(RedisKeyConfig.GRAPH_DATA + transactionUser.getCurrencyId() + "1h",
+                            transactionGraphList = transactionDealRedisService.jointGraphData(currencyId,60, transactionDealRedisList);
+                            redisService.addValue(RedisKeyConfig.GRAPH_DATA + currencyId + "1h",
                                     transactionGraphList);
                             break;
                         case 4:
-                            transactionGraphList = transactionDealRedisService.jointGraphData(transactionUser.getCurrencyId(),240, transactionDealRedisList);
-                            redisService.addValue(RedisKeyConfig.GRAPH_DATA + transactionUser.getCurrencyId() + "4h",
+                            transactionGraphList = transactionDealRedisService.jointGraphData(currencyId,240, transactionDealRedisList);
+                            redisService.addValue(RedisKeyConfig.GRAPH_DATA + currencyId + "4h",
                                     transactionGraphList);
                             break;
                         case 5:
-                            transactionGraphList = transactionDealRedisService.jointGraphData(transactionUser.getCurrencyId(),1440, transactionDealRedisList);
-                            redisService.addValue(RedisKeyConfig.GRAPH_DATA + transactionUser.getCurrencyId() + "1d",
+                            transactionGraphList = transactionDealRedisService.jointGraphData(currencyId,1440, transactionDealRedisList);
+                            redisService.addValue(RedisKeyConfig.GRAPH_DATA + currencyId + "1d",
                                     transactionGraphList);
                             break;
                         case 6:
-                            transactionGraphList = transactionDealRedisService.jointGraphData(transactionUser.getCurrencyId(),10080, transactionDealRedisList);
-                            redisService.addValue(RedisKeyConfig.GRAPH_DATA + transactionUser.getCurrencyId() + "1w",
+                            transactionGraphList = transactionDealRedisService.jointGraphData(currencyId,10080, transactionDealRedisList);
+                            redisService.addValue(RedisKeyConfig.GRAPH_DATA + currencyId + "1w",
                                     transactionGraphList);
                             break;
                     }

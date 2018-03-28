@@ -6,6 +6,7 @@ import com.jydp.dao.ITransactionDealRedisDao;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.DTO.TransactionBottomPriceDTO;
+import com.jydp.entity.DTO.TransactionCurrencyDealPriceDTO;
 import com.jydp.entity.DTO.TransactionDealPriceDTO;
 import com.jydp.entity.VO.TransactionGraphVO;
 import com.jydp.entity.DTO.TransactionDealRedisDTO;
@@ -411,6 +412,27 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
     public List<TransactionDealRedisDTO> listTransactionDealRedisForTimer(int currencyId, Timestamp starTime,
                                                                           Timestamp endTime) {
         return  transactionDealRedisDao.listTransactionDealRedisForTimer(currencyId, starTime, endTime);
+    }
+
+    /**
+     * 查询基准货币信息
+     * @return 查询成功：返回基准货币信息，查询失败：返回null
+     */
+    public List<TransactionCurrencyDealPriceDTO> getTransactionCurrencyDealPrice() {
+        long dateLon = DateUtil.lingchenLong();
+        Timestamp date;
+
+        //判断当前时间是否是凌晨至开盘之前
+        long nowDate = DateUtil.getCurrentTimeMillis() - RedisKeyConfig.OPENING_TIME;
+        if(nowDate >= dateLon){
+            dateLon = dateLon + RedisKeyConfig.OPENING_TIME;
+            date = DateUtil.longToTimestamp(dateLon);
+        } else {
+            dateLon = dateLon - RedisKeyConfig.DAY_TIME + RedisKeyConfig.OPENING_TIME;
+            date = DateUtil.longToTimestamp(dateLon);
+
+        }
+        return transactionDealRedisDao.getTransactionCurrencyDealPrice(date);
     }
 
 }

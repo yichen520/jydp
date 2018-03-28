@@ -5,6 +5,7 @@ import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.ITransactionDealRedisDao;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.DTO.TransactionBottomPriceDTO;
+import com.jydp.entity.DTO.TransactionCurrencyDealPriceDTO;
 import com.jydp.entity.DTO.TransactionDealPriceDTO;
 import com.jydp.entity.DTO.TransactionDealRedisDTO;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -415,6 +416,26 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
+        return result;
+    }
+
+    /**
+     * 查询基准货币信息
+     * @return 查询成功：返回基准货币信息，查询失败：返回null
+     */
+    public List<TransactionCurrencyDealPriceDTO> getTransactionCurrencyDealPrice(Timestamp date) {
+        List<TransactionCurrencyDealPriceDTO> result = null;
+        Timestamp addTime = DateUtil.getCurrentTime();
+        Map<String,Object> map = new HashMap<>();
+        map.put("date", date);
+        map.put("addTime", addTime);
+
+        try {
+            result = sqlSessionTemplate.selectList("TransactionDealRedis_getTransactionCurrencyDealPrice", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
         return result;
     }
 

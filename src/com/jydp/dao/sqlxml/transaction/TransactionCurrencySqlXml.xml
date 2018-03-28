@@ -248,4 +248,10 @@
         ORDER BY upTime DESC
     </select>
 
+    <select id="TransactionCurrency_listcurrencyId" resultType="int">
+        SELECT currencyId
+        FROM transaction_currency_tab
+        WHERE upStatus IN (2,3)
+        ORDER BY rankNumber ASC
+    </select>
 </mapper>

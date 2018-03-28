@@ -43,9 +43,9 @@
             <p class="coinInput">
                 <label class="popName">提现数量<span class="star">*</span></label>
                 <input type="text" class="entry" placeholder="您要提现的数量"  id="number" autocomplete="off"
-                       onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="11"/>
-                <span class="tips" id="tip">提示：当前币种最低提现<fmt:formatNumber type="number" value="${userCoinConfigList[0].minCurrencyNumber}" maxFractionDigits="4" groupingUsed="false"/>个，
-                        超过<fmt:formatNumber type="number" value="${userCoinConfigList[0].freeCurrencyNumber}" maxFractionDigits="4" groupingUsed="false"/>个需人工审核</span>
+                       onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)" maxlength="11"/>
+                <span class="tips" id="tip">提示：当前币种最低提现<fmt:formatNumber type="number" value="${userCoinConfigList[0].minCurrencyNumber}" maxFractionDigits="2" groupingUsed="false"/>个，
+                        超过<fmt:formatNumber type="number" value="${userCoinConfigList[0].freeCurrencyNumber}" maxFractionDigits="2" groupingUsed="false"/>个需人工审核</span>
                 <input type="hidden" id="minNumber">
             </p>
             <p class="coinInput">
@@ -81,7 +81,7 @@
     window.onload = function() {
         //提现最小数量
         var minNumber = '${userCoinConfigList[0].minCurrencyNumber}';
-        minNumber = String(minNumber).replace(/^(.*\..{4}).*$/,"$1");
+        minNumber = String(minNumber).replace(/^(.*\..{2}).*$/,"$1");
         minNumber = Number(minNumber);
         $("#minNumber").val(minNumber);
 
@@ -112,10 +112,10 @@
                     var data = result.data;
                     var userCoinConfig = data.userCoinConfig;
 
-                    var reg = /^(.*\..{4}).*$/;
+                    var reg = /^(.*\..{2}).*$/;
                     //币种数量
                     var coinNumber = userCoinConfig.currencyNumber;
-                    coinNumber = String(coinNumber).replace(reg,"$1");
+                    coinNumber = String(coinNumber).replace(/^(.*\..{4}).*$/,"$1");
                     coinNumber = Number(coinNumber);
                     //提现最小数量
                     var minNumber = userCoinConfig.minCurrencyNumber;

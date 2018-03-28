@@ -12,4 +12,10 @@
 		(#{sylRecordNo}, #{userAccount}, #{userId}, #{coinType}, #{shengyuanCoin}, #{handleMark}, #{addTime})
 	</insert>
 
+	<select id="SylToJydpChain_getSylToJydpChainBysylRecordNo" parameterType="java.lang.String" resultType="SylToJydpChainDO">
+		SELECT sylRecordNo, userAccount, userId, coinType, shengyuanCoin, handleMark, addTime
+		FROM syl_to_jydp_chain_tab  TDRT
+		WHERE sylRecordNo = #{sylRecordNo}
+	</select>
+
 </mapper>
