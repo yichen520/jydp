@@ -122,13 +122,29 @@ public class SylUserBoundController {
             return responseJson;
         }
 
-        if(!userIdentification.getUserCertNo().equals(idCard) && !userIdentification.getUserName().equals(uname)){
+        if(!userIdentification.getUserCertNo().equals(idCard) || !userIdentification.getUserName().equals(uname)){
             responseJson.put("code", 106);
             responseJson.put("message", "绑定账号实名认证信息不匹配,请选择本人身份认证信息账号进行绑定操作");
             return responseJson;
         }
 
-        SylUserBoundDO sylUserBound = new SylUserBoundDO();
+        //验证交易大盘用户是否存在绑定信息
+        SylUserBoundDO sylUserBound = sylUserBoundService.getSylUserBoundByUserId(user.getUserId());
+        if(sylUserBound != null){
+            responseJson.put("code", 107);
+            responseJson.put("message", "该用户已存在绑定账号");
+            return responseJson;
+        }
+
+        //验证盛源链用户是否存在绑定信息
+        sylUserBound = sylUserBoundService.getSylUserBoundBySylUserAccount(sylUserAccount);
+        if(sylUserBound != null){
+            responseJson.put("code", 108);
+            responseJson.put("message", "您已存在绑定账号");
+            return responseJson;
+        }
+
+        sylUserBound = new SylUserBoundDO();
         sylUserBound.setUserId(user.getUserId());
         sylUserBound.setUserAccount(user.getUserAccount());
         sylUserBound.setUserSylAccount(sylUserAccount);
@@ -136,7 +152,7 @@ public class SylUserBoundController {
 
         boolean insertSylUserBound = sylUserBoundService.insertSylUserBound(sylUserBound);
         if(!insertSylUserBound){
-            responseJson.put("code", 107);
+            responseJson.put("code", 109);
             responseJson.put("message", "绑定失败");
             return responseJson;
         }

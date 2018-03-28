@@ -17,4 +17,11 @@
 		FROM syl_user_bound_tab
 		WHERE userId = #{userId}
 	</select>
+
+	<select id="SylUserBound_getSylUserBoundBySylUserAccount" parameterType="java.lang.String" resultType="SylUserBoundDO">
+		SELECT userId, userAccount, userSylAccount, addTime
+		FROM syl_user_bound_tab
+		WHERE userSylAccount = #{sylUserAccount}
+	</select>
+
 </mapper>

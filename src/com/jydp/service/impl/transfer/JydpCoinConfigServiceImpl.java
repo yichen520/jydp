@@ -30,7 +30,7 @@ public class JydpCoinConfigServiceImpl implements IJydpCoinConfigService {
 
     /** 交易币种 */
     @Autowired
-    ITransactionCurrencyService transactionCurrencyService;
+    private ITransactionCurrencyService transactionCurrencyService;
 
     /**
      * 根据筛选条件获取JYDP币种转出管理
