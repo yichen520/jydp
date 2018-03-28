@@ -1,5 +1,6 @@
 package com.jydp.controller;
 
+import com.iqmkj.utils.CheckMobile;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,13 @@ public class VisitCotroller {
 	/** 根目录访问 */
 	@RequestMapping(value = "")
 	public String visitPage(HttpServletRequest request) {
-		return "redirect:/userWeb/homePage/show";
+		boolean checkMobile = CheckMobile.check(request);
+		if (checkMobile){
+			return "redirect:/userWap/homePage/show";
+
+		}else {
+			return "redirect:/userWeb/homePage/show";
+		}
 	}
 
 	/** web端根目录访问 */

@@ -1,5 +1,8 @@
 package com.jydp.controller.wap;
 
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.iqmkj.utils.LogUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.DO.system.SystemNoticeDO;
 import com.jydp.service.ISystemNoticeService;
@@ -9,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,7 +52,7 @@ public class WapSystemNoticeController {
         }
 
         int totalNumber = systemNoticeService.countSystemNoticeForUser();
-        int pageSize = 20;
+        int pageSize = 10;
 
         List<SystemNoticeDO> systemNoticeList = null;
         if (totalNumber > 0) {
@@ -70,10 +74,16 @@ public class WapSystemNoticeController {
             totalPageNumber = 1;
         }
 
-        request.setAttribute("pageNumber",pageNumber);
-        request.setAttribute("totalNumber",totalNumber);
-        request.setAttribute("totalPageNumber",totalPageNumber);
-        request.setAttribute("systemNoticeList",systemNoticeList);
+        ObjectMapper mapper = new ObjectMapper();
+        try{
+            String systemNoticeListJson = mapper.writeValueAsString(systemNoticeList);
+            request.setAttribute("systemNoticeList",systemNoticeListJson);
+            request.setAttribute("pageNumber",pageNumber);
+            request.setAttribute("totalNumber",totalNumber);
+            request.setAttribute("totalPageNumber",totalPageNumber);
+        }catch(Exception e){
+            LogUtil.printErrorLog(e);
+        }
     }
 
     /**  打开系统公告详情页面 */
@@ -99,8 +109,66 @@ public class WapSystemNoticeController {
                 systemNotice.setNoticeTitle(noticeTitle);
             }
         }
+        ObjectMapper mapper = new ObjectMapper();
+        try{
+            String systemNoticeJson = mapper.writeValueAsString(systemNotice);
+            request.setAttribute("systemNotice",systemNoticeJson);
 
-        request.setAttribute("systemNotice",systemNotice);
+        }catch(Exception e){
+            LogUtil.printErrorLog(e);
+        }
         return  "page/wap/noticeDetail";
+
+    }
+
+    /**
+     * 加载更多公告
+     * @return 加载更多公告跳转到公告页面
+     */
+    @RequestMapping(value = "/showMoreNotice", method = RequestMethod.POST)
+    public @ResponseBody JSONObject showMoreNotice(HttpServletRequest request) {
+        JSONObject response = new JSONObject();
+        String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
+
+        int pageNumber = 0;
+        if (StringUtil.isNotNull(pageNumberStr)) {
+            pageNumber = Integer.parseInt(pageNumberStr);
+        }
+
+        int totalNumber = systemNoticeService.countSystemNoticeForUser();
+        int pageSize = 10;
+
+        List<SystemNoticeDO> systemNoticeList = null;
+        if (totalNumber > 0) {
+            systemNoticeList = systemNoticeService.listSystemNoticeForUser(pageNumber, pageSize);
+        }
+
+        if (systemNoticeList != null && systemNoticeList.size() > 0) {
+            for (SystemNoticeDO systemNotice : systemNoticeList) {
+                String noticeTitle = systemNotice.getNoticeTitle();
+                if (StringUtil.isNotNull(noticeTitle)) {
+                    noticeTitle = HtmlUtils.htmlEscape(noticeTitle);
+                    systemNotice.setNoticeTitle(noticeTitle);
+                }
+            }
+        }
+
+        int totalPageNumber = (int)Math.ceil(totalNumber / (pageSize * 1.0));
+        if (totalPageNumber <= 0) {
+            totalPageNumber = 1;
+        }
+
+        try{
+            response.put("systemNoticeList",systemNoticeList);
+            response.put("pageNumber",pageNumber);
+            response.put("totalNumber",totalNumber);
+            response.put("totalPageNumber",totalPageNumber);
+            response.put("code", 1);
+            response.put("message", "查询成功!");
+        }catch(Exception e){
+            LogUtil.printErrorLog(e);
+        }
+
+        return response;
     }
 }

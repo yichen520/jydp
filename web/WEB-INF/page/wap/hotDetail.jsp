@@ -13,13 +13,13 @@
     <link rel="stylesheet" href="<%=path %>/resources/css/wap/simpleTips_wap.css">
     <link rel="stylesheet" href="<%=path %>/resources/css/wap/detail.css">
     
-    <title>公告详情</title>
+    <title>话题详情</title>
 </head>
 <body>
     <!-- 头部导航 -->
     <header>
         <img src="<%=path %>/resources/image/wap/back.png" class="backimg" onclick="javascript:window.history.back(-1);"/>
-        <p>公告详情</p>
+        <p>话题详情</p>
     </header>
     <!-- 内容区域 -->
     <div class="content">
@@ -30,6 +30,10 @@
         <div class="editor">
             {{content}}
         </div>
+    </div>
+    <!-- loading图 -->
+    <div id="loading">
+        <i></i>
     </div>
 </body>
 
@@ -56,9 +60,9 @@
     });
 
     //公告数据填充
-    var systemNoticeData = ${requestScope.systemNotice};
+    var systemHotData = ${requestScope.systemHot};
     var noticefunc = Handlebars.compile($('.content').html());
-    $('.content').html(noticefunc(systemNoticeData));
+    $('.content').html(noticefunc(systemHotData));
 
 </script>
 
