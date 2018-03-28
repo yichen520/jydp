@@ -4,8 +4,10 @@ package com.jydp.controller.syl;
 import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.SignatureUtil;
 import com.iqmkj.utils.StringUtil;
+import com.jydp.entity.DO.syl.SylUserBoundDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.service.ISylToJydpChainService;
+import com.jydp.service.ISylUserBoundService;
 import com.jydp.service.IUserService;
 import config.SylConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,10 @@ public class SylGoJydpDealController {
     /** 用户管理 */
     @Autowired
     private IUserService userService;
+
+    /** 盛源链账号绑定 */
+    @Autowired
+    private ISylUserBoundService sylUserBoundService;
 
     /** 接收SYL转账盛源链请求 */
     @RequestMapping(value = "/rechargeCoin", method = RequestMethod.POST)
@@ -82,10 +88,17 @@ public class SylGoJydpDealController {
             return responseJson;
         }
 
+        SylUserBoundDO sylUserBound = sylUserBoundService.getSylUserBoundByUserId(user.getUserId());
+        if(sylUserBound == null){
+            responseJson.put("code", 202);
+            responseJson.put("message", "未查询到相关绑定信息");
+            return responseJson;
+        }
+
         double coin = Double.parseDouble(coinStr);
         boolean operation = sylToJydpChainService.operationSylToJydpChain(orderNo, user.getUserId(), userAccount, coin, coinType);
         if(!operation){
-            responseJson.put("code", 202);
+            responseJson.put("code", 203);
             responseJson.put("message", "转账失败");
             return responseJson;
         }
