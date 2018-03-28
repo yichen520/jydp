@@ -12,6 +12,7 @@ import com.jydp.service.IUserIdentificationImageService;
 import com.jydp.service.IUserIdentificationService;
 import com.jydp.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +26,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/userWap/userLogin")
+@Scope(value = "prototype")
 public class WapLoginController {
 
     /** 用户账号 */
@@ -71,8 +73,6 @@ public class WapLoginController {
             return "page/wap/login";
         }
 
-        /* 后期可能会用到
-
         //查询用户最新认证信息
         UserIdentificationDO userIdentification = userIdentificationService.getUserIdentificationByUserAccountLately(user.getUserAccount());
 
@@ -80,7 +80,7 @@ public class WapLoginController {
         if (userIdentification == null) {
             request.setAttribute("userId",user.getUserId());
             request.setAttribute("userAccount",user.getUserAccount());
-            return "page/web/identification";
+            return "page/wap/identification";
         }
         //认证未通过
         if (userIdentification.getIdentificationStatus() != 2) {
@@ -90,9 +90,8 @@ public class WapLoginController {
             request.setAttribute("userAccount",user.getUserAccount());
             request.setAttribute("identification", userIdentification);
             request.setAttribute("identificationImageList", userIdentificationImageList);
-            return "page/web/identificationAfresh";
+            return "page/wap/identificationAfresh";
         }
-        */
 
         if (user.getAccountStatus() != 1) {
             request.setAttribute("code", 2);
@@ -105,8 +104,21 @@ public class WapLoginController {
         userSessionBO.setUserAccount(user.getUserAccount());
         userSessionBO.setIsPwd(1);
         UserWapInterceptor.loginSuccess(request, userSessionBO);
+
+        /**
+         * 加入判断来访地址
+         * 进行页面跳转
+         *  request.getHeader("referer");
+         */
+
         return "redirect:/userWap/homePage/show";
     }
 
+    /** 退出登录 */
+    @RequestMapping(value = "/loginOut")
+    public String loginOut(HttpServletRequest request) {
+        UserWapInterceptor.loginOut(request);
+        return "page/wap/login";
+    }
 
 }

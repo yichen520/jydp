@@ -52,9 +52,9 @@ header .change{
     color: #666;
 }
 .mark-list .remark{
+    margin-bottom: 0.2rem;
     width: 80%;
     vertical-align: top;
-    height: 1rem;
     text-align: right;
     float: right;
     font-size: 0.3rem;
@@ -110,8 +110,6 @@ header .change{
     width: 3.34rem;
     height: 2.08rem;
     border: 0;
-    background: url("../images/test/timg.jpeg");
-    background-size: cover
 }
 .icardtwo{
     position: absolute;
@@ -128,6 +126,9 @@ header .change{
     top: 0.88rem;
     width: 3.34rem;
     height: 2.08rem;
-    background: url("../images/test/timg.jpeg");
-    background-size: cover
+}
+.autor img,.blahtwo img{
+    width: 3.34rem;
+    height: 2.08rem;
+    object-fit:cover;
 }
