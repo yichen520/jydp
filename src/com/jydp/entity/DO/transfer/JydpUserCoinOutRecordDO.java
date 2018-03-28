@@ -19,7 +19,7 @@ public class JydpUserCoinOutRecordDO {
     private double currencyNumber; //币种数量
     private int handleStatus; //审核状态 1：待审核，2：审核通过，3：审核拒绝 4:已撤回
     private Timestamp handleTime; //审核时间
-    private int outStatus; //转出状态 1:待转出, 2:转出中, 3:转出成功, 4:转出失败
+    private int outStatus; //推送状态，1：未推送，2：返回成功，3：返回失败
     private Timestamp finishTime; //完成时间
     private String remark; //备注
     private Timestamp addTime; //添加时间
@@ -205,7 +205,7 @@ public class JydpUserCoinOutRecordDO {
     }
 
     /**
-     * 转出状态 1:待转出, 2:转出中, 3:转出成功, 4:转出失败
+     * 推送状态，1：未推送，2：返回成功，3：返回失败
      *
      * @return out status
      */
@@ -214,7 +214,7 @@ public class JydpUserCoinOutRecordDO {
     }
 
     /**
-     * 转出状态 1:待转出, 2:转出中, 3:转出成功, 4:转出失败
+     * 推送状态，1：未推送，2：返回成功，3：返回失败
      *
      * @param outStatus the out status
      */

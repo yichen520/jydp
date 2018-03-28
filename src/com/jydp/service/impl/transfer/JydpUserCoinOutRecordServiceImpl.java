@@ -378,10 +378,11 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
     /**
      * 根据记录号查询记录批量修改转出状态(jydp向syl提币申请)
      * @param coinRecordNoList 转出记录流水号集合
+     * @param outStatus 推送状态，1：未推送，2：返回成功，3：返回失败
      * @return 修改成功：true；修改失败：false
      */
-    public boolean updateJydpUserCoinOutRecordOutStatus(List<String> coinRecordNoList){
-        return jydpUserCoinOutRecordDao.updateJydpUserCoinOutRecordOutStatus(coinRecordNoList);
+    public boolean updateJydpUserCoinOutRecordOutStatus(List<String> coinRecordNoList, int outStatus){
+        return jydpUserCoinOutRecordDao.updateJydpUserCoinOutRecordOutStatus(coinRecordNoList, outStatus);
     }
 
     /**

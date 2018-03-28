@@ -172,7 +172,7 @@
 
     <update id="JydpUserCoinOutRecord_updateJydpUserCoinOutRecordOutStatus" parameterType="java.util.Map">
         UPDATE jydp_user_coin_out_record_tab
-        SET outStatus = 2
+        SET outStatus = #{outStatus}
         WHERE handleStatus = 2
         AND outStatus = 1
         AND coinRecordNo IN
