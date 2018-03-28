@@ -3,6 +3,7 @@ package com.jydp.dao.impl.kgraph;
 import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.IKGraphHalfhourDao;
 import com.jydp.entity.DO.kgraph.KGraphHalfhourDO;
+import com.jydp.entity.VO.TransactionGraphVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -83,11 +84,11 @@ public class KGraphHalfhourDaoImpl implements IKGraphHalfhourDao {
      * @param num 数量
      * @return 操作成功：返回统计数据List，操作失败：返回null
      */
-    public List<KGraphHalfhourDO> listKGraphLately(int currencyId, int num){
+    public List<TransactionGraphVO> listKGraphLately(int currencyId, int num){
         Map<String, Object> map = new HashMap<>();
         map.put("currencyId", currencyId);
         map.put("num", num);
-        List<KGraphHalfhourDO> resultList = null;
+        List<TransactionGraphVO> resultList = null;
 
         try {
             resultList = sqlSessionTemplate.selectList("KGraphHalfhourDao_listKGraphLately", map);
@@ -97,4 +98,24 @@ public class KGraphHalfhourDaoImpl implements IKGraphHalfhourDao {
 
         return resultList;
     }
+
+    /**
+     * 更新节点数据
+     * @param kGraph 节点数据
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean updateKGraph(KGraphHalfhourDO kGraph) {
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.update("KGraphHalfhour_updateKGraph", kGraph);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        }
+        return false;
+    }
+
 }

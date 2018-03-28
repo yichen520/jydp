@@ -1,6 +1,7 @@
 package com.jydp.dao;
 
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
+import com.jydp.entity.DTO.KGraphCurrencyDTO;
 import com.jydp.entity.DTO.TransactionCurrencyBasicDTO;
 import com.jydp.entity.DTO.TransactionUserDealDTO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
@@ -186,4 +187,10 @@ public interface ITransactionCurrencyDao {
      * @return 查询成功:返回币种id集合, 查询失败:返回null
      */
     List<Integer> listcurrencyId();
+    /**
+     * 查询所有交易币种id,和上线状态（k线图统计操作）
+     * @return 操作成功：返回币种信息，操作失败：返回null
+     */
+    List<KGraphCurrencyDTO> listKGraphCurrency();
+
 }

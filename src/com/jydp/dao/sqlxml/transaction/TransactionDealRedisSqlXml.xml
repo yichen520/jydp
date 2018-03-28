@@ -161,7 +161,9 @@
 		SELECT addTime
 		FROM transaction_deal_redis_tab
 		WHERE currencyId = #{currencyId}
-		AND orderNo LIKE CONCAT(#{prefix}, '%')
+		<if test="prefix != null and prefix != ''">
+			AND orderNo LIKE CONCAT(#{prefix}, '%')
+		</if>
 		ORDER BY addTime ASC
 		LIMIT 1
 	</select>
@@ -173,7 +175,6 @@
 		WHERE currencyId = #{currencyId}
 		AND addTime <![CDATA[ >= ]]> #{startTime}
 		AND addTime <![CDATA[ <= ]]> #{endTime}
-		ORDER BY addTime DESC
 	</select>
 
 	<select id="TransactionDealRedis_getTransactionCurrencyDealPrice" parameterType="java.util.Map" resultType="TransactionCurrencyDealPriceDTO">

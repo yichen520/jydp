@@ -254,4 +254,10 @@
         WHERE upStatus IN (2,3)
         ORDER BY rankNumber ASC
     </select>
+
+    <select id="TransactionCurrency_listKGraphCurrency" resultType="KGraphCurrencyDTO">
+        SELECT currencyId, upStatus
+        FROM transaction_currency_tab
+    </select>
+
 </mapper>

@@ -57,22 +57,11 @@
 		SET loginTime = #{loginTime}
 		WHERE sessionId = #{sessionId}
  	</update>
- 	
- 	<delete id="BackerSession_deleteSession" parameterType="java.util.Map" >
- 		DELETE FROM backer_session_tab
- 		WHERE loginTime <![CDATA[ < ]]> #{queryStartTime}
- 	</delete>
- 	
+
  	<select id="BackerSession_countSession" parameterType="java.sql.Timestamp" resultType="int">
 		SELECT COUNT(sessionId)
 		FROM backer_session_tab
 		WHERE loginTime <![CDATA[ < ]]> #{loginTime}
 	</select>
- 	
- 	<delete id="BackerSession_deleteSessionByTimeForTimer" parameterType="java.util.Map" >
- 		DELETE FROM backer_session_tab
- 		WHERE loginTime <![CDATA[ < ]]> #{loginTime}
- 		LIMIT #{pageSize}
- 	</delete>
- 	
+
 </mapper>

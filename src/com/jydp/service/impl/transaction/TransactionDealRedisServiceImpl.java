@@ -257,121 +257,6 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
     }
 
     /**
-     * k线图数据拼接
-     * @param currencyId  币种Id
-     * @param minute  分钟数
-     * @param transactionDealRedisList  成交记录
-     * @return 操作成功:返回k线图数据(前一百条), 操作失败:返回null
-     */
-    public List<TransactionGraphVO> jointGraphData(int currencyId, int minute, List<TransactionDealRedisDTO> transactionDealRedisList){
-        JsonObjectBO responseJson = new JsonObjectBO();
-        List<TransactionGraphVO> transactionGraphList = new ArrayList<>();
-        long nodeDate = 1L * minute * 60 * 1000;  //节点时间
-        int length = 0;  //长度值
-        int subscript = 0;  //下标值
-        long initialDate = 0;  //初始时间
-        double openPrice = 0;  //开盘价
-        double closPrice = 0;  //收盘价
-        double maxPrice = 0;  //最高价
-        double minPrice = 0;  //最低价
-        double countPrice = 0;  //成交量
-
-        //获取list长度
-        if(transactionDealRedisList == null || transactionDealRedisList.size() <= 0){
-            return transactionGraphList;
-        } else {
-            length = transactionDealRedisList.size();
-            initialDate = transactionDealRedisList.get(0).getAddTime().getTime();
-        }
-
-        //获得截止时间点
-        long nowDate = 1L * DateUtil.getCurrentTime().getTime();
-        //判定当前拼接时间节点是否大于截止时间节点
-        while (initialDate < nowDate){
-            TransactionGraphVO transactionGraphVO = new TransactionGraphVO();
-
-            //判断下标是否越界
-            if(length > subscript){
-                //时间节点判断
-                TransactionDealRedisDTO transactionDealRedis =  transactionDealRedisList.get(subscript);
-                if (initialDate <= transactionDealRedis.getAddTime().getTime() &&
-                        transactionDealRedis.getAddTime().getTime() < (initialDate + nodeDate)){
-                    //开盘价放入
-                    if(openPrice == 0){
-                        openPrice =  transactionDealRedis.getTransactionPrice();
-                    }
-
-                    //收盘价放入
-                    closPrice = transactionDealRedis.getTransactionPrice();
-
-                    //最高价放入
-                    if(maxPrice < transactionDealRedis.getTransactionPrice()){
-                        maxPrice = transactionDealRedis.getTransactionPrice();
-                    }
-
-                    //最低价放入
-                    if(minPrice > transactionDealRedis.getTransactionPrice() || minPrice == 0){
-                        minPrice = transactionDealRedis.getTransactionPrice();
-                    }
-
-                    //成交量计算
-                    countPrice = BigDecimalUtil.add(countPrice,transactionDealRedis.getCurrencyNumber());
-                    subscript++;
-                } else {
-
-                    if(openPrice != 0){
-                        transactionGraphVO.setOpenPrice(openPrice);
-                        transactionGraphVO.setClosPrice(closPrice);
-                        transactionGraphVO.setMaxPrice(maxPrice);
-                        transactionGraphVO.setMinPrice(minPrice);
-                        transactionGraphVO.setCountPrice(countPrice);
-                        transactionGraphVO.setDealDate(DateUtil.longToTimestamp(initialDate));
-                        transactionGraphList.add(transactionGraphVO);
-
-                        //节点参数格式化
-                        openPrice = 0;  //开盘价
-                        closPrice = 0;  //收盘价
-                        maxPrice = 0;  //最高价
-                        minPrice = 0;  //最低价
-                        countPrice = 0;  //成交量
-                    }
-
-                    initialDate += nodeDate;
-                }
-            } else {
-
-                if(openPrice != 0) {
-                    transactionGraphVO.setOpenPrice(openPrice);
-                    transactionGraphVO.setClosPrice(closPrice);
-                    transactionGraphVO.setMaxPrice(maxPrice);
-                    transactionGraphVO.setMinPrice(minPrice);
-                    transactionGraphVO.setCountPrice(countPrice);
-                    transactionGraphVO.setDealDate(DateUtil.longToTimestamp(initialDate));
-                    transactionGraphList.add(transactionGraphVO);
-
-                    //节点参数格式化
-                    openPrice = 0;  //开盘价
-                    closPrice = 0;  //收盘价
-                    maxPrice = 0;  //最高价
-                    minPrice = 0;  //最低价
-                    countPrice = 0;  //成交量
-                }
-                initialDate += nodeDate;
-            }
-        }
-
-        List<TransactionGraphVO> transactionGraph =  new ArrayList<>();
-        if(transactionGraphList != null && transactionGraphList.size() > 0){
-            if(transactionGraphList.size() > 100){
-                transactionGraph.addAll(transactionGraphList.subList(transactionGraphList.size() - 100, transactionGraphList.size()));
-            } else {
-                transactionGraph = transactionGraphList;
-            }
-        }
-        return transactionGraph;
-    }
-
-    /**
      * 从redis获取k线图数据
      * @param currencyId  币种Id
      * @param node  时间节点 ：5分钟 5m、15分钟 15m、30分钟 30m、1小时 1h、4小时 4h、1天 1d 、1周 1w
@@ -401,14 +286,20 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
     /**
      * 查询该币种最早的交易时间
      * @param currencyId 币种id
-     * @param prefix 记录号前缀（区别后台做单，还是用户挂单）
+     * @param prefix 记录号前缀（区别后台做单，还是用户挂单）可为null
      * @return 操作成功：返回最早的交易时间，操作失败或无交易记录：返回null
      */
     public Timestamp getEarliestTime(int currencyId, String prefix) {
         return  transactionDealRedisDao.getEarliestTime(currencyId, prefix);
     }
 
-
+    /**
+     * 查询成交记录
+     * @param currencyId 币种Id
+     * @param starTime 开始时间
+     * @param endTime 结束时间
+     * @return 操作成功：返回统计集合，操作失败：返回null
+     */
     public List<TransactionDealRedisDTO> listTransactionDealRedisForTimer(int currencyId, Timestamp starTime,
                                                                           Timestamp endTime) {
         return  transactionDealRedisDao.listTransactionDealRedisForTimer(currencyId, starTime, endTime);

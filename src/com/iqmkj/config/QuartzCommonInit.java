@@ -36,8 +36,14 @@ public class QuartzCommonInit {
     @Autowired
     private IHomePageRedisService homePageRedisService;
 
+    /** k线图统计数据公共服务 */
+    @Autowired
+    private IKGraphCommonService kGraphCommonService;
+
     /** 执行初始化 */
     public void executeInit() {
+        //k线图参数存入redis
+        kGraphCommonService.exeKLineGraphForInit();
         //将成交记录放进redis
         transactionRedisDealCommonService.userDealForRedis();
         //每日凌晨更新最高与最低价更新
@@ -46,8 +52,6 @@ public class QuartzCommonInit {
         ITransactionPendOrderCommonService.getPendOrder();
         //从数据库拉取首页数据到redis
         homePageRedisService.getHomePageData();
-        //k线图参数存入redis
-        transactionRedisDealCommonService.graphDataForRedis();
         //启动刷新是否需要上市指导价
         transactionRedisDealCommonService.gruidPriceForYesterdayPrice();
         //启动统计交易

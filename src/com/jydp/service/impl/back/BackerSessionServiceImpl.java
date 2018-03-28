@@ -80,15 +80,7 @@ public class BackerSessionServiceImpl implements IBackerSessionService {
     public boolean updateSessionById(int sessionId) {
         return backerSessionDao.updateSessionById(sessionId);
     }
-    
-    /**
-     * 删除session(该服务暂停使用)
-     * @return 操作成功：返回true，操作失败：返回false
-     */
-    public boolean deleteSession() {
-        return backerSessionDao.deleteSession();
-    }
-    
+
 	/**
 	 * 查询session数量
 	 * @param loginTime 登陆时间
@@ -96,16 +88,6 @@ public class BackerSessionServiceImpl implements IBackerSessionService {
 	 */
     public int countSession(Timestamp loginTime) {
     	return backerSessionDao.countSession(loginTime);
-    }
-    
-    /**
-     * 删除session（定时器操作，该服务暂停使用）
-     * @param loginTime 登陆时间
-     * @param pageSize 删除数量
-     * @return 操作成功：返回true，操作失败：返回false
-     */
-    public boolean deleteSessionByTimeForTimer(Timestamp loginTime, int pageSize) {
-    	return backerSessionDao.deleteSessionByTimeForTimer(loginTime, pageSize);
     }
 
     /**

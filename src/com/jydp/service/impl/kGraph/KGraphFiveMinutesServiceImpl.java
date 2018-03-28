@@ -2,6 +2,7 @@ package com.jydp.service.impl.kGraph;
 
 import com.jydp.dao.IKGraphFiveMinutesDao;
 import com.jydp.entity.DO.kgraph.KGraphFiveMinutesDO;
+import com.jydp.entity.VO.TransactionGraphVO;
 import com.jydp.service.IKGraphFiveMinutesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,7 +54,17 @@ public class KGraphFiveMinutesServiceImpl implements IKGraphFiveMinutesService {
      * @param num 数量
      * @return 操作成功：返回统计数据List，操作失败：返回null
      */
-    public List<KGraphFiveMinutesDO> listKGraphLately(int currencyId, int num){
+    public List<TransactionGraphVO> listKGraphLately(int currencyId, int num){
         return kGraphFiveMinutesDao.listKGraphLately(currencyId, num);
     }
+
+    /**
+     * 更新节点数据
+     * @param kGraph 节点数据
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean updateKGraph(KGraphFiveMinutesDO kGraph) {
+        return kGraphFiveMinutesDao.updateKGraph(kGraph);
+    }
+
 }

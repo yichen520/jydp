@@ -4,6 +4,7 @@ import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.ITransactionCurrencyDao;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
+import com.jydp.entity.DTO.KGraphCurrencyDTO;
 import com.jydp.entity.DTO.TransactionCurrencyBasicDTO;
 import com.jydp.entity.DTO.TransactionDealPriceDTO;
 import com.jydp.entity.DTO.TransactionUserDealDTO;
@@ -612,6 +613,14 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      */
     public List<Integer> listcurrencyId() {
         return transactionCurrencyDao.listcurrencyId();
+    }
+
+    /**
+     * 查询所有交易币种id,和上线状态（k线图统计操作）
+     * @return 操作成功：返回币种信息，操作失败：返回null
+     */
+    public List<KGraphCurrencyDTO> listKGraphCurrency() {
+        return transactionCurrencyDao.listKGraphCurrency();
     }
 
 }

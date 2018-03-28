@@ -2,6 +2,7 @@ package com.jydp.service.impl.kGraph;
 
 import com.jydp.dao.IKGraphHalfhourDao;
 import com.jydp.entity.DO.kgraph.KGraphHalfhourDO;
+import com.jydp.entity.VO.TransactionGraphVO;
 import com.jydp.service.IKGraphHalfhourService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,7 +54,17 @@ public class KGraphHalfhourServiceImpl implements IKGraphHalfhourService {
      * @param num 数量
      * @return 操作成功：返回统计数据List，操作失败：返回null
      */
-    public List<KGraphHalfhourDO> listKGraphLately(int currencyId, int num){
+    public List<TransactionGraphVO> listKGraphLately(int currencyId, int num){
         return kGraphHalfhourDao.listKGraphLately(currencyId, num);
     }
+
+    /**
+     * 更新节点数据
+     * @param kGraph 节点数据
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean updateKGraph(KGraphHalfhourDO kGraph) {
+        return kGraphHalfhourDao.updateKGraph(kGraph);
+    }
+
 }

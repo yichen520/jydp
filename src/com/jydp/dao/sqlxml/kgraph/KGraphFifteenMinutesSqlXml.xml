@@ -5,35 +5,47 @@
 
 <mapper namespace="com.jydp.dao.impl.kgraph.KGraphFifteenMinutesDaoImpl">
 
-	<insert id="KGraphFifteenMinutes_insertKGraph" parameterType="KGraphFifteenMinutesDO">
-		INSERT INTO k_line_graph_fifteen_minutes_tab(currencyId, nodeTime, openPrice, closePrice, maxPrice, minPrice,
+	<insert id="KGraphFifteenMinutes_insertKGraph" parameterType="java.util.List">
+		INSERT INTO k_line_graph_fifteen_minutes_tab(currencyId, nodeTime, openPrice, closPrice, maxPrice, minPrice,
 		transactionTotal)
 		VALUES
-		<foreach collection="kGraphFiveMinutesList" item="item" index="index" separator=",">
-			(#{item.currencyId}, #{item.nodeTime}, #{item.openPrice}, #{item.closePrice}, #{item.maxPrice}, #{item.minPrice},
+		<foreach collection="list" item="item" index="index" separator=",">
+			(#{item.currencyId}, #{item.nodeTime}, #{item.openPrice}, #{item.closPrice}, #{item.maxPrice}, #{item.minPrice},
 			#{item.transactionTotal})
 		</foreach>
 	</insert>
 
 	<select id="KGraphFifteenMinutes_getKGraphLatelyTime" parameterType="int" resultType="java.sql.Timestamp">
-		SELECT max(nodeTime)
+		SELECT nodeTime
 		FROM k_line_graph_fifteen_minutes_tab
+		WHERE currencyId = #{currencyId}
+		ORDER BY nodeTime DESC
+		LIMIT 1
 	</select>
 
 	<select id="KGraphFifteenMinutes_getKGraphLately" parameterType="int" resultType="KGraphFifteenMinutesDO">
-		SELECT currencyId, nodeTime, openPrice, closePrice, maxPrice, minPrice, transactionTotal
+		SELECT currencyId, nodeTime, openPrice, closPrice, maxPrice, minPrice, transactionTotal
 		FROM k_line_graph_fifteen_minutes_tab
 		WHERE currencyId = #{currencyId}
 		ORDER BY nodeTime DESC
 		LIMIT 0,1
 	</select>
 
-	<select id="KGraphFifteenMinutes_listKGraphLately" parameterType="java.util.Map" resultType="KGraphFifteenMinutesDO">
-		SELECT currencyId, nodeTime, openPrice, closePrice, maxPrice, minPrice, transactionTotal
+	<select id="KGraphFifteenMinutes_listKGraphLately" parameterType="java.util.Map" resultType="TransactionGraphVO">
+		SELECT openPrice AS openPrice, closPrice AS closPrice, maxPrice AS maxPrice, minPrice AS minPrice,
+			    transactionTotal AS countPrice, nodeTime AS dealDate
 		FROM k_line_graph_fifteen_minutes_tab
 		WHERE currencyId = #{currencyId}
 		ORDER BY nodeTime DESC
 		LIMIT 0, #{num}
 	</select>
- 	
+
+	<update id="KGraphFifteenMinutes_updateKGraph" parameterType="KGraphFifteenMinutesDO">
+		UPDATE k_line_graph_fifteen_minutes_tab
+		SET openPrice = #{openPrice}, closPrice = #{closPrice},
+		maxPrice = #{maxPrice}, minPrice = #{minPrice}, transactionTotal = #{transactionTotal}
+		WHERE currencyId = #{currencyId}
+		AND nodeTime = #{nodeTime}
+	</update>
+
 </mapper>

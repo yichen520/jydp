@@ -2,6 +2,7 @@ package com.jydp.service.impl.kGraph;
 
 import com.jydp.dao.IKGraphOneDayDao;
 import com.jydp.entity.DO.kgraph.KGraphOneDayDO;
+import com.jydp.entity.VO.TransactionGraphVO;
 import com.jydp.service.IKGraphOneDayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,7 +54,17 @@ public class KGraphOneDayServiceImpl implements IKGraphOneDayService {
      * @param num 数量
      * @return 操作成功：返回统计数据List，操作失败：返回null
      */
-    public List<KGraphOneDayDO> listKGraphLately(int currencyId, int num){
+    public List<TransactionGraphVO> listKGraphLately(int currencyId, int num){
         return kGraphOneDayDao.listKGraphLately(currencyId, num);
     }
+
+    /**
+     * 更新节点数据
+     * @param kGraph 节点数据
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    public boolean updateKGraph(KGraphOneDayDO kGraph) {
+        return kGraphOneDayDao.updateKGraph(kGraph);
+    }
+
 }
