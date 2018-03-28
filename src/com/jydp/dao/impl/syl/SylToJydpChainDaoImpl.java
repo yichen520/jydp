@@ -37,4 +37,21 @@ public class SylToJydpChainDaoImpl implements ISylToJydpChainDao {
             return false;
         }
     }
+
+    /**
+     * 根据订单号查询订单信息
+     * @param sylRecordNo 订单号
+     * @return 查询成功：返回订单信息, 查询失败或者没有相关信息：返回null
+     */
+    public SylToJydpChainDO getSylToJydpChainBysylRecordNo(String sylRecordNo){
+        SylToJydpChainDO result = null;
+
+        try {
+            result = sqlSessionTemplate.selectOne("SylToJydpChain_getSylToJydpChainBysylRecordNo", sylRecordNo);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return result;
+    }
 }
