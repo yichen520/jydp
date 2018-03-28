@@ -7,6 +7,7 @@ import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DTO.WapUserModifyPayPasswordDTO;
+import com.jydp.entity.DTO.WapUserModifyPhoneDTO;
 import com.jydp.entity.VO.WapUserCurrencyAssetsVO;
 import com.jydp.entity.VO.WapUserVO;
 import com.jydp.interceptor.UserWebInterceptor;
@@ -293,7 +294,7 @@ public class WapUserInfoController {
         }
 
         //修改支付密码
-        boolean forgetPwd = userService.forgetPayPwd(user.getUserId(), userModifyPayPasswordDTO.getNewPassword());
+        boolean forgetPwd = userService.forgetPayPwd(user.getUserId(), MD5Util.toMd5(userModifyPayPasswordDTO.getNewPassword()));
         if (!forgetPwd) {
             response.setCode(3);
             response.setMessage("修改失败，请重试");
@@ -430,4 +431,99 @@ public class WapUserInfoController {
         request.setAttribute("phoneNumber", userInfo.getPhoneNumber());
         return "page/wap/modifyPhone";
     }
+
+    /**
+     * 修改手机号
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/phone/modify",method = RequestMethod.POST)
+    @ResponseBody
+    public JsonObjectBO modifyPhone(HttpServletRequest request,
+                                    @RequestBody WapUserModifyPhoneDTO userModifyPhoneDTO) {
+        JsonObjectBO response = new JsonObjectBO();
+
+        UserSessionBO user = UserWebInterceptor.getUser(request);
+        if (user == null) {
+            response.setCode(2);
+            response.setMessage("未登录");
+            return response;
+        }
+        if (userModifyPhoneDTO==null) {
+            response.setCode(3);
+            response.setMessage("未接受到参数");
+            return response;
+        }
+        String validateCode = StringUtil.stringNullHandle(userModifyPhoneDTO.getOldValidCode());
+        String newVerifyCode = StringUtil.stringNullHandle(userModifyPhoneDTO.getNewValidCode());
+        String password = StringUtil.stringNullHandle(userModifyPhoneDTO.getPassword());
+        String areaCode = StringUtil.stringNullHandle(userModifyPhoneDTO.getAreaCode());
+        String phone = StringUtil.stringNullHandle(userModifyPhoneDTO.getPhone());
+
+        if (!StringUtil.isNotNull(validateCode) || !StringUtil.isNotNull(password) || !StringUtil.isNotNull(newVerifyCode)
+                || !StringUtil.isNotNull(phone) || !StringUtil.isNotNull(areaCode)) {
+            response.setCode(3);
+            response.setMessage("未接受到参数");
+            return response;
+        }
+
+        //获取用户信息
+        UserDO userMessage = userService.getUserByUserId(user.getUserId());
+        if(userMessage == null){
+            response.setCode(3);
+            response.setMessage("用户信息查询失败，请稍后重试");
+            return response;
+        }
+
+        if((areaCode + phone).equals(userMessage.getPhoneAreaCode() + userMessage.getPhoneNumber())){
+            response.setCode(3);
+            response.setMessage("新手机号不可与原手机号相同");
+            return response;
+        }
+        //验证码判定
+        JsonObjectBO validatePhone = systemValidatePhoneService.validatePhone(userMessage.getPhoneAreaCode() + userMessage.getPhoneNumber(), validateCode);
+        if(validatePhone.getCode() != 1){
+            response.setCode(validatePhone.getCode());
+            response.setMessage("原手机" + validatePhone.getMessage());
+            return response;
+        }
+
+        //验证码判定
+        validatePhone = systemValidatePhoneService.validatePhone(areaCode + phone, newVerifyCode);
+        if(validatePhone.getCode() != 1){
+            response.setCode(validatePhone.getCode());
+            response.setMessage("新手机" + validatePhone.getMessage());
+            return response;
+        }
+
+        //登录密码判定
+        password = MD5Util.toMd5(password);
+        UserDO userLog = userService.validateUserLogin(user.getUserAccount(), password);
+        if(userLog == null){
+            response.setCode(3);
+            response.setMessage("登录密码错误！");
+            return response;
+        }
+
+        //判定当前手机是否存在重复绑定
+        UserDO userPhone = userService.getUserByPhone(phone);
+        if(userPhone != null){
+            response.setCode(3);
+            response.setMessage("该手机已被绑定");
+            return response;
+        }
+
+        //手机号修改
+        boolean updatePhone = userService.updatePhone(user.getUserId(), areaCode, phone);
+        if(!updatePhone){
+            response.setCode(5);
+            response.setMessage("修改失败");
+            return response;
+        }
+        response.setCode(1);
+        response.setMessage("修改成功");
+        return response;
+    }
+
 }

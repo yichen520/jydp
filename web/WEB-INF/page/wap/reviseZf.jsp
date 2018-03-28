@@ -52,7 +52,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         <input type="password" placeholder="重复密码" maxlength="16" id="confirmPwdByPhone"/>
                     </div>
                 <div class="userPhone">
-                    <p class="num" id="phoneByPhone">${phoneAreaCode} ${phoneNumber}</p>
+                    <p class="num">${phoneAreaCode} ${phoneNumber}</p>
                 </div>
                 <div class="userCode">
                     <input type="number" placeholder="请输入6位短信验证码" maxlength="6" id="codeByPhone"/>
@@ -115,7 +115,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 }),
                 success:function(result){
                     openTips(result.message);
-                    setTimeout("skipToUserInfoHtml()",1000);
+                    if (result.code==1) {
+                        setTimeout("skipToUserInfoHtml()",1000);
+                    }
                 },
                 error:function(){
                     return openTips("服务器错误");

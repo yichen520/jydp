@@ -97,7 +97,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             success:function(result){
                 openTips(result.message);
                 if (result.code==1) {
-                    setTimeout("skipToUserInfoHtml()",1000);
+                    setTimeout("skipToLoginHtml()",1000);
                 }
             },
             error:function(){
@@ -105,8 +105,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             }
         });
     });
-    function skipToUserInfoHtml() {
-        window.location.href="<%=path%>/userWap/userInfo/show.htm";
+    function skipToLoginHtml() {
+        window.location.href="<%=path%>/wapLogin";
     }
 </script>
 

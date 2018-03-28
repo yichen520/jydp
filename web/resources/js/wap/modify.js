@@ -6,6 +6,20 @@ $(function () {
         var bgHeight = $(document).height();
         $('.choseNumber').on('click',function() {
             $('.chosePhone').css("height",bgHeight +"px");
+            $.get("/jydp/userWap/forgetPassword/phoneArea",function(result){
+                var list = {};
+                var myData = result.data.phoneAreaMap;
+                list.phoneAreaMap = [];
+                var i = 0;
+                for(var key in myData){
+                    var obj = {"cityNum":key,"city":myData[key]};
+                    list.phoneAreaMap[i++] = obj;
+                }
+                var compileTemplate = $("#getPhoneArea").html();
+                var compileComplile = Handlebars.compile(compileTemplate);
+                var headerHtml = compileComplile(list);
+                $("#phoneAreaContainer").html(headerHtml);
+            });
             $('.chosePhone').show();
         });
         $('.search').on('click','p',function() {
@@ -29,17 +43,30 @@ $(function () {
     }
     function clickButton(obj) {
         var obj = $(obj);
-        var phone=obj.text().replace(/\ +/g,"");
+        var phone="";
+        var areaCode="";
+        var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
+        if (obj.attr("id")=="oldPhoneCode") {
+            areaCode=$("#oldAreaCode").text()
+            phone=$("#oldPhone").text();
+        } else {
+            areaCode=$("#newAreaCode").text()
+            phone=$("#newPhone").val();
+        }
+        if (!myreg.test(phone)) {
+            openTips("手机号格式不正确");
+            return;
+        }
         $.ajax({
             url: "/jydp/sendCode/sendPhoneCode",
             type:'post',
             dataType:'json',
             async:true,
             data:{
-                phoneNumber : phone
+                phoneNumber : areaCode+phone
             },
             success:function(result){
-                //openTips(result.message);
+                openTips(result.message);
             },
             error:function(){
                 return openTips("服务器错误");

@@ -74,4 +74,5 @@ public class WapUserModifyPayPasswordDTO {
     public void setValidCode(String validCode) {
         this.validCode = validCode;
     }
+
 }
