@@ -2,6 +2,7 @@ package com.jydp.service;
 
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.DTO.TransactionBottomPriceDTO;
+import com.jydp.entity.DTO.TransactionCurrencyDealPriceDTO;
 import com.jydp.entity.DTO.TransactionDealPriceDTO;
 import com.jydp.entity.DTO.TransactionDealRedisDTO;
 import com.jydp.entity.VO.TransactionGraphVO;
@@ -179,4 +180,9 @@ public interface ITransactionDealRedisService {
     List<TransactionDealRedisDTO> listTransactionDealRedisForTimer(int currencyId, Timestamp starTime,
                                                                    Timestamp endTime);
 
+    /**
+     * 查询基准货币信息
+     * @return 查询成功：返回基准货币信息，查询失败：返回null
+     */
+    List<TransactionCurrencyDealPriceDTO> getTransactionCurrencyDealPrice();
 }

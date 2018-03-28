@@ -38,20 +38,20 @@ public class TransactionPendOrderCommonServiceImpl implements ITransactionPendOr
      */
     public void getPendOrder(){
         //获取所有币种
-        List<TransactionCurrencyVO> transactionCurrencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
-        if(transactionCurrencyList == null){
-            return;
+        List<Integer> currencyIdList = transactionCurrencyService.listcurrencyId();
+        if(currencyIdList == null || currencyIdList.size() <= 0){
+            return ;
         }
 
-        for (TransactionCurrencyDO transactionCurrency: transactionCurrencyList) {
+        for(Integer currencyId : currencyIdList){
             //买入记录
             List<TransactionPendOrderDTO> transactionPendOrderBuyList =
-                    transactionPendOrderService.listLatestRecords(1,transactionCurrency.getCurrencyId(),15);
+                    transactionPendOrderService.listLatestRecords(1,currencyId,15);
 
             //设置买入挂单记录key
-            String buyKey = RedisKeyConfig.BUY_KEY + transactionCurrency.getCurrencyId();
+            String buyKey = RedisKeyConfig.BUY_KEY + currencyId;
             //设置买一价key
-            String buyOneKey = RedisKeyConfig.BUY_ONE_KEY + transactionCurrency.getCurrencyId();
+            String buyOneKey = RedisKeyConfig.BUY_ONE_KEY + currencyId;
 
             if(transactionPendOrderBuyList.size() > 0){
                 //插入最新挂单记录
@@ -66,12 +66,12 @@ public class TransactionPendOrderCommonServiceImpl implements ITransactionPendOr
 
             //卖出记录
             List<TransactionPendOrderDTO> transactionPendOrderSellList =
-                    transactionPendOrderService.listLatestRecords(2,transactionCurrency.getCurrencyId(),15);
+                    transactionPendOrderService.listLatestRecords(2,currencyId,15);
 
             //设置卖出挂单记录key
-            String sellKey = RedisKeyConfig.SELL_KEY + transactionCurrency.getCurrencyId();
+            String sellKey = RedisKeyConfig.SELL_KEY + currencyId;
             //设置卖一价key
-            String sellOneKey = RedisKeyConfig.SELL_ONE_KEY + transactionCurrency.getCurrencyId();
+            String sellOneKey = RedisKeyConfig.SELL_ONE_KEY + currencyId;
 
             if(transactionPendOrderSellList.size() > 0){
                 //插入最新数据

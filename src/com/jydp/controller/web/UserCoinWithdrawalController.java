@@ -165,6 +165,21 @@ public class UserCoinWithdrawalController {
         int currencyId = Integer.parseInt(currencyIdStr);
         double number = Double.parseDouble(numberStr);
 
+        if (number <= 0) {
+            response.setCode(3);
+            response.setMessage("提现数量必须大于0");
+            return response;
+        }
+
+        if (number % 1 > 0) {
+            String suf = numberStr.substring(numberStr.indexOf('.') + 1, numberStr.length());
+            if (suf.length() > 2) {
+                response.setCode(3);
+                response.setMessage("请输入正确的提币数量");
+                return response;
+            }
+        }
+
         UserDO user = userService.getUserByUserId(userBo.getUserId());
         if (user == null) {
             response.setCode(3);

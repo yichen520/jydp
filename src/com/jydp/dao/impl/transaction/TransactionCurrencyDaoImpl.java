@@ -467,4 +467,21 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
         return result;
     }
 
+    /**
+     * 获取所有上线中和停牌的币种id集合
+     * @return 查询成功:返回币种id集合, 查询失败:返回null
+     */
+    public List<Integer> listcurrencyId() {
+        List<Integer> resultList = null;
+
+        try {
+            resultList = sqlSessionTemplate.selectList("TransactionCurrency_listcurrencyId");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return resultList;
+    }
+
+
 }

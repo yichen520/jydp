@@ -176,4 +176,11 @@
 		ORDER BY addTime DESC
 	</select>
 
+	<select id="TransactionDealRedis_getTransactionCurrencyDealPrice" parameterType="java.util.Map" resultType="TransactionCurrencyDealPriceDTO">
+		SELECT SUM(TDRT.currencyNumber) turnover,MAX(TDRT.transactionPrice) highestPrice, MIN(TDRT.transactionPrice) lowestPrice, TDRT.currencyId
+		FROM transaction_deal_redis_tab  TDRT
+		WHERE TDRT.addTime <![CDATA[ >= ]]> #{date}
+			  AND addTime <![CDATA[ <= ]]> #{addTime}
+		GROUP BY TDRT.currencyId
+	</select>
 </mapper>
