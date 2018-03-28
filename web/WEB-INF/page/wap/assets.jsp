@@ -75,7 +75,7 @@
 <script type="text/javascript">
     $(function () {
         $.ajax({
-            url: "/userWap/userInfo/currencyAssets",
+            url: "<%=path%>/userWap/userInfo/currencyAssets",
             dataType: "json",
             type: 'GET',
             async: true, //默认异步调用 (false：同步)
