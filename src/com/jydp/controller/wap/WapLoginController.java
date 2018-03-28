@@ -46,7 +46,13 @@ public class WapLoginController {
      * @return 登录页面
      */
     @RequestMapping("/show")
-    public String userLoginPage(){
+    public String userLoginPage(HttpServletRequest request){
+        String referer = request.getHeader("referer");
+        String host = request.getHeader("Host");
+        String[] strs = referer.split(host);
+        String uriStr = strs[1];
+        uriStr = uriStr.substring(5);
+        request.getSession().setAttribute("uriStr", uriStr);
         return "page/wap/login";
     }
 
@@ -110,7 +116,10 @@ public class WapLoginController {
          * 进行页面跳转
          *  request.getHeader("referer");
          */
-
+        String uriStr = (String) request.getSession().getAttribute("uriStr");
+        if(uriStr != null){
+            return "redirect:"+uriStr;
+        }
         return "redirect:/userWap/homePage/show";
     }
 

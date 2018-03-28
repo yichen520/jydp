@@ -56,8 +56,16 @@ public class UserWapInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object controlller) throws Exception {
         UserSessionBO userSession = (UserSessionBO) request.getSession().getAttribute("userSession");
+
         if (userSession == null) {
             //如果是ajax请求
+            String referer = request.getHeader("referer");
+            String host = request.getHeader("Host");
+            String[] strs = referer.split(host);
+            String uriStr = strs[1];
+            uriStr = uriStr.substring(5);
+            request.getSession().setAttribute("uriStr", uriStr);
+
             if (request.getHeader("x-requested-with") != null
                     && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) {
                 JSONObject jsonObject = new JSONObject();
