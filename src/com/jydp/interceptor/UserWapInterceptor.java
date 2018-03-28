@@ -41,7 +41,7 @@ public class UserWapInterceptor implements HandlerInterceptor {
     private static IRedisService redisService;
 
     /** redis服务 */
-    private static IRedisService getRedisService(HttpServletRequest request) {
+    private static IRedisService getRedisService() {
         if (redisService == null) {
             redisService = (IRedisService) ApplicationContextHandle.getBean("redisService");
         }
@@ -56,7 +56,6 @@ public class UserWapInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object controlller) throws Exception {
         UserSessionBO userSession = (UserSessionBO) request.getSession().getAttribute("userSession");
-
         if (userSession == null) {
             //如果是ajax请求
             if (request.getHeader("x-requested-with") != null
@@ -104,7 +103,7 @@ public class UserWapInterceptor implements HandlerInterceptor {
         String springSessionId = request.getSession().getId();
         String SESSION_USER_KEY = SessionConfig.SESSION_USER_ID + String.valueOf(userSession.getUserId());
         String SESSION_SESSIONS_KEY = SessionConfig.SESSION_SESSIONS + springSessionId;
-        getRedisService(request).addList(SESSION_USER_KEY, SESSION_SESSIONS_KEY, SessionConfig.SESSION_TIME_OUT);
+        getRedisService().addList(SESSION_USER_KEY, SESSION_SESSIONS_KEY, SessionConfig.SESSION_TIME_OUT);
         return;
     }
 
@@ -144,6 +143,11 @@ public class UserWapInterceptor implements HandlerInterceptor {
      * @param request 当前用户请求
      */
     public static void loginOut(HttpServletRequest request) {
+        UserSessionBO userSession = (UserSessionBO) request.getSession().getAttribute("userSession");
+        if(userSession != null){
+            String SESSION_USER_KEY = SessionConfig.SESSION_USER_ID + String.valueOf(userSession.getUserId());
+            getRedisService().deleteValue(SESSION_USER_KEY);
+        }
         request.getSession().removeAttribute("userSession");
         request.getSession().invalidate();
     }

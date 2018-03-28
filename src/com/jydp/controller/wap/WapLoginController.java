@@ -104,8 +104,21 @@ public class WapLoginController {
         userSessionBO.setUserAccount(user.getUserAccount());
         userSessionBO.setIsPwd(1);
         UserWapInterceptor.loginSuccess(request, userSessionBO);
+
+        /**
+         * 加入判断来访地址
+         * 进行页面跳转
+         *  request.getHeader("referer");
+         */
+
         return "redirect:/userWap/homePage/show";
     }
 
+    /** 退出登录 */
+    @RequestMapping(value = "/loginOut")
+    public String loginOut(HttpServletRequest request) {
+        UserWapInterceptor.loginOut(request);
+        return "page/wap/login";
+    }
 
 }
