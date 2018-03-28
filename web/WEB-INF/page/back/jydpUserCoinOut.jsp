@@ -110,7 +110,7 @@
                         <td class="number">${jydpUserCoinOutRecord.coinRecordNo}</td>
                         <td class="account">${jydpUserCoinOutRecord.userAccount}</td>
                         <td class="coin">${jydpUserCoinOutRecord.currencyName}</td>
-                        <td class="amount"><fmt:formatNumber type="number" value="${jydpUserCoinOutRecord.currencyNumber}" groupingUsed="FALSE" maxFractionDigits="4"/></td>
+                        <td class="amount"><fmt:formatNumber type="number" value="${jydpUserCoinOutRecord.currencyNumber}" groupingUsed="FALSE" maxFractionDigits="2"/></td>
                         <td class="account">${jydpUserCoinOutRecord.walletAccount}</td>
                         <td class="time"><fmt:formatDate type="time" value="${jydpUserCoinOutRecord.finishTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
                         <c:if test="${jydpUserCoinOutRecord.handleStatus == '1'}">

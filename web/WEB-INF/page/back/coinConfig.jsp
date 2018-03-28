@@ -71,8 +71,8 @@
                     <tr class="tableInfo">
                         <td class="time"><fmt:formatDate type="time" value="${jydpCoinConfig.addTime }" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
                         <td class="coin">${jydpCoinConfig.currencyName}</td>
-                        <td class="amount"><fmt:formatNumber type="number" value="${jydpCoinConfig.freeCurrencyNumber}" groupingUsed="FALSE" maxFractionDigits="4"/></td>
-                        <td class="amount"><fmt:formatNumber type="number" value="${jydpCoinConfig.minCurrencyNumber}" groupingUsed="FALSE" maxFractionDigits="4"/></td>
+                        <td class="amount"><fmt:formatNumber type="number" value="${jydpCoinConfig.freeCurrencyNumber}" groupingUsed="FALSE" maxFractionDigits="2"/></td>
+                        <td class="amount"><fmt:formatNumber type="number" value="${jydpCoinConfig.minCurrencyNumber}" groupingUsed="FALSE" maxFractionDigits="2"/></td>
                         <td class="account">${jydpCoinConfig.backerAccount}</td>
                         <td class="ip">${jydpCoinConfig.ipAddress}</td>
                         <td class="operate">
