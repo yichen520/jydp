@@ -151,11 +151,11 @@
 <script type="text/javascript">
 
     $("#userCenter").click(function () {
-        window.location.href="/userWap/userInfo/userCenter/show.htm";
+        window.location.href="<%=path%>/userWap/userInfo/userCenter/show.htm";
     });
 
     $("#currencyAssets").click(function () {
-        window.location.href="/userWap/userInfo/currencyAssets/show.htm";
+        window.location.href="<%=path%>/userWap/userInfo/currencyAssets/show.htm";
     })
 
 </script>

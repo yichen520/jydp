@@ -29,6 +29,22 @@ $(function () {
     }
     function clickButton(obj) {
         var obj = $(obj);
+        var phone=obj.text().replace(/\ +/g,"");
+        $.ajax({
+            url: "/jydp/sendCode/sendPhoneCode",
+            type:'post',
+            dataType:'json',
+            async:true,
+            data:{
+                phoneNumber : phone
+            },
+            success:function(result){
+                //openTips(result.message);
+            },
+            error:function(){
+                return openTips("服务器错误");
+            }
+        });
         obj.attr("disabled", "disabled");/*按钮倒计时*/
         var time = 60;
         var set = setInterval(function () {

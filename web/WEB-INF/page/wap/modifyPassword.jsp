@@ -29,61 +29,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <!-- 原密码修改 -->
             <div class="registerContent" style="display:block">
                 <div class="userPasswordTwo">
-                    <input type="password" placeholder="原登录密码" maxlength="16" />
+                    <input type="password" placeholder="原登录密码" maxlength="16" id="oldPwd"/>
                 </div>
                 <div class="userPassword">
-                    <input  style="width:100%" type="password" placeholder="新密码为字母、数字，6～16个字符" maxlength="16"/>
+                    <input  style="width:100%" type="password" placeholder="新密码为字母、数字，6～16个字符" maxlength="16" id="newPwd"/>
                 </div>
                 <div class="userPassword">
-                        <input type="password" placeholder="再次输入新密码" maxlength="16"/>
+                        <input type="password" placeholder="再次输入新密码" maxlength="16" id="confirmPwd"/>
                     </div>
                 <div class="userPhone">
-                    <p class="num">+86 136****9006</p> 
+                    <p class="num">${phoneAreaCode} ${phoneNumber}</p>
                 </div>
                 <div class="userCode">
-                    <input type="number" placeholder="请输入6位短信验证码" maxlength="6"/>
+                    <input type="number" placeholder="请输入6位短信验证码" maxlength="6" id="validCode"/>
                     <p class="code">获取验证码</p>
                 </div>  
             </div>
         </div>
-        <div class="confirm" onclick="openTip()" >提 交</div>
-    </div>
-    <!-- 选择手机号弹窗 -->
-    <div class="chosePhone">
-        <div class="search">
-            <img src="<%=path%>/resources/image/wap/searchIcon.png" />
-            <input type="text" placeholder="请选择国家或区号"/>
-            <p>取消</p>
-        </div>
-        <div class="searchList">
-            <ul>
-                <li>
-                    <p class="city">阿尔及利亚</p>
-                    <p class="cityNum">+35</p>
-                    <p class="clear"></p>
-                </li>
-                <li>
-                    <p class="city">安哥拉</p>
-                    <p class="cityNum">+23</p>
-                    <p class="clear"></p>
-                </li>
-                <li>
-                    <p class="city">阿根廷</p>
-                    <p class="cityNum">+54</p>
-                    <p class="clear"></p>
-                </li>
-                <li>
-                    <p class="city">亚美尼亚</p>
-                    <p class="cityNum">+375</p>
-                    <p class="clear"></p>
-                </li>
-                <li>
-                    <p class="city">安道尔共和国</p>
-                    <p class="cityNum">+376</p>
-                    <p class="clear"></p>
-                </li>
-            </ul>
-        </div>
+        <div class="confirm">提 交</div>
     </div>
     <!-- loading图 -->
     <div id="loading">
@@ -98,13 +61,53 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="<%=path%>/resources/js/wap/simpleTips_wap.js"></script>
 
 <script>
-    function openTip()
-    {
-        openTips("阿萨德芳");
-    }
     $(".back").click(function () {
-        window.location.href="/userWap/userInfo/userCenter/show.htm";
-    })
+        window.location.href="<%=path%>/userWap/userInfo/userCenter/show.htm";
+    });
+    $(".confirm").click(function () {
+        var regx = /^[A-Za-z0-9]*$/;
+        var oldPwd=$("#oldPwd").val();
+        var newPwd=$("#newPwd").val();
+        var confirmPwd=$("#confirmPwd").val();
+        var validCode=$("#validCode").val();
+        if (oldPwd=="" || newPwd== ""|| confirmPwd=="" || validCode=="") {
+            openTips("全部为必填项");
+            return;
+        }
+        if (!regx.test(newPwd) || !regx.test(confirmPwd) || newPwd!=confirmPwd) {
+            openTips("密码格式不正确或者两次输入密码不一致");
+            return;
+        }
+        if (validCode.length !=6 || newPwd.length<6 || newPwd.length>16) {
+            openTips("验证码或者密码长度错误");
+            return;
+        }
+        $.ajax({
+            url: "<%=path%>/userWap/userInfo/password/modify",
+            type:'post',
+            dataType:'json',
+            async:true,
+            contentType: "application/json",
+            data: JSON.stringify({
+                oldPassword: oldPwd,
+                newPassword: newPwd,
+                confirmPassword: confirmPwd,
+                validCode:validCode
+            }),
+            success:function(result){
+                openTips(result.message);
+                if (result.code==1) {
+                    setTimeout("skipToUserInfoHtml()",1000);
+                }
+            },
+            error:function(){
+                return openTips("服务器错误");
+            }
+        });
+    });
+    function skipToUserInfoHtml() {
+        window.location.href="<%=path%>/userWap/userInfo/show.htm";
+    }
 </script>
 
 </html>

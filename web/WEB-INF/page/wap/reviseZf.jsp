@@ -42,13 +42,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <div class="userPassword">
                         <input type="password" placeholder="重复密码" maxlength="16" id="confirmPwdByPwd"/>
                     </div>
-                <div class="userPhone">
-                    <p class="num" id="phoneByPwd">${phoneAreaCode} ${phoneNumber}</p>
-                </div>
-                <div class="userCode">
-                    <input type="number" placeholder="请输入6位短信验证码" maxlength="6" id="codeByPwd"/>
-                    <p class="code">获取验证码</p>
-                </div>  
             </div>
             <!-- 通过手机号修改 -->
             <div class="registerContent" style="display:none">
@@ -83,7 +76,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <script>
     $(".back").click(function () {
-        window.location.href="/userWap/userInfo/userCenter/show.htm";
+        window.location.href="<%=path%>/userWap/userInfo/userCenter/show.htm";
     })
 
     $(".confirm").click(function () {
@@ -97,8 +90,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             oldPwd=$("#oldPwdPyPwd").val();
             newPwd=$("#newPwdByPwd").val();
             confirmPwd=$("#confirmPwdByPwd").val();
-            code=$("#codeByPwd").val();
-            if (oldPwd=="" || newPwd== ""|| confirmPwd=="" || code=="") {
+            if (oldPwd=="" || newPwd== ""|| confirmPwd=="") {
                 openTips("全部为必填项");
                 return;
             }
@@ -106,15 +98,34 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 openTips("密码格式不正确或者两次输入密码不一致");
                 return;
             }
-            if (code.length !=6 || newPwd.length<6 || newPwd.length>16) {
-                openTips("验证码或者密码长度错误");
+            if (newPwd.length<6 || newPwd.length>16) {
+                openTips("密码长度错误");
                 return;
             }
+            $.ajax({
+                url: "<%=path%>/userWap/userInfo/payPassword/modifyByPwd",
+                type:'post',
+                dataType:'json',
+                async:true,
+                contentType: "application/json",
+                data: JSON.stringify({
+                    oldPassword: oldPwd,
+                    newPassword: newPwd,
+                    confirmPassword: confirmPwd
+                }),
+                success:function(result){
+                    openTips(result.message);
+                    setTimeout("skipToUserInfoHtml()",1000);
+                },
+                error:function(){
+                    return openTips("服务器错误");
+                }
+            });
         } else {
             //通过手机号修改
-            newPwd=$("#newPwdByPhone").text();
-            confirmPwd=$("#confirmPwdByPhone").text();
-            code=$("#codeByPhone").text();
+            newPwd=$("#newPwdByPhone").val();
+            confirmPwd=$("#confirmPwdByPhone").val();
+            code=$("#codeByPhone").val().replace(/\ +/g,"");
             if (newPwd== ""|| confirmPwd=="" || code=="") {
                 openTips("全部为必填项");
                 return;
@@ -127,8 +138,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 openTips("验证码或者密码长度错误");
                 return;
             }
+            $.ajax({
+                url: "<%=path%>/userWap/userInfo/payPassword/modifyByPhone",
+                type:'post',
+                dataType:'json',
+                async:true,
+                contentType: "application/json",
+                data: JSON.stringify({
+                    newPassword: newPwd,
+                    confirmPassword: confirmPwd,
+                    validCode:code
+                }),
+                success:function(result){
+                    openTips(result.message);
+                    if (result.code==1) {
+                        setTimeout("skipToUserInfoHtml()",1000);
+                    }
+                },
+                error:function(){
+                    return openTips("服务器错误");
+                }
+            });
         }
     })
+    function skipToUserInfoHtml() {
+        window.location.href="<%=path%>/userWap/userInfo/show.htm";
+    }
 </script>
 
 </html>

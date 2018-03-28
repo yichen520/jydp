@@ -1,17 +1,22 @@
 package com.jydp.controller.wap;
 
 import com.alibaba.fastjson.JSONObject;
+import com.iqmkj.utils.MD5Util;
+import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.user.UserDO;
+import com.jydp.entity.DTO.WapUserModifyPayPasswordDTO;
 import com.jydp.entity.VO.WapUserCurrencyAssetsVO;
 import com.jydp.entity.VO.WapUserVO;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.IRedisService;
+import com.jydp.service.ISystemValidatePhoneService;
 import com.jydp.service.IUserCurrencyNumService;
 import com.jydp.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -40,8 +45,17 @@ public class WapUserInfoController {
     @Autowired
     IUserCurrencyNumService userCurrencyNumService;
 
+    /**
+     * redis缓存
+     */
     @Autowired
     IRedisService redisService;
+
+    /**
+     * 手机校验
+     */
+    @Autowired
+    ISystemValidatePhoneService systemValidatePhoneService;
 
 
     /**
@@ -151,11 +165,143 @@ public class WapUserInfoController {
         if (userInfo == null) {
             request.setAttribute("code", 2);
             request.setAttribute("message", "用户信息查询失败");
-            return "/page/wap/reviseZf";
+            return "/page/wap/login";
         }
-        request.setAttribute("phoneAreaCode",userInfo.getPhoneAreaCode());
-        request.setAttribute("phoneNumber",userInfo.getPhoneNumber());
+        request.setAttribute("phoneAreaCode", userInfo.getPhoneAreaCode());
+        request.setAttribute("phoneNumber", userInfo.getPhoneNumber());
         return "/page/wap/reviseZf";
+    }
+
+    /**
+     * 通过密码修改支付密码
+     *
+     * @return
+     */
+    @RequestMapping(value = "/payPassword/modifyByPwd", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonObjectBO modifyPayPassword(HttpServletRequest request,
+                                          @RequestBody WapUserModifyPayPasswordDTO userModifyPayPasswordDTO) {
+        JsonObjectBO response = new JsonObjectBO();
+        UserSessionBO user = UserWebInterceptor.getUser(request);
+        if (user == null) {
+            response.setCode(4);
+            response.setMessage("登陆过期");
+            return response;
+        }
+        if (userModifyPayPasswordDTO == null || !StringUtil.isNotNull(userModifyPayPasswordDTO.getOldPassword()) ||
+                !StringUtil.isNotNull(userModifyPayPasswordDTO.getNewPassword()) || !StringUtil.isNotNull(userModifyPayPasswordDTO.getConfirmPassword())) {
+            response.setCode(2);
+            response.setMessage("参数不能为空");
+            return response;
+        }
+        //两次密码对比
+        if (!userModifyPayPasswordDTO.getNewPassword().equals(userModifyPayPasswordDTO.getConfirmPassword())) {
+            response.setCode(3);
+            response.setMessage("密码输入不一致！");
+            return response;
+        }
+        //新密码与原密码对比
+        if (userModifyPayPasswordDTO.getNewPassword().equals(userModifyPayPasswordDTO.getOldPassword())) {
+            response.setCode(3);
+            response.setMessage("新密码不可与原密码相同");
+            return response;
+        }
+        //获取用户信息
+        UserDO userInfo = userService.getUserByUserId(user.getUserId());
+        if (userInfo == null) {
+            response.setCode(3);
+            response.setMessage("用户信息查询失败，请稍后重试");
+            return response;
+        }
+        //判断支付密码是否正确
+        boolean userPay = userService.validateUserPay(user.getUserAccount(), MD5Util.toMd5(userModifyPayPasswordDTO.getOldPassword()));
+        if (!userPay) {
+            response.setCode(3);
+            response.setMessage("原密码错误！");
+            return response;
+        }
+        //判断支付密码是否与登陆密码相同
+        UserDO userLog = userService.validateUserLogin(user.getUserAccount(), MD5Util.toMd5(userModifyPayPasswordDTO.getNewPassword()));
+        if (userLog != null) {
+            response.setCode(3);
+            response.setMessage("不可与登录密码相同！");
+            return response;
+        }
+
+        //修改支付密码
+        boolean forgetPwd = userService.forgetPayPwd(user.getUserId(), MD5Util.toMd5(userModifyPayPasswordDTO.getNewPassword()));
+        if (!forgetPwd) {
+            response.setCode(3);
+            response.setMessage("修改失败，请重试");
+            return response;
+        }
+        response.setCode(1);
+        response.setMessage("修改成功");
+        return response;
+    }
+
+    /**
+     * 通过手机号修改支付密码
+     *
+     * @param request
+     * @param userModifyPayPasswordDTO
+     * @return
+     */
+    @RequestMapping(value = "/payPassword/modifyByPhone", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonObjectBO modifyPayPasswordByPhone(HttpServletRequest request,
+                                                 @RequestBody WapUserModifyPayPasswordDTO userModifyPayPasswordDTO) {
+        JsonObjectBO response = new JsonObjectBO();
+        UserSessionBO user = UserWebInterceptor.getUser(request);
+        if (user == null) {
+            response.setCode(4);
+            response.setMessage("登录过期");
+            return response;
+        }
+        if (userModifyPayPasswordDTO == null || !StringUtil.isNotNull(userModifyPayPasswordDTO.getValidCode()) ||
+                !StringUtil.isNotNull(userModifyPayPasswordDTO.getNewPassword()) || !StringUtil.isNotNull(userModifyPayPasswordDTO.getConfirmPassword())) {
+            response.setCode(2);
+            response.setMessage("参数不能为空");
+            return response;
+        }
+        //两次密码对比
+        if (!userModifyPayPasswordDTO.getNewPassword().equals(userModifyPayPasswordDTO.getConfirmPassword())) {
+            response.setCode(3);
+            response.setMessage("密码输入不一致！");
+            return response;
+        }
+        //获取用户信息
+        UserDO userMessage = userService.getUserByUserId(user.getUserId());
+        if (userMessage == null) {
+            response.setCode(3);
+            response.setMessage("用户信息查询失败，请稍后重试");
+            return response;
+        }
+        //验证码判定
+        JsonObjectBO validatePhone = systemValidatePhoneService.validatePhone(userMessage.getPhoneAreaCode() + userMessage.getPhoneNumber(), userModifyPayPasswordDTO.getValidCode());
+        if (validatePhone.getCode() != 1) {
+            response.setCode(validatePhone.getCode());
+            response.setMessage(validatePhone.getMessage());
+            return response;
+        }
+        //判断支付密码是否与登陆密码相同
+        UserDO userLog = userService.validateUserLogin(user.getUserAccount(), MD5Util.toMd5(userModifyPayPasswordDTO.getNewPassword()));
+        if (userLog != null) {
+            response.setCode(3);
+            response.setMessage("不可与登录密码相同！");
+            return response;
+        }
+
+        //修改支付密码
+        boolean forgetPwd = userService.forgetPayPwd(user.getUserId(), userModifyPayPasswordDTO.getNewPassword());
+        if (!forgetPwd) {
+            response.setCode(3);
+            response.setMessage("修改失败，请重试");
+            return response;
+        }
+        response.setCode(1);
+        response.setMessage("修改成功");
+        return response;
     }
 
     /**
@@ -172,7 +318,92 @@ public class WapUserInfoController {
             request.setAttribute("message", "登陆过期");
             return "page/wap/login";
         }
+        UserDO userInfo = userService.getUserByUserId(user.getUserId());
+        if (userInfo == null) {
+            request.setAttribute("code", 2);
+            request.setAttribute("message", "用户信息查询失败");
+            return "/page/wap/login";
+        }
+        request.setAttribute("phoneAreaCode", userInfo.getPhoneAreaCode());
+        request.setAttribute("phoneNumber", userInfo.getPhoneNumber());
         return "/page/wap/modifyPassword";
+    }
+
+    /**
+     * 修改登陆密码
+     *
+     * @param request
+     * @param userModifyPasswordDTO
+     * @return
+     */
+    @RequestMapping(value = "/password/modify", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonObjectBO modifyPassword(HttpServletRequest request,
+                                       @RequestBody WapUserModifyPayPasswordDTO userModifyPasswordDTO) {
+        JsonObjectBO response = new JsonObjectBO();
+        UserSessionBO user = UserWebInterceptor.getUser(request);
+        if (user == null) {
+            response.setCode(4);
+            response.setMessage("登录过期");
+            return response;
+        }
+        if (userModifyPasswordDTO == null || !StringUtil.isNotNull(userModifyPasswordDTO.getValidCode()) || !StringUtil.isNotNull(userModifyPasswordDTO.getOldPassword()) ||
+                !StringUtil.isNotNull(userModifyPasswordDTO.getNewPassword()) || !StringUtil.isNotNull(userModifyPasswordDTO.getConfirmPassword())) {
+            response.setCode(2);
+            response.setMessage("参数不能为空");
+            return response;
+        }
+        //两次密码对比
+        if (!userModifyPasswordDTO.getNewPassword().equals(userModifyPasswordDTO.getConfirmPassword())) {
+            response.setCode(3);
+            response.setMessage("密码输入不一致！");
+            return response;
+        }
+        //新密码与原密码对比
+        if (userModifyPasswordDTO.getNewPassword().equals(userModifyPasswordDTO.getOldPassword())) {
+            response.setCode(3);
+            response.setMessage("新密码不可与原密码相同");
+            return response;
+        }
+        //获取用户信息
+        UserDO userMessage = userService.getUserByUserId(user.getUserId());
+        if (userMessage == null) {
+            response.setCode(3);
+            response.setMessage("用户信息查询失败，请稍后重试");
+            return response;
+        }
+        //验证码判定
+        JsonObjectBO validatePhone = systemValidatePhoneService.validatePhone(userMessage.getPhoneAreaCode() + userMessage.getPhoneNumber(), userModifyPasswordDTO.getValidCode());
+        if (validatePhone.getCode() != 1) {
+            response.setCode(validatePhone.getCode());
+            response.setMessage(validatePhone.getMessage());
+            return response;
+        }
+
+        //原密码判定
+        UserDO userLog = userService.validateUserLogin(user.getUserAccount(), MD5Util.toMd5(userModifyPasswordDTO.getOldPassword()));
+        if (userLog == null) {
+            response.setCode(3);
+            response.setMessage("原密码错误！");
+            return response;
+        }
+        //判断新密码是否与支付密码相同
+        boolean userPay = userService.validateUserPay(user.getUserAccount(), MD5Util.toMd5(userModifyPasswordDTO.getNewPassword()));
+        if (userPay) {
+            response.setCode(3);
+            response.setMessage("不可与支付密码相同！");
+            return response;
+        }
+        //更新密码
+        boolean forgetPwd = userService.forgetPwd(user.getUserAccount(), MD5Util.toMd5(userModifyPasswordDTO.getNewPassword()));
+        if (!forgetPwd) {
+            response.setCode(3);
+            response.setMessage("修改失败，请重试");
+            return response;
+        }
+        response.setCode(1);
+        response.setMessage("修改成功");
+        return response;
     }
 
     /**
@@ -189,6 +420,14 @@ public class WapUserInfoController {
             request.setAttribute("message", "登陆过期");
             return "page/wap/login";
         }
+        UserDO userInfo = userService.getUserByUserId(user.getUserId());
+        if (userInfo == null) {
+            request.setAttribute("code", 2);
+            request.setAttribute("message", "用户信息查询失败");
+            return "/page/wap/login";
+        }
+        request.setAttribute("phoneAreaCode", userInfo.getPhoneAreaCode());
+        request.setAttribute("phoneNumber", userInfo.getPhoneNumber());
         return "page/wap/modifyPhone";
     }
 }

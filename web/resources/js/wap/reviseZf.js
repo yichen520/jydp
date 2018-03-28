@@ -18,7 +18,7 @@ $(function () {
                 phoneNumber : phone
             },
             success:function(result){
-                openTips(result.message);
+                //openTips(result.message);
             },
             error:function(){
                 return openTips("服务器错误");

@@ -28,7 +28,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <div class="title">修改手机号</div>
         <div class="registerContent">
             <div class="oldPhone">
-                <p>原手机号：<span>130****0019</span></p>
+                <p>原手机号：<span>${phoneAreaCode} ${phoneNumber}</span></p>
             </div>
             <div class="oldPhoneCode">
                 <input type="number" placeholder="请输入6位短信验证码" maxlength="6" class="oldCode"/>
@@ -101,12 +101,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="<%=path%>/resources/js/wap/simpleTips_wap.js"></script>
 
 <script>
-    function openTip()
-    {
-        openTips("阿萨德芳");
-    }
     $(".back").click(function () {
-        window.location.href="/userWap/userInfo/userCenter/show.htm";
+        window.location.href="<%=path%>/userWap/userInfo/userCenter/show.htm";
     })
 </script>
 
