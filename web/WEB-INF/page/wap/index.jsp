@@ -92,7 +92,7 @@
         <img src="<%=path %>/resources/image/wap/home-chose.png" class="home-icon"/>
         <p class="chose">首页</p>
     </a>
-    <a href="deal.html" class="deal">
+    <a href="<%=path %>/userWap/tradeCenter/show" class="deal">
         <img src="<%=path %>/resources/image/wap/deal-nochose.png" class="deal-icon"/>
         <p>交易</p>
     </a>

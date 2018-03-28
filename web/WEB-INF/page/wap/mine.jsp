@@ -5,7 +5,6 @@
     String path = request.getContextPath();
     String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,7 +20,6 @@
 <body>
     <!-- 内容区域 -->
     <div id="wrapper">
-
         <c:if test="${code==4}">
             <!-- 未登录状态 -->
             <div class="noLogin">
@@ -76,14 +74,14 @@
         <!-- 列表 -->
         <div class="mine-list">
             <ul>
-                <li>
+                <li id="userCenter" style="cursor: pointer;">
                     <img src="<%=path%>/resources/image/wap/userIcon.png" class="icon"/>
                     <p>个人中心
                         <img src="<%=path%>/resources/image/wap/nextIcon.png" class="next" />
                     </p>
                     <div class="clear"></div>
                 </li>
-                <li>
+                <li id="currencyAssets" style="cursor: pointer;">
                     <img src="<%=path%>/resources/image/wap/moneyIcon.png" class="icon"/>
                     <p>币种资产
                         <img src="<%=path%>/resources/image/wap/nextIcon.png" class="next" />
@@ -130,11 +128,11 @@
     </div>
     <!-- 底部tabBar -->
     <footer>
-        <a href="index.html" class="home">
+        <a href="<%=path%>/userWap/homePage/show" class="home">
             <img src="<%=path%>/resources/image/wap/home-nochose.png"  class="home-icon"/>
             <p>首页</p>
         </a>
-        <a  href="deal.html" class="deal">
+        <a  href="<%=path%>/userWap/userMine/show.htm" class="deal">
             <img src="<%=path%>/resources/image/wap/deal-nochose.png"  class="deal-icon"/>
             <p>交易</p>
         </a>
@@ -149,7 +147,16 @@
 <script src="<%=path%>/resources/js/wap/zepto.min.js"></script>
 <script src="<%=path%>/resources/js/wap/jquery-2.1.4.min.js"></script>
 
+
 <script type="text/javascript">
+
+    $("#userCenter").click(function () {
+        window.location.href="<%=path%>/userWap/userInfo/userCenter/show.htm";
+    });
+
+    $("#currencyAssets").click(function () {
+        window.location.href="<%=path%>/userWap/userInfo/currencyAssets/show.htm";
+    })
 
 </script>
 </html>
