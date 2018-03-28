@@ -1,6 +1,5 @@
 $(function () {
     show();
-    btnCode();
     // 弹出选择手机
     function show() {
         var bgHeight = $(document).height();
@@ -34,19 +33,29 @@ $(function () {
         });
         
     };
-    
-    //获取验证码60s重新发送
-    function btnCode() {
-        $('.code').on('click',function () {
-            clickButton(this);
-        });
+
+    var wait=60;
+    function time(o) {
+        if (wait == 0) {
+            o.removeAttribute("disabled");
+            o.value="获取验证码";
+            wait = 60;
+        } else {
+            o.setAttribute("disabled", true);
+            o.value="重新发送(" + wait + ")";
+            wait--;
+            setTimeout(function() {
+                    time(o)
+                },
+                1000)
+        }
     }
-    function clickButton(obj) {
-        var obj = $(obj);
+    $('.code').on('click',function(){
+        time(this);
         var phone="";
         var areaCode="";
         var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
-        if (obj.attr("id")=="oldPhoneCode") {
+        if ($(this).attr("id")=="oldPhoneCode") {
             areaCode=$("#oldAreaCode").text()
             phone=$("#oldPhone").text();
         } else {
@@ -72,14 +81,6 @@ $(function () {
                 return openTips("服务器错误");
             }
         });
-        obj.attr("disabled", "disabled");/*按钮倒计时*/
-        var time = 60;
-        var set = setInterval(function () {
-            obj.text(--time + "s后重新获取");
-        }, 1000);/*等待时间*/
-        setTimeout(function () {
-            obj.attr("disabled", false).text("再次获取");/*倒计时*/
-            clearInterval(set);
-        }, 60000);
-    };
+    });
+
 });

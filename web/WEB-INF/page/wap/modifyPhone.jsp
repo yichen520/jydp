@@ -32,7 +32,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             </div>
             <div class="oldPhoneCode">
                 <input type="number" placeholder="请输入6位短信验证码" maxlength="6" class="oldCode" id="oldValidCode"/>
-                <p class="code" id="oldPhoneCode">获取验证码</p>
+                <input class="code" id="oldPhoneCode" value="获取验证码"/>
             </div>
             <div class="newPhone">
                 <div class="choseNumber">
@@ -43,7 +43,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             </div>
             <div class="newPhoneCode">
                 <input type="number" placeholder="请输入6位短信验证码" maxlength="6" class="oldCode" id="newValidCode"/>
-                <p class="code" id="newPhoneCode">获取验证码</p>
+                <input class="code" id="newPhoneCode" value="获取验证码"/>
             </div>
             <div class="userPassword">
                 <input type="password" placeholder="登录密码" maxlength="16" id="password"/>
