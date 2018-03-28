@@ -11,6 +11,7 @@ import com.jydp.service.IRedisService;
 import com.jydp.service.IUserSessionService;
 import config.SessionConfig;
 import config.SystemCommonConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -55,6 +56,7 @@ public class UserWapInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object controlller) throws Exception {
         UserSessionBO userSession = (UserSessionBO) request.getSession().getAttribute("userSession");
+
         if (userSession == null) {
             //如果是ajax请求
             if (request.getHeader("x-requested-with") != null

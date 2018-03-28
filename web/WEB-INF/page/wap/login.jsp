@@ -41,8 +41,8 @@
                 </div>
                 <div class="button" onclick="loginSubmit();" >登录</div>
                 <div class="footer">
-                    <a>忘记密码</a>
-                    <a href="register.html">注册</a>
+                    <a href="${pageContext.request.contextPath}/userWap/forgetPassword/show">忘记密码</a>
+                    <a href="${pageContext.request.contextPath}/userWap/userRegister/show">注册</a>
                     <div class="clear"></div>
                 </div>
             </form>
