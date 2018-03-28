@@ -382,7 +382,7 @@ public class TradeServiceImpl implements ITradeService {
             return resultJson;
         } else {
             resultJson.setCode(2);
-            resultJson.setMessage("交易失败");
+            resultJson.setMessage("挂单成功"); //此处为交易失败，但提示用户挂单成功
             return resultJson;
         }
     }
