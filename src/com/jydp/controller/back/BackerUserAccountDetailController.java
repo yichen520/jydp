@@ -72,7 +72,6 @@ public class BackerUserAccountDetailController {
             return "page/back/index";
         }
 
-        //String userIdStr = StringUtil.stringNullHandle(request.getParameter("userId"));
         if (!StringUtil.isNotNull(userIdStr)) {
             attributes.addFlashAttribute("code", 2);
             attributes.addFlashAttribute("message", "参数为空");
