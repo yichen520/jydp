@@ -28,7 +28,12 @@ public class BackerLoginController {
 	/** 后台管理员 */
 	@Autowired
 	private IBackerService backerService;
-	
+
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public  String show(){
+
+		return "page/back/login";
+	}
 	/** 登录 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(HttpServletRequest request) {
