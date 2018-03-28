@@ -37,6 +37,7 @@ header img{
     color: #333;
     line-height: 0.98rem;
     color: #e83a33;
+    width:30%;
 }
 .oldPhoneCode .oldCode{
     float: left;
@@ -58,6 +59,7 @@ header img{
     color: #333;
     line-height: 0.98rem;
     color: #e83a33;
+    width:30%;
 }
 .newPhoneCode .oldCode{
     float: left;
