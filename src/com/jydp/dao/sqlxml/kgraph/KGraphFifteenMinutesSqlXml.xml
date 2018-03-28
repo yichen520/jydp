@@ -5,7 +5,7 @@
 
 <mapper namespace="com.jydp.dao.impl.kgraph.KGraphFifteenMinutesDaoImpl">
 
-	<insert id="KGraphFifteenMinutes_insertKGraph" parameterType="java.util.List">
+	<insert id="KGraphFifteenMinutes_insertKGraph" parameterType="KGraphFifteenMinutesDO">
 		INSERT INTO k_line_graph_fifteen_minutes_tab(currencyId, nodeTime, openPrice, closePrice, maxPrice, minPrice,
 		transactionTotal)
 		VALUES

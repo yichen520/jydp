@@ -5,7 +5,7 @@
 
 <mapper namespace="com.jydp.dao.impl.kgraph.KGraphFourHoursDaoImpl">
 
-	<insert id="KGraphFourHoursDao_insertKGraph" parameterType="java.util.List">
+	<insert id="KGraphFourHoursDao_insertKGraph" parameterType="KGraphFourHoursDO">
 		INSERT INTO k_line_graph_four_hours_tab(currencyId, nodeTime, openPrice, closePrice, maxPrice, minPrice,
 		transactionTotal)
 		VALUES

@@ -5,7 +5,7 @@
 
 <mapper namespace="com.jydp.dao.impl.kgraph.KGraphOneWeekDaoImpl">
 
-	<insert id="KGraphOneWeekDao_insertKGraph" parameterType="java.util.List">
+	<insert id="KGraphOneWeekDao_insertKGraph" parameterType="KGraphOneWeekDO">
 		INSERT INTO k_line_graph_one_week_tab(currencyId, nodeTime, openPrice, closePrice, maxPrice, minPrice,
 		transactionTotal)
 		VALUES
