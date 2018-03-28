@@ -102,12 +102,4 @@ public interface IUserCurrencyNumDao {
      */
     List<UserAmountCheckDTO> listCheckUserAmountForTimer(double checkAmount, double checkAmountLock,
                                                          int pageNumber, int pageSize);
-
-    /**
-     * 批量修改用户币数量
-     * @param userCurrencyNumList 用户币数量集合
-     * @return 成功：true，查询失败：返回false
-     */
-    boolean updateUserCurrencyNumList(List<UserCurrencyNumDO> userCurrencyNumList);
-
 }

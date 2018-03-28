@@ -167,14 +167,4 @@ public class UserCurrencyNumServiceImpl implements IUserCurrencyNumService {
                                                          int pageNumber, int pageSize) {
         return userCurrencyNumDao.listCheckUserAmountForTimer(checkAmount, checkAmountLock, pageNumber, pageSize);
     }
-
-    /**
-     * 批量修改用户币数量
-     * @param userCurrencyNumList 用户币数量集合
-     * @return 成功：true，查询失败：返回false
-     */
-    public boolean updateUserCurrencyNumList(List<UserCurrencyNumDO> userCurrencyNumList){
-        return userCurrencyNumDao.updateUserCurrencyNumList(userCurrencyNumList);
-    }
-
 }
