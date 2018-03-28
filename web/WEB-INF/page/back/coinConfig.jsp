@@ -41,10 +41,10 @@
                     <p class="condition">管理员账号：<input type="text" class="askInput" value="${backerAccount}" id="backerAccount" name="backerAccount"
                                                       onkeyup="matchUtil(this, 'ENumber')" onblur="matchUtil(this, 'ENumber')" maxlength="16"/></p>
                     <p class="condition">币种：
-                        <select class="askSelect" id="currencyName" name="currencyName">
-                            <option value ="">全部</option>
+                        <select class="askSelect" id="currencyId" name="currencyId">
+                            <option value ="0">全部</option>
                             <c:forEach items="${transactionCurrencyList}" var="item">
-                                <option value="${item.currencyName}">${item.currencyName}</option>
+                                <option value="${item.currencyId}">${item.currencyName}</option>
                             </c:forEach>
                         </select>
                     </p>
@@ -146,7 +146,7 @@
     window.onload = function() {
         var code = '${code}';
         var message = '${message}';
-        $("#currencyName").val('${currencyName}');
+        $("#currencyId").val('${currencyId}');
 
         if (code != 1 && message != "") {
             openTips(message);

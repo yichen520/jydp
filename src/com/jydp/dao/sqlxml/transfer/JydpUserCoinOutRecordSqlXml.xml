@@ -70,8 +70,8 @@
             <if test="coinRecordNo != null and coinRecordNo != '' ">
                 coinRecordNo LIKE CONCAT('%', #{coinRecordNo}, '%')
             </if>
-            <if test="currencyName != null and currencyName != '' ">
-                AND currencyName = #{currencyName}
+            <if test="currencyId != 0 ">
+                AND currencyId = #{currencyId}
             </if>
             <if test="userAccount != null and userAccount != '' ">
                 AND userAccount LIKE CONCAT('%', #{userAccount}, '%')
@@ -105,8 +105,8 @@
             <if test="coinRecordNo != null and coinRecordNo != '' ">
                 coinRecordNo LIKE CONCAT('%', #{coinRecordNo}, '%')
             </if>
-            <if test="currencyName != null and currencyName != '' ">
-                AND currencyName = #{currencyName}
+            <if test="currencyId != 0 ">
+                AND currencyId = #{currencyId}
             </if>
             <if test="userAccount != null and userAccount != '' ">
                 AND userAccount LIKE CONCAT('%', #{userAccount}, '%')

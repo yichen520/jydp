@@ -53,7 +53,7 @@ public interface IJydpUserCoinOutRecordDao {
      * @param coinRecordNo 记录号，没有填null
      * @param userAccount 用户账号，没有填null
      * @param walletAccount 转入账号，没有填null
-     * @param currencyName 币种名称，没有填null
+     * @param currencyId 币种id，没有填0
      * @param handleStatus 审核状态，没有填0
      * @param startAddTime 申请开始时间，没有填null
      * @param endAddTime 申请结束时间，没有填null
@@ -61,7 +61,7 @@ public interface IJydpUserCoinOutRecordDao {
      * @param endFinishTime 完成结束时间 ，没有填null
      * @return 查询成功：返回用户转出记录数；查询失败：返回0
      */
-    int countJydpUserCoinOutRecordForBack(String coinRecordNo, String userAccount, String walletAccount, String currencyName, int handleStatus,
+    int countJydpUserCoinOutRecordForBack(String coinRecordNo, String userAccount, String walletAccount, int currencyId, int handleStatus,
                                    Timestamp startAddTime, Timestamp endAddTime, Timestamp startFinishTime, Timestamp endFinishTime);
 
     /**
@@ -69,7 +69,7 @@ public interface IJydpUserCoinOutRecordDao {
      * @param coinRecordNo 记录号，没有填null
      * @param userAccount 用户账号，没有填null
      * @param walletAccount 转入账号，没有填null
-     * @param currencyName 币种名称，没有填null
+     * @param currencyId 币种id，没有填0
      * @param handleStatus 审核状态，没有填0
      * @param startAddTime 申请开始时间，没有填null
      * @param endAddTime 申请结束时间，没有填null
@@ -77,7 +77,7 @@ public interface IJydpUserCoinOutRecordDao {
      * @param endFinishTime 完成结束时间 ，没有填null
      * @return 查询成功：返回用户转出记录集合；查询失败：返回null
      */
-    List<JydpUserCoinOutRecordDO> listJydpUserCoinOutRecord(String coinRecordNo, String userAccount, String walletAccount, String currencyName, int handleStatus,
+    List<JydpUserCoinOutRecordDO> listJydpUserCoinOutRecord(String coinRecordNo, String userAccount, String walletAccount, int currencyId, int handleStatus,
                                                             Timestamp startAddTime, Timestamp endAddTime, Timestamp startFinishTime, Timestamp endFinishTime,
                                                             int pageNumber, int pageSize);
 

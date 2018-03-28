@@ -19,10 +19,10 @@ public interface IJydpCoinConfigService {
      * @param backerAccount  后台管理员帐号
      * @param startAddTime  开始时间
      * @param endAddTime  结束时间
-     * @param currencyName  币种名称
+     * @param currencyId  币种id,没有填0
      * @return  操作成功：返回记录集合，操作失败：返回null
      */
-    List<JydpCoinConfigDO> getJydpCoinConfigServiceList(Timestamp startAddTime, Timestamp endAddTime, String backerAccount, String currencyName);
+    List<JydpCoinConfigDO> getJydpCoinConfigServiceList(Timestamp startAddTime, Timestamp endAddTime, String backerAccount, int currencyId);
 
     /**
      * 新增JYDP币种转出管理

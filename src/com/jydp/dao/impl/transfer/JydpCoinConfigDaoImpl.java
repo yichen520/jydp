@@ -29,15 +29,15 @@ public class JydpCoinConfigDaoImpl implements IJydpCoinConfigDao {
      * @param backerAccount  后台管理员帐号
      * @param startAddTime  开始时间
      * @param endAddTime  结束时间
-     * @param currencyName  币种名称
+     * @param currencyId  币种id,没有填0
      * @return  操作成功：返回记录集合，操作失败：返回null
      */
-    public List<JydpCoinConfigDO> getJydpCoinConfigServiceList(Timestamp startAddTime, Timestamp endAddTime, String backerAccount, String currencyName){
+    public List<JydpCoinConfigDO> getJydpCoinConfigServiceList(Timestamp startAddTime, Timestamp endAddTime, String backerAccount, int currencyId){
         Map<String, Object> map = new HashMap<>();
         map.put("startAddTime", startAddTime);
         map.put("endAddTime", endAddTime);
         map.put("backerAccount", backerAccount);
-        map.put("currencyName", currencyName);
+        map.put("currencyId", currencyId);
 
         List<JydpCoinConfigDO> result = null;
         try {

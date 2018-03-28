@@ -48,7 +48,7 @@ public class BackerCoinConfigController {
         String addTimeStr = StringUtil.stringNullHandle(request.getParameter("startAddTime"));
         String endTimeStr = StringUtil.stringNullHandle(request.getParameter("endAddTime"));
         String backerAccount = StringUtil.stringNullHandle(request.getParameter("backerAccount"));
-        String currencyName = StringUtil.stringNullHandle(request.getParameter("currencyName"));
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
 
         Timestamp startAddTime = null;
         if (StringUtil.isNotNull(addTimeStr)) {
@@ -59,9 +59,14 @@ public class BackerCoinConfigController {
             endAddTime = DateUtil.stringToTimestamp(endTimeStr);
         }
 
+        int currencyId = 0;
+        if (StringUtil.isNotNull(currencyIdStr)) {
+            currencyId = Integer.parseInt(currencyIdStr);
+        }
+
         List<JydpCoinConfigDO> jydpCoinConfigList = null;
 
-        jydpCoinConfigList = jydpCoinConfigService.getJydpCoinConfigServiceList(startAddTime, endAddTime, backerAccount, currencyName);
+        jydpCoinConfigList = jydpCoinConfigService.getJydpCoinConfigServiceList(startAddTime, endAddTime, backerAccount, currencyId);
         //获取币种信息
         List<TransactionCurrencyDO> transactionCurrencyList = transactionCurrencyService.listTransactionCurrencyAll();
 
@@ -70,7 +75,7 @@ public class BackerCoinConfigController {
         request.setAttribute("backerAccount", backerAccount);
         request.setAttribute("addTime", addTimeStr);
         request.setAttribute("endTime", endTimeStr);
-        request.setAttribute("currencyName", currencyName);
+        request.setAttribute("currencyId", currencyId);
 
         //当前页面的权限标识
         request.getSession().setAttribute("backer_pagePowerId", 161000);

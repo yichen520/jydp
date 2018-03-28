@@ -45,7 +45,7 @@ public class BackerUserCoinOutController {
         String coinRecordNo = StringUtil.stringNullHandle(request.getParameter("coinRecordNo"));
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
         String walletAccount = StringUtil.stringNullHandle(request.getParameter("walletAccount"));
-        String currencyName = StringUtil.stringNullHandle(request.getParameter("currencyName"));
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
         String handleStatusStr = StringUtil.stringNullHandle(request.getParameter("handleStatus"));
         String startAddTimeStr = StringUtil.stringNullHandle(request.getParameter("startAddTime"));
         String endAddTimeStr = StringUtil.stringNullHandle(request.getParameter("endAddTime"));
@@ -80,8 +80,13 @@ public class BackerUserCoinOutController {
             handleStatus = Integer.parseInt(handleStatusStr);
         }
 
+        int currencyId = 0;
+        if (StringUtil.isNotNull(currencyIdStr)) {
+            currencyId = Integer.parseInt(currencyIdStr);
+        }
+
         //查询数据
-        int totalNumber = jydpUserCoinOutRecordService.countJydpUserCoinOutRecordForBack(coinRecordNo, userAccount, walletAccount, currencyName, handleStatus,
+        int totalNumber = jydpUserCoinOutRecordService.countJydpUserCoinOutRecordForBack(coinRecordNo, userAccount, walletAccount, currencyId, handleStatus,
                                                                                     startAddTime, endAddTime, startFinishTime, endFinishTime);
 
         List<JydpUserCoinOutRecordDO> jydpUserCoinOutRecordList = null;
@@ -96,7 +101,7 @@ public class BackerUserCoinOutController {
             pageNumber = totalPageNumber - 1;
         }
         if (totalNumber > 0) {
-            jydpUserCoinOutRecordList = jydpUserCoinOutRecordService.listJydpUserCoinOutRecord(coinRecordNo, userAccount, walletAccount, currencyName, handleStatus,
+            jydpUserCoinOutRecordList = jydpUserCoinOutRecordService.listJydpUserCoinOutRecord(coinRecordNo, userAccount, walletAccount, currencyId, handleStatus,
                     startAddTime, endAddTime, startFinishTime, endFinishTime, pageNumber, pageSize);
         }
         //获取币种信息
@@ -105,7 +110,7 @@ public class BackerUserCoinOutController {
         request.setAttribute("coinRecordNo", coinRecordNo);
         request.setAttribute("userAccount", userAccount);
         request.setAttribute("walletAccount", walletAccount);
-        request.setAttribute("currencyName", currencyName);
+        request.setAttribute("currencyId", currencyId);
         request.setAttribute("handleStatus", handleStatus);
         request.setAttribute("startAddTime", startAddTimeStr);
         request.setAttribute("endAddTime", endAddTimeStr);
