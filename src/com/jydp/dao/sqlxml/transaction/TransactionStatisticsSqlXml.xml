@@ -30,7 +30,7 @@
 
     <select id="TransactionStatistics_listTransactionStatisticsForBack" parameterType="java.util.Map"
             resultType="TransactionStatisticsDO">
-        SELECT orderNo, currencyId, currencyName, transactionTotalNumber, transactionTotalPrice, currencyCoefficient,
+        SELECT orderNo, statisticsDate, currencyId, currencyName, transactionTotalNumber, transactionTotalPrice, currencyCoefficient,
         addTime
         FROM transaction_statistics_tab
         WHERE 1=1
@@ -43,16 +43,16 @@
         <if test="endTime != null">
             AND addTime <![CDATA[ <= ]]> #{endTime}
         </if>
-        ORDER BY addTime DESC, orderNo
+        ORDER BY currencyId, statisticsDate DESC
         LIMIT #{startNumber}, #{pageSize}
     </select>
 
     <insert id="TransactionStatistics_insertTransactionStatisticsList" parameterType="java.util.List">
         INSERT INTO transaction_statistics_tab
-        (orderNo, currencyId, currencyName, transactionTotalNumber, transactionTotalPrice, currencyCoefficient, addTime)
+        (orderNo, statisticsDate, currencyId, currencyName, transactionTotalNumber, transactionTotalPrice, currencyCoefficient, addTime)
         VALUES
             <foreach collection="list" item="item" separator=",">
-                (#{item.orderNo}, #{item.currencyId}, #{item.currencyName}, #{item.transactionTotalNumber},
+                (#{item.orderNo}, #{item.statisticsDate}, #{item.currencyId}, #{item.currencyName}, #{item.transactionTotalNumber},
                 #{item.transactionTotalPrice}, #{item.currencyCoefficient}, #{item.addTime})
             </foreach>
     </insert>
@@ -60,6 +60,14 @@
     <select id="TransactionStatistics_getLastAddTime" resultType="java.sql.Timestamp">
         SELECT addTime
         FROM transaction_statistics_tab
+        ORDER BY addTime DESC
+        LIMIT 1
+    </select>
+
+    <select id="TransactionStatistics_getLastAddTimeByCurrencyId" resultType="java.sql.Timestamp" parameterType="int">
+        SELECT addTime
+        FROM transaction_statistics_tab
+        WHERE currencyId = #{currencyId}
         ORDER BY addTime DESC
         LIMIT 1
     </select>

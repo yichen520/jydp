@@ -30,7 +30,8 @@
                 <form id="addForm" action="<%=path %>/backerWeb/backerRole/roleAdd.htm" method="post">
                     <p class="role">
                         <label class="name">角色名称<span class="star">*</span>：</label>
-                        <input type="text" class="nameInput" placeholder="2~10个字符" id="add_roleName" name="add_roleName" maxlength="10"/>
+                        <input type="text" class="nameInput" placeholder="2~10个字符"  id="add_roleName" name="add_roleName" maxlength="10"
+                               onkeyup="value=value.replace(/[^a-zA-Z0-9\_\u4e00-\u9fa5]/,'')" onblur="value=value.replace(/[^a-zA-Z0-9\_\u4e00-\u9fa5]/,'')"/>
                     </p>
                     <input type="hidden" id="add_powerJson" name="add_powerJson">
                     <input type="hidden" id="add_mainPowerJson" name="add_mainPowerJson">

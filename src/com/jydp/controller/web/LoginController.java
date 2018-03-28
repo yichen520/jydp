@@ -1,6 +1,7 @@
 package com.jydp.controller.web;
 
 import com.google.code.kaptcha.Constants;
+import com.iqmkj.utils.Base64Util;
 import com.iqmkj.utils.MD5Util;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.UserSessionBO;
@@ -57,6 +58,7 @@ public class LoginController {
     public String login(HttpServletRequest request) {
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
         String password = StringUtil.stringNullHandle(request.getParameter("password"));
+        password = Base64Util.decode(password);
         String validateCode = StringUtil.stringNullHandle(request.getParameter("validateCode"));
         String sessionCode = (String) request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
 

@@ -26,8 +26,8 @@
         FROM transaction_make_order_tab
         WHERE
             1 = 1
-            <if test="currencyName != null and currencyName !=''">
-                AND currencyName LIKE CONCAT('%', #{currencyName}, '%')
+            <if test="currencyId != 0">
+                AND currencyId = #{currencyId}
             </if>
             <if test="orderNo != null and orderNo !=''">
                 AND orderNo LIKE CONCAT('%', #{orderNo}, '%')
@@ -49,8 +49,8 @@
         FROM transaction_make_order_tab
         WHERE
             1 = 1
-            <if test="currencyName != null and currencyName !=''">
-                AND currencyName LIKE CONCAT('%', #{currencyName}, '%')
+            <if test="currencyId != 0">
+                AND currencyId = #{currencyId}
             </if>
             <if test="orderNo != null and orderNo !=''">
                 AND orderNo LIKE CONCAT('%', #{orderNo}, '%')

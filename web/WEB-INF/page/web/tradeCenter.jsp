@@ -482,6 +482,8 @@
         $(".mask").fadeOut("fast");
         $(popObj).fadeOut("fast");
 
+        buyPwd = encode64(buyPwd);
+
         $.ajax({
             url: '<%=path%>' + "/userWeb/tradeCenter/buy.htm", //方法路径URL
             data:{
@@ -527,6 +529,8 @@
 
         $(".mask").fadeOut("fast");
         $(popObj).fadeOut("fast");
+
+        sellPwd = encode64(sellPwd);
 
         $.ajax({
             url: '<%=path%>' + "/userWeb/tradeCenter/sell.htm", //方法路径URL
@@ -1028,7 +1032,7 @@
                             text: '价格'
                         },
                         opposite: false,
-                        height: '78%',
+                        height: '72%',
                         resize: {
                             enabled: true
                         },
@@ -1179,7 +1183,7 @@
             PayPwdBoo = false;
             return;
         }
-
+        rememberPwd = encode64(rememberPwd);
         $.ajax({
             url: '<%=path%>' + "/userWeb/tradeCenter/rememberPwd.htm", //方法路径URL
             data:{
@@ -1237,6 +1241,7 @@
                     pendBoo = false;
                     //openTips(result.message);
                     if(result.code == 5){
+                        openTips("该币种已下线，具体开启情况请留意公告");
                         setTimeout("returnWebHome()",2000 );
                     }
                     return;
@@ -1320,6 +1325,7 @@
                     dealBoo = false;
                     //openTips(result.message);
                     if(result.code == 5){
+                        openTips("该币种已下线，具体开启情况请留意公告");
                         setTimeout("returnWebHome()",2000 );
                     }
 
@@ -1635,6 +1641,37 @@
             }
         });
     }
+
+    // base64加密开始
+    var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+    function encode64(input) {
+        var output = "";
+        var chr1, chr2, chr3 = "";
+        var enc1, enc2, enc3, enc4 = "";
+        var i = 0;
+        do {
+            chr1 = input.charCodeAt(i++);
+            chr2 = input.charCodeAt(i++);
+            chr3 = input.charCodeAt(i++);
+            enc1 = chr1 >> 2;
+            enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+            enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+            enc4 = chr3 & 63;
+            if (isNaN(chr2)) {
+                enc3 = enc4 = 64;
+            } else if (isNaN(chr3)) {
+                enc4 = 64;
+            }
+            output = output + keyStr.charAt(enc1) + keyStr.charAt(enc2)
+                + keyStr.charAt(enc3) + keyStr.charAt(enc4);
+            chr1 = chr2 = chr3 = "";
+            enc1 = enc2 = enc3 = enc4 = "";
+        } while (i < input.length);
+
+        return output;
+    }
+    // base64加密结束
 
     //返回首页
     function returnWebHome(){

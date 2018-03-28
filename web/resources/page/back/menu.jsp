@@ -96,6 +96,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         </ul>
     </li>
 
+    <li class="levelOne" id="li_160000">
+        <p class="menuTitle">
+            币种转出管理
+            <img src="<%=path %>/resources/image/back/down.png" class="menu_down"/>
+            <img src="<%=path %>/resources/image/back/up.png" class="menu_up" />
+        </p>
+
+        <ul class="levelTwo">
+            <li class="menuInfo" id="li_161000"><a id="a_161000" href="<%=path%>/backerWeb/backerCoinConfig/show.htm">币种转出管理</a></li>
+            <li class="menuInfo" id="li_162000"><a id="a_162000" href="<%=path%>/backerWeb/backerUserCoinOut/show.htm">币种转出审核</a></li>
+        </ul>
+    </li>
+
     <li class="levelOne"  id="li_130000" >
         <p class="menuTitle">
             后台账号管理

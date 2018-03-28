@@ -95,8 +95,8 @@
         SELECT  COUNT(currencyId)
         FROM transaction_currency_tab
         <where>
-            <if test="currencyName != null and currencyName !=''">
-                AND currencyName LIKE CONCAT('%', #{currencyName}, '%')
+            <if test="currencyId != 0">
+                AND currencyId = #{currencyId}
             </if>
             <if test="backerAccount != null and backerAccount !=''">
                 AND backerAccount LIKE CONCAT('%', #{backerAccount}, '%')
@@ -127,8 +127,8 @@
                  paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         <where>
-            <if test="currencyName != null and currencyName !=''">
-                AND currencyName LIKE CONCAT('%', #{currencyName}, '%')
+            <if test="currencyId != 0">
+                AND currencyId = #{currencyId}
             </if>
             <if test="backerAccount != null and backerAccount !=''">
                 AND backerAccount LIKE CONCAT('%', #{backerAccount}, '%')
@@ -256,4 +256,10 @@
         ORDER BY upTime DESC
     </select>
 
+    <select id="TransactionCurrency_listcurrencyId" resultType="int">
+        SELECT currencyId
+        FROM transaction_currency_tab
+        WHERE upStatus IN (2,3)
+        ORDER BY rankNumber ASC
+    </select>
 </mapper>

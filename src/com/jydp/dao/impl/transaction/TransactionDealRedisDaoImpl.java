@@ -5,6 +5,7 @@ import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.ITransactionDealRedisDao;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.DTO.TransactionBottomPriceDTO;
+import com.jydp.entity.DTO.TransactionCurrencyDealPriceDTO;
 import com.jydp.entity.DTO.TransactionDealPriceDTO;
 import com.jydp.entity.DTO.TransactionDealRedisDTO;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -28,17 +29,18 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
     private SqlSessionTemplate sqlSessionTemplate;
 
     /**
-     * 查询前num条成交记录
+     * 查询前num条成交记录(小于等于当前时间)
      * @param num 查询条数
      * @param currencyId 币种Id
      * @return 查询成功：返回用户成交记录；查询失败：返回null
      */
     public List<TransactionDealRedisDO> listTransactionDealRedis(int num, int currencyId) {
         List<TransactionDealRedisDO> transactionDealRedisList = null;
-
+        Timestamp addTime = DateUtil.getCurrentTime();
         Map<String,Object> map = new HashMap<>();
         map.put("num", num);
         map.put("currencyId", currencyId);
+        map.put("addTime", addTime);
 
         try {
             transactionDealRedisList = sqlSessionTemplate.selectList("TransactionDealRedis_listTransactionDealRedis",map);
@@ -91,15 +93,19 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
 
 
     /**
-     * 查询今日总成交数量
+     * 查询今日总成交数量(小于等于当前时间)
      * @param date 当前时间戳
      * @return 查询成功：返回总成交数量，查询失败或没有成交量：返回0
      */
     public List<TransactionDealPriceDTO> getNowTurnover(Timestamp date){
         List<TransactionDealPriceDTO> result = null;
+        Timestamp addTime = DateUtil.getCurrentTime();
+        Map<String,Object> map = new HashMap<>();
+        map.put("date", date);
+        map.put("addTime", addTime);
 
         try {
-            result = sqlSessionTemplate.selectList("TransactionDealRedis_getNowTurnover", date);
+            result = sqlSessionTemplate.selectList("TransactionDealRedis_getNowTurnover", map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
@@ -108,15 +114,19 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
     }
 
     /**
-     * 查询今日总交易额
+     * 查询今日总交易额(小于等于当前时间)
      * @param date 当前时间戳
      * @return 查询成功：返回总成交金额，查询失败或没有成交额：返回0
      */
     public List<TransactionDealPriceDTO> getNowVolumeOfTransaction(Timestamp date){
         List<TransactionDealPriceDTO> result = null;
+        Timestamp addTime = DateUtil.getCurrentTime();
+        Map<String,Object> map = new HashMap<>();
+        map.put("date", date);
+        map.put("addTime", addTime);
 
         try {
-            result = sqlSessionTemplate.selectList("TransactionDealRedis_getNowVolumeOfTransaction", date);
+            result = sqlSessionTemplate.selectList("TransactionDealRedis_getNowVolumeOfTransaction", map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
@@ -126,15 +136,19 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
 
 
     /**
-     * 查询今日最高价
+     * 查询今日最高价小于等于当前时间)
      * @param date 今日时间戳
      * @return 查询成功：返回今日最高价，查询失败或今日最高价为0：返回0
      */
     public List<TransactionDealPriceDTO> getTodayHighestPrice(Timestamp date){
         List<TransactionDealPriceDTO> result = null;
+        Timestamp addTime = DateUtil.getCurrentTime();
+        Map<String,Object> map = new HashMap<>();
+        map.put("date", date);
+        map.put("addTime", addTime);
 
         try {
-            result = sqlSessionTemplate.selectList("TransactionDealRedis_getTodayHighestPrice", date);
+            result = sqlSessionTemplate.selectList("TransactionDealRedis_getTodayHighestPrice", map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
@@ -143,15 +157,19 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
     }
 
     /**
-     * 查询今日最低价
+     * 查询今日最低价(小于等于当前时间)
      * @param date 今日时间戳
      * @return 查询成功：返回今日最低价，查询失败或今日最低价为0：返回0
      */
     public List<TransactionDealPriceDTO> getTodayLowestPrice(Timestamp date){
         List<TransactionDealPriceDTO> result = null;
+        Timestamp addTime = DateUtil.getCurrentTime();
+        Map<String,Object> map = new HashMap<>();
+        map.put("date", date);
+        map.put("addTime", addTime);
 
         try {
-            result = sqlSessionTemplate.selectList("TransactionDealRedis_getTodayLowestPrice", date);
+            result = sqlSessionTemplate.selectList("TransactionDealRedis_getTodayLowestPrice", map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
@@ -219,22 +237,24 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
     }
 
     /**
-     * 获取盛源交易所 当日成交总价，当日成交总数量
+     * 获取盛源交易所 日成交总价，日成交总数量
      * @param currencyId 币种Id
      * @param orderNoPrefix 批次号前缀
+     * @param startTime   开始时间
+     * @param endTime     结束时间
      * @return 操作成功：返回数据集合，操作失败:返回null
      */
-    public TransactionBottomPriceDTO getBottomPriceToday(int currencyId, String orderNoPrefix){
+    public TransactionBottomPriceDTO getBottomPrice(int currencyId, String orderNoPrefix,
+                                                    Timestamp startTime, Timestamp endTime) {
         Map<String,Object> map = new HashMap<>();
         map.put("currencyId", currencyId);
         map.put("orderNoPrefix", orderNoPrefix);
-        long lingchenLong = DateUtil.lingchenLong();
-        String todayData = DateUtil.longToTimeStr(lingchenLong, DateUtil.dateFormat2);
-        map.put("todayData", todayData);
+        map.put("startTime", startTime);
+        map.put("endTime", endTime);
 
         TransactionBottomPriceDTO result = null;
         try {
-            result = sqlSessionTemplate.selectOne("TransactionDealRedis_getBottomPriceToday", map);
+            result = sqlSessionTemplate.selectOne("TransactionDealRedis_getBottomPrice", map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
@@ -242,15 +262,17 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
     }
 
     /**
-     * 获取盛源交易所 当前价
+     * 获取盛源交易所 当前价(小于等于当前时间)
      * @param currencyId 币种Id
      * @param orderNoPrefix 批次号前缀
      * @return 查询成功：返回当前价格，查询失败或当前价格为0：返回0
      */
     public double getCurrentPrice(int currencyId, String orderNoPrefix){
         Map<String,Object> map = new HashMap<>();
+        Timestamp addTime = DateUtil.getCurrentTime();
         map.put("currencyId", currencyId);
         map.put("orderNoPrefix", orderNoPrefix);
+        map.put("addTime", addTime);
 
         double result = 0;
         try {
@@ -262,15 +284,18 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
     }
 
     /**
-     * k线图数据拉取
+     * k线图数据拉取(小于等于当前时间)
      * @param currencyId 币种Id
      * @return 操作成功：返回数据集合，操作失败:返回null
      */
     public List<TransactionDealRedisDTO> listTransactionUserDealForKline(int currencyId){
         List<TransactionDealRedisDTO> resultList = null;
-
+        Timestamp addTime = DateUtil.getCurrentTime();
+        Map<String, Object> map = new HashMap<>();
+        map.put("currencyId", currencyId);
+        map.put("addTime", addTime);
         try {
-            resultList = sqlSessionTemplate.selectList("TransactionUserDeal_listTransactionUserDealForKline", currencyId);
+            resultList = sqlSessionTemplate.selectList("TransactionUserDeal_listTransactionUserDealForKline", map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
@@ -327,4 +352,91 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
 
         return  resultList;
     }
+
+    /**
+     * 验证币种是否已存在交易
+     * @param currencyId 币种id
+     * @return 已存在交易：返回true，不存在交易：返回false
+     */
+    public boolean validateGuidancePrice(int currencyId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("currencyId", currencyId);
+        map.put("addTime", DateUtil.getCurrentTime());
+
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.selectOne("TransactionDealRedis_validateGuidancePrice", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 查询该币种最早的交易时间
+     * @param currencyId 币种id
+     * @param prefix 记录号前缀（区别后台做单，还是用户挂单）
+     * @return 操作成功：返回最早的交易时间，操作失败或无交易记录：返回null
+     */
+    public Timestamp getEarliestTime(int currencyId, String prefix) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("currencyId", currencyId);
+        map.put("prefix", prefix);
+
+        Timestamp result = null;
+        try {
+            result = sqlSessionTemplate.selectOne("TransactionDealRedis_getEarliestTime", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return result;
+    }
+
+    /**
+     * 查询成交记录
+     * @param currencyId 币种Id
+     * @param starTime 开始时间
+     * @param endTime 结束时间
+     * @return 操作成功：返回统计集合，操作失败：返回null
+     */
+    public List<TransactionDealRedisDTO> listTransactionDealRedisForTimer(int currencyId, Timestamp starTime,
+                                                                   Timestamp endTime) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("currencyId", currencyId);
+        map.put("startTime", starTime);
+        map.put("endTime", endTime);
+
+        List<TransactionDealRedisDTO> result = null;
+        try {
+            result = sqlSessionTemplate.selectList("TransactionDealRedis_listTransactionDealRedisForTimer", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return result;
+    }
+
+    /**
+     * 查询基准货币信息
+     * @return 查询成功：返回基准货币信息，查询失败：返回null
+     */
+    public List<TransactionCurrencyDealPriceDTO> getTransactionCurrencyDealPrice(Timestamp date) {
+        List<TransactionCurrencyDealPriceDTO> result = null;
+        Timestamp addTime = DateUtil.getCurrentTime();
+        Map<String,Object> map = new HashMap<>();
+        map.put("date", date);
+        map.put("addTime", addTime);
+
+        try {
+            result = sqlSessionTemplate.selectList("TransactionDealRedis_getTransactionCurrencyDealPrice", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return result;
+    }
+
 }

@@ -6,6 +6,7 @@ import com.jydp.dao.ITransactionDealRedisDao;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.DTO.TransactionBottomPriceDTO;
+import com.jydp.entity.DTO.TransactionCurrencyDealPriceDTO;
 import com.jydp.entity.DTO.TransactionDealPriceDTO;
 import com.jydp.entity.VO.TransactionGraphVO;
 import com.jydp.entity.DTO.TransactionDealRedisDTO;
@@ -190,12 +191,7 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
      * @return  操作成功：返回true，操作失败：返回false
      */
     public boolean validateGuidancePrice(int currencyId){
-        List<TransactionDealRedisDO> redisDO = transactionDealRedisDao.listTransactionDealRedis(1, currencyId);
-        if (redisDO != null && !redisDO.isEmpty()){
-            return true;
-        } else {
-            return false;
-        }
+        return transactionDealRedisDao.validateGuidancePrice(currencyId);
     }
 
     /**
@@ -217,13 +213,16 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
     }
 
     /**
-     * 获取盛源交易所 当日成交总价，当日成交总数量
+     * 获取盛源交易所 日成交总价，日成交总数量
      * @param currencyId 币种Id
      * @param orderNoPrefix 批次号前缀
+     * @param startTime   开始时间
+     * @param endTime     结束时间
      * @return 操作成功：返回数据集合，操作失败:返回null
      */
-    public TransactionBottomPriceDTO getBottomPriceToday(int currencyId, String orderNoPrefix){
-        return transactionDealRedisDao.getBottomPriceToday(currencyId, orderNoPrefix);
+    public TransactionBottomPriceDTO getBottomPrice(int currencyId, String orderNoPrefix,
+                                                    Timestamp startTime, Timestamp endTime) {
+        return transactionDealRedisDao.getBottomPrice(currencyId, orderNoPrefix, startTime, endTime);
     }
 
     /**
@@ -398,4 +397,42 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
     public List<TransactionBottomPriceDTO> listStatistics(String orderNoPrefix, Timestamp date, Timestamp endDate){
         return  transactionDealRedisDao.listStatistics(orderNoPrefix, date, endDate);
     }
+
+    /**
+     * 查询该币种最早的交易时间
+     * @param currencyId 币种id
+     * @param prefix 记录号前缀（区别后台做单，还是用户挂单）
+     * @return 操作成功：返回最早的交易时间，操作失败或无交易记录：返回null
+     */
+    public Timestamp getEarliestTime(int currencyId, String prefix) {
+        return  transactionDealRedisDao.getEarliestTime(currencyId, prefix);
+    }
+
+
+    public List<TransactionDealRedisDTO> listTransactionDealRedisForTimer(int currencyId, Timestamp starTime,
+                                                                          Timestamp endTime) {
+        return  transactionDealRedisDao.listTransactionDealRedisForTimer(currencyId, starTime, endTime);
+    }
+
+    /**
+     * 查询基准货币信息
+     * @return 查询成功：返回基准货币信息，查询失败：返回null
+     */
+    public List<TransactionCurrencyDealPriceDTO> getTransactionCurrencyDealPrice() {
+        long dateLon = DateUtil.lingchenLong();
+        Timestamp date;
+
+        //判断当前时间是否是凌晨至开盘之前
+        long nowDate = DateUtil.getCurrentTimeMillis() - RedisKeyConfig.OPENING_TIME;
+        if(nowDate >= dateLon){
+            dateLon = dateLon + RedisKeyConfig.OPENING_TIME;
+            date = DateUtil.longToTimestamp(dateLon);
+        } else {
+            dateLon = dateLon - RedisKeyConfig.DAY_TIME + RedisKeyConfig.OPENING_TIME;
+            date = DateUtil.longToTimestamp(dateLon);
+
+        }
+        return transactionDealRedisDao.getTransactionCurrencyDealPrice(date);
+    }
+
 }

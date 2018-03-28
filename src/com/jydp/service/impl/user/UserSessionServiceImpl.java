@@ -56,7 +56,7 @@ public class UserSessionServiceImpl implements IUserSessionService {
 	}
 	
     /**
-     * 删除session（定时器操作）
+     * 删除session（定时器操作,该方法暂停使用）
      * @param loginTime 登陆时间
      * @return 操作成功：返回true，操作失败：返回false
      */
@@ -65,7 +65,7 @@ public class UserSessionServiceImpl implements IUserSessionService {
     }
 
 	/**
-	 * 删除用户的session
+	 * 删除用户的session(该方法暂停使用)
 	 * @param userId 用户Id
 	 * @return 操作成功：返回true，操作失败：返回false
 	 */

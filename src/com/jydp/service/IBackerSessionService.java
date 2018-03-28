@@ -56,7 +56,7 @@ public interface IBackerSessionService {
     boolean updateSessionById(int sessionId);
     
     /**
-     * 删除session
+     * 删除session(该服务暂停使用)
      * @return 操作成功：返回true，操作失败：返回false
      */
     boolean deleteSession();
@@ -69,7 +69,7 @@ public interface IBackerSessionService {
 	int countSession(Timestamp loginTime);
     
     /**
-     * 删除session（定时器操作）
+     * 删除session（定时器操作，该服务暂停使用）
      * @param loginTime 登陆时间
      * @param pageSize 删除数量
      * @return 操作成功：返回true，操作失败：返回false

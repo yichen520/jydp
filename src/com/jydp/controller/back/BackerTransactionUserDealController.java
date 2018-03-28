@@ -66,7 +66,7 @@ public class BackerTransactionUserDealController {
     public void list(HttpServletRequest request) {
         String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
-        String currencyName = StringUtil.stringNullHandle(request.getParameter("currencyName"));
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
         String paymentTypeStr = StringUtil.stringNullHandle(request.getParameter("paymentType"));
         String startAddTimeStr = StringUtil.stringNullHandle(request.getParameter("startAddTime"));
         String endAddTimeStr = StringUtil.stringNullHandle(request.getParameter("endAddTime"));
@@ -78,6 +78,7 @@ public class BackerTransactionUserDealController {
         Timestamp startPendTime = null;
         Timestamp endPendTime = null;
         int paymentType = 0;
+        int currencyId = 0;
         int pageNumber = 0;
 
         if (StringUtil.isNotNull(startAddTimeStr)) {
@@ -95,13 +96,16 @@ public class BackerTransactionUserDealController {
         if (StringUtil.isNotNull(paymentTypeStr)) {
             paymentType = Integer.parseInt(paymentTypeStr);
         }
+        if (StringUtil.isNotNull(currencyIdStr)) {
+            currencyId = Integer.parseInt(currencyIdStr);
+        }
         if (StringUtil.isNotNull(pageNumberStr)) {
             pageNumber = Integer.parseInt(pageNumberStr);
         }
 
         int pageSize = 20;
 
-        int totalNumber = transactionUserDealService.countTransactionUserDealForBack(userAccount, paymentType, currencyName, startAddTime, endAddTime, startPendTime, endPendTime);
+        int totalNumber = transactionUserDealService.countTransactionUserDealForBack(userAccount, paymentType, currencyId, startAddTime, endAddTime, startPendTime, endPendTime);
 
         int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
         if (totalPageNumber <= 0) {
@@ -113,7 +117,7 @@ public class BackerTransactionUserDealController {
 
         List<TransactionUserDealVO> transactionUserDealList = null;
         if (totalNumber > 0) {
-            transactionUserDealList = transactionUserDealService.listTransactionUserDealForBack(userAccount, paymentType, currencyName, startAddTime, endAddTime, startPendTime, endPendTime, pageNumber, pageSize);
+            transactionUserDealList = transactionUserDealService.listTransactionUserDealForBack(userAccount, paymentType, currencyId, startAddTime, endAddTime, startPendTime, endPendTime, pageNumber, pageSize);
         }
         //全部币种
         List<TransactionCurrencyDO> transactionCurrencyList = transactionCurrencyService.listTransactionCurrencyAll();
@@ -125,7 +129,7 @@ public class BackerTransactionUserDealController {
         request.setAttribute("endPendTime", endPendTimeStr);
         request.setAttribute("userAccount", userAccount);
         request.setAttribute("paymentType", paymentType);
-        request.setAttribute("currencyName", currencyName);
+        request.setAttribute("currencyId", currencyId);
 
         request.setAttribute("totalNumber", totalNumber);
         request.setAttribute("totalPageNumber", totalPageNumber);

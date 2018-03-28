@@ -3,7 +3,6 @@ package com.jydp.controller.back;
 
 import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.DateUtil;
-import com.iqmkj.utils.FileWriteLocalUtil;
 import com.iqmkj.utils.FileWriteRemoteUtil;
 import com.iqmkj.utils.ImageReduceUtil;
 import com.iqmkj.utils.StringUtil;
@@ -125,15 +124,7 @@ public class BackerAdsHomepagesController {
             maxRankNumber = systemAdsHomepagesService.getMaxRankForBack();
         }
 
-        String imageUrl = "";
-        /*try {
-            imageUrl = FileWriteRemoteUtil.uploadFile(adsImageUrl.getOriginalFilename(),
-                    adsImageUrl.getInputStream(), FileUrlConfig.file_remote_adImage_url);
-        } catch (Exception e) {
-            LogUtil.printErrorLog(e);
-        }*/
-
-        imageUrl = ImageReduceUtil.reduceImageUploadRemote(adsImageUrl, request, FileUrlConfig.file_remote_adImage_url);
+        String imageUrl = ImageReduceUtil.reduceImageUploadRemote(adsImageUrl, FileUrlConfig.file_remote_adImage_url);
         if (imageUrl.equals("") || imageUrl == null) {
              response.put("code", 3);
              response.put("message", "新增失败！");
@@ -200,14 +191,7 @@ public class BackerAdsHomepagesController {
         //判断是否修改了图片
         if (adsImageUrl != null && !adsImageUrl.isEmpty()) {
             SystemAdsHomepagesDO systemAdsHomePagesDO = systemAdsHomepagesService.getSystemAdsHomePagesById(id);
-            String imageUrl = "";
-            /*try {
-                imageUrl = FileWriteRemoteUtil.uploadFile(adsImageUrl.getOriginalFilename(),
-                        adsImageUrl.getInputStream(), FileUrlConfig.file_remote_adImage_url);
-            } catch (Exception e) {
-                LogUtil.printErrorLog(e);
-            }*/
-            imageUrl = ImageReduceUtil.reduceImageUploadRemote(adsImageUrl, request, FileUrlConfig.file_remote_adImage_url);
+            String imageUrl = ImageReduceUtil.reduceImageUploadRemote(adsImageUrl, FileUrlConfig.file_remote_adImage_url);
 
             if (imageUrl != null && !imageUrl.equals("")) {
                 FileWriteRemoteUtil.deleteFile(systemAdsHomePagesDO.getAdsImageUrl());
@@ -267,7 +251,7 @@ public class BackerAdsHomepagesController {
         boolean deleteResult = systemAdsHomepagesService.deleteSystemAdsHomePages(id);
         if (deleteResult) {
             // 删除图片
-            FileWriteLocalUtil.deleteFile(systemAdsHomepagesDO.getAdsImageUrl());
+            FileWriteRemoteUtil.deleteFile(systemAdsHomepagesDO.getAdsImageUrl());
 
             response.put("code", 1);
             response.put("message", "删除成功！");

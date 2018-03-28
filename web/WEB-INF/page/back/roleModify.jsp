@@ -32,7 +32,8 @@
                     <p class="role">
                         <label class="name">角色名称<span class="star">*</span>：</label>
                         <input type="text" class="nameInput" placeholder="2~10个字符" maxLength="10"
-                               id="modify_roleName" name="modify_roleName" value="${role.roleName }"/>
+                               id="modify_roleName" name="modify_roleName" value="${role.roleName }"
+                        onkeyup="value=value.replace(/[^a-zA-Z0-9\_\u4e00-\u9fa5]/,'')" onblur="value=value.replace(/[^a-zA-Z0-9\_\u4e00-\u9fa5]/,'')"/>
                     </p>
                     <input type="hidden" name="modify_roleId" value="${role.roleId }">
                     <input type="hidden" id="modify_powerJson" name="modify_powerJson">
