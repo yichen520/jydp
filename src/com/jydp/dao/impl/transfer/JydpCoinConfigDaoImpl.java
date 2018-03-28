@@ -1,5 +1,6 @@
 package com.jydp.dao.impl.transfer;
 
+import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.IJydpCoinConfigDao;
 import com.jydp.entity.DO.transfer.JydpCoinConfigDO;
@@ -107,15 +108,20 @@ public class JydpCoinConfigDaoImpl implements IJydpCoinConfigDao {
     }
 
     /**
-     * 查询用户所有币种,数量及转出管理
+     * 查询用户所有币种,数量及转出管理(小于等于当前时间)
      * @param userId 用户id
      * @return 查询成功:返回所有币种信息, 查询失败:返回null
      */
     public List<UserCoinConfigVO> listUserCoinConfigByUserId(int userId) {
         List<UserCoinConfigVO> resultList = null;
+        Map<String, Object> map = new HashMap<>();
+        Timestamp addTime = DateUtil.getCurrentTime();
+        map.put("userId", userId);
+        map.put("addTime", addTime);
+
 
         try {
-            resultList = sqlSessionTemplate.selectList("JydpCoinConfig_listUserCoinConfigByUserId", userId);
+            resultList = sqlSessionTemplate.selectList("JydpCoinConfig_listUserCoinConfigByUserId", map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }

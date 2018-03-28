@@ -45,7 +45,7 @@
         WHERE recordNo = #{recordNo}
         AND configStatus = 1
     </update>
-    <select id="JydpCoinConfig_listUserCoinConfigByUserId" parameterType="int" resultType="UserCoinConfigVO">
+    <select id="JydpCoinConfig_listUserCoinConfigByUserId" parameterType="java.util.Map" resultType="UserCoinConfigVO">
 
         SELECT NTB.userId, NTB.currencyNumber, CTB.currencyId, CTB.currencyName, CTB.freeCurrencyNumber, CTB.minCurrencyNumber
         FROM  ( SELECT userId, currencyId, currencyNumber
@@ -61,7 +61,7 @@
                 FROM(
                     SELECT currencyId, currencyName, freeCurrencyNumber, minCurrencyNumber
                     FROM jydp_coin_config_tab
-                    WHERE addTime <![CDATA[ <= ]]> NOW()
+                    WHERE addTime <![CDATA[ <= ]]> #{addTime}
                     AND configStatus = 1
                     GROUP BY currencyId, addTime
                     ORDER BY addTime DESC
