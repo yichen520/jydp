@@ -5,7 +5,7 @@
 
 <mapper namespace="com.jydp.dao.impl.kgraph.KGraphHalfhourDaoImpl">
 
-	<insert id="KGraphHalfhourDao_insertKGraph" parameterType="KGraphHalfhourDO">
+	<insert id="KGraphHalfhourDao_insertKGraph" parameterType="java.util.List">
 		INSERT INTO k_line_graph_halfhour_tab(currencyId, nodeTime, openPrice, closePrice, maxPrice, minPrice,
 		transactionTotal)
 		VALUES
