@@ -130,7 +130,6 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
         double quantity = 0;
 
         Timestamp getDate = DateUtil.getCurrentTime();
-        List<TransactionDealPriceDTO> closing = transactionDealRedisService.getNowLastPrice(getDate);
         //判断当前时间是否是凌晨至开盘之前
         long dateLon = DateUtil.lingchenLong();
         long nowDate = getDate.getTime() - RedisKeyConfig.OPENING_TIME;
