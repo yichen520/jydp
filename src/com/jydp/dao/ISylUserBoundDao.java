@@ -22,4 +22,11 @@ public interface ISylUserBoundDao {
      * @return 查询成功:返回用户盛源链信息, 查询失败:返回null
      */
     SylUserBoundDO getSylUserBoundByUserId(int userId);
+
+    /**
+     * 根据盛源链账号查询绑定信息
+     * @param sylUserAccount 盛源链账号
+     * @return 查询成功:返回用户绑定信息, 查询失败或者没有相关信息:返回null
+     */
+    SylUserBoundDO getSylUserBoundBySylUserAccount(String sylUserAccount);
 }

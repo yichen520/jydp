@@ -36,4 +36,13 @@ public class SylUserBoundServiceImpl implements ISylUserBoundService {
     public SylUserBoundDO getSylUserBoundByUserId(int userId) {
         return sylUserBoundDao.getSylUserBoundByUserId(userId);
     }
+
+    /**
+     * 根据盛源链账号查询绑定信息
+     * @param sylUserAccount 盛源链账号
+     * @return 查询成功:返回用户绑定信息, 查询失败或者没有相关信息:返回null
+     */
+    public SylUserBoundDO getSylUserBoundBySylUserAccount(String sylUserAccount){
+        return sylUserBoundDao.getSylUserBoundBySylUserAccount(sylUserAccount);
+    }
 }
