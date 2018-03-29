@@ -108,10 +108,10 @@ public interface IJydpUserCoinOutRecordService {
     /**
      * 根据记录号查询记录批量修改转出状态(jydp向syl提币申请)
      * @param coinRecordNoList 转出记录流水号集合
-     * @param outStatus 推送状态，1：未推送，2：返回成功，3：返回失败
+     * @param sendStatus 转出状态，1：未转出，2：转出中，3：转出成功，4：转出失败
      * @return 修改成功：true；修改失败：false
      */
-    boolean updateJydpUserCoinOutRecordOutStatus(List<String> coinRecordNoList, int outStatus);
+    boolean updateJydpUserCoinOutRecordOutStatus(List<String> coinRecordNoList, int sendStatus);
 
     /**
      * 查询审核通过且未推送的列表
@@ -132,7 +132,7 @@ public interface IJydpUserCoinOutRecordService {
      * @param orderNo 转出记录流水号
      * @param recordNo 盛源链记录号
      * @param coinId 币种Id
-     * @param code 状态 （1表示交易成功，2表示交易失败）
+     * @param code 状态 （3表示交易成功，4表示交易失败）
      * @param receiveTime 完成时间
      * @return 查询成功：返回记录信息；查询失败：返回null
      */

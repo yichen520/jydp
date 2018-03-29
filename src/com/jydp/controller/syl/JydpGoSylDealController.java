@@ -113,9 +113,9 @@ public class JydpGoSylDealController {
         Timestamp receiveTime = Timestamp.valueOf(receiveTimeStr);
         boolean updateSyl;
         if(code.equals("1")){
-            updateSyl = jydpUserCoinOutRecordService.updateJydpUserCoinOutRecordBySyl(orderNo, recordNo,transactionCurrency.getCurrencyId(), 2, receiveTime);
-        } else {
             updateSyl = jydpUserCoinOutRecordService.updateJydpUserCoinOutRecordBySyl(orderNo, recordNo,transactionCurrency.getCurrencyId(), 3, receiveTime);
+        } else {
+            updateSyl = jydpUserCoinOutRecordService.updateJydpUserCoinOutRecordBySyl(orderNo, recordNo,transactionCurrency.getCurrencyId(), 4, receiveTime);
         }
 
         if(!updateSyl){
