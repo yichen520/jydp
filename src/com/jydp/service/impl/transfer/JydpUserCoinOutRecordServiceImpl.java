@@ -234,9 +234,9 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
      * @param endFinishTime 完成结束时间 ，没有填null
      * @return 查询成功：返回用户转出记录数；查询失败：返回0
      */
-    public int countJydpUserCoinOutRecordForBack(String coinRecordNo, String userAccount, String walletAccount, int currencyId, int handleStatus,
+    public int countJydpUserCoinOutRecordForBack(String coinRecordNo, String userAccount, String walletAccount, int currencyId, int handleStatus,int outStatus,
                                    Timestamp startAddTime, Timestamp endAddTime, Timestamp startFinishTime, Timestamp endFinishTime){
-        return jydpUserCoinOutRecordDao.countJydpUserCoinOutRecordForBack(coinRecordNo, userAccount, walletAccount, currencyId, handleStatus,
+        return jydpUserCoinOutRecordDao.countJydpUserCoinOutRecordForBack(coinRecordNo, userAccount, walletAccount, currencyId, handleStatus, outStatus,
                                                                 startAddTime, endAddTime, startFinishTime, endFinishTime);
     }
 
@@ -253,10 +253,10 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
      * @param endFinishTime 完成结束时间 ，没有填null
      * @return 查询成功：返回用户转出记录集合；查询失败：返回null
      */
-    public List<JydpUserCoinOutRecordDO> listJydpUserCoinOutRecord(String coinRecordNo, String userAccount, String walletAccount, int currencyId, int handleStatus,
+    public List<JydpUserCoinOutRecordDO> listJydpUserCoinOutRecord(String coinRecordNo, String userAccount, String walletAccount, int currencyId, int handleStatus, int outStatus,
                                                             Timestamp startAddTime, Timestamp endAddTime, Timestamp startFinishTime, Timestamp endFinishTime,
                                                             int pageNumber, int pageSize){
-        return jydpUserCoinOutRecordDao.listJydpUserCoinOutRecord(coinRecordNo, userAccount, walletAccount, currencyId, handleStatus, startAddTime, endAddTime,
+        return jydpUserCoinOutRecordDao.listJydpUserCoinOutRecord(coinRecordNo, userAccount, walletAccount, currencyId, handleStatus, outStatus, startAddTime, endAddTime,
                                                             startFinishTime, endFinishTime, pageNumber, pageSize);
 
     }

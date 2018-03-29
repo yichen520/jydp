@@ -38,10 +38,13 @@
     width: 97px;
 }
 .state{
-    width: 80px;
+    width: 110px;
+}
+.tableInfo .state{
+    text-align: left;
 }
 .mark{
-    width: 120px;
+    width: 90px;
 }
 .check,.choose_two,.controlAll{
     display: inline-block;
