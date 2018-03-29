@@ -23,7 +23,7 @@
 <div class="wrapper">
     <div class="list-box">
         <p>帐号</p>
-        <input type="number" id="userAccount" disabled="disabled" value="${userAccount}"/>
+        <input type="test" id="userAccount" disabled="disabled" value="${userAccount}"/>
     </div>
     <div class="list-box">
         <p>姓名</p>
@@ -38,7 +38,7 @@
     </div>
     <div class="list-box">
         <p>证件号</p>
-        <input type="number" id="userCertNo" placeholder="您的证件号" maxlength="18"/>
+        <input type="text" id="userCertNo" placeholder="您的证件号" maxlength="18"/>
     </div>
     <div class="idcard-box">
 
