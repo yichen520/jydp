@@ -23,7 +23,7 @@
 		FROM backer_session_tab
 		<where>
 			<if test="backerAccount != null and backerAccount != ''">
-				backerAccount = #{backerAccount}
+				backerAccount LIKE CONCAT('%', #{backerAccount}, '%')
 			</if>
             <if test="startTime != null">
                 AND loginTime <![CDATA[ >= ]]> #{startTime}
@@ -41,7 +41,7 @@
 		FROM backer_session_tab
 		<where>
 			<if test="backerAccount != null and backerAccount != ''">
-				backerAccount = #{backerAccount}
+				backerAccount LIKE CONCAT('%', #{backerAccount}, '%')
 			</if>
             <if test="startTime != null">
                 AND loginTime <![CDATA[ >= ]]> #{startTime}
