@@ -42,10 +42,11 @@
 
             <p class="registerInput">
                 <label class="popName">登录密码<span class="star">*</span></label>
-                <input type="password" class="password entry" id="password" name="password" placeholder="字母、数字，6~16个字符" maxLength="16"
+                <input type="password" class="password entry" id="password" placeholder="字母、数字，6~16个字符" maxLength="16"
                        onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
                        onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
                 <span class="warmTips">该项为登录账号时所用密码</span>
+                <input type="hidden" id="encodePwd" name="password"/>
             </p>
             <p class="registerInput">
                 <label class="popName">重复密码<span class="star">*</span></label>
@@ -55,10 +56,11 @@
             </p>
             <p class="registerInput">
                 <label class="popName">支付密码<span class="star">*</span></label>
-                <input type="password" class="password entry" id="payPassword" name="payPassword" placeholder="字母、数字，6~16个字符" maxlength="16"
+                <input type="password" class="password entry" id="payPassword" placeholder="字母、数字，6~16个字符" maxlength="16"
                        onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
                        onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
                 <span class="warmTips">该项为交易时所用密码</span>
+                <input type="hidden" id="encodePayPwd" name="payPassword"/>
             </p>
             <p class="registerInput">
                 <label class="popName">重复密码<span class="star">*</span></label>
@@ -135,6 +137,37 @@
             $('.selectUl').removeClass('selected');
         });
     });
+
+    // base64加密开始
+    var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+    function encode64(input) {
+        var output = "";
+        var chr1, chr2, chr3 = "";
+        var enc1, enc2, enc3, enc4 = "";
+        var i = 0;
+        do {
+            chr1 = input.charCodeAt(i++);
+            chr2 = input.charCodeAt(i++);
+            chr3 = input.charCodeAt(i++);
+            enc1 = chr1 >> 2;
+            enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+            enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+            enc4 = chr3 & 63;
+            if (isNaN(chr2)) {
+                enc3 = enc4 = 64;
+            } else if (isNaN(chr3)) {
+                enc4 = 64;
+            }
+            output = output + keyStr.charAt(enc1) + keyStr.charAt(enc2)
+                + keyStr.charAt(enc3) + keyStr.charAt(enc4);
+            chr1 = chr2 = chr3 = "";
+            enc1 = enc2 = enc3 = enc4 = "";
+        } while (i < input.length);
+
+        return output;
+    }
+    // base64加密结束
 
     //验证用户账号
     var validateUserBoo = false;
@@ -383,6 +416,11 @@
         }else{
             registerBoo = true;
         }
+
+        var pwd = encode64($("#password").val());
+        var payPwd = encode64($("#payPassword").val());
+        $("#encodePwd").val(pwd);
+        $("#encodePayPwd").val(payPwd);
 
         var formData = new FormData(document.getElementById("registerForm"));
         $.ajax({

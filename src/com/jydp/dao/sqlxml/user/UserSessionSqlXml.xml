@@ -23,16 +23,5 @@
 		FROM user_session_tab
 		WHERE loginTime <![CDATA[ < ]]> #{loginTime}
 	</select>
-	
-	<delete id="UserSession_deleteSessionByTimeForTimer" parameterType="java.util.Map">
- 		DELETE FROM user_session_tab
- 		WHERE loginTime <![CDATA[ < ]]> #{loginTime}
- 		LIMIT #{pageSize}
- 	</delete>
 
-	<delete id="UserSession_deleteSessionByUserId" parameterType="int">
-		DELETE FROM user_session_tab
-		WHERE userId = #{userId}
-	</delete>
-	
 </mapper>

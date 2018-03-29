@@ -1,6 +1,7 @@
 package com.jydp.controller.web;
 
 import com.alibaba.fastjson.JSONObject;
+import com.iqmkj.utils.Base64Util;
 import config.SystemHelpConfig;
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.MD5Util;
@@ -100,7 +101,9 @@ public class RegisterController {
 
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
         String password = StringUtil.stringNullHandle(request.getParameter("password"));
+        password = Base64Util.decode(password);
         String payPassword = StringUtil.stringNullHandle(request.getParameter("payPassword"));
+        payPassword = Base64Util.decode(payPassword);
         String validateCode = StringUtil.stringNullHandle(request.getParameter("validateCode"));
         String phoneAreaCode = StringUtil.stringNullHandle(request.getParameter("phoneAreaCode"));
         String phoneNumber = StringUtil.stringNullHandle(request.getParameter("phoneNumber"));
