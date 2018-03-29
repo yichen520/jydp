@@ -32,7 +32,7 @@
             <div class="showBoxContent">是否撤销该委托？</div>
             <div class="showBoxButton">
                 <div class="cancelShow">取消</div>
-                <div class="okay">确定</div>
+                <div class="okay" onclick="withdraw()">确定</div>
             </div>
         </div>
     </div>
@@ -63,7 +63,7 @@
         <div class="footer">
             <p class="remark" style="display:none">{{remark}}</p>
             {{#withdrawShow handleStatus}}
-                <p class="withdraw">撤回</p>
+                <p class="withdraw" onclick="showDialog('{{coinRecordNo}}')">撤回</p>
             {{/withdrawShow}}
             <p class="clear"></p>
         </div>
@@ -176,29 +176,41 @@
         }
     }
 
-    var coinRecordNo = $("#recallRecordNo").val();
-    $.ajax({
-        url: '<%=path %>/userWeb/jydpUserCoinOutRecord/withdrawCoinOutRecord.htm',
-        type:'post',
-        data:{
-            coinRecordNo:coinRecordNo
-        },
-        dataType:'json',
-        success:function (result) {
-            if (result.code == 1) {
-               window.location.href = "<%=path %>/userWap/presentRecord/show.htm";
-            } else {
-                openTips(result.message);
-                setTimeout(function () {
-                    window.location.href = "<%=path %>/userWap/presentRecord/show.htm";
-                }, 1000);
-            }
-            withdrawBoo = false;
-        },
-        error:function () {
-            withdrawBoo = false;
-            openTips("数据加载出错，请稍候重试");
+    var withdrawBoo = false;
+    //撤销操作
+    function withdraw() {
+
+        if (withdrawBoo) {
+            openTips("正在撤销，请稍后！");
+            return;
+        } else {
+            withdrawBoo = true;
         }
-    });
+
+        var coinRecordNo = $("#recallRecordNo").val();
+        $.ajax({
+            url: '<%=path %>/userWeb/jydpUserCoinOutRecord/withdrawCoinOutRecord.htm',
+            type: 'post',
+            data: {
+                coinRecordNo: coinRecordNo
+            },
+            dataType: 'json',
+            success: function (result) {
+                if (result.code == 1) {
+                    window.location.href = "<%=path %>/userWap/presentRecord/show.htm";
+                } else {
+                    openTips(result.message);
+                    setTimeout(function () {
+                        window.location.href = "<%=path %>/userWap/presentRecord/show.htm";
+                    }, 1000);
+                }
+                withdrawBoo = false;
+            },
+            error: function () {
+                withdrawBoo = false;
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
+    }
 </script>
 </html>
