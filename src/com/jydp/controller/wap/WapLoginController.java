@@ -48,7 +48,13 @@ public class WapLoginController {
     @RequestMapping("/show")
     public String userLoginPage(HttpServletRequest request){
         String referer = request.getHeader("referer");
+        if(!StringUtil.isNotNull(referer)){
+            return "page/wap/login";
+        }
         String host = request.getHeader("Host");
+        if(!StringUtil.isNotNull(host)){
+            return "page/wap/login";
+        }
         String[] strs = referer.split(host);
         String uriStr = strs[1];
         uriStr = uriStr.substring(5);

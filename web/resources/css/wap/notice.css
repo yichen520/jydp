@@ -38,3 +38,11 @@ header .back{
     color: #999;
     margin-top: 0.26rem
 }
+.more{
+    margin-bottom: 0.8rem;
+    margin-top: 0.3rem;
+    text-align: center;
+    width: 100%;
+    color: #999;
+    font-size: 0.26rem;
+}

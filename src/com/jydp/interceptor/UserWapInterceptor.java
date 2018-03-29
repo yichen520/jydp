@@ -5,6 +5,7 @@ import com.iqmkj.config.ApplicationContextHandle;
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.IpAddressUtil;
 import com.iqmkj.utils.NumberUtil;
+import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.user.UserSessionDO;
 import com.jydp.service.IRedisService;
@@ -60,7 +61,15 @@ public class UserWapInterceptor implements HandlerInterceptor {
         if (userSession == null) {
             //如果是ajax请求
             String referer = request.getHeader("referer");
+            if(!StringUtil.isNotNull(referer)){
+                request.getRequestDispatcher("/wapLogin").forward(request, response);
+                return false;
+            }
             String host = request.getHeader("Host");
+            if(!StringUtil.isNotNull(host)){
+                request.getRequestDispatcher("/wapLogin").forward(request, response);
+                return false;
+            }
             String[] strs = referer.split(host);
             String uriStr = strs[1];
             uriStr = uriStr.substring(5);

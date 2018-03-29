@@ -20,7 +20,13 @@
 <header>
     <img src="<%=path %>/resources/image/wap/home-logo.png"/>
     <p>首页</p>
-    <a href="<%=path %>/userWap/userLogin/show">登录</a>
+    <c:choose>
+        <c:when test="${userSession.userAccount == null}">
+            <a href="<%=path %>/userWap/userLogin/show">登录</a>
+        </c:when>
+        <c:otherwise>
+        </c:otherwise>
+    </c:choose>
 </header>
 <!-- 内容区域 -->
 <div id="wrapper">
@@ -197,11 +203,12 @@
     $(document).ready(function () {
         //循环执行，每隔10秒钟执行一次 10000
         var t1 = window.setInterval(refreshMarket, 10000);
+        //判读session是否存在
+
     });
 
     //首页banner数据填充
     var systemAdsHomepagesListData = ${requestScope.systemAdsHomepagesList};
-    console.log(systemAdsHomepagesListData);
     var systemAdsHomepagesfunc = Handlebars.compile($('.swiper-wrapper').html());
     $('.swiper-wrapper').html(systemAdsHomepagesfunc(systemAdsHomepagesListData));
 
