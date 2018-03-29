@@ -525,7 +525,8 @@ CREATE TABLE `transaction_deal_redis_tab` (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `addTime` (`addTime`) USING BTREE,
-  KEY `currencyId` (`currencyId`)
+  KEY `currencyId` (`currencyId`) USING BTREE,
+  KEY `transactionPrice` (`transactionPrice`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=1305987 DEFAULT CHARSET=utf8 COMMENT='redis成交记录';
 
 -- ----------------------------

@@ -67,19 +67,17 @@
 	</select>
 
 	<select id="TransactionDealRedis_getNowLastPrice"  parameterType="java.util.Map" resultType="TransactionDealPriceDTO">
-        SELECT T.transactionPrice,T.currencyId,T.addTime
-        FROM (SELECT max(TDRT.transactionPrice) transactionPrice, TDRT.currencyId,  TDRT.addTime
-                FROM transaction_deal_redis_tab  TDRT
-                WHERE TDRT.addTime IN (SELECT max(addTime)
-                                        FROM transaction_deal_redis_tab
-                                        WHERE addTime <![CDATA[ <= ]]> #{date}
-                                        <if test="endDate != null">
-                                            AND addTime <![CDATA[ >= ]]> #{endDate}
-                                        </if>
-                                        GROUP BY currencyId)
-                GROUP BY TDRT.addTime,TDRT.currencyId
-                ORDER BY TDRT.addTime DESC ) T
-        GROUP BY T.currencyId
+		SELECT MAX(TDRT.transactionPrice) transactionPrice, TDRT.currencyId,  TDRT.addTime
+		FROM transaction_deal_redis_tab  TDRT,
+			(SELECT currencyId,max(addTime) as addTime
+			 FROM transaction_deal_redis_tab
+			 WHERE addTime <![CDATA[ <= ]]> #{date}
+			 <if test="endDate != null">
+				AND addTime <![CDATA[ >= ]]> #{endDate}
+			 </if>
+			 GROUP BY currencyId) TM
+		WHERE TDRT.currencyId = TM.currencyId AND TDRT.addTime = TM.addTime
+		GROUP BY TDRT.currencyId
 	</select>
 
 	<select id="TransactionDealRedis_listTransactionDealRedisByOrderNo" parameterType="java.lang.String" resultType="TransactionDealRedisDO">
