@@ -7,11 +7,11 @@
 
 	<insert id="TransactionPendOrder_insertPendOrder" parameterType="TransactionPendOrderDO">
 		INSERT INTO transaction_pend_order_tab
-		(pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingPrice, buyFee,
+		(pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingPrice, buyFee, restBalanceLock,
 		pendingNumber, dealNumber, pendingStatus, remark, feeRemark, addTime)
 		VALUES
 		(#{pendingOrderNo}, #{userId}, #{userAccount}, #{paymentType}, #{currencyId}, #{currencyName}, #{pendingPrice},
-		#{buyFee}, #{pendingNumber}, #{dealNumber}, #{pendingStatus}, #{remark}, #{feeRemark}, #{addTime})
+		#{buyFee}, #{restBalanceLock}, #{pendingNumber}, #{dealNumber}, #{pendingStatus}, #{remark}, #{feeRemark}, #{addTime})
 	</insert>
 
 	<update id="TransactionPendOrder_updatePendOrder" parameterType="TransactionPendOrderDO">
@@ -21,7 +21,7 @@
 	</update>
 
 	<select id="TransactionPendOrder_getPendOrderByPendingOrderNo" parameterType="java.lang.String" resultType="TransactionPendOrderDO">
-		SELECT pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingPrice, buyFee,
+		SELECT pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingPrice, buyFee, restBalanceLock,
 		pendingNumber, dealNumber, pendingStatus, remark, addTime, endTime
 		FROM transaction_pend_order_tab
 		WHERE pendingOrderNo = #{pendingOrderNo}
@@ -34,7 +34,7 @@
 	</select>
 
 	<select id="TransactionPendOrder_listPendOrderByUserId" parameterType="java.util.Map" resultType="TransactionPendOrderDO">
-		SELECT pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingPrice, buyFee,
+		SELECT pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingPrice, buyFee, restBalanceLock,
 		pendingNumber, dealNumber, pendingStatus, remark, addTime, endTime
 		FROM transaction_pend_order_tab
 		WHERE userId = #{userId}
@@ -95,7 +95,7 @@
 	</select>
 
 	<select id="TransactionPendOrder_listPendOrderForBack" parameterType="java.util.Map" resultType="TransactionPendOrderDO">
-		SELECT pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingPrice, buyFee,
+		SELECT pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingPrice, buyFee, restBalanceLock,
 		pendingNumber, dealNumber, pendingStatus, remark, addTime, endTime, userAccount
 		FROM transaction_pend_order_tab
 		WHERE 1 = 1
@@ -129,20 +129,20 @@
 
 	<update id="TransactionPendOrder_updatePartRevoke" parameterType="java.util.Map">
 		UPDATE transaction_pend_order_tab
-		SET pendingStatus = 4, endTime = #{endTime}
+		SET pendingStatus = 4, endTime = #{endTime}, restBalanceLock = 0
 		WHERE pendingOrderNo = #{pendingOrderNo}
 		  AND dealNumber + (CAST(#{revokeNumber} AS DECIMAL(18,6))) <![CDATA[ = ]]> pendingNumber
 	</update>
 
 	<update id="TransactionPendOrder_updateAllRevoke" parameterType="java.util.Map">
 		UPDATE transaction_pend_order_tab
-		SET pendingStatus = 5, endTime = #{endTime}
+		SET pendingStatus = 5, endTime = #{endTime}, restBalanceLock = 0
 		WHERE pendingOrderNo = #{pendingOrderNo}
 		AND (CAST(#{revokeNumber} AS DECIMAL(18,6))) <![CDATA[ = ]]> pendingNumber
 	</update>
 
 	<select id="TransactionPendOrder_getLastTransactionPendOrder" parameterType="java.util.Map" resultType="TransactionPendOrderDO">
-		SELECT pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingPrice, buyFee,
+		SELECT pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingPrice, buyFee, restBalanceLock,
 		pendingNumber, dealNumber, pendingStatus, remark, addTime, endTime
 		FROM transaction_pend_order_tab
 		WHERE currencyId = #{currencyId}
@@ -164,20 +164,20 @@
 
 	<update id="TransactionPendOrder_updatePartDeal" parameterType="java.util.Map">
 		UPDATE transaction_pend_order_tab
-		SET pendingStatus = 2, endTime = #{endTime}, dealNumber = dealNumber + #{dealNumber}
+		SET pendingStatus = 2, endTime = #{endTime}, dealNumber = dealNumber + #{dealNumber}, restBalanceLock = restBalanceLock - #{restBalanceLock}
 		WHERE pendingOrderNo = #{pendingOrderNo}
 		  AND (CAST(#{dealNumber} AS DECIMAL(18,6))) + dealNumber <![CDATA[ < ]]> pendingNumber
 	</update>
 
 	<update id="TransactionPendOrder_updateAllDeal" parameterType="java.util.Map">
 		UPDATE transaction_pend_order_tab
-		SET pendingStatus = 3, endTime = #{endTime}, dealNumber = dealNumber + #{dealNumber}
+		SET pendingStatus = 3, endTime = #{endTime}, dealNumber = dealNumber + #{dealNumber}, restBalanceLock = 0
 		WHERE pendingOrderNo = #{pendingOrderNo}
 		AND (CAST(#{dealNumber} AS DECIMAL(18,6))) + dealNumber <![CDATA[ = ]]> pendingNumber
 	</update>
 
 	<select id="TransactionPendOrder_listPendOrderForWeb" parameterType="java.util.Map" resultType="TransactionPendOrderVO">
-		SELECT pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingPrice, buyFee,
+		SELECT pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingPrice, buyFee, restBalanceLock,
 		pendingNumber, dealNumber, pendingStatus, remark, addTime, endTime, userAccount
 		FROM transaction_pend_order_tab
 		WHERE userId = #{userId}

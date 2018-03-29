@@ -33,10 +33,10 @@
                     <p class="condition">用户账号：<input type="text" class="askInput" id="userAccount" name="userAccount"
                                                      maxlength="16" onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" value="${userAccount}" /></p>
                     <p class="condition">币种：
-                        <select class="askSelect" id="currencyId" name="currencyName">
+                        <select class="askSelect" id="currencyId" name="currencyId">
                             <option value="">全部</option>
                             <c:forEach items="${transactionCurrencyList}" var="item">
-                                <option value="${item.currencyName}">${item.currencyName}</option>
+                                <option value="${item.currencyId}">${item.currencyName}</option>
                             </c:forEach>
                         </select>
                     </p>
@@ -94,17 +94,17 @@
                         <td class="amount">
                             <c:if test="${item.paymentType == 1}">
                                 <p>总计：$<fmt:formatNumber type="number" value="${item.currencyTotalPrice}" maxFractionDigits="6"/></p>
-                                <p>实际：$<fmt:formatNumber type="number" value="${item.currencyTotalPrice + item.feeNumber * item.currencyTotalPrice }" maxFractionDigits="6"/></p>
+                                <p>实际：$<fmt:formatNumber type="number" value="${item.actualPrice}" maxFractionDigits="6"/></p>
                             </c:if>
                             <c:if test="${item.paymentType == 2}">
                                 <p>总计：$<fmt:formatNumber type="number" value="${item.currencyTotalPrice}" maxFractionDigits="6"/></p>
-                                <p>实际：$<fmt:formatNumber type="number" value="${item.currencyTotalPrice - item.feeNumber * item.currencyTotalPrice }" maxFractionDigits="6"/></p>
+                                <p>实际：$<fmt:formatNumber type="number" value="${item.actualPrice}" maxFractionDigits="6"/></p>
                             </c:if>
                             <c:if test="${item.paymentType == 3}">
                                 <p>总计：$<fmt:formatNumber type="number" value="${item.currencyTotalPrice }" maxFractionDigits="6"/></p>
                             </c:if>
                             <c:if test="${item.paymentType != 3}">
-                                <p>手续费：$<fmt:formatNumber type="number" value="${item.feeNumber * item.currencyTotalPrice }" maxFractionDigits="8"/></p>
+                                <p>手续费：$<fmt:formatNumber type="number" value="${item.fee}" maxFractionDigits="8"/></p>
                             </c:if>
                         </td>
                         <c:if test="${item.paymentType == 1}">
@@ -168,7 +168,7 @@
         }
 
         $("#currencyId option").each(function(){
-            if($(this).val()=='${currencyName}'){
+            if($(this).val()=='${currencyId}'){
                 $(this).attr('selected',true);
             }
         });

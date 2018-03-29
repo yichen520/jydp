@@ -98,7 +98,7 @@ public class BackerTransactionMakeOrderController {
     public void List(HttpServletRequest request) {
         String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
         String orderNoStr = StringUtil.stringNullHandle(request.getParameter("orderNo"));
-        String currencyNameStr = StringUtil.stringNullHandle(request.getParameter("currencyName"));
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
         String executeStatusStr = StringUtil.stringNullHandle(request.getParameter("executeStatus"));
         String startExecuteTimeStr = StringUtil.stringNullHandle(request.getParameter("startExecuteTime"));
         String endExecuteTimeStr = StringUtil.stringNullHandle(request.getParameter("endExecuteTime"));
@@ -106,6 +106,7 @@ public class BackerTransactionMakeOrderController {
         Timestamp startExecuteTime = null;
         Timestamp endExecuteTime = null;
         int executeStatus = 0;
+        int currencyId = 0;
         int pageNumber = 0;
 
         if (StringUtil.isNotNull(startExecuteTimeStr)) {
@@ -117,13 +118,16 @@ public class BackerTransactionMakeOrderController {
         if (StringUtil.isNotNull(executeStatusStr)) {
             executeStatus = Integer.parseInt(executeStatusStr);
         }
+        if (StringUtil.isNotNull(currencyIdStr)) {
+            currencyId = Integer.parseInt(currencyIdStr);
+        }
         if (StringUtil.isNotNull(pageNumberStr)) {
             pageNumber = Integer.parseInt(pageNumberStr);
         }
 
         int pageSize = 20;
 
-        int totalNumber = transactionMakeOrderService.countTransactionMakeOrderForBack(orderNoStr, currencyNameStr, executeStatus, startExecuteTime, endExecuteTime);
+        int totalNumber = transactionMakeOrderService.countTransactionMakeOrderForBack(orderNoStr, currencyId, executeStatus, startExecuteTime, endExecuteTime);
 
         int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
         if (totalPageNumber <= 0) {
@@ -135,7 +139,7 @@ public class BackerTransactionMakeOrderController {
 
         List<TransactionMakeOrderDO> transactionMakeOrderList = null;
         if (totalNumber > 0) {
-            transactionMakeOrderList = transactionMakeOrderService.listTransactionMakeOrderForBack(orderNoStr, currencyNameStr, executeStatus, startExecuteTime, endExecuteTime, pageNumber, pageSize);
+            transactionMakeOrderList = transactionMakeOrderService.listTransactionMakeOrderForBack(orderNoStr, currencyId, executeStatus, startExecuteTime, endExecuteTime, pageNumber, pageSize);
         }
 
         List<TransactionCurrencyDO> transactionCurrencyList = transactionCurrencyService.listTransactionCurrencyAll();
@@ -145,7 +149,7 @@ public class BackerTransactionMakeOrderController {
         request.setAttribute("endExecuteTime", endExecuteTimeStr);
         request.setAttribute("orderNo", orderNoStr);
         request.setAttribute("executeStatus", executeStatus);
-        request.setAttribute("currencyName", currencyNameStr);
+        request.setAttribute("currencyId", currencyId);
 
         request.setAttribute("totalNumber", totalNumber);
         request.setAttribute("totalPageNumber", totalPageNumber);
@@ -256,20 +260,20 @@ public class BackerTransactionMakeOrderController {
             long execTimeL = hour + minu;
 
             double currencyPrice = Double.parseDouble(StringUtil.stringNullHandle(twoArr[1]));
-            if (currencyPrice * 100 % 1 > 0){
+            if (BigDecimalUtil.mul(currencyPrice, 100) % 1 > 0){
                 response.setCode(5);
                 response.setMessage("单价最多两位小数");
                 return response;
             }
 
             double currencyNumber = Double.parseDouble(StringUtil.stringNullHandle(twoArr[2]));
-            if (currencyNumber * 10000 % 1 > 0){
+            if (BigDecimalUtil.mul(currencyNumber, 10000) % 1 > 0){
                 response.setCode(5);
                 response.setMessage("数量最多四位小数");
                 return response;
             }
 
-            if (execTimeL < 0 || currencyPrice < 0 || currencyNumber < 0) {
+            if (execTimeL <= 0 || currencyPrice <= 0 || currencyNumber <= 0) {
                 response.setCode(5);
                 response.setMessage("执行命令内容错误");
                 return response;
@@ -394,9 +398,10 @@ public class BackerTransactionMakeOrderController {
         }
 
         TransactionMakeOrderDO order = transactionMakeOrderService.getTransactionMakeOrderByOrderNo(orderNoStr);
-        if (order == null || order.getExecuteStatus() != 3 || order.getExecuteStatus() != 4) {
+        if (order == null || order.getExecuteStatus() == 2) {
             response.setCode(3);
-            response.setMessage("该记录不能删除");
+            response.setMessage("该记录暂不能删除");
+            return response;
         }
 
         boolean result = transactionMakeOrderService.deleteMakeOrderByOrderNo(orderNoStr);

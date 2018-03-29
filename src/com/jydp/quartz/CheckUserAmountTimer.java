@@ -37,7 +37,7 @@ public class CheckUserAmountTimer {
     private ISystemSwitchRecordService systemSwitchRecordService;
 
     /** 执行对账操作 (每分钟核对一次)*/
-    @Scheduled(cron="0 0/1 *  * * ? ")
+    //@Scheduled(cron="0 0/1 *  * * ? ")
     public void executeCheck() {
         //系统开关1：开启，2：关闭
         int switchCode = systemSwitchRecordService.getNewestSendSwitchStatus(SystemSwitchConfig.CHECK_AMOUNT_CODE);

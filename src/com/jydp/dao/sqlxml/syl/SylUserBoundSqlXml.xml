@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC
+		"-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jydp.dao.impl.syl.SylUserBoundDaoImpl">
+
+	<insert id="SylUserBound_insertSylUserBound" parameterType="SylUserBoundDO">
+		INSERT INTO syl_user_bound_tab
+		(userId, userAccount, userSylAccount, addTime)
+		VALUES
+		(#{userId}, #{userAccount}, #{userSylAccount}, #{addTime})
+	</insert>
+
+	<select id="SylUserBound_getSylUserBoundByUserId" parameterType="int" resultType="SylUserBoundDO">
+		SELECT userId, userAccount, userSylAccount, addTime
+		FROM syl_user_bound_tab
+		WHERE userId = #{userId}
+	</select>
+
+	<select id="SylUserBound_getSylUserBoundBySylUserAccount" parameterType="java.lang.String" resultType="SylUserBoundDO">
+		SELECT userId, userAccount, userSylAccount, addTime
+		FROM syl_user_bound_tab
+		WHERE userSylAccount = #{sylUserAccount}
+	</select>
+
+</mapper>

@@ -25,9 +25,9 @@ public class MakeOrderExcTimer {
     private ITransactionMakeOrderService transactionMakeOrderService;
 
     /** 执行做单 */
-    @Scheduled(cron="0/15 * *  * * ? ")
+    @Scheduled(cron="0/2 * *  * * ? ")
     public void executeMakeOrderExc(){
-        List<TransactionMakeOrderDO> transactionMakeOrderList = transactionMakeOrderService.listMakeOrderByExecuteStatus( 1, 5);
+        List<TransactionMakeOrderDO> transactionMakeOrderList = transactionMakeOrderService.listMakeOrderByExecuteStatus( 1, 10);
         List<String> list = new ArrayList<>();
         if (transactionMakeOrderList != null && transactionMakeOrderList.size() > 0) {
             for (TransactionMakeOrderDO order: transactionMakeOrderList) {

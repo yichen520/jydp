@@ -1,6 +1,7 @@
 package com.jydp.controller.back;
 
 import com.google.code.kaptcha.Constants;
+import com.iqmkj.utils.Base64Util;
 import com.iqmkj.utils.MD5Util;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.BackerSessionBO;
@@ -39,9 +40,10 @@ public class BackerLoginController {
 	public String login(HttpServletRequest request) {
 		String backerAccount = StringUtil.stringNullHandle(request.getParameter("backerAccount"));
 		String password = StringUtil.stringNullHandle(request.getParameter("password"));
+		password = Base64Util.decode(password);
 		String validateCode = StringUtil.stringNullHandle(request.getParameter("validateCode"));
 		String sessionCode = (String) request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
-		
+
 		request.setAttribute("backerAccount", backerAccount);
 		
 		if(!StringUtil.isNotNull(validateCode) || !StringUtil.isNotNull(sessionCode)){

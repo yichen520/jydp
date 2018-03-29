@@ -72,12 +72,13 @@ public class BackerTransactionCurrencyCoefficientController {
     /** 查询数据 */
     public void List(HttpServletRequest request) {
         String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
-        String currencyNameStr = StringUtil.stringNullHandle(request.getParameter("currencyName"));
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
         String startAddTimeStr = StringUtil.stringNullHandle(request.getParameter("startAddTime"));
         String endAddTimeStr = StringUtil.stringNullHandle(request.getParameter("endAddTime"));
 
         Timestamp startAddTime = null;
         Timestamp endAddTime = null;
+        int currencyId = 0;
         int pageNumber = 0;
 
         if (StringUtil.isNotNull(startAddTimeStr)) {
@@ -86,13 +87,16 @@ public class BackerTransactionCurrencyCoefficientController {
         if (StringUtil.isNotNull(endAddTimeStr)) {
             endAddTime = DateUtil.stringToTimestamp(endAddTimeStr);
         }
+        if (StringUtil.isNotNull(currencyIdStr)) {
+            currencyId = Integer.parseInt(currencyIdStr);
+        }
         if (StringUtil.isNotNull(pageNumberStr)) {
             pageNumber = Integer.parseInt(pageNumberStr);
         }
 
         int pageSize = 20;
 
-        int totalNumber = transactionCurrencyCoefficientService.countTransactionCurrencyCoeffieientForBack(currencyNameStr, startAddTime, endAddTime);
+        int totalNumber = transactionCurrencyCoefficientService.countTransactionCurrencyCoeffieientForBack(currencyId, startAddTime, endAddTime);
 
         int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
         if (totalPageNumber <= 0) {
@@ -104,7 +108,7 @@ public class BackerTransactionCurrencyCoefficientController {
 
         List<TransactionCurrencyCoefficientDO> currencyCoefficientList = null;
         if (totalNumber > 0) {
-            currencyCoefficientList = transactionCurrencyCoefficientService.listTransactionCurrencyCoefficientForBack(currencyNameStr,
+            currencyCoefficientList = transactionCurrencyCoefficientService.listTransactionCurrencyCoefficientForBack(currencyId,
                     startAddTime, endAddTime, pageNumber, pageSize);
         }
 
@@ -113,7 +117,7 @@ public class BackerTransactionCurrencyCoefficientController {
         request.setAttribute("pageNumber", pageNumber);
         request.setAttribute("startAddTime", startAddTimeStr);
         request.setAttribute("endAddTime", endAddTimeStr);
-        request.setAttribute("currencyName", currencyNameStr);
+        request.setAttribute("currencyId", currencyId);
 
         request.setAttribute("totalNumber", totalNumber);
         request.setAttribute("totalPageNumber", totalPageNumber);

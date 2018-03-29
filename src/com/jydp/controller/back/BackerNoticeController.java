@@ -12,7 +12,6 @@ import com.jydp.service.IRedisService;
 import com.jydp.service.ISystemNoticeService;
 import config.FileUrlConfig;
 import config.RedisKeyConfig;
-import config.SystemHelpConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -165,14 +164,7 @@ public class BackerNoticeController {
         if(noticeUrl == null){
             imageUrl = FileUrlConfig.notice_hotTopic_defaultImage;
         }else{
-            /*try {
-                imageUrl = FileWriteRemoteUtil.uploadFile(noticeUrl.getOriginalFilename(),
-                        noticeUrl.getInputStream(), FileUrlConfig.file_remote_noticeImage_url);
-            } catch (IOException e) {
-                LogUtil.printErrorLog(e);
-            }*/
-            imageUrl = ImageReduceUtil.reduceImageUploadRemote
-                    (noticeUrl, request, FileUrlConfig.file_remote_noticeImage_url);
+            imageUrl = ImageReduceUtil.reduceImageUploadRemote(noticeUrl, FileUrlConfig.file_remote_noticeImage_url);
         }
 
         SystemNoticeDO systemNoticeDO = new SystemNoticeDO();
@@ -276,15 +268,7 @@ public class BackerNoticeController {
         // 判断是否修改了图片
         if (noticeUrl != null && !noticeUrl.isEmpty()) {
             SystemNoticeDO systemNoticeDO = systemNoticeService.getSystemNoticeById(id);
-            String imageUrl = "";
-            /*try {
-                imageUrl = FileWriteRemoteUtil.uploadFile(noticeUrl.getOriginalFilename(),
-                        noticeUrl.getInputStream(), FileUrlConfig.file_remote_noticeImage_url);
-            } catch (IOException e) {
-                LogUtil.printErrorLog(e);
-            }*/
-            imageUrl = ImageReduceUtil.reduceImageUploadRemote
-                    (noticeUrl, request, FileUrlConfig.file_remote_noticeImage_url);
+            String imageUrl = ImageReduceUtil.reduceImageUploadRemote(noticeUrl, FileUrlConfig.file_remote_noticeImage_url);
 
             if (imageUrl != null && !imageUrl.equals("")) {
                 if(!systemNoticeDO.getNoticeUrl().equals(FileUrlConfig.notice_hotTopic_defaultImage)){

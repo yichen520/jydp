@@ -1,5 +1,6 @@
 package com.jydp.quartz;
 
+import com.jydp.service.IKGraphCommonService;
 import com.jydp.service.ITransactionPendOrderCommonService;
 import com.jydp.service.ITransactionRedisDealCommonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,10 @@ public class TransactionPageTimer {
 	/** 数据库拉取 成交记录 到redis */
 	@Autowired
 	private ITransactionRedisDealCommonService transactionRedisDealCommonService;
+
+	/** k线图统计数据公共服务 */
+	@Autowired
+	private IKGraphCommonService kGraphCommonService;
 
 	/** 成交记录  每5秒刷新一次 */
 	@Scheduled(cron="0/5 * *  * * ? ")
@@ -44,10 +49,10 @@ public class TransactionPageTimer {
         transactionRedisDealCommonService.updateWeeHoursBasisOfPrice();
     }
 
-	/** k线图参数存入redis （五分钟一次） */
+	/** k线图数据统计存入统计表和redis （五分钟一次） */
 	@Scheduled(cron="0 0/5 *  * * ? ")
 	public void graphDataForRedis(){
-		transactionRedisDealCommonService.graphDataForRedis();
+		kGraphCommonService.exeKLineGraphForTimer();
 	}
 	
 }

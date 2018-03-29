@@ -57,13 +57,13 @@
                     <td class="deal">
                         <c:if test="${dealRecord.paymentType != 3}">
                             <p>成交总额：$<fmt:formatNumber type="number" value="${dealRecord.currencyTotalPrice}" maxFractionDigits="6"/></p>
-                            <p>手续费：$<fmt:formatNumber type="number" value="${dealRecord.feeNumber * dealRecord.currencyTotalPrice}" maxFractionDigits="8"/></p>
+                            <p>手续费：$<fmt:formatNumber type="number" value="${dealRecord.fee}" maxFractionDigits="8"/></p>
                         </c:if>
                         <c:if test="${dealRecord.paymentType == 1}">
-                            <p>实际支出：$<fmt:formatNumber type="number" value="${dealRecord.feeNumber * dealRecord.currencyTotalPrice + dealRecord.currencyTotalPrice}" maxFractionDigits="6"/></p>
+                            <p>实际支出：$<fmt:formatNumber type="number" value="${dealRecord.actualPrice}" maxFractionDigits="6"/></p>
                         </c:if>
                         <c:if test="${dealRecord.paymentType == 2}">
-                            <p>实际到账：$<fmt:formatNumber type="number" value="${dealRecord.currencyTotalPrice - dealRecord.feeNumber * dealRecord.currencyTotalPrice }" maxFractionDigits="6"/></p>
+                            <p>实际到账：$<fmt:formatNumber type="number" value="${dealRecord.actualPrice }" maxFractionDigits="6"/></p>
                         </c:if>
                     </td>
                     <td class="time"><fmt:formatDate type="time" value="${dealRecord.addTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>

@@ -97,4 +97,28 @@ public class UserBalanceDaoImpl implements IUserBalanceDao {
         }
         return result;
     }
+
+    /**
+     * 根据userBalanceList批量插入用户记录
+     * @param userBalanceList 用户记录集合
+     * @return 成功：true；查询失败：false
+     */
+    public boolean insertUserBalanceList(List<UserBalanceDO>userBalanceList){
+        Map<String, Object> map = new HashMap<>();
+        map.put("userBalanceList", userBalanceList);
+        int result = 0;
+
+        try {
+            result = sqlSessionTemplate.insert("UserBalance_insertUserBalanceList",map);
+        }catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result == userBalanceList.size()) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
 }

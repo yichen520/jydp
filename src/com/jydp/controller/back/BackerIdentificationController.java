@@ -10,7 +10,6 @@ import com.jydp.interceptor.BackerWebInterceptor;
 import com.jydp.other.SendMessage;
 import com.jydp.service.IUserIdentificationImageService;
 import com.jydp.service.IUserIdentificationService;
-import com.jydp.service.IUserService;
 import config.PhoneAreaConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -43,10 +42,6 @@ public class BackerIdentificationController {
     /** 用户认证详情图 */
     @Autowired
     private IUserIdentificationImageService userIdentificationImageService;
-
-    /** 用户账户 */
-    @Autowired
-    private IUserService userService;
 
     /** 展示列表页面 */
     @RequestMapping(value = "/show.htm")
