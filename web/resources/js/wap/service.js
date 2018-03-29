@@ -73,7 +73,7 @@ var ParamAndViewInit = {
 
                 if(Number(data.totalPageNumber) == (Number(data.pageNumber) + 1) ){
                     $(".more").unbind('click');
-                    $(".more").text("已经全部显示");
+                    $(".more").text("已显示全部记录");
                 }
             },
             error: function () {

@@ -98,4 +98,11 @@ public interface ITransactionUserDealService {
      * @return 查询成功：返回记录总数，查询失败：返回0
      */
     int countUserDealForWeb(int userId);
+
+    /**
+     * wap端查询用户成交记录总数
+     * @param userId 用户Id
+     * @return 查询成功：返回记录总数，查询失败：返回0
+     */
+    int countUserDealForWap(int userId);
 }

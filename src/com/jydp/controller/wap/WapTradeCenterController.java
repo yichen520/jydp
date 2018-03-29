@@ -4,16 +4,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.*;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
+import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DTO.TransactionPendOrderDTO;
 import com.jydp.entity.DTO.TransactionUserDealDTO;
-import com.jydp.entity.VO.StandardParameterVO;
-import com.jydp.entity.VO.TransactionCurrencyVO;
-import com.jydp.entity.VO.TransactionPendOrderVO;
-import com.jydp.entity.VO.UserDealCapitalMessageVO;
+import com.jydp.entity.VO.*;
+import com.jydp.interceptor.UserWapInterceptor;
 import com.jydp.service.*;
 import config.RedisKeyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +85,7 @@ public class WapTradeCenterController {
             currencyIdStr = transactionCurrencyList.get(0).getCurrencyId() + "";
         }
         request.setAttribute("currencyIdStr", currencyIdStr);
-        return "page/wap/deal";
+        return "page/wap/wapTradeCenter";
     }
 
     /**
@@ -113,23 +112,17 @@ public class WapTradeCenterController {
         }
 
         int currencyId = Integer.parseInt(currencyIdStr);
+        response.put("currencyId", currencyIdStr);
         TransactionCurrencyVO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
         if (transactionCurrency == null) {
             //这里返回到哪里
             response.put("code", 1);
-            response.put("message", "没有上线的币种");
+            response.put("message", "币种未上线");
             return response;
         }
         transactionCurrency.setBuyFee(transactionCurrency.getBuyFee() * 100);
         transactionCurrency.setSellFee(transactionCurrency.getSellFee() * 100);
 
-        //查询所有币行情信息
-        List<TransactionUserDealDTO> transactionUserDealList = null;
-        Object transactionUserDealListObject = redisService.getValue(RedisKeyConfig.HOMEPAGE_CURRENCY_MARKET);
-        if (transactionUserDealListObject != null) {
-            transactionUserDealList = (List<TransactionUserDealDTO>)transactionUserDealListObject;
-        }
-        response.put("transactionUserDealList", transactionUserDealList);
         //获取用户交易中心相关资产
         UserSessionBO user = (UserSessionBO) request.getSession().getAttribute("userSession");
         //如果用户已登录
@@ -153,7 +146,7 @@ public class WapTradeCenterController {
                 userCurrencyNumService.insertUserCurrencyForWap(userCurrencyNumDOList);
             }
             UserDO userDO = userService.getUserByUserId(user.getUserId());
-            response.put("userIdPwd", user.getIsPwd());
+            response.put("userIsPwd", user.getIsPwd());
             response.put("payPasswordStatus", userDO.getPayPasswordStatus());
             response.put("userSession", user);
         }
@@ -322,7 +315,6 @@ public class WapTradeCenterController {
                 userSession.setIsPwd(2);
                 request.getSession().setAttribute("userSession", userSession);
                 response.put("userIdPwd", 2);
-                ;
             }
         }
 
@@ -477,7 +469,6 @@ public class WapTradeCenterController {
                 userSession.setIsPwd(2);
                 request.getSession().setAttribute("userSession", userSession);
                 response.put("userIdPwd", 2);
-                ;
             }
         }
 
@@ -515,6 +506,356 @@ public class WapTradeCenterController {
         response.put("message", trade.getMessage());
         return response;
     }
+
+    /** 获取委托记录 */
+    @RequestMapping(value = "/entrust.htm", method = RequestMethod.POST)
+    public @ResponseBody JSONObject entrust(HttpServletRequest request) {
+        JSONObject response = new JSONObject();
+        List<TransactionPendOrderVO> transactionPendOrderList = null;
+
+        //获取参数
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyIdStr"));
+        if (!StringUtil.isNotNull(currencyIdStr)) {
+            response.put("code", 3);
+            response.put("message", "参数错误" );
+            return response;
+        }
+        int currencyId = Integer.parseInt(currencyIdStr);
+        UserSessionBO user = UserWapInterceptor.getUser(request);
+        if (user != null) {
+            transactionPendOrderList = transactionPendOrderService.listPendOrderForWap(user.getUserId(),currencyId,0, 10);
+        }else {
+            response.put("code", 4);
+            response.put("message", "用户未登录" );
+            return response;
+        }
+
+        response.put("transactionPendOrderList", transactionPendOrderList);
+        response.put("code", 0);
+        response.put("message", "查询成功" );
+        return response;
+    }
+
+
+    /** 获取交易相关价格（用户资金信息） */
+    @RequestMapping(value = "/userInfo.htm", method = RequestMethod.POST)
+    public @ResponseBody JSONObject userInfo(HttpServletRequest request) {
+        JSONObject response = new JSONObject();
+        UserDealCapitalMessageVO userDealCapitalMessage = new UserDealCapitalMessageVO();
+
+        //获取参数
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+        if (!StringUtil.isNotNull(currencyIdStr)) {
+            response.put("code", 3);
+            response.put("message", "参数错误" );
+            return response;
+        }
+        int currencyId = Integer.parseInt(currencyIdStr);
+        UserSessionBO user = UserWapInterceptor.getUser(request);
+        if (user != null) {
+            userDealCapitalMessage = userService.countCheckUserAmountForTimer(user.getUserId(), currencyId);
+        }else {
+            response.put("code", 4);
+            response.put("message", "用户未登录" );
+            return response;
+        }
+
+        response.put("userDealCapitalMessage", userDealCapitalMessage);
+        response.put("code", 0);
+        response.put("message", "查询成功" );
+        return response;
+    }
+
+    /**
+     * 获取挂单记录
+     */
+    @RequestMapping(value = "/pend", method = RequestMethod.POST)
+    public @ResponseBody JSONObject pend(HttpServletRequest request) {
+        JSONObject response = new JSONObject();
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+        if (!StringUtil.isNotNull(currencyIdStr)) {
+            response.put("code", 3);
+            response.put("message", "参数错误");
+            return response;
+        }
+
+        int currencyId = 0;
+        currencyId = Integer.parseInt(currencyIdStr);
+        //获取币种信息
+        TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
+        if (transactionCurrency != null) {
+            if (transactionCurrency.getUpStatus() == 4) {
+                response.put("code", 5);
+                response.put("message", "该币种不在上线状态");
+                return response;
+            }
+        }
+
+        List<TransactionPendOrderDTO> transactionPendOrderBuyList = null;
+        Object transactionPendOrderBuyListStr = redisService.getValue(RedisKeyConfig.BUY_KEY + transactionCurrency.getCurrencyId());
+        if (transactionPendOrderBuyListStr != null && StringUtil.isNotNull(transactionPendOrderBuyListStr.toString())) {
+            transactionPendOrderBuyList = (List<TransactionPendOrderDTO>) transactionPendOrderBuyListStr;
+        }
+        if (transactionPendOrderBuyList == null || transactionPendOrderBuyList.isEmpty()) {
+            transactionPendOrderBuyList = transactionPendOrderService.listLatestRecords(1, transactionCurrency.getCurrencyId(), 15);
+        }
+        List<TransactionPendOrderDTO> transactionPendOrderSellList = null;
+        Object transactionPendOrderSellListStr = redisService.getValue(RedisKeyConfig.SELL_KEY + transactionCurrency.getCurrencyId());
+        if (transactionPendOrderSellListStr != null && StringUtil.isNotNull(transactionPendOrderSellListStr.toString())) {
+            transactionPendOrderSellList = (List<TransactionPendOrderDTO>) transactionPendOrderSellListStr;
+        }
+        if (transactionPendOrderSellList == null || transactionPendOrderSellList.isEmpty()) {
+            transactionPendOrderSellList = transactionPendOrderService.listLatestRecords(2, transactionCurrency.getCurrencyId(), 15);
+        }
+
+        response.put("transactionPendOrderBuyList", transactionPendOrderBuyList);
+        response.put("transactionPendOrderSellList", transactionPendOrderSellList);
+        response.put("code", 0);
+        response.put("message", "查询成功");
+        return response;
+    }
+
+    /** 获取交易相关价格（基准信息） */
+    @RequestMapping(value = "/gainDealPrice", method = RequestMethod.POST)
+    public @ResponseBody JSONObject gainDealPrice(HttpServletRequest request) {
+        JSONObject response = new JSONObject();
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+        if (!StringUtil.isNotNull(currencyIdStr)) {
+            response.put("code", 3);
+            response.put("message", "参数错误");
+            return response;
+        }
+
+        int currencyId = 0;
+        currencyId = Integer.parseInt(currencyIdStr);
+        //获取币种基准信息
+        StandardParameterVO standardParameter = transactionCurrencyService.listTransactionCurrencyAll(currencyId);
+        response.put("standardParameter", standardParameter);
+        response.put("code", 0);
+        response.put("message", "查询成功");
+        return response;
+    }
+
+    /**
+     * 币种交易行情获取
+     */
+    @RequestMapping("/currencyInfo")
+    public @ResponseBody JSONObject getCurrencyInfo(){
+        JSONObject response = new JSONObject();
+        //查询所有币行情信息
+        List<TransactionUserDealDTO> transactionUserDealList = null;
+        Object transactionUserDealListObject = redisService.getValue(RedisKeyConfig.HOMEPAGE_CURRENCY_MARKET);
+        if (transactionUserDealListObject != null) {
+            transactionUserDealList = (List<TransactionUserDealDTO>)transactionUserDealListObject;
+        }
+        if(transactionUserDealList == null || transactionUserDealList.isEmpty()){
+             transactionUserDealList = transactionCurrencyService.getTransactionCurrencyMarketForWeb();
+        }
+        response.put("transactionUserDealList", transactionUserDealList);
+        response.put("code", 0);
+        response.put("message", "查询成功");
+        return response;
+    }
+
+    /**
+     * 交易信息
+     */
+    @RequestMapping("/deal")
+    public @ResponseBody JSONObject deal(HttpServletRequest request){
+        JSONObject response = new JSONObject();
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+        if (!StringUtil.isNotNull(currencyIdStr)) {
+            response.put("code", 3);
+            response.put("message", "参数错误");
+            return response;
+        }
+        int currencyId = 0;
+        currencyId = Integer.parseInt(currencyIdStr);
+        //获取成交记录
+        List<TransactionDealRedisDO> dealList = null;
+        Object dealListStr = redisService.getValue(RedisKeyConfig.CURRENCY_DEAL_KEY + currencyId);
+        if (dealListStr != null && StringUtil.isNotNull(dealListStr.toString())) {
+            dealList = (List<TransactionDealRedisDO>) dealListStr;
+        }
+        if (dealList == null || dealList.isEmpty()) {
+            dealList = transactionDealRedisService.listTransactionDealRedis(50, currencyId);
+        }
+        response.put("dealList", dealList);
+
+        response.put("code", 0);
+        response.put("message", "查询成功");
+        return response;
+    }
+
+    /** 记住密码提示 */
+    @RequestMapping(value = "/rememberPwd.htm", method = RequestMethod.POST)
+    public @ResponseBody JSONObject rememberPwd(HttpServletRequest request) {
+        JSONObject response = new JSONObject();
+
+        UserSessionBO user = UserWapInterceptor.getUser(request);
+        if (user == null) {
+            response.put("code", 4);
+            response.put("message", "用户未登录" );
+            return response;
+        }
+        //获取参数
+        String rememberPwd = StringUtil.stringNullHandle(request.getParameter("rememberPwd"));
+        String payPasswordStatusStr = StringUtil.stringNullHandle(request.getParameter("payPasswordStatus"));
+        if (!StringUtil.isNotNull(rememberPwd)) {
+            response.put("code", 3);
+            response.put("message", "参数获取错误" );
+            return response;
+        }
+        int payPasswordStatus = 1;
+        if (StringUtil.isNotNull(payPasswordStatusStr)) {
+            payPasswordStatus = Integer.parseInt(payPasswordStatusStr);
+        }
+
+        //验证交易密码
+        rememberPwd = MD5Util.toMd5(rememberPwd);
+        boolean checkResult = userService.validateUserPay(user.getUserAccount(), rememberPwd);
+        if(!checkResult){
+            response.put("code", 4);
+            response.put("message", "支付密码错误" );
+            return response;
+        }
+
+        //修改交易密码状态
+        boolean updateBoo = userService.updateUserPayPasswordStatus(user.getUserId(), payPasswordStatus);
+        if(!updateBoo){
+            response.put("code", 2);
+            response.put("message", "修改失败" );
+            return response;
+        }
+
+        //修改session中是否输入过密码标识
+        if(payPasswordStatus == 2){
+            user.setIsPwd(2);
+            request.getSession().setAttribute("userSession", user);
+            response.put("userIsPwd", 2);
+        }else if(payPasswordStatus == 1){
+            user.setIsPwd(1);
+            request.getSession().setAttribute("userSession", user);
+            response.put("userIsPwd", 1);
+        }
+
+        response.put("code", 0);
+        response.put("message", "修改成功");
+        return response;
+    }
+
+    /**
+     * 跳转到图表页面
+     */
+    @RequestMapping("/toChartPage")
+    public String toChartPage(HttpServletRequest request){
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+        if (!StringUtil.isNotNull(currencyIdStr)) {
+            return "page/wap/wapTradeCenter";
+        }
+        int currencyId = 0;
+        currencyId = Integer.parseInt(currencyIdStr);
+        request.setAttribute("currencyIdStr", currencyIdStr);
+        return "page/wap/tradeChart";
+    }
+
+    @RequestMapping("/getChartPageInfo")
+    public @ResponseBody  JSONObject getChartPageInfo(HttpServletRequest request){
+        JSONObject response = new JSONObject();
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyIdStr"));
+        List<TransactionCurrencyVO> transactionCurrencyList = transactionCurrencyService.getOnlineAndSuspensionCurrencyForWap();
+        if (StringUtil.isNull(currencyIdStr)) {
+            if (transactionCurrencyList == null || transactionCurrencyList.size() <= 0) {
+                //这里返回到哪里
+                response.put("code", 1);
+                response.put("message", "没有上线的币种");
+                return response;
+            }
+            currencyIdStr = transactionCurrencyList.get(0).getCurrencyId() + "";
+        }
+        int currencyId = Integer.parseInt(currencyIdStr);
+        response.put("currencyId", currencyIdStr);
+
+        //币种信息
+        TransactionCurrencyVO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
+        if (transactionCurrency == null) {
+            //这里返回到哪里
+            response.put("code", 1);
+            response.put("message", "币种未上线");
+            return response;
+        }
+        transactionCurrency.setBuyFee(transactionCurrency.getBuyFee() * 100);
+        transactionCurrency.setSellFee(transactionCurrency.getSellFee() * 100);
+        response.put("transactionCurrency", transactionCurrency);
+
+        //用户信息
+        UserSessionBO user = (UserSessionBO) request.getSession().getAttribute("userSession");
+        if (user != null) {
+            //判断用户是否拥有该币种，如果没有帮助其新增
+            UserCurrencyNumDO userCurrencyNum = userCurrencyNumService.getUserCurrencyNumByUserIdAndCurrencyId(user.getUserId(), currencyId);
+            if (userCurrencyNum == null) {
+                UserCurrencyNumDO userCurrencyNumDO = new UserCurrencyNumDO();
+                userCurrencyNumDO.setUserId(user.getUserId());
+                userCurrencyNumDO.setCurrencyId(currencyId);
+                userCurrencyNumDO.setCurrencyNumber(0);
+                userCurrencyNumDO.setCurrencyNumberLock(0);
+                userCurrencyNumDO.setAddTime(DateUtil.getCurrentTime());
+                List<UserCurrencyNumDO> userCurrencyNumDOList = new ArrayList<>();
+                userCurrencyNumDOList.add(userCurrencyNumDO);
+                userCurrencyNumService.insertUserCurrencyForWap(userCurrencyNumDOList);
+            }
+            response.put("userSession", user);
+        }
+
+        //该币种基准信息 买一价 买一价 今日最高 今日最低 今日涨幅 昨日收盘 今日成交量
+        StandardParameterVO standardParameter = transactionCurrencyService.listTransactionCurrencyAll(currencyId);
+        response.put("standardParameter", standardParameter);
+
+        //获取成交记录
+        List<TransactionDealRedisDO> dealList = null;
+        Object dealListStr = redisService.getValue(RedisKeyConfig.CURRENCY_DEAL_KEY + currencyId);
+        if (dealListStr != null && StringUtil.isNotNull(dealListStr.toString())) {
+            dealList = (List<TransactionDealRedisDO>) dealListStr;
+        }
+        if (dealList == null || dealList.isEmpty()) {
+            dealList = transactionDealRedisService.listTransactionDealRedis(50, transactionCurrency.getCurrencyId());
+        }
+        response.put("dealList", dealList);
+
+        //webAppPath
+        //查询成功需要加入项目名称
+        String webAppPath = request.getServletContext().getContextPath();
+        response.put("webAppPath", webAppPath);
+
+        response.put("code", 0);
+        response.put("message", "查询成功");
+        return response;
+    }
+
+    /** k线图参数获取 */
+    @RequestMapping(value = "/gainGraphData", method = RequestMethod.POST)
+    public @ResponseBody JSONObject gainGraphData(HttpServletRequest request) {
+        JSONObject response = new JSONObject();
+        List<TransactionGraphVO> transactionGraphList =  new ArrayList<TransactionGraphVO>();
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+        String node = StringUtil.stringNullHandle(request.getParameter("node"));
+
+        if (!StringUtil.isNotNull(currencyIdStr) || !StringUtil.isNotNull(node)) {
+            response.put("code", 3);
+            response.put("message", "参数获取错误");
+            return response;
+        }
+
+        int currencyId = 0;
+        currencyId = Integer.parseInt(currencyIdStr);
+        transactionGraphList = transactionDealRedisService.gainGraphData(currencyId, node);
+        response.put("transactionGraphList", transactionGraphList);
+
+        response.put("code", 0);
+        response.put("message", "查询成功");
+        return response;
+    }
+
 }
 
 

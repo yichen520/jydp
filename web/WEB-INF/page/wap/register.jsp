@@ -28,13 +28,11 @@
                        maxLength="16" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="validateUser(this)"/>
             </div>
             <div class="userPhone">
-                <span>
-                    <select id="selectContext">
-                        <c:forEach items="${phoneAreaMap }" var="phoneArea">
-                            <option value="${phoneArea.key }">${phoneArea.key }</option>
-                        </c:forEach>
-                     </select>
-                </span>
+                <div class="choseNumber" onclick="getPhoneArea()">
+                    <p class="num" id="chosePhoneNum">${selectedArea}</p>
+                    <img src="<%=path %>/resources/image/wap/iconDown.png"/>
+                </div>
+
                 <input type="text" id="phoneNumber" name="phoneNumber" placeholder="您的手机号" maxlength="11"
                        onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
             </div>
@@ -70,13 +68,28 @@
                        onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
             </div>
         </div>
-        <div class="footer">
-            <input type="checkbox" name="readCheck" id="readCheck"/>
-            <p>已阅读并接受<span>《用户注册协议》</span></p>
-        </div>
         <div class="confirm" onclick="register()">注册</div>
+        <div class="footer">
+            <div class="checkboxBox">
+                <input type="checkbox" checked="checked"/>
+            </div>
+            <p onclick="readUserAgree()">已阅读并接受<span>《用户注册协议》</span></p>
+        </div>
     </div>
 </form>
+
+<!-- 选择手机号弹窗 -->
+<div class="chosePhone" id="chosePhone"></div>
+<script type="text/template" id="abcd">
+    <div class="search">
+        <img src="<%=path %>/resources/image/wap/searchIcon.png"/>
+        <input type="type" placeholder="请选择国家或区号" id="country" onkeyup="showSearch()"/>
+        <p onclick="backHome()">取消</p>
+    </div>
+    <div class="searchList" id="searchList">
+        {{{phoneArea jsonObject}}}
+    </div>
+</script>
 
 <form id="identificationForm" action="<%=path %>/userWap/WapIdentificationController/show" method="post">
     <input type="hidden" id="userId" name="userId"/>
@@ -88,11 +101,97 @@
 <script src="<%=path %>/resources/js/wap/zepto.min.js"></script>
 <script src="<%=path %>/resources/js/wap/jquery-2.1.4.min.js"></script>
 <script src="<%=path %>/resources/js/wap/simpleTips_wap.js"></script>
-
+<script src="<%=path %>/resources/js/wap/handlebars-v4.0.11.js"></script>
 <script type="text/javascript">
+    var jsonObject;
+    $.ajax({
+        url: '<%=path %>' + "/userWap/userRegister/getPhoneArea",
+        type: 'post',
+        dataType: 'json',
+        async: true,
+        data: {},
+        success: function (result) {
+            if (result.code != 1) {
+                openTips(result.message);
+                validateUserBoo = false;
+                return;
+            }
+
+            //获取的数据存储
+            jsonObject = result.data.jsonObject;
+
+            var template = Handlebars.compile($("#abcd").html())
+            $('#chosePhone').html(template(result.data));
+
+            $("li[name='phoneName']").each(function () {
+                $(this).bind("click", search);
+            });
+        },
+        error: function () {
+            validateUserBoo = false;
+            openTips("服务异常")
+        }
+    });
+
+    Handlebars.registerHelper("phoneArea", function (jsonObject123) {
+        var jsonObjectString = eval('(' + jsonObject123 + ')');
+        var out = "<ul id='ultest'>";
+        for (var prop in jsonObjectString) {
+            out = out + "<li name='phoneName'>";
+            out = out + "<p class='city' id='city'>" + jsonObjectString[prop] + "</p>";
+            out = out + "<p class='cityNum' id='cityNum'>" + prop + "</p>";
+            out = out + "<p class='clear'>" + "</p>";
+            out = out + "</li>";
+        }
+        out = out + "</ul>";
+        return out;
+    });
+
+
+    //获取手机区号并赋值
+    function search() {
+        var cityNum = $(this).children("p:eq(1)").text();
+        $('.chosePhone').css("height", "0");
+        $('.chosePhone').hide();
+        $('.num').text(cityNum);
+    }
+
+    //搜索时动态显示区号
+    function showSearch() {
+        var value = $("#country").val();
+        if (!value) {
+            $("#ultest li").each(function () {
+                $(this).show();
+            })
+            return;
+        }
+        $("#ultest li").each(function () {
+            if ($(this).children("p:eq(0)").text() == value || $(this).children("p:eq(1)").text() == value) {
+                $(this).show()
+            } else {
+                $(this).hide();
+            }
+        })
+    }
+
+    //跳转显示选择区号页
+    function getPhoneArea() {
+        var bgHeight = $(document).height();
+        $('.chosePhone').css("height", bgHeight + "px");
+        $('.chosePhone').show();
+    }
+    
+    //返回
+    function backHome() {
+        $('.chosePhone').css("height", "0");
+        $('.chosePhone').hide();
+    }
+
+    function readUserAgree() {
+        window.location.href="<%=path %>/userWap/wapHelpCenter/show/101016";
+    }
     //验证用户账号
     var validateUserBoo = false;
-
     function validateUser(obj) {
         var userAccount = obj.value;
         var reg = /^[A-Za-z0-9]{6,16}$/;
@@ -130,12 +229,11 @@
     }
 
     //获取短信验证码
-    var getMesCodeFalg = false;
-
+    var getMesCodeFlag = false;
     function getMesCode(obj) {
         //号码检验
         var phoneNumber = $('#phoneNumber').val();
-        var area = $("#selectContext").val();
+        var area = $('#chosePhoneNum').text();
         var regPos = /^\d+(\.\d+)?$/; //非负浮点数
         var phoneReg = /^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$/;
         if (!phoneNumber || phoneNumber == "" || phoneNumber == null) {
@@ -165,7 +263,7 @@
                     openTips(message);
                     return;
                 }
-                getMesCodeFalg = true;
+                getMesCodeFlag = true;
             },
             error: function () {
                 openTips("短信发送失败");
@@ -175,7 +273,6 @@
 
     //时间倒计时
     var wait = 60;
-
     function time(obj) {
         if (wait == 0) {
             $(obj).attr("disabled", false);
@@ -199,10 +296,9 @@
         var repeatPassword = $("#repeatPassword").val();
         var payPassword = $("#payPassword").val();
         var repeatPayPassword = $("#repeatPayPassword").val();
-        var phoneArea = $("#selectContext").val();
+        var phoneArea = $("#chosePhoneNum").text();
         var phone = $("#phoneNumber").val();
         var validateCode = $("#validateCode").val();
-
         var commonReg = /^[A-Za-z0-9]{6,16}$/;
         var phoneReg = /^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$/;
 
@@ -261,13 +357,12 @@
             openTips("请输入6位短信验证码");
             return;
         }
-        if (!getMesCodeFalg) {
+        if (!getMesCodeFlag) {
             openTips("请先获取短信验证码");
             return;
         }
         //注册协议
-        var readChecked = document.getElementById("readCheck").checked;
-        if (!readChecked) {
+        if (!checked) {
             openTips("请阅读用户注册协议");
             return;
         }
@@ -302,6 +397,9 @@
                         $("#userAccountIde").val(userAccount);
                         $("#identificationForm").submit();
                     }, 3000)
+
+                    //注册成功跳转到实名认证页面
+                    window.location.href="<%=path %>/wapLogin";
                 } else {
                     openTips(result.message);
                 }
@@ -313,5 +411,22 @@
             }
         });
     }
+
+    //复选框加载图片的处理
+    var checked = true;
+    var flag = 1;
+    $(".footer").on('click', function () {
+        if (flag == 1) {
+            $(".checkboxBox").css("background", "url(../../resources/image/wap/check-no.png) no-repeat");
+            $(".checkboxBox").css("background-size", "cover");
+            flag = 0;
+            checked = false;
+        } else {
+            $(".checkboxBox").css("background", "url(../../resources/image/wap/check-yes.png) no-repeat");
+            $(".checkboxBox").css("background-size", "cover");
+            flag = 1;
+            checked = true;
+        }
+    })
 </script>
 </html>
