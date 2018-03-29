@@ -1,18 +1,25 @@
 package com.jydp.controller.wap;
 
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.iqmkj.utils.LogUtil;
 import com.iqmkj.utils.StringUtil;
+import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.system.SystemAdsHomepagesDO;
 import com.jydp.entity.DO.system.SystemBusinessesPartnerDO;
 import com.jydp.entity.DO.system.SystemNoticeDO;
 import com.jydp.entity.DTO.TransactionUserDealDTO;
+import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.service.IHomePageService;
 import com.jydp.service.IRedisService;
 import com.jydp.service.ITransactionCurrencyService;
 import config.RedisKeyConfig;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -110,14 +117,40 @@ public class WapHomePageController {
                 systemBusinessesPartnerList = homePageService.getSystemBusinessesPartnerList();
                 redisService.addValue(RedisKeyConfig.HOMEPAGE_PARTNER,systemBusinessesPartnerList);
             }
-
-            request.setAttribute("systemAdsHomepagesList",systemAdsHomepagesList);
-            request.setAttribute("systemNoticeList",systemNoticeList);
-            request.setAttribute("systemBusinessesPartnerList",systemBusinessesPartnerList);
-            request.setAttribute("transactionUserDealList",transactionUserDealList);
-
+        ObjectMapper mapper = new ObjectMapper();
+        try{
+            String systemAdsHomepagesListJson = mapper.writeValueAsString(systemAdsHomepagesList);
+            String systemNoticeListJson = mapper.writeValueAsString(systemNoticeList);
+            String systemBusinessesPartnerListJson = mapper.writeValueAsString(systemBusinessesPartnerList);
+            String transactionUserDealListJson = mapper.writeValueAsString(transactionUserDealList);
+            request.setAttribute("systemAdsHomepagesList",systemAdsHomepagesListJson);
+            request.setAttribute("systemNoticeList",systemNoticeListJson);
+            request.setAttribute("systemBusinessesPartnerList",systemBusinessesPartnerListJson);
+            request.setAttribute("transactionUserDealList",transactionUserDealListJson);
             return "page/wap/index";
+        }catch(Exception e){
+            LogUtil.printErrorLog(e);
         }
+        return "page/wap/index";
+
+        }
+
+    /** 获取所有wap端信息 */
+    @RequestMapping("/getWeb")
+    public @ResponseBody
+    JsonObjectBO getAllCurrency(){
+
+        JsonObjectBO jsonObjectBO = new JsonObjectBO();
+
+        List<TransactionCurrencyVO> transactionCurrencyList = transactionCurrencyService.getOnlineAndSuspensionCurrencyForWeb();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("transactionCurrencyList",transactionCurrencyList);
+
+        jsonObjectBO.setCode(1);
+        jsonObjectBO.setMessage("查询成功");
+        jsonObjectBO.setData(jsonObject);
+        return jsonObjectBO;
+    }
 
 
 

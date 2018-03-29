@@ -1,6 +1,6 @@
 $(function () {
     $('.back').on('click',function(){
-        window.location.href = "myRecord.html"
+        window.location.href = "javascript:history.back(-1)"
     });
     $('.see').on('click',function(){
         window.location.href = "volume.html"

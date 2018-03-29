@@ -15,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
@@ -36,7 +35,7 @@ public class WapRegisterController {
     IUserService userService;
 
     /**
-     * 系统手机验证码
+     * 手机验证码
      */
     @Autowired
     private ISystemValidatePhoneService systemValidatePhoneService;
@@ -46,10 +45,28 @@ public class WapRegisterController {
      */
     @RequestMapping(value = "/show")
     public String show(HttpServletRequest request) {
-        Map<String, String> phoneAreaMap = PhoneAreaConfig.phoneAreaMap;
         request.setAttribute("selectedArea", PhoneAreaConfig.PHONE_AREA_CHINA);
-        request.setAttribute("phoneAreaMap", phoneAreaMap);
         return "page/wap/register";
+    }
+
+    /**
+     *  获取国家对应的手机区域号
+     */
+    @RequestMapping(value = "/getPhoneArea")
+    public @ResponseBody JsonObjectBO getPhoneArea(HttpServletRequest request) {
+        Map<String, String> phoneAreaMap = PhoneAreaConfig.phoneAreaMap;
+
+        //对map数据进行转换
+        String jsonObjectStr = JSONObject.toJSONString(phoneAreaMap);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("jsonObject",jsonObjectStr);
+
+        JsonObjectBO responseJson = new JsonObjectBO();
+        responseJson.setCode(1);
+        responseJson.setMessage("查询成功");
+        responseJson.setData(jsonObject);
+
+        return responseJson;
     }
 
     /**

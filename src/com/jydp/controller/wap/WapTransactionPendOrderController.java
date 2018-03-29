@@ -45,15 +45,15 @@ public class WapTransactionPendOrderController {
     /**
      * 展示委托记录页面
      */
-    @RequestMapping(value = "/show")
+    @RequestMapping(value = "/show.htm")
     public String show(HttpServletRequest request) {
         //是否登录检验
-        /*UserSessionBO user = UserWapInterceptor.getUser(request);
+        UserSessionBO user = UserWapInterceptor.getUser(request);
         if (user == null) {
             request.setAttribute("code", 4);
             request.setAttribute("message", "未登录");
             return "page/wap/login";
-        }*/
+        }
         request.setAttribute("pageNumber",0);
         return "page/wap/entrust";
     }
@@ -67,9 +67,8 @@ public class WapTransactionPendOrderController {
         String pageNumberStr = request.getParameter("pageNumber");
 
         UserSessionBO user = UserWapInterceptor.getUser(request);
+        int userId = Integer.parseInt(request.getParameter("userId"));
 
-        int userId =259;
-     //   int userId = Integer.parseInt(request.getParameter("userId"));  //测试暂时注释
         JsonObjectBO responseJson = new JsonObjectBO();
 
         int pageNumber = 0;
@@ -100,17 +99,17 @@ public class WapTransactionPendOrderController {
     /**
      * 撤销挂单
      */
-    @RequestMapping(value = "/revoke", method = RequestMethod.POST)
+    @RequestMapping(value = "/revoke.htm", method = RequestMethod.POST)
     public @ResponseBody
     JsonObjectBO revoke(HttpServletRequest request) {
         JsonObjectBO resultJson = new JsonObjectBO();
 
-  /*      UserSessionBO user = UserWebInterceptor.getUser(request);
+        UserSessionBO user = UserWebInterceptor.getUser(request);
         if (user == null) {
             resultJson.setCode(4);
             resultJson.setMessage("未登录");
             return resultJson;
-        }*/
+        }
 
         String pendingOrderNo = StringUtil.stringNullHandle(request.getParameter("pendingOrderNo"));
         if (!StringUtil.isNotNull(pendingOrderNo)) {
@@ -126,11 +125,11 @@ public class WapTransactionPendOrderController {
             return resultJson;
         }
 
-      /*  if (transactionPendOrder.getUserId() != user.getUserId()) {
+        if (transactionPendOrder.getUserId() != user.getUserId()) {
             resultJson.setCode(4);
             resultJson.setMessage("此操作非该挂单本人");
             return resultJson;
-        }*/
+        }
 
         boolean updateResult = transactionPendOrderService.revokePendOrder(pendingOrderNo);
         if (updateResult) {

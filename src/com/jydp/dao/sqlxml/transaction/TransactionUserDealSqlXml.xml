@@ -92,6 +92,13 @@
 		WHERE userId = #{userId}
 	</select>
 
+	<select id="TransactionUserDeal_countUserDealForWap" parameterType="int" resultType="int">
+		SELECT COUNT(orderNo)
+		FROM transaction_user_deal_tab
+		WHERE userId = #{userId}
+	</select>
+
+	<!--<select id="TransactionUserDeal_countTransactionUserDealByPendNo" parameterType="java.lang.String" resultType="int">-->
 	<select id="TransactionUserDeal_countTransactionUserDealByPendNo" parameterType="java.util.Map" resultType="int">
 		SELECT COUNT(orderNo)
 		FROM transaction_user_deal_tab

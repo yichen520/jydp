@@ -9,6 +9,6 @@ $(function () {
         window.location.href = "helpDetail.html"
     });
     $('.backimg').on('click',function(){
-        window.location.href = "mine.html"
+        window.location.href = "/jydp/userWap/userInfo/show.htm"
     });
 });

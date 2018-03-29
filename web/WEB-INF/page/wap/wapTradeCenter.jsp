@@ -23,15 +23,18 @@
 <div id="header">
     <div>
         <input type="hidden" id="currencyIdStr" name="currencyIdStr" value="${currencyIdStr}"/>
-        <input type="hidden" id="userSession" name="userSession" value="${userSession}"/>
     </div>
 </div>
 <!-- 头部导航 -->
 <script type="text/x-handlebars-template" id="headerTemplate">
 <header>
+    <div>
+        <input type="hidden" id="currencyId"  value="{{currencyId}}"/>
+        <input type="hidden" id="userSession" name="userSession" value="{{userSession}}"/>
+    </div>
     <img src="{{webAppPath}}/resources/image/wap/header-open.png" class="open"/>
     <p>{{transactionCurrency.currencyName}}({{transactionCurrency.currencyShortName}}/USD)</p>
-    <a href="{{webAppPath}}/userWap/userLogin/show">登录</a>
+    {{{isLogin userSession webAppPath}}}
 </header>
 <div class="nav">
     <div class="nav-top">
@@ -44,25 +47,24 @@
     </div>
     <div class="nav-content">
                 <div class="nav-content-list">
-                    <p class="list-desc">最高 <span class="list-num">{{formatNumber standardParameter.todayMax 6}}</span></p>
-                    <p class="list-desc">最低 <span class="list-num">{{formatNumber standardParameter.todayMin 6}}</span></p>
+                    <p class="list-desc">最高 <span class="list-num" id="todayMaxSpan">{{formatNumber standardParameter.todayMax 6}}</span></p>
+                    <p class="list-desc">最低 <span class="list-num" id="todayMinSpan">{{formatNumber standardParameter.todayMin 6}}</span></p>
                 </div>
                 <div class="nav-content-list">
-                    <p class="list-desc">买一价 <span class="list-num">{{formatNumber standardParameter.buyOne 6}}</span></p>
-                    <p class="list-desc">卖一价 <span class="list-num">{{formatNumber standardParameter.sellOne 6}}</span></p>
+                    <p class="list-desc">买一价 <span class="list-num" id="buyOneSpan">{{formatNumber standardParameter.buyOne 6}}</span></p>
+                    <p class="list-desc">卖一价 <span class="list-num" id="sellOneOne">{{formatNumber standardParameter.sellOne 6}}</span></p>
                 </div>
                 <div class="nav-content-list">
                     <p class="list-desc">日成交额</p>
-                    <p class="list-num">{{formatNumber standardParameter.dayTurnove 4}}万</p>
+                    <p class="list-num" id="dayTurnoveOne">{{formatNumber standardParameter.dayTurnove 4}}万</p>
                 </div>
     </div>
 </div>
 
-<!-- 内容 -->
 <div id="wrapper">
     <!-- 当前价格 -->
     <div class="nowPrice">
-        <div class="title">当前价格：\${{formatNumber standardParameter.nowPrice 8}}</div>
+        <div class="title" id="nowPriceDiv">当前价格：\${{formatNumber standardParameter.nowPrice 8}}</div>
     </div>
     <!-- 买入卖入价格 -->
     <div class="tool">
@@ -76,7 +78,7 @@
                 {{#each transactionPendOrderSellList}}
                 <p>
                     <span>卖{{eachWithIndexFromOne @index}}</span>
-                    <span>{{formatNumber restNumber 4}}</span>
+                    <span>{{formatNumber pendingNumber 4}}</span>
                     <span>{{formatNumber sumPrice 6}}</span>
                 </p>
                 {{/each}}
@@ -92,7 +94,7 @@
                 {{#each transactionPendOrderBuyList}}
                     <p>
                     <span>买{{eachWithIndexFromOne @index}}</span>
-                    <span>{{formatNumber restNumber 4}}</span>
+                    <span>{{formatNumber pendingNumber 4}}</span>
                     <span>{{formatNumber sumPrice 6}}</span>
                     </p>
                 {{/each}}
@@ -100,7 +102,7 @@
         </div>
         <div class="clear"></div>
     </div>
-    <!-- 买入卖出委托记录 -->
+    <!-- 买入和卖出操作 -->
     <div class="main">
         <ul class="mainTitle">
             <li>
@@ -120,22 +122,22 @@
     </div>
     <div class="tab">
     <input type="hidden" id="webAppPath" value="{{webAppPath}}"/>
-    <input type="hidden" id="userIsPwd" value="{{userIdPwd}}"/>
     <input type="hidden" id="cucyId" name="cucyId" value="{{transactionCurrency.currencyId}}">
     <!-- 买入 -->
     <div class="buy">
         <div class="mainContent">
             <div class="mainContent-priceBuy">
-                <span>单价</span><input id="buyPrice" name="buyPrice"  maxlength="9">
+                <span>单价</span><input type="number" id="buyPrice" name="buyPrice"  maxlength="9">
         </div>
         <div class="mainContent-numBuy">
-            <span>数量</span><input  id="buyNum" name="buyNum" maxlength="11">
+            <span>数量</span><input type="number" id="buyNum" name="buyNum" maxlength="11">
         </div>
             <input type="hidden" id="buyFee" value="{{transactionCurrency.buyFee}}">
             <input type="hidden" id="buyTotal">
             <p class="maxNum" id="buyMax">最大可买: 0</p>
             <div class="mainContent-passwordBuy">
                 <span>交易密码</span><input type="password" id="buyPwd" name="buyPwd" maxlength="16" onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')" />
+                <span class="setting">设置</span>
             </div>
         </div>
         <div class="mainButtonBuy">买入</div>
@@ -167,19 +169,18 @@
             <p class="maxNum" id="sellMax">最大可获得: 0</p>
             <div class="mainContent-passwordSell">
                 <span>交易密码</span><input type="password" id="sellPwd" name="sellPwd" maxlength="16" onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')" />
+                <span class="setting">设置</span>
             </div>
         </div>
         <div class="mainButtonSell">卖出</div>
             <div class="mainMoney">
                 <p class="mainMoney-title">
-                        <span>总资产</span>
                         <span>冻结数量</span>
                         <span>可用数量</span>
                 </p>
                 <p class="mainMoney-num">
-                    <span>{{formatNumber userDealCapitalMessage.currencyNumberSum 6}}</span>
-                    <span>{{formatNumber userDealCapitalMessage.userBalanceLock 6}}</span>
-                    <span>{{formatNumber userDealCapitalMessage.userBalance 6}}</span>
+                    <span id="currencyNumberLockShow">{{formatNumber userDealCapitalMessage.currencyNumberLock 6}}</span>
+                    <span id="currencyNumberShow">{{formatNumber userDealCapitalMessage.currencyNumber 6}}</span>
                 </p>
             </div>
         </div>
@@ -195,26 +196,32 @@
             </ul>
             {{#each transactionPendOrderList}}
             <ul class="entrust-content">
-                <li>{{paymentTypeFormat paymentType}}</li>
+                <li>{{{paymentTypeFormat paymentType}}}</li>
                 <li>{{formatNumber pendingPrice 2}}</li>
                 <li>{{formatNumber pendingNumber 4}}</li>
                 <li>{{formatNumber dealNumber 4}}</li>
-                <li id="toCancleOrder">撤销<input type="hidden" value="{{pendingOrderNo}}"/></li>
+                <li class="toCancleOrder">撤销<input type="hidden" value="{{pendingOrderNo}}"/></li>
                 <li class="clear"></li>
             </ul>
             {{/each}}
         </div>
     </div>
 </div>
-<div id="revokeDiv" style="display: none;width: 200px;height: 200px;background-color: #C9C9C9;position: absolute">
-    <p>撤销委托</p>
-    <p><img src="{{webAppPath}}/resources/image/wap/tips.png"/>确定撤销该委托内容？</p>
-    <div class="buttons">
-        <input type="hidden" id="pendOrderNoCancle" name="pendOrderNoCancle">
-        <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-        <input type="text" id="cancleOrder" value="确&nbsp;定" class="yes" onfocus="this.blur()" />
+
+<!--false-->
+<div class="mask_order" >
+    <div class="mask_content_order">
+        <div class="orderConfirm">
+            <p class="popTitle">撤销委托</p>
+            <div class="buttons">
+                <input type="hidden" id="pendOrderNoCancle" name="pendOrderNoCancle">
+                <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
+                <input type="text" id="cancleOrder" value="确&nbsp;定" class="yes" onfocus="this.blur()" />
+            </div>
+        </div>
     </div>
 </div>
+
 
 <!-- 底部tabBar -->
 <footer>
@@ -242,9 +249,7 @@
             <div class="clear"></div>
         </div>
         <div class="choseBzBox-content">
-            <ul>
-                    {{#eachFortransactionCurrencyList transactionUserDealList standardParameter webAppPath}}
-                    {{/eachFortransactionCurrencyList}}
+            <ul id="currencyListUl">
             </ul>
         </div>
     </div>
@@ -305,13 +310,37 @@
             <div class="buttons">
                 <input type="hidden" id="sellPwdConfirm" />
                 <input  type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()"/>
-                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="sellHandle()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" id="sellHandler"/>
             </div>
         </div>
     </div>
 </div>
 
 <!--其他-->
+<!-- 密码设置弹窗 -->
+
+<div class="cin">
+    <div class="settingBox">
+        <div class="settingTitle">记住密码提示</div>
+        <div class="settingContent">
+            <label>
+                <input type="radio" name="remember" value="2" class="choose"/>每次登陆只输入一次密码
+            </label>
+            <label>
+                <input type="radio" name="remember" value="1" class="choose"/>每笔交易都输入密码
+            </label>
+            <p>
+                交易密码<input type="password" class="pas" id="rememberPwd" onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
+            </p>
+        </div>
+        <div class="settingButton">
+            <input type="hidden" id="payPasswordStatus" name="payPasswordStatus" value="{{payPasswordStatus}}"/>
+            <input type="hidden" id="userIsPwd" name="userIsPwd" value="{{userIsPwd}}"/>
+            <div class="cancelSetting">取消</div>
+            <div class="okaySetting">确定</div>
+        </div>
+    </div>
+</div>
 </script>
 </div>
 <script src="<%=path %>/resources/js/wap/common.js"></script>
