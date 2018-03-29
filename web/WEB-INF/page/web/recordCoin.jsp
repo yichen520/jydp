@@ -58,13 +58,16 @@
                         <c:if test="${coinOutRecord.handleStatus == 4}">
                             <p>审核状态：已撤回</p>
                         </c:if>
-                        <c:if test="${coinOutRecord.handleStatus == 2 and coinOutRecord.outStatus == 1}">
+                        <c:if test="${coinOutRecord.handleStatus == 2 and coinOutRecord.sendStatus == 1}">
                             <p>转出状态：待转出</p>
                         </c:if>
-                        <c:if test="${coinOutRecord.handleStatus == 2 and coinOutRecord.outStatus == 2}">
+                        <c:if test="${coinOutRecord.handleStatus == 2 and coinOutRecord.sendStatus == 2}">
+                            <p>转出状态：转出中</p>
+                        </c:if>
+                        <c:if test="${coinOutRecord.handleStatus == 2 and coinOutRecord.sendStatus == 3}">
                             <p>转出状态：转出成功</p>
                         </c:if>
-                        <c:if test="${coinOutRecord.handleStatus == 2 and coinOutRecord.outStatus == 3}">
+                        <c:if test="${coinOutRecord.handleStatus == 2 and coinOutRecord.sendStatus == 4}">
                             <p>转出状态：转出失败</p>
                         </c:if>
                         <c:if test="${coinOutRecord.handleStatus != 2}">
