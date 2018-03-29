@@ -201,7 +201,7 @@
 
         var coinRecordNo = $("#recallRecordNo").val();
         $.ajax({
-            url: '<%=path %>/userWeb/jydpUserCoinOutRecord/withdrawCoinOutRecord.htm',
+            url: '<%=path %>/userWap/presentRecord/withdrawCoinOutRecord.htm',
             type: 'post',
             data: {
                 coinRecordNo: coinRecordNo
