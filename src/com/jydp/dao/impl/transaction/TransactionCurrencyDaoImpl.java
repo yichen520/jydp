@@ -3,6 +3,7 @@ package com.jydp.dao.impl.transaction;
 import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.ITransactionCurrencyDao;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
+import com.jydp.entity.DTO.KGraphCurrencyDTO;
 import com.jydp.entity.DTO.TransactionCurrencyBasicDTO;
 import com.jydp.entity.DTO.TransactionUserDealDTO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
@@ -477,6 +478,20 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
         List<TransactionCurrencyBasicDTO> result = null;
         try {
             result = sqlSessionTemplate.selectList("TransactionCurrency_listAllTransactionCurrencyBasicInfor");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return result;
+    }
+
+    /**
+     * 查询所有交易币种id,和上线状态（k线图统计操作）
+     * @return 操作成功：返回币种信息，操作失败：返回null
+     */
+    public List<KGraphCurrencyDTO> listKGraphCurrency() {
+        List<KGraphCurrencyDTO> result = null;
+        try {
+            result = sqlSessionTemplate.selectList("TransactionCurrency_listKGraphCurrency");
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }

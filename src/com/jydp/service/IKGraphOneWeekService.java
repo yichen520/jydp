@@ -1,6 +1,7 @@
 package com.jydp.service;
 
 import com.jydp.entity.DO.kgraph.KGraphOneWeekDO;
+import com.jydp.entity.VO.TransactionGraphVO;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -38,6 +39,13 @@ public interface IKGraphOneWeekService {
      * @param num 数量
      * @return 操作成功：返回统计数据List，操作失败：返回null
      */
-    List<KGraphOneWeekDO> listKGraphLately(int currencyId, int num);
+    List<TransactionGraphVO> listKGraphLately(int currencyId, int num);
+
+    /**
+     * 更新节点数据
+     * @param kGraph 节点数据
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean updateKGraph(KGraphOneWeekDO kGraph);
 
 }

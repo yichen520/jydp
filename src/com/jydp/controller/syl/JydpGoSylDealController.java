@@ -111,15 +111,11 @@ public class JydpGoSylDealController {
 
         //判定订单状态
         Timestamp receiveTime = Timestamp.valueOf(receiveTimeStr);
-        boolean updateSyl = false;
+        boolean updateSyl;
         if(code.equals("1")){
-            updateSyl = jydpUserCoinOutRecordService.updateJydpUserCoinOutRecordBySyl(orderNo, recordNo,transactionCurrency.getCurrencyId(), 2, receiveTime);
-        } else if(code.equals("2")){
             updateSyl = jydpUserCoinOutRecordService.updateJydpUserCoinOutRecordBySyl(orderNo, recordNo,transactionCurrency.getCurrencyId(), 3, receiveTime);
         } else {
-            responseJson.put("code", 404);
-            responseJson.put("message", "无效状态标示");
-            return responseJson;
+            updateSyl = jydpUserCoinOutRecordService.updateJydpUserCoinOutRecordBySyl(orderNo, recordNo,transactionCurrency.getCurrencyId(), 4, receiveTime);
         }
 
         if(!updateSyl){

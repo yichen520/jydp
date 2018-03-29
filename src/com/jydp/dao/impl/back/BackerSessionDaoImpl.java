@@ -140,32 +140,7 @@ public class BackerSessionDaoImpl implements IBackerSessionDao {
             return false;
         }
     }
-    
-    /**
-     * 删除session(该服务暂停使用)
-     * @return 操作成功：返回true，操作失败：返回false
-     */
-    public boolean deleteSession() {
-        long queryStartTime = DateUtil.getCurrentTimeMillis();
-        
-        Map<String,Object> map = new HashMap<String,Object>();
-        map.put("queryStartTime", new Timestamp(queryStartTime));
-        
-        int resultNumber = 0;
-        
-        try {
-            resultNumber = sqlSessionTemplate.delete("BackerSession_deleteSession", map);
-        } catch (Exception e) {
-            LogUtil.printErrorLog(e);
-        }
-        
-        if(resultNumber > 0){
-            return true;
-        }else{
-            return false;
-        }
-    }
-    
+
 	/**
 	 * 查询session数量
 	 * @param loginTime 登陆时间
@@ -180,31 +155,5 @@ public class BackerSessionDaoImpl implements IBackerSessionDao {
         }
         return resultNumber;
 	}
-    
-    /**
-     * 删除session（定时器操作，该服务暂停使用）
-     * @param loginTime 登陆时间
-     * @param pageSize 删除数量
-     * @return 操作成功：返回true，操作失败：返回false
-     */
-    public boolean deleteSessionByTimeForTimer(Timestamp loginTime, int pageSize) {
-    	Map<String, Object> map = new HashMap<String, Object>();
-    	map.put("loginTime", loginTime);
-    	map.put("pageSize", pageSize);
-    	
-        int resultNumber = 0;
-        
-        try {
-            resultNumber = sqlSessionTemplate.delete("BackerSession_deleteSessionByTimeForTimer", map);
-        } catch (Exception e) {
-            LogUtil.printErrorLog(e);
-        }
-        
-        if(resultNumber > 0 && resultNumber == pageSize){
-            return true;
-        }else{
-            return false;
-        }
-    }
-    
+
 }

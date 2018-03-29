@@ -21,14 +21,8 @@ public interface ITransactionRedisDealCommonService {
     /** 每日开盘基准信息重置(昨日收盘价) */
     void updateWeeHoursBasisOfPrice();
 
-    /** k线图参数存入redis(时间节点：5分钟 5m、15分钟 15m、30分钟 30m、1小时 1h、4小时 4h、1天 1d 、1周 1w) */
-    void graphDataForRedis();
-
     /** 刷新交易指导价(昨日收盘价) */
     void gruidPriceForYesterdayPrice();
-
-    /** 每日交易统计 (注：该方法暂时停用)*/
-    boolean statistics();
 
     /**
      * 后台做单执行统计每天总成交量，总成交金额（定时器执行，系统初始化）

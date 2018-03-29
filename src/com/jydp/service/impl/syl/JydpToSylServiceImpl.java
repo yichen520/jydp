@@ -36,7 +36,8 @@ public class JydpToSylServiceImpl implements IJydpToSylService {
             return;
         }
 
-        List<String> coinRecordNoList = new ArrayList<>();
+        List<String> successList = new ArrayList<>();
+        List<String> failList = new ArrayList<>();
         for (JydpUserCoinOutRecordDO jydpUserCoinOutRecord: jydpUserCoinOutRecordList) {
             String orderNo = jydpUserCoinOutRecord.getCoinRecordNo();
             String userAccount = jydpUserCoinOutRecord.getUserAccount();
@@ -71,12 +72,21 @@ public class JydpToSylServiceImpl implements IJydpToSylService {
             if (responseJson != null
                     && responseJson.containsKey("code")
                     && responseJson.getInteger("code") == 1) {
-                coinRecordNoList.add(orderNo);
+                successList.add(orderNo);
+            }else if(responseJson != null
+                    && responseJson.containsKey("code")
+                    && responseJson.getInteger("code") != 1){
+                failList.add(orderNo);
             }
+
+
         }
         //批量修改状态
-        if(coinRecordNoList != null && coinRecordNoList.size() != 0){
-            jydpUserCoinOutRecordService.updateJydpUserCoinOutRecordOutStatus(coinRecordNoList);
+        if(successList != null && successList.size() != 0){
+            jydpUserCoinOutRecordService.updateJydpUserCoinOutRecordOutStatus(successList,2);
+        }
+        if(failList != null && failList.size() != 0){
+            jydpUserCoinOutRecordService.updateJydpUserCoinOutRecordOutStatus(failList,4);
         }
     }
 }

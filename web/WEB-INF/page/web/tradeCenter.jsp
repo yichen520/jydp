@@ -964,7 +964,7 @@
                     ]]
                 }
 
-                for (i; i < dataLength; i += 1) {
+                for (var i = dataLength - 1; i >= 0; i--) {
                     ohlc.push([
                         data[i].dealDate, // 时间节点
                         data[i].openPrice, // 开盘价

@@ -271,8 +271,19 @@
             });
         } else { //小于等于400k 原图上传
             formData.append("frontImg", $('#frontImg')[0].files[0]);
-            formData.append("backImg", $('#backImg')[0].files[0]);
-            uploadFile(formData);
+
+            if (fileObjB.size / 1024 > 400) {
+                photoCompress(fileObjB, {
+                    quality: 0.2
+                }, function (base64Codes) {
+                    var backFile = convertBase64UrlToBlob(base64Codes);
+                    formData.append("backImg", backFile, "file_backImg.jpg"); // 文件对象
+                    uploadFile(formData);
+                });
+            } else {
+                formData.append("backImg", $('#backImg')[0].files[0]);
+                uploadFile(formData);
+            }
         }
     }
 

@@ -199,7 +199,7 @@ public class TransactionMakeOrderServiceImpl implements ITransactionMakeOrderSer
                 deal.setCurrencyId(order.getCurrencyId());
                 deal.setTransactionPrice(order.getCurrencyPrice());
                 deal.setCurrencyNumber(entry.getKey());
-                deal.setCurrencyTotalPrice(NumberUtil.doubleFormat(BigDecimalUtil.mul(entry.getKey(), order.getCurrencyPrice()), 8));
+                deal.setCurrencyTotalPrice(BigDecimalUtil.mul(entry.getKey(), order.getCurrencyPrice()));
                 deal.setAddTime(DateUtil.longToTimestamp(order.getExecuteTime().getTime() + entry.getValue()));
 
                 transactionDealRedisDOS.add(deal);

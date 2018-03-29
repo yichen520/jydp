@@ -379,7 +379,7 @@ public class TransactionDealRedisDaoImpl implements ITransactionDealRedisDao {
     /**
      * 查询该币种最早的交易时间
      * @param currencyId 币种id
-     * @param prefix 记录号前缀（区别后台做单，还是用户挂单）
+     * @param prefix 记录号前缀（区别后台做单，还是用户挂单）,可为null
      * @return 操作成功：返回最早的交易时间，操作失败或无交易记录：返回null
      */
     public Timestamp getEarliestTime(int currencyId, String prefix) {

@@ -54,24 +54,6 @@ public class UserSessionServiceImpl implements IUserSessionService {
 	public int countSession(Timestamp loginTime) {
 		return userSessionDao.countSession(loginTime);
 	}
-	
-    /**
-     * 删除session（定时器操作,该方法暂停使用）
-     * @param loginTime 登陆时间
-     * @return 操作成功：返回true，操作失败：返回false
-     */
-    public boolean deleteSessionByTimeForTimer(Timestamp loginTime, int pageSize) {
-    	return userSessionDao.deleteSessionByTimeForTimer(loginTime, pageSize);
-    }
-
-	/**
-	 * 删除用户的session(该方法暂停使用)
-	 * @param userId 用户Id
-	 * @return 操作成功：返回true，操作失败：返回false
-	 */
-	public boolean deleteSessionByUserId(int userId) {
-		return userSessionDao.deleteSessionByUserId(userId);
-	}
 
 	/**
 	 * 删除redis中用户的session

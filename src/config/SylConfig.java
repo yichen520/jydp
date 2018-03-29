@@ -14,7 +14,7 @@ public class SylConfig {
     /**
      * 盛源链钱包平台服务器根路径
      **/
-    public static final String ROOT_URL = "http://192.168.12.37:8080/syl/";
+    public static final String ROOT_URL = "http://192.168.12.123:8080/";
 
     /**
      * 绑定用户接口

@@ -11,7 +11,7 @@ import java.util.Map;
 public class KGraphDTO {
 
     private int currencyId;  //币种Id
-    private Map<Long, KGraphFifteenMinutesDO> fiveMap;//五分钟节点
+    private Map<Long, KGraphFiveMinutesDO> fiveMap;//五分钟节点
     private Map<Long, KGraphFifteenMinutesDO> fifteenMap;//十五分钟节点
     private Map<Long, KGraphHalfhourDO> halfhourMap;//三十分钟节点
     private Map<Long, KGraphOneHoursDO> oneHoursMap;//一小时节点
@@ -39,7 +39,7 @@ public class KGraphDTO {
      *五分钟节点
      * @return 五分钟节点
      */
-    public Map<Long, KGraphFifteenMinutesDO> getFiveMap() {
+    public Map<Long, KGraphFiveMinutesDO> getFiveMap() {
         return fiveMap;
     }
 
@@ -47,7 +47,7 @@ public class KGraphDTO {
      *五分钟节点
      * @param fiveMap 五分钟节点
      */
-    public void setFiveMap(Map<Long, KGraphFifteenMinutesDO> fiveMap) {
+    public void setFiveMap(Map<Long, KGraphFiveMinutesDO> fiveMap) {
         this.fiveMap = fiveMap;
     }
 

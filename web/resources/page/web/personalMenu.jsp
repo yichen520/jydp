@@ -21,7 +21,7 @@
 
         <ul class="levelTwo">
             <li class="menuInfo"><a id="userMessage" href="<%=path %>/userWeb/userMessage/show.htm">个人信息</a></li>
-            <li class="menuInfo"><a href="#">银行卡绑定</a></li>
+            <li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">银行卡绑定</a></li>
         </ul>
     </li>
 
@@ -33,8 +33,8 @@
         </p>
 
         <ul class="levelTwo">
-            <li class="menuInfo"><a href="#">我要充值</a></li>
-            <li class="menuInfo"><a href="#">立即提现</a></li>
+            <li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">我要充值</a></li>
+            <li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">立即提现</a></li>
             <li class="menuInfo"><a id="userCoinWithdrawal" href="<%=path %>/userWeb/userCoinWithdrawal/show.htm">币种提现</a></li>
         </ul>
     </li>
@@ -50,8 +50,8 @@
             <%--<li class="menuInfo"><a id="accountRecord" href="<%=path %>/userWeb/accountRecord/show.htm">账户记录</a></li>--%>
             <li class="menuInfo"><a id="transactionPendOrderController" href="<%=path%>/userWeb/transactionPendOrderController/show.htm">委托记录</a></li>
             <li class="menuInfo"><a id="dealRecord" href="<%=path %>/userWeb/dealRecord/show.htm">成交记录</a></li>
-            <li class="menuInfo"><a href="#">充值记录</a></li>
-            <li class="menuInfo"><a href="#">提现记录</a></li>
+            <li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">充值记录</a></li>
+            <li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">提现记录</a></li>
             <li class="menuInfo"><a id="jydpUserCoinOutRecord" href="<%=path %>/userWeb/jydpUserCoinOutRecord/show.htm">币种提出记录</a></li>
         </ul>
     </li>
@@ -114,6 +114,10 @@
         }
     }
     var showPersonalMenu = setInterval(showPersonalMenu, 20);
+
+    function disableTip() {
+        openTips("该功能暂未开放");
+    }
 </script>
 </body>
 </html>

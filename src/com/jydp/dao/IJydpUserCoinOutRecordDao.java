@@ -61,7 +61,7 @@ public interface IJydpUserCoinOutRecordDao {
      * @param endFinishTime 完成结束时间 ，没有填null
      * @return 查询成功：返回用户转出记录数；查询失败：返回0
      */
-    int countJydpUserCoinOutRecordForBack(String coinRecordNo, String userAccount, String walletAccount, int currencyId, int handleStatus,
+    int countJydpUserCoinOutRecordForBack(String coinRecordNo, String userAccount, String walletAccount, int currencyId, int handleStatus, int sendStatus,
                                    Timestamp startAddTime, Timestamp endAddTime, Timestamp startFinishTime, Timestamp endFinishTime);
 
     /**
@@ -77,7 +77,7 @@ public interface IJydpUserCoinOutRecordDao {
      * @param endFinishTime 完成结束时间 ，没有填null
      * @return 查询成功：返回用户转出记录集合；查询失败：返回null
      */
-    List<JydpUserCoinOutRecordDO> listJydpUserCoinOutRecord(String coinRecordNo, String userAccount, String walletAccount, int currencyId, int handleStatus,
+    List<JydpUserCoinOutRecordDO> listJydpUserCoinOutRecord(String coinRecordNo, String userAccount, String walletAccount, int currencyId, int handleStatus, int sendStatus,
                                                             Timestamp startAddTime, Timestamp endAddTime, Timestamp startFinishTime, Timestamp endFinishTime,
                                                             int pageNumber, int pageSize);
 
@@ -109,9 +109,10 @@ public interface IJydpUserCoinOutRecordDao {
     /**
      * 根据记录号查询记录批量修改转出状态(jydp向syl提币申请)
      * @param coinRecordNoList 转出记录流水号集合
+     * @param sendStatus 转出状态，1：未转出，2：转出中，3：转出成功，4：转出失败
      * @return 修改成功：true；修改失败：false
      */
-    boolean updateJydpUserCoinOutRecordOutStatus(List<String> coinRecordNoList);
+    boolean updateJydpUserCoinOutRecordOutStatus(List<String> coinRecordNoList, int sendStatus);
 
     /**
      * 查询审核通过且未推送的列表
@@ -131,7 +132,7 @@ public interface IJydpUserCoinOutRecordDao {
      * @param orderNo 转出记录流水号
      * @param recordNo 盛源链记录号
      * @param coinId 币种Id
-     * @param code 状态 （1表示交易成功，2表示交易失败）
+     * @param code 状态 （3表示交易成功，4表示交易失败）
      * @param receiveTime 完成时间
      * @return 查询成功：返回记录信息；查询失败：返回null
      */

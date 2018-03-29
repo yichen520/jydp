@@ -7,7 +7,7 @@
 
     <select id="JydpUserCoinOutRecord_getJydpUserCoinOutRecordlist" parameterType="java.util.Map" resultType="JydpUserCoinOutRecordDO">
         SELECT coinRecordNo, currencyId, userId, userAccount, walletAccount, currencyName, currencyNumber, handleStatus, handleTime,
-        outStatus, finishTime, remark, addTime
+        outStatus, finishTime, remark, addTime, sendStatus
         FROM jydp_user_coin_out_record_tab
         WHERE userId = #{userId}
         ORDER BY addTime DESC
@@ -28,7 +28,7 @@
 
     <select id="JydpUserCoinOutRecord_getJydpUserCoinOutRecordByRecordNo" parameterType="java.lang.String" resultType="JydpUserCoinOutRecordDO">
         SELECT coinRecordNo, currencyId, userId, userAccount, walletAccount, currencyName, currencyNumber, handleStatus, handleTime,
-        outStatus, finishTime, remark, addTime
+        outStatus, finishTime, remark, addTime, sendStatus
         FROM jydp_user_coin_out_record_tab
         WHERE coinRecordNo = #{coinRecordNo}
     </select>
@@ -82,6 +82,9 @@
             <if test="handleStatus > 0">
                 AND handleStatus = #{handleStatus}
             </if>
+            <if test="sendStatus > 0">
+                AND sendStatus = #{sendStatus}
+            </if>
             <if test="startAddTime != null">
                 AND addTime <![CDATA[ >= ]]> #{startAddTime}
             </if>
@@ -99,7 +102,7 @@
 
     <select id="JydpUserCoinOutRecord_listJydpUserCoinOutRecord" parameterType="java.util.Map" resultType="JydpUserCoinOutRecordDO">
         SELECT coinRecordNo, currencyId, userId, userAccount, walletAccount, currencyName, currencyNumber,
-                handleStatus, handleTime, outStatus, finishTime, remark, addTime
+                handleStatus, handleTime, outStatus, finishTime, remark, addTime, sendStatus
         FROM jydp_user_coin_out_record_tab
         <where>
             <if test="coinRecordNo != null and coinRecordNo != '' ">
@@ -116,6 +119,9 @@
             </if>
             <if test="handleStatus > 0">
                 AND handleStatus = #{handleStatus}
+            </if>
+            <if test="sendStatus > 0">
+                AND sendStatus = #{sendStatus}
             </if>
             <if test="startAddTime != null">
                 AND addTime <![CDATA[ >= ]]> #{startAddTime}
@@ -162,7 +168,7 @@
 
     <select id="JydpUserCoinOutRecord_listJydpUserCoinOutRecordByCoinRecordNo" parameterType="java.util.Map" resultType="JydpUserCoinOutRecordDO">
         SELECT coinRecordNo, currencyId, userId, userAccount, walletAccount, currencyName, currencyNumber,
-        handleStatus, handleTime, outStatus, finishTime, remark, addTime
+        handleStatus, handleTime, outStatus, finishTime, remark, addTime, sendStatus
         FROM jydp_user_coin_out_record_tab
         WHERE coinRecordNo IN
         <foreach collection="coinRecordNoList" item="item" index="index" open="(" separator="," close=")">
@@ -172,7 +178,7 @@
 
     <update id="JydpUserCoinOutRecord_updateJydpUserCoinOutRecordOutStatus" parameterType="java.util.Map">
         UPDATE jydp_user_coin_out_record_tab
-        SET outStatus = 2
+        SET outStatus = 2, sendStatus = #{sendStatus}
         WHERE handleStatus = 2
         AND outStatus = 1
         AND coinRecordNo IN
@@ -183,7 +189,7 @@
 
     <select id="JydpUserCoinOutRecord_listNotPushRecord" resultType="JydpUserCoinOutRecordDO">
         SELECT coinRecordNo, currencyId, userId, userAccount, walletAccount, currencyName, currencyNumber,
-        handleStatus, handleTime, outStatus, finishTime, remark, addTime
+        handleStatus, handleTime, outStatus, finishTime, remark, addTime, sendStatus
         FROM jydp_user_coin_out_record_tab
         WHERE handleStatus = 2
           AND outStatus = 1
@@ -191,7 +197,7 @@
 
     <select id="JydpUserCoinOutRecord_getJydpUserCoinOutRecordByRecordNoAndCoinType" parameterType="java.util.Map" resultType="JydpUserCoinOutRecordDO">
         SELECT coinRecordNo, currencyId, userId, userAccount, walletAccount, currencyName, currencyNumber, handleStatus, handleTime,
-        outStatus, finishTime, remark, addTime
+        outStatus, finishTime, remark, addTime, sendStatus
         FROM jydp_user_coin_out_record_tab
         WHERE sylRecordNo = #{sylRecordNo}
         AND currencyId = #{coinId}
@@ -201,7 +207,7 @@
 
     <update id="JydpUserCoinOutRecord_updateJydpUserCoinOutRecordBySyl" parameterType="java.util.Map">
         UPDATE jydp_user_coin_out_record_tab
-        SET sylRecordNo = #{sylRecordNo}, outStatus = #{code}, finishTime = #{receiveTime}
+        SET sylRecordNo = #{sylRecordNo}, sendStatus = #{code}, finishTime = #{receiveTime}
         WHERE coinRecordNo = #{orderNo}
         AND handleStatus = 2
         AND outStatus = 2
