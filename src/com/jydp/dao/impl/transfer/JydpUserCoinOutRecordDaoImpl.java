@@ -57,7 +57,7 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
      * @param endFinishTime 完成结束时间 ，没有填null
      * @return 查询成功：返回用户转出记录数；查询失败：返回0
      */
-    public int countJydpUserCoinOutRecordForBack(String coinRecordNo, String userAccount, String walletAccount, int currencyId, int handleStatus,
+    public int countJydpUserCoinOutRecordForBack(String coinRecordNo, String userAccount, String walletAccount, int currencyId, int handleStatus, int sendStatus,
                                           Timestamp startAddTime, Timestamp endAddTime, Timestamp startFinishTime, Timestamp endFinishTime){
 
         Map<String, Object> map = new HashMap<>();
@@ -70,6 +70,7 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
         map.put("endAddTime", endAddTime);
         map.put("startFinishTime", startFinishTime);
         map.put("endFinishTime", endFinishTime);
+        map.put("sendStatus", sendStatus);
 
         int result = 0;
         try {
@@ -94,7 +95,7 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
      * @param endFinishTime 完成结束时间 ，没有填null
      * @return 查询成功：返回用户转出记录集合；查询失败：返回null
      */
-    public List<JydpUserCoinOutRecordDO> listJydpUserCoinOutRecord(String coinRecordNo, String userAccount, String walletAccount, int currencyId, int handleStatus,
+    public List<JydpUserCoinOutRecordDO> listJydpUserCoinOutRecord(String coinRecordNo, String userAccount, String walletAccount, int currencyId, int handleStatus, int sendStatus,
                                                                    Timestamp startAddTime, Timestamp endAddTime, Timestamp startFinishTime, Timestamp endFinishTime,
                                                                    int pageNumber, int pageSize){
         Map<String, Object> map = new HashMap<>();
@@ -109,6 +110,7 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
         map.put("endFinishTime", endFinishTime);
         map.put("startNumber", pageNumber * pageSize);
         map.put("pageSize", pageSize);
+        map.put("sendStatus", sendStatus);
 
         List<JydpUserCoinOutRecordDO> result = null;
 
@@ -275,13 +277,13 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
     /**
      * 根据记录号查询记录批量修改转出状态
      * @param coinRecordNoList 转出记录流水号集合
-     * @param outStatus 推送状态，1：未推送，2：返回成功，3：返回失败
+     * @param sendStatus 转出状态，1：未转出，2：转出中，3：转出成功，4：转出失败
      * @return 修改成功：true；修改失败：false
      */
-    public boolean updateJydpUserCoinOutRecordOutStatus(List<String> coinRecordNoList, int outStatus){
+    public boolean updateJydpUserCoinOutRecordOutStatus(List<String> coinRecordNoList, int sendStatus){
         Map<String, Object> map = new HashMap<>();
         map.put("coinRecordNoList", coinRecordNoList);
-        map.put("outStatus", outStatus);
+        map.put("sendStatus", sendStatus);
         int result = 0;
 
         try {
@@ -339,7 +341,7 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
      * @param orderNo 转出记录流水号
      * @param recordNo 盛源链记录号
      * @param coinId 币种Id
-     * @param code 状态 （1表示交易成功，2表示交易失败）
+     * @param code 状态 （3表示交易成功，4表示交易失败）
      * @param receiveTime 完成时间
      * @return 查询成功：返回记录信息；查询失败：返回null
      */

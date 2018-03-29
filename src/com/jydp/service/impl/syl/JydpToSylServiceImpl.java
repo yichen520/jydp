@@ -86,7 +86,7 @@ public class JydpToSylServiceImpl implements IJydpToSylService {
             jydpUserCoinOutRecordService.updateJydpUserCoinOutRecordOutStatus(successList,2);
         }
         if(failList != null && failList.size() != 0){
-            jydpUserCoinOutRecordService.updateJydpUserCoinOutRecordOutStatus(failList,3);
+            jydpUserCoinOutRecordService.updateJydpUserCoinOutRecordOutStatus(failList,4);
         }
     }
 }
