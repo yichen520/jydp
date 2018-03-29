@@ -17,63 +17,14 @@
 </head>
 <body>
     <header style="border-bottom:0">
-        <img src="./images/back.png" class="backimg"/>
+        <img src="<%=path %>/resources/image/wap/back.png" onclick="javascript:window.history.back(-1);" class="backimg"/>
         <p>币种提现记录</p>
     </header>
     <!-- 内容区域 -->
     <div class="wrapper">
         <div hidden="hidden" id="queryPageNumber" name="pageNumber"></div>
-
-        <div class="main">
-            <p class="titleBox">
-                <span class="name">盛源链</span>
-                <span class="state">审核通过</span>
-            </p>
-            <div class="content">
-                <p class="num">12345.00</p>
-                <p class="timeTitle">申请时间</p>
-                <p class="serialTitle">申请流水号</p>
-                <p class="time">2016-06-06 13:00:02</p>
-                <p class="serial">123456789012347</p>
-                <p class="clear"></p>
-            </div>
-            <p class="money-state">转出状态：
-                <span>转出成功</span>
-                <span style="display:none">转出中</span>
-                <span style="display:none">转出失败</span>
-            </p>
-            <div class="footer">
-                <p class="remark" >备注内容备注备注内容备注备注内容备注</p>
-                <p class="withdraw" style="display:none">撤回</p>
-                <p class="clear"></p>
-            </div>
-        </div>
-        <div class="main">
-            <p class="titleBox">
-                <span class="name">盛源链</span>
-                <span class="state">审核拒绝</span>
-            </p>
-            <div class="content">
-                <p class="num">12345.00</p>
-                <p class="timeTitle">申请时间</p>
-                <p class="serialTitle">申请流水号</p>
-                <p class="time">2016-06-06 13:00:02</p>
-                <p class="serial">123456789012347</p>
-                <p class="clear"></p>
-            </div>
-            <p class="money-state">转出状态：
-                <span>转出失败</span>
-                <span style="display:none">转出成功</span>
-                <span style="display:none">转出中</span>
-            </p>
-            <div class="footer">
-                <p class="remark">备注内容备注备注内容备注备注内容备注</p>
-                <p class="withdraw" style="display:none">撤回</p>
-                <p class="clear"></p>
-            </div>
-        </div>
     </div>
-    <p class="more">查看更多</p>
+    <p class="more" onclick="pageNext()">查看更多</p>
     <!-- 撤销弹窗 -->
     <div class="bg">
         <div class="showBox">
@@ -94,25 +45,26 @@
     {{#each this}}
     <div class="main">
         <p class="titleBox">
-            <span class="name">盛源链</span>
-            <span class="state">待审核</span>
+            <input type="hidden" id="recallRecordNo">
+            <span class="name">{{currencyName}}</span>
+            <span class="state">{{handleShow handleStatus}}</span>
         </p>
         <div class="content">
-            <p class="num">12345.00</p>
+            <%--<p class="num">{{formatNumber currencyNumber 2}}</p>--%>
             <p class="timeTitle">申请时间</p>
             <p class="serialTitle">申请流水号</p>
-            <p class="time">2016-06-06 13:00:02</p>
-            <p class="serial">123456789012347</p>
+            <p class="time">{{addTimeConvert addTime}}</p>
+            <p class="serial">{{coinRecordNo}}</p>
             <p class="clear"></p>
         </div>
         <p class="money-state">转出状态：
-            <span>转出中</span>
-            <span style="display:none">转出成功</span>
-            <span style="display:none">转出失败</span>
+            <span>{{sendShow sendStatus}}</span>
         </p>
         <div class="footer">
-            <p class="remark" style="display:none">备注内容备注备注内容备注备注内容备注</p>
-            <p class="withdraw">撤回</p>
+            <p class="remark" style="display:none">{{remark}}</p>
+            {{#withdrawShow handleStatus}}
+                <p class="withdraw">撤回</p>
+            {{/withdrawShow}}
             <p class="clear"></p>
         </div>
     </div>
@@ -121,9 +73,9 @@
 <script src="<%=path %>/resources/js/wap/common.js"></script>
 <script src="<%=path %>/resources/js/wap/zepto.min.js"></script>
 <script src="<%=path %>/resources/js/wap/jquery-2.1.4.min.js"></script>
-<script src="<%=path %>/resources/js/wap/present.js"></script>
 <script src="<%=path %>/resources/js/wap/simpleTips_wap.js"></script>
 <script src="<%=path %>/resources/js/wap/handlebars-v4.0.11.js"></script>
+<script src="<%=path %>/resources/js/wap/present.js"></script>
 <script type="text/javascript">
     //时间转换
     Handlebars.registerHelper("addTimeConvert", function (addTime) {
@@ -138,6 +90,115 @@
         var seconds = date.getSeconds();
         seconds=seconds < 10 ? ('0' + seconds) : seconds;
         return year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+    });
+
+    //函数加载
+    Handlebars.registerHelper('formatNumber', function (num, maxFractionDigits, options) {
+        if (isNaN(num) || isNaN(maxFractionDigits)) {
+            openTips("参数类型错误");
+            return false;
+        }
+        num = num.toString();
+        maxFractionDigits = parseInt(maxFractionDigits);
+        if (num.indexOf(".") === -1) {
+            return num;
+        }
+        var numField = num.split(".");
+        var integerDigits = numField[0];
+        var fractionDigits = numField[1];
+
+        if (fractionDigits.length <= maxFractionDigits) {
+            return num;
+        }
+        fractionDigits = fractionDigits.substring(0, maxFractionDigits);
+        var numStr = integerDigits + "." + fractionDigits;
+        return numStr;
+    });
+
+    //处理状态显示
+    Handlebars.registerHelper("handleShow", function (handleStatus) {
+        switch (handleStatus) {
+            case 1: return "待审核";break;
+            case 2: return "审核通过";break;
+            case 3: return "审核拒绝";break;
+            case 4: return "已撤回";
+        }
+    });
+
+    //撤回按钮显示
+    Handlebars.registerHelper("withdrawShow", function (handleStatus,options) {
+        if (handleStatus == 1) {
+            //满足条件执行
+            return options.fn(this);
+        }
+    });
+
+    //转出状态显示
+    Handlebars.registerHelper("sendShow" ,function (sendStatus) {
+        switch (sendStatus) {
+            case 1: return "待转出";break;
+            case 2: return "转出中";break;
+            case 3: return "转出成功";break;
+            case 4: return "转出失败";
+        }
+    });
+
+    //提币记录数据填充
+    var presentListData = ${requestScope.coinOutRecordList};
+    var presentfunc = Handlebars.compile($('#template').html());
+    $('.wrapper').html(presentfunc(presentListData));
+
+    //更多
+    function pageNext() {
+        var pageNumber = $("#queryPageNumber").html();
+        var totalPageNumber = parseInt(${requestScope.totalPageNumber});
+        if(pageNumber < totalPageNumber - 1){
+            pageNumber = pageNumber + 1;
+            $.ajax({
+                url: '<%=path %>/userWap/presentRecord/showMorePresent',
+                type: 'post',
+                dataType: 'json',
+                data:{pageNumber:pageNumber,},//参数
+                success: function (result) {
+                    if (result.code == 1) {
+                        var presentList = result.coinOutRecordList;
+                        if (presentList != null) {
+                            var transactionfunc = Handlebars.compile($('#template').html());
+                            $('.wrapper').append(transactionfunc(noticeList));
+                            $('#queryPageNumber').html(result.pageNumber)
+                        }
+                    }
+                }
+            });
+        } else {
+            $(".more").remove();
+            openTips("已全部加载完成");
+        }
+    }
+
+    var coinRecordNo = $("#recallRecordNo").val();
+    $.ajax({
+        url: '<%=path %>/userWeb/jydpUserCoinOutRecord/withdrawCoinOutRecord.htm',
+        type:'post',
+        data:{
+            coinRecordNo:coinRecordNo
+        },
+        dataType:'json',
+        success:function (result) {
+            if (result.code == 1) {
+               window.location.href = "<%=path %>/userWap/presentRecord/show.htm";
+            } else {
+                openTips(result.message);
+                setTimeout(function () {
+                    window.location.href = "<%=path %>/userWap/presentRecord/show.htm";
+                }, 1000);
+            }
+            withdrawBoo = false;
+        },
+        error:function () {
+            withdrawBoo = false;
+            openTips("数据加载出错，请稍候重试");
+        }
     });
 </script>
 </html>
