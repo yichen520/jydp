@@ -72,7 +72,6 @@
 <script src="${pageContext.request.contextPath}/resources/js/wap/jquery-2.1.4.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/wap/common.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/wap/zepto.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/wap/aut.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/wap/simpleTips_wap.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/localResizeIMG.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/mobileBUGFix.mini.js"></script>
