@@ -230,6 +230,30 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
     }
 
     /**
+     * 获取所有币种行情信息(wap端)
+     * @return 查询成功：返回所有币种行情信息；查询失败：返回null
+     */
+    @Override
+    public List<TransactionUserDealDTO> getTransactionCurrencyMarketForWap() {
+        //查询所有币种
+        List<TransactionUserDealDTO> transactionUserDealList = transactionCurrencyDao.getTransactionCurrencyMarketForWap();
+        if (transactionUserDealList != null) {
+            for (TransactionUserDealDTO transactionUserDeal:transactionUserDealList) {
+                int currencyId = transactionUserDeal.getCurrencyId();
+                StandardParameterVO standardParameterVO = listTransactionCurrencyAll(currencyId);
+
+                transactionUserDeal.setLatestPrice(standardParameterVO.getNowPrice());
+                transactionUserDeal.setBuyOnePrice(standardParameterVO.getBuyOne());
+                transactionUserDeal.setSellOnePrice(standardParameterVO.getSellOne());
+                transactionUserDeal.setVolume(standardParameterVO.getDayTurnove());
+                transactionUserDeal.setChange(standardParameterVO.getTodayRange());
+            }
+        }
+        long endTime = System.currentTimeMillis();
+        return transactionUserDealList;
+    }
+
+    /**
      * 查询币种个数（后台）
      * @param currencyName  货币名称(币种)
      * @param paymentType  交易状态,1:正常，2:涨停，3:跌停，4:停牌

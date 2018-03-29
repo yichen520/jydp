@@ -104,6 +104,12 @@ public interface ITransactionCurrencyService {
     List<TransactionUserDealDTO> getTransactionCurrencyMarketForWeb();
 
     /**
+     * 获取所有币种行情信息(wap端)
+     * @return 查询成功：返回所有币种行情信息；查询失败：返回null
+     */
+    List<TransactionUserDealDTO> getTransactionCurrencyMarketForWap();
+
+    /**
      * 查询币种个数（后台）
      * @param currencyName  货币名称(币种)
      * @param paymentType  交易状态,1:正常，2:涨停，3:跌停，4:停牌
