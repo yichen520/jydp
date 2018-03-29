@@ -25,7 +25,7 @@
             <ul class="coinLink">
             </ul>
         </li>
-        <li class="navInfo"><a href="#">我要充值</a></li>
+        <li class="navInfo"><a href="javascript:void(0)" onclick="disableTip()">我要充值</a></li>
         <li class="navInfo"><a id="message" href="<%=path %>/userWeb/userMessage/show.htm">个人中心</a></li>
     </ul>
 
@@ -125,6 +125,10 @@
     function toTradeCenter(currencyId) {
         $("#menuCurrencyId").val(currencyId);
         $("#tradeCenterForm").submit();
+    }
+    
+    function disableTip() {
+        openTips("该功能暂未开放");
     }
 </script>
 </body>
