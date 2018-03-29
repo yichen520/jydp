@@ -752,7 +752,6 @@ var ParamsAndInit = {
     },
     updatePayPwd :function () {
         var payPasswordStatus = $("input[name='remember']:checked").val();
-        //var payPasswordStatus = parseInt($("#payPasswordStatus").val());
         var rememberPwd = $("#rememberPwd").val();
 
         var user = $("#userSession").val();
@@ -783,7 +782,6 @@ var ParamsAndInit = {
                     openTips(data.message);
                     return;
                 }
-
                 $('.cin').css("height","0");
                 $('.settingBox').animate({opacity:'0'},"100");
                 setTimeout(function(){

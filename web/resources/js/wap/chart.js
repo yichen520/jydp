@@ -218,7 +218,7 @@ var ChartParamsAndInit = {
         if (undefined == currencyId || currencyId == null || currencyId == "") {
             return;
         }
-        window.setInterval(ChartParamsAndInit.pendDeal, 5000);
+        window.setInterval(ChartParamsAndInit.dealInfo, 5000);
         window.setInterval(ChartParamsAndInit.deal, 5000);
     },
     openChart: function () {
@@ -364,7 +364,13 @@ var ChartParamsAndInit = {
                             color: '#cccccc'
                         }
                     },
-                    rangeSelector: {
+                    navigator: {
+                        enabled: false
+                    },
+                    scrollbar: {
+                        enabled: false
+                    },
+                    rangeSelector : {
                         enabled: false
                     },
                     yAxis: [{
@@ -375,59 +381,33 @@ var ChartParamsAndInit = {
                         },
                         floor: 0,  //  最低数据大于0，
                         labels: {
-                            format: '{value}',
-
-                        },
-                        title: {
-                            text: '价格'
+                            format: '{value}'
                         },
                         opposite: false,
-                        height: '78%',
+                        top: '12%',
+                        height: '88%',
                         resize: {
                             enabled: true
                         },
-                        lineWidth: 2
-                    }, {
-                        labels: {
-                            format: '{value}',
-                            enabled: false
-                        },
-                        resize: {
-                            enabled: true
-                        },
-                        opposite: false,
-                        title: {
-                            text: '成交量'
-                        },
-                        top: '80%',
-                        height: '20%',
-                        offset: 0,
                         lineWidth: 2
                     }],
-                    series: [
+                    series : [
                         {
-                            name: currencyName,
+                            name : '123',
                             type: 'candlestick',
+                            color: 'green',
+                            lineColor: 'green',
+                            upColor: 'red',
+                            upLineColor: 'red',
+                            data : ohlc,
                             data: ohlc,
-                            tooltip: {},
-                            data: ohlc,
+                            navigatorOptions: {
+                                color: Highcharts.getOptions().colors[0]
+                            },
                             dataGrouping: {
                                 units: groupingUnits
                             },
                             yAxis: 0
-
-                        },
-                        {
-                            name: '成交量',
-                            type: 'column',
-                            data: res,
-                            yAxis: 1,
-                            dataGrouping: {
-                                units: groupingUnits
-                            },
-                            color: "#68a8ee",
-                            tooltip: {},
-
                         }
                     ]
                 });
@@ -472,7 +452,7 @@ $().ready(function () {
             ChartParamsAndInit.openChart();
             ChartParamsAndInit.gainGraphData("5m", 7);
             ChartParamsAndInit.open();
-            ChartParamsAndInit.reloadData();
+           ChartParamsAndInit.reloadData();
         }
     });
 });
