@@ -142,6 +142,18 @@
 		WHERE phoneNumber = #{phoneNumber}
 	</select>
 
+	<select id="User_getUserByPhoneAndPassword" parameterType="java.util.Map" resultType="SylUserDO">
+		SELECT UT.userId, UT.userAccount, UT.phoneAreaCode, UT.phoneNumber, UT.userBalance,
+		UT.userBalanceLock, UT.accountStatus, UT.payPasswordStatus, UT.addTime, UIT.userCertNo
+		FROM user_tab UT
+		LEFT JOIN user_identification_tab UIT
+			ON UT.userId = UIT.userId
+		WHERE UT.phoneAreaCode = #{phoneAreaCode}
+			AND UT.phoneNumber = #{phoneNumber}
+			AND UT.password = #{password}
+			AND UIT.identificationStatus = 2
+	</select>
+
 	<update id="User_updateAddUserAmount" parameterType="java.util.Map">
 		UPDATE user_tab
 		SET userBalance = userBalance + #{userBalance},

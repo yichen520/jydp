@@ -27,6 +27,8 @@ public class UserBalanceConfig {
     public static final String BUY_ENTRUST = "买入挂单";
     /** 卖出挂单 */
     public static final String SELL_ENTRUST = "卖出挂单";
+    /** 币种提现 */
+    public static final String COIN_WITHDRAWAL = "币种提现";
 
 
 }

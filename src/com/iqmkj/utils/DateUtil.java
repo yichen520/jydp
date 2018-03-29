@@ -44,7 +44,16 @@ public class DateUtil {
 	
 	/** 时间字符串格式：yyyyMMdd */
 	public static final String dateFormat11 = "yyyyMMdd";
-	
+
+	/** 时间字符串格式：yyyy-MM-dd HH:mm:00.0 */
+	public static final String dateFormat12 = "yyyy-MM-dd HH:mm:00.0";
+
+	/** 时间字符串格式：yyyy-MM-dd HH:00:00.0 */
+	public static final String dateFormat13 = "yyyy-MM-dd HH:00:00.0";
+
+	/** 时间字符串格式：yyyy-MM-dd 00:00:00.0 */
+	public static final String dateFormat14= "yyyy-MM-dd 00:00:00.0";
+
 	/**
 	 * 获取当前时间的时间戳毫秒数
 	 * 推荐此种方法，执行速度快
@@ -168,6 +177,21 @@ public class DateUtil {
 		String dataStr = formatter.format(date);
 		Timestamp timestamp = Timestamp.valueOf(dataStr);
 		
+		return timestamp;
+	}
+
+	/**
+	 * 将时间戳毫秒数转换时间戳格式
+	 * @param timeLong 时间戳毫秒数
+	 * @param formatStr 时间字符串，例如格式：yyyy-MM-dd HH:mm:ss
+	 * @return 时间戳
+	 */
+	public static Timestamp longToTimestampByFormat(long timeLong, String formatStr){
+		SimpleDateFormat formatter = new SimpleDateFormat(formatStr);
+		Date date = new Date(timeLong);
+		String dataStr = formatter.format(date);
+		Timestamp timestamp = Timestamp.valueOf(dataStr);
+
 		return timestamp;
 	}
 

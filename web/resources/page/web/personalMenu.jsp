@@ -35,6 +35,7 @@
         <ul class="levelTwo">
             <li class="menuInfo"><a href="#">我要充值</a></li>
             <li class="menuInfo"><a href="#">立即提现</a></li>
+            <li class="menuInfo"><a id="userCoinWithdrawal" href="<%=path %>/userWeb/userCoinWithdrawal/show.htm">币种提现</a></li>
         </ul>
     </li>
 
@@ -51,6 +52,7 @@
             <li class="menuInfo"><a id="dealRecord" href="<%=path %>/userWeb/dealRecord/show.htm">成交记录</a></li>
             <li class="menuInfo"><a href="#">充值记录</a></li>
             <li class="menuInfo"><a href="#">提现记录</a></li>
+            <li class="menuInfo"><a id="jydpUserCoinOutRecord" href="<%=path %>/userWeb/jydpUserCoinOutRecord/show.htm">币种提出记录</a></li>
         </ul>
     </li>
 

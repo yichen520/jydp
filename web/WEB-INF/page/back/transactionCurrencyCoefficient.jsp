@@ -40,10 +40,10 @@
                                       value="${endAddTime}" onfocus="this.blur()"/>
                     </p>
                     <p class="condition">币种名称：
-                        <select class="askSelect" id="currencyId" name="currencyName">
+                        <select class="askSelect" id="currencyId" name="currencyId">
                             <option value="">全部</option>
                             <c:forEach items="${transactionCurrencyList}" var="item">
-                                <option value="${item.currencyName}">${item.currencyName}</option>
+                                <option value="${item.currencyId}">${item.currencyName}</option>
                             </c:forEach>
                         </select>
                     </p>
@@ -176,7 +176,7 @@
         }
 
         $("#currencyId option").each(function(){
-            if($(this).val()=='${currencyName}'){
+            if($(this).val()=='${currencyId}'){
                 $(this).attr('selected',true);
             }
         });

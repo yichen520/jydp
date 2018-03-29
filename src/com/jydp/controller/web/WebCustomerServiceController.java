@@ -52,7 +52,7 @@ public class WebCustomerServiceController {
                 String handleContent = userFeedback.getHandleContent();
                 if (StringUtil.isNotNull(handleContent)) {
                     handleContent = HtmlUtils.htmlEscape(handleContent);
-                    userFeedback.setFeedbackTitle(handleContent);
+                    userFeedback.setHandleContent(handleContent);
                 }
                 if (StringUtil.isNotNull(feedbackContent)) {
                     feedbackContent = HtmlUtils.htmlEscape(feedbackContent);

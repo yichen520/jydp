@@ -46,7 +46,7 @@ public class DealRecordController {
         int pageSize = 20;
 
         if (StringUtil.isNotNull(pendingOrderNo)) {
-            int totalNumber = transactionUserDealService.countTransactionUserDealByPendNo(pendingOrderNo);
+            int totalNumber = transactionUserDealService.countTransactionUserDealByPendNo(pendingOrderNo, userSession.getUserId());
 
             int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
             if (totalPageNumber <= 0) {
@@ -58,7 +58,7 @@ public class DealRecordController {
 
             List<TransactionUserDealVO> dealRecordList = null;
             if (totalNumber > 0) {
-                dealRecordList = transactionUserDealService.listTransactionUserDealByPendNo(pendingOrderNo, pageNumber, pageSize);
+                dealRecordList = transactionUserDealService.listTransactionUserDealByPendNo(pendingOrderNo, userSession.getUserId(), pageNumber, pageSize);
             }
 
             request.setAttribute("pageNumber", pageNumber);

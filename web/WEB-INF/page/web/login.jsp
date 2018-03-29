@@ -36,9 +36,10 @@
 
                 <p class="loginInfo">
                     <img src="<%=path %>/resources/image/web/password.png" class="loginImg" />
-                    <input type="password" class="loginInput" placeholder="登录密码" id="password" name="password"
+                    <input type="password" class="loginInput" placeholder="登录密码" id="password"
                            onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
                            maxLength="16" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                    <input type="hidden" id="encodePwd" name="password"/>
                 </p>
                 <p class="loginCode">
                     <input type="text" id="validateCode" name="validateCode" class="codeInput" placeholder="验证码"
@@ -87,8 +88,41 @@
             return;
         }
 
+        var pwd = encode64($("#password").val());
+        $("#encodePwd").val(pwd);
         $("#loginForm").submit();
     }
+
+    // base64加密开始
+    var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+    function encode64(input) {
+        var output = "";
+        var chr1, chr2, chr3 = "";
+        var enc1, enc2, enc3, enc4 = "";
+        var i = 0;
+        do {
+            chr1 = input.charCodeAt(i++);
+            chr2 = input.charCodeAt(i++);
+            chr3 = input.charCodeAt(i++);
+            enc1 = chr1 >> 2;
+            enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+            enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+            enc4 = chr3 & 63;
+            if (isNaN(chr2)) {
+                enc3 = enc4 = 64;
+            } else if (isNaN(chr3)) {
+                enc4 = 64;
+            }
+            output = output + keyStr.charAt(enc1) + keyStr.charAt(enc2)
+                + keyStr.charAt(enc3) + keyStr.charAt(enc4);
+            chr1 = chr2 = chr3 = "";
+            enc1 = enc2 = enc3 = enc4 = "";
+        } while (i < input.length);
+
+        return output;
+    }
+    // base64加密结束
 
     //字符串判空，为空返回true，非空返回false
     function isEmpty(validateStr) {

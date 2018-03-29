@@ -146,15 +146,8 @@ public class BackerBusinessesPartnerController {
         }
 
         //图片上传
-        String imgUrl = null;
-        /*try {
-            imgUrl = FileWriteRemoteUtil.uploadFile(businessesPartnerImageUrl.getOriginalFilename(),
-                    businessesPartnerImageUrl.getInputStream(), FileUrlConfig.file_remote_systemBusinessesPartner_url);
-        } catch (IOException e) {
-            LogUtil.printErrorLog(e);
-        }*/
-        imgUrl = ImageReduceUtil.reduceImageUploadRemote
-                (businessesPartnerImageUrl, request, FileUrlConfig.file_remote_systemBusinessesPartner_url);
+        String imgUrl = ImageReduceUtil.reduceImageUploadRemote
+                (businessesPartnerImageUrl, FileUrlConfig.file_remote_systemBusinessesPartner_url);
         if (!StringUtil.isNotNull(imgUrl)) {
             responsJson.setCode(-1);
             responsJson.setMessage("文件服务器未响应，请稍后重试");
@@ -335,14 +328,8 @@ public class BackerBusinessesPartnerController {
         //获取用户上传的图片
         String imgUrl = null;
         if (businessesPartnerImageUrl != null && !businessesPartnerImageUrl.isEmpty()) {
-            /*try {
-                imgUrl = FileWriteRemoteUtil.uploadFile(businessesPartnerImageUrl.getOriginalFilename(),
-                        businessesPartnerImageUrl.getInputStream(), FileUrlConfig.file_remote_systemBusinessesPartner_url);
-            } catch (IOException e) {
-                LogUtil.printErrorLog(e);
-            }*/
             imgUrl = ImageReduceUtil.reduceImageUploadRemote
-                    (businessesPartnerImageUrl, request, FileUrlConfig.file_remote_systemBusinessesPartner_url);
+                    (businessesPartnerImageUrl, FileUrlConfig.file_remote_systemBusinessesPartner_url);
         }
         if (businessesPartnerImageUrl != null && !businessesPartnerImageUrl.isEmpty() && !StringUtil.isNotNull(imgUrl)) {
             responsJson.setCode(5);
