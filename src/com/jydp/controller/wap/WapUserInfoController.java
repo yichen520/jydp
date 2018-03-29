@@ -526,4 +526,21 @@ public class WapUserInfoController {
         return response;
     }
 
+    /**
+     * 跳转到我的记录页面
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/myRecord/show.htm",method = RequestMethod.GET)
+    public String toMyRecord(HttpServletRequest request) {
+        UserSessionBO user = UserWebInterceptor.getUser(request);
+        if (user == null) {
+            request.setAttribute("code", 4);
+            request.setAttribute("message", "登陆过期");
+            return "page/wap/login";
+        }
+        return "page/wap/myRecord";
+    }
+
 }

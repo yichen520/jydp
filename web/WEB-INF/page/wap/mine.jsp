@@ -88,7 +88,7 @@
                     </p>
                     <div class="clear"></div>
                 </li>
-                <li>
+                <li id="myRecord">
                     <img src="<%=path%>/resources/image/wap/myrecordIco.png" class="icon"/>
                     <p>我的记录
                         <img src="<%=path%>/resources/image/wap/nextIcon.png" class="next" />
@@ -156,6 +156,10 @@
 
     $("#currencyAssets").click(function () {
         window.location.href="<%=path%>/userWap/userInfo/currencyAssets/show.htm";
+    })
+
+    $("#myRecord").click(function () {
+        window.location.href="<%=path%>/userWap/userInfo/myRecord/show.htm";
     })
 
     $("#userCoinWithdrawal").click(function () {
