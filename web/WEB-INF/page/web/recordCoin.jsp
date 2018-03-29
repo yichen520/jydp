@@ -34,7 +34,7 @@
                     <td class="time">申请流水号</td>
                     <td class="coin">币种</td>
                     <td class="amount">数量</td>
-                    <td class="state">审核状态</td>
+                    <td class="state">状态</td>
                     <td class="time">完成时间</td>
                     <td class="mark">备注</td>
                     <td class="operate">操作</td>
@@ -45,18 +45,32 @@
                     <td class="time">${coinOutRecord.coinRecordNo}</td>
                     <td class="coin">${coinOutRecord.currencyName}</td>
                     <td class="amount"><fmt:formatNumber type="number" value="${coinOutRecord.currencyNumber}" maxFractionDigits="2"></fmt:formatNumber></td>
-                    <c:if test="${coinOutRecord.handleStatus == 1}">
-                        <td class="state wait">待审核</td>
-                    </c:if>
-                    <c:if test="${coinOutRecord.handleStatus == 2}">
-                        <td class="state pass">审核通过</td>
-                    </c:if>
-                    <c:if test="${coinOutRecord.handleStatus == 3}">
-                        <td class="state refuse">审核拒绝</td>
-                    </c:if>
-                    <c:if test="${coinOutRecord.handleStatus == 4}">
-                        <td class="state">已撤回</td>
-                    </c:if>
+                    <td class="state">
+                        <c:if test="${coinOutRecord.handleStatus == 1}">
+                            <p>审核状态：待审核</p>
+                        </c:if>
+                        <c:if test="${coinOutRecord.handleStatus == 2}">
+                            <p>审核状态：审核通过</p>
+                        </c:if>
+                        <c:if test="${coinOutRecord.handleStatus == 3}">
+                            <p>审核状态：审核拒绝</p>
+                        </c:if>
+                        <c:if test="${coinOutRecord.handleStatus == 4}">
+                            <p>审核状态：已撤回</p>
+                        </c:if>
+                        <c:if test="${coinOutRecord.handleStatus == 2 and coinOutRecord.outStatus == 1}">
+                            <p>转出状态：待转出</p>
+                        </c:if>
+                        <c:if test="${coinOutRecord.handleStatus == 2 and coinOutRecord.outStatus == 2}">
+                            <p>转出状态：转出成功</p>
+                        </c:if>
+                        <c:if test="${coinOutRecord.handleStatus == 2 and coinOutRecord.outStatus == 3}">
+                            <p>转出状态：转出失败</p>
+                        </c:if>
+                        <c:if test="${coinOutRecord.handleStatus != 2}">
+                            <p>转出状态：</p>
+                        </c:if>
+                    </td>
                     <td class="time"><fmt:formatDate type="time" value="${coinOutRecord.finishTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
                     <td class="mark">${coinOutRecord.remark}</td>
                     <td class="operate">
