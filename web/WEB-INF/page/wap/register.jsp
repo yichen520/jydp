@@ -397,6 +397,9 @@
                         $("#userAccountIde").val(userAccount);
                         $("#identificationForm").submit();
                     }, 3000)
+
+                    //注册成功跳转到实名认证页面
+                    window.location.href="<%=path %>/wapLogin";
                 } else {
                     openTips(result.message);
                 }
@@ -409,20 +412,20 @@
         });
     }
 
-    //input框加载图片的处理
-    var checked = false;
+    //复选框加载图片的处理
+    var checked = true;
     var flag = 1;
     $(".footer").on('click', function () {
         if (flag == 1) {
-            $(".checkboxBox").css("background", "url(../../resources/image/wap/check-yes.png) no-repeat");
-            $(".checkboxBox").css("background-size", "cover");
-            flag = 0;
-            checked = true;
-        } else {
             $(".checkboxBox").css("background", "url(../../resources/image/wap/check-no.png) no-repeat");
             $(".checkboxBox").css("background-size", "cover");
-            flag = 1;
+            flag = 0;
             checked = false;
+        } else {
+            $(".checkboxBox").css("background", "url(../../resources/image/wap/check-yes.png) no-repeat");
+            $(".checkboxBox").css("background-size", "cover");
+            flag = 1;
+            checked = true;
         }
     })
 </script>
