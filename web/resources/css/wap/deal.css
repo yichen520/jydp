@@ -277,7 +277,7 @@
     display: block;
     float: left;
     padding-left: 0.62rem;
-    width: 70%;
+
     height: 0.7rem;
     line-height: 0.7rem;
     font-size: 0.24rem;
@@ -379,11 +379,22 @@
     color: #666; 
     text-align: center;
 }
-.entrust .entrust-content:nth-of-type(odd) li:nth-of-type(1){
-    color: #00be97;
+.setting{
+    margin-left: 0;
+    float: right;
+    text-align: right;
+    color: #999;
+    line-height: 0.7rem;
+    font-size: 0.24rem;
+    padding-right: 0.2rem;
 }
-.entrust .entrust-content:nth-of-type(even) li:nth-of-type(1){
-    color: #e83a33;
+.cin{
+    width: 100%;
+    background: rgba(0,0,0,0.7);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 99;
 }
 .entrust-content li:nth-of-type(1){
     text-align: left
@@ -398,7 +409,70 @@
     text-align: right;
     color: #68adfa;
 }
-
+.settingBox{
+    border-radius: 2px;
+    width: 5.64rem;
+    position: fixed;
+    left: 50%;
+    margin-left: -2.82rem;
+    top: 45%;
+    margin-top: -2rem;
+    z-index: 100;
+    opacity: 0;
+    display: none;
+    background: #fff;
+}
+.settingTitle{
+    text-align: center;
+    width: 100%;
+    height: 1rem;
+    line-height: 1rem;
+    font-size: 0.32rem;
+    color: #000;
+    border-bottom: 1px solid #ececec;
+}
+.settingContent{
+    padding: 0rem 0.3rem 0.36rem 0.3rem;
+    font-size: 0.28rem;
+    color: #333;
+}
+.settingContent label{
+    float: left;
+    width: 100%;
+    padding-top: 0.2rem;
+}
+.settingContent label:nth-of-type(2){
+    margin-bottom: 0.24rem;
+}
+.settingContent .pas{
+    height: 0.7rem;
+    line-height: 0.7rem;
+    font-size: 0.24rem;
+    color: #666;
+    width: 65%;
+    margin-left: 0.2rem;
+    border: 1px solid #ececec;
+    padding-left: 0.2rem;
+}
+.choose{
+    margin-right: 0.1rem;
+}
+.settingButton{
+    display: flex;
+}
+.settingButton div{
+    flex: 1;
+    font-size: 0.32rem;
+    line-height: 0.9rem;
+    text-align: center;
+    color: #999;
+    border-top: 1px solid #ececec;
+    border-right:1px solid #ececec;
+}
+.settingButton div:nth-of-type(2){
+    color: #e83a33;
+    border-right:0;
+}
 /* 选择币种 */
 .choseBz{
     width: 100%;
@@ -478,9 +552,8 @@
     position:fixed;
     width: 100%;
     min-width: 1400px;
-    height:100%;
     background-color:rgba(0,0,0,0.6);
-    z-index:10;
+    z-index:100;
     top:0;
 }
 .mask_content{
@@ -492,13 +565,13 @@
 }
 .popTitle{
     position: relative;
-    padding-left: 20px;
-    width: 380px;
-    height: 40px;
-    line-height: 40px;
+    padding-left: 0.3rem;
+    width: 92%;
+    height: 1.3rem;
+    line-height: 1rem;
     display: inline-block;
     border-radius: 10px 10px 0 0;
-    font-size: 16px;
+    font-size: 0.3rem;
     color: #666666;
     border-bottom: 1px solid #ececec;
 }
@@ -521,17 +594,17 @@
     vertical-align: middle;
 }
 .buttons{
-    padding: 20px 20px 20px 0;
-    width: 380px;
-    text-align: right;
+
 }
 .yes{
-    width: 65px;
-    height: 30px;
-    border: 1px solid #e83a33;
+    float: left;
+    width:50%;
+    border-right:0;
+    height: 0.75rem;
+    line-height:0.75rem;
     background-color: #e83a33;
     text-align: center;
-    font-size: 14px;
+    font-size: 0.26rem;
     color: #ffffff;
     cursor: pointer;
 }
@@ -539,13 +612,14 @@
     background-color: #d0342e;
 }
 .cancel{
-    margin-right: 20px;
-    width: 65px;
-    height: 30px;
-    border: 1px solid #cccccc;
+    float: left;
+    border-left:0;
+    width: 50%;
+    height: 0.75rem;
+    line-height:0.75rem;
     background-color: #ffffff;
     text-align: center;
-    font-size: 14px;
+    font-size:0.26rem;
     color: #333333;
     cursor: pointer;
 }
@@ -587,24 +661,30 @@
     height: 35px;
     line-height: 35px;
 }
-
-
+.red{
+    color: #e83a33
+}
+.green{
+    color: #00be97;
+}
 .mask_order{
     display: none;
     position:fixed;
     width: 100%;
     min-width: 1400px;
-    height:100%;
     background-color:rgba(0,0,0,0.6);
-    z-index:10;
+    z-index:100;
     top:0;
 }
 .mask_content_order {
-    width:400px;
-    margin:300px  auto;
+    position: fixed;
+    margin-left:-2rem;
+    left:50%;
+    top:35%;
+    width:4rem;
     background-color:#ffffff;
     font-size: 14px;
-    border-radius: 5px;
+
 }
 .orderConfirm{
     display: none;

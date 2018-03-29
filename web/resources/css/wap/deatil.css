@@ -1,0 +1,17 @@
+body{
+    background: #f5f5f5;
+}
+header .backimg{
+    position: absolute;
+    top: 0.28rem;
+    left: 0.3rem;
+    width: 0.19rem;
+    height: 0.35rem;
+}
+.content{
+    margin-top: 1.11rem;
+    padding: 0.3rem;
+    background: #fff;
+    font-size: 0.3rem;
+    color: #333;
+}

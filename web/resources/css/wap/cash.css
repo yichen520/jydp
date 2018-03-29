@@ -1,0 +1,176 @@
+body{
+    background: #f76767;
+}
+header{
+    background: #f76767;
+    border: 0;
+}
+header p {
+    color: #fff
+}
+header .back{
+    position: absolute;
+    top: 0.28rem;
+    left: 0.3rem;
+    width: 0.19rem;
+    height: 0.35rem;
+}
+.topBanner{
+    position: absolute;
+    top: 2.7rem;
+    width: 100%;
+    height: 100%;
+}
+.content-box{
+    position: absolute;
+    width: 7.3rem;
+    left: 50%;
+    margin-left: -3.65rem;
+    height: 8.12rem;
+    top: 1.3rem;
+    background:url('../../image/wap/cash-card.png');
+    background-size:cover; 
+    
+}
+.top{
+    width: 100%;
+}
+.money{
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 0.5rem;
+    color: #333;
+    padding-top: 0.6rem;
+}
+.moneyDes{
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-size: 0.24rem;
+    color: #bbb;
+    padding-top: 0.2rem;
+}
+.center{
+    margin-top: 1.2rem;
+    padding-left: 0.45rem;
+    padding-right: 0.45rem;
+}
+.txChose{
+    border-bottom: 1px solid #ececec;
+    margin-top: 0.2rem;
+}
+.txt{
+    display: inline-block;
+    height: 0.6rem;
+    line-height: 0.6rem;
+    font-size: 0.28rem;
+    color: #666;
+    float: left;
+    width: 1.6rem;  
+    font-weight: 400;
+}
+.code{
+     background: #fff;
+    width: 2rem;
+    float: right;
+    font-size: 0.26rem;
+    color: #68adfa;
+    line-height: 0.6rem;
+    text-align: right
+}
+.tishi{
+    float: left;
+    margin-top: 0.06rem;
+    margin-right: 0.2rem;
+    width: 0.22rem;
+    height: 0.22rem;
+}
+.txt span{
+    color: #f04641;
+}
+.txChose select{
+    width: 4rem;
+    margin-left: 0.48rem;
+    float: left;
+    line-height: 0.6rem;
+    font-size: 0.28rem;
+    color: #333;
+    background: #fff;
+    border:0;
+}
+option{
+    line-height: 0.6rem;
+    font-size: 0.28rem;
+}
+.txChose img{
+    margin-top: 0.2rem;
+    width: 0.14rem;
+    height: 0.24rem;
+    float: right;
+}
+.txNum{
+    border-bottom: 1px solid #ececec;
+    margin-top: 0.38rem; 
+}
+.txNum input{
+    width: 4rem;
+    margin-left: 0.48rem;
+    float: left;
+    line-height: 0.6rem;
+    font-size: 0.28rem;
+    color: #333;
+    background: #fff;
+    border:0;
+}
+.phoneCode{
+    border-bottom: 1px solid #ececec;  
+}
+.desc{
+    display: block;
+    margin-top: 0.15rem;
+    margin-bottom: 0.3rem;
+    font-size: 0.24rem;
+    color: #ccc;
+}
+.phoneCode .codeTxt{
+    width: 1.5rem;
+    margin-left: 0.48rem;
+    float: left;
+    line-height: 0.6rem;
+    font-size: 0.28rem;
+    color: #333;
+    background: #fff;
+    border:0; 
+}
+.traPassword{
+    border-bottom: 1px solid #ececec
+}
+.traPassword input{
+    width: 4rem;
+    margin-left: 0.5rem;
+    float: left;
+    line-height: 0.6rem;
+    font-size: 0.28rem;
+    color: #333;
+    background: #fff;
+    border:0;
+}
+.button{
+    margin: 0 auto;
+    margin-top: 1rem;
+    font-size: 0.3rem;
+    color: #fff;
+    width: 6.9rem;
+    border-radius: 3px;
+    box-shadow: 0px 5px 15px rgba(248,183,180,0.6);
+    height: 0.66rem;
+    line-height: 0.66rem;
+    text-align: center;
+    background: -ms-linear-gradient(top, #fe5c5c, #e83e3a);
+    background: -moz-linear-gradient(top,#fe5c5c,#e83e3a);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%,from(#fe5c5c), to(#e83e3a));
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fe5c5c), to(#e83e3a));
+    background: -webkit-linear-gradient(top, #fe5c5c, #e83e3a);
+    background: -o-linear-gradient(top, #fe5c5c, #e83e3a);
+}
