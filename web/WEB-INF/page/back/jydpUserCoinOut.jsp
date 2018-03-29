@@ -54,11 +54,12 @@
                         </select>
                     </p>
                     <p class="condition">转出状态：
-                        <select class="askSelect" id="outStatus" name="outStatus">
+                        <select class="askSelect" id="sendStatus" name="sendStatus">
                             <option value="0">全部</option>
-                            <option value="1">待转出</option>
-                            <option value="2">转出成功</option>
-                            <option value="3">转出失败</option>
+                            <option value="1">未转出</option>
+                            <option value="2">转出中</option>
+                            <option value="3">转出成功</option>
+                            <option value="4">转出失败</option>
                         </select>
                     </p>
                     <p class="condition">
@@ -124,19 +125,22 @@
                         <c:if test="${jydpUserCoinOutRecord.handleStatus == '1'}">
                             <td class="state">
                                 <p>审核状态：待审核</p>
-                                <p>转出状态：待推送</p>
+                                <p>转出状态：未转出</p>
                             </td>
                         </c:if>
                         <c:if test="${jydpUserCoinOutRecord.handleStatus == '2'}">
                             <td class="state">
                                 <p>审核状态：审核通过</p>
-                                <c:if test="${jydpUserCoinOutRecord.outStatus == '1'}">
-                                    <p>转出状态：待推送</p>
+                                <c:if test="${jydpUserCoinOutRecord.sendStatus == '1'}">
+                                    <p>转出状态：未转出</p>
                                 </c:if>
-                                <c:if test="${jydpUserCoinOutRecord.outStatus == '2'}">
+                                <c:if test="${jydpUserCoinOutRecord.sendStatus == '2'}">
+                                    <p>转出状态：转出中</p>
+                                </c:if>
+                                <c:if test="${jydpUserCoinOutRecord.sendStatus == '3'}">
                                     <p>转出状态：转出成功</p>
                                 </c:if>
-                                <c:if test="${jydpUserCoinOutRecord.outStatus == '3'}">
+                                <c:if test="${jydpUserCoinOutRecord.sendStatus == '4'}">
                                     <p>转出状态：转出失败</p>
                                 </c:if>
                             </td>
@@ -215,7 +219,7 @@
         var message = '${message}';
         $("#currencyId").val('${currencyId}');
         $("#handleStatus").val('${handleStatus}');
-        $("#outStatus").val('${outStatus}');
+        $("#sendStatus").val('${sendStatus}');
         if (code != 1 && message != "") {
             openTips(message);
             return false;
