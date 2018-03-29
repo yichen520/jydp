@@ -58,12 +58,9 @@ public class WapPresentRecordController {
         int userId = userSession.getUserId();
         int totalNumber = jydpUserCoinOutRecordService.countJydpUserCoinOutRecord(userId);
 
-        int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
+        int totalPageNumber = (int)Math.ceil(totalNumber / (pageSize * 1.0));
         if (totalPageNumber <= 0) {
             totalPageNumber = 1;
-        }
-        if (totalPageNumber <= pageNumber) {
-            pageNumber = totalPageNumber - 1;
         }
 
         List<JydpUserCoinOutRecordDO> jydpUserCoinOutRecordList = null;
@@ -102,12 +99,9 @@ public class WapPresentRecordController {
         int userId = userSession.getUserId();
         int totalNumber = jydpUserCoinOutRecordService.countJydpUserCoinOutRecord(userId);
 
-        int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
+        int totalPageNumber = (int)Math.ceil(totalNumber / (pageSize * 1.0));
         if (totalPageNumber <= 0) {
             totalPageNumber = 1;
-        }
-        if (totalPageNumber <= pageNumber) {
-            pageNumber = totalPageNumber - 1;
         }
 
         List<JydpUserCoinOutRecordDO> jydpUserCoinOutRecordList = null;
