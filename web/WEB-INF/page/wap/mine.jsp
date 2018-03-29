@@ -88,7 +88,7 @@
                     </p>
                     <div class="clear"></div>
                 </li>
-                <li>
+                <li id="myRecord">
                     <img src="<%=path%>/resources/image/wap/myrecordIco.png" class="icon"/>
                     <p>我的记录
                         <img src="<%=path%>/resources/image/wap/nextIcon.png" class="next" />
@@ -132,7 +132,7 @@
             <img src="<%=path%>/resources/image/wap/home-nochose.png"  class="home-icon"/>
             <p>首页</p>
         </a>
-        <a  href="<%=path%>/userWap/userMine/show.htm" class="deal">
+        <a  href="<%=path %>/userWap/tradeCenter/show" class="deal">
             <img src="<%=path%>/resources/image/wap/deal-nochose.png"  class="deal-icon"/>
             <p>交易</p>
         </a>
@@ -156,6 +156,10 @@
 
     $("#currencyAssets").click(function () {
         window.location.href="<%=path%>/userWap/userInfo/currencyAssets/show.htm";
+    })
+
+    $("#myRecord").click(function () {
+        window.location.href="<%=path%>/userWap/userInfo/myRecord/show.htm";
     })
 
 </script>

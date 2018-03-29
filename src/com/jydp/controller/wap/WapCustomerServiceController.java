@@ -41,7 +41,7 @@ public class WapCustomerServiceController {
             request.setAttribute("message", "未登录！");
             return "page/web/login";
         }
-        return "page/wap/service";
+        return "page/wap/wapCustomerService";
     }
 
     /**

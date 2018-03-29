@@ -2,6 +2,7 @@ package com.jydp.controller.sljz;
 
 import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.BigDecimalUtil;
+import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.NumberUtil;
 import com.iqmkj.utils.SignatureUtil;
 import com.iqmkj.utils.StringUtil;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.TreeMap;
 
 /**
@@ -95,16 +97,28 @@ public class GetCurrentPriceAndBottomPriceController {
             return responseJson;
         }
 
-        //获取该币种最近的系数
-        double todayRatio = 0.8;
-        TransactionCurrencyCoefficientDO currencyCoefficient = transactionCurrencyCoefficientService.getCurrencyCoefficientByCurrencyId(transactionCurrency.getCurrencyId());
+        //当前价
+        double currentPrice = transactionDealRedisService.getCurrentPrice(transactionCurrency.getCurrencyId(), SystemCommonConfig.TRANSACTION_MAKE_ORDER);
+        if (currentPrice <= 0) {
+            responseJson.put("code", 5);
+            responseJson.put("message", "最近无成交记录");
+            return responseJson;
+        }
+        currentPrice = NumberUtil.doubleFormat(currentPrice, 2);
+
+        Timestamp lingchenTime = DateUtil.longToTimestamp(DateUtil.lingchenLong());
+        Timestamp currentTime = DateUtil.getCurrentTime();
+
+        //获取该币种最近的系数,默认为0
+        double todayRatio = 0;
+        TransactionCurrencyCoefficientDO currencyCoefficient = transactionCurrencyCoefficientService.getCurrencyCoefficientByCurrencyId(transactionCurrency.getCurrencyId(), currentTime);
         if (currencyCoefficient != null && currencyCoefficient.getCurrencyCoefficient() > 0) {
             todayRatio = currencyCoefficient.getCurrencyCoefficient();
         }
 
         //查询当日成交总价，当日成交总数量
         TransactionBottomPriceDTO bottomPriceToday = transactionDealRedisService.
-                getBottomPriceToday(transactionCurrency.getCurrencyId(), SystemCommonConfig.TRANSACTION_MAKE_ORDER);
+                getBottomPrice(transactionCurrency.getCurrencyId(), SystemCommonConfig.TRANSACTION_MAKE_ORDER, lingchenTime, currentTime);
         if (bottomPriceToday == null) {
             bottomPriceToday = new TransactionBottomPriceDTO();
             bottomPriceToday.setCurrencyId(transactionCurrency.getCurrencyId());
@@ -121,7 +135,34 @@ public class GetCurrentPriceAndBottomPriceController {
             bottomPricePast.setTotalPrice(0);
         }
 
-        //总价:(历史当日总价 * 历史当日系数 + 当日总价*当日总系数)
+        //查询最后一条统计数据添加时间, 与当前时间相差大于24小时，统计昨日历史总价和总成交量
+        Timestamp lastAddTime = transactionStatisticsService.getLastAddTimeByCurrencyId(transactionCurrency.getCurrencyId());
+        if (lastAddTime != null && currentTime.getTime() - lastAddTime.getTime() > 1000 * 60 * 60 * 24 - 1000) {
+            Timestamp lingchenYesterday = DateUtil.longToTimestamp(DateUtil.lingchenLong() - 1000 * 60 * 60 * 24);
+            TransactionBottomPriceDTO bottomPriceYesterday = transactionDealRedisService.
+                    getBottomPrice(transactionCurrency.getCurrencyId(), SystemCommonConfig.TRANSACTION_MAKE_ORDER, lingchenYesterday, lingchenTime);
+            if (bottomPriceYesterday == null) {
+                bottomPriceYesterday = new TransactionBottomPriceDTO();
+                bottomPriceYesterday.setCurrencyId(transactionCurrency.getCurrencyId());
+                bottomPriceYesterday.setTotalNumber(0);
+                bottomPriceYesterday.setTotalPrice(0);
+            }
+
+            //获取该币种 今天0点之前的最新系数,默认为0
+            double yesterdayRatio = 0;
+            TransactionCurrencyCoefficientDO currencyCoefficientYesterday =
+                    transactionCurrencyCoefficientService.getCurrencyCoefficientByCurrencyId(transactionCurrency.getCurrencyId(), lingchenTime);
+            if (currencyCoefficientYesterday != null && currencyCoefficientYesterday.getCurrencyCoefficient() > 0) {
+                yesterdayRatio = currencyCoefficientYesterday.getCurrencyCoefficient();
+            }
+
+            double yesterdayPrice = BigDecimalUtil.add(bottomPricePast.getTotalPrice(), BigDecimalUtil.mul(bottomPriceYesterday.getTotalPrice(), yesterdayRatio));
+            double yesterdayNumber = BigDecimalUtil.add(bottomPricePast.getTotalNumber(), bottomPriceYesterday.getTotalNumber());
+            bottomPricePast.setTotalPrice(yesterdayPrice);
+            bottomPricePast.setTotalNumber(yesterdayNumber);
+        }
+
+        //总价:(历史当日总价 * 历史当日系数 + 当日总价*当日最新系数)
         double totalPrice = BigDecimalUtil.add(bottomPricePast.getTotalPrice(), BigDecimalUtil.mul(bottomPriceToday.getTotalPrice(), todayRatio));
         //总数量:(历史成交总数量 + 当日成交总数量)
         double totalNumber = BigDecimalUtil.add(bottomPricePast.getTotalNumber(), bottomPriceToday.getTotalNumber());
@@ -131,18 +172,20 @@ public class GetCurrentPriceAndBottomPriceController {
         String bottomPriceStr = BigDecimalUtil.div(totalPrice, totalNumber, 8);
         if (StringUtil.isNotNull(bottomPriceStr)) {
             bottomPrice = Double.parseDouble(bottomPriceStr);
-            bottomPrice = NumberUtil.doubleFormat(bottomPrice, 4);
+            bottomPrice = NumberUtil.doubleFormat(bottomPrice, 2);
         }
-
-        //当前价
-        double currentPrice = transactionDealRedisService.
-                getCurrentPrice(transactionCurrency.getCurrencyId(), SystemCommonConfig.TRANSACTION_MAKE_ORDER);
-        currentPrice = NumberUtil.doubleFormat(currentPrice, 4);
 
         TransactionBottomCurrentPriceDTO bottomCurrentPrice = new TransactionBottomCurrentPriceDTO();
         bottomCurrentPrice.setCurrencyShortName(transactionCurrency.getCurrencyShortName());
         bottomCurrentPrice.setKeepPrice(bottomPrice);
         bottomCurrentPrice.setCurrentPrice(currentPrice);
+
+        //防止异常数据
+        if (bottomCurrentPrice.getKeepPrice() <= 0) {
+            responseJson.put("code", 5);
+            responseJson.put("message", "系统数据异常");
+            return responseJson;
+        }
 
         responseJson.put("code", 1);
         responseJson.put("message", "查询成功");

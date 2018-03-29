@@ -1,0 +1,79 @@
+.askSelect{
+    width: 120px;
+}
+.askInput,.askTime{
+    width: 150px;
+}
+.topOperate{
+    float: right;
+}
+.refuse,.pass{
+    margin:10px 0 0 10px;
+    width: 80px;
+    height: 36px;
+    border: none;
+    text-align: center;
+    border-radius: 5px;
+    background-color: #49a2fb;
+    color: #ffffff;
+    font-size: 14px;
+    cursor: pointer;
+}
+.refuse:hover,.pass:hover{
+    background-color: #2c94fd;
+}
+.time{
+    width: 130px;
+}
+.number{
+    width: 110px;
+}
+.account{
+    width: 140px;
+}
+.coin{
+    width: 64px;
+}
+.amount{
+    width: 97px;
+}
+.state{
+    width: 110px;
+}
+.tableInfo .state{
+    text-align: left;
+}
+.mark{
+    width: 90px;
+}
+.check,.choose_two,.controlAll{
+    display: inline-block;
+    width: 70px;
+}
+.controlAll{
+    height: 30px;
+    line-height: 30px;
+}
+
+
+.pass_pop,.refuse_pop{
+    display: none;
+}
+.popName{
+    display: inline-block;
+    width: 50px;
+    height: 35px;
+    line-height: 35px;
+    text-align: left;
+    color: #666666;
+    font-size: 14px;
+}
+.txt{
+    float: right;
+    vertical-align: top;
+    padding: 5px;
+    width: 295px;
+    resize: none;
+    height: 60px;
+    border: 1px solid #ececec;
+}

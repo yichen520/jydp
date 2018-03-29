@@ -33,9 +33,7 @@ public class TransactionStatisticsDaoImpl implements ITransactionStatisticsDao {
     public TransactionBottomPriceDTO getBottomPricePast(int currencyId){
         Map<String,Object> map = new HashMap<>();
         map.put("currencyId", currencyId);
-        long lingchenLong = DateUtil.lingchenLong();
-        String todayData = DateUtil.longToTimeStr(lingchenLong, DateUtil.dateFormat2);
-        map.put("todayData", todayData);
+        map.put("todayData", DateUtil.getCurrentTime());
 
         TransactionBottomPriceDTO result = null;
         try {
@@ -129,6 +127,24 @@ public class TransactionStatisticsDaoImpl implements ITransactionStatisticsDao {
 
         try {
             date = sqlSessionTemplate.selectOne("TransactionStatistics_getLastAddTime");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return date;
+    }
+
+    /**
+     * 获取最后一条添加的时间
+     *
+     * @param currencyId 币种Id
+     * @return 操作成功：返回添加的时间，操作失败：返回null
+     */
+    public Timestamp getLastAddTimeByCurrencyId(int currencyId) {
+        Timestamp date = null;
+
+        try {
+            date = sqlSessionTemplate.selectOne("TransactionStatistics_getLastAddTimeByCurrencyId", currencyId);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }

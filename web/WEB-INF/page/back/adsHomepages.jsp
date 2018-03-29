@@ -261,12 +261,12 @@
         var adsImageUrlStr = document.getElementById("changead_t1").value;
         var adsImageUrl = document.getElementById("changead_a1").files[0];
 
-        if (adsTitle == null || adsTitle == "") {
-            return openTips("标题不能为空");
-        }
-
         if (adsImageUrlStr == null || adsImageUrlStr == '') {
             return openTips("请上传封面图");
+        }
+
+        if (adsTitle == null || adsTitle == "") {
+            return openTips("标题不能为空");
         }
 
         if (adsTitle.length < 2 || adsTitle.length > 16) {
@@ -534,7 +534,7 @@
         var filemaxsize = 1024 * 10;//10M
         if (filepath) {
             var isnext = false;
-            var fileend = filepath.substring(filepath.indexOf("."));
+            var fileend = filepath.substring(filepath.lastIndexOf("."));
             if (filetypes && filetypes.length > 0) {
                 for (var i = 0; i < filetypes.length; i++) {
                     if (filetypes[i] == fileend) {
@@ -544,7 +544,7 @@
                 }
             }
             if (!isnext) {
-                openTips("图片格式必须是,jpeg,jpg,png中的一种！");
+                openTips("图片格式必须是jpeg,jpg,png中的一种！");
                 target.value = "";
                 return false;
             }

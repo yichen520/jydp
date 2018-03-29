@@ -4,7 +4,9 @@ import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.ITransactionCurrencyDao;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
+import com.jydp.entity.DTO.KGraphCurrencyDTO;
 import com.jydp.entity.DTO.TransactionCurrencyBasicDTO;
+import com.jydp.entity.DTO.TransactionDealPriceDTO;
 import com.jydp.entity.DTO.TransactionUserDealDTO;
 import com.jydp.entity.VO.StandardParameterVO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
@@ -18,7 +20,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 交易币种
@@ -125,7 +130,7 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
             transactionCurrency.setUpTime(upTime);
         }
 
-        int maxNum = transactionCurrencyDao.countTransactionCurrencyForBack(null,0, 0, null, null, null,null, null);
+        int maxNum = transactionCurrencyDao.countTransactionCurrencyForBack(0,0, 0, null, null, null,null, null);
         //降位
         if (maxNum > 0) {
             addBoo = transactionCurrencyDao.updateCurrencyRankNumber(maxNum);
@@ -230,8 +235,32 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
     }
 
     /**
+     * 获取所有币种行情信息(wap端)
+     * @return 查询成功：返回所有币种行情信息；查询失败：返回null
+     */
+    @Override
+    public List<TransactionUserDealDTO> getTransactionCurrencyMarketForWap() {
+        //查询所有币种
+        List<TransactionUserDealDTO> transactionUserDealList = transactionCurrencyDao.getTransactionCurrencyMarketForWap();
+        if (transactionUserDealList != null) {
+            for (TransactionUserDealDTO transactionUserDeal:transactionUserDealList) {
+                int currencyId = transactionUserDeal.getCurrencyId();
+                StandardParameterVO standardParameterVO = listTransactionCurrencyAll(currencyId);
+
+                transactionUserDeal.setLatestPrice(standardParameterVO.getNowPrice());
+                transactionUserDeal.setBuyOnePrice(standardParameterVO.getBuyOne());
+                transactionUserDeal.setSellOnePrice(standardParameterVO.getSellOne());
+                transactionUserDeal.setVolume(standardParameterVO.getDayTurnove());
+                transactionUserDeal.setChange(standardParameterVO.getTodayRange());
+            }
+        }
+        long endTime = System.currentTimeMillis();
+        return transactionUserDealList;
+    }
+
+    /**
      * 查询币种个数（后台）
-     * @param currencyName  货币名称(币种)
+     * @param currencyId  币种Id,查询全部填0
      * @param paymentType  交易状态,1:正常，2:涨停，3:跌停，4:停牌
      * @param upStatus  上线状态,1:待上线,2:上线中,3:禁用,4:已下线
      * @param backAccount  管理员账号
@@ -241,15 +270,15 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      * @param endUpTime  结束上线时间
      * @return  操作成功：返回交易币种条数，操作失败：返回0
      */
-    public int countTransactionCurrencyForBack(String currencyName, int paymentType, int upStatus, String backAccount,
+    public int countTransactionCurrencyForBack(int currencyId, int paymentType, int upStatus, String backAccount,
                                                Timestamp startAddTime, Timestamp endAddTime, Timestamp startUpTime, Timestamp endUpTime){
-        return transactionCurrencyDao.countTransactionCurrencyForBack(currencyName, paymentType, upStatus,
+        return transactionCurrencyDao.countTransactionCurrencyForBack(currencyId, paymentType, upStatus,
                 backAccount, startAddTime, endAddTime, startUpTime, endUpTime);
     }
 
     /**
      * 查询币种集合（后台）
-     * @param currencyName  货币名称(币种)
+     * @param currencyId  币种Id,查询全部填0
      * @param paymentType  交易状态,1:正常，2:涨停，3:跌停，4:停牌
      * @param upStatus  上线状态,1:待上线,2:上线中,3:禁用,4:已下线
      * @param backAccount  管理员账号
@@ -261,10 +290,10 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      * @param pageSize 每页条数
      * @return  操作成功：返回交易币种条数，操作失败：返回0
      */
-    public List<TransactionCurrencyVO> listTransactionCurrencyForBack(String currencyName, int paymentType, int upStatus, String backAccount,
+    public List<TransactionCurrencyVO> listTransactionCurrencyForBack(int currencyId, int paymentType, int upStatus, String backAccount,
                                                                       Timestamp startAddTime, Timestamp endAddTime, Timestamp startUpTime, Timestamp endUpTime, int pageNumber, int pageSize){
 
-        List<TransactionCurrencyVO> transactionCurrencyVOS = transactionCurrencyDao.listTransactionCurrencyForBack(currencyName, paymentType, upStatus, backAccount,
+        List<TransactionCurrencyVO> transactionCurrencyVOS = transactionCurrencyDao.listTransactionCurrencyForBack(currencyId, paymentType, upStatus, backAccount,
                 startAddTime, endAddTime, startUpTime, endUpTime, pageNumber, pageSize);
 
         for (TransactionCurrencyVO currency: transactionCurrencyVOS) {
@@ -335,10 +364,32 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
             upBoo = transactionCurrencyDao.updatePaymentType(currencyId, 2, backerAccount, ipAddress);
         }
         if (upStatus == 2 && upBoo) {
-            boolean resultBoo = transactionDealRedisService.validateGuidancePrice(currencyId);
-            if (!resultBoo) {
-                upBoo = redisService.addValue(RedisKeyConfig.YESTERDAY_PRICE + currency.getCurrencyId(),
-                        currency.getGuidancePrice());
+            //判断当前时间是否是凌晨至开盘之前
+            long dateLon = DateUtil.lingchenLong();
+            long nowDate = DateUtil.getCurrentTime().getTime() - RedisKeyConfig.OPENING_TIME;
+            if(nowDate >= dateLon){
+                //八点至凌晨
+                dateLon = dateLon + RedisKeyConfig.OPENING_TIME;
+            } else {
+                //凌晨至八点
+                dateLon = dateLon - RedisKeyConfig.DAY_TIME + RedisKeyConfig.OPENING_TIME;
+            }
+
+            //昨日收盘价计算
+            dateLon = dateLon - 1;
+            Timestamp date = DateUtil.longToTimestamp(dateLon);
+
+            List<TransactionDealPriceDTO> nowLastPrice = transactionDealRedisService.getNowLastPrice(date);
+            TransactionCurrencyDO transactionCurrency = transactionCurrencyDao.getTransactionCurrencyByCurrencyId(currencyId);
+            if (nowLastPrice != null && !nowLastPrice.isEmpty()  && transactionCurrency != null) {
+                List<Integer> lowInt = new ArrayList<>();
+                for (TransactionDealPriceDTO currDTO: nowLastPrice) {
+                    lowInt.add(currDTO.getCurrencyId());
+                }
+
+                if (!lowInt.contains(currencyId)) {
+                    upBoo = redisService.addValue(RedisKeyConfig.YESTERDAY_PRICE + currencyId, currency.getGuidancePrice());
+                }
             }
         }
 
@@ -587,6 +638,22 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
      */
     public List<TransactionCurrencyBasicDTO> listAllTransactionCurrencyBasicInfor() {
         return transactionCurrencyDao.listAllTransactionCurrencyBasicInfor();
+    }
+
+    /**
+     * 获取所有上线中和停牌的币种id集合
+     * @return 查询成功:返回币种id集合, 查询失败:返回null
+     */
+    public List<Integer> listcurrencyId() {
+        return transactionCurrencyDao.listcurrencyId();
+    }
+
+    /**
+     * 查询所有交易币种id,和上线状态（k线图统计操作）
+     * @return 操作成功：返回币种信息，操作失败：返回null
+     */
+    public List<KGraphCurrencyDTO> listKGraphCurrency() {
+        return transactionCurrencyDao.listKGraphCurrency();
     }
 
 }

@@ -1,6 +1,7 @@
 package com.jydp.dao;
 
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
+import com.jydp.entity.DTO.KGraphCurrencyDTO;
 import com.jydp.entity.DTO.TransactionCurrencyBasicDTO;
 import com.jydp.entity.DTO.TransactionUserDealDTO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
@@ -65,7 +66,7 @@ public interface ITransactionCurrencyDao {
 
     /**
      * 查询币种个数（后台）
-     * @param currencyName  货币名称(币种)
+     * @param currencyId  币种Id,查询全部填0
      * @param paymentType  交易状态,1:正常，2:涨停，3:跌停，4:停牌
      * @param upStatus  上线状态,1:待上线,2:上线中,3:禁用,4:已下线
      * @param backAccount  管理员账号
@@ -75,12 +76,12 @@ public interface ITransactionCurrencyDao {
      * @param endUpTime  结束上线时间
      * @return  操作成功：返回交易币种条数，操作失败：返回0
      */
-    int countTransactionCurrencyForBack(String currencyName, int paymentType, int upStatus, String backAccount,
+    int countTransactionCurrencyForBack(int currencyId, int paymentType, int upStatus, String backAccount,
                                         Timestamp startAddTime, Timestamp endAddTime, Timestamp startUpTime, Timestamp endUpTime);
 
     /**
      * 查询币种集合（后台）
-     * @param currencyName  货币名称(币种)
+     * @param currencyId  币种Id,查询全部填0
      * @param paymentType  交易状态,1:正常，2:涨停，3:跌停，4:停牌
      * @param upStatus  上线状态,1:待上线,2:上线中,3:禁用,4:已下线
      * @param backAccount  管理员账号
@@ -92,7 +93,7 @@ public interface ITransactionCurrencyDao {
      * @param pageSize 每页条数
      * @return  操作成功：返回交易币种条数，操作失败：返回0
      */
-    List<TransactionCurrencyVO> listTransactionCurrencyForBack(String currencyName, int paymentType, int upStatus, String backAccount,
+    List<TransactionCurrencyVO> listTransactionCurrencyForBack(int currencyId, int paymentType, int upStatus, String backAccount,
                                                                Timestamp startAddTime, Timestamp endAddTime, Timestamp startUpTime, Timestamp endUpTime, int pageNumber, int pageSize);
 
     /**
@@ -127,6 +128,12 @@ public interface ITransactionCurrencyDao {
      * @return 查询成功：返回各币种信息；查询失败：返回null
      */
     List<TransactionUserDealDTO> getTransactionCurrencyMarketForWeb();
+
+    /**
+     * 为币种行情获取所有币种信息(wap)
+     * @return 查询成功：返回各币种信息；查询失败：返回null
+     */
+    List<TransactionUserDealDTO> getTransactionCurrencyMarketForWap();
 
     /**
      * 查询全部币种信息(web端用户注册时使用)
@@ -186,5 +193,16 @@ public interface ITransactionCurrencyDao {
      * @return 操作成功：返回币种信息，操作失败：返回null
      */
     List<TransactionCurrencyBasicDTO> listAllTransactionCurrencyBasicInfor();
+
+    /**
+     * 获取所有上线中和停牌的币种id集合
+     * @return 查询成功:返回币种id集合, 查询失败:返回null
+     */
+    List<Integer> listcurrencyId();
+    /**
+     * 查询所有交易币种id,和上线状态（k线图统计操作）
+     * @return 操作成功：返回币种信息，操作失败：返回null
+     */
+    List<KGraphCurrencyDTO> listKGraphCurrency();
 
 }

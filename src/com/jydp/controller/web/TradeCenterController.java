@@ -177,16 +177,19 @@ public class TradeCenterController {
         String buyPriceStr = StringUtil.stringNullHandle(request.getParameter("buyPrice"));
         String buyNumStr = StringUtil.stringNullHandle(request.getParameter("buyNum"));
         String buyPwd = StringUtil.stringNullHandle(request.getParameter("buyPwd"));
+        buyPwd = Base64Util.decode(buyPwd);
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
 
         double buyPrice = 0;
         if (StringUtil.isNotNull(buyPriceStr)) {
             buyPrice = Double.parseDouble(buyPriceStr);
+            buyPrice = NumberUtil.doubleFormat(buyPrice,2);
         }
 
         double buyNum = 0;
         if (StringUtil.isNotNull(buyNumStr)) {
             buyNum = Double.parseDouble(buyNumStr);
+            buyNum = NumberUtil.doubleFormat(buyNum,4);
         }
 
         int currencyId = 0;
@@ -295,7 +298,7 @@ public class TradeCenterController {
 
         //计算手续费及总价
         double buyFee = transactionCurrency.getBuyFee();
-        double sumPrice = NumberUtil.doubleUpFormat(BigDecimalUtil.mul(BigDecimalUtil.mul(buyNum, buyPrice),BigDecimalUtil.add(1, buyFee)),6);
+        double sumPrice = NumberUtil.doubleUpFormat(BigDecimalUtil.mul(BigDecimalUtil.mul(buyNum, buyPrice),BigDecimalUtil.add(1, buyFee)),8);
 
         if(user.getUserBalance() < sumPrice){
             resultJson.setCode(5);
@@ -349,16 +352,19 @@ public class TradeCenterController {
         String sellPriceStr = StringUtil.stringNullHandle(request.getParameter("sellPrice"));
         String sellNumStr = StringUtil.stringNullHandle(request.getParameter("sellNum"));
         String sellPwd = StringUtil.stringNullHandle(request.getParameter("sellPwd"));
+        sellPwd = Base64Util.decode(sellPwd);
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
 
         double sellPrice = 0;
         if (StringUtil.isNotNull(sellPriceStr)) {
             sellPrice = Double.parseDouble(sellPriceStr);
+            sellPrice = NumberUtil.doubleFormat(sellPrice, 2);
         }
 
         double sellNum = 0;
         if (StringUtil.isNotNull(sellNumStr)) {
             sellNum = Double.parseDouble(sellNumStr);
+            sellNum = NumberUtil.doubleFormat(sellNum, 4);
         }
 
         int currencyId = 0;
@@ -519,13 +525,15 @@ public class TradeCenterController {
 
         //获取币种信息
         TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
-        if(transactionCurrency != null){
-
-            if(transactionCurrency.getUpStatus() == 4){
-                resultJson.setCode(5);
-                resultJson.setMessage("该币种不在上线状态");
-                return resultJson;
-            }
+        if (transactionCurrency == null) {
+            resultJson.setCode(3);
+            resultJson.setMessage("币种信息获取失败,请稍候再试");
+            return resultJson;
+        }
+        if (transactionCurrency.getUpStatus() == 4) {
+            resultJson.setCode(5);
+            resultJson.setMessage("该币种不在上线状态");
+            return resultJson;
         }
 
         List<TransactionDealRedisDO> dealList = null;
@@ -566,13 +574,15 @@ public class TradeCenterController {
 
         //获取币种信息
         TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
-        if(transactionCurrency != null){
-
-            if(transactionCurrency.getUpStatus() == 4){
-                resultJson.setCode(5);
-                resultJson.setMessage("该币种不在上线状态");
-                return resultJson;
-            }
+        if (transactionCurrency == null) {
+            resultJson.setCode(3);
+            resultJson.setMessage("该币种不在上线状态");
+            return resultJson;
+        }
+        if (transactionCurrency.getUpStatus() == 4) {
+            resultJson.setCode(5);
+            resultJson.setMessage("该币种不在上线状态");
+            return resultJson;
         }
 
         List<TransactionPendOrderDTO> transactionPendOrderBuyList = null;
@@ -706,6 +716,7 @@ public class TradeCenterController {
 
         //获取参数
         String rememberPwd = StringUtil.stringNullHandle(request.getParameter("rememberPwd"));
+        rememberPwd = Base64Util.decode(rememberPwd);
         String payPasswordStatusStr = StringUtil.stringNullHandle(request.getParameter("payPasswordStatus"));
         if (!StringUtil.isNotNull(rememberPwd)) {
             resultJson.setCode(3);

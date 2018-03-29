@@ -1,0 +1,41 @@
+.time{
+    width: 138px;
+}
+.number{
+    width: 150px;
+}
+.coin{
+    width: 90px;
+}
+.amount{
+    width: 100px;
+}
+.state{
+    width: 120px;
+}
+.tableInfo .state{
+    text-align: left;
+}
+.mark{
+    width: 136px;
+}
+.operate{
+    width: 60px;
+}
+.recall{
+    width: 55px;
+    text-align: center;
+    font-size: 13px;
+    color: #68adfa;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+}
+.recall:hover{
+    color: #52a1f9;
+}
+
+
+.recall_pop{
+    display: none;
+}

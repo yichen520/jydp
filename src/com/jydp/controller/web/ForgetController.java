@@ -1,5 +1,6 @@
 package com.jydp.controller.web;
 
+import com.iqmkj.utils.Base64Util;
 import com.iqmkj.utils.MD5Util;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
@@ -50,6 +51,7 @@ public class ForgetController {
 
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
         String password = StringUtil.stringNullHandle(request.getParameter("password"));
+        password = Base64Util.decode(password);
         String validateCode = StringUtil.stringNullHandle(request.getParameter("validateCode"));
         String phoneNumber = StringUtil.stringNullHandle(request.getParameter("phoneNumber"));
         String phoneAreaCode = StringUtil.stringNullHandle(request.getParameter("phoneAreaCode"));

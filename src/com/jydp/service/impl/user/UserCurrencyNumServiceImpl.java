@@ -229,5 +229,4 @@ public class UserCurrencyNumServiceImpl implements IUserCurrencyNumService {
                                                                 int pageNumber, int pageSize) {
         return userCurrencyNumDao.listCheckUserAmountForTimer(checkAmount, checkAmountLock, pageNumber, pageSize);
     }
-
 }

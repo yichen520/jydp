@@ -1,10 +1,6 @@
 package com.jydp.controller.web;
 
-import com.iqmkj.utils.BigDecimalUtil;
-import com.iqmkj.utils.IpAddressUtil;
-import com.iqmkj.utils.MD5Util;
-import com.iqmkj.utils.NumberUtil;
-import com.iqmkj.utils.StringUtil;
+import com.iqmkj.utils.*;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.user.UserDO;
@@ -143,6 +139,10 @@ public class UserMessageController {
         String repetitionPassword = StringUtil.stringNullHandle(request.getParameter("repetitionPassword"));
         String pasVerifyCode = StringUtil.stringNullHandle(request.getParameter("pasVerifyCode"));
 
+        password = Base64Util.decode(password);
+        newPassword = Base64Util.decode(newPassword);
+        repetitionPassword = Base64Util.decode(repetitionPassword);
+
         if (!StringUtil.isNotNull(password) || !StringUtil.isNotNull(newPassword)
                 || !StringUtil.isNotNull(repetitionPassword) || !StringUtil.isNotNull(pasVerifyCode)) {
             responseJson.setCode(3);
@@ -224,6 +224,10 @@ public class UserMessageController {
         String password = StringUtil.stringNullHandle(request.getParameter("password"));
         String newPassword = StringUtil.stringNullHandle(request.getParameter("newPassword"));
         String repetitionPassword = StringUtil.stringNullHandle(request.getParameter("repetitionPassword"));
+
+        password = Base64Util.decode(password);
+        newPassword = Base64Util.decode(newPassword);
+        repetitionPassword = Base64Util.decode(repetitionPassword);
 
         if (!StringUtil.isNotNull(password) || !StringUtil.isNotNull(newPassword)
                 || !StringUtil.isNotNull(repetitionPassword)) {
@@ -358,6 +362,9 @@ public class UserMessageController {
         String newPassword = StringUtil.stringNullHandle(request.getParameter("newPassword"));
         String repetitionPassword = StringUtil.stringNullHandle(request.getParameter("repetitionPassword"));
 
+        newPassword = Base64Util.decode(newPassword);
+        repetitionPassword = Base64Util.decode(repetitionPassword);
+
         if (!StringUtil.isNotNull(validateCode) || !StringUtil.isNotNull(newPassword)
                 || !StringUtil.isNotNull(repetitionPassword)) {
             responseJson.setCode(3);
@@ -427,6 +434,7 @@ public class UserMessageController {
         String validateCode = StringUtil.stringNullHandle(request.getParameter("validateCode"));
         String newVerifyCode = StringUtil.stringNullHandle(request.getParameter("newVerifyCode"));
         String password = StringUtil.stringNullHandle(request.getParameter("password"));
+        password = Base64Util.decode(password);
         String areaCode = StringUtil.stringNullHandle(request.getParameter("areaCode"));
         String phone = StringUtil.stringNullHandle(request.getParameter("phone"));
 

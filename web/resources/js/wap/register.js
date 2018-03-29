@@ -56,7 +56,7 @@ $(function () {
                 success:function(result){
                     openTips(result.message);
                 },
-                error:function(){
+                error:function() {
                     return openTips("服务器错误");
                 }
             });

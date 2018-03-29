@@ -26,8 +26,8 @@
         FROM transaction_currency_coefficient_tab
         WHERE
             1 = 1
-            <if test="currencyName != null and currencyName !=''">
-                AND currencyName = #{currencyName}
+            <if test="currencyId != 0">
+                AND currencyId = #{currencyId}
             </if>
             <if test="startAddTime != null">
                 AND addTime <![CDATA[ >= ]]> #{startAddTime}
@@ -43,8 +43,8 @@
         FROM transaction_currency_coefficient_tab
         WHERE
             1 = 1
-            <if test="currencyName != null and currencyName !=''">
-                AND currencyName = #{currencyName}
+            <if test="currencyId != 0">
+                AND currencyId = #{currencyId}
             </if>
             <if test="startAddTime != null">
                 AND addTime <![CDATA[ >= ]]> #{startAddTime}
@@ -56,12 +56,14 @@
         LIMIT #{startNumber}, #{pageSize}
     </select>
 
-    <select id="CurrencyCoefficient_getCurrencyCoefficientByCurrencyId" parameterType="int" resultType="TransactionCurrencyCoefficientDO">
+    <select id="CurrencyCoefficient_getCurrencyCoefficientByCurrencyId" parameterType="java.util.Map"
+            resultType="TransactionCurrencyCoefficientDO">
         SELECT orderNo, currencyId, currencyName, currencyCoefficient,
             backerAccount, ipAddress, addTime
         FROM transaction_currency_coefficient_tab
         WHERE currencyId = #{currencyId}
-          ORDER BY addTime DESC
+        AND addTime <![CDATA[ <= ]]> #{date}
+        ORDER BY addTime DESC
         LIMIT 0,1
     </select>
 
@@ -70,13 +72,15 @@
         WHERE orderNo = #{orderNo}
     </delete>
 
-    <select id="CurrencyCoefficient_listTransactionCurrencyCoefficientForNew" resultType="TransactionCurrencyCoefficientDO">
+    <select id="CurrencyCoefficient_listTransactionCurrencyCoefficientForNew" parameterType="java.sql.Timestamp" resultType="TransactionCurrencyCoefficientDO">
         SELECT orderNo, currencyId, currencyName, currencyCoefficient,
             backerAccount, ipAddress, addTime
         FROM (SELECT orderNo, currencyId, currencyName, currencyCoefficient,
                   backerAccount, ipAddress, addTime
               FROM transaction_currency_coefficient_tab
-              ORDER BY addTime DESC) staTab
+              WHERE addTime <![CDATA[ <= ]]> #{date}
+              ORDER BY addTime DESC
+              LIMIT 1000) staTab
         GROUP BY currencyId
     </select>
 </mapper>

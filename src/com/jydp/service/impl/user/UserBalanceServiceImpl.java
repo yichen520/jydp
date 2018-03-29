@@ -76,4 +76,13 @@ public class UserBalanceServiceImpl implements IUserBalanceService {
         return userBalanceDao.countUserBalanceForWeb(userId);
     }
 
+    /**
+     * 根据userBalanceList批量插入用户记录
+     * @param userBalanceList 用户记录集合
+     * @return 成功：true；查询失败：false
+     */
+    public boolean insertUserBalanceList(List<UserBalanceDO>userBalanceList){
+        return userBalanceDao.insertUserBalanceList(userBalanceList);
+    }
+
 }

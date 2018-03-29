@@ -56,7 +56,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </div>
                 <div class="userCode">
                     <input type="number" placeholder="请输入6位短信验证码" maxlength="6" id="codeByPhone"/>
-                    <p class="code">获取验证码</p>
+                    <input class="code" value="获取验证码"/>
                 </div>  
             </div>
         </div>
