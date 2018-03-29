@@ -40,6 +40,7 @@
     <div id="loading">
         <i></i>
     </div>
+    <input type="hidden" id="webPath" value="<%=path %>">
 </body>
 <script id="template" type="text/x-handlebars-template">
     {{#each this}}
@@ -77,6 +78,7 @@
 <script src="<%=path %>/resources/js/wap/handlebars-v4.0.11.js"></script>
 <script src="<%=path %>/resources/js/wap/present.js"></script>
 <script type="text/javascript">
+    var webPath = $("#webPath").val();
     //时间转换
     Handlebars.registerHelper("addTimeConvert", function (addTime) {
         var date = new Date(addTime);

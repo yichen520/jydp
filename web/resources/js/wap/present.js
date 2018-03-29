@@ -25,5 +25,5 @@ function showDialog(coinRecordNo) {
     alert(coinRecordNo);
 }
 $('.backimg').on('click',function () {
-    location.href = "javascript:history.back(-1)"
+    location.href = webPath + "/userWap/wapTransactionPendOrderController/showMyRecord";
 });

@@ -31,7 +31,7 @@
             <p>充值记录</p>
             <img src="<%=path %>/resources/image/wap/nextIcon.png"/>
         </div>
-        <div class="content">
+        <div class="content" id="present">
             <p>提现记录</p>
             <img src="<%=path %>/resources/image/wap/nextIcon.png"/>
         </div>
@@ -55,6 +55,10 @@
     //成交记录
     $("#volume").click(function () {
         window.location.href = "<%=path %>"+"/userWap/wapDealRecord/show.htm";
+    })
+    //币种提现记录
+    $("#present").click(function () {
+        window.location.href = "<%=path %>"+"/userWap/presentRecord/show.htm";
     })
     //返回
     $("#back").click(function () {
