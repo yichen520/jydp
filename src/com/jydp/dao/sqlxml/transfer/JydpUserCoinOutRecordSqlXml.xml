@@ -82,6 +82,9 @@
             <if test="handleStatus > 0">
                 AND handleStatus = #{handleStatus}
             </if>
+            <if test="outStatus > 0">
+                AND outStatus = #{outStatus}
+            </if>
             <if test="startAddTime != null">
                 AND addTime <![CDATA[ >= ]]> #{startAddTime}
             </if>
@@ -116,6 +119,9 @@
             </if>
             <if test="handleStatus > 0">
                 AND handleStatus = #{handleStatus}
+            </if>
+            <if test="outStatus > 0">
+                AND outStatus = #{outStatus}
             </if>
             <if test="startAddTime != null">
                 AND addTime <![CDATA[ >= ]]> #{startAddTime}

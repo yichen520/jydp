@@ -57,7 +57,7 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
      * @param endFinishTime 完成结束时间 ，没有填null
      * @return 查询成功：返回用户转出记录数；查询失败：返回0
      */
-    public int countJydpUserCoinOutRecordForBack(String coinRecordNo, String userAccount, String walletAccount, int currencyId, int handleStatus,
+    public int countJydpUserCoinOutRecordForBack(String coinRecordNo, String userAccount, String walletAccount, int currencyId, int handleStatus, int outStatus,
                                           Timestamp startAddTime, Timestamp endAddTime, Timestamp startFinishTime, Timestamp endFinishTime){
 
         Map<String, Object> map = new HashMap<>();
@@ -70,6 +70,7 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
         map.put("endAddTime", endAddTime);
         map.put("startFinishTime", startFinishTime);
         map.put("endFinishTime", endFinishTime);
+        map.put("outStatus", outStatus);
 
         int result = 0;
         try {
@@ -94,7 +95,7 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
      * @param endFinishTime 完成结束时间 ，没有填null
      * @return 查询成功：返回用户转出记录集合；查询失败：返回null
      */
-    public List<JydpUserCoinOutRecordDO> listJydpUserCoinOutRecord(String coinRecordNo, String userAccount, String walletAccount, int currencyId, int handleStatus,
+    public List<JydpUserCoinOutRecordDO> listJydpUserCoinOutRecord(String coinRecordNo, String userAccount, String walletAccount, int currencyId, int handleStatus, int outStatus,
                                                                    Timestamp startAddTime, Timestamp endAddTime, Timestamp startFinishTime, Timestamp endFinishTime,
                                                                    int pageNumber, int pageSize){
         Map<String, Object> map = new HashMap<>();
@@ -109,6 +110,7 @@ public class JydpUserCoinOutRecordDaoImpl implements IJydpUserCoinOutRecordDao {
         map.put("endFinishTime", endFinishTime);
         map.put("startNumber", pageNumber * pageSize);
         map.put("pageSize", pageSize);
+        map.put("outStatus", outStatus);
 
         List<JydpUserCoinOutRecordDO> result = null;
 

@@ -53,6 +53,14 @@
                             <option value="4">已撤回</option>
                         </select>
                     </p>
+                    <p class="condition">转出状态：
+                        <select class="askSelect" id="outStatus" name="outStatus">
+                            <option value="0">全部</option>
+                            <option value="1">待转出</option>
+                            <option value="2">转出成功</option>
+                            <option value="3">转出失败</option>
+                        </select>
+                    </p>
                     <p class="condition">
                         申请时间：
                         从&nbsp;<input placeholder="请选择起始时间" class="askTime" name="startAddTime"
@@ -94,7 +102,7 @@
                     <td class="amount">申请数量</td>
                     <td class="account">转入账号</td>
                     <td class="time">完成时间</td>
-                    <td class="state">审核状态</td>
+                    <td class="state">状态</td>
                     <td class="mark">备注</td>
                     <td class="check">
                         <label class="controlAll">
@@ -114,16 +122,34 @@
                         <td class="account">${jydpUserCoinOutRecord.walletAccount}</td>
                         <td class="time"><fmt:formatDate type="time" value="${jydpUserCoinOutRecord.finishTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
                         <c:if test="${jydpUserCoinOutRecord.handleStatus == '1'}">
-                            <td class="state">待审核</td>
+                            <td class="state">
+                                <p>审核状态：待审核</p>
+                                <p>转出状态：待推送</p>
+                            </td>
                         </c:if>
                         <c:if test="${jydpUserCoinOutRecord.handleStatus == '2'}">
-                            <td class="state">审核通过</td>
+                            <td class="state">
+                                <p>审核状态：审核通过</p>
+                                <c:if test="${jydpUserCoinOutRecord.outStatus == '1'}">
+                                    <p>转出状态：待推送</p>
+                                </c:if>
+                                <c:if test="${jydpUserCoinOutRecord.outStatus == '2'}">
+                                    <p>转出状态：转出成功</p>
+                                </c:if>
+                                <c:if test="${jydpUserCoinOutRecord.outStatus == '3'}">
+                                    <p>转出状态：转出失败</p>
+                                </c:if>
+                            </td>
                         </c:if>
                         <c:if test="${jydpUserCoinOutRecord.handleStatus == '3'}">
-                            <td class="state">审核拒绝</td>
+                            <td class="state">
+                                <p>审核状态：审核拒绝</p>
+                            </td>
                         </c:if>
                         <c:if test="${jydpUserCoinOutRecord.handleStatus == '4'}">
-                            <td class="state">已撤回</td>
+                            <td class="state">
+                                <p>审核状态：已撤回</p>
+                            </td>
                         </c:if>
                         <td class="mark">${jydpUserCoinOutRecord.remark}</td>
                         <td class="check">
@@ -189,6 +215,7 @@
         var message = '${message}';
         $("#currencyId").val('${currencyId}');
         $("#handleStatus").val('${handleStatus}');
+        $("#outStatus").val('${outStatus}');
         if (code != 1 && message != "") {
             openTips(message);
             return false;
