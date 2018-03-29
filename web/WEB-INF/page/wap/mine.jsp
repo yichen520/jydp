@@ -95,9 +95,9 @@
                     </p>
                     <div class="clear"></div>
                 </li>
-                <li>
+                <li id="userCoinWithdrawal" style="cursor: pointer;">
                     <img src="<%=path%>/resources/image/wap//cashIcon.png" class="icon"/>
-                    <p>立即提现
+                    <p>币种提现
                         <img src="<%=path%>/resources/image/wap/nextIcon.png" class="next" />
                     </p>
                     <div class="clear"></div>
@@ -156,6 +156,10 @@
 
     $("#currencyAssets").click(function () {
         window.location.href="<%=path%>/userWap/userInfo/currencyAssets/show.htm";
+    })
+
+    $("#userCoinWithdrawal").click(function () {
+        window.location.href="<%=path%>/userWap/userCoinWithdrawal/show.htm";
     })
 
 </script>
