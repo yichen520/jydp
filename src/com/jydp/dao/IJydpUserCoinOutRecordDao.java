@@ -61,7 +61,7 @@ public interface IJydpUserCoinOutRecordDao {
      * @param endFinishTime 完成结束时间 ，没有填null
      * @return 查询成功：返回用户转出记录数；查询失败：返回0
      */
-    int countJydpUserCoinOutRecordForBack(String coinRecordNo, String userAccount, String walletAccount, int currencyId, int handleStatus, int outStatus,
+    int countJydpUserCoinOutRecordForBack(String coinRecordNo, String userAccount, String walletAccount, int currencyId, int handleStatus, int sendStatus,
                                    Timestamp startAddTime, Timestamp endAddTime, Timestamp startFinishTime, Timestamp endFinishTime);
 
     /**
@@ -77,7 +77,7 @@ public interface IJydpUserCoinOutRecordDao {
      * @param endFinishTime 完成结束时间 ，没有填null
      * @return 查询成功：返回用户转出记录集合；查询失败：返回null
      */
-    List<JydpUserCoinOutRecordDO> listJydpUserCoinOutRecord(String coinRecordNo, String userAccount, String walletAccount, int currencyId, int handleStatus, int outStatus,
+    List<JydpUserCoinOutRecordDO> listJydpUserCoinOutRecord(String coinRecordNo, String userAccount, String walletAccount, int currencyId, int handleStatus, int sendStatus,
                                                             Timestamp startAddTime, Timestamp endAddTime, Timestamp startFinishTime, Timestamp endFinishTime,
                                                             int pageNumber, int pageSize);
 
