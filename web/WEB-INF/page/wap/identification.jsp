@@ -45,17 +45,17 @@
         <p class="title">证件照</p>
         <div class="file">
 
-            <input type="file" id="icardone" name="avatar" onchange="c()" class="icardone"/>
+            <input type="file" id="icardone" name="avatar" class="icardone"/>
             <div id="blah" class="autor"></div>
             <div class="imgone">
-                <img src="${pageContext.request.contextPath}/resources/image/wap/tianjia.png"/>
+                <img src="${pageContext.request.contextPath}/resources/image/wap/tianjia.png" id="img1"/>
                 <p>证件正面照</p>
             </div>
 
-            <input type="file" id="icardtwo" name="avatar" onchange="b()" class="icardtwo"/>
+            <input type="file" id="icardtwo" name="avatar" class="icardtwo"/>
             <div id="blahtwo"></div>
             <div class="imgtwo">
-                <img src="${pageContext.request.contextPath}/resources/image/wap/tianjia.png"/>
+                <img src="${pageContext.request.contextPath}/resources/image/wap/tianjia.png" id="img2"/>
                 <p>证件反面照</p>
             </div>
             <div class="clear"></div>
@@ -74,8 +74,42 @@
 <script src="${pageContext.request.contextPath}/resources/js/wap/zepto.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/wap/aut.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/wap/simpleTips_wap.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/localResizeIMG.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/mobileBUGFix.mini.js"></script>
 
 <script>
+    var formData = new FormData();
+    //记录上传图片状态的
+    var a = false;
+    var b = false;
+    $('#icardone').localResizeIMG({
+        width: 800,
+        quality: 0.2,
+        success: function (result) {
+            document.getElementById('blah').style.backgroundImage='url('+result.base64+')';
+            var blob = dataURLtoBlob(result.base64);
+            formData.append("frontImg", blob, "file_frontImg.jpg");
+            a = true;
+        }
+    });
+    $('#icardtwo').localResizeIMG({
+        width: 800,
+        quality: 0.2,
+        success: function (result) {
+            document.getElementById('blahtwo').style.backgroundImage='url('+result.base64+')';
+            var blob = dataURLtoBlob(result.base64);
+            formData.append("backImg", blob, "file_backImg.jpg");
+            b = true;
+        }
+    });
+    function dataURLtoBlob(dataurl) {
+        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new Blob([u8arr], { type: mime });
+    }
     function submit() {
         var userAccount = $("#userAccount").val();
         var userName = $("#userName").val();
@@ -109,26 +143,21 @@
                 return openTips("护照号长度必须大于6位");
             }
         }
-        if (frontImg == null || frontImg == "") {
+        if (!a) {
             return openTips("请上传您的证件正面照");
         }
-        if (!checkFileImage($("#icardone"))) {
-            return;
-        }
-        if (backImg == null || backImg == "") {
+        if (!b) {
             return openTips("请上传您的证件反面照");
         }
-        if (!checkFileImage($("#icardtwo"))) {
+        if(!(a&&b)){
             return;
         }
-        var formData = new FormData();
-        formData.append("frontImg", $("#icardone")[0].files[0]);
-        formData.append("backImg", $("#icardtwo")[0].files[0]);
         formData.append("userAccount", userAccount);
         formData.append("userName", userName);
         formData.append("userCertType", userCertType);
         formData.append("userCertNo", userCertNo);
         var url = "${pageContext.request.contextPath}/userWap/identificationController/add"
+
         $.ajax({
             url: url,
             type: 'post',
