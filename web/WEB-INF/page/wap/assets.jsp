@@ -59,6 +59,7 @@
         <div class="nav">
             <div class="navLeft">
                 <ul>
+                    <li style="display: none">币种ID：<span id="currencyId">{{currencyId}}</span></li>
                     <li>币种总资产：<span>{{totalCurrencyAssets}}</span></li>
                     <li>可用数量：<span>{{currencyNumber}}</span></li>
                     <li>冻结数量：<span>{{currencyNumberLock}}</span></li>
@@ -86,11 +87,17 @@
                 }
                 var myTemplate = Handlebars.compile($("#table-template").html());
                 $('.wrapper').html(myTemplate(data.data));
+
+                $(".see").on("click",function () {
+                    var currencyId=$(this).parent().parent().find("#currencyId").text()
+                    window.location.href="<%=path%>/userWap/tradeCenter/show?currencyIdStr="+currencyId
+                })
             },
             error: function () {
                 openTips("数据加载出错，请稍候重试");
             }
         });
     })
+
 </script>
 </html>

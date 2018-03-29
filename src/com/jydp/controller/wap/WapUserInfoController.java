@@ -438,7 +438,7 @@ public class WapUserInfoController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/phone/modify",method = RequestMethod.POST)
+    @RequestMapping(value = "/phone/modify", method = RequestMethod.POST)
     @ResponseBody
     public JsonObjectBO modifyPhone(HttpServletRequest request,
                                     @RequestBody WapUserModifyPhoneDTO userModifyPhoneDTO) {
@@ -450,7 +450,7 @@ public class WapUserInfoController {
             response.setMessage("未登录");
             return response;
         }
-        if (userModifyPhoneDTO==null) {
+        if (userModifyPhoneDTO == null) {
             response.setCode(3);
             response.setMessage("未接受到参数");
             return response;
@@ -470,20 +470,20 @@ public class WapUserInfoController {
 
         //获取用户信息
         UserDO userMessage = userService.getUserByUserId(user.getUserId());
-        if(userMessage == null){
+        if (userMessage == null) {
             response.setCode(3);
             response.setMessage("用户信息查询失败，请稍后重试");
             return response;
         }
 
-        if((areaCode + phone).equals(userMessage.getPhoneAreaCode() + userMessage.getPhoneNumber())){
+        if ((areaCode + phone).equals(userMessage.getPhoneAreaCode() + userMessage.getPhoneNumber())) {
             response.setCode(3);
             response.setMessage("新手机号不可与原手机号相同");
             return response;
         }
         //验证码判定
         JsonObjectBO validatePhone = systemValidatePhoneService.validatePhone(userMessage.getPhoneAreaCode() + userMessage.getPhoneNumber(), validateCode);
-        if(validatePhone.getCode() != 1){
+        if (validatePhone.getCode() != 1) {
             response.setCode(validatePhone.getCode());
             response.setMessage("原手机" + validatePhone.getMessage());
             return response;
@@ -491,7 +491,7 @@ public class WapUserInfoController {
 
         //验证码判定
         validatePhone = systemValidatePhoneService.validatePhone(areaCode + phone, newVerifyCode);
-        if(validatePhone.getCode() != 1){
+        if (validatePhone.getCode() != 1) {
             response.setCode(validatePhone.getCode());
             response.setMessage("新手机" + validatePhone.getMessage());
             return response;
@@ -500,7 +500,7 @@ public class WapUserInfoController {
         //登录密码判定
         password = MD5Util.toMd5(password);
         UserDO userLog = userService.validateUserLogin(user.getUserAccount(), password);
-        if(userLog == null){
+        if (userLog == null) {
             response.setCode(3);
             response.setMessage("登录密码错误！");
             return response;
@@ -508,7 +508,7 @@ public class WapUserInfoController {
 
         //判定当前手机是否存在重复绑定
         UserDO userPhone = userService.getUserByPhone(phone);
-        if(userPhone != null){
+        if (userPhone != null) {
             response.setCode(3);
             response.setMessage("该手机已被绑定");
             return response;
@@ -516,7 +516,7 @@ public class WapUserInfoController {
 
         //手机号修改
         boolean updatePhone = userService.updatePhone(user.getUserId(), areaCode, phone);
-        if(!updatePhone){
+        if (!updatePhone) {
             response.setCode(5);
             response.setMessage("修改失败");
             return response;
