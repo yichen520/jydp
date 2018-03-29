@@ -37,10 +37,10 @@
             <form id="queryForm" action="<%=path %>/backerWeb/transactionCurrency/show.htm" method="post">
                 <div class="askArea">
                     <p class="condition">币种名称：
-                        <select class="askSelect" id="currencyId" name="currencyName">
+                        <select class="askSelect" id="currencyId" name="currencyId">
                             <option value="">全部</option>
                             <c:forEach items="${transactionCurrencyList}" var="item">
-                                <option value="${item.currencyName}">${item.currencyName}</option>
+                                <option value="${item.currencyId}">${item.currencyName}</option>
                             </c:forEach>
                         </select>
                     </p>
@@ -110,8 +110,8 @@
                         </td>
                         <td class="coinLogo"><img src="${item.currencyImgUrl}" /></td>
                         <td class="service">
-                            <p>买入：<fmt:formatNumber type="number" value="${item.buyFee * 100}" maxFractionDigits="6"/>%</p>
-                            <p>卖出：<fmt:formatNumber type="number" value="${item.sellFee * 100}" maxFractionDigits="6"/>%</p>
+                            <p>买入：<fmt:formatNumber type="number" value="${item.buyFee }" maxFractionDigits="6"/>%</p>
+                            <p>卖出：<fmt:formatNumber type="number" value="${item.sellFee}" maxFractionDigits="6"/>%</p>
                         </td>
                         <c:if test="${item.paymentType == 1}">
                             <td class="state">正常</td>
@@ -141,7 +141,7 @@
                                 <c:if test="${item.rankNumber != 1}">
                                     <input type="text" value="上&nbsp;移" class="adUp" onfocus="this.blur()" onclick="upMove('${item.currencyId}')"/>
                                 </c:if>
-                                <c:if test="${item.rankNumber != totalNumber}">
+                                <c:if test="${item.rankNumber != totalCurrNumber}">
                                     <input type="text" value="下&nbsp;移" class="adDown" onfocus="this.blur()" onclick="downMove('${item.currencyId}')"/>
                                 </c:if>
                                 <c:if test="${item.rankNumber != 1}">
@@ -379,7 +379,7 @@
         }
 
         $("#currencyId option").each(function(){
-            if($(this).val()=='${currencyName}'){
+            if($(this).val()=='${currencyId}'){
                 $(this).attr('selected',true);
             }
         });
@@ -655,8 +655,8 @@
 
         document.getElementById("currencyNameUp").value = currencyName;
         document.getElementById("currencyShortNameUp").value = currencyShortName;
-        document.getElementById("buyFeeUp").value = buyFee * 100;
-        document.getElementById("sellFeeUp").value = sellFee * 100;
+        document.getElementById("buyFeeUp").value = buyFee;
+        document.getElementById("sellFeeUp").value = sellFee;
         document.getElementById("c_onlineTime").value = upTime;
         document.getElementById("guidUp").value = price;
 

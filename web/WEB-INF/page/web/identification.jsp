@@ -39,7 +39,7 @@
         <p class="phoneInput phoneInputName">
             <label class="popName">姓名<span class="star">*</span></label>
             <input type="text" id="userName" class="entry" placeholder="您的证件姓名" maxlength="16"
-                onkeyup="matchUtil(this, 'rightful')" onblur="matchUtil(this, 'rightful')"/>
+                   onkeyup="matchUtil(this, 'rightful')" onblur="matchUtil(this, 'rightful')"/>
         </p>
 
         <p class="phoneInput">
@@ -113,6 +113,70 @@
         }
     });
 
+    /*
+        三个参数
+        file：一个是文件(类型是图片格式)，
+        w：一个是文件压缩的后宽度，宽度越小，字节越小
+        objDiv：一个是容器或者回调函数
+        photoCompress()
+     */
+    function photoCompress(file, w, objDiv) {
+        var ready = new FileReader();
+        /*开始读取指定的Blob对象或File对象中的内容. 当读取操作完成时,
+        readyState属性的值会成为DONE,如果设置了onloadend事件处理程序,则调用之.
+        同时,result属性中将包含一个data: URL格式的字符串以表示所读取文件的内容.*/
+        ready.readAsDataURL(file);
+        ready.onload = function () {
+            var re = this.result;
+            canvasDataURL(re, w, objDiv)
+        }
+    }
+
+    function canvasDataURL(path, obj, callback) {
+        var img = new Image();
+        img.src = path;
+        img.onload = function () {
+            var that = this;
+            // 默认按比例压缩
+            var w = that.width;
+            var h = that.height;
+            // 图像质量
+            var quality = 0.7;  // 默认图片质量为0.7
+            if (obj.quality && obj.quality <= 1 && obj.quality > 0) {
+                quality = obj.quality;
+            }
+            //生成canvas
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
+            // 创建属性节点
+            var anw = document.createAttribute("width");
+            anw.nodeValue = w;
+            var anh = document.createAttribute("height");
+            anh.nodeValue = h;
+            canvas.setAttributeNode(anw);
+            canvas.setAttributeNode(anh);
+            ctx.drawImage(that, 0, 0, w, h);
+            // quality值越小，所绘制出的图像越模糊
+            var base64 = canvas.toDataURL('image/jpeg', quality);
+            // 回调函数返回base64的值
+            callback(base64);
+        }
+    }
+
+    /**
+     * 将以base64的图片url数据转换为Blob
+     * @param urlData
+     *            用url方式表示的base64图片数据
+     */
+    function convertBase64UrlToBlob(urlData) {
+        var arr = urlData.split(','), mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new Blob([u8arr], {type: mime});
+    }
+
     //新增实名认证
     var addBoo = false;
     function add() {
@@ -131,8 +195,6 @@
         var frontImg = $("#frontImg").val();
         var backImg = $("#backImg").val();
 
-        //$("#userName").val("");
-        //$("#userCertNo").val("");
         if (userName == null || userName == "" || userName.length > 16) {
             addBoo = false;
             return openTips("请输入您的姓名");
@@ -183,8 +245,50 @@
         formData.append("userName", userName);
         formData.append("userCertType", userCertType);
         formData.append("userCertNo", userCertNo);
-        formData.append("frontImg", $('#frontImg')[0].files[0]);
-        formData.append("backImg", $('#backImg')[0].files[0]);
+
+        var fileObjF = document.getElementById("frontImg").files[0];
+        var fileObjB = document.getElementById("backImg").files[0];
+
+        if (fileObjF.size / 1024 > 400) { //大于400K，进行压缩上传
+            photoCompress(fileObjF, {
+                quality: 0.2
+            }, function (base64Codes) {
+                var frontFile = convertBase64UrlToBlob(base64Codes);
+                formData.append("frontImg", frontFile, "file_frontImg.jpg"); // 文件对象
+
+                if (fileObjB.size / 1024 > 400) {
+                    photoCompress(fileObjB, {
+                        quality: 0.2
+                    }, function (base64Codes) {
+                        var backFile = convertBase64UrlToBlob(base64Codes);
+                        formData.append("backImg", backFile, "file_backImg.jpg"); // 文件对象
+                        uploadFile(formData);
+                    });
+                } else {
+                    formData.append("backImg", $('#backImg')[0].files[0]);
+                    uploadFile(formData);
+                }
+            });
+        } else { //小于等于400k 原图上传
+            formData.append("frontImg", $('#frontImg')[0].files[0]);
+
+            if (fileObjB.size / 1024 > 400) {
+                photoCompress(fileObjB, {
+                    quality: 0.2
+                }, function (base64Codes) {
+                    var backFile = convertBase64UrlToBlob(base64Codes);
+                    formData.append("backImg", backFile, "file_backImg.jpg"); // 文件对象
+                    uploadFile(formData);
+                });
+            } else {
+                formData.append("backImg", $('#backImg')[0].files[0]);
+                uploadFile(formData);
+            }
+        }
+    }
+
+    //上传文件方法
+    function uploadFile(formData) {
         $.ajax({
             url: '<%=path %>' + "/userWeb/identificationController/add",
             type:'post',

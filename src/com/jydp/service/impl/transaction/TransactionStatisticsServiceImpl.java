@@ -74,4 +74,14 @@ public class TransactionStatisticsServiceImpl implements ITransactionStatisticsS
     public Timestamp getLastAddTime(){
         return transactionStatisticsDao.getLastAddTime();
     }
+
+    /**
+     * 获取最后一条添加的时间
+     *
+     * @param currencyId 币种Id
+     * @return 操作成功：返回添加的时间，操作失败：返回null
+     */
+    public Timestamp getLastAddTimeByCurrencyId(int currencyId) {
+        return transactionStatisticsDao.getLastAddTimeByCurrencyId(currencyId);
+    }
 }

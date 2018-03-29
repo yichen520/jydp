@@ -9,12 +9,14 @@ import java.sql.Timestamp;
  */
 public class TransactionStatisticsDO {
     private String orderNo;  //记录号，业务类型（2）+日期（6）+随机位（10）
+    private Timestamp statisticsDate;  //统计日期
     private int currencyId;  //币种Id
     private String currencyName;  //货币名称
     private double transactionTotalNumber;  //成交总数量
     private double transactionTotalPrice;  //成交总价格
     private double currencyCoefficient;  //币种系数
     private Timestamp addTime;  //添加时间
+
 
     /**
      * 记录号，业务类型（2）+日期（6）+随机位（10）
@@ -32,6 +34,22 @@ public class TransactionStatisticsDO {
      */
     public void setOrderNo(String orderNo) {
         this.orderNo = orderNo;
+    }
+
+    /**
+     * 统计日期
+     * @return 统计日期
+     */
+    public Timestamp getStatisticsDate() {
+        return statisticsDate;
+    }
+
+    /**
+     * 统计日期
+     * @param statisticsDate 统计日期
+     */
+    public void setStatisticsDate(Timestamp statisticsDate) {
+        this.statisticsDate = statisticsDate;
     }
 
     /**

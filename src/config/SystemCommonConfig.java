@@ -28,7 +28,11 @@ public class SystemCommonConfig {
 	public static final String TRANSACTION_CURRENCY_COEFFICIENT = "34";
 	/** 交易统计 -业务类型（2）+日期（6）+随机位（10） */
 	public static final String TRANSACTION_STATISTICS = "35";
+	/** 币种转出管理记录号 -业务类型（2）+日期（6）+随机位（7）*/
+	public static final String COIN_CONFIG_RECORDNO = "36";
 
+	/** 用户币种转出记录 -业务类型（2）+日期（6）+随机位（7） */
+	public static final String COIN_OUT = "40";
 
 	/** 做单 -redis成交记录对应挂单记录号 -业务类型（2）+日期（6）+随机位（10）*/
 	public static final String TRANSACTION_MAKE_ORDER_PENDNO = "S0";

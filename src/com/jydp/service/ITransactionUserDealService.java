@@ -47,21 +47,21 @@ public interface ITransactionUserDealService {
      * 查询成交记录条数(后台)
      * @param userAccount  用户账号
      * @param paymentType  收支类型,1：买入，2：卖出
-     * @param currencyName  货币名称
+     * @param currencyId  币种id,查询全部填0
      * @param startAddTime  起始完成时间
      * @param endAddTime  结束完成时间
      * @param startPendTime  起始挂单时间
      * @param endPendTime  结束挂单时间
      * @return  操作成功：返回成交记录条数，操作失败：返回0
      */
-    int countTransactionUserDealForBack(String userAccount, int paymentType, String currencyName,
+    int countTransactionUserDealForBack(String userAccount, int paymentType, int currencyId,
                                         Timestamp startAddTime, Timestamp endAddTime, Timestamp startPendTime, Timestamp endPendTime);
 
     /**
      * 查询成交记录(后台)
      * @param userAccount  用户账号
      * @param paymentType  收支类型,1：买入，2：卖出
-     * @param currencyName  货币名称
+     * @param currencyId  币种id,查询全部填0
      * @param startAddTime  起始完成时间
      * @param endAddTime  结束完成时间
      * @param startPendTime  起始挂单时间
@@ -70,25 +70,27 @@ public interface ITransactionUserDealService {
      * @param pageSize  每页条数
      * @return  操作成功：返回成交记录，操作失败：返回null
      */
-    List<TransactionUserDealVO> listTransactionUserDealForBack(String userAccount, int paymentType, String currencyName,
+    List<TransactionUserDealVO> listTransactionUserDealForBack(String userAccount, int paymentType, int currencyId,
                                                                Timestamp startAddTime, Timestamp endAddTime, Timestamp startPendTime, Timestamp endPendTime,
                                                                int pageNumber, int pageSize);
 
     /**
      * 根据挂单记录号查询成交记录条数
      * @param pendNo  挂单记录号
+     * @param userId  用户Id
      * @return  操作成功：返回成交记录条数，操作失败:返回0
      */
-    int countTransactionUserDealByPendNo(String pendNo);
+    int countTransactionUserDealByPendNo(String pendNo, int userId);
 
     /**
      * 根据挂单记录号查询成交记录
      * @param pendNo  挂单记录号
+     * @param userId  用户Id
      * @param pageNumber  当前页数
      * @param pageSize  每页条数
      * @return  操作成功：返回成交记录集合，操作失败:返回null
      */
-    List<TransactionUserDealVO> listTransactionUserDealByPendNo(String pendNo, int pageNumber, int pageSize);
+    List<TransactionUserDealVO> listTransactionUserDealByPendNo(String pendNo, int userId, int pageNumber, int pageSize);
 
     /**
      * 查询用户成交记录总数
@@ -96,4 +98,11 @@ public interface ITransactionUserDealService {
      * @return 查询成功：返回记录总数，查询失败：返回0
      */
     int countUserDealForWeb(int userId);
+
+    /**
+     * wap端查询用户成交记录总数
+     * @param userId 用户Id
+     * @return 查询成功：返回记录总数，查询失败：返回0
+     */
+    int countUserDealForWap(int userId);
 }

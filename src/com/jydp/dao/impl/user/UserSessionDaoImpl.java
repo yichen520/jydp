@@ -76,50 +76,5 @@ public class UserSessionDaoImpl implements IUserSessionDao {
         
         return resultNumber;
     }
-	
-    /**
-     * 删除session（定时器操作）
-     * @param loginTime 登陆时间
-     * @param pageSize 删除数量
-     * @return 操作成功：返回true，操作失败：返回false
-     */
-    public boolean deleteSessionByTimeForTimer(Timestamp loginTime, int pageSize) {
-    	Map<String, Object> map = new HashMap<String, Object>();
-    	map.put("loginTime", loginTime);
-    	map.put("pageSize", pageSize);
-    	
-        int resultNumber = 0;
-        try {
-            resultNumber = sqlSessionTemplate.delete("UserSession_deleteSessionByTimeForTimer", map);
-        } catch (Exception e) {
-            LogUtil.printErrorLog(e);
-        }
-        
-        if(resultNumber > 0 && resultNumber == pageSize){
-            return true;
-        }else{
-            return false;
-        }
-    }
 
-	/**
-	 * 删除用户的session
-	 * @param userId 用户Id
-	 * @return 操作成功：返回true，操作失败：返回false
-	 */
-	public boolean deleteSessionByUserId(int userId) {
-		int resultNumber = 0;
-		try {
-			resultNumber = sqlSessionTemplate.delete("UserSession_deleteSessionByUserId", userId);
-		} catch (Exception e) {
-			LogUtil.printErrorLog(e);
-		}
-
-		if(resultNumber > 0){
-			return true;
-		}else{
-			return false;
-		}
-	}
-	
 }

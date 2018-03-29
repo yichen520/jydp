@@ -109,5 +109,4 @@ public interface IUserCurrencyNumDao {
      */
     List<UserAmountCheckDTO> listCheckUserAmountForTimer(double checkAmount, double checkAmountLock,
                                                          int pageNumber, int pageSize);
-
 }

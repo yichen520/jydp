@@ -91,9 +91,9 @@ public class MD5Util {
 	public static String md5Str(String paramStr){
 		String resultStr = "";
 		
-		byte[] btInput = paramStr.getBytes();
 		try {
-			// 获得MD5摘要算法的 MessageDigest 对象  
+			byte[] btInput = paramStr.getBytes("UTF-8");
+			// 获得MD5摘要算法的 MessageDigest 对象
 			MessageDigest mdInst = MessageDigest.getInstance("MD5");
 			// 使用指定的字节更新摘要
 			mdInst.update(btInput);
@@ -101,7 +101,7 @@ public class MD5Util {
 			byte[] md = mdInst.digest();
 			
 			resultStr = getMD5Str(md);
-		} catch (NoSuchAlgorithmException e) {
+		} catch (Exception e) {
 			LogUtil.printErrorLog(e);
 		}
 		

@@ -13,10 +13,12 @@ import com.jydp.service.ISystemHotService;
 import config.FileUrlConfig;
 import config.RedisKeyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.HtmlUtils;
 
@@ -167,14 +169,7 @@ public class BackerHotTopicController {
         if(noticeUrl == null){
             imageUrl = FileUrlConfig.notice_hotTopic_defaultImage;
         }else{
-            /*try {
-                imageUrl = FileWriteRemoteUtil.uploadFile(noticeUrl.getOriginalFilename(),
-                        noticeUrl.getInputStream(), FileUrlConfig.file_remote_noticeImage_url);
-            } catch (IOException e) {
-                LogUtil.printErrorLog(e);
-            }*/
-            imageUrl = ImageReduceUtil.reduceImageUploadRemote
-                    (noticeUrl, request, FileUrlConfig.file_remote_noticeImage_url);
+            imageUrl = ImageReduceUtil.reduceImageUploadRemote(noticeUrl, FileUrlConfig.file_remote_noticeImage_url);
         }
 
         Timestamp addTime = DateUtil.getCurrentTime();
@@ -268,14 +263,7 @@ public class BackerHotTopicController {
         if (noticeUrl != null && !noticeUrl.isEmpty()) {
             SystemHotDO systemHotDO  = systemHotService.getSystemHotById(id);
 
-            /*try {
-                imageUrl = FileWriteRemoteUtil.uploadFile(noticeUrl.getOriginalFilename(),
-                        noticeUrl.getInputStream(), FileUrlConfig.file_remote_noticeImage_url);
-            } catch (IOException e) {
-                LogUtil.printErrorLog(e);
-            }*/
-            imageUrl = ImageReduceUtil.reduceImageUploadRemote
-                    (noticeUrl, request, FileUrlConfig.file_remote_noticeImage_url);
+            imageUrl = ImageReduceUtil.reduceImageUploadRemote(noticeUrl, FileUrlConfig.file_remote_noticeImage_url);
 
             if (imageUrl != null && !imageUrl.equals("")) {
                 if(!systemHotDO.getNoticeUrl().equals(FileUrlConfig.notice_hotTopic_defaultImage)){

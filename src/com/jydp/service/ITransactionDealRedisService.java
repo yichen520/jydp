@@ -2,6 +2,7 @@ package com.jydp.service;
 
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.DTO.TransactionBottomPriceDTO;
+import com.jydp.entity.DTO.TransactionCurrencyDealPriceDTO;
 import com.jydp.entity.DTO.TransactionDealPriceDTO;
 import com.jydp.entity.DTO.TransactionDealRedisDTO;
 import com.jydp.entity.VO.TransactionGraphVO;
@@ -99,12 +100,15 @@ public interface ITransactionDealRedisService {
     boolean deleteDealByOrderNo(String orderNo);
 
     /**
-     * 获取盛源交易所 当日成交总价，当日成交总数量
+     * 获取盛源交易所 日成交总价，日成交总数量
      * @param currencyId 币种Id
      * @param orderNoPrefix 批次号前缀
-     * @return 操作成功：返回数据，操作失败:返回null
+     * @param startTime   开始时间
+     * @param endTime     结束时间
+     * @return 操作成功：返回数据集合，操作失败:返回null
      */
-    TransactionBottomPriceDTO getBottomPriceToday(int currencyId, String orderNoPrefix);
+    TransactionBottomPriceDTO getBottomPrice(int currencyId, String orderNoPrefix,
+                                             Timestamp startTime, Timestamp endTime);
 
     /**
      * 获取盛源交易所 当前价
@@ -132,15 +136,6 @@ public interface ITransactionDealRedisService {
     List<TransactionDealRedisDO> listTransactionDealForPending(int paymentType, int currencyId, Timestamp date, int num);
 
     /**
-     * k线图数据拼接
-     * @param currencyId  币种Id
-     * @param minute  分钟数
-     * @param transactionDealRedisList  成交记录
-     * @return 操作成功:返回k线图数据(前一百条), 操作失败:返回null
-     */
-    List<TransactionGraphVO> jointGraphData(int currencyId, int minute, List<TransactionDealRedisDTO> transactionDealRedisList);
-
-    /**
      * 从redis获取k线图数据
      * @param currencyId  币种Id
      * @param node  时间节点 ：5分钟 5m、15分钟 15m、30分钟 30m、1小时 1h、4小时 4h、1天 1d 、1周 1w
@@ -156,4 +151,28 @@ public interface ITransactionDealRedisService {
      * @return  操作成功：返回统计集合，操作失败：返回null
      */
     List<TransactionBottomPriceDTO> listStatistics(String orderNoPrefix, Timestamp date, Timestamp endDate);
+
+    /**
+     * 查询该币种最早的交易时间
+     * @param currencyId 币种id
+     * @param prefix 记录号前缀（区别后台做单，还是用户挂单）可为null
+     * @return 操作成功：返回最早的交易时间，操作失败或无交易记录：返回null
+     */
+    Timestamp getEarliestTime(int currencyId, String prefix);
+
+    /**
+     * 查询成交记录
+     * @param currencyId 币种Id
+     * @param starTime 开始时间
+     * @param endTime 结束时间
+     * @return 操作成功：返回统计集合，操作失败：返回null
+     */
+    List<TransactionDealRedisDTO> listTransactionDealRedisForTimer(int currencyId, Timestamp starTime,
+                                                                   Timestamp endTime);
+
+    /**
+     * 查询基准货币信息
+     * @return 查询成功：返回基准货币信息，查询失败：返回null
+     */
+    List<TransactionCurrencyDealPriceDTO> getTransactionCurrencyDealPrice();
 }
