@@ -90,33 +90,19 @@ public class ImageReduceUtil {
         String fileName = "";
         StringBuilder sb = new StringBuilder();
         try {
-            long startTime = System.currentTimeMillis();   //获取开始时间
-
             fileName = FileWriteLocalUtil.SaveInputStreamToFileByPath(img.getInputStream(),
                     path, NumberUtil.createNumberStr(6) + ".jpg");
 
-            long endTime = System.currentTimeMillis(); //获取结束时间
-            sb.append("文件压缩开始，大小：" + img.getSize() + "，存放本地耗时： " + (endTime - startTime) + "ms，文件名：" + fileName);
-
-            int n = 0;
             //压缩，直到目标文件大小小于desFileSize
             while (true) {
                 long fileSize = reducePicCycle(fileName, accuracy);
 
-                n++;
-                endTime = System.currentTimeMillis(); //获取结束时间
-                sb.append("\n压缩第" + n + "次，当前大小为" + fileSize + "，耗时： " + (endTime - startTime) + "ms");
                 if (fileSize <= desFileSize * 1024) {
                     break;
                 }
             }
-            sb.append("\n--------------压缩完毕-------------");
-            LogUtil.printInfoLog(sb.toString());
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
-            sb.append("\n!!!!!!!!!!!!!!!!压缩异常!!!!!!!!!!!!!!!!");
-
-            LogUtil.printInfoLog(sb.toString());
             FileWriteLocalUtil.deleteFileRealPath(fileName);
             return null;
         }
