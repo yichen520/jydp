@@ -247,11 +247,13 @@
             var template = Handlebars.compile($("#pendOrder").html())
             $('#tableList').html(template(resultData.data));
 
+            if (resultData.data.totalPageNumber <= Number(pageNumber) + 1) {
+                $("#seeMore").hide();
+            }
 
             $(".see").each(function () {
                 $(this).bind("click", seeDetails);
             });
-
             $(".cancel").each(function () {
                 $(this).bind("click", applicationCanceled);
             });
