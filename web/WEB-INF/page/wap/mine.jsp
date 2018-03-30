@@ -65,7 +65,7 @@
                                 <p>冻结资产（$）</p>
                                 <p><fmt:formatNumber type="number" maxFractionDigits="6" value="${userInfo.userBalanceLock}"></fmt:formatNumber></p>
                             </div>
-                            <div class="recharge">充值</div>
+                            <div class="recharge" style="display: none">充值</div>
                         </div>
                     </div>
                     </div>
