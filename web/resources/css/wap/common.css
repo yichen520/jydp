@@ -7,12 +7,13 @@ a{color: black;text-decoration: none;}
 a:hover {text-decoration: none;}
 a {border: none;-webkit-tap-highlight-color: rgba(0,0,0,0);-webkit-tap-highlight-color: transparent;outline: none;}
 html{font-family: "微软雅黑",Arial;}
-select{-moz-appearance:none;-webkit-appearance:none;-webkit-linearappearance:none}
+select{-moz-appearance:none;-webkit-appearance:none;-webkit-linearappearance:none;outline: none}
 body{-webkit-overflow-scrolling: touch;-webkit-overflow-scrolling : touch; }
 textarea, a {
     -webkit-tap-highlight-color: transparent;
+    outline: none
 }
-input{-webkit-tap-highlight-color:rgba(0,0,0,0);}
+input{-webkit-tap-highlight-color:rgba(0,0,0,0);outline: none}
 .clear{
     display: block;
     clear: both
@@ -36,7 +37,7 @@ input{-webkit-tap-highlight-color:rgba(0,0,0,0);}
     left: 0;
     right: 0;
     margin: auto;
-    background: url("../images/loading.gif") no-repeat;
+    background: url("../../image/wap/loading.gif") no-repeat;
     background-size: cover;
 }
 /* 头部header */

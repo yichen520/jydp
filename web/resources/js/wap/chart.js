@@ -87,7 +87,7 @@ var ChartParamsAndInit = {
                 if (transactionUserDealList != undefined && transactionUserDealList != null && transactionUserDealList != "") {
                     var $currencyListUl = $("#currencyListUl");
                     $currencyListUl.empty();
-                    var out = "";
+                    var out = "<ul class='choseBzBox-content'>";
                     for (var i = 0; i < transactionUserDealList.length; i++) {
                         myHref = "<a href='" + "toChartPage?currencyId=" + transactionUserDealList[i].currencyId + "'>";
                         out = out + '<li>' +
@@ -96,6 +96,7 @@ var ChartParamsAndInit = {
                             + "<p class='zhang'>" + transactionUserDealList[i].change + "%</p>"
                             + "</li>";
                     }
+                    out += "</ul>"
                     $currencyListUl.html(out);
                 }
             },
@@ -115,7 +116,7 @@ var ChartParamsAndInit = {
             //加载数据
             ChartParamsAndInit.currencyInfo();
         });
-        $('.closeBox').on('click', function () {
+        $('#closeAnthoer').on('click', function () {
             setTimeout(function () {
                 $('.closeAnthoer').css("height", "0");
                 $('.choseBz').css("height", "0");
@@ -450,9 +451,9 @@ $().ready(function () {
             //数据准备
             //参数给与
             ChartParamsAndInit.openChart();
-            ChartParamsAndInit.gainGraphData("5m", 7);
             ChartParamsAndInit.open();
-           ChartParamsAndInit.reloadData();
+            ChartParamsAndInit.reloadData();
+            ChartParamsAndInit.gainGraphData("5m", 7);
         }
     });
 });
