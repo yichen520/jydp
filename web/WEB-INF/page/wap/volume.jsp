@@ -70,7 +70,7 @@
                     <li>单价：<span>{{formatNumber transactionPrice 2}}</span></li>
                     <li>总价：<span>{{formatNumber currencyTotalPrice 6}}</span></li>
                     <li>手续费：<span>{{feesConvert feeNumber currencyTotalPrice 8}}</span></li>
-                    <li>实际到账：<span>{{actualArrivalConvert feeNumber currencyTotalPrice 6}}</span></li>
+                    <li>{{formatPaymentType paymentType}}：<span>{{actualArrivalConvert feeNumber currencyTotalPrice 6}}</span></li>
                     <li>完成时间：<span>{{addTimeConvert addTime}}</span></li>
                 </ul>
             </div>
@@ -155,6 +155,25 @@
         }
         return "未知类型";
     });
+
+    //实际支出买入显示类型
+    Handlebars.registerHelper("formatPaymentType", function (type) {
+        if (type == undefined || type == null || type == "" || isNaN(type)) {
+            return "未知类型";
+        }
+        if (type == 1) {
+            return "实际到账";
+        }
+        if (type == 2) {
+            return "实际支出";
+        }
+        if (type == 3){
+            return "成交总价";
+        }
+        return "未知类型";
+    });
+
+
 
     //手续费
     Handlebars.registerHelper("feesConvert", function (feeNumber, currencyTotalPrice,maxFractionDigits) {
