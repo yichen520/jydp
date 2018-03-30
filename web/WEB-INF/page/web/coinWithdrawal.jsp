@@ -30,7 +30,12 @@
         <div class="main">
             <p class="coinInput">
                 <label class="popName">当前可提币数量</label>
-                <span class="amount" id="coinNumber"><fmt:formatNumber type="number" value="${userCoinConfigList[0].currencyNumber}" maxFractionDigits="4" groupingUsed="false"/></span>
+                <c:if test="${!empty userCoinConfigList}">
+                    <span class="amount" id="coinNumber"><fmt:formatNumber type="number" value="${userCoinConfigList[0].currencyNumber}" maxFractionDigits="4" groupingUsed="false"/></span>
+                </c:if>
+                <c:if test="${empty userCoinConfigList}">
+                    <span class="amount" id="coinNumber">0</span>
+                </c:if>
             </p>
             <p class="coinInput">
                 <label class="popName">选择币种<span class="star">*</span></label>
@@ -44,8 +49,13 @@
                 <label class="popName">提币数量<span class="star">*</span></label>
                 <input type="text" class="entry" placeholder="您要提币的数量"  id="number" autocomplete="off"
                        onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)" maxlength="11"/>
-                <span class="tips" id="tip">提示：当前币种最低提币<fmt:formatNumber type="number" value="${userCoinConfigList[0].minCurrencyNumber}" maxFractionDigits="2" groupingUsed="false"/>个，
-                        超过<fmt:formatNumber type="number" value="${userCoinConfigList[0].freeCurrencyNumber}" maxFractionDigits="2" groupingUsed="false"/>个需人工审核</span>
+                <c:if test="${!empty userCoinConfigList}">
+                    <span class="tips" id="tip">提示：当前币种最低提币<fmt:formatNumber type="number" value="${userCoinConfigList[0].minCurrencyNumber}" maxFractionDigits="2" groupingUsed="false"/>个，
+                            超过<fmt:formatNumber type="number" value="${userCoinConfigList[0].freeCurrencyNumber}" maxFractionDigits="2" groupingUsed="false"/>个需人工审核</span>
+                </c:if>
+                <c:if test="${empty userCoinConfigList}">
+                    <span class="tips" id="tip">提示：当前币种最低提币0个，超过0个需人工审核</span>
+                </c:if>
                 <input type="hidden" id="minNumber">
             </p>
             <p class="coinInput">
