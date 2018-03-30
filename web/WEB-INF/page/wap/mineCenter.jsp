@@ -32,7 +32,7 @@
             <img src="<%=path%>/resources/image/wap/nextIcon.png" />
         </div></a>
         <a href="<%=path%>/userWap/userInfo/modifyPassword/show.htm"><div class="content volume">
-            <p>修改密码</p>
+            <p>修改登录密码</p>
             <img src="<%=path%>/resources/image/wap/nextIcon.png" />
         </div></a>
         <a href="<%=path%>/userWap/userInfo/modifyPhone/show.htm"><div class="content">
