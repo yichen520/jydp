@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 
 /** 
- * 防止Captcha机器人登陆的验证码 
+ * 防止Captcha机器人登录的验证码
  * @author xex 
  * 
  */  

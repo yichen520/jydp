@@ -71,7 +71,7 @@
         })
     });
 
-    //验证登陆
+    //验证登录
     function loginSubmit() {
         var userAccount = $("#userAccount").val();
         var password = $("#password").val();

@@ -275,7 +275,7 @@ var ChartParamsAndInit = {
                     return;
                 }
                 data = data.transactionGraphList;
-                ChartParamsAndInit.sleep(1000);
+             //   ChartParamsAndInit.sleep(4000);
                 var ohlc = [], res = [], volome = [], dataLength = data.length;
                 var i = 0;
                 if (time == "5m") {
@@ -463,8 +463,9 @@ $().ready(function () {
             //参数给与
             ChartParamsAndInit.openChart();
             ChartParamsAndInit.open();
-            ChartParamsAndInit.reloadData();
             ChartParamsAndInit.gainGraphData("5m", 7);
+            ChartParamsAndInit.sleep(1000);
+            window.setTimeout(ChartParamsAndInit.reloadData,10000);
         }
     });
 });

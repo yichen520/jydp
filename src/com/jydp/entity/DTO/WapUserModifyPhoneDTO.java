@@ -27,7 +27,7 @@ public class WapUserModifyPhoneDTO {
     private String newValidCode;
 
     /**
-     * 登陆密码
+     * 登录密码
      */
     private String password;
     /**
@@ -79,13 +79,13 @@ public class WapUserModifyPhoneDTO {
         this.newValidCode = newValidCode;
     }
     /**
-     * 登陆密码
+     * 登录密码
      */
     public String getPassword() {
         return password;
     }
     /**
-     * 登陆密码
+     * 登录密码
      */
     public void setPassword(String password) {
         this.password = password;

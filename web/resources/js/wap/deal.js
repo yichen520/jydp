@@ -52,7 +52,7 @@ var ParamsAndInit = {
         });
         Handlebars.registerHelper("isLogin", function (userSession, webAppPath) {
             if(userSession == undefined || userSession == null || userSession == ""){
-                return "<a href='" + webAppPath + "/userWap/userLogin/show'>登陆</a>";
+                return "<a href='" + webAppPath + "/userWap/userLogin/show'>登录</a>";
             }else {
                 return "";
             }

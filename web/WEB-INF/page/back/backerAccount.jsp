@@ -577,7 +577,7 @@
         $("#queryForm").submit();
     }
 
-    //登陆页跳转
+    //登录页跳转
     function backLogin() {
         window.location.href = "<%=path%>" + "/backLogin";
     }
