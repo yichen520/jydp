@@ -149,7 +149,7 @@
 
     //剩余数量
     Handlebars.registerHelper("pendingRemainNumberConvert", function (pendingNumber, dealNumber,maxFractionDigits) {
-        var pendingRemainNumber = (pendingNumber - dealNumber).toFixed(maxFractionDigits);
+        var pendingRemainNumber = pendingNumber - dealNumber;
         if (isNaN(pendingRemainNumber) || isNaN(maxFractionDigits)) {
             openTips("参数类型错误");
             return false;
@@ -173,7 +173,7 @@
 
     //委托总价
     Handlebars.registerHelper("pendingTotalPriceConvert", function (pendingNumber, pendingPrice,maxFractionDigits) {
-        var pendingTotalPrice = (pendingNumber * pendingPrice).toFixed(maxFractionDigits);
+        var pendingTotalPrice = pendingNumber * pendingPrice;
         if (isNaN(pendingTotalPrice) || isNaN(maxFractionDigits)) {
             openTips("参数类型错误");
             return false;
