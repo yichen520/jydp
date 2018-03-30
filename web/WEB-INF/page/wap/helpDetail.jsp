@@ -18,7 +18,8 @@
     <!-- 头部导航 -->
     <header>
         <img src="<%=path %>/resources/image/wap/back.png" class="backimg"/>
-        <p>帮助详情</p>
+        <%--<p>帮助详情</p>--%>
+        <p>${helpTitle}详情</p>
     </header>
     <!-- 内容区域 -->
     <div class="content">
@@ -28,6 +29,7 @@
     <div id="loading">
         <i></i>
     </div>
+    <input type="hidden" id="requestSource" value="${requestSource}">
 </body>
 
 <script type="text/javascript" src="<%=path %>/resources/js/wap/common.js"></script>
@@ -38,9 +40,16 @@
 
 
 <script type="text/javascript">
-    $('.backimg').on('click',function(){
-        window.location.href = "<%=path %>/userWap/wapHelpCenter/showHelpCenter"
-    });
+    var requestSource = $("#requestSource").val();
+    if (!requestSource) {
+        $('.backimg').on('click', function () {
+            window.location.href = "<%=path %>/userWap/wapHelpCenter/showHelpCenter"
+        });
+    }else{
+        $('.backimg').on('click', function () {
+            window.location.href = "<%=path %>/userWap/userRegister/show"
+        });
+    }
 </script>
 
 

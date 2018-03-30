@@ -22,7 +22,6 @@ function showDialog(coinRecordNo) {
     $('.showBox').css("display","block");
     $('.showBox').animate({opacity:'1'},"1000");
     $("#recallRecordNo").val(coinRecordNo);
-    alert(coinRecordNo);
 }
 $('.backimg').on('click',function () {
     location.href = webPath + "/userWap/wapTransactionPendOrderController/showMyRecord";
