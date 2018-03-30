@@ -54,16 +54,16 @@
                     <div class="userBox">
                         <div class="usertitle">
                             <p>账户总资产（$）</p>
-                            <p><fmt:formatNumber type="number" maxFractionDigits="6" value="${userInfo.userBalance+userInfo.userBalanceLock}"></fmt:formatNumber></p>
+                            <p><fmt:formatNumber type="number" maxFractionDigits="2" value="${userInfo.userBalance+userInfo.userBalanceLock}"></fmt:formatNumber></p>
                         </div>
                         <div class="usercontent">
                             <div class="canuserBox">
                                 <p>可用资产（$）</p>
-                                <p><fmt:formatNumber type="number" maxFractionDigits="6" value="${userInfo.userBalance}"></fmt:formatNumber></p>
+                                <p><fmt:formatNumber type="number" maxFractionDigits="2" value="${userInfo.userBalance}"></fmt:formatNumber></p>
                             </div>
                             <div class="unuserBox">
                                 <p>冻结资产（$）</p>
-                                <p><fmt:formatNumber type="number" maxFractionDigits="6" value="${userInfo.userBalanceLock}"></fmt:formatNumber></p>
+                                <p><fmt:formatNumber type="number" maxFractionDigits="2" value="${userInfo.userBalanceLock}"></fmt:formatNumber></p>
                             </div>
                             <div class="recharge" style="display: none">充值</div>
                         </div>
@@ -177,7 +177,7 @@
             <p style="display: none;">{{currencyId}}</p>
             <p>{{currencyName}}({{currencyShortName}})</p>
             <p>{{latestPrice}}</p>
-            <p>{{change}}</p>
+            <p>{{change}}%</p>
         </li>
     {{/each}}
 </script>
