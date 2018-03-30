@@ -649,7 +649,7 @@ var ParamsAndInit = {
                 for(var i = 0; i <= orderSellList.length - 1; i++){
                     newChildSell += '<p>' +
                             '<span>卖' + (i + 1) + '</span>' +
-                            '<span>' + ParamsAndInit.formatNumber(orderSellList[i].pendingNumber, 4) + '</span>' +
+                            '<span>' + ParamsAndInit.formatNumber(orderSellList[i].restNumber, 4) + '</span>' +
                             '<span>' + ParamsAndInit.formatNumber(orderSellList[i].sumPrice, 6) + '</span>' +
                             '</p>';
                 }
@@ -661,7 +661,7 @@ var ParamsAndInit = {
                     var buyPendingNumber = orderBuyList[i].pendingNumber
                     newChildBuy += '<p>' +
                         '<span>买' + (i + 1) + '</span>' +
-                        '<span>' + ParamsAndInit.formatNumber(orderBuyList[i].pendingNumber, 4) + '</span>' +
+                        '<span>' + ParamsAndInit.formatNumber(orderBuyList[i].restNumber, 4) + '</span>' +
                         '<span>' + ParamsAndInit.formatNumber(orderBuyList[i].sumPrice, 6) + '</span>' +
                         '</p>';
                 }
@@ -712,11 +712,11 @@ var ParamsAndInit = {
         }
         var userSession = $("#userSession").val();
         if(userSession != undefined && userSession != null && userSession != ""){
-                 window.setInterval(ParamsAndInit.userInfo, 5000);
-                 window.setInterval(ParamsAndInit.entrust, 5000);
+                 window.setInterval(ParamsAndInit.userInfo, 1000);
+                 window.setInterval(ParamsAndInit.entrust, 1000);
         }
-        window.setInterval(ParamsAndInit.pendOrder, 5000);
-        window.setInterval(ParamsAndInit.dealInfo, 5000);
+        window.setInterval(ParamsAndInit.pendOrder, 1000);
+        window.setInterval(ParamsAndInit.dealInfo, 1000);
     },
     currencyInfo: function(){
         var webAppPath =  $("#webAppPath").val();
