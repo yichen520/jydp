@@ -17,12 +17,12 @@
 </head>
 <body>
     <header style="border-bottom:0">
-        <img src="<%=path %>/resources/image/wap/back.png" onclick="javascript:window.history.back(-1);" class="backimg"/>
+        <img src="<%=path %>/resources/image/wap/back.png" class="backimg"/>
         <p>币种提现记录</p>
     </header>
     <!-- 内容区域 -->
+    <input type="hidden" id="queryPageNumber" name="pageNumber" value="${pageNumber}">
     <div class="wrapper">
-        <div hidden="hidden" id="queryPageNumber" name="pageNumber"></div>
     </div>
     <p class="more" onclick="pageNext()">查看更多</p>
     <!-- 撤销弹窗 -->
@@ -51,7 +51,7 @@
             <span class="state">{{handleShow handleStatus}}</span>
         </p>
         <div class="content">
-            <%--<p class="num">{{formatNumber currencyNumber 2}}</p>--%>
+            <p class="num">{{formatNumber currencyNumber 2}}</p>
             <p class="timeTitle">申请时间</p>
             <p class="serialTitle">申请流水号</p>
             <p class="time">{{addTimeConvert addTime}}</p>
@@ -62,7 +62,9 @@
             <span>{{sendShow sendStatus}}</span>
         </p>
         <div class="footer">
-            <p class="remark" style="display:none">{{remark}}</p>
+            {{#remarkShow handleStatus}}
+                <p class="remark">{{remark}}</p>
+            {{/remarkShow}}
             {{#withdrawShow handleStatus}}
                 <p class="withdraw" onclick="showDialog('{{coinRecordNo}}')">撤回</p>
             {{/withdrawShow}}
@@ -136,7 +138,7 @@
     });
 
     //转出状态显示
-    Handlebars.registerHelper("sendShow" ,function (sendStatus) {
+    Handlebars.registerHelper("sendShow", function (sendStatus) {
         switch (sendStatus) {
             case 1: return "待转出";break;
             case 2: return "转出中";break;
@@ -145,6 +147,14 @@
         }
     });
 
+    //备注显示
+    Handlebars.registerHelper("remarkShow", function (handleStatus,options) {
+        //审核通过或拒绝显示备注
+        if (handleStatus == 2 || handleStatus == 3) {
+            //满足条件执行
+            return options.fn(this);
+        }
+    });
     //提币记录数据填充
     var presentListData = ${requestScope.coinOutRecordList};
     var presentfunc = Handlebars.compile($('#template').html());
@@ -152,22 +162,22 @@
 
     //更多
     function pageNext() {
-        var pageNumber = $("#queryPageNumber").html();
+        var pageNumber = parseInt($("#queryPageNumber").val());
         var totalPageNumber = parseInt(${requestScope.totalPageNumber});
         if(pageNumber < totalPageNumber - 1){
             pageNumber = pageNumber + 1;
             $.ajax({
-                url: '<%=path %>/userWap/presentRecord/showMorePresent',
+                url: '<%=path %>/userWap/presentRecord/showMorePresent.htm',
                 type: 'post',
                 dataType: 'json',
-                data:{pageNumber:pageNumber,},//参数
+                data:{pageNumber:pageNumber},//参数
                 success: function (result) {
                     if (result.code == 1) {
                         var presentList = result.coinOutRecordList;
-                        if (presentList != null) {
+                        if (presentList != null && presentList.length > 0) {
                             var transactionfunc = Handlebars.compile($('#template').html());
-                            $('.wrapper').append(transactionfunc(noticeList));
-                            $('#queryPageNumber').html(result.pageNumber)
+                            $('.wrapper').append(transactionfunc(presentList));
+                            $('#queryPageNumber').val(result.pageNumber);
                         }
                     }
                 }
@@ -191,7 +201,7 @@
 
         var coinRecordNo = $("#recallRecordNo").val();
         $.ajax({
-            url: '<%=path %>/userWeb/jydpUserCoinOutRecord/withdrawCoinOutRecord.htm',
+            url: '<%=path %>/userWap/presentRecord/withdrawCoinOutRecord.htm',
             type: 'post',
             data: {
                 coinRecordNo: coinRecordNo
