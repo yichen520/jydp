@@ -176,8 +176,8 @@
         <li>
             <p style="display: none;">{{currencyId}}</p>
             <p>{{currencyName}}({{currencyShortName}})</p>
-            <p>{{latestPrice}}</p>
-            <p>{{change}}%</p>
+            <p style="color: red">{{latestPrice}}</p>
+            <p style="color: red">{{change}}%</p>
         </li>
     {{/each}}
 </script>
