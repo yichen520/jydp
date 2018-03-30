@@ -67,10 +67,9 @@ public class WapTransactionPendOrderController {
         String pageNumberStr = request.getParameter("pageNumber");
 
         UserSessionBO user = UserWapInterceptor.getUser(request);
-        int userId = Integer.parseInt(request.getParameter("userId"));
+        int userId = user.getUserId();
 
         JsonObjectBO responseJson = new JsonObjectBO();
-
         int pageNumber = 0;
         if (StringUtil.isNotNull(pageNumberStr)) {
             pageNumber = Integer.parseInt(pageNumberStr);
