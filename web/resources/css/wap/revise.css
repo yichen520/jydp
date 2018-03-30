@@ -67,12 +67,9 @@ header img{
     height: 0.11rem;
     float: left;
 }
-.registerContent div:nth-of-type(3) input{
-    width: 50%;
-    float: left;
-}
+
 .registerContent .code{
-    width: 50%;
+    width: 30%;
     float: right;
     text-align: right;
     color: #e83a33;
@@ -85,13 +82,19 @@ header img{
 
 .registerContent div input{
     float: left;
-    width: 50%;
+    width: 100%;
     display: block;
     height: 0.98rem;
     line-height: 0.98rem;
     background: #fff;
     font-size: 0.3rem;
     color: #333;
+}
+#validCode{
+    width:70%;
+}
+#codeByPhone{
+    width:70%;
 }
 .newPassword{
     width: 100%;
