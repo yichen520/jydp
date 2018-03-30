@@ -109,7 +109,7 @@
                     </p>
                     <div class="clear"></div>
                 </li>
-                <li>
+                <li id="helperCenter">
                     <img src="<%=path%>/resources/image/wap/helpIcon.png" class="icon"/>
                     <p>帮助中心
                         <img src="<%=path%>/resources/image/wap/nextIcon.png" class="next" />
@@ -164,6 +164,10 @@
 
     $("#userCoinWithdrawal").click(function () {
         window.location.href="<%=path%>/userWap/userCoinWithdrawal/show.htm";
+    })
+
+    $("#helperCenter").click(function () {
+        window.location.href="<%=path%>/userWap/wapHelpCenter/showHelpCenter";
     })
 
 </script>
