@@ -148,9 +148,9 @@
                 <span>可用美金</span>
             </p>
             <p class="mainMoney-num">
-                <span id="currencyNumberSumShow">{{formatNumber userDealCapitalMessage.currencyNumberSum 6}}</span>
-                <span id="userBalanceLockShow">{{formatNumber userDealCapitalMessage.userBalanceLock 6}}</span>
-                <span id="userBalance">{{formatNumber userDealCapitalMessage.userBalance 6}}</span>
+                <span id="currencyNumberSumShow">\${{formatNumber userDealCapitalMessage.currencyNumberSum 6}}</span>
+                <span id="userBalanceLockShow">\${{formatNumber userDealCapitalMessage.userBalanceLock 6}}</span>
+                <span id="userBalance">\${{formatNumber userDealCapitalMessage.userBalance 6}}</span>
             </p>
         </div>
     </div>

@@ -508,7 +508,7 @@ var ParamsAndInit = {
             return;
         }
         $.ajax({
-            url: webAppPath + "/userWap/transactionPendOrder/revokeForDeal.htm",
+            url: webAppPath + "/userWap/wapTransactionPendOrderController/revokeForDeal.htm",
             data: {
                 //参数
                 pendingOrderNo: pendOrderNo
@@ -615,7 +615,7 @@ var ParamsAndInit = {
                     $("#currencyNumber").val(ParamsAndInit.formatNumber(userDealCapitalMessage.currencyNumber, 4));
                     $("#currencyNumberLockShow").html(ParamsAndInit.formatNumber(userDealCapitalMessage.currencyNumberLock, 6));
 
-                    $("#userBalance").html(ParamsAndInit.formatNumber(userDealCapitalMessage.userBalance, 6));
+                    $("#userBalance").html("$"+ParamsAndInit.formatNumber(userDealCapitalMessage.userBalance, 6));
                     $("#userBalanceLockShow").html("$" + ParamsAndInit.formatNumber(userDealCapitalMessage.userBalanceLock, 6));
                     $("#currencyNumberSumShow").html("$" + ParamsAndInit.formatNumber(userDealCapitalMessage.currencyNumberSum, 6));
                 }
