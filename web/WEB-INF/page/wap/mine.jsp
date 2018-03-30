@@ -109,6 +109,13 @@
                     </p>
                     <div class="clear"></div>
                 </li>
+                <li id="hotTopic">
+                    <img src="<%=path%>/resources/image/wap/hotTopic.png" class="icon"/>
+                    <p class="hotTitle">热门话题
+                        <img src="<%=path%>/resources/image/wap/nextIcon.png" class="next" />
+                    </p>
+                    <div class="clear"></div>
+                </li>
                 <li id="helperCenter">
                     <img src="<%=path%>/resources/image/wap/helpIcon.png" class="icon"/>
                     <p>帮助中心
@@ -126,13 +133,143 @@
             </ul>
         </div>
     </div>
+    <!-- 选择币种 -->
+    <div class="choseBz" >
+        <div class="choseBzBox">
+            <div class="closeAnthoer closeBox"></div>
+            <div class="choseBzBox-title">
+                <p>选择币种</p>
+                <img src="<%=path%>/resources/image/wap/header-close.png" class="closeBox"/>
+                <div class="clear"></div>
+            </div>
+            <div class="choseBzBox-content">
+                <ul>
+                    <li>
+                        <p>盛源链</p>
+                        <p class="zhang">92.0000</p>
+                        <p class="zhang">+10%</p>
+                    </li>
+                    <li>
+                        <p>盛源链</p>
+                        <p class="zhang">92.0000</p>
+                        <p class="zhang">+10%</p>
+                    </li>
+                    <li>
+                        <p>盛源链</p>
+                        <p class="zhang">92.0000</p>
+                        <p class="zhang">+10%</p>
+                    </li>
+                    <li>
+                        <p>盛源链</p>
+                        <p class="zhang">92.0000</p>
+                        <p class="zhang">+10%</p>
+                    </li>
+                    <li>
+                        <p>盛源链</p>
+                        <p class="zhang">92.0000</p>
+                        <p class="zhang">+10%</p>
+                    </li>
+                    <li>
+                        <p>盛源链</p>
+                        <p class="zhang">92.0000</p>
+                        <p class="zhang">+10%</p>
+                    </li>
+                    <li>
+                        <p>盛源链</p>
+                        <p class="zhang">92.0000</p>
+                        <p class="zhang">+10%</p>
+                    </li>
+                    <li>
+                        <p>盛源链</p>
+                        <p class="zhang">92.0000</p>
+                        <p class="zhang">+10%</p>
+                    </li>
+                    <li>
+                        <p>盛源链</p>
+                        <p class="zhang">92.0000</p>
+                        <p class="zhang">+10%</p>
+                    </li>
+                    <li>
+                        <p>盛源链</p>
+                        <p class="zhang">92.0000</p>
+                        <p class="zhang">+10%</p>
+                    </li>
+                    <li>
+                        <p>盛源链</p>
+                        <p class="zhang">92.0000</p>
+                        <p class="zhang">+10%</p>
+                    </li>
+                    <li>
+                        <p>盛源链</p>
+                        <p class="zhang">92.0000</p>
+                        <p class="zhang">+10%</p>
+                    </li>
+                    <li>
+                        <p>盛源链</p>
+                        <p class="zhang">92.0000</p>
+                        <p class="zhang">+10%</p>
+                    </li>
+                    <li>
+                        <p>盛源链</p>
+                        <p class="zhang">92.0000</p>
+                        <p class="zhang">+10%</p>
+                    </li>
+                    <li>
+                        <p>盛源链</p>
+                        <p class="zhang">92.0000</p>
+                        <p class="zhang">+10%</p>
+                    </li>
+                    <li>
+                        <p>盛源链盛源链盛源链</p>
+                        <p class="zhang">92.0000</p>
+                        <p class="zhang">+10%</p>
+                    </li>
+                    <li>
+                        <p>盛源链</p>
+                        <p class="zhang">92.0000</p>
+                        <p class="zhang">+10%</p>
+                    </li>
+                    <li>
+                        <p>盛源链</p>
+                        <p class="die">92.0000</p>
+                        <p class="die">-10%</p>
+                    </li>
+                    <li>
+                        <p>盛源链盛源链盛源链盛源链</p>
+                        <p class="die">92.0000</p>
+                        <p class="die">-10%</p>
+                    </li>
+                    <li>
+                        <p>盛源链</p>
+                        <p class="zhang">92.0000</p>
+                        <p class="zhang">+10%</p>
+                    </li>
+                    <li>
+                        <p>盛源链盛源链盛源链盛源链</p>
+                        <p class="die">92.0000</p>
+                        <p class="die">+10%</p>
+                    </li>
+                    <li>
+                        <p>盛源链</p>
+                        <p class="zhang">92.0000</p>
+                        <p class="zhang">+10%</p>
+                    </li>
+                    <li>
+                        <p>盛源链盛源链盛源链盛源链</p>
+                        <p class="die">92.0000</p>
+                        <p class="die">+10%</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
     <!-- 底部tabBar -->
     <footer>
         <a href="<%=path%>/userWap/homePage/show" class="home">
             <img src="<%=path%>/resources/image/wap/home-nochose.png"  class="home-icon"/>
             <p>首页</p>
         </a>
-        <a  href="<%=path %>/userWap/tradeCenter/show" class="deal">
+        <a class="deal open">
             <img src="<%=path%>/resources/image/wap/deal-nochose.png"  class="deal-icon"/>
             <p>交易</p>
         </a>
@@ -145,6 +282,7 @@
 
 <script src="<%=path%>/resources/js/wap/common.js"></script>
 <script src="<%=path%>/resources/js/wap/zepto.min.js"></script>
+<script src="<%=path%>/resources/js/wap/mine.js"></script>
 <script src="<%=path%>/resources/js/wap/jquery-2.1.4.min.js"></script>
 
 
@@ -176,6 +314,10 @@
 
     $("#contactCustomerService").click(function () {
         window.location.href="<%=path%>/userWap/wapCustomerService/show";
+    })
+
+    $("#hotTopic").click(function () {
+        window.location.href="<%=path%>/userWap/wapSystemHot/show";
     })
 
 </script>

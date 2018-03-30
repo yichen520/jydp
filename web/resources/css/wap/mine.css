@@ -189,7 +189,10 @@ body {padding-bottom:1.2rem }
     padding-bottom: 0.4rem;
 }
 .choseBzBox-content ul li p{
-    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 33%;
     font-size: 0.26rem;
     font-weight: 600;
 }
