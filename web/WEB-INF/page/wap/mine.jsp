@@ -176,13 +176,33 @@
         <li>
             <p style="display: none;">{{currencyId}}</p>
             <p>{{currencyName}}({{currencyShortName}})</p>
+            {{#compare change 0}}
             <p style="color: red">{{latestPrice}}</p>
+            {{else}}
+            <p style="color: green">{{latestPrice}}</p>
+            {{/compare}}
+            {{#compare change 0}}
             <p style="color: red">{{change}}%</p>
+            {{else}}
+            <p style="color: green">{{change}}%</p>
+            {{/compare}}
         </li>
     {{/each}}
 </script>
 
 <script type="text/javascript">
+
+    //if比较
+    Handlebars.registerHelper("compare", function (x1, x2, options) {
+
+        if (x1 >= x2) {
+            //满足条件执行
+            return options.fn(this);
+        } else {
+            //不满足执行{{else}}部分
+            return options.inverse(this);
+        }
+    });
 
     $("#userCenter").click(function () {
         window.location.href="<%=path%>/userWap/userInfo/userCenter/show.htm";
