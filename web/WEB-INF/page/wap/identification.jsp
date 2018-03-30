@@ -22,7 +22,7 @@
 <!-- 内容区域 -->
 <div class="wrapper">
     <div class="list-box">
-        <p>帐号</p>
+        <p>账户</p>
         <input type="test" id="userAccount" disabled="disabled" value="${userAccount}"/>
     </div>
     <div class="list-box">
