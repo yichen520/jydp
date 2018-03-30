@@ -159,10 +159,12 @@ public class WapHotController {
             totalPageNumber = 1;
         }
         try{
-            request.setAttribute("systemHotList",systemHotList);
-            request.setAttribute("pageNumber",pageNumber);
-            request.setAttribute("totalNumber",totalNumber);
-            request.setAttribute("totalPageNumber",totalPageNumber);
+            response.put("systemHotList",systemHotList);
+            response.put("pageNumber",pageNumber);
+            response.put("totalNumber",totalNumber);
+            response.put("totalPageNumber",totalPageNumber);
+            response.put("code", 1);
+            response.put("message", "查询成功!");
         }catch(Exception e){
             LogUtil.printErrorLog(e);
         }

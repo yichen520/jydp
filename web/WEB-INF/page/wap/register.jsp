@@ -104,6 +104,7 @@
 <script src="<%=path %>/resources/js/wap/simpleTips_wap.js"></script>
 <script src="<%=path %>/resources/js/wap/handlebars-v4.0.11.js"></script>
 <script type="text/javascript">
+    var chinaArea = '${selectedArea}';
     var jsonObject;
     $.ajax({
         url: '<%=path %>' + "/userWap/userRegister/getPhoneArea",
@@ -248,7 +249,7 @@
         if (!regPos.test(phoneNumber) || phoneNumber.length > 11 || phoneNumber.length < 6) {
             return openTips("请输入正确手机号");
         }
-        if (!phoneReg.test(phoneNumber)) {
+        if (area == chinaArea&& !phoneReg.test(phoneNumber)) {
             return openTips("请输入正确手机号");
         }
 
@@ -329,7 +330,7 @@
         } else if (phone.length < 6 || phone.length > 11) {
             openTips("请输入正确手机号");
             return;
-        } else if (!phoneReg.test(phone)) {
+        } else if (phoneArea == chinaArea &&!phoneReg.test(phone)) {
             openTips("请输入正确手机号");
             return;
         }

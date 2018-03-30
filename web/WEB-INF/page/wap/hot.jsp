@@ -111,7 +111,7 @@
                 data:{pageNumber:pageNumber,},//参数
                 success: function (result) {
                     if (result.code == 1) {
-                        var noticeList = result.systemNoticeList;
+                        var noticeList = result.systemHotList;
                         if (noticeList != null) {
                             var transactionfunc = Handlebars.compile($('#template').html());
                             $('.content ul').append(transactionfunc(noticeList));
