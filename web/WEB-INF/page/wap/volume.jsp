@@ -69,8 +69,8 @@
                     <li>数量：<span>{{formatNumber currencyNumber 4}}</span></li>
                     <li>单价：<span>{{formatNumber transactionPrice 2}}</span></li>
                     <li>总价：<span>{{formatNumber currencyTotalPrice 6}}</span></li>
-                    <li>手续费：<span>{{feesConvert feeNumber currencyTotalPrice 8}}</span></li>
-                    <li>{{formatPaymentType paymentType}}：<span>{{actualArrivalConvert feeNumber currencyTotalPrice 6}}</span></li>
+                    <li>手续费：<span>{{feesConvert fee 8}}</span></li>
+                    <li>{{formatPaymentType paymentType}}：<span>{{actualArrivalConvert actualPrice 6}}</span></li>
                     <li>完成时间：<span>{{addTimeConvert addTime}}</span></li>
                 </ul>
             </div>
@@ -176,24 +176,22 @@
 
 
     //手续费
-    Handlebars.registerHelper("feesConvert", function (feeNumber, currencyTotalPrice,maxFractionDigits) {
-        var feePrice = (feeNumber * currencyTotalPrice).toFixed(maxFractionDigits);
-
-        if (isNaN(feePrice) || isNaN(maxFractionDigits)) {
+    Handlebars.registerHelper("feesConvert", function (fee, maxFractionDigits) {
+        if (isNaN(maxFractionDigits)) {
             openTips("参数类型错误");
             return false;
         }
-        feePrice = feePrice.toString();
+        fee = fee.toString();
         maxFractionDigits = parseInt(maxFractionDigits);
-        if (feePrice.indexOf(".") === -1) {
-            return feePrice;
+        if (fee.indexOf(".") === -1) {
+            return fee;
         }
-        var numField = feePrice.split(".");
+        var numField = fee.split(".");
         var integerDigits = numField[0];
         var fractionDigits = numField[1];
 
         if (fractionDigits.length <= maxFractionDigits) {
-            return feePrice;
+            return fee;
         }
         fractionDigits = fractionDigits.substring(0, maxFractionDigits);
         var feePriceStr = integerDigits + "." + fractionDigits;
@@ -201,24 +199,22 @@
     });
 
     //实际到账
-    Handlebars.registerHelper("actualArrivalConvert", function (feeNumber, currencyTotalPrice,maxFractionDigits) {
-        var actualArrivalPrice = (currencyTotalPrice - (feeNumber * currencyTotalPrice).toFixed(8)).toFixed(maxFractionDigits);
-        if (isNaN(actualArrivalPrice) || isNaN(maxFractionDigits)) {
+    Handlebars.registerHelper("actualArrivalConvert", function (actualPrice,maxFractionDigits) {
+        if (isNaN(actualPrice) || isNaN(maxFractionDigits)) {
             openTips("参数类型错误");
             return false;
         }
-
-        actualArrivalPrice = actualArrivalPrice.toString();
+        actualPrice = actualPrice.toString();
         maxFractionDigits = parseInt(maxFractionDigits);
-        if (actualArrivalPrice.indexOf(".") == -1) {
-            return actualArrivalPrice;
+        if (actualPrice.indexOf(".") == -1) {
+            return actualPrice;
         }
-        var numField = actualArrivalPrice.split(".");
+        var numField = actualPrice.split(".");
         var integerDigits = numField[0];
         var fractionDigits = numField[1];
 
         if (fractionDigits.length <= maxFractionDigits) {
-            return actualArrivalPrice;
+            return actualPrice;
         }
         fractionDigits = fractionDigits.substring(0, maxFractionDigits);
         var feePriceStr = integerDigits + "." + fractionDigits;
