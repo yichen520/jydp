@@ -29,6 +29,9 @@ var ParamAndViewInit = {
         var h = date.getHours() + ':';
         var m = date.getMinutes() + ':';
         var s = date.getSeconds();
+        if(s < 10){
+            s = "0" + s;
+        }
         return Y+M+D+h+m+s;
     },
     viewMore: function () {
@@ -181,6 +184,9 @@ $(function () {
         var h = date.getHours() + ':';
         var m = date.getMinutes() + ':';
         var s = date.getSeconds();
+        if(s < 10){
+            s = "0" + s;
+        }
         return Y+M+D+h+m+s;
     });
     Handlebars.registerHelper("showHandlerContent", function(handleContent){

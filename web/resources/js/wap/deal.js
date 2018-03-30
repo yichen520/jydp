@@ -812,6 +812,13 @@ var ParamsAndInit = {
                 $("#userIsPwd").val(isPwd);
                 $("#payPasswordStatus").val(payPasswordStatus);
                 $("#rememberPwd").val("");
+                if(payPasswordStatus == 1){
+                    $(".maxNum").text("当前设置: 每笔交易都输入密码");
+                }
+                if(payPasswordStatus == 2){
+                    $(".maxNum").text("当前设置: 每次登录只输入一次密码");
+                }
+
                 openTips(data.message);
             }, error: function () {
                 $('.cin').fadeOut();
@@ -907,6 +914,15 @@ $().ready(function () {
             ParamsAndInit.reloadData();
             ParamsAndInit.seeting();
             ParamsAndInit.mask();
+            var h=$(window).height();
+            $(window).resize(function() {
+                if($(window).height()<h){
+                    $('footer').hide();
+                }
+                if($(window).height()>=h){
+                    $('footer').show();
+                }
+            });
         },
         error: function () {
             openTips("服务器异常，请稍后再试！")
