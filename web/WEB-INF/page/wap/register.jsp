@@ -73,7 +73,7 @@
             <div class="checkboxBox">
                 <input type="checkbox" checked="checked"/>
             </div>
-            <p onclick="readUserAgree()">已阅读并接受<span>《用户注册协议》</span></p>
+            <p>已阅读并接受<span onclick="readUserAgree()">《用户注册协议》</span></p>
         </div>
     </div>
 </form>
@@ -188,7 +188,7 @@
     }
 
     function readUserAgree() {
-        window.location.href="<%=path %>/userWap/wapHelpCenter/show/101016?type=1";
+        window.location.href="<%=path %>/userWap/wapHelpCenter/show/101010?type=1";
     }
     //验证用户账号
     var validateUserBoo = false;

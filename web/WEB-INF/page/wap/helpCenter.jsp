@@ -62,7 +62,7 @@
 <script type="text/javascript">
     //跳转至我的页面
     $('.backimg').on('click',function(){
-        window.location.href = "<%=path %>/userWap/userMine/show.htm"
+        window.location.href = "<%=path %>/userWap/userInfo/show.htm"
     });
     //跳转
     function showDetail(helpId) {
