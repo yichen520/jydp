@@ -99,5 +99,9 @@
         });
     })
 
+    $('.back').on('click',function(){
+        window.location.href = "javascript:history.back(-1)"
+    });
+
 </script>
 </html>
