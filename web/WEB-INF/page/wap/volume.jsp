@@ -70,7 +70,9 @@
                     <li>单价：<span>{{formatNumber transactionPrice 2}}</span></li>
                     <li>总价：<span>{{formatNumber currencyTotalPrice 6}}</span></li>
                     <li>手续费：<span>{{feesConvert fee 8}}</span></li>
-                    <li>{{formatPaymentType paymentType}}：<span>{{actualArrivalConvert actualPrice 6}}</span></li>
+                    {{#compare actualPrice 0 }}
+                        <li>{{formatPaymentType paymentType}}：<span>{{actualArrivalConvert actualPrice 6}}</span></li>
+                    {{/compare}}
                     <li>完成时间：<span>{{addTimeConvert addTime}}</span></li>
                 </ul>
             </div>
@@ -112,6 +114,17 @@
         },
         error: function () {
             openTips("请求数据异常");
+        }
+    });
+
+    //if比较
+    Handlebars.registerHelper("compare", function (x1, x2, options) {
+        if (x1 > x2) {
+            //满足条件执行
+            return options.fn(this);
+        } else {
+            //不满足执行{{else}}部分
+            return options.inverse(this);
         }
     });
 
@@ -200,6 +213,7 @@
 
     //实际到账
     Handlebars.registerHelper("actualArrivalConvert", function (actualPrice,maxFractionDigits) {
+
         if (isNaN(actualPrice) || isNaN(maxFractionDigits)) {
             openTips("参数类型错误");
             return false;

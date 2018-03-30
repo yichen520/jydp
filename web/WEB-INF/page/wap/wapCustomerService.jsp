@@ -54,12 +54,12 @@
         <div class="showTitle">提交问题</div>
         <div class="showContent">
             <div class="contentTitle">
-                <p>标题</p>
+                <p>标题<span style="color: red">*</span></p>
                 <input id="feedbackTitle" type="text" placeholder="问题标题，2～16个字符" maxlength="16" minlength="2"/>
                 <div class="clear"></div>
             </div>
             <div class="contentBox">
-                <p>内容</p>
+                <p>内容<span style="color: red">*</span></p>
                 <textarea id="feedbackContent" placeholder="问题内容" maxlength="500"></textarea>
                 <div class="clear"></div>
             </div>

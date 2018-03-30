@@ -30,11 +30,6 @@ var ChartParamsAndInit = {
             num = num.toString();
             maxFractionDigits = parseInt(maxFractionDigits);
             if (num.indexOf(".") === -1) {
-              /*  if("0" == num){
-                    return num;
-                }else{
-                    return num +"万";
-                }*/
                 return num;
             }
             var numField = num.split(".");
@@ -197,11 +192,6 @@ var ChartParamsAndInit = {
                     $("#sellOneOne").text(ChartParamsAndInit.formatNumber(standardParameter.sellOne, 6));
                     var dayTurnove =  ChartParamsAndInit.formatNumber(standardParameter.dayTurnove, 4);
                     $("#dayTurnoveOne").text(dayTurnove);
-                  /*  if(dayTurnove == 0){
-                        $("#dayTurnoveOne").text(dayTurnove);
-                    }else {
-                        $("#dayTurnoveOne").text(dayTurnove +"万");
-                    }*/
                 }
             },
             error: function () {
