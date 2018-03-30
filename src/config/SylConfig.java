@@ -17,7 +17,7 @@ public class SylConfig {
     public static final String ROOT_URL = "http://192.168.12.123:8080/";
 
     /**
-     * 交易大盘向盛源链钱包转币申请接口
+     * 绑定用户接口
      **/
     public static final String WITHDRAWALS_COIN_APPLY_URL = ROOT_URL + "withdrawalsCoinApply";
 
