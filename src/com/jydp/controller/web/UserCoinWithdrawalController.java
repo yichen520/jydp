@@ -80,8 +80,10 @@ public class UserCoinWithdrawalController {
         List<UserCoinConfigVO> userCoinConfigList = jydpCoinConfigService.listUserCoinConfigByUserId(userBo.getUserId());
 
         String phoneNumber = user.getPhoneNumber();
-        String phoneNumberEn = phoneNumber.substring(0, 3) + "***" + phoneNumber.substring(phoneNumber.length() - 3, phoneNumber.length());
-
+        String phoneNumberEn = null;
+        if (phoneNumber != null && phoneNumber.length() == 11) {
+            phoneNumberEn = phoneNumber.substring(0, 3) + "****" + phoneNumber.substring(phoneNumber.length() - 4, phoneNumber.length());
+        }
         request.setAttribute("userCoinConfigList",userCoinConfigList);
         request.setAttribute("phoneAreaCode",user.getPhoneAreaCode());
         request.setAttribute("phoneNumber",phoneNumber);
@@ -241,7 +243,7 @@ public class UserCoinWithdrawalController {
             return response;
         }
 
-        //sylUserBound.getUserSylAccount()
+        // TODO: 2018/3/30 0030  aaaaa --> sylUserBound.getUserSylAccount()
         boolean resultBoo = jydpUserCoinOutRecordService.insertJydpUserCoinOutRecord(currencyId, jydpCoinConfig.getCurrencyName(), userBo.getUserId(),
                     userBo.getUserAccount(), "aaaaa", number);
 
