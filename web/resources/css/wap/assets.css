@@ -97,6 +97,7 @@ header .back{
     width: 4.06rem;
 }
 .navLeft ul li{
+    width:6.5rem;
     font-size: 0.28rem;
     color: #666;
     margin-bottom: 0.13rem;

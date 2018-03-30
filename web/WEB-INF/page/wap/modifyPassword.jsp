@@ -16,12 +16,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <link rel="stylesheet" href="<%=path%>/resources/css/wap/simpleTips_wap.css">
     <link rel="stylesheet" href="<%=path%>/resources/css/wap/revise.css">
 
-    <title>修改密码</title>
+    <title>修改登录密码</title>
 </head>
 <body>
     <header>
         <img src="<%=path%>/resources/image/wap/back.png" class="back"/>
-        <p>修改密码</p>
+        <p>修改登录密码</p>
     </header>
 
     <div class="registerBox">
@@ -29,13 +29,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <!-- 原密码修改 -->
             <div class="registerContent" style="display:block">
                 <div class="userPasswordTwo">
-                    <input type="password" placeholder="原登录密码" maxlength="16" id="oldPwd"/>
+                    <input type="password" placeholder="原登录密码" maxlength="16" id="oldPwd" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
                 </div>
                 <div class="userPassword">
-                    <input  style="width:100%" type="password" placeholder="新密码为字母、数字，6～16个字符" maxlength="16" id="newPwd"/>
+                    <input  style="width:100%" type="password" placeholder="新密码为字母、数字，6～16个字符" maxlength="16" id="newPwd" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
                 </div>
                 <div class="userPassword">
-                        <input type="password" placeholder="再次输入新密码" maxlength="16" id="confirmPwd"/>
+                        <input type="password" placeholder="再次输入新密码" maxlength="16" id="confirmPwd" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
                     </div>
                 <div class="userPhone">
                     <p class="num">${phoneAreaCode} ${phoneNumber}</p>

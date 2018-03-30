@@ -34,22 +34,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <!-- 原密码修改 -->
             <div class="registerContent" style="display:block">
                 <div class="userPasswordTwo">
-                    <input type="password" placeholder="原密码" maxlength="16" id="oldPwdPyPwd"/>
+                    <input type="password" placeholder="原密码" maxlength="16" id="oldPwdPyPwd" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
                 </div>
                 <div class="userPassword">
-                    <input  style="width:100%" type="password" placeholder="新密码为字母、数字，6～16个字符" maxlength="16" id="newPwdByPwd"/>
+                    <input  style="width:100%" type="password" placeholder="新密码为字母、数字，6～16个字符" maxlength="16" id="newPwdByPwd" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
                 </div>
                 <div class="userPassword">
-                        <input type="password" placeholder="重复密码" maxlength="16" id="confirmPwdByPwd"/>
+                        <input type="password" placeholder="重复密码" maxlength="16" id="confirmPwdByPwd" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
                     </div>
             </div>
             <!-- 通过手机号修改 -->
             <div class="registerContent" style="display:none">
                 <div class="userPassword">
-                    <input style="width:100%" type="password" placeholder="新密码为字母、数字，6～16个字符" maxlength="16" id="newPwdByPhone"/>
+                    <input style="width:100%" type="password" placeholder="新密码为字母、数字，6～16个字符" maxlength="16" id="newPwdByPhone" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
                 </div>
                 <div class="userPassword">
-                        <input type="password" placeholder="重复密码" maxlength="16" id="confirmPwdByPhone"/>
+                        <input type="password" placeholder="重复密码" maxlength="16" id="confirmPwdByPhone" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
                     </div>
                 <div class="userPhone">
                     <p class="num">${phoneAreaCode} ${phoneNumber}</p>
