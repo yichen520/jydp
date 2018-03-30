@@ -14,13 +14,14 @@ header .backimg{
     background: #fff;
     font-size: 0.3rem;
     color: #333;
+    position: relative;
 }
 .content img{
     width: 100%;
 }
 .time{
     position: absolute;
-    bottom: 0.3rem;
+    bottom: 0rem;
     left: 0.3rem;
     color: #999;
     font-size: 0.24rem;
@@ -33,4 +34,9 @@ header .backimg{
 }
 video{
     width: 100%;
+}
+.editor{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }

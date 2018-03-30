@@ -480,7 +480,7 @@
 
 
     $('.backimg').on('click',function () {
-        location.href = "javascript:history.back(-1)"
+        location.href = "<%=path %>/userWap/userLogin/show"
     });
 </script>
 </html>
