@@ -159,9 +159,7 @@
     var codeBoo = false;
 
     function getMesCode(obj) {
-        time(obj);
-
-        if (codeBoo || wait == 0) {
+        if (codeBoo && wait > 0) {
             return;
         } else {
             codeBoo = true;
@@ -177,10 +175,12 @@
                 phoneNumber : bindingMobile
             },
             success:function(result){
+                time(obj);
                 openTips(result.message);
-                codeBoo = true;
+                codeBoo = false;
             }, error:function(){
                 openTips("系统错误！");
+                codeBoo = false;
             }
         });
     }
