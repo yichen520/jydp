@@ -79,9 +79,16 @@ $(function () {
         } else {
             areaCode=$("#newAreaCode").text()
             phone=$("#newPhone").val();
-            if (!myreg.test(phone)) {
-                openTips("手机号格式不正确");
-                return;
+            if ($("#newAreaCode").text()!='+86') {
+                if (phone.length<6 || phone.length>11) {
+                    openTips("手机号格式不正确");
+                    return;
+                }
+            } else {
+                if (!myreg.test(phone)) {
+                    openTips("手机号格式不正确");
+                    return;
+                }
             }
             timeNew(this);
         }
