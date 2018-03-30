@@ -123,17 +123,20 @@
 <!-- 选择币种 -->
 <div class="choseBz">
     <div class="choseBzBox">
-        <div class="closeAnthoer closeBox"></div>
+
         <div class="choseBzBox-title">
             <p>选择币种</p>
             <img src="{{webAppPath}}/resources/image/wap/header-close.png" class="closeBox"/>
             <div class="clear"></div>
         </div>
-        <div class="choseBzBox-content">
-            <ul id="currencyListUl">
-            </ul>
+        <div id="currencyListUl">
+         <ul  class="choseBzBox-content">
+        </ul>
         </div>
     </div>
+    <div id="closeAnthoer" class="closeAnthoer closeBox"></div>
+
+
 </div>
 <!-- loading图 -->
 <div id="loading">
