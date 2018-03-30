@@ -57,6 +57,48 @@ var ParamsAndInit = {
                 return "";
             }
         });
+        Handlebars.registerHelper("eachForTransactionPendOrderSellList", function (transactionPendOrderSellList) {
+            var newChildSell = "";
+            for(var i = transactionPendOrderSellList.length - 1; i >= 0; i--){
+                newChildSell += '<span class="list-content">' +
+                    '<span>卖' + (i + 1) + '</span>' +
+                    '<span>' + ParamsAndInit.formatNumber(transactionPendOrderSellList[i].pendingPrice, 2) + '</span>' +
+                    '<span>' + ParamsAndInit.formatNumber(transactionPendOrderSellList[i].restNumber, 4) + '</span>' +
+                    '<span>' + ParamsAndInit.formatNumber(transactionPendOrderSellList[i].sumPrice, 6) + '</span>' +
+                    '</span>';
+            }
+            return newChildSell;
+        });
+        Handlebars.registerHelper('formatNumberWithWan', function (num, maxFractionDigits, options) {
+            if (isNaN(num) || isNaN(maxFractionDigits)) {
+                openTips("参数类型错误");
+                return false;
+            }
+            num = num.toString();
+            maxFractionDigits = parseInt(maxFractionDigits);
+            if (num.indexOf(".") === -1) {
+                if("0" == num){
+                    return num;
+                }else{
+                    return num +"万";
+                }
+                return num;
+            }
+            var numField = num.split(".");
+            var integerDigits = numField[0];
+            var fractionDigits = numField[1];
+
+            if (fractionDigits.length <= maxFractionDigits) {
+                return num;
+            }
+            fractionDigits = fractionDigits.substring(0, maxFractionDigits);
+            var numStr = integerDigits + "." + fractionDigits;
+            if("0" == numStr){
+                return numStr;
+            }else{
+                return numStr +"万";
+            }
+        });
     },
     tabChange: function () {
         $(".mainTitle li:eq(1)").click(function () {
@@ -646,7 +688,7 @@ var ParamsAndInit = {
 
                 $(".leftContent").empty();
                 var newChildSell = "";
-                for(var i = 0; i <= orderSellList.length - 1; i++){
+                for(var i = orderSellList.length - 1; i >= 0; i--){
                     newChildSell += '<span class="list-content">' +
                             '<span>卖' + (i + 1) + '</span>' +
                             '<span>' + ParamsAndInit.formatNumber(orderSellList[i].pendingPrice, 2) + '</span>' +
@@ -697,7 +739,13 @@ var ParamsAndInit = {
                     $("#todayMinSpan").text(ParamsAndInit.formatNumber(standardParameter.todayMin, 6));
                     $("#buyOneSpan").text(ParamsAndInit.formatNumber(standardParameter.buyOne, 6));
                     $("#sellOneOne").text(ParamsAndInit.formatNumber(standardParameter.sellOne, 6));
-                    $("#dayTurnoveOne").text(ParamsAndInit.formatNumber(standardParameter.dayTurnove, 4)+"万");
+                    var dayTurnove =  ParamsAndInit.formatNumber(standardParameter.dayTurnove, 4);
+                    if(dayTurnove == 0){
+                        $("#dayTurnoveOne").text(dayTurnove);
+                    }else {
+                        $("#dayTurnoveOne").text(dayTurnove +"万");
+                    }
+
                     $("#nowPriceDiv").text("当前价格：$"+ParamsAndInit.formatNumber(standardParameter.nowPrice, 8));
                 }
             },

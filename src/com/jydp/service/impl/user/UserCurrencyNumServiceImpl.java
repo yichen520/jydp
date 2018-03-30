@@ -94,12 +94,7 @@ public class UserCurrencyNumServiceImpl implements IUserCurrencyNumService {
                 userCurrency.setCurrencyName(userCurrencyNumDTO.getCurrencyName());
                 userCurrency.setCurrencyNumber(userCurrencyNumDTO.getCurrencyNumber());
                 userCurrency.setCurrencyNumberLock(userCurrencyNumDTO.getCurrencyNumberLock());
-                // 计算币种总资产
-                Object currencyPrice = redisService.getValue(RedisKeyConfig.NOW_PRICE + userCurrencyNumDTO.getCurrencyId());
-                if (currencyPrice != null && StringUtil.isNotNull(currencyPrice.toString())) {
-                    Double currencyAssets = (userCurrencyNumDTO.getCurrencyNumber() + userCurrencyNumDTO.getCurrencyNumberLock()) * Double.parseDouble(currencyPrice.toString());
-                    userCurrency.setTotalCurrencyAssets(currencyAssets);
-                }
+                userCurrency.setTotalCurrencyAssets(userCurrencyNumDTO.getCurrencyNumber()+userCurrencyNumDTO.getCurrencyNumberLock());
                 userCurrencyAssets.add(userCurrency);
             }
             return userCurrencyAssets;

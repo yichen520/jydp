@@ -48,8 +48,8 @@
                 <span class="list-desc right">卖一 <span class="list-num"  id="sellOneOne">{{formatNumber standardParameter.sellOne 6}}</span></span>
             </p>
             <p class="nav-content-list flex">
-                <span class="list-desc">日成交额</span>
-                <span class="list-num" style="display:block" id="dayTurnoveOne">{{formatNumber standardParameter.dayTurnove 4}}万</span>
+                <span class="list-desc txtRight">日成交额</span>
+                <span class="list-num" style="display:block" id="dayTurnoveOne">{{formatNumberWithWan standardParameter.dayTurnove 4}}</span>
             </p>
         </div>
     </section>
@@ -71,14 +71,8 @@
                     <span>总额($)</span>
                 </div>
                 <p class="leftContent">
-                {{#each transactionPendOrderSellList}}
-                    <span class="list-content">
-                        <span>卖{{eachWithIndexFromOne @index}}</span>
-                        <span>{{formatNumber pendingPrice 2 }}</span>
-                        <span>{{formatNumber restNumber 4}}</span>
-                        <span>{{formatNumber sumPrice 6}}</span>
-                    </span>
-                {{/each}}
+                    {{{eachForTransactionPendOrderSellList transactionPendOrderSellList}}}
+
                 </p>
             </div>
             <div class="payRight">
@@ -119,17 +113,17 @@
             <div class="buy">
                 <div class="mainContent">
                     <div class="mainContent-priceBuy">
-                        <span class="name">单价</span><input type="number" id="buyPrice" name="buyPrice" maxlength="9">
+                        <span class="name">单价</span><input type="number" id="buyPrice" name="buyPrice" oninput="if(value.length>9)value=value.slice(0,9)" >
                     </div>
                     <div class="mainContent-numBuy">
-                        <span class="name">数量</span><input type="number" id="buyNum" name="buyNum" maxlength="11">
+                        <span class="name">数量</span><input type="number" id="buyNum" name="buyNum" oninput="if(value.length>11)value=value.slice(0,11)" >
                     </div>
                     <input type="hidden" id="buyFee" value="{{transactionCurrency.buyFee}}">
                     <input type="hidden" id="buyTotal">
                     <p class="maxNum" id="buyMax">最大可买: 0</p>
                     <div class="mainContent-passwordBuy">
-                        <span class="name">交易密码</span><input type="password" id="buyPwd" name="buyPwd" maxlength="16"
-                                                onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')"
+                        <span class="name">交易密码</span><input type="password" id="buyPwd" name="buyPwd" oninput="if(value.length>16)value=value.slice(0,16)"
+                                                             onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')"
                                                 onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
                         <span class="setting">设置</span>
                     </div>
@@ -153,10 +147,10 @@
             <div class="sell">
                 <div class="mainContent">
                     <div class="mainContent-priceSell">
-                        <span class="name">单价</span><input type="number" id="sellPrice" name="sellPrice" maxlength=9>
+                        <span class="name">单价</span><input type="number" id="sellPrice" name="sellPrice" oninput="if(value.length>9)value=value.slice(0,9)" >
                     </div>
                     <div class="mainContent-numSell">
-                        <span class="name">数量</span><input type="number" id="sellNum" name="sellNum" maxlength="11">
+                        <span class="name">数量</span><input type="number" id="sellNum" name="sellNum" oninput="if(value.length>11)value=value.slice(0,11)" >
                     </div>
                     <input type="hidden" id="sellFee" value="{{transactionCurrency.sellFee}}">
                     <input type="hidden" id="currencyNumber"
@@ -164,8 +158,8 @@
                     <input type="hidden" id="sellTotal">
                     <p class="maxNum" id="sellMax">最大可获得: 0</p>
                     <div class="mainContent-passwordSell">
-                        <span class="name">交易密码</span><input type="password" id="sellPwd" name="sellPwd" maxlength="16"
-                                                onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')"
+                        <span class="name">交易密码</span><input type="password" id="sellPwd" name="sellPwd" oninput="if(value.length>16)value=value.slice(0,16)"
+                                                             onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')"
                                                 onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
                         <span class="setting">设置</span>
                     </div>
@@ -241,7 +235,7 @@
     <!-- 选择币种 -->
     <div class="choseBz">
         <div class="choseBzBox">
-            <div class="closeAnthoer closeBox"></div>
+
             <div class="choseBzBox-title">
                 <p>选择币种</p>
                 <img src="{{webAppPath}}/resources/image/wap/header-close.png" class="closeBox"/>
@@ -252,6 +246,7 @@
                 </ul>
             </div>
         </div>
+        <div class="closeAnthoer closeBox"></div>
     </div>
 
     <!--买入 卖出提示-->

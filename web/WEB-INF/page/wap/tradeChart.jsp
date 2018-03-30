@@ -49,8 +49,8 @@
                 <p class="list-desc right">卖一价 <span class="list-num"  id="sellOneOne">{{formatNumber standardParameter.sellOne 6}}</span></p>
             </div>
             <div class="nav-content-list">
-                <p class="list-desc">日成交额</p>
-                <p class="list-num" id="dayTurnoveOne">{{formatNumber standardParameter.dayTurnove 4}}万</p>
+                <p class="list-desc txtRight">日成交额</p>
+                <p class="list-num" id="dayTurnoveOne">{{formatNumberWithWan standardParameter.dayTurnove 4}}</p>
             </div>
     </div>
 </div>
