@@ -15,9 +15,13 @@
     <title>注册</title>
 </head>
 <body>
-<div class="back">
-    <a href="<%=path %>/userWap/userLogin/show"><img src="<%=path %>/resources/image/wap/back.png"/></a>
-</div>
+<%--<div class="back">--%>
+    <%--<a href="<%=path %>/userWap/userLogin/show"><img src="<%=path %>/resources/image/wap/back.png"/></a>--%>
+<%--</div>--%>
+<header>
+    <img src="<%=path %>/resources/image/wap/back.png" class="backimg"/>
+    <p>注册</p>
+</header>
 <form id="registerForm" method="post">
     <div class="registerBox">
         <div class="title">注册</div>
@@ -233,8 +237,6 @@
     function getMesCode(obj) {
         if(getMesCodeFlag || waitBoo){
             return false;
-        }else{
-            getMesCodeFlag = true;
         }
 
         //号码检验
