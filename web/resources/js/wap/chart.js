@@ -214,6 +214,7 @@ var ChartParamsAndInit = {
                     $("#todayMinSpan").text(ChartParamsAndInit.formatNumber(standardParameter.todayMin, 6));
                     $("#buyOneSpan").text(ChartParamsAndInit.formatNumber(standardParameter.buyOne, 6));
                     $("#sellOneOne").text(ChartParamsAndInit.formatNumber(standardParameter.sellOne, 6));
+                    var dayTurnove =  ChartParamsAndInit.formatNumber(standardParameter.dayTurnove, 4);
                     if(dayTurnove == 0){
                         $("#dayTurnoveOne").text(dayTurnove);
                     }else {
