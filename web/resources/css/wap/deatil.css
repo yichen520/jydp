@@ -15,3 +15,22 @@ header .backimg{
     font-size: 0.3rem;
     color: #333;
 }
+.content img{
+    width: 100%;
+}
+.time{
+    position: absolute;
+    bottom: 0.3rem;
+    left: 0.3rem;
+    color: #999;
+    font-size: 0.24rem;
+    padding-top: 0.3rem;
+}
+.noticeTitle{
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
+video{
+    width: 100%;
+}
