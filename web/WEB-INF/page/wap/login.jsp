@@ -27,7 +27,7 @@
                         <img src="${pageContext.request.contextPath}/resources/image/wap/iconUser.png" />
                         <input type="text" placeholder="您的登录账号" id="userAccount" name="userAccount" value="${userAccount}"
                                onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
-                               maxLength="16" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                               maxLength="16" oninput="if(value.length>16) value=value.slice(0,15)" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
                     </div>
                 </div>
                 <div class="passwordBox">
@@ -35,7 +35,7 @@
                         <img src="${pageContext.request.contextPath}/resources/image/wap/iconPassword.png" />
                         <input type="password" placeholder="您的登录密码" id="password" name="password"
                                onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
-                               maxLength="16" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"
+                               maxLength="16"oninput="if(value.length>16) value=value.slice(0,15)"  onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"
                                onkeypress="keypressHandle(event);"/>
                     </div>
                 </div>

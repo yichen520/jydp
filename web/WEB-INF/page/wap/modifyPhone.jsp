@@ -31,7 +31,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <p>原手机号：<span id="oldAreaCode">${phoneAreaCode}</span>&nbsp;<span id="oldPhone">${phoneNumber}</span></p>
             </div>
             <div class="oldPhoneCode">
-                <input type="number" placeholder="请输入6位短信验证码" maxlength="6" class="oldCode" id="oldValidCode"/>
+                <input type="number" placeholder="请输入6位短信验证码" oninput="if(value.length>6)value=value.slice(0,6)" class="oldCode" id="oldValidCode"/>
                 <input class="code" id="oldPhoneCode" value="获取验证码"/>
             </div>
             <div class="newPhone">
@@ -42,7 +42,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <input type="number" placeholder="您的新手机号" maxlength="11" id="newPhone"/>
             </div>
             <div class="newPhoneCode">
-                <input type="number" placeholder="请输入6位短信验证码" maxlength="6" class="oldCode" id="newValidCode"/>
+                <input type="number" placeholder="请输入6位短信验证码" oninput="if(value.length>6)value=value.slice(0,6)" class="oldCode" id="newValidCode"/>
                 <input class="code" id="newPhoneCode" value="获取验证码"/>
             </div>
             <div class="userPassword">

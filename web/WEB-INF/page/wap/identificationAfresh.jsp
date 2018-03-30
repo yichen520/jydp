@@ -25,7 +25,7 @@
 <!-- 内容区域 -->
 <div class="wrapper">
     <div class="list-box">
-        <p>审核状态</p>
+        <p class="list-title">审核状态</p>
         <c:if test="${identification.identificationStatus == 1}">
             <span class="smz" >审核中</span>
         </c:if>
@@ -39,15 +39,15 @@
         <div class="clear">${identification.remark}</div>
     </div>
     <div class="list-box">
-        <p>账号</p>
+        <p class="list-title">账号</p>
         <p class="text" id="userAccount">${identification.userAccount}</p>
     </div>
     <div class="list-box">
-        <p>姓名</p>
+        <p  class="list-title">姓名</p>
         <p class="text">${identification.userName}</p>
     </div>
     <div class="list-box">
-        <p>证件类型</p>
+        <p class="list-title">证件类型</p>
 
         <c:if test="${identification.userCertType == 1}">
             <p class="text">身份证</p>
@@ -57,16 +57,16 @@
         </c:if>
     </div>
     <div class="list-box">
-        <p>证件号码</p>
+        <p class="list-title">证件号码</p>
         <p class="text">${identification.userCertNo}</p>
     </div>
     <div class="idcard-box">
         <p class="title">证件照</p>
         <div class="file">
             <div id="blah" class="autor">
-                <img src="${identificationImageList[0].imageUrlFormat}">
+                <img src="${identificationImageList[0].imageUrlFormat}" class="blahOne">
             </div>
-            <div id="blahtwo" class="blahtwo"><img src="${identificationImageList[1].imageUrlFormat}"></div>
+            <div id="blahtwo" class="blahtwo"><img src="${identificationImageList[1].imageUrlFormat}" class="blahTwo"></div>
         </div>
     </div>
 </div>

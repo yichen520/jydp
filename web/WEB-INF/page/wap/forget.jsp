@@ -26,7 +26,7 @@
             <div class="userName">
                 <input type="text" placeholder="您的登录账号" id="userAccount" name="userAccount"
                        onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
-                       maxLength="16" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                       oninput="if(value.length>16) value=value.slice(0,15)" maxLength="16" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
             </div>
             <div class="userPhone">
                 <div class="choseNumber">
@@ -34,20 +34,20 @@
                     <img src="${pageContext.request.contextPath}/resources/image/wap/iconDown.png" />
                 </div>
                 <input type="text" placeholder="您注册的手机号" id="phoneNumber" name="phoneNumber" maxlength="11"
-                       onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
+                       oninput="if(value.length>11) value=value.slice(0,10)" onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
             </div>
             <div class="userCode">
                 <input type="text" id="validateCode" name="validateCode" placeholder="请输入6位短信验证码" maxlength="6"
-                       onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
+                       oninput="if(value.length>6) value=value.slice(0,5)"onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
                 <p onclick="getValidateCode()">获取验证码</p>
             </div>
             <div class="userPassword">
                 <input type="password" id="password" name="password" placeholder="新密码为字母、数字，6～16个字符" maxlength="16"
-                       onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                       oninput="if(value.length>16) value=value.slice(0,15)" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
             </div>
             <div class="userPasswordTwo">
                 <input type="password" id="repeatPassword" placeholder="请再次输入新密码" maxlength="16"
-                       onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                       oninput="if(value.length>16) value=value.slice(0,15)" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
             </div>
                 <input type="hidden" name="phoneAreaCode" id="phoneAreaCode">
             </form>
@@ -59,7 +59,7 @@
     <div class="chosePhone">
         <div class="search">
             <img src="${pageContext.request.contextPath}/resources/image/wap/searchIcon.png" />
-            <input type="type" placeholder="请选择国家或区号"/>
+            <input type="type" placeholder="请选择国家或区号" id="country" oninput="if(value.length>16) value=value.slice(0,15)" onkeyup="showSearch()"/>
             <p>取消</p>
         </div>
         <div class="searchList">
@@ -188,6 +188,24 @@
             $("#phoneAreaContainer").html(headerHtml);
 
         });
+    }
+
+    //搜索时动态显示区号
+    function showSearch() {
+        var value = $("#country").val();
+        if (!value) {
+            $("#phoneAreaContainer li").each(function () {
+                $(this).show();
+            })
+            return;
+        }
+        $("#phoneAreaContainer li").each(function () {
+            if ($(this).children("p:eq(0)").text() == value || $(this).children("p:eq(1)").text() == value) {
+                $(this).show()
+            } else {
+                $(this).hide();
+            }
+        })
     }
 
 
