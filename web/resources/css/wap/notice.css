@@ -32,6 +32,9 @@ header .back{
 .list-box .title{
     font-size: 0.28rem;
     color: #333;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
 }
 .list-box .date{
     font-size: 0.24rem;
