@@ -328,7 +328,7 @@
             <div class="settingTitle">记住密码提示</div>
             <div class="settingContent">
                 <label>
-                    <input type="radio" name="remember" value="2" class="choose"/>每次登陆只输入一次密码
+                    <input type="radio" name="remember" value="2" class="choose"/>每次登录只输入一次密码
                 </label>
                 <label>
                     <input type="radio" name="remember" value="1" class="choose"/>每笔交易都输入密码

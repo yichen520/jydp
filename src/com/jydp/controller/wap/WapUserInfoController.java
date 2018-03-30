@@ -102,7 +102,7 @@ public class WapUserInfoController {
         UserSessionBO user = UserWebInterceptor.getUser(request);
         if (user == null) {
             request.setAttribute("code", 4);
-            request.setAttribute("message", "登陆过期");
+            request.setAttribute("message", "登录过期");
             return "page/wap/login";
         }
         return "/page/wap/mineCenter";
@@ -118,7 +118,7 @@ public class WapUserInfoController {
         UserSessionBO user = UserWebInterceptor.getUser(request);
         if (user == null) {
             request.setAttribute("code", 4);
-            request.setAttribute("message", "登陆过期");
+            request.setAttribute("message", "登录过期");
             return "page/wap/login";
         }
         return "/page/wap/assets";
@@ -137,7 +137,7 @@ public class WapUserInfoController {
         UserSessionBO user = UserWebInterceptor.getUser(request);
         if (user == null) {
             response.setCode(4);
-            response.setMessage("登陆过期");
+            response.setMessage("登录过期");
             return response;
         }
         List<WapUserCurrencyAssetsVO> list = userCurrencyNumService.listUserCurrencyAssets(user.getUserId());
@@ -159,7 +159,7 @@ public class WapUserInfoController {
         UserSessionBO user = UserWebInterceptor.getUser(request);
         if (user == null) {
             request.setAttribute("code", 4);
-            request.setAttribute("message", "登陆过期");
+            request.setAttribute("message", "登录过期");
             return "page/wap/login";
         }
         UserDO userInfo = userService.getUserByUserId(user.getUserId());
@@ -186,7 +186,7 @@ public class WapUserInfoController {
         UserSessionBO user = UserWebInterceptor.getUser(request);
         if (user == null) {
             response.setCode(4);
-            response.setMessage("登陆过期");
+            response.setMessage("登录过期");
             return response;
         }
         if (userModifyPayPasswordDTO == null || !StringUtil.isNotNull(userModifyPayPasswordDTO.getOldPassword()) ||
@@ -221,7 +221,7 @@ public class WapUserInfoController {
             response.setMessage("原密码错误！");
             return response;
         }
-        //判断支付密码是否与登陆密码相同
+        //判断支付密码是否与登录密码相同
         UserDO userLog = userService.validateUserLogin(user.getUserAccount(), MD5Util.toMd5(userModifyPayPasswordDTO.getNewPassword()));
         if (userLog != null) {
             response.setCode(3);
@@ -285,7 +285,7 @@ public class WapUserInfoController {
             response.setMessage(validatePhone.getMessage());
             return response;
         }
-        //判断支付密码是否与登陆密码相同
+        //判断支付密码是否与登录密码相同
         UserDO userLog = userService.validateUserLogin(user.getUserAccount(), MD5Util.toMd5(userModifyPayPasswordDTO.getNewPassword()));
         if (userLog != null) {
             response.setCode(3);
@@ -316,7 +316,7 @@ public class WapUserInfoController {
         UserSessionBO user = UserWebInterceptor.getUser(request);
         if (user == null) {
             request.setAttribute("code", 4);
-            request.setAttribute("message", "登陆过期");
+            request.setAttribute("message", "登录过期");
             return "page/wap/login";
         }
         UserDO userInfo = userService.getUserByUserId(user.getUserId());
@@ -331,7 +331,7 @@ public class WapUserInfoController {
     }
 
     /**
-     * 修改登陆密码
+     * 修改登录密码
      *
      * @param request
      * @param userModifyPasswordDTO
@@ -418,7 +418,7 @@ public class WapUserInfoController {
         UserSessionBO user = UserWebInterceptor.getUser(request);
         if (user == null) {
             request.setAttribute("code", 4);
-            request.setAttribute("message", "登陆过期");
+            request.setAttribute("message", "登录过期");
             return "page/wap/login";
         }
         UserDO userInfo = userService.getUserByUserId(user.getUserId());
@@ -537,7 +537,7 @@ public class WapUserInfoController {
         UserSessionBO user = UserWebInterceptor.getUser(request);
         if (user == null) {
             request.setAttribute("code", 4);
-            request.setAttribute("message", "登陆过期");
+            request.setAttribute("message", "登录过期");
             return "page/wap/login";
         }
         return "page/wap/myRecord";

@@ -88,7 +88,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         }
     }
 
-	//验证登陆
+	//验证登录
 	function loginSubmit() {
 		var backerAccount = $("#backerAccount").val();
 		var password = $("#password").val();
