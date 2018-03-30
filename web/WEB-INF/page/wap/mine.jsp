@@ -102,7 +102,7 @@
                     </p>
                     <div class="clear"></div>
                 </li>
-                <li>
+                <li id="sysNotice">
                     <img src="<%=path%>/resources/image/wap/noticeIcon.png" class="icon"/>
                     <p>系统公告
                         <img src="<%=path%>/resources/image/wap/nextIcon.png" class="next" />
@@ -116,7 +116,7 @@
                     </p>
                     <div class="clear"></div>
                 </li>
-                <li>
+                <li id="contactCustomerService">
                     <img src="<%=path%>/resources/image/wap/serviceIcon.png" class="icon"/>
                     <p>联系客服
                         <img src="<%=path%>/resources/image/wap/nextIcon.png" class="next" />
@@ -168,6 +168,14 @@
 
     $("#helperCenter").click(function () {
         window.location.href="<%=path%>/userWap/wapHelpCenter/showHelpCenter";
+    })
+
+    $("#sysNotice").click(function () {
+        window.location.href="<%=path%>/userWap/wapSystemNotice/show";
+    })
+
+    $("#contactCustomerService").click(function () {
+        window.location.href="<%=path%>/userWap/wapCustomerService/show";
     })
 
 </script>

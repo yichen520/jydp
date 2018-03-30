@@ -15,9 +15,10 @@
     <title>忘记密码</title>
 </head>
 <body>
-    <div class="back">
-        <a href="javascript:history.back(-1)"><img src="${pageContext.request.contextPath}/resources/image/wap/back.png" /></a>
-    </div>
+    <header>
+        <img src="${pageContext.request.contextPath}/resources/image/wap/back.png" class="backimg" id="backImg"/>
+        <p>忘记密码</p>
+    </header>
     <div class="registerBox">
         <div class="title">忘记密码</div>
         <div class="registerContent">
@@ -98,6 +99,12 @@
             return false;
         }
     }
+
+    $(function () {
+        $("#backImg").click(function () {
+            window.location.replace("${pageContext.request.contextPath}/userWap/userLogin/show");
+        })
+    })
 
     var b = false;
     function getValidateCode() {

@@ -218,8 +218,8 @@ var ChartParamsAndInit = {
         if (undefined == currencyId || currencyId == null || currencyId == "") {
             return;
         }
-        window.setInterval(ChartParamsAndInit.dealInfo, 5000);
-        window.setInterval(ChartParamsAndInit.deal, 5000);
+        window.setInterval(ChartParamsAndInit.dealInfo, 1000);
+        window.setInterval(ChartParamsAndInit.deal, 1000);
     },
     openChart: function () {
         Highcharts.setOptions({
@@ -265,7 +265,6 @@ var ChartParamsAndInit = {
                     return;
                 }
                 data = data.transactionGraphList;
-                console.info(data);
                 var ohlc = [], res = [], volome = [], dataLength = data.length;
                 var i = 0;
                 if (time == "5m") {
