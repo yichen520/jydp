@@ -15,9 +15,6 @@
     <title>注册</title>
 </head>
 <body>
-<%--<div class="back">--%>
-    <%--<a href="<%=path %>/userWap/userLogin/show"><img src="<%=path %>/resources/image/wap/back.png"/></a>--%>
-<%--</div>--%>
 <header>
     <img src="<%=path %>/resources/image/wap/back.png" class="backimg"/>
     <p>注册</p>
@@ -27,7 +24,7 @@
         <div class="title">注册</div>
         <div class="registerContent">
             <div class="userName">
-                <input type="text" id="userAccount" name="userAccount" placeholder="登录帐号为字母、数字，6～16个字符 "
+                <input type="text" id="userAccount" name="userAccount" placeholder="登录账号为字母、数字，6～16个字符 "
                        onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
                        maxLength="16" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="validateUser(this)"/>
             </div>
@@ -438,5 +435,10 @@
             checked = true;
         }
     })
+
+
+    $('.backimg').on('click',function () {
+        location.href = "javascript:history.back(-1)"
+    });
 </script>
 </html>
