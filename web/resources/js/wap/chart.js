@@ -438,7 +438,7 @@ var ChartParamsAndInit = {
                         }
                     ]
                 });
-                window.setTimeout(ChartParamsAndInit.reloadData(),5000);
+                window.setTimeout(ChartParamsAndInit.reloadData,5000);
             },
             error: function () {
                 openTips("页面数据错误，请刷新!");
