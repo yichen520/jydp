@@ -105,7 +105,7 @@
         if(pageNumber < totalPageNumber - 1){
             pageNumber = pageNumber + 1;
             $.ajax({
-                url: '<%=path %>/userWap/wapSystemNotice/showMoreHot',
+                url: '<%=path %>/userWap/wapSystemHot/showMoreHot',
                 type: 'post',
                 dataType: 'json',
                 data:{pageNumber:pageNumber,},//参数
