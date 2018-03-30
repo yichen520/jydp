@@ -55,12 +55,12 @@
         <div class="showContent">
             <div class="contentTitle">
                 <p>标题</p>
-                <input id="feedbackTitle" type="text" placeholder="问题标题，2～16个字符"/>
+                <input id="feedbackTitle" type="text" placeholder="问题标题，2～16个字符" maxlength="16" minlength="2"/>
                 <div class="clear"></div>
             </div>
             <div class="contentBox">
                 <p>内容</p>
-                <textarea id="feedbackContent" placeholder="问题内容"></textarea>
+                <textarea id="feedbackContent" placeholder="问题内容" maxlength="500"></textarea>
                 <div class="clear"></div>
             </div>
         </div>

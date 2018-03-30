@@ -496,12 +496,13 @@ html,body{
 }
 .choseBzBox-content  li{
     display: flex;
-    padding-bottom: 0.4rem;
+    margin-bottom: 0.4rem;
 }
 .choseBzBox-content  li p{
     flex: 1;
     font-size: 0.26rem;
     font-weight: 600;
+    text-align: right;
 }
 .zhang{
     color: #e83a33
@@ -516,10 +517,13 @@ html,body{
     white-space: nowrap;
 }
 .choseBzBox-content  li p:nth-of-type(2){
-    text-align: center;
+    text-align: left;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
 }
 .choseBzBox-content  li p:nth-of-type(3){
-    text-align: right;
+    text-align: center;
 }
 #currencyListUl{
     height: 100%;

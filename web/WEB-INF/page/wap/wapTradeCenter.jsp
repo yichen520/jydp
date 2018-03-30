@@ -113,10 +113,10 @@
             <div class="buy">
                 <div class="mainContent">
                     <div class="mainContent-priceBuy">
-                        <span class="name">单价</span><input type="number" id="buyPrice" name="buyPrice" oninput="if(value.length>9)value=value.slice(0,9)" >
+                        <span class="name">单价</span><input type="number" id="buyPrice" name="buyPrice"  onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')" oninput="if(value.length>9)value=value.slice(0,9)" >
                     </div>
                     <div class="mainContent-numBuy">
-                        <span class="name">数量</span><input type="number" id="buyNum" name="buyNum" oninput="if(value.length>11)value=value.slice(0,11)" >
+                        <span class="name">数量</span><input type="number" id="buyNum" name="buyNum"  onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')" oninput="if(value.length>11)value=value.slice(0,11)" >
                     </div>
                     <input type="hidden" id="buyFee" value="{{transactionCurrency.buyFee}}">
                     <input type="hidden" id="buyTotal">
@@ -147,10 +147,10 @@
             <div class="sell">
                 <div class="mainContent">
                     <div class="mainContent-priceSell">
-                        <span class="name">单价</span><input type="number" id="sellPrice" name="sellPrice" oninput="if(value.length>9)value=value.slice(0,9)" >
+                        <span class="name">单价</span><input type="number" id="sellPrice" name="sellPrice" oninput="if(value.length>9)value=value.slice(0,9)" onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')" >
                     </div>
                     <div class="mainContent-numSell">
-                        <span class="name">数量</span><input type="number" id="sellNum" name="sellNum" oninput="if(value.length>11)value=value.slice(0,11)" >
+                        <span class="name">数量</span><input type="number" id="sellNum" name="sellNum" oninput="if(value.length>11)value=value.slice(0,11)" onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')" >
                     </div>
                     <input type="hidden" id="sellFee" value="{{transactionCurrency.sellFee}}">
                     <input type="hidden" id="currencyNumber"
@@ -158,7 +158,7 @@
                     <input type="hidden" id="sellTotal">
                     <p class="maxNum" id="sellMax">最大可获得: 0</p>
                     <div class="mainContent-passwordSell">
-                        <span class="name">交易密码</span><input type="password" id="sellPwd" name="sellPwd" oninput="if(value.length>16)value=value.slice(0,16)"
+                        <span class="name">交易密码</span><input type="password" id="sellPwd" name="sellPwd" oninput="if(value.length>16)value=value.slice(0,16)" maxlength="16"
                                                              onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')"
                                                 onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
                         <span class="setting">设置</span>
@@ -242,8 +242,8 @@
                 <div class="clear"></div>
             </div>
             <div class="choseBzBox-content">
-                <ul id="currencyListUl">
-                </ul>
+                  <ul id="currencyList">
+                  </ul>
             </div>
         </div>
         <div class="closeAnthoer closeBox"></div>
@@ -322,14 +322,16 @@
         <div class="settingBox">
             <div class="settingTitle">记住密码提示</div>
             <div class="settingContent">
-                <label>
-                    <input type="radio" name="remember" value="2" class="choose"/>每次登录只输入一次密码
+                <label style="position: relative">
+                    <input type="radio" name="remember" value="2" class="choose" style="position: absolute;top: 0.24rem;"/>
+                    <span style="position: absolute;left: 0.45rem">每次登录只输入一次密码</span>
                 </label>
-                <label>
-                    <input type="radio" name="remember" value="1" class="choose"/>每笔交易都输入密码
+                <label style="position: relative;margin-top: 0.3rem;margin-bottom: 0.6rem">
+                    <input type="radio" name="remember" value="1" class="choose"  style="position: absolute;top: 0.24rem;"/>
+                    <span style="position: absolute;left: 0.45rem">每笔交易都输入密码</span>
                 </label>
-                <p>
-                    交易密码<input type="password" class="pas" id="rememberPwd"
+                <p >
+                    交易密码<input type="password" class="pas" id="rememberPwd" maxlength="16"
                                onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')"
                                onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
                 </p>
@@ -343,11 +345,41 @@
         </div>
     </div>
 </script>
+<script id="table-template" type="text/x-handlebars-template">
+    {{#each this}}
+    <li>
+        <p style="display: none;">{{currencyId}}</p>
+        <p>{{currencyName}}({{currencyShortName}})</p>
+        {{#compare change 0}}
+        <p style="color: red">{{latestPrice}}</p>
+        {{else}}
+        <p style="color: green">{{latestPrice}}</p>
+        {{/compare}}
+        {{#compare change 0}}
+        <p style="color: red">{{change}}%</p>
+        {{else}}
+        <p style="color: green">{{change}}%</p>
+        {{/compare}}
+    </li>
+    {{/each}}
+</script>
 </div>
 <script src="<%=path %>/resources/js/wap/common.js"></script>
 <script src="<%=path %>/resources/js/wap/jquery-2.1.4.min.js"></script>
 <script src="<%=path %>/resources/js/wap/handlebars-v4.0.11.js"></script>
 <script src="<%=path %>/resources/js/wap/simpleTips_wap.js"></script>
 <script src="<%=path %>/resources/js/wap/deal.js"></script>
+<script type="text/javascript">
+    //if比较
+    Handlebars.registerHelper("compare", function (x1, x2, options) {
+        if (x1 >= x2) {
+            //满足条件执行
+            return options.fn(this);
+        } else {
+            //不满足执行{{else}}部分
+            return options.inverse(this);
+        }
+    });
+</script>
 </body>
 </html>

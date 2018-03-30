@@ -75,6 +75,7 @@ header .back{
     margin-top: 0.28rem;
 }
 .main{
+    word-wrap:break-word;
     font-size: 0.24rem;
     color: #666;
 }
@@ -109,6 +110,7 @@ header .back{
     left: 0;
     top: 0;
     z-index: 99;
+    display: none;
 }
 .showBox{
     border-radius: 2px;
@@ -119,9 +121,9 @@ header .back{
     margin-left: -2.82rem;
     top: 40%;
     margin-top: -2.275rem;
-    display: none;
+    display: block;
     z-index: 100;
-    opacity: 0;
+    opacity: 1;
     background: #fff;
 }
 .showTitle{
