@@ -126,6 +126,11 @@ header img{
     float: left;
     width: 100%;
 }
+.content-list ul li:nth-of-type(1) div{
+    margin-left: 0.6rem;
+    width: 1rem;
+    text-align: left;
+}
 
 /* 合作商家 */
 .seller{
@@ -170,7 +175,6 @@ header img{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: 90%;
 }
 /* 选择币种 */
 .choseBz{
