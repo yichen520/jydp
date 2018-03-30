@@ -35,7 +35,7 @@ public class WapTransactionPendOrderController {
     ITransactionPendOrderService transactionPendOrderService;
 
     /**
-     * 跳转到我的记录页面(暂时用于测试使用)
+     * 跳转到我的记录页面
      */
     @RequestMapping(value = "/showMyRecord")
     public String showMyRecord() {
