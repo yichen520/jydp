@@ -15,9 +15,10 @@
     <title>忘记密码</title>
 </head>
 <body>
-    <div class="back">
-        <a href="javascript:history.back(-1)"><img src="${pageContext.request.contextPath}/resources/image/wap/back.png" /></a>
-    </div>
+    <header>
+        <img src="${pageContext.request.contextPath}/resources/image/wap/back.png" class="backimg"/>
+        <p>忘记密码</p>
+    </header>
     <div class="registerBox">
         <div class="title">忘记密码</div>
         <div class="registerContent">

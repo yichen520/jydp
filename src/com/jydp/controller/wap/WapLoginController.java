@@ -70,6 +70,7 @@ public class WapLoginController {
         if (user == null) {
             request.setAttribute("code", 3);
             request.setAttribute("message", "账号或密码错误");
+            request.setAttribute("userAccount", userAccount);
             return "page/wap/login";
         }
 
@@ -112,7 +113,7 @@ public class WapLoginController {
     @RequestMapping(value = "/loginOut")
     public String loginOut(HttpServletRequest request) {
         UserWapInterceptor.loginOut(request);
-        return "redirect:/page/wap/login";
+        return "redirect:/userWap/userLogin/show";
     }
 
 }

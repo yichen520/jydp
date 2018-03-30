@@ -32,7 +32,7 @@ header img{
 }
 .notice img{
     float: left;
-    margin-top: 0.14rem; 
+    margin-top: 0.14rem;
     margin-left: 0.15rem;
     width: 0.24rem;
     height: 0.2rem;
@@ -143,12 +143,12 @@ header img{
     float: left;
 }
 .sellerContent{
-    margin-top: 0.3rem;
-    display: flex;
     padding-bottom: 0.3rem;
 }
 .iconBox{
-    flex: 1;
+    float: left;
+    margin-top: 0.3rem;
+    width:25%;
 }
 .iconBox img{
     display: block;
@@ -166,9 +166,9 @@ header img{
 .choseBz{
     width: 100%;
     background: rgba(0,0,0,0.4);
-    position: absolute;
-    left: 0;
+    position: fixed;
     top: 0;
+    left: 0;
     z-index: 99;
 }
 .closeAnthoer{
@@ -182,6 +182,7 @@ header img{
     position: absolute;
     left: -82%;
     top: 0;
+    display: none;
     width: 82%;
     /* height: 100%; */
     background: #fff;
@@ -210,10 +211,13 @@ header img{
 }
 .choseBzBox-content{
     padding: 0.3rem;
+    height: 70%;
+    overflow: hidden;
+    overflow-y: scroll;
 }
 .choseBzBox-content ul li{
     display: flex;
-    margin-bottom: 0.4rem;
+    padding-bottom: 0.4rem;
 }
 .choseBzBox-content ul li p{
     flex: 1;

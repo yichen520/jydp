@@ -78,7 +78,7 @@
                 {{#each transactionPendOrderSellList}}
                 <p>
                     <span>卖{{eachWithIndexFromOne @index}}</span>
-                    <span>{{formatNumber pendingNumber 4}}</span>
+                    <span>{{formatNumber restNumber 4}}</span>
                     <span>{{formatNumber sumPrice 6}}</span>
                 </p>
                 {{/each}}
@@ -94,7 +94,7 @@
                 {{#each transactionPendOrderBuyList}}
                     <p>
                     <span>买{{eachWithIndexFromOne @index}}</span>
-                    <span>{{formatNumber pendingNumber 4}}</span>
+                    <span>{{formatNumber restNumber 4}}</span>
                     <span>{{formatNumber sumPrice 6}}</span>
                     </p>
                 {{/each}}

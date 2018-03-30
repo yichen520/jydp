@@ -17,9 +17,15 @@ header .change{
     height: 0.88rem;
     border-bottom: 1px solid #ececec;
 }
-.list-box p{
+.list-box .list-title{
     float: left;
     line-height: 0.88rem;
+    font-size: 0.3rem;
+    color: #666;
+    font-weight: 400
+}
+.mark-list .list-title{
+    float: left;
     font-size: 0.3rem;
     color: #666;
 }
@@ -42,7 +48,7 @@ header .change{
 }
 .mark-list{
     width: 100%;
-    border-bottom: 1px solid #ececec; 
+    border-bottom: 1px solid #ececec;
     padding-bottom: 0.28rem;
     padding-top: 0.28rem;
 }
@@ -52,7 +58,6 @@ header .change{
     color: #666;
 }
 .mark-list .remark{
-    margin-bottom: 0.2rem;
     width: 80%;
     vertical-align: top;
     text-align: right;
@@ -62,10 +67,11 @@ header .change{
     border: 0;
     padding: 0;
     resize: none;
-    color: #999
+    color: #999;
 }
 .list-box .text{
     float: right;
+    font-weight: 400;
     line-height: 0.88rem;
     font-size: 0.3rem;
     color: #666;
@@ -75,7 +81,7 @@ header .change{
 }
 .list-box select{
     -moz-appearance:none;
-    -webkit-appearance:none; 
+    -webkit-appearance:none;
     height: 0.88rem;
     float: right;
     line-height: 0.88rem;
@@ -90,6 +96,7 @@ header .change{
     position: relative;
 }
 .idcard-box .title {
+    display:block;
     line-height: 0.88rem;
     font-size: 0.3rem;
     color: #666;
@@ -103,13 +110,14 @@ header .change{
     width: 3.34rem;
     height: 2.08rem;
 }
-.autor{
+.blahOne{
     position: absolute;
     left: 0;
     top: 0.9rem;
     width: 3.34rem;
     height: 2.08rem;
     border: 0;
+    object-fit: cover
 }
 .icardtwo{
     position: absolute;
@@ -120,15 +128,14 @@ header .change{
     width: 3.34rem;
     height: 2.08rem;
 }
-#blahtwo{
+.blahTwo{
     position: absolute;
     right: 0;
     top: 0.88rem;
     width: 3.34rem;
     height: 2.08rem;
+    object-fit: cover
 }
-.autor img,.blahtwo img{
-    width: 3.34rem;
-    height: 2.08rem;
-    object-fit:cover;
+.file{
+    display: block;
 }

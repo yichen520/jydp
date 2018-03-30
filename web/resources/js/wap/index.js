@@ -5,8 +5,8 @@ $(function () {
     //notice();
     function banner() {  
         var mySwiper = new Swiper('.banner', {
-            autoplay: 3000,//可选选项，自动滑动
-            speed: 3000,
+            autoplay: 1500,//可选选项，自动滑动
+            speed: 200,
             pagination: '.swiper-pagination',
         })
     };

@@ -33,13 +33,6 @@
     <!-- 广告轮播图 -->
     <div class="swiper-container banner">
         <div class="swiper-wrapper">
-            {{#each this}}
-                {{#if wapLinkUrl}}
-                    <a target="_blank" href="{{wapLinkUrl}}" class="swiper-slide"><img src="{{adsImageUrlFormat}}" class="swiper-slide"/></a>
-                {{else}}
-                    <a class="swiper-slide"><img src="{{adsImageUrlFormat}}"/></a>
-                {{/if}}
-            {{/each}}
         </div>
         <div class="swiper-pagination"></div>
     </div>
@@ -48,14 +41,6 @@
     <div class="notice">
         <img src="<%=path %>/resources/image/wap/home-notice.png"/>
         <ul class="noticeContent">
-            {{#each this}}
-            <li class="noticebox">
-                <a target="_blank" href="<%=path%>/userWap/wapSystemNotice/showNoticeDetail/{{id}}" class="link">
-                    <p class="noticeTitle">【公告】{{noticeTitle}}</p>
-                    <span>{{addTimeDateConvert addTime}}</span>
-                </a>
-            </li>
-            {{/each}}
         </ul>
         <div class="more"><a href="<%=path %>/userWap/wapSystemNotice/show">更多</a></div>
         <div class="clear"></div>
@@ -71,24 +56,6 @@
             <div class="clear"></div>
         </div>
         <div class="sellerContent">
-            {{#each this}}
-                {{#if webLinkUrl}}
-                    <div class="iconBox">
-                        <a target="_blank" href="{{webLinkUrl}}" class="link">
-                            <img src="{{businessesImageUrlFormat}}"/>
-                        </a>
-                        <p>{{partner.businessesName}}</p>
-                    </div>
-
-                    {{else}}
-                    <div class="iconBox">
-                        <a target="_blank" href="" class="link">
-                            <img src="{{businessesImageUrlFormat}}"/>
-                        </a>
-                        <p>{{partner.businessesName}}</p>
-                    </div>
-                {{/if}}
-            {{/each}}
         </div>
     </div>
 </div>
@@ -128,11 +95,11 @@
 
                 {{#compare change 0}}
 
-                <p class="red">$ {{latestPrice}}</p>
+                <p class="red"> {{volume}}</p>
 
                 {{else}}
 
-                <p class="green">$ {{latestPrice}}</p>
+                <p class="green"> {{volume}}</p>
 
                 {{/compare}}
 
@@ -155,6 +122,47 @@
         </li>
     </ul>
     {{/each}}
+</script>
+
+<script id="swiperTemplate" type="text/x-handlebars-template">
+    {{#each this}}
+        {{#if wapLinkUrl}}
+            <a target="_blank" href="{{wapLinkUrl}}" class="swiper-slide"><img src="{{adsImageUrlFormat}}" class="swiper-slide"/></a>
+        {{else}}
+            <a class="swiper-slide"><img src="{{adsImageUrlFormat}}"/></a>
+        {{/if}}
+    {{/each}}
+</script>
+
+<script id="sellerTemplate" type="text/x-handlebars-template">
+{{#each this}}
+    {{#if webLinkUrl}}
+        <div class="iconBox">
+            <a target="_blank" href="{{webLinkUrl}}" class="link">
+                <img src="{{businessesImageUrlFormat}}"/>
+            </a>
+            <p>{{partner.businessesName}}</p>
+        </div>
+    {{else}}
+        <div class="iconBox">
+            <a target="_blank" href="" class="link">
+                <img src="{{businessesImageUrlFormat}}"/>
+            </a>
+            <p>{{partner.businessesName}}</p>
+        </div>
+    {{/if}}
+{{/each}}
+</script>
+
+<script id="noticeTemplate" type="text/x-handlebars-template">
+{{#each this}}
+<li class="noticebox">
+    <a target="_blank" href="<%=path%>/userWap/wapSystemNotice/showNoticeDetail/{{id}}" class="link">
+        <p class="noticeTitle">【公告】{{noticeTitle}}</p>
+        <span>{{addTimeDateConvert addTime}}</span>
+    </a>
+</li>
+{{/each}}
 </script>
 <script src="<%=path %>/resources/js/wap/common.js"></script>
 <script src="<%=path %>/resources/js/wap/zepto.min.js"></script>
@@ -209,12 +217,12 @@
 
     //首页banner数据填充
     var systemAdsHomepagesListData = ${requestScope.systemAdsHomepagesList};
-    var systemAdsHomepagesfunc = Handlebars.compile($('.swiper-wrapper').html());
+    var systemAdsHomepagesfunc = Handlebars.compile($('#swiperTemplate').html());
     $('.swiper-wrapper').html(systemAdsHomepagesfunc(systemAdsHomepagesListData));
 
     //公告数据填充
     var systemNoticeListData = ${requestScope.systemNoticeList};
-    var noticefunc = Handlebars.compile($('.noticeContent').html());
+    var noticefunc = Handlebars.compile($('#noticeTemplate').html());
     $('.noticeContent').html(noticefunc(systemNoticeListData));
     //交易数据填充
     var transactionUserDealListData = ${requestScope.transactionUserDealList};
@@ -223,7 +231,7 @@
 
     //合作伙伴数据填充
     var systemBusinessesPartnerListData = ${requestScope.systemBusinessesPartnerList};
-    var systemBusinessesfunc = Handlebars.compile($('.sellerContent').html());
+    var systemBusinessesfunc = Handlebars.compile($('#sellerTemplate').html());
     $('.sellerContent').html(systemBusinessesfunc(systemBusinessesPartnerListData));
 
     //刷新币种行情
