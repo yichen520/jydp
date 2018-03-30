@@ -151,7 +151,7 @@ header .back{
     border: 1px solid #d9d9d9;
     font-size: 0.24rem;
     float: left;
-    width: 4.13rem;
+    width: 3.96rem;
     height: 0.6rem;
     line-height: 0.6rem;
 }
@@ -173,7 +173,7 @@ textarea{
     border: 1px solid #d9d9d9;
     font-size: 0.24rem;
     float: left;
-    width: 4.09rem;
+    width: 3.95rem;
     height: 1.68rem;
     -webkit-appearance: none;
 }
