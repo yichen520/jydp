@@ -91,7 +91,7 @@
     </div>
 </script>
 
-<form id="identificationForm" action="<%=path %>/userWap/WapIdentificationController/show" method="post">
+<form id="identificationForm" action="<%=path %>/userWap/identificationController/showAdd" method="post">
     <input type="hidden" id="userId" name="userId"/>
     <input type="hidden" id="userAccountIde" name="userAccount"/>
 </form>
@@ -387,6 +387,7 @@
 
                 if (result.code == 1) {
                     openTips(result.message);
+
                     //注册成功跳转到实名认证页面
                     setTimeout(function () {
                         var obj = result.data;
@@ -397,9 +398,6 @@
                         $("#userAccountIde").val(userAccount);
                         $("#identificationForm").submit();
                     }, 3000)
-
-                    //注册成功跳转到实名认证页面
-                    window.location.href="<%=path %>/wapLogin";
                 } else {
                     openTips(result.message);
                 }
