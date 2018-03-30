@@ -70,6 +70,7 @@ public class WapLoginController {
         if (user == null) {
             request.setAttribute("code", 3);
             request.setAttribute("message", "账号或密码错误");
+            request.setAttribute("userAccount", userAccount);
             return "page/wap/login";
         }
 
