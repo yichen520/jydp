@@ -54,11 +54,11 @@
         <p class="phoneCode">
             <img src="<%=path %>/resources/image/wap/tishi.png"  class="tishi"/>
             <c:if test="${!empty userCoinConfigList}" >
-                <span class="desc" id="tip">当前币种最低提现<fmt:formatNumber type="number" value="${userCoinConfigList[0].minCurrencyNumber}" maxFractionDigits="2" groupingUsed="false"/>个，
+                <span class="desc" id="tip">当前币种最低提币<fmt:formatNumber type="number" value="${userCoinConfigList[0].minCurrencyNumber}" maxFractionDigits="2" groupingUsed="false"/>个，
                     超过<fmt:formatNumber type="number" value="${userCoinConfigList[0].freeCurrencyNumber}" maxFractionDigits="2" groupingUsed="false"/>个需人工审核</span>
             </c:if>
             <c:if test="${empty userCoinConfigList}" >
-                <span class="desc" id="tip">当前币种最低提现0个，超过0个需人工审核</span>
+                <span class="desc" id="tip">当前币种最低提币0个，超过0个需人工审核</span>
             </c:if>
             <input type="hidden" id="minNumber">
             <span class="txt">短信验证码<span>*</span></span>
@@ -133,7 +133,7 @@
                     var coinNumber = userCoinConfig.currencyNumber;
                     coinNumber = String(coinNumber).replace(/^(.*\..{4}).*$/,"$1");
                     coinNumber = Number(coinNumber);
-                    //提现最小数量
+                    //提币最小数量
                     var minNumber = userCoinConfig.minCurrencyNumber;
                     minNumber = String(minNumber).replace(reg,"$1");
                     minNumber = Number(minNumber);
@@ -143,7 +143,7 @@
                     freeNumber = Number(freeNumber);
 
                     document.getElementById("coinNumber").innerHTML = coinNumber;
-                    document.getElementById("tip").innerHTML = '提示：当前币种最低提现' + minNumber + '个，超过' + freeNumber + '个需人工审核';
+                    document.getElementById("tip").innerHTML = '提示：当前币种最低提币' + minNumber + '个，超过' + freeNumber + '个需人工审核';
                     $("#minNumber").val(minNumber);
                 } else {
                     openTips(result.message);
@@ -185,7 +185,7 @@
         });
     }
 
-    //币种提现
+    //币种提币
     var coinBoo = false;
     function mentionCoin() {
         if (coinBoo) {
@@ -223,7 +223,7 @@
         }
         if (number < minNumber) {
             coinBoo = false;
-            return openTips("提现数量不能小于最低提现数量");
+            return openTips("提币数量不能小于最低提币数量");
         }
         if (!validateCode) {
             coinBoo = false;
