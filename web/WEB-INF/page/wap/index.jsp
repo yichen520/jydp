@@ -170,7 +170,7 @@
         </div>
     {{else}}
         <div class="iconBox">
-            <a target="_blank" href="" class="link">
+            <a target="_blank"  class="link">
                 <img src="{{businessesImageUrlFormat}}"/>
             </a>
             <p>{{businessesName}}</p>
