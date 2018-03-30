@@ -34,37 +34,56 @@ $(function () {
         
     };
 
-    var wait=60;
-    function time(o) {
-        if (wait == 0) {
+
+    var waitOld =60;
+    var waitNew =60;
+    function timeOld(o) {
+        if (waitOld == 0) {
             o.removeAttribute("disabled");
             o.value="获取验证码";
-            wait = 60;
+            waitOld = 60;
         } else {
             o.setAttribute("disabled", true);
-            o.value="重新发送(" + wait + ")";
-            wait--;
+            o.value="重新发送(" + waitOld + ")";
+            waitOld--;
             setTimeout(function() {
-                    time(o)
+                    timeOld(o)
                 },
                 1000)
         }
     }
+    function timeNew(o) {
+        if (waitNew == 0) {
+            o.removeAttribute("disabled");
+            o.value="获取验证码";
+            waitNew = 60;
+        } else {
+            o.setAttribute("disabled", true);
+            o.value="重新发送(" + waitNew + ")";
+            waitNew--;
+            setTimeout(function() {
+                    timeNew(o)
+                },
+                1000)
+        }
+    }
+
     $('.code').on('click',function(){
-        time(this);
         var phone="";
         var areaCode="";
         var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
         if ($(this).attr("id")=="oldPhoneCode") {
             areaCode=$("#oldAreaCode").text()
             phone=$("#oldPhone").text();
+            timeOld(this);
         } else {
             areaCode=$("#newAreaCode").text()
             phone=$("#newPhone").val();
-        }
-        if (!myreg.test(phone)) {
-            openTips("手机号格式不正确");
-            return;
+            if (!myreg.test(phone)) {
+                openTips("手机号格式不正确");
+                return;
+            }
+            timeNew(this);
         }
         $.ajax({
             url: "/jydp/sendCode/sendPhoneCode",
@@ -82,5 +101,4 @@ $(function () {
             }
         });
     });
-
 });
