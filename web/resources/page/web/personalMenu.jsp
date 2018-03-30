@@ -35,7 +35,7 @@
         <ul class="levelTwo">
             <li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">我要充值</a></li>
             <li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">立即提现</a></li>
-            <li class="menuInfo"><a id="userCoinWithdrawal" href="<%=path %>/userWeb/userCoinWithdrawal/show.htm">币种提现</a></li>
+            <li class="menuInfo"><a id="userCoinWithdrawal" href="<%=path %>/userWeb/userCoinWithdrawal/show.htm">币种提币</a></li>
         </ul>
     </li>
 
