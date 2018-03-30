@@ -269,7 +269,7 @@
                 if (code != 1 ) {
                     return;
                 }
-                getMesCodeFlag = false;
+                getMesCodeFlag = true;
             },
             error: function () {
                 getMesCodeFlag = false;
