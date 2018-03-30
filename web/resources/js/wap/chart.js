@@ -382,10 +382,6 @@ var ChartParamsAndInit = {
                         data[i].minPrice, // 最低价
                         data[i].closPrice // 收盘价
                     ]);
-             /*       res.push([
-                        data[i].dealDate, // 时间节点
-                        data[i].countPrice // 成交量
-                    ]);*/
                 }
                 // 使用框架
                 $('#chart').highcharts('StockChart', {
@@ -469,7 +465,7 @@ var ChartParamsAndInit = {
                         }
                     ]
                 });
-          //      window.setTimeout(ChartParamsAndInit.reloadData(),5000);
+                window.setTimeout(ChartParamsAndInit.reloadData(),5000);
             },
             error: function () {
                 openTips("页面数据错误，请刷新!");
