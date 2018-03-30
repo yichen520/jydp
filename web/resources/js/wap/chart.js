@@ -22,6 +22,36 @@ var ChartParamsAndInit = {
             var numStr = integerDigits + "." + fractionDigits;
             return numStr;
         });
+        Handlebars.registerHelper('formatNumberWithWan', function (num, maxFractionDigits, options) {
+            if (isNaN(num) || isNaN(maxFractionDigits)) {
+                openTips("参数类型错误");
+                return false;
+            }
+            num = num.toString();
+            maxFractionDigits = parseInt(maxFractionDigits);
+            if (num.indexOf(".") === -1) {
+                if("0" == num){
+                    return num;
+                }else{
+                    return num +"万";
+                }
+                return num;
+            }
+            var numField = num.split(".");
+            var integerDigits = numField[0];
+            var fractionDigits = numField[1];
+
+            if (fractionDigits.length <= maxFractionDigits) {
+                return num;
+            }
+            fractionDigits = fractionDigits.substring(0, maxFractionDigits);
+            var numStr = integerDigits + "." + fractionDigits;
+            if("0" == numStr){
+                return numStr;
+            }else{
+                return numStr +"万";
+            }
+        });
         Handlebars.registerHelper("paymentTypeFormat", function (type, index) {
             if (type == undefined || type == null || type == "" || isNaN(type)) {
                 return "未知类型";
@@ -54,6 +84,9 @@ var ChartParamsAndInit = {
             var h = date.getHours() + ':';
             var m = date.getMinutes() + ':';
             var s = date.getSeconds();
+            if(s < 10){
+                s = "0" + s;
+            }
             return Y + M + D + h + m + s;
         });
     },
@@ -70,6 +103,9 @@ var ChartParamsAndInit = {
         var h = date.getHours() + ':';
         var m = date.getMinutes() + ':';
         var s = date.getSeconds();
+        if(s < 10){
+            s = "0" + s;
+        }
         return Y + M + D + h + m + s;
     },
     currencyInfo: function () {
@@ -124,6 +160,14 @@ var ChartParamsAndInit = {
             }, 450);
             $('.choseBzBox').animate({left: '-82%'}, "500");
         });
+        $(".closeBox").on('click', function () {
+            setTimeout(function () {
+                $('.closeAnthoer').css("height", "0");
+                $('.choseBz').css("height", "0");
+                $('.choseBzBox').css("height", "0");
+            }, 450);
+            $('.choseBzBox').animate({left: '-82%'}, "500");
+        });
     },
     formatNumber: function (num, maxFractionDigits) {
         if (isNaN(num) || isNaN(maxFractionDigits)) {
@@ -170,7 +214,11 @@ var ChartParamsAndInit = {
                     $("#todayMinSpan").text(ChartParamsAndInit.formatNumber(standardParameter.todayMin, 6));
                     $("#buyOneSpan").text(ChartParamsAndInit.formatNumber(standardParameter.buyOne, 6));
                     $("#sellOneOne").text(ChartParamsAndInit.formatNumber(standardParameter.sellOne, 6));
-                    $("#dayTurnoveOne").text(ChartParamsAndInit.formatNumber(standardParameter.dayTurnove, 4)+"万");
+                    if(dayTurnove == 0){
+                        $("#dayTurnoveOne").text(dayTurnove);
+                    }else {
+                        $("#dayTurnoveOne").text(dayTurnove +"万");
+                    }
                 }
             },
             error: function () {
@@ -275,7 +323,6 @@ var ChartParamsAndInit = {
                     return;
                 }
                 data = data.transactionGraphList;
-             //   ChartParamsAndInit.sleep(4000);
                 var ohlc = [], res = [], volome = [], dataLength = data.length;
                 var i = 0;
                 if (time == "5m") {
@@ -404,7 +451,7 @@ var ChartParamsAndInit = {
                     }],
                     series : [
                         {
-                            name : '123',
+                            name : currencyName,
                             type: 'candlestick',
                             color: 'green',
                             lineColor: 'green',
@@ -422,6 +469,7 @@ var ChartParamsAndInit = {
                         }
                     ]
                 });
+          //      window.setTimeout(ChartParamsAndInit.reloadData(),5000);
             },
             error: function () {
                 openTips("页面数据错误，请刷新!");
@@ -458,14 +506,11 @@ $().ready(function () {
             var headerComplile = Handlebars.compile(headerTemplate);
             var headerHtml = headerComplile(data);
             $("#header").html(headerHtml);
-
             //数据准备
             //参数给与
             ChartParamsAndInit.openChart();
             ChartParamsAndInit.open();
             ChartParamsAndInit.gainGraphData("5m", 7);
-            ChartParamsAndInit.sleep(1000);
-            window.setTimeout(ChartParamsAndInit.reloadData,10000);
         }
     });
 });
