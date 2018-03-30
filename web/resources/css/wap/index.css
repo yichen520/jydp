@@ -6,6 +6,11 @@ header img{
     width: 0.5rem;
     height: 0.5rem;
 }
+.element::-webkit-scrollbar {display:none}
+
+::-webkit-scrollbar {
+    display: none;
+}
 
 /* 内容区域 */
 #wrapper{
