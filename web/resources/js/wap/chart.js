@@ -169,7 +169,7 @@ var ChartParamsAndInit = {
                     $("#todayMinSpan").text(ChartParamsAndInit.formatNumber(standardParameter.todayMin, 6));
                     $("#buyOneSpan").text(ChartParamsAndInit.formatNumber(standardParameter.buyOne, 6));
                     $("#sellOneOne").text(ChartParamsAndInit.formatNumber(standardParameter.sellOne, 6));
-                    $("#dayTurnoveOne").text(ChartParamsAndInit.formatNumber(standardParameter.dayTurnove, 4));
+                    $("#dayTurnoveOne").text(ChartParamsAndInit.formatNumber(standardParameter.dayTurnove, 4)+"万");
                 }
             },
             error: function () {
@@ -245,8 +245,10 @@ var ChartParamsAndInit = {
         var currencyName = $("#currencyName").val();
         var webAppPath = $("#webAppPath").val();
         Highcharts.setOptions({
+            global: {useUTC: false},
             lang: {
-                rangeSelectorZoom: ''
+                months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                weekdays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
             }
         });
         $.ajax({
@@ -263,6 +265,7 @@ var ChartParamsAndInit = {
                     return;
                 }
                 data = data.transactionGraphList;
+                console.info(data);
                 var ohlc = [], res = [], volome = [], dataLength = data.length;
                 var i = 0;
                 if (time == "5m") {
@@ -322,11 +325,10 @@ var ChartParamsAndInit = {
                         data[i].minPrice, // 最低价
                         data[i].closPrice // 收盘价
                     ]);
-                    res.push([
+             /*       res.push([
                         data[i].dealDate, // 时间节点
                         data[i].countPrice // 成交量
-
-                    ]);
+                    ]);*/
                 }
                 // 使用框架
                 $('#chart').highcharts('StockChart', {
@@ -349,7 +351,6 @@ var ChartParamsAndInit = {
                     plotOptions: {
                         column: {
                             pointWidth: 5
-
                         }
                     },
                     tooltip: {
@@ -400,14 +401,14 @@ var ChartParamsAndInit = {
                             upColor: 'red',
                             upLineColor: 'red',
                             data : ohlc,
-                            data: ohlc,
+
                             navigatorOptions: {
                                 color: Highcharts.getOptions().colors[0]
                             },
                             dataGrouping: {
                                 units: groupingUnits
                             },
-                            yAxis: 0
+
                         }
                     ]
                 });

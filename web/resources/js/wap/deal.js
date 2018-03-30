@@ -696,7 +696,7 @@ var ParamsAndInit = {
                     $("#todayMinSpan").text(ParamsAndInit.formatNumber(standardParameter.todayMin, 6));
                     $("#buyOneSpan").text(ParamsAndInit.formatNumber(standardParameter.buyOne, 6));
                     $("#sellOneOne").text(ParamsAndInit.formatNumber(standardParameter.sellOne, 6));
-                    $("#dayTurnoveOne").text(ParamsAndInit.formatNumber(standardParameter.dayTurnove, 4));
+                    $("#dayTurnoveOne").text(ParamsAndInit.formatNumber(standardParameter.dayTurnove, 4)+"万");
                     $("#nowPriceDiv").text("当前价格：$"+ParamsAndInit.formatNumber(standardParameter.nowPrice, 8));
                 }
             },
