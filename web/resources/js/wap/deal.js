@@ -892,12 +892,20 @@ $().ready(function () {
             ParamsAndInit.open();
             $("#buyPrice").unbind("keyup");
             $("#buyPrice").bind("keyup", {num: 2}, ParamsAndInit.matchUtil);
+            $("#buyPrice").unbind("blur");
+            $("#buyPrice").bind("blur", {num: 2}, ParamsAndInit.matchUtil);
+            $("#buyNum").unbind("keyup");
+            $("#buyNum").bind("keyup", {num: 4}, ParamsAndInit.matchUtil);
             $("#buyNum").unbind("blur");
             $("#buyNum").bind("blur", {num: 4}, ParamsAndInit.matchUtil);
             $("#sellPrice").unbind("keyup");
             $("#sellPrice").bind("keyup", {num: 2}, ParamsAndInit.matchUtil);
+            $("#sellPrice").unbind("blur");
+            $("#sellPrice").bind("blur", {num: 2}, ParamsAndInit.matchUtil);
             $("#sellNum").unbind("blur");
             $("#sellNum").bind("blur", {num: 4}, ParamsAndInit.matchUtil);
+            $("#sellNum").unbind("keyup");
+            $("#sellNum").bind("keyup", {num: 4}, ParamsAndInit.matchUtil);
             $(".mainButtonBuy").bind('click', ParamsAndInit.toBuy);
             $(".mainButtonSell").bind('click', ParamsAndInit.toSell);
             $(".toCancleOrder").each(function () {
