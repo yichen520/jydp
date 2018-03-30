@@ -98,7 +98,9 @@
 </body>
 <script id="template" type="text/x-handlebars-template">
     {{#each this}}
+    <a href="<%=path%>/userWap/tradeCenter/show?currencyIdStr={{currencyId}}">
     <ul>
+
         <li>
             <img src="{{currencyImgUrl}}"/>
             <div>
@@ -142,7 +144,9 @@
             </div>
         </li>
     </ul>
+    </a>
     {{/each}}
+
 </script>
 
 <script id="swiperTemplate" type="text/x-handlebars-template">
@@ -191,8 +195,18 @@
     <li>
         <p style="display: none;">{{currencyId}}</p>
         <p>{{currencyName}}({{currencyShortName}})</p>
+
+        {{#compare change 0}}
         <p class="red">{{latestPrice}}</p>
+        {{else}}
+        <p class="green">{{latestPrice}}</p>
+        {{/compare}}
+
+        {{#compare change 0}}
         <p class="red">{{change}}%</p>
+        {{else}}
+        <p class="green">{{change}}%</p>
+        {{/compare}}
     </li>
     {{/each}}
 </script>
