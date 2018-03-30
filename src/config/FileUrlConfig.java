@@ -31,6 +31,9 @@ public class FileUrlConfig {
 	/** 公告图片目录 */
 	public static final String file_remote_noticeImage_url ="noticeImage";
 
+	/** 币种管理图片目录 */
+	public static final String file_remote_transactionCyrrency_url = "transactionCyrrency";
+
 	/** 实名认证，证件照目录 */
 	public static final String file_remote_identificationImage_url ="identificationImage";
 

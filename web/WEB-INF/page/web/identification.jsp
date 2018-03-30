@@ -124,8 +124,14 @@
 
         //大于400K，进行压缩上传
         if (fileObj.size / 1024 > 400) {
+            var quality = 0.4;
+            if (fileObj.size / 1024 < 5 * 1024) {
+                //5M以内
+                quality = 0.7;
+            }
+
             photoCompress(fileObj, {
-                quality: 0.4
+                quality: quality
             }, function (base64Codes) {
                 var file = convertBase64UrlToBlob(base64Codes);
                 if (fileId == "frontImg") {
@@ -401,7 +407,7 @@
 
     var mapMatch = {};
     mapMatch['ENumber'] = /[^\a-\z\A-\Z\d]/g;
-    mapMatch['rightful'] = /[%`~!@#$^&*()=|{}':;",_+\-\\\[\].<>/?！￥…（）—【】《》；：‘’”“。，、？]/g;
+    mapMatch['rightful'] = /[%`~!@#$^&*()=|{}':;",_+\-\\\[\].<>/?！￥…（）—【】《》；：‘’”“。，、？1234567890]/g;
     function matchUtil(o, str) {
         o.value = o.value.replace(mapMatch[str], '');
     }

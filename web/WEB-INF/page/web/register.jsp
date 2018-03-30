@@ -100,8 +100,8 @@
 
             <p class="user">
                 <span>
-                    <img src="<%=path %>/resources/image/web/click.png" class="check" />
-                    <img src="<%=path %>/resources/image/web/clicked.png" class="checked" style="display: none " />
+                    <img src="<%=path %>/resources/image/web/click.png" class="check" style="display: none " />
+                    <img src="<%=path %>/resources/image/web/clicked.png" class="checked"  />
                     已阅读并接受
                 </span>
                 <a href="<%=path %>/userWeb/userRegister/registerAgree" class="agreement">《用户注册协议》</a>
@@ -283,7 +283,7 @@
     };
 
     var registerBoo = false;
-    var redCheck = false;
+    var redCheck = true;
     //用户注册
     function register() {
         var userAccountEle = $("#userAccount");
