@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="<%=path %>/resources/css/wap/common.css">
     <link rel="stylesheet" href="<%=path %>/resources/css/wap/index.css">
     <link rel="stylesheet" href="<%=path %>/resources/css/wap/swiper-3.4.2.min.css">
+    <%--<link rel="stylesheet" href="<%=path %>/resources/css/wap/deal.css">--%>
     <title>首页</title>
 </head>
 <body>
@@ -59,13 +60,33 @@
         </div>
     </div>
 </div>
+<!-- loading图 -->
+<%--<div id="loading">--%>
+    <%--<i></i>--%>
+<%--</div>--%>
+<!-- 选择币种 -->
+<div class="choseBz" >
+    <div class="choseBzBox">
+        <div class="closeAnthoer closeBox"></div>
+        <div class="choseBzBox-title">
+            <p>选择币种</p>
+            <img src="<%=path%>/resources/image/wap/header-close.png" class="closeBox"/>
+            <div class="clear"></div>
+        </div>
+        <div class="choseBzBox-content">
+            <ul id="currencyList">
+            </ul>
+        </div>
+    </div>
+</div>
+
 <!-- 底部tabBar -->
 <footer>
     <a class="home" href="#">
         <img src="<%=path %>/resources/image/wap/home-chose.png" class="home-icon"/>
         <p class="chose">首页</p>
     </a>
-    <a href="<%=path %>/userWap/tradeCenter/show" class="deal">
+    <a  class="deal open">
         <img src="<%=path %>/resources/image/wap/deal-nochose.png" class="deal-icon"/>
         <p>交易</p>
     </a>
@@ -141,14 +162,14 @@
             <a target="_blank" href="{{webLinkUrl}}" class="link">
                 <img src="{{businessesImageUrlFormat}}"/>
             </a>
-            <p>{{partner.businessesName}}</p>
+            <p>{{businessesName}}</p>
         </div>
     {{else}}
         <div class="iconBox">
             <a target="_blank" href="" class="link">
                 <img src="{{businessesImageUrlFormat}}"/>
             </a>
-            <p>{{partner.businessesName}}</p>
+            <p>{{businessesName}}</p>
         </div>
     {{/if}}
 {{/each}}
@@ -163,6 +184,17 @@
     </a>
 </li>
 {{/each}}
+</script>
+
+<script id="table-template" type="text/x-handlebars-template">
+    {{#each this}}
+    <li>
+        <p style="display: none;">{{currencyId}}</p>
+        <p>{{currencyName}}({{currencyShortName}})</p>
+        <p class="red">{{latestPrice}}</p>
+        <p class="red">{{change}}%</p>
+    </li>
+    {{/each}}
 </script>
 <script src="<%=path %>/resources/js/wap/common.js"></script>
 <script src="<%=path %>/resources/js/wap/zepto.min.js"></script>
@@ -255,6 +287,11 @@
             }
         });
     }
+
+    $('.choseBzBox-content ul').on('click', 'li', function () {
+        var currencyId=$(this).find("p").eq(0).text();
+        window.location.href="<%=path%>/userWap/tradeCenter/show?currencyIdStr="+currencyId
+    })
 
 </script>
 </html>
