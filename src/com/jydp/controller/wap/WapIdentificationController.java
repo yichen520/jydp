@@ -60,6 +60,11 @@ public class WapIdentificationController {
         }
 
         UserDO userDO = userService.getUserByUserAccount(userAccount);
+        if(userDO == null){
+            request.setAttribute("code", 2);
+            request.setAttribute("message", "参数不正确");
+            return "page/web/login";
+        }
 
         //待审核，审核拒绝，进入查看实名认证信息页
         if (userDO.getAuthenticationStatus() == 1 || userDO.getAuthenticationStatus() == 3) {
@@ -92,6 +97,14 @@ public class WapIdentificationController {
             request.setAttribute("message", "参数为空");
             return "page/wap/login";
         }
+
+        UserDO userDO = userService.getUserByUserAccount(userAccount);
+        if(userDO == null){
+            request.setAttribute("code", 2);
+            request.setAttribute("message", "参数不正确");
+            return "page/web/login";
+        }
+
         request.setAttribute("userAccount", userAccount);
         return "page/wap/identification";
     }
