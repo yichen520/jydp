@@ -21,7 +21,7 @@
 
         <ul class="levelTwo">
             <li class="menuInfo"><a id="userMessage" href="<%=path %>/userWeb/userMessage/show.htm">个人信息</a></li>
-            <li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">银行卡绑定</a></li>
+            <%--<li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">银行卡绑定</a></li>--%>
         </ul>
     </li>
 
@@ -35,7 +35,7 @@
         <ul class="levelTwo">
             <li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">我要充值</a></li>
             <li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">立即提现</a></li>
-            <li class="menuInfo"><a id="userCoinWithdrawal" href="<%=path %>/userWeb/userCoinWithdrawal/show.htm">我要币种</a></li>
+            <li class="menuInfo"><a id="userCoinWithdrawal" href="<%=path %>/userWeb/userCoinWithdrawal/show.htm">我要提币</a></li>
         </ul>
     </li>
 
