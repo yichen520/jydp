@@ -32,17 +32,21 @@
                     <p class="num" id="area">+86</p>
                     <img src="${pageContext.request.contextPath}/resources/image/wap/iconDown.png" />
                 </div>
-                <input type="number" placeholder="您注册的手机号" id="phoneNumber" name="phoneNumber" maxlength="11"/>
+                <input type="text" placeholder="您注册的手机号" id="phoneNumber" name="phoneNumber" maxlength="11"
+                       onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
             </div>
             <div class="userCode">
-                <input type="number" id="validateCode" name="validateCode" placeholder="请输入6位短信验证码" maxlength="6"/>
+                <input type="text" id="validateCode" name="validateCode" placeholder="请输入6位短信验证码" maxlength="6"
+                       onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
                 <p onclick="getValidateCode()">获取验证码</p>
             </div>
             <div class="userPassword">
-                <input type="password" id="password" name="password" placeholder="新密码为字母、数字，6～16个字符" maxlength="16"/>
+                <input type="password" id="password" name="password" placeholder="新密码为字母、数字，6～16个字符" maxlength="16"
+                       onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
             </div>
             <div class="userPasswordTwo">
-                <input type="password" id="repeatPassword" placeholder="请再次输入新密码" maxlength="16"/>
+                <input type="password" id="repeatPassword" placeholder="请再次输入新密码" maxlength="16"
+                       onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
             </div>
                 <input type="hidden" name="phoneAreaCode" id="phoneAreaCode">
             </form>

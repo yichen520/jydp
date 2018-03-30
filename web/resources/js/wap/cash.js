@@ -18,5 +18,5 @@ var wait=60;
         }
     }
     $('.code').on('click',function(){
-        time(this);
+        //time(this);
     })

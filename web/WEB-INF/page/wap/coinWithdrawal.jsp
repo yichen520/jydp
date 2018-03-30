@@ -14,14 +14,14 @@
     <link rel="stylesheet" href="<%=path %>/resources/css/wap/simpleTips_wap.css">
     <link rel="stylesheet" href="<%=path %>/resources/css/wap/cash.css">
 
-    <title>币种提现</title>
+    <title>币种提币</title>
 </head>
 <body>
 <img src="<%=path %>/resources/image/wap/bztx-banner.png" class="topBanner" />
 <!-- 头部导航 -->
 <header>
     <img src="<%=path %>/resources/image/wap/backW.png" class="back"/>
-    <p>币种提现</p>
+    <p>币种提币</p>
 </header>
 <!-- 内容区域 -->
 <div class="content-box">
@@ -32,7 +32,7 @@
         <c:if test="${empty userCoinConfigList}" >
             <span class="money" id="coinNumber">0</span>
         </c:if>
-        <span class="moneyDes">当前可提现数量</span>
+        <span class="moneyDes">当前可提币数量</span>
     </p>
     <div class="center">
         <p class="txChose">
@@ -46,8 +46,8 @@
             <span class="clear"></span>
         </p>
         <p class="txNum">
-            <span class="txt">提现数量<span>*</span></span>
-            <input  type="text" placeholder="您要提现的数量" id="number" autocomplete="off"
+            <span class="txt">提币数量<span>*</span></span>
+            <input  type="text" placeholder="您要提币的数量" id="number" autocomplete="off"
                     onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)" maxlength="11" />
             <span class="clear"></span>
         </p>
@@ -159,9 +159,7 @@
     var codeBoo = false;
 
     function getMesCode(obj) {
-        time(obj);
-
-        if (codeBoo || wait == 0) {
+        if (codeBoo && wait > 0) {
             return;
         } else {
             codeBoo = true;
@@ -177,10 +175,12 @@
                 phoneNumber : bindingMobile
             },
             success:function(result){
+                time(obj);
                 openTips(result.message);
-                codeBoo = true;
+                codeBoo = false;
             }, error:function(){
                 openTips("系统错误！");
+                codeBoo = false;
             }
         });
     }

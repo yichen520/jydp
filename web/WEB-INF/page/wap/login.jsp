@@ -67,7 +67,7 @@
     }
     $(function(){
         $("#logo").click(function () {
-            window.location.replace("${pageContext.request.contextPath}");
+            window.location.replace("${pageContext.request.contextPath}/userWap/homePage/show");
         })
     });
 

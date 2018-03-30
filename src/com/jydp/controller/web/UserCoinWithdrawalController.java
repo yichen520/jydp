@@ -81,7 +81,7 @@ public class UserCoinWithdrawalController {
 
         String phoneNumber = user.getPhoneNumber();
         String phoneNumberEn = null;
-        if (phoneNumber != null && phoneNumber.length() == 11) {
+        if (phoneNumber != null && phoneNumber.length() > 5) {
             phoneNumberEn = phoneNumber.substring(0, 3) + "****" + phoneNumber.substring(phoneNumber.length() - 4, phoneNumber.length());
         }
         request.setAttribute("userCoinConfigList",userCoinConfigList);

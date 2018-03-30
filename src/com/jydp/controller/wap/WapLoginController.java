@@ -112,7 +112,7 @@ public class WapLoginController {
     @RequestMapping(value = "/loginOut")
     public String loginOut(HttpServletRequest request) {
         UserWapInterceptor.loginOut(request);
-        return "page/wap/login";
+        return "redirect:/page/wap/login";
     }
 
 }
