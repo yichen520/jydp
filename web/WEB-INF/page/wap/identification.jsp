@@ -179,7 +179,7 @@
                 if (result.code == 1) {
                     openTips(result.message);
                     setTimeout(function (){
-                        window.location.replace("${pageContext.request.contextPath}/wapLogin");
+                        resubmit(userAccount);
                     }, 1000);
                 } else {
                     openTips(result.message);
@@ -188,6 +188,19 @@
                 openTips("服务器异常，请稍后再试！");
             }
         });
+    }
+    function resubmit(userAccount) {
+        // 取得要提交页面的URL
+        var action = "${pageContext.request.contextPath}/userWap/identificationController/show.htm";
+        var form = $("<form></form>");
+        form.attr('action',action);
+        form.attr('method','post');
+        input1 = $("<input type='hidden' name='userAccount' />");
+        input1.attr('value',userAccount);
+        form.append(input1);
+        form.appendTo("body");
+        form.css('display','none');
+        form.submit();
     }
 
     //判断图片格式
