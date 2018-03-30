@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/public.css" />
     <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/simpleTips.css" />
 
-    <title>币种提现</title>
+    <title>币种提币</title>
 </head>
 <body>
 <header id="header"></header>
@@ -25,11 +25,11 @@
     <div id="personalMenu"></div>
 
     <div class="contentRight">
-        <div class="title">币种提现</div>
+        <div class="title">币种提币</div>
 
         <div class="main">
             <p class="coinInput">
-                <label class="popName">当前可提现数量</label>
+                <label class="popName">当前可提币数量</label>
                 <span class="amount" id="coinNumber"><fmt:formatNumber type="number" value="${userCoinConfigList[0].currencyNumber}" maxFractionDigits="4" groupingUsed="false"/></span>
             </p>
             <p class="coinInput">
@@ -41,10 +41,10 @@
                 </select>
             </p>
             <p class="coinInput">
-                <label class="popName">提现数量<span class="star">*</span></label>
-                <input type="text" class="entry" placeholder="您要提现的数量"  id="number" autocomplete="off"
+                <label class="popName">提币数量<span class="star">*</span></label>
+                <input type="text" class="entry" placeholder="您要提币的数量"  id="number" autocomplete="off"
                        onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)" maxlength="11"/>
-                <span class="tips" id="tip">提示：当前币种最低提现<fmt:formatNumber type="number" value="${userCoinConfigList[0].minCurrencyNumber}" maxFractionDigits="2" groupingUsed="false"/>个，
+                <span class="tips" id="tip">提示：当前币种最低提币<fmt:formatNumber type="number" value="${userCoinConfigList[0].minCurrencyNumber}" maxFractionDigits="2" groupingUsed="false"/>个，
                         超过<fmt:formatNumber type="number" value="${userCoinConfigList[0].freeCurrencyNumber}" maxFractionDigits="2" groupingUsed="false"/>个需人工审核</span>
                 <input type="hidden" id="minNumber">
             </p>
@@ -79,7 +79,7 @@
 
 <script type="text/javascript">
     window.onload = function() {
-        //提现最小数量
+        //提币最小数量
         var minNumber = '${userCoinConfigList[0].minCurrencyNumber}';
         minNumber = String(minNumber).replace(/^(.*\..{2}).*$/,"$1");
         minNumber = Number(minNumber);
@@ -117,7 +117,7 @@
                     var coinNumber = userCoinConfig.currencyNumber;
                     coinNumber = String(coinNumber).replace(/^(.*\..{4}).*$/,"$1");
                     coinNumber = Number(coinNumber);
-                    //提现最小数量
+                    //提币最小数量
                     var minNumber = userCoinConfig.minCurrencyNumber;
                     minNumber = String(minNumber).replace(reg,"$1");
                     minNumber = Number(minNumber);
@@ -127,7 +127,7 @@
                     freeNumber = Number(freeNumber);
 
                     document.getElementById("coinNumber").innerHTML = coinNumber;
-                    document.getElementById("tip").innerHTML = '提示：当前币种最低提现' + minNumber + '个，超过' + freeNumber + '个需人工审核';
+                    document.getElementById("tip").innerHTML = '提示：当前币种最低提币' + minNumber + '个，超过' + freeNumber + '个需人工审核';
                     $("#minNumber").val(minNumber);
                 } else {
                     openTips(result.message);
@@ -175,7 +175,7 @@
 
     document.getElementById("message").onclick=function(){time(this);};
 
-    //币种提现
+    //币种提币
     var coinBoo = false;
     function mentionCoin() {
         if (coinBoo) {
@@ -213,7 +213,7 @@
         }
         if (number < minNumber) {
             coinBoo = false;
-            return openTips("提现数量不能小于最低提现数量");
+            return openTips("提币数量不能小于最低提币数量");
         }
         if (!validateCode) {
             coinBoo = false;
