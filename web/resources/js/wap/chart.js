@@ -236,6 +236,15 @@ var ChartParamsAndInit = {
             ChartParamsAndInit.gainMatch($(this).index());
         });
     },
+    sleep:function(numberMillis) {
+        var now = new Date();
+        var exitTime = now.getTime() + numberMillis;
+        while (true) {
+            now = new Date();
+            if (now.getTime() > exitTime)
+                return;
+        }
+    },
     gainMatch: function (i) {
         var gainHash = ['5m', '15m', '30m', '1h', '4h', '1d', '1w'];
         ChartParamsAndInit.gainGraphData(gainHash[i], 7);
@@ -266,6 +275,7 @@ var ChartParamsAndInit = {
                     return;
                 }
                 data = data.transactionGraphList;
+                ChartParamsAndInit.sleep(1000);
                 var ohlc = [], res = [], volome = [], dataLength = data.length;
                 var i = 0;
                 if (time == "5m") {
@@ -414,6 +424,7 @@ var ChartParamsAndInit = {
                 });
             },
             error: function () {
+                openTips("页面数据错误，请刷新!");
                 return;
             }
         });
