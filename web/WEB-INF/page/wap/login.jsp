@@ -25,7 +25,7 @@
                 <div class="usernameBox">
                     <div class="box">
                         <img src="${pageContext.request.contextPath}/resources/image/wap/iconUser.png" />
-                        <input type="text" placeholder="您的登录帐号" id="userAccount" name="userAccount" value="${userAccount}"
+                        <input type="text" placeholder="您的登录账号" id="userAccount" name="userAccount" value="${userAccount}"
                                onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
                                maxLength="16" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
                     </div>

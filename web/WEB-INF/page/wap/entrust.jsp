@@ -302,8 +302,9 @@
                     calMoreBoo = false;
                     return;
                 }
-                setTimeout(function () { },5000);
-                window.location.href = webPath + "/userWap/wapTransactionPendOrderController/show.htm"
+                setTimeout(function () {
+                    window.location.href = webPath + "/userWap/wapTransactionPendOrderController/show.htm"
+                },1000);
             },
             error: function () {
                 openTips("数据加载出错，请稍候重试");
@@ -359,6 +360,14 @@
                     //专配数据
                     var template = Handlebars.compile($("#pendOrder").html());
                     $('#tableList').append(template(resultData.data));
+
+                    //绑定事件
+                    $(".see").each(function () {
+                        $(this).bind("click", seeDetails);
+                    });
+                    $(".cancel").each(function () {
+                        $(this).bind("click", applicationCanceled);
+                    });
                 }
                 //查看更多限制
                 if (resultData.data.totalPageNumber <= Number(pageNumber) + 1) {
