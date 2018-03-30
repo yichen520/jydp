@@ -313,13 +313,13 @@
 
         //检验
         if (!userAccount) {
-            openTips("请输入6-16位的字母、数字账户");
+            openTips("请输入6-16位的字母、数字账号");
             return;
         } else if (userAccount.length < 6 || userAccount.length > 16) {
             openTips("账号长度为6~16个字符")
             return;
         } else if (!commonReg.test(userAccount)) {
-            openTips("账户格式不正确");
+            openTips("账号格式不正确");
             return;
         }
 
