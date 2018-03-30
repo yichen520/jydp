@@ -47,18 +47,6 @@ public class WapLoginController {
      */
     @RequestMapping("/show")
     public String userLoginPage(HttpServletRequest request){
-        String referer = request.getHeader("referer");
-        if(!StringUtil.isNotNull(referer)){
-            return "page/wap/login";
-        }
-        String host = request.getHeader("Host");
-        if(!StringUtil.isNotNull(host)){
-            return "page/wap/login";
-        }
-        String[] strs = referer.split(host);
-        String uriStr = strs[1];
-        uriStr = uriStr.substring(5);
-        request.getSession().setAttribute("uriStr", uriStr);
         return "page/wap/login";
     }
 
@@ -82,6 +70,7 @@ public class WapLoginController {
         if (user == null) {
             request.setAttribute("code", 3);
             request.setAttribute("message", "账号或密码错误");
+            request.setAttribute("userAccount", userAccount);
             return "page/wap/login";
         }
 
@@ -117,15 +106,6 @@ public class WapLoginController {
         userSessionBO.setIsPwd(1);
         UserWapInterceptor.loginSuccess(request, userSessionBO);
 
-        /**
-         * 加入判断来访地址
-         * 进行页面跳转
-         *  request.getHeader("referer");
-         */
-        String uriStr = (String) request.getSession().getAttribute("uriStr");
-        if(uriStr != null){
-            return "redirect:"+uriStr;
-        }
         return "redirect:/userWap/homePage/show";
     }
 
@@ -133,7 +113,7 @@ public class WapLoginController {
     @RequestMapping(value = "/loginOut")
     public String loginOut(HttpServletRequest request) {
         UserWapInterceptor.loginOut(request);
-        return "page/wap/login";
+        return "redirect:/page/wap/login";
     }
 
 }

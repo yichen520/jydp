@@ -76,7 +76,7 @@
         </div>
         <div class="bottom">
             {{{show pendingStatus pendingOrderNo}}}
-            <input type="hidden" id="pendingOrderNo" value="{{pendingOrderNo}}">
+            <input class="findClass" type="hidden" id="pendingOrderNo" value="{{pendingOrderNo}}">
         </div>
     </div>
     {{/each}}
@@ -157,10 +157,10 @@
     Handlebars.registerHelper("show", function (status) {
         var out = "";
         if (status == 1 || status == 2) {
-            out = out + "<div class='cancel' onclick='applicationCanceled()'>" + "撤销申请" + "</div>"
+            out = out + "<div class='cancel'>" + "撤销申请" + "</div>"
         }
         if (status != 1) {
-            out = out + "<div class='see' onclick='seeDetails()'>" + "查看详情" + "</div>";
+            out = out + "<div class='see'>" + "查看详情" + "</div>";
         }
         return out;
     });
@@ -183,6 +183,15 @@
 
             var template = Handlebars.compile($("#pendOrder").html())
             $('#tableList').html(template(resultData.data));
+
+
+            $(".see").each(function () {
+                $(this).bind("click", seeDetails);
+            });
+
+            $(".cancel").each(function () {
+                $(this).bind("click", applicationCanceled);
+            });
         },
         error: function () {
             openTips("请求数据异常");
@@ -196,18 +205,20 @@
 
     //查看详情页面跳转
     function seeDetails() {
-        var pendingOrderNo = $("#pendingOrderNo").val();
+        //直接通过id去取的值会是同一个值
+        var pendingOrderNo = $(this).parent().children('.findClass').val();
         window.location.href = webPath + "/userWap/wapDealRecord/show.htm?pendingOrderNo=" + pendingOrderNo;
     }
 
     //撤销申请
+    var pendingOrderNoCancel;
     function applicationCanceled() {
+        pendingOrderNoCancel = $(this).parent().children('.findClass').val();
         show();
     }
 
     function cancleOrder() {
-        var pendingOrderNo = $("#pendingOrderNo").val();
-        if (pendingOrderNo == "" || pendingOrderNo == null) {
+        if (pendingOrderNoCancel == "" || pendingOrderNoCancel == null) {
             openTips("挂单号错误");
             return;
         }
@@ -215,7 +226,7 @@
         $.ajax({
             url: webPath + "/userWap/wapTransactionPendOrderController/revoke.htm",
             data: {
-                pendingOrderNo: pendingOrderNo
+                pendingOrderNo: pendingOrderNoCancel
             },
             dataType: "json",
             type: 'POST',
@@ -223,11 +234,12 @@
             success: function (resultData) {
                 var code = resultData.code;
                 var message = resultData.message;
+                openTips(message);
                 if (code != 1 && message != "") {
                     calMoreBoo = false;
-                    openTips(message);
                     return;
                 }
+                setTimeout(function () { },5000);
                 window.location.href = webPath + "/userWap/wapTransactionPendOrderController/show.htm"
             },
             error: function () {
@@ -282,7 +294,6 @@
                 var transactionPendOrderRecordList = resultData.data.transactionPendOrderRecordList;
                 if (transactionPendOrderRecordList != null) {
                     //专配数据
-                    alert(1);
                     var template = Handlebars.compile($("#pendOrder").html());
                     $('#tableList').append(template(resultData.data));
                 }

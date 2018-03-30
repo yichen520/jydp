@@ -13,4 +13,9 @@
     if (!doc.addEventListener) return;
     win.addEventListener(resizeEvt, recalc, false);
     doc.addEventListener('DOMContentLoaded', recalc, false);
+    document.onreadystatechange = function () {  
+        if(document.readyState === "complete"){  
+            $("#loading").fadeOut();  
+        }  
+    };
 })(document, window);

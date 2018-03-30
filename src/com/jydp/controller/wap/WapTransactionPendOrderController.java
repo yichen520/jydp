@@ -35,7 +35,7 @@ public class WapTransactionPendOrderController {
     ITransactionPendOrderService transactionPendOrderService;
 
     /**
-     * 跳转到我的记录页面(暂时用于测试使用)
+     * 跳转到我的记录页面
      */
     @RequestMapping(value = "/showMyRecord")
     public String showMyRecord() {
@@ -67,10 +67,9 @@ public class WapTransactionPendOrderController {
         String pageNumberStr = request.getParameter("pageNumber");
 
         UserSessionBO user = UserWapInterceptor.getUser(request);
-        int userId = Integer.parseInt(request.getParameter("userId"));
+        int userId = user.getUserId();
 
         JsonObjectBO responseJson = new JsonObjectBO();
-
         int pageNumber = 0;
         if (StringUtil.isNotNull(pageNumberStr)) {
             pageNumber = Integer.parseInt(pageNumberStr);
@@ -141,5 +140,46 @@ public class WapTransactionPendOrderController {
         }
 
         return resultJson;
+    }
+
+    /** 撤销挂单 */
+    @RequestMapping(value = "/revokeForDeal.htm", method = RequestMethod.POST)
+    public @ResponseBody JSONObject revokeForDeal(HttpServletRequest request) {
+        JSONObject response = new JSONObject();
+        UserSessionBO user = (UserSessionBO) request.getSession().getAttribute("userSession");
+        if(user == null){
+            response.put("code", 4);
+            response.put("message", "未登录");
+            return response;
+        }
+
+        String pendingOrderNo = StringUtil.stringNullHandle(request.getParameter("pendingOrderNo"));
+        if(StringUtil.isNull(pendingOrderNo)){
+            response.put("code", 3);
+            response.put("message", "参数错误");
+            return response;
+        }
+
+        TransactionPendOrderDO transactionPendOrder = transactionPendOrderService.getPendOrderByPendingOrderNo(pendingOrderNo);
+        if(transactionPendOrder == null){
+            response.put("code", 3);
+            response.put("message", "参数错误");
+            return response;
+        }
+        if(user.getUserId() != transactionPendOrder.getUserId()){
+            response.put("code", 4);
+            response.put("message", "此操作非该挂单本人");
+            return response;
+        }
+
+        boolean result = transactionPendOrderService.revokePendOrder(pendingOrderNo);
+        if(!result){
+            response.put("code", 5);
+            response.put("message", "撤单失败");
+            return response;
+        }
+        response.put("code", 0);
+        response.put("message", "撤单成功");
+        return response;
     }
 }

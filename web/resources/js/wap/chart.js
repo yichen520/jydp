@@ -36,9 +36,9 @@ var ChartParamsAndInit = {
         });
         Handlebars.registerHelper("isLogin", function (userSession, webAppPath) {
             if (userSession == undefined || userSession == null || userSession == "") {
-                return "<a href='" + webAppPath + "/userWap/userLogin/show'></a>";
+                return "<a href='" + webAppPath + "/userWap/userLogin/show'>登录</a>";
             } else {
-                return "<a style='display: block' class='name' href='#' >" + userSession.userAccount + "</a>";
+                return "";
             }
         });
         Handlebars.registerHelper("timeFormat", function (timestamp) {
@@ -169,7 +169,7 @@ var ChartParamsAndInit = {
                     $("#todayMinSpan").text(ChartParamsAndInit.formatNumber(standardParameter.todayMin, 6));
                     $("#buyOneSpan").text(ChartParamsAndInit.formatNumber(standardParameter.buyOne, 6));
                     $("#sellOneOne").text(ChartParamsAndInit.formatNumber(standardParameter.sellOne, 6));
-                    $("#dayTurnoveOne").text(ChartParamsAndInit.formatNumber(standardParameter.dayTurnove, 4));
+                    $("#dayTurnoveOne").text(ChartParamsAndInit.formatNumber(standardParameter.dayTurnove, 4)+"万");
                 }
             },
             error: function () {
@@ -218,7 +218,7 @@ var ChartParamsAndInit = {
         if (undefined == currencyId || currencyId == null || currencyId == "") {
             return;
         }
-        window.setInterval(ChartParamsAndInit.pendDeal, 5000);
+        window.setInterval(ChartParamsAndInit.dealInfo, 5000);
         window.setInterval(ChartParamsAndInit.deal, 5000);
     },
     openChart: function () {
@@ -245,8 +245,10 @@ var ChartParamsAndInit = {
         var currencyName = $("#currencyName").val();
         var webAppPath = $("#webAppPath").val();
         Highcharts.setOptions({
+            global: {useUTC: false},
             lang: {
-                rangeSelectorZoom: ''
+                months: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                weekdays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
             }
         });
         $.ajax({
@@ -263,6 +265,7 @@ var ChartParamsAndInit = {
                     return;
                 }
                 data = data.transactionGraphList;
+                console.info(data);
                 var ohlc = [], res = [], volome = [], dataLength = data.length;
                 var i = 0;
                 if (time == "5m") {
@@ -322,11 +325,10 @@ var ChartParamsAndInit = {
                         data[i].minPrice, // 最低价
                         data[i].closPrice // 收盘价
                     ]);
-                    res.push([
+             /*       res.push([
                         data[i].dealDate, // 时间节点
                         data[i].countPrice // 成交量
-
-                    ]);
+                    ]);*/
                 }
                 // 使用框架
                 $('#chart').highcharts('StockChart', {
@@ -349,7 +351,6 @@ var ChartParamsAndInit = {
                     plotOptions: {
                         column: {
                             pointWidth: 5
-
                         }
                     },
                     tooltip: {
@@ -364,7 +365,13 @@ var ChartParamsAndInit = {
                             color: '#cccccc'
                         }
                     },
-                    rangeSelector: {
+                    navigator: {
+                        enabled: false
+                    },
+                    scrollbar: {
+                        enabled: false
+                    },
+                    rangeSelector : {
                         enabled: false
                     },
                     yAxis: [{
@@ -375,58 +382,32 @@ var ChartParamsAndInit = {
                         },
                         floor: 0,  //  最低数据大于0，
                         labels: {
-                            format: '{value}',
-
-                        },
-                        title: {
-                            text: '价格'
+                            format: '{value}'
                         },
                         opposite: false,
-                        height: '78%',
+                        top: '12%',
+                        height: '88%',
                         resize: {
                             enabled: true
                         },
-                        lineWidth: 2
-                    }, {
-                        labels: {
-                            format: '{value}',
-                            enabled: false
-                        },
-                        resize: {
-                            enabled: true
-                        },
-                        opposite: false,
-                        title: {
-                            text: '成交量'
-                        },
-                        top: '80%',
-                        height: '20%',
-                        offset: 0,
                         lineWidth: 2
                     }],
-                    series: [
+                    series : [
                         {
-                            name: currencyName,
+                            name : '123',
                             type: 'candlestick',
-                            data: ohlc,
-                            tooltip: {},
-                            data: ohlc,
-                            dataGrouping: {
-                                units: groupingUnits
-                            },
-                            yAxis: 0
+                            color: 'green',
+                            lineColor: 'green',
+                            upColor: 'red',
+                            upLineColor: 'red',
+                            data : ohlc,
 
-                        },
-                        {
-                            name: '成交量',
-                            type: 'column',
-                            data: res,
-                            yAxis: 1,
+                            navigatorOptions: {
+                                color: Highcharts.getOptions().colors[0]
+                            },
                             dataGrouping: {
                                 units: groupingUnits
                             },
-                            color: "#68a8ee",
-                            tooltip: {},
 
                         }
                     ]
@@ -472,7 +453,7 @@ $().ready(function () {
             ChartParamsAndInit.openChart();
             ChartParamsAndInit.gainGraphData("5m", 7);
             ChartParamsAndInit.open();
-            ChartParamsAndInit.reloadData();
+           ChartParamsAndInit.reloadData();
         }
     });
 });

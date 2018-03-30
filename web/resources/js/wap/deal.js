@@ -54,7 +54,7 @@ var ParamsAndInit = {
             if(userSession == undefined || userSession == null || userSession == ""){
                 return "<a href='" + webAppPath + "/userWap/userLogin/show'>登陆</a>";
             }else {
-                return "<a style='display: block' class='name' href='#' >" + userSession.userAccount + "</a>";
+                return "";
             }
         });
     },
@@ -508,7 +508,7 @@ var ParamsAndInit = {
             return;
         }
         $.ajax({
-            url: webAppPath + "/userWap/transactionPendOrder/revoke.htm",
+            url: webAppPath + "/userWap/transactionPendOrder/revokeForDeal.htm",
             data: {
                 //参数
                 pendingOrderNo: pendOrderNo
@@ -696,7 +696,7 @@ var ParamsAndInit = {
                     $("#todayMinSpan").text(ParamsAndInit.formatNumber(standardParameter.todayMin, 6));
                     $("#buyOneSpan").text(ParamsAndInit.formatNumber(standardParameter.buyOne, 6));
                     $("#sellOneOne").text(ParamsAndInit.formatNumber(standardParameter.sellOne, 6));
-                    $("#dayTurnoveOne").text(ParamsAndInit.formatNumber(standardParameter.dayTurnove, 4));
+                    $("#dayTurnoveOne").text(ParamsAndInit.formatNumber(standardParameter.dayTurnove, 4)+"万");
                     $("#nowPriceDiv").text("当前价格：$"+ParamsAndInit.formatNumber(standardParameter.nowPrice, 8));
                 }
             },
@@ -752,7 +752,6 @@ var ParamsAndInit = {
     },
     updatePayPwd :function () {
         var payPasswordStatus = $("input[name='remember']:checked").val();
-        //var payPasswordStatus = parseInt($("#payPasswordStatus").val());
         var rememberPwd = $("#rememberPwd").val();
 
         var user = $("#userSession").val();
@@ -783,7 +782,6 @@ var ParamsAndInit = {
                     openTips(data.message);
                     return;
                 }
-
                 $('.cin').css("height","0");
                 $('.settingBox').animate({opacity:'0'},"100");
                 setTimeout(function(){

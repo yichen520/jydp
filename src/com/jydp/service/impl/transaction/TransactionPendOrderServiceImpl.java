@@ -512,7 +512,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
      * @return 操作成功：返回挂单记录列表，操作失败：返回null
      */
     public List<TransactionPendOrderVO> listPendOrderForWap(int userId, int currencyId, int pageNumber, int pageSize){
-        List<TransactionPendOrderVO> transactionPendOrderList = transactionPendOrderDao.listPendOrderForWeb(userId, currencyId, pageNumber, pageSize);
+        List<TransactionPendOrderVO> transactionPendOrderList = transactionPendOrderDao.listPendOrderForWap(userId, currencyId, pageNumber, pageSize);
         if(transactionPendOrderList == null){
             return transactionPendOrderList;
         }

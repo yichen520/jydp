@@ -23,11 +23,12 @@
 <div class="wrapper">
     <div class="list-box">
         <p>帐号</p>
-        <input type="number" id="userAccount" disabled="disabled" value="${userAccount}"/>
+        <input type="test" id="userAccount" disabled="disabled" value="${userAccount}"/>
     </div>
     <div class="list-box">
         <p>姓名</p>
-        <input type="text" id="userName" maxlength="16" placeholder="您的真实姓名"/>
+        <input type="text" id="userName" maxlength="16" placeholder="您的真实姓名"
+               onkeyup="matchUtil(this, 'rightful')" onblur="matchUtil(this, 'rightful')"/>
     </div>
     <div class="list-box">
         <p>证件类型</p>
@@ -38,7 +39,8 @@
     </div>
     <div class="list-box">
         <p>证件号</p>
-        <input type="number" id="userCertNo" placeholder="您的证件号" maxlength="18"/>
+        <input type="text" id="userCertNo" placeholder="您的证件号" maxlength="18"
+               onkeyup="matchUtil(this, 'ENumber')" onblur="matchUtil(this, 'ENumber')"/>
     </div>
     <div class="idcard-box">
 
@@ -72,7 +74,6 @@
 <script src="${pageContext.request.contextPath}/resources/js/wap/jquery-2.1.4.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/wap/common.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/wap/zepto.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/wap/aut.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/wap/simpleTips_wap.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/localResizeIMG.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/mobileBUGFix.mini.js"></script>
@@ -82,6 +83,7 @@
     //记录上传图片状态的
     var a = false;
     var b = false;
+
     $('#icardone').localResizeIMG({
         width: 800,
         quality: 0.2,
@@ -110,6 +112,13 @@
         }
         return new Blob([u8arr], { type: mime });
     }
+    var mapMatch = {};
+    mapMatch['ENumber'] = /[^\a-\z\A-\Z\d]/g;
+    mapMatch['rightful'] = /[%`~!@#$^&*()=|{}':;",_+\-\\\[\].<>/?！￥…（）—【】《》；：‘’”“。，、？1234567890]/g;
+    function matchUtil(o, str) {
+        o.value = o.value.replace(mapMatch[str], '');
+    }
+
     function submit() {
         var userAccount = $("#userAccount").val();
         var userName = $("#userName").val();
@@ -170,7 +179,7 @@
                 if (result.code == 1) {
                     openTips(result.message);
                     setTimeout(function (){
-                        window.location.replace("${pageContext.request.contextPath}/wapLogin");
+                        resubmit(userAccount);
                     }, 1000);
                 } else {
                     openTips(result.message);
@@ -179,6 +188,19 @@
                 openTips("服务器异常，请稍后再试！");
             }
         });
+    }
+    function resubmit(userAccount) {
+        // 取得要提交页面的URL
+        var action = "${pageContext.request.contextPath}/userWap/identificationController/show.htm";
+        var form = $("<form></form>");
+        form.attr('action',action);
+        form.attr('method','post');
+        input1 = $("<input type='hidden' name='userAccount' />");
+        input1.attr('value',userAccount);
+        form.append(input1);
+        form.appendTo("body");
+        form.css('display','none');
+        form.submit();
     }
 
     //判断图片格式
