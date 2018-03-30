@@ -20,6 +20,12 @@ header .backimg{
 .content img{
     width: 100%;
 }
+.editor{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .time{
     position: absolute;
     bottom: 0.3rem;
