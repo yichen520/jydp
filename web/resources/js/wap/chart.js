@@ -265,7 +265,6 @@ var ChartParamsAndInit = {
                     return;
                 }
                 data = data.transactionGraphList;
-                console.info(data);
                 var ohlc = [], res = [], volome = [], dataLength = data.length;
                 var i = 0;
                 if (time == "5m") {

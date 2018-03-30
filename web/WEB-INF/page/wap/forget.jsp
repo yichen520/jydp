@@ -16,7 +16,7 @@
 </head>
 <body>
     <header>
-        <img src="${pageContext.request.contextPath}/resources/image/wap/back.png" class="backimg"/>
+        <img src="${pageContext.request.contextPath}/resources/image/wap/back.png" class="backimg" id="backImg"/>
         <p>忘记密码</p>
     </header>
     <div class="registerBox">
@@ -99,6 +99,12 @@
             return false;
         }
     }
+
+    $(function () {
+        $("#backImg").click(function () {
+            window.location.replace("${pageContext.request.contextPath}/userWap/userLogin/show");
+        })
+    })
 
     var b = false;
     function getValidateCode() {
