@@ -1,3 +1,4 @@
+body {padding-bottom:1.2rem }
 /* 内容区域 */
 #wrapper{
     width: 100%;
@@ -7,9 +8,7 @@
 }
 /* 登录状态 */
 .login{
-    display: block;
     padding-top: 0.4rem;
-    
 }
 .login .title{
     padding-left: 0.3rem;
@@ -29,11 +28,16 @@
     line-height: 0.83rem;
 }
 .userBox{
-    margin-top: 0.1rem;
-    width: 100%;
-    height: 3.25rem;
+    -moz-box-shadow:0px 0px 10px #e83a33;
+     -webkit-box-shadow:0px 0px 10px #e83a33; 
+    box-shadow:0px 0px 10px #e83a33;
+    margin: 0 auto;
+    margin-top: 0.4rem;
+    width: 6.91rem;
+    height: 2.82rem;
     background: url('../../image/wap/userDeatil-banner.png');
     background-size: cover;
+    border-radius: 10px;
 }
 .usertitle{
     padding-top: 0.4rem;
@@ -50,7 +54,7 @@
     color: #fff;
 }
 .usercontent{
-    margin-top: 0.5rem;
+    margin-top: 0.4rem;
     padding-left: 0.4rem;
 }
 .usercontent div{
@@ -67,9 +71,9 @@
 .usercontent div:nth-of-type(3){
     margin-top: 0.2rem;
     float: right;
-    margin-right: 0.6rem;
+    margin-right: 0.3rem;
     height: 0.46rem;
-    width: 0.82rem;
+    width: 1.12rem;
     line-height: 0.48rem;
     text-align: center;
     border-radius: 2px;
@@ -78,8 +82,7 @@
     border: 0.01rem solid #fff;
 }
 /* 未登录状态 */
-.noLogin {
-
+.noLogin{
     padding-top: 0.7rem;
     margin-bottom: 0.4rem;
     padding-left: 0.3rem;
@@ -101,7 +104,8 @@
 
 /* 列表 */
 .mine-list{
-    pogadding: 0 0.3rem 0 0.3rem;
+    padding: 0.2rem 0.3rem 0 0.3rem;
+    overflow-y: scroll;
 }
 .mine-list ul li .icon{
     margin-top: 0.2rem;
@@ -126,4 +130,81 @@
     right: 0;
     width: 0.14rem;
     height: 0.24rem;
+}
+/* 选择币种 */
+.choseBz{
+    width: 100%;
+    background: rgba(0,0,0,0.4);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+}
+.closeAnthoer{
+    width: 20%;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    z-index: 99;
+}
+.choseBzBox{
+    position: absolute;
+    left: -82%;
+    top: 0;
+    display: none;
+    width: 82%;
+    /* height: 100%; */
+    background: #fff;
+    z-index: 100;
+}
+.choseBzBox-title{
+    width: 100%;
+    height: 0.9rem;
+    background: #fff;
+    border-bottom: 1px solid #ececec;
+}
+.choseBzBox-title p{
+    margin-left: 0.3rem;
+    font-size: 0.34rem;
+    color: #666;
+    font-weight: 600;
+    float: left;
+    line-height: 0.9rem;
+}
+.choseBzBox-title img{
+    margin-right: 0.3rem;
+    margin-top: 0.25rem;
+    float: right;
+    width: 0.34rem;
+    height: 0.3rem;
+}
+.choseBzBox-content{
+    padding: 0.3rem;
+    height: 70%;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+.choseBzBox-content ul li{
+    display: flex;
+    padding-bottom: 0.4rem;
+}
+.choseBzBox-content ul li p{
+    flex: 1;
+    font-size: 0.26rem;
+    font-weight: 600;
+}
+.zhang{
+    color: #e83a33
+}
+.die{
+    color: #00be97
+}
+.choseBzBox-content ul li p:nth-of-type(1){
+    color: #999;
+}
+.choseBzBox-content ul li p:nth-of-type(2){
+    text-align: center;
+}
+.choseBzBox-content ul li p:nth-of-type(3){
+    text-align: right;
 }
