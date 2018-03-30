@@ -7,7 +7,7 @@ $(function () {
     function banner() {
         var mySwiper = new Swiper('.banner', {
             autoplay: 1500,//可选选项，自动滑动
-            speed: 00,
+            speed: 200,
             pagination: '.swiper-pagination',
         })
     };
@@ -42,7 +42,7 @@ $(function () {
                 },450);
                 $('.choseBzBox').animate({left:'-82%'},"500");
             });
-           
+
 }
 
 });
