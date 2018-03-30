@@ -129,9 +129,9 @@
             <img src="{{webAppPath}}/resources/image/wap/header-close.png" class="closeBox"/>
             <div class="clear"></div>
         </div>
-        <div id="currencyListUl">
-         <ul  class="choseBzBox-content">
-        </ul>
+        <div class="choseBzBox-content">
+            <ul id="currencyList">
+            </ul>
         </div>
     </div>
     <div id="closeAnthoer" class="closeAnthoer closeBox"></div>
@@ -143,6 +143,25 @@
     <i></i>
 </div>
 </script>
+
+<script id="table-template" type="text/x-handlebars-template">
+    {{#each this}}
+    <li>
+        <p style="display: none;">{{currencyId}}</p>
+        <p>{{currencyName}}({{currencyShortName}})</p>
+        {{#compare change 0}}
+        <p style="color: red">{{latestPrice}}</p>
+        {{else}}
+        <p style="color: green">{{latestPrice}}</p>
+        {{/compare}}
+        {{#compare change 0}}
+        <p style="color: red">{{change}}%</p>
+        {{else}}
+        <p style="color: green">{{change}}%</p>
+        {{/compare}}
+    </li>
+    {{/each}}
+</script>
 <script type="text/javascript" src="<%=path %>/resources/js/wap/common.js"></script>
 <script type="text/javascript" src="<%=path %>/resources/js/wap/jquery-2.1.4.min.js"></script>
 <script src="<%=path %>/resources/js/wap/handlebars-v4.0.11.js"></script>
@@ -151,6 +170,20 @@
 <script type="text/javascript" src="<%=path %>/resources/js/wap/highstock.js"></script>
 <%--<script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>--%>
 <script src="https://img.hcharts.cn/highcharts/themes/dark-unica.js"></script>
+<script type="text/javascript">
+
+    //if比较
+    Handlebars.registerHelper("compare", function (x1, x2, options) {
+
+        if (x1 >= x2) {
+            //满足条件执行
+            return options.fn(this);
+        } else {
+            //不满足执行{{else}}部分
+            return options.inverse(this);
+        }
+    });
+</script>
 
 </body>
 </html>
