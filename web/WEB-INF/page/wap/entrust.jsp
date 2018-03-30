@@ -282,7 +282,6 @@
                 var transactionPendOrderRecordList = resultData.data.transactionPendOrderRecordList;
                 if (transactionPendOrderRecordList != null) {
                     //专配数据
-                    alert(1);
                     var template = Handlebars.compile($("#pendOrder").html());
                     $('#tableList').append(template(resultData.data));
                 }

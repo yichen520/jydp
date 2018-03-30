@@ -31,15 +31,15 @@
     <input type="hidden" id="pageNumber" name="pageNumber" value="${pageNumber}">
 </div>
 <!-- 撤销弹窗 -->
-    <div class="bg">
-        <div class="showBox">
-            <div class="showBoxTitle">撤销委托</div>
-            <div class="showBoxContent">是否撤销该委托？</div>
-            <div class="showBoxButton">
-                <div class="cancelShow">取消</div>
-                <div class="okay">确定</div>
-            </div>
+<div class="bg">
+    <div class="showBox">
+        <div class="showBoxTitle">撤销委托</div>
+        <div class="showBoxContent">是否撤销该委托？</div>
+        <div class="showBoxButton">
+            <div class="cancelShow">取消</div>
+            <div class="okay">确定</div>
         </div>
+    </div>
 </div>
 <!-- loading图 -->
 <div id="loading">
@@ -89,7 +89,7 @@
         url: wapPath + "/userWap/wapDealRecord/getAccountRecord.htm",
         data: {
             pendingOrderNo: pendingOrderNo,
-            pageNumber:pageNumber
+            pageNumber: pageNumber
         },
         dataType: "json",
         type: 'POST',
@@ -105,7 +105,8 @@
             var template = Handlebars.compile($("#accountRecord").html())
             $('#tableList').html(template(resultData.data));
 
-            if(resultData.data.totalPageNumber <= Number(pageNumber)+1){
+            //对查看更多做控制
+            if (resultData.data.totalPageNumber <= Number(pageNumber) + 1) {
                 $("#seeMore").hide();
             }
         },
@@ -142,17 +143,17 @@
     });
 
     //买入 卖出 撤销的样式显示
-    Handlebars.registerHelper("paymentTypeClassConvert",function (paymentType) {
+    Handlebars.registerHelper("paymentTypeClassConvert", function (paymentType) {
         if (paymentType == undefined || paymentType == null || paymentType == "" || isNaN(paymentType)) {
             return "未知类型";
         }
-        if (paymentType == 1){
+        if (paymentType == 1) {
             return "mr";
         }
-        if (paymentType == 2){
+        if (paymentType == 2) {
             return "mc";
         }
-        if (paymentType == 3){
+        if (paymentType == 3) {
             return "cx";
         }
         return "未知类型";
@@ -165,38 +166,38 @@
         var month = date.getMonth() + 1;
         var day = date.getDate();
         var hours = date.getHours();
-        if(hours<10){
-            hours = '0'+hours;
+        if (hours < 10) {
+            hours = '0' + hours;
         }
         var minutes = date.getMinutes();
-        if(minutes<10){
-            minutes = '0'+minutes;
+        if (minutes < 10) {
+            minutes = '0' + minutes;
         }
         var seconds = date.getSeconds();
-        if(seconds<10){
-            seconds = '0'+seconds;
+        if (seconds < 10) {
+            seconds = '0' + seconds;
         }
         return year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
     });
 
-    //返回  这里需要做判断,看似从哪个页面跳转过来的
+    //返回
     $('.back').on('click', function () {
         //根据跳转源返回到对应的页面
-         if (pendingOrderNo == null || pendingOrderNo == "") {
+        if (pendingOrderNo == null || pendingOrderNo == "") {
             window.location.href = wapPath + "/userWap/wapTransactionPendOrderController/showMyRecord";
-        }else{
-            window.location.href = wapPath + "/userWap/wapTransactionPendOrderController/show";
+        } else {
+            window.location.href = wapPath + "/userWap/wapTransactionPendOrderController/show.htm";
         }
     });
-    
+
     //查看更多
     function seeMore() {
-        pageNumber = Number(pageNumber)+1;
+        pageNumber = Number(pageNumber) + 1;
         $.ajax({
             url: wapPath + "/userWap/wapDealRecord/getAccountRecord.htm",
             data: {
                 pendingOrderNo: pendingOrderNo,
-                pageNumber:pageNumber
+                pageNumber: pageNumber
             },
             dataType: "json",
             type: 'POST',
