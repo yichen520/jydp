@@ -19,6 +19,7 @@ header .backimg{
 }
 .content img{
     width: 100%;
+    display: block;
 }
 .editor{
     overflow: hidden;
