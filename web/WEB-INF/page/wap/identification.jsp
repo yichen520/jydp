@@ -40,7 +40,7 @@
     <div class="list-box">
         <p>证件号</p>
         <input type="text" id="userCertNo" placeholder="您的证件号" maxlength="18"
-               oninput="if(value.length>16) value=value.slice(0,15)" onkeyup="matchUtil(this, 'ENumber')" onblur="matchUtil(this, 'ENumber')"/>
+               oninput="if(value.length>18) value=value.slice(0,17)" onkeyup="matchUtil(this, 'ENumber')" onblur="matchUtil(this, 'ENumber')"/>
     </div>
     <div class="idcard-box">
 
@@ -191,7 +191,7 @@
     }
     function resubmit(userAccount) {
         // 取得要提交页面的URL
-        var action = "${pageContext.request.contextPath}/userWap/identificationController/show.htm";
+        var action = "${pageContext.request.contextPath}/userWap/identificationController/show";
         var form = $("<form></form>");
         form.attr('action',action);
         form.attr('method','post');

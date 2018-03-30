@@ -50,7 +50,7 @@ public class WapIdentificationController {
     private IUserIdentificationImageService userIdentificationImageService;
 
     /** 实名认证页面入口 */
-    @RequestMapping("/show.htm")
+    @RequestMapping("/show")
     public String show(HttpServletRequest request) {
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
         if (!StringUtil.isNotNull(userAccount)) {

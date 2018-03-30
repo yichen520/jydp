@@ -34,11 +34,11 @@
                     <img src="${pageContext.request.contextPath}/resources/image/wap/iconDown.png" />
                 </div>
                 <input type="text" placeholder="您注册的手机号" id="phoneNumber" name="phoneNumber" maxlength="11"
-                       oninput="if(value.length>16) value=value.slice(0,15)" onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
+                       oninput="if(value.length>11) value=value.slice(0,10)" onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
             </div>
             <div class="userCode">
                 <input type="text" id="validateCode" name="validateCode" placeholder="请输入6位短信验证码" maxlength="6"
-                       onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
+                       oninput="if(value.length>6) value=value.slice(0,5)"onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
                 <p onclick="getValidateCode()">获取验证码</p>
             </div>
             <div class="userPassword">
