@@ -751,7 +751,7 @@ var ParamsAndInit = {
                     if(dayTurnove == 0){
                         $("#dayTurnoveOne").text(dayTurnove);
                     }else {
-                        $("#dayTurnoveOne").text(dayTurnove +"万");
+                        $("#dayTurnoveOne").text(dayTurnove);
                     }
 
                     $("#nowPriceDiv").text("当前价格：$"+ParamsAndInit.formatNumber(standardParameter.nowPrice, 8));
