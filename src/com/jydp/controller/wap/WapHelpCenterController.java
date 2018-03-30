@@ -36,16 +36,24 @@ public class WapHelpCenterController {
     /** 显示帮助中心页面 */
     @RequestMapping(value = "/show/{helpIdStr}", method = RequestMethod.GET)
     public String show(HttpServletRequest request, @PathVariable String helpIdStr) {
+        //获取访问源 字段
+        String requestSource = request.getParameter("type");
+        //默认
         int helpId = SystemHelpConfig.COMPANY_SYNOPSIS;
+        String helpTitle = SystemHelpConfig.userHelpMap.get(helpId);
+
         String reg = "[0-9]*";
         if (helpIdStr.length() < 11 && Pattern.matches(reg,helpIdStr)) {
             int help = Integer.parseInt(helpIdStr);
             if (SystemHelpConfig.userHelpMap.containsKey(help)) {
                 helpId = Integer.parseInt(helpIdStr);
             }
+            helpTitle = SystemHelpConfig.userHelpMap.get(helpId);
         }
         SystemHelpDO systemHelpDO = systemHelpService.getSystemHelpById(helpId);
 
+        request.setAttribute("requestSource",requestSource);
+        request.setAttribute("helpTitle",helpTitle);
         request.setAttribute("systemHelpDO", systemHelpDO);
         request.setAttribute("helpId", helpId);
         request.setAttribute("code", 1);

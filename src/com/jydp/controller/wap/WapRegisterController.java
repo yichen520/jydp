@@ -140,7 +140,7 @@ public class WapRegisterController {
             return responseJson;
         }
 
-        responseJson = systemValidatePhoneService.validatePhone(phoneAreaCode + phoneNumber, validateCode);
+        responseJson = systemValidatePhoneService.validatePhone(phoneAreaCode+phoneNumber, validateCode);
         if (responseJson.getCode() != 1) {
             return responseJson;
         }

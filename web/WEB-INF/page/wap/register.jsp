@@ -188,7 +188,7 @@
     }
 
     function readUserAgree() {
-        window.location.href="<%=path %>/userWap/wapHelpCenter/show/101016";
+        window.location.href="<%=path %>/userWap/wapHelpCenter/show/101016?type=1";
     }
     //验证用户账号
     var validateUserBoo = false;
@@ -259,14 +259,14 @@
             success: function (resultData) {
                 var code = resultData.code;
                 var message = resultData.message;
-                if (code != 1 && message != "") {
-                    openTips(message);
+                openTips(message);
+                if (code != 1 ) {
                     return;
                 }
                 getMesCodeFlag = true;
             },
             error: function () {
-                openTips("短信发送失败");
+                openTips("服务器错误");
             }
         });
     }
@@ -397,6 +397,9 @@
                         $("#userAccountIde").val(userAccount);
                         $("#identificationForm").submit();
                     }, 3000)
+
+                    //注册成功跳转到实名认证页面
+                    window.location.href="<%=path %>/wapLogin";
                 } else {
                     openTips(result.message);
                 }
@@ -409,20 +412,20 @@
         });
     }
 
-    //input框加载图片的处理
-    var checked = false;
+    //复选框加载图片的处理
+    var checked = true;
     var flag = 1;
     $(".footer").on('click', function () {
         if (flag == 1) {
-            $(".checkboxBox").css("background", "url(../../resources/image/wap/check-yes.png) no-repeat");
-            $(".checkboxBox").css("background-size", "cover");
-            flag = 0;
-            checked = true;
-        } else {
             $(".checkboxBox").css("background", "url(../../resources/image/wap/check-no.png) no-repeat");
             $(".checkboxBox").css("background-size", "cover");
-            flag = 1;
+            flag = 0;
             checked = false;
+        } else {
+            $(".checkboxBox").css("background", "url(../../resources/image/wap/check-yes.png) no-repeat");
+            $(".checkboxBox").css("background-size", "cover");
+            flag = 1;
+            checked = true;
         }
     })
 </script>

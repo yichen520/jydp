@@ -1,4 +1,4 @@
-package com.jydp.controller.web;
+package com.jydp.controller.wap;
 
 import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.Base64Util;
@@ -26,9 +26,9 @@ import java.util.List;
  * @Author: wqq
  */
 @Controller
-@RequestMapping("/userWeb/userCoinWithdrawal")
+@RequestMapping("/userWap/userCoinWithdrawal")
 @Scope(value = "prototype")
-public class UserCoinWithdrawalController {
+public class WapUserCoinWithdrawalController {
 
     /**  JYDP币种转出管理 */
     @Autowired
@@ -84,12 +84,13 @@ public class UserCoinWithdrawalController {
         if (phoneNumber != null && phoneNumber.length() == 11) {
             phoneNumberEn = phoneNumber.substring(0, 3) + "****" + phoneNumber.substring(phoneNumber.length() - 4, phoneNumber.length());
         }
+
         request.setAttribute("userCoinConfigList",userCoinConfigList);
         request.setAttribute("phoneAreaCode",user.getPhoneAreaCode());
         request.setAttribute("phoneNumber",phoneNumber);
         request.setAttribute("phoneNumberEn",phoneNumberEn);
 
-        return "page/web/coinWithdrawal";
+        return "page/wap/coinWithdrawal";
     }
 
     /**  获取币种管理信息 */
@@ -245,7 +246,7 @@ public class UserCoinWithdrawalController {
 
         // TODO: 2018/3/30 0030  aaaaa --> sylUserBound.getUserSylAccount()
         boolean resultBoo = jydpUserCoinOutRecordService.insertJydpUserCoinOutRecord(currencyId, jydpCoinConfig.getCurrencyName(), userBo.getUserId(),
-                    userBo.getUserAccount(), "aaaaa", number);
+                userBo.getUserAccount(), "aaaaa", number);
 
         if (resultBoo) {
             response.setCode(1);

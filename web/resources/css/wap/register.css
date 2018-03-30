@@ -104,7 +104,7 @@
     float: left;
     width: 0.34rem;
     height: 0.34rem;
-    background: url("../../image/wap/check-no.png") no-repeat;
+    background: url("../../image/wap/check-yes.png") no-repeat;
     background-size:cover; 
 }
 .footer input{

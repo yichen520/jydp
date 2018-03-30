@@ -28,7 +28,7 @@
             <span class="time date"> {{addTimeConvert addTime}}</span>
         </p>
         <div class="editor">
-            {{content}}
+            {{{content}}}
         </div>
     </div>
 </body>
@@ -58,6 +58,7 @@
     //公告数据填充
     var systemNoticeData = ${requestScope.systemNotice};
     var noticefunc = Handlebars.compile($('.content').html());
+
     $('.content').html(noticefunc(systemNoticeData));
 
 </script>

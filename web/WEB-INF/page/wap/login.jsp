@@ -16,7 +16,7 @@
     <!-- 内容区域 -->
     <div class="wrapper">
         <div class="logoBox">
-            <img src="${pageContext.request.contextPath}/resources/image/wap/login-logo.png" />
+            <img src="${pageContext.request.contextPath}/resources/image/wap/login-logo.png" id="logo"/>
             <p>交易大盘</p>
         </div>
         <div class="loginBox">
@@ -48,6 +48,13 @@
             </form>
         </div>
     </div>
+
+</body>
+
+<script src="${pageContext.request.contextPath}/resources/js/wap/common.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/wap/zepto.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/wap/jquery-2.1.4.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/wap/simpleTips_wap.js"></script>
 <script type="text/javascript">
     window.onload = function() {
         var code = '${code}';
@@ -58,6 +65,11 @@
             return false;
         }
     }
+    $(function(){
+        $("#logo").click(function () {
+            window.location.replace("${pageContext.request.contextPath}");
+        })
+    });
 
     //验证登陆
     function loginSubmit() {
@@ -96,10 +108,4 @@
         }
     }
 </script>
-</body>
-
-<script src="${pageContext.request.contextPath}/resources/js/wap/common.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/wap/zepto.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/wap/jquery-2.1.4.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/wap/simpleTips_wap.js"></script>
 </html>

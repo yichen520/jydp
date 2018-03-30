@@ -28,7 +28,7 @@
             <span class="time date"> {{addTimeConvert addTime}}</span>
         </p>
         <div class="editor">
-            {{content}}
+            {{{content}}}
         </div>
     </div>
     <!-- loading图 -->
