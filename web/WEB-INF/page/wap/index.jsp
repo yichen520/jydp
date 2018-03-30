@@ -256,7 +256,7 @@
 
     $(document).ready(function () {
         //循环执行，每隔10秒钟执行一次 10000
-       // var t1 = window.setInterval(refreshMarket, 10000);
+        var t1 = window.setInterval(refreshMarket, 10000);
         //判读session是否存在
 
     });
