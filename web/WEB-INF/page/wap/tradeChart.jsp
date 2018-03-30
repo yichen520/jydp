@@ -115,7 +115,7 @@
             <img src="{{webAppPath}}/resources/image/wap/deal-chose.png"  class="deal-icon"/>
             <p class="chose">交易</p>
     </a>
-    <a href="{{webAppPath}}/userWap/userMine/show.htm" class="mine">
+    <a href="{{webAppPath}}/userWap/userInfo/show.htm" class="mine">
             <img src="{{webAppPath}}/resources/image/wap/mine-nochose.png"  class="mine-icon"/>
             <p>我的</p>
     </a>
@@ -146,7 +146,7 @@
 <script type="text/javascript" src="<%=path %>/resources/js/wap/chart.js"></script>
 <script type="text/javascript" src="<%=path %>/resources/js/wap/simpleTips_wap.js"></script>
 <script type="text/javascript" src="<%=path %>/resources/js/wap/highstock.js"></script>
-<script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
+<%--<script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>--%>
 <script src="https://img.hcharts.cn/highcharts/themes/dark-unica.js"></script>
 
 </body>

@@ -23,7 +23,7 @@ var ParamAndViewInit = {
     },
     backToMine: function () {
         var webAppPath = $("#webAppPath").val();
-        window.location.href = webAppPath + "/userWap/userMine/show.htm";
+        window.location.href = webAppPath + "/userWap/userInfo/show.htm";
     },
     formatDate: function(timestamp){
         var date = new Date(timestamp);//10位需要乘以1000

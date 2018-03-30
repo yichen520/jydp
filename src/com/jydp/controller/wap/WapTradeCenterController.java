@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -849,6 +850,9 @@ public class WapTradeCenterController {
         int currencyId = 0;
         currencyId = Integer.parseInt(currencyIdStr);
         transactionGraphList = transactionDealRedisService.gainGraphData(currencyId, node);
+        if(null != transactionGraphList && !transactionGraphList.isEmpty()) {
+            Collections.reverse(transactionGraphList);
+        }
         response.put("transactionGraphList", transactionGraphList);
 
         response.put("code", 0);
