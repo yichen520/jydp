@@ -139,9 +139,9 @@
 
 </div>
 <!-- loading图 -->
-<div id="loading">
-    <i></i>
-</div>
+<%--<div id="loading">--%>
+    <%--<i></i>--%>
+<%--</div>--%>
 </script>
 
 <script id="table-template" type="text/x-handlebars-template">

@@ -310,7 +310,6 @@
                 <input type="hidden" id="sellPwdConfirm" />
                 <div class="cancelmaskSell">取消</div>
                 <div class="okaymaskSell" id="sellHandler">确定</div>
-
             </div>
         </div>
     </div>
