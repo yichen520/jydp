@@ -152,9 +152,11 @@
 <script id="swiperTemplate" type="text/x-handlebars-template">
     {{#each this}}
         {{#if wapLinkUrl}}
-            <a target="_blank" href="{{wapLinkUrl}}" class="swiper-slide"><img src="{{adsImageUrlFormat}}" class="swiper-slide"/></a>
+            <a target="_blank" href="{{wapLinkUrl}}" class="swiper-slide"  >
+                <img src="{{adsImageUrlFormat}}" style="object-fit: cover;"/>
+            </a>
         {{else}}
-            <a class="swiper-slide"><img src="{{adsImageUrlFormat}}"/></a>
+            <a class="swiper-slide" ><img src="{{adsImageUrlFormat}}"  style="object-fit: cover;"/></a>
         {{/if}}
     {{/each}}
 </script>

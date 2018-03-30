@@ -454,7 +454,7 @@ html,body{
     position: absolute;
     left:82%;
     top: 0;
-    z-index: 100;
+    z-index: 99;
 }
 .choseBzBox{
     position: absolute;
@@ -468,7 +468,8 @@ html,body{
     overflow-y: scroll;
 }
 .choseBzBox-title{
-    width: 100%;
+    position: fixed;
+    width: 82%;
     height: 0.9rem;
     background: #fff;
     border-bottom: 1px solid #ececec;
@@ -490,18 +491,21 @@ html,body{
 }
 .choseBzBox-content{
     padding: 0.3rem;
-    height: 100%;
+    height:100%;
     overflow: hidden;
     overflow-y: scroll;
+    overflow-y: scroll;
+    padding-bottom: 2rem;
 }
 .choseBzBox-content  li{
     display: flex;
-    padding-bottom: 0.4rem;
+    margin-bottom: 0.4rem;
 }
 .choseBzBox-content  li p{
     flex: 1;
     font-size: 0.26rem;
     font-weight: 600;
+    text-align: right;
 }
 .zhang{
     color: #e83a33
@@ -516,10 +520,13 @@ html,body{
     white-space: nowrap;
 }
 .choseBzBox-content  li p:nth-of-type(2){
-    text-align: center;
+    text-align: left;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
 }
 .choseBzBox-content  li p:nth-of-type(3){
-    text-align: right;
+    text-align: center;
 }
 #currencyListUl{
     height: 100%;

@@ -11,7 +11,7 @@
 
     <link rel="stylesheet" href="<%=path %>/resources/css/wap/common.css">
     <link rel="stylesheet" href="<%=path %>/resources/css/wap/simpleTips_wap.css">
-    <link rel="stylesheet" href="<%=path %>/resources/css/wap/detail.css">
+    <link rel="stylesheet" href="<%=path %>/resources/css/wap/deatil.css">
     
     <title>话题详情</title>
 </head>

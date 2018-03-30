@@ -19,6 +19,15 @@ header .backimg{
 }
 .content img{
     width: 100%;
+    display: block;
+}
+.editor{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.editor p{
+    display: inline;
 }
 .time{
     position: absolute;

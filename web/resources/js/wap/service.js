@@ -2,23 +2,14 @@ var ParamAndViewInit = {
     show: function () {
         var bgHeight = $(document).height();
         $('.submit').on('click',function() {
-            $('.bg').css("height",bgHeight +"px");
-            $('.showBox').css("display","block");
-            $('.showBox').animate({opacity:'1'},"1000");
+            $('.bg').fadeIn();
         });
         $('.okay').on('click',function() {
-            $('.bg').css("height","0");
-            $('.showBox').animate({opacity:'0'},"100");
-            setTimeout(function(){
-                $('.showBox').css('display','none');
-            },100)
+            $('.bg').fadeOut();
+
         });
         $('.cancel').on('click',function() {
-            $('.bg').css("height","0");
-            $('.showBox').animate({opacity:'0'},"100");
-            setTimeout(function(){
-                $('.showBox').css('display','none');
-            },100)
+            $('.bg').fadeOut();
         });
     },
     backToMine: function () {
@@ -38,9 +29,14 @@ var ParamAndViewInit = {
         var h = date.getHours() + ':';
         var m = date.getMinutes() + ':';
         var s = date.getSeconds();
+        if(s < 10){
+            s = "0" + s;
+        }
         return Y+M+D+h+m+s;
     },
     viewMore: function () {
+        var bgHeight = $(document).height();
+        $('.bg').css("height",bgHeight +"px");
         //拿到已有的list
         var $listUserFeedbackList  = $("div[class='list']");
         var pageNum = $("#pageNumber").val();
@@ -152,6 +148,7 @@ var ParamAndViewInit = {
     }
 }
 $(function () {
+    var bgHeight = $(document).height();
     //初始化事件
     ParamAndViewInit.show();
     $('.back').on('click',ParamAndViewInit.backToMine);
@@ -187,6 +184,9 @@ $(function () {
         var h = date.getHours() + ':';
         var m = date.getMinutes() + ':';
         var s = date.getSeconds();
+        if(s < 10){
+            s = "0" + s;
+        }
         return Y+M+D+h+m+s;
     });
     Handlebars.registerHelper("showHandlerContent", function(handleContent){
@@ -215,6 +215,12 @@ $(function () {
             $("#contactDiv").html(contactHtml);
             $('.more').bind('click',ParamAndViewInit.viewMore);
             $('.okay').bind('click',ParamAndViewInit.addFeedback);
+            var bgHeight = $(document).height();
+             $('.bg').css("height",bgHeight +"px");
+            if(Number(data.totalPageNumber) == (Number(data.pageNumber) + 1) ){
+                $(".more").unbind('click');
+                $(".more").text("已显示全部记录");
+            }
         },
         error: function () {
             openTips("服务器异常，请稍后再试！");

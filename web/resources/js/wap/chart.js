@@ -30,11 +30,6 @@ var ChartParamsAndInit = {
             num = num.toString();
             maxFractionDigits = parseInt(maxFractionDigits);
             if (num.indexOf(".") === -1) {
-                if("0" == num){
-                    return num;
-                }else{
-                    return num +"万";
-                }
                 return num;
             }
             var numField = num.split(".");
@@ -46,11 +41,12 @@ var ChartParamsAndInit = {
             }
             fractionDigits = fractionDigits.substring(0, maxFractionDigits);
             var numStr = integerDigits + "." + fractionDigits;
-            if("0" == numStr){
+            return numStr;
+           /* if("0" == numStr){
                 return numStr;
             }else{
                 return numStr +"万";
-            }
+            }*/
         });
         Handlebars.registerHelper("paymentTypeFormat", function (type, index) {
             if (type == undefined || type == null || type == "" || isNaN(type)) {
@@ -108,49 +104,29 @@ var ChartParamsAndInit = {
         }
         return Y + M + D + h + m + s;
     },
-    currencyInfo: function () {
-        var webAppPath = $("#webAppPath").val();
-        $.ajax({
-            url: "currencyInfo",
-            dataType: "json",
-            type: 'POST',
-            async: true, //默认异步调用 (false：同步)
-            success: function (data) {
-                if (data.code != 0) {
-                    return;
-                }
-                var transactionUserDealList = data.transactionUserDealList;
-                if (transactionUserDealList != undefined && transactionUserDealList != null && transactionUserDealList != "") {
-                    var $currencyListUl = $("#currencyListUl");
-                    $currencyListUl.empty();
-                    var out = "<ul class='choseBzBox-content'>";
-                    for (var i = 0; i < transactionUserDealList.length; i++) {
-                        myHref = "<a href='" + "toChartPage?currencyId=" + transactionUserDealList[i].currencyId + "'>";
-                        out = out + '<li>' +
-                            '<p>' + myHref + transactionUserDealList[i].currencyName + "(" + transactionUserDealList[i].currencyShortName + ")" + "</a></p>"
-                            + "<p class='zhang'>" + transactionUserDealList[i].latestPrice + "</p>"
-                            + "<p class='zhang'>" + transactionUserDealList[i].change + "%</p>"
-                            + "</li>";
-                    }
-                    out += "</ul>"
-                    $currencyListUl.html(out);
-                }
-            },
-            error: function () {
-                return;
-            }
-        });
-    },
     open: function () {
         var bgHeight = $(document).height();
         $('.open').on('click', function () {
+            $.get("/jydp/userWap/tradeCenter/currencyInfo",function (result) {
+                if (result.code!=0) {
+                    openTips(result.message)
+                    return;
+                }
+                var webpath = $("#webAppPath").val();
+                var myTemplate = Handlebars.compile($("#table-template").html());
+                $('#currencyList').html(myTemplate(result.transactionUserDealList));
+
+                $('.choseBzBox-content ul').on('click', 'li', function () {
+                    var currencyId=$(this).find("p").eq(0).text();
+                    window.location.href="toChartPage?currencyId="+currencyId
+                })
+            })
+
             $('.closeAnthoer').css("height", bgHeight + "px");
             $('.choseBz').css("height", bgHeight + "px");
             $('.choseBzBox').css("height", bgHeight + "px");
             $('.choseBzBox').show();
             $('.choseBzBox').animate({left: '0'}, "500");
-            //加载数据
-            ChartParamsAndInit.currencyInfo();
         });
         $('#closeAnthoer').on('click', function () {
             setTimeout(function () {
@@ -215,11 +191,7 @@ var ChartParamsAndInit = {
                     $("#buyOneSpan").text(ChartParamsAndInit.formatNumber(standardParameter.buyOne, 6));
                     $("#sellOneOne").text(ChartParamsAndInit.formatNumber(standardParameter.sellOne, 6));
                     var dayTurnove =  ChartParamsAndInit.formatNumber(standardParameter.dayTurnove, 4);
-                    if(dayTurnove == 0){
-                        $("#dayTurnoveOne").text(dayTurnove);
-                    }else {
-                        $("#dayTurnoveOne").text(dayTurnove +"万");
-                    }
+                    $("#dayTurnoveOne").text(dayTurnove);
                 }
             },
             error: function () {

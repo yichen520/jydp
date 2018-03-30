@@ -27,14 +27,14 @@
         <p>成交记录</p>
         <img src="<%=path %>/resources/image/wap/nextIcon.png"/>
     </div>
-    <div class="content">
+<%--    <div class="content">
         <p>充值记录</p>
         <img src="<%=path %>/resources/image/wap/nextIcon.png"/>
     </div>
     <div class="content">
         <p>提现记录</p>
         <img src="<%=path %>/resources/image/wap/nextIcon.png"/>
-    </div>
+    </div>--%>
     <div class="content currency" id="currency">
         <p>币种提现记录</p>
         <img src="<%=path %>/resources/image/wap/nextIcon.png"/>
