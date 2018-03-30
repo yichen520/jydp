@@ -177,7 +177,7 @@
 
     //手续费
     Handlebars.registerHelper("feesConvert", function (feeNumber, currencyTotalPrice,maxFractionDigits) {
-        var feePrice = feeNumber * currencyTotalPrice;
+        var feePrice = (feeNumber * currencyTotalPrice).toFixed(maxFractionDigits);
 
         if (isNaN(feePrice) || isNaN(maxFractionDigits)) {
             openTips("参数类型错误");
@@ -202,7 +202,7 @@
 
     //实际到账
     Handlebars.registerHelper("actualArrivalConvert", function (feeNumber, currencyTotalPrice,maxFractionDigits) {
-        var actualArrivalPrice = currencyTotalPrice - feeNumber * currencyTotalPrice;
+        var actualArrivalPrice = (currencyTotalPrice - (feeNumber * currencyTotalPrice).toFixed(8)).toFixed(maxFractionDigits);
         if (isNaN(actualArrivalPrice) || isNaN(maxFractionDigits)) {
             openTips("参数类型错误");
             return false;
