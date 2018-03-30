@@ -1,11 +1,6 @@
 $(function () {
-    $('.back').on('click',function(){
-        window.location.href = "mine.html"
-    });
-    $('.backimg').on('click',function(){
-        window.location.href = "hot.html"
-    });
-    $('.content').on('click','li',function(){
-        window.location.href = "hotDeatil.html"
-    });
+    //将返回页面跳转注释，因为可能是不同的页面进入这个系统公告页面
+    // $('.back').on('click',function(){
+    //     window.location.href = "mine.html"
+    // });
 });
