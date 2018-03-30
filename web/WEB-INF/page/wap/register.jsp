@@ -188,7 +188,7 @@
     }
 
     function readUserAgree() {
-        window.location.href="<%=path %>/userWap/wapHelpCenter/show/101016";
+        window.location.href="<%=path %>/userWap/wapHelpCenter/show/101016?type=1";
     }
     //验证用户账号
     var validateUserBoo = false;
@@ -259,14 +259,14 @@
             success: function (resultData) {
                 var code = resultData.code;
                 var message = resultData.message;
-                if (code != 1 && message != "") {
-                    openTips(message);
+                openTips(message);
+                if (code != 1 ) {
                     return;
                 }
                 getMesCodeFlag = true;
             },
             error: function () {
-                openTips("短信发送失败");
+                openTips("服务器错误");
             }
         });
     }
