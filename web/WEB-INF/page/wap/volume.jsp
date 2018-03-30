@@ -162,10 +162,10 @@
             return "未知类型";
         }
         if (type == 1) {
-            return "实际到账";
+            return "实际支出";
         }
         if (type == 2) {
-            return "实际支出";
+            return "实际到账";
         }
         if (type == 3){
             return "成交总价";

@@ -168,18 +168,25 @@ public class WapTradeCenterController {
         Object transactionPendOrderBuyListStr = redisService.getValue(RedisKeyConfig.BUY_KEY + transactionCurrency.getCurrencyId());
         if (transactionPendOrderBuyListStr != null && StringUtil.isNotNull(transactionPendOrderBuyListStr.toString())) {
             transactionPendOrderBuyList = (List<TransactionPendOrderDTO>) transactionPendOrderBuyListStr;
+            if(transactionPendOrderBuyList.size() > 5) {
+                transactionPendOrderBuyList = transactionPendOrderBuyList.subList(0, 5);
+            }
         }
         if (transactionPendOrderBuyList == null || transactionPendOrderBuyList.isEmpty()) {
-            transactionPendOrderBuyList = transactionPendOrderService.listLatestRecords(1, transactionCurrency.getCurrencyId(), 15);
+
+            transactionPendOrderBuyList = transactionPendOrderService.listLatestRecords(1, transactionCurrency.getCurrencyId(), 5);
         }
         //挂单记录 卖出
         List<TransactionPendOrderDTO> transactionPendOrderSellList = null;
         Object transactionPendOrderSellListStr = redisService.getValue(RedisKeyConfig.SELL_KEY + transactionCurrency.getCurrencyId());
         if (transactionPendOrderSellListStr != null && StringUtil.isNotNull(transactionPendOrderSellListStr.toString())) {
             transactionPendOrderSellList = (List<TransactionPendOrderDTO>) transactionPendOrderSellListStr;
+            if(transactionPendOrderSellList.size() > 5) {
+                transactionPendOrderSellList = transactionPendOrderSellList.subList(0, 5);
+            }
         }
         if (transactionPendOrderSellList == null || transactionPendOrderSellList.isEmpty()) {
-            transactionPendOrderSellList = transactionPendOrderService.listLatestRecords(2, transactionCurrency.getCurrencyId(), 15);
+            transactionPendOrderSellList = transactionPendOrderService.listLatestRecords(2, transactionCurrency.getCurrencyId(), 5);
         }
 
         //查询成功需要加入项目名称
@@ -596,6 +603,9 @@ public class WapTradeCenterController {
         Object transactionPendOrderBuyListStr = redisService.getValue(RedisKeyConfig.BUY_KEY + transactionCurrency.getCurrencyId());
         if (transactionPendOrderBuyListStr != null && StringUtil.isNotNull(transactionPendOrderBuyListStr.toString())) {
             transactionPendOrderBuyList = (List<TransactionPendOrderDTO>) transactionPendOrderBuyListStr;
+            if(transactionPendOrderBuyList.size() > 5) {
+                transactionPendOrderBuyList = transactionPendOrderBuyList.subList(0, 5);
+            }
         }
         if (transactionPendOrderBuyList == null || transactionPendOrderBuyList.isEmpty()) {
             transactionPendOrderBuyList = transactionPendOrderService.listLatestRecords(1, transactionCurrency.getCurrencyId(), 15);
@@ -604,9 +614,12 @@ public class WapTradeCenterController {
         Object transactionPendOrderSellListStr = redisService.getValue(RedisKeyConfig.SELL_KEY + transactionCurrency.getCurrencyId());
         if (transactionPendOrderSellListStr != null && StringUtil.isNotNull(transactionPendOrderSellListStr.toString())) {
             transactionPendOrderSellList = (List<TransactionPendOrderDTO>) transactionPendOrderSellListStr;
+            if(transactionPendOrderSellList.size() > 5) {
+                transactionPendOrderSellList = transactionPendOrderSellList.subList(0, 5);
+            }
         }
         if (transactionPendOrderSellList == null || transactionPendOrderSellList.isEmpty()) {
-            transactionPendOrderSellList = transactionPendOrderService.listLatestRecords(2, transactionCurrency.getCurrencyId(), 15);
+            transactionPendOrderSellList = transactionPendOrderService.listLatestRecords(2, transactionCurrency.getCurrencyId(), 5);
         }
 
         response.put("transactionPendOrderBuyList", transactionPendOrderBuyList);
@@ -677,9 +690,12 @@ public class WapTradeCenterController {
         Object dealListStr = redisService.getValue(RedisKeyConfig.CURRENCY_DEAL_KEY + currencyId);
         if (dealListStr != null && StringUtil.isNotNull(dealListStr.toString())) {
             dealList = (List<TransactionDealRedisDO>) dealListStr;
+            if(dealList.size() > 20){
+                dealList = dealList.subList(0,20);
+            }
         }
         if (dealList == null || dealList.isEmpty()) {
-            dealList = transactionDealRedisService.listTransactionDealRedis(50, currencyId);
+            dealList = transactionDealRedisService.listTransactionDealRedis(20, currencyId);
         }
         response.put("dealList", dealList);
 
@@ -817,9 +833,12 @@ public class WapTradeCenterController {
         Object dealListStr = redisService.getValue(RedisKeyConfig.CURRENCY_DEAL_KEY + currencyId);
         if (dealListStr != null && StringUtil.isNotNull(dealListStr.toString())) {
             dealList = (List<TransactionDealRedisDO>) dealListStr;
+            if(dealList.size() > 20){
+                dealList = dealList.subList(0,20);
+            }
         }
         if (dealList == null || dealList.isEmpty()) {
-            dealList = transactionDealRedisService.listTransactionDealRedis(50, transactionCurrency.getCurrencyId());
+            dealList = transactionDealRedisService.listTransactionDealRedis(20, transactionCurrency.getCurrencyId());
         }
         response.put("dealList", dealList);
 

@@ -1,15 +1,17 @@
+
 /* 头部价格 */
 .nav{
     position: fixed;
-    top: 0.91rem;
+    top: 0.92rem;
     left: 0;
     width: 100%;
-    padding: 0.3rem 0 0.3rem 0 ;
-    border-bottom:1px solid #ececec; 
+    padding: 0rem 0 0.2rem 0 ;
+    border-bottom:1px solid #ececec;
     background: #fff;
     z-index: 99;
 }
 .nav-top{
+    margin-top: 0.2rem;
     padding-left: 0.3rem;
     padding-right: 0.3rem;
 }
@@ -50,13 +52,33 @@
     padding-left: 0.3rem;
     padding-right: 0.3rem;
 }
-.nav-content-list{
-    flex: 1;
+.nav-content .topLeft{
+    padding-top: 0.26rem;
+    font-weight: 600;
+}
+.right{
+    text-align: center;
+}
+.nav-content .flex{
+    margin-top: 0.2rem;
+    flex: 1
+}
+.nav-boxone .nav-content-list{
+
+    float: left;
     margin-top: 0.16rem;
     text-align: center;
 }
+.nav-boxone .nav-content-list:nth-last-of-type(1){
+    margin-right:0rem;
+}
+.nav-boxtwo{
+
+    margin-top: 0.16rem;
+}
 .list-desc{
-    font-size: 0.22rem;
+    display: block;
+    font-size: 0.26rem;
     color: #999;
     margin-bottom: 0.16rem;
 }
@@ -69,22 +91,27 @@
 .nav-content-list .list-desc:last-of-type{
     margin-bottom: 0;
 }
-.list-num{  
+.list-num{
+
     font-size: 0.24rem;
     color:#333;
-    margin-left: 0.2rem; 
+    margin-left: 0.2rem;
 }
 #wrapper{
+    padding-bottom: 1.2rem;
     width: 100%;
     position: relative;
-    top: 2.9rem;
+    top: 2.3rem;
     left: 0;
 }
 /* 当前价格 */
 .nowPrice{
-    padding-top: 0.3rem;
+    padding-right: 0.3rem;
+    padding-top: 0.15rem;
 }
 .nowPrice .title{
+    padding-top: 0.1rem;
+    float: left;
     margin-left: 0.3rem;
     font-size: 0.26rem;
     color:#333;
@@ -92,93 +119,102 @@
 
 /* 买入卖出 */
 .payLeft{
-    float: left;
-    width: 3.7rem;
+    width: 100%;
 }
 .payLeft .leftTitle{
     display: flex;
-    margin-left: 0.3rem;
-    
+    padding-left: 0.28rem;
 }
 .payLeft .leftTitle span{
     margin-top: 0.3rem;
     flex: 1;
     font-size: 0.24rem;
     color: #999;
+    text-align: left;
 }
 .leftContent{
     margin-top: 0.2rem;
     width: 100%;
     background: #fafffd;
 }
-.leftContent p{
+.leftContent .list-content{
     padding-left: 0.28rem;
     height: 0.44rem;
     line-height: 0.44rem;
     display: flex;
 }
-.leftContent p span{
+.leftContent .list-content span{
     flex: 1;
     font-size: 0.24rem;
     color: #333;
+    text-align: left;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    padding-right:0.24rem;
 }
-.leftContent p span:first-of-type{
+.leftContent .list-content span:first-of-type{
     color: #00be97;
 }
 .payRight{
-    float: right;
-    width: 3.7rem;
+    width: 100%;
 }
 .payRight .rightTitle{
     display: flex;
-    margin-left: 0.1rem;
-    
+
+    padding-left: 0.28rem;
 }
 .payRight .rightTitle span{
     margin-top: 0.3rem;
     flex: 1;
     font-size: 0.24rem;
     color: #999;
+    text-align: left;
 }
 .rightContent{
-    margin-top: 0.2rem;
+    margin-top: 0.1rem;
     width: 100%;
     background: #fffaf7;
 }
-.rightContent p{
-    padding-left: 0.1rem;
+.rightContent .list-content{
+    padding-left: 0.28rem;
     height: 0.44rem;
     line-height: 0.44rem;
     display: flex;
+    text-align: left
 }
-.rightContent p span{
+.rightContent .list-content span{
     flex: 1;
     font-size: 0.24rem;
     color: #333;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    padding-right:0.24rem;
 }
-.rightContent p span:first-of-type{
+.rightContent .list-content span:first-of-type{
     color: #e83a33;
 }
 
- /* 买入卖出委托记录 */
- .main{
-     padding: 0.3rem 0.3rem;
- }
- .mainTitle li{
-     float: left;
-     font-size: 0.3rem;
-     margin-right: 0.64rem;
- }
- .mainTitle li:nth-of-type(1){
+/* 买入卖出委托记录 */
+.main{
+    padding: 0.3rem 0.3rem;
+}
+.mainTitle li{
+    float: left;
+    font-size: 0.3rem;
+    margin-right: 0.64rem;
+}
+.mainTitle li:nth-of-type(1){
     color: #e83a33;
- }
- .mainTitle li:nth-of-type(2){
+}
+.mainTitle li:nth-of-type(2){
     color: #00be97;
- }
- .mainTitle li:nth-of-type(3){
+}
+.mainTitle li:nth-of-type(3){
     color: #333;
- }
- .mainTitle .borderBuy{
+}
+.mainTitle .borderBuy{
     margin: 0 auto;
     width: 0.2rem;
     height: 0.04rem;
@@ -198,95 +234,41 @@
     background: #333;
     display: none;
 }
- .buy{
-     padding: 0 0.3rem 0 0.3rem;
-     display: block;
- }
- .sell{
+.buy{
     padding: 0 0.3rem 0 0.3rem;
-     display: none;
- }
- .entrust{
+    display: block;
+}
+.sell{
+    padding: 0 0.3rem 0 0.3rem;
+    display: none;
+}
+.entrust{
     padding: 0 0.3rem 0 0.3rem;
     display: none;
     margin-bottom: 1rem;
- }
- 
+}
 
- /* 买入 */
- .mainContent-priceBuy{
-     margin-bottom: 0.2rem;
-     width: 100%;
-     height: 0.7rem;
-     border: 1px solid #e7e7e7; 
- }
- .mainContent span{
-     width: 1rem;
-     float: left;
-     margin-left: 0.2rem;
-    line-height: 0.7rem;
-    font-size: 0.24rem;
-    color:#666;
- }
- .mainContent input{
-     display: inline-block;
-     padding-left: 1.06rem;
-     width: 50%;
-     height: 0.7rem;
-     line-height: 0.7rem;
-     font-size: 0.24rem;
-     color:#666;
- }
- .mainContent-numBuy{
-    margin-bottom: 0.1rem;
-    width: 100%;
-     height: 0.7rem;
-     line-height: 0.7rem;
-     border: 1px solid #e7e7e7;
- }
- .maxNum{
-     font-size: 0.22rem;
-     color: #999;
- }
- .mainContent-passwordBuy{
-    margin-top: 0.1rem;
-    width: 100%;
-    height: 0.7rem;
-    line-height: 0.7rem;
-    border: 1px solid #e7e7e7;
- }
 
- /* 卖出 */
- .mainButtonBuy{
-     margin-top: 0.3rem;
-     width: 100%;
-     height: 0.7rem;
-     line-height: 0.7rem;
-     background: #e83a33;
-     color: #fff;
-     font-size: 0.34rem;
-     text-align: center;
- }
- .mainContent-priceSell{
+/* 买入 */
+.mainContent-priceBuy{
     margin-bottom: 0.2rem;
     width: 100%;
     height: 0.7rem;
-    border: 1px solid #e7e7e7; 
+    border: 1px solid #e7e7e7;
 }
-.mainContent input{
-    display: block;
-    float: left;
-    padding-left: 0.62rem;
 
+.mainContent input{
+    display: inline-block;
+    padding-left: 1.06rem;
+    width: 50%;
     height: 0.7rem;
     line-height: 0.7rem;
     font-size: 0.24rem;
     color:#666;
-    font-weight: 600;
 }
-.mainContent-numSell{
-   margin-bottom: 0.1rem;
-   width: 100%;
+.mainContent-numBuy{
+    margin-bottom: 0.1rem;
+    width: 100%;
     height: 0.7rem;
     line-height: 0.7rem;
     border: 1px solid #e7e7e7;
@@ -295,14 +277,79 @@
     font-size: 0.22rem;
     color: #999;
 }
-.mainContent-passwordSell{
-   margin-top: 0.1rem;
-   width: 100%;
-   height: 0.7rem;
-   line-height: 0.7rem;
-   border: 1px solid #e7e7e7;
+.mainContent-passwordBuy{
+    margin-top: 0.1rem;
+    width: 100%;
+    height: 0.7rem;
+    line-height: 0.7rem;
+    border: 1px solid #e7e7e7;
 }
- .mainButtonSell{
+
+/* 卖出 */
+.mainButtonBuy{
+    margin-top: 0.3rem;
+    width: 100%;
+    height: 0.7rem;
+    line-height: 0.7rem;
+    background: #e83a33;
+    color: #fff;
+    font-size: 0.34rem;
+    text-align: center;
+}
+.mainContent-priceSell{
+    margin-bottom: 0.2rem;
+    width: 100%;
+    height: 0.7rem;
+    border: 1px solid #e7e7e7;
+}
+.mainContent input{
+    display: block;
+    float: left;
+    padding-left: 0.62rem;
+    width: 50%;
+    height: 0.7rem;
+    line-height: 0.7rem;
+    font-size: 0.24rem;
+    color:#666;
+
+}
+.name{
+    width: 1rem;
+    float: left;
+    margin-left: 0.2rem;
+    line-height: 0.7rem;
+    font-size: 0.24rem;
+    color: #666;
+}
+.setting{
+    margin-left: 0;
+    float: right;
+    text-align: right;
+    color: #999;
+    line-height: 0.7rem;
+    font-size: 0.24rem;
+    padding-right: 0.2rem;
+}
+.mainContent-numSell{
+    margin-bottom: 0.1rem;
+    width: 100%;
+    height: 0.7rem;
+    line-height: 0.7rem;
+    border: 1px solid #e7e7e7;
+}
+.maxNum{
+    margin-top: 0.1rem;
+    font-size: 0.22rem;
+    color: #999;
+}
+.mainContent-passwordSell{
+    margin-top: 0.1rem;
+    width: 100%;
+    height: 0.7rem;
+    line-height: 0.7rem;
+    border: 1px solid #e7e7e7;
+}
+.mainButtonSell{
     margin-top: 0.3rem;
     width: 100%;
     height: 0.7rem;
@@ -312,28 +359,37 @@
     font-size: 0.34rem;
     text-align: center;
 }
- .mainMoney{
-     margin-top: .3rem;
-     margin-bottom: 1.68rem;
- }
- .mainMoney-title{
-     display: flex;
-     font-size: 0.24rem;
-     color: #666;
- }
- .mainMoney span{
-     flex: 1;
- }
- .mainMoney span:nth-of-type(2){
-     text-align: center;
- }
- .mainMoney span:nth-of-type(3){
+.mainMoney{
+    margin-top: .3rem;
+}
+.mainMoney-title{
+    display: block;
+    display: flex;
+    font-size: 0.24rem;
+    color: #666;
+}
+.mainMoney-title span{
+    flex: 1;
+}
+.mainMoney-title span:nth-of-type(2){
+    text-align: center;
+}
+.mainMoney-title span:nth-of-type(3){
     text-align: right;
 }
- .mainMoney-num{
+.mainMoney-num{
     display: flex;
     font-size: 0.26rem;
     color: #333;
+}
+.mainMoney-num span{
+    flex: 1;
+}
+.mainMoney-num span:nth-of-type(2){
+    text-align: center;
+}
+.mainMoney-num span:nth-of-type(3){
+    text-align: right;
 }
 /* 委托记录 */
 .entrust-title{
@@ -347,7 +403,7 @@
     width: 20%;
     float: left;
     font-size: 0.26rem;
-    color: #999; 
+    color: #999;
     text-align: center;
 }
 .entrust-title li:nth-of-type(1){
@@ -367,26 +423,133 @@
 }
 .entrust-content{
     padding: 0 0.1rem 0 0.1rem;
-    height: 0.7rem;
-    line-height: 0.7rem;
     width: 98%;
-    border-bottom:  1px solid #ececec;
 }
 .entrust-content li{
-    width: 20%;
-    float: left;
-    font-size: 0.24rem;
-    color: #666; 
-    text-align: center;
-}
-.setting{
-    margin-left: 0;
-    float: right;
-    text-align: right;
-    color: #999;
+    height: 0.7rem;
     line-height: 0.7rem;
     font-size: 0.24rem;
-    padding-right: 0.2rem;
+    color: #666;
+    text-align: center;
+    border-bottom:  1px solid #ececec;
+}
+.entrust-content li p{
+    float: left;
+    text-align: left;
+    width: 20%;
+}
+.entrust-content li:last-of-type{
+    border-bottom: 0
+}
+.entrust-content li p:nth-of-type(3){
+    text-align: center;
+}
+.entrust-content li p:nth-of-type(4){
+    text-align: center;
+}
+.entrust-content li p:nth-of-type(5){
+    text-align: right;
+    color: #68adfa;
+}
+.green{
+    color: #00be97;
+}
+.red{
+    color: #e83a33
+}
+
+
+/* 选择币种 */
+.choseBz{
+    width: 100%;
+    background: rgba(0,0,0,0.4);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+}
+.closeAnthoer{
+    width: 20%;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    z-index: 99;
+}
+.choseBzBox{
+    position: absolute;
+    left: -82%;
+    top: 0;
+    display: none;
+    width: 82%;
+    /* height: 100%; */
+    background: #fff;
+    z-index: 100;
+    overflow-y: scroll;
+}
+.choseBzBox-title{
+    width: 100%;
+    height: 0.9rem;
+    background: #fff;
+    border-bottom: 1px solid #ececec;
+}
+.choseBzBox-title p{
+    margin-left: 0.3rem;
+    font-size: 0.34rem;
+    color: #666;
+    font-weight: 600;
+    float: left;
+    line-height: 0.9rem;
+}
+.choseBzBox-title img{
+    margin-right: 0.3rem;
+    margin-top: 0.25rem;
+    float: right;
+    width: 0.34rem;
+    height: 0.3rem;
+}
+.choseBzBox-content{
+    padding: 0.3rem;
+    height: 83%;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+.choseBzBox-content ul li{
+    display: flex;
+    padding-bottom: 0.4rem;
+}
+.choseBzBox-content ul li p{
+    flex: 1;
+    font-size: 0.26rem;
+    font-weight: 600;
+}
+.zhang{
+    color: #e83a33
+}
+.die{
+    color: #00be97
+}
+.choseBzBox-content ul li p:nth-of-type(1){
+    color: #999;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
+.choseBzBox-content ul li p:nth-of-type(2){
+    text-align: center;
+
+}
+.choseBzBox-content ul li p:nth-of-type(3){
+    text-align: right;
+
+}
+/* 弹窗撤销 */
+.bg{
+    width: 100%;
+    background: rgba(0,0,0,0.7);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 99;
 }
 .cin{
     width: 100%;
@@ -395,19 +558,70 @@
     left: 0;
     top: 0;
     z-index: 99;
+    display: none;
 }
-.entrust-content li:nth-of-type(1){
-    text-align: left
+.mask{
+    width: 100%;
+    background: rgba(0,0,0,0.7);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 99;
+    display: none;
 }
-.entrust-content li:nth-of-type(2){
-    text-align: left
+.maskSell{
+    width: 100%;
+    background: rgba(0,0,0,0.7);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 99;
+    display: none;
 }
-.entrust-content li:nth-of-type(4){
-    text-align: right
+.showBox{
+    border-radius: 2px;
+    width: 5.64rem;
+    height: 2.7rem;
+    position: fixed;
+    left: 50%;
+    margin-left: -2.82rem;
+    top: 50%;
+    margin-top: -1.35rem;
+    display: none;
+    z-index: 100;
+    opacity: 0;
+    background: #fff;
 }
-.entrust-content li:nth-of-type(5){
-    text-align: right;
-    color: #68adfa;
+.showBoxTitle{
+    text-align: center;
+    widows: 100%;
+    height: 1rem;
+    line-height: 1rem;
+    font-size: 0.32rem;
+    color: #000;
+}
+.showBoxContent{
+    padding-left: 0.3rem;
+    font-size: 0.28rem;
+    color: #666;
+}
+.showBoxButton{
+    margin-top: 0.4rem;
+    height: 0.9rem;
+    display: flex;
+}
+.showBoxButton div{
+    flex: 1;
+    font-size: 0.32rem;
+    line-height: 0.9rem;
+    text-align: center;
+    color: #999;
+    border-top: 1px solid #d9d9d9;
+    border-right:1px solid #d9d9d9;
+}
+.showBoxButton div:nth-of-type(2){
+    color: #e83a33;
+    border-right:0;
 }
 .settingBox{
     border-radius: 2px;
@@ -418,8 +632,8 @@
     top: 45%;
     margin-top: -2rem;
     z-index: 100;
-    opacity: 0;
-    display: none;
+    opacity: 1;
+    display: block;
     background: #fff;
 }
 .settingTitle{
@@ -473,224 +687,105 @@
     color: #e83a33;
     border-right:0;
 }
-/* 选择币种 */
-.choseBz{
-    width: 100%;
-    background: rgba(0,0,0,0.4);
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 99;
-}
-.closeAnthoer{
-    width: 20%;
-    position: absolute;
-    left: 100%;
-    top: 0;
-    z-index: 99;
-}
-.choseBzBox{
-    position: absolute;
-    left: -82%;
-    top: 0;
-    display: none;
-    width: 82%;
-    /* height: 100%; */
-    background: #fff;
-    z-index: 100;
-}
-.choseBzBox-title{
-    width: 100%;
-    height: 0.9rem;
-    background: #fff;
-    border-bottom: 1px solid #ececec;
-}
-.choseBzBox-title p{
-    margin-left: 0.3rem;
-    font-size: 0.34rem;
-    color: #666;
-    font-weight: 600;
-    float: left;
-    line-height: 0.9rem;
-}
-.choseBzBox-title img{
-    margin-right: 0.3rem;
-    margin-top: 0.25rem;
-    float: right;
-    width: 0.34rem;
-    height: 0.3rem;
-}
-.choseBzBox-content{
-    padding: 0.3rem;
-}
-.choseBzBox-content ul li{
-    display: flex;
-    margin-bottom: 0.4rem;
-}
-.choseBzBox-content ul li p{
-    flex: 1;
-    font-size: 0.26rem;
-    font-weight: 600;
-}
-.zhang{
-    color: #e83a33
-}
-.die{
-    color: #00be97
-}
-.choseBzBox-content ul li p:nth-of-type(1){
-    color: #999;
-}
-.choseBzBox-content ul li p:nth-of-type(2){
-    text-align: center;
-}
-.choseBzBox-content ul li p:nth-of-type(3){
-    text-align: right;
-}
-.mask{
-    display: none;
-    position:fixed;
-    width: 100%;
-    min-width: 1400px;
-    background-color:rgba(0,0,0,0.6);
-    z-index:100;
-    top:0;
-}
-.mask_content{
-    width: 5rem;
-    background-color: #ffffff;
-    font-size: 14px;
+.maskBox{
+    border-radius: 2px;
+    width: 5.64rem;
     position: fixed;
-    top: 35%;
     left: 50%;
-    margin-left: -2.5rem;
+    margin-left: -2.82rem;
+    top: 45%;
+    margin-top: -2rem;
+    z-index: 100;
+    opacity: 1;
+    display: block;
+    background: #fff;
 }
-.popTitle{
-    position: relative;
-    width: 100%;
-    height: 1.3rem;
-    line-height: 1.3rem;
+.maskBoxTitle{
+    font-size: 0.32rem;
+    color: #000;
+    height: 1.02rem;
+    line-height: 1.02rem;
+    text-align: center
+}
+.maskBoxContent p{
+    padding-left: 0.32rem;
+    margin-bottom: 0.3rem;
+    color: #888;
+    font-size: 0.24rem;
+}
+.maskBoxContent span{
     display: inline-block;
-    border-radius: 10px 10px 0 0;
-    font-size: 0.3rem;
-    color: #666666;
-    border-bottom: 1px solid #ececec;
+    width: 1.5rem;
+    color: #666;
+    font-size: 0.24rem;
+}
+.maskBoxButton{
+    margin-top: 0.4rem;
+    height: 0.9rem;
+    display: flex;
+}
+.maskBoxButton div{
+    flex: 1;
+    font-size: 0.32rem;
+    line-height: 0.9rem;
     text-align: center;
+    color: #999;
+    border-top: 1px solid #d9d9d9;
+    border-right:1px solid #d9d9d9;
 }
-.popInput{
-    display: inline-block;
-    text-align: left;
-    height: 0.8rem;
-    line-height: 0.8rem;
-    padding-left: 0.3rem;
-
-}
-.popInput:nth-of-type(5){
-    padding-bottom: 0.3rem;
-}
-.popTips{
-    margin-top: 15px;
-    padding: 0 20px;
-    width: 360px;
-    font-size: 15px;
-    color: #666666;
-}
-.tipsImg{
-    margin-right: 15px;
-    vertical-align: middle;
-}
-.buttons{
-    border-top: 1px solid #ddd;
-}
-.yes{
-    float: left;
-    width:50%;
+.maskBoxButton div:nth-of-type(2){
+    color: #e83a33;
     border-right:0;
-    height: 0.75rem;
-    line-height:0.75rem;
-    background-color: #e83a33;
-    text-align: center;
-    font-size: 0.26rem;
-    color: #ffffff;
-    cursor: pointer;
-}
-.yes:hover{
-    background-color: #d0342e;
-}
-.cancel{
-    float: left;
-    border-left:0;
-    width: 50%;
-    height: 0.75rem;
-    line-height:0.75rem;
-    background-color: #ffffff;
-    text-align: center;
-    font-size:0.26rem;
-    color: #333333;
-    cursor: pointer;
-}
-.cancel:hover{
-    opacity: 0.8;
 }
 
-.buyConfirm,.sellConfirm,.revoke_pop,.password_pop, .revokeConfirm{
-    display: none;
-}
-.popName{
-    float: left;
-    line-height: 0.8rem;
-    text-align: left;
-    color: #666666;
-    font-size: 14px;
-    width: 2rem;
-}
-.popInfo{
 
-    text-align: left;
-    width: 250px;
-    height: 20px;
-    line-height: 20px;
-    font-size: 14px;
-    color: #777777;
-    word-break: break-all;
-}
-.star{
-    color: #ff0000;
-}
-.popTips label{
-    float: left;
-    width: 100%;
-    line-height: 35px;
-}
-.password_pop .popName{
-    height: 35px;
-    line-height: 35px;
-}
-.red{
-    color: #e83a33
-}
-.green{
-    color: #00be97;
-}
-.mask_order{
-    display: none;
-    position:fixed;
-    width: 100%;
-    min-width: 1400px;
-    background-color:rgba(0,0,0,0.6);
-    z-index:100;
-    top:0;
-}
-.mask_content_order {
+.maskSellBox{
+    border-radius: 2px;
+    width: 5.64rem;
     position: fixed;
-    margin-left:-2rem;
-    left:50%;
-    top:35%;
-    width:4rem;
-    background-color:#ffffff;
-    font-size: 14px;
-
+    left: 50%;
+    margin-left: -2.82rem;
+    top: 45%;
+    margin-top: -2rem;
+    z-index: 100;
+    opacity: 1;
+    display: block;
+    background: #fff;
 }
-.orderConfirm{
-    display: none;
+.maskSellBoxTitle{
+    font-size: 0.32rem;
+    color: #000;
+    height: 1.02rem;
+    line-height: 1.02rem;
+    text-align: center
+}
+.maskSellBoxContent p{
+    padding-left: 0.32rem;
+    margin-bottom: 0.3rem;
+    color: #888;
+    font-size: 0.24rem;
+}
+.maskSellBoxContent span{
+    display: inline-block;
+    width: 1.5rem;
+    color: #666;
+    font-size: 0.24rem;
+}
+.maskSellBoxButton{
+    margin-top: 0.4rem;
+    height: 0.9rem;
+    display: flex;
+}
+.maskSellBoxButton div{
+    flex: 1;
+    font-size: 0.32rem;
+    line-height: 0.9rem;
+    text-align: center;
+    color: #999;
+    border-top: 1px solid #d9d9d9;
+    border-right:1px solid #d9d9d9;
+}
+.maskSellBoxButton div:nth-of-type(2){
+    color: #e83a33;
+    border-right:0;
 }
