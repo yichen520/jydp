@@ -143,122 +143,7 @@
                 <div class="clear"></div>
             </div>
             <div class="choseBzBox-content">
-                <ul>
-                    <li>
-                        <p>盛源链</p>
-                        <p class="zhang">92.0000</p>
-                        <p class="zhang">+10%</p>
-                    </li>
-                    <li>
-                        <p>盛源链</p>
-                        <p class="zhang">92.0000</p>
-                        <p class="zhang">+10%</p>
-                    </li>
-                    <li>
-                        <p>盛源链</p>
-                        <p class="zhang">92.0000</p>
-                        <p class="zhang">+10%</p>
-                    </li>
-                    <li>
-                        <p>盛源链</p>
-                        <p class="zhang">92.0000</p>
-                        <p class="zhang">+10%</p>
-                    </li>
-                    <li>
-                        <p>盛源链</p>
-                        <p class="zhang">92.0000</p>
-                        <p class="zhang">+10%</p>
-                    </li>
-                    <li>
-                        <p>盛源链</p>
-                        <p class="zhang">92.0000</p>
-                        <p class="zhang">+10%</p>
-                    </li>
-                    <li>
-                        <p>盛源链</p>
-                        <p class="zhang">92.0000</p>
-                        <p class="zhang">+10%</p>
-                    </li>
-                    <li>
-                        <p>盛源链</p>
-                        <p class="zhang">92.0000</p>
-                        <p class="zhang">+10%</p>
-                    </li>
-                    <li>
-                        <p>盛源链</p>
-                        <p class="zhang">92.0000</p>
-                        <p class="zhang">+10%</p>
-                    </li>
-                    <li>
-                        <p>盛源链</p>
-                        <p class="zhang">92.0000</p>
-                        <p class="zhang">+10%</p>
-                    </li>
-                    <li>
-                        <p>盛源链</p>
-                        <p class="zhang">92.0000</p>
-                        <p class="zhang">+10%</p>
-                    </li>
-                    <li>
-                        <p>盛源链</p>
-                        <p class="zhang">92.0000</p>
-                        <p class="zhang">+10%</p>
-                    </li>
-                    <li>
-                        <p>盛源链</p>
-                        <p class="zhang">92.0000</p>
-                        <p class="zhang">+10%</p>
-                    </li>
-                    <li>
-                        <p>盛源链</p>
-                        <p class="zhang">92.0000</p>
-                        <p class="zhang">+10%</p>
-                    </li>
-                    <li>
-                        <p>盛源链</p>
-                        <p class="zhang">92.0000</p>
-                        <p class="zhang">+10%</p>
-                    </li>
-                    <li>
-                        <p>盛源链盛源链盛源链</p>
-                        <p class="zhang">92.0000</p>
-                        <p class="zhang">+10%</p>
-                    </li>
-                    <li>
-                        <p>盛源链</p>
-                        <p class="zhang">92.0000</p>
-                        <p class="zhang">+10%</p>
-                    </li>
-                    <li>
-                        <p>盛源链</p>
-                        <p class="die">92.0000</p>
-                        <p class="die">-10%</p>
-                    </li>
-                    <li>
-                        <p>盛源链盛源链盛源链盛源链</p>
-                        <p class="die">92.0000</p>
-                        <p class="die">-10%</p>
-                    </li>
-                    <li>
-                        <p>盛源链</p>
-                        <p class="zhang">92.0000</p>
-                        <p class="zhang">+10%</p>
-                    </li>
-                    <li>
-                        <p>盛源链盛源链盛源链盛源链</p>
-                        <p class="die">92.0000</p>
-                        <p class="die">+10%</p>
-                    </li>
-                    <li>
-                        <p>盛源链</p>
-                        <p class="zhang">92.0000</p>
-                        <p class="zhang">+10%</p>
-                    </li>
-                    <li>
-                        <p>盛源链盛源链盛源链盛源链</p>
-                        <p class="die">92.0000</p>
-                        <p class="die">+10%</p>
-                    </li>
+                <ul id="currencyList">
                 </ul>
             </div>
         </div>
@@ -281,10 +166,21 @@
 </body>
 
 <script src="<%=path%>/resources/js/wap/common.js"></script>
+<script type="text/javascript" src="<%=path %>/resources/js/wap/handlebars-v4.0.11.js"></script>
 <script src="<%=path%>/resources/js/wap/zepto.min.js"></script>
 <script src="<%=path%>/resources/js/wap/mine.js"></script>
 <script src="<%=path%>/resources/js/wap/jquery-2.1.4.min.js"></script>
 
+<script id="table-template" type="text/x-handlebars-template">
+    {{#each this}}
+        <li>
+            <p style="display: none;">{{currencyId}}</p>
+            <p>{{currencyName}}({{currencyShortName}})</p>
+            <p>{{latestPrice}}</p>
+            <p>{{change}}</p>
+        </li>
+    {{/each}}
+</script>
 
 <script type="text/javascript">
 
@@ -320,5 +216,9 @@
         window.location.href="<%=path%>/userWap/wapSystemHot/show";
     })
 
+    $('.choseBzBox-content ul').on('click', 'li', function () {
+         var currencyId=$(this).find("p").eq(0).text();
+         window.location.href="<%=path%>/userWap/tradeCenter/show?currencyIdStr="+currencyId
+    })
 </script>
 </html>
