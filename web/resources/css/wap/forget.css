@@ -103,6 +103,7 @@
 }
 /* 选择手机号弹窗 */
 .chosePhone{
+    margin-top: 0.91rem;
     position: absolute;
     top: 0;
     left: 0;
