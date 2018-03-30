@@ -22,7 +22,7 @@
     <div class="registerBox">
         <div class="title">忘记密码</div>
         <div class="registerContent">
-            <form id="forgetForm" action="${pageContext.request.contextPath}/userWap/forgetPassword/forgetPassword" method="post">
+            <form id="forgetForm" method="post">
             <div class="userName">
                 <input type="text" placeholder="您的登录账号" id="userAccount" name="userAccount"
                        onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
@@ -165,7 +165,31 @@
             return openTips("请获取验证码");
         }
         $("#phoneAreaCode").val(area);
-        $("#forgetForm").submit();
+        var formData = new FormData(document.getElementById("forgetForm"));
+        var url = "${pageContext.request.contextPath}/userWap/forgetPassword/forgetPassword";
+        $.ajax({
+            url: url,
+            type:'post',
+            data:formData,
+            dataType:'json',
+            processData:false,
+            contentType:false,
+            success:function (result) {
+                if (result.code == 1) {
+                    openTips(result.message);
+                    setTimeout(function () {
+                        window.location.href = "${pageContext.request.contextPath}" + "/userWap/userLogin/show";
+                    },3000);
+                } else {
+                    openTips(result.message);
+                }
+                forgetPwdBoo = false;
+            },
+            error:function () {
+                forgetPwdBoo = false;
+                openTips("数据加载出错，请稍候重试");
+            }
+        });
     }
 
     $('.choseNumber').on('click',function() {
