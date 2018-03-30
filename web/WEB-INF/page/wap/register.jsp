@@ -323,6 +323,27 @@
             return;
         }
 
+        if (!phone) {
+            openTips("请输入您的手机号");
+            return;
+        } else if (phone.length < 6 || phone.length > 11) {
+            openTips("请输入正确手机号");
+            return;
+        } else if (!phoneReg.test(phone)) {
+            openTips("请输入正确手机号");
+            return;
+        }
+
+        if (!getMesCodeFlag) {
+            openTips("请先获取短信验证码");
+            return;
+        }
+
+        if (!validateCode || validateCode.length != 6) {
+            openTips("请输入6位短信验证码");
+            return;
+        }
+
         if (!password) {
             openTips("请输入6-16位的字母、数字登录密码");
             return;
@@ -332,8 +353,18 @@
         } else if (!commonReg.test(password)) {
             openTips("登录密码格式不正确");
             return;
-        } else if (password != repeatPassword) {
-            openTips("登录密码和确认登录密码不一致");
+        }
+        if (!repeatPassword) {
+            openTips("请输入重复登录密码");
+            return;
+        } else if (repeatPassword.length < 6 || repeatPassword.length > 16) {
+            openTips("重复登录密码长度应为6-16位字符");
+            return;
+        } else if (!commonReg.test(repeatPassword)) {
+            openTips("重复登录密码格式不正确");
+            return;
+        }else if (password != repeatPassword) {
+            openTips("登录密码和重复登录密码不一致");
             return;
         }
 
@@ -346,30 +377,22 @@
         } else if (!commonReg.test(payPassword)) {
             openTips("支付密码格式不正确");
             return;
+        }
+
+        if (!repeatPayPassword) {
+            openTips("请输入6-16位的字母、数字重复支付密码");
+            return;
+        } else if (repeatPayPassword.length < 6 || repeatPayPassword.length > 16) {
+            openTips("重复支付密码的长度应为6-16位字符");
+            return;
+        } else if (!commonReg.test(repeatPayPassword)) {
+            openTips("重复支付密码格式不正确");
+            return;
         } else if (payPassword != repeatPayPassword) {
-            openTips("支付密码和确认支付密码不一致");
+            openTips("支付密码和重复支付密码不一致");
             return;
         }
 
-        if (!phone) {
-            openTips("请输入您的手机号");
-            return;
-        } else if (phone.length < 6 || phone.length > 11) {
-            openTips("请输入正确手机号");
-            return;
-        } else if (!phoneReg.test(phone)) {
-            openTips("请输入正确手机号");
-            return;
-        }
-
-        if (!validateCode || validateCode.length != 6) {
-            openTips("请输入6位短信验证码");
-            return;
-        }
-        if (!getMesCodeFlag) {
-            openTips("请先获取短信验证码");
-            return;
-        }
         //注册协议
         if (!checked) {
             openTips("请阅读用户注册协议");
@@ -418,6 +441,24 @@
             }
         });
     }
+
+
+   $("#payPassword").blur(function () {
+       var password = $("#password").val();
+       var payPassword = $("#payPassword").val();
+       if(!password){
+           openTips("请先输入登录密码");
+           return;
+       }
+       if(!payPassword){
+           openTips("请输入支付密码");
+           return;
+       }
+       if(password==payPassword){
+           openTips("支付密码和登录密码不能一致");
+           return;
+       }
+   })
 
     //复选框加载图片的处理
     var checked = true;
