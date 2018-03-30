@@ -66,7 +66,7 @@
             <div class="payLeft">
                 <div class="leftTitle">
                     <span>卖/买</span>
-                    <span>价格</span>
+                    <span>价格($)</span>
                     <span>数量</span>
                     <span>总额($)</span>
                 </div>
