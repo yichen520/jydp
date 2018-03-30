@@ -60,9 +60,9 @@
             <div class="navLeft">
                 <ul>
                     <li style="display: none">币种ID：<span id="currencyId">{{currencyId}}</span></li>
-                    <li>币种总资产：<span>{{totalCurrencyAssets}}</span></li>
-                    <li>可用数量：<span>{{currencyNumber}}</span></li>
-                    <li>冻结数量：<span>{{currencyNumberLock}}</span></li>
+                    <li>币种总资产：<span>{{formatNumber totalCurrencyAssets}}</span></li>
+                    <li>可用数量：<span>{{formatNumber currencyNumber}}</span></li>
+                    <li>冻结数量：<span>{{formatNumber currencyNumberLock}}</span></li>
                 </ul>
             </div>
         </div>
@@ -74,6 +74,11 @@
 </script>
 
 <script type="text/javascript">
+
+    Handlebars.registerHelper("formatNumber", function (x) {
+        return x.toFixed(4)
+    });
+
     $(function () {
         $.ajax({
             url: "<%=path%>/userWap/userInfo/currencyAssets",
