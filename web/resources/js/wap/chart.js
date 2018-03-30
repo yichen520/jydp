@@ -450,9 +450,9 @@ $().ready(function () {
             //数据准备
             //参数给与
             ChartParamsAndInit.openChart();
-            ChartParamsAndInit.gainGraphData("5m", 7);
             ChartParamsAndInit.open();
-           ChartParamsAndInit.reloadData();
+            ChartParamsAndInit.reloadData();
+            ChartParamsAndInit.gainGraphData("5m", 7);
         }
     });
 });

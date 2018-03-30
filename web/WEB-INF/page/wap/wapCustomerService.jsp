@@ -21,7 +21,7 @@
     <script id="contactService" type="ext/x-handlebars-template">
         <!-- 头部导航 -->
         <header>
-            <img src="{{webAppPath}}/resources/image/wap/back.png" class="back"/>
+                <img src="{{webAppPath}}/resources/image/wap/back.png"  onclick="window.location.href='{{webAppPath}}/userWap/userInfo/show.htm'" class="back"/>
             <p>联系客服</p>
         </header>
         <!-- 内容 -->
