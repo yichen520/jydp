@@ -61,15 +61,15 @@
             </div>
             <div class="navLeft">
                 <ul>
-                    <li>委托数量：<span>{{pendingNumber}}</span></li>
-                    <li>委托单价：<span>{{pendingPrice}}</span></li>
-                    <li>委托总价：<span>{{pendingTotalPriceConvert pendingNumber pendingPrice}}</span></li>
+                    <li>委托数量：<span>{{formatNumber pendingNumber 4}}</span></li>
+                    <li>委托单价：<span>{{formatNumber pendingPrice 6}}</span></li>
+                    <li>委托总价：<span>{{pendingTotalPriceConvert pendingNumber pendingPrice 6}}</span></li>
                 </ul>
             </div>
             <div class="navRight">
                 <ul>
-                    <li>成交数量：<span>{{dealNumber}}</span></li>
-                    <li>剩余数量：<span class="special">{{pendingRemainNumberConvert pendingNumber dealNumber}}</span></li>
+                    <li>成交数量：<span>{{formatNumber dealNumber 4}}</span></li>
+                    <li>剩余数量：<span class="special">{{pendingRemainNumberConvert pendingNumber dealNumber 4}}</span></li>
 
                 </ul>
             </div>
@@ -85,6 +85,31 @@
 <script type="text/javascript">
     var webPath = $("#webPath").val();
     var pageNumber = $("#pageNumber").val();
+
+    //对位数进行控制
+    Handlebars.registerHelper("formatNumber", function (num,maxFractionDigits) {
+        if (isNaN(num) || isNaN(maxFractionDigits)) {
+            openTips("参数类型错误");
+            return false;
+        }
+        num = num.toString();
+        maxFractionDigits = parseInt(maxFractionDigits);
+        if (num.indexOf(".") === -1) {
+            return num;
+        }
+        var numField = num.split(".");
+        var integerDigits = numField[0];
+        var fractionDigits = numField[1];
+
+        if (fractionDigits.length <= maxFractionDigits) {
+            return num;
+        }
+        fractionDigits = fractionDigits.substring(0, maxFractionDigits);
+        var numStr = integerDigits + "." + fractionDigits;
+        return numStr;
+    });
+
+
     //收支类型转换
     Handlebars.registerHelper("paymentTypeConvert", function (type) {
         if (type == undefined || type == null || type == "" || isNaN(type)) {
@@ -123,13 +148,51 @@
     });
 
     //剩余数量
-    Handlebars.registerHelper("pendingRemainNumberConvert", function (pendingNumber, dealNumber) {
-        return pendingNumber - dealNumber;
+    Handlebars.registerHelper("pendingRemainNumberConvert", function (pendingNumber, dealNumber,maxFractionDigits) {
+        var pendingRemainNumber = pendingNumber - dealNumber;
+        if (isNaN(pendingRemainNumber) || isNaN(maxFractionDigits)) {
+            openTips("参数类型错误");
+            return false;
+        }
+        pendingRemainNumber = pendingRemainNumber.toString();
+        maxFractionDigits = parseInt(maxFractionDigits);
+        if (pendingRemainNumber.indexOf(".") === -1) {
+            return pendingRemainNumber;
+        }
+        var numField = pendingRemainNumber.split(".");
+        var integerDigits = numField[0];
+        var fractionDigits = numField[1];
+
+        if (fractionDigits.length <= maxFractionDigits) {
+            return pendingRemainNumber;
+        }
+        fractionDigits = fractionDigits.substring(0, maxFractionDigits);
+        var pendingRemainNumberStr = integerDigits + "." + fractionDigits;
+        return pendingRemainNumberStr;
     });
 
     //委托总价
-    Handlebars.registerHelper("pendingTotalPriceConvert", function (pendingNumber, pendingPrice) {
-        return pendingNumber * pendingPrice;
+    Handlebars.registerHelper("pendingTotalPriceConvert", function (pendingNumber, pendingPrice,maxFractionDigits) {
+        var pendingTotalPrice = pendingNumber * pendingPrice;
+        if (isNaN(pendingTotalPrice) || isNaN(maxFractionDigits)) {
+            openTips("参数类型错误");
+            return false;
+        }
+        pendingTotalPrice = pendingTotalPrice.toString();
+        maxFractionDigits = parseInt(maxFractionDigits);
+        if (pendingTotalPrice.indexOf(".") === -1) {
+            return pendingTotalPrice;
+        }
+        var numField = pendingTotalPrice.split(".");
+        var integerDigits = numField[0];
+        var fractionDigits = numField[1];
+
+        if (fractionDigits.length <= maxFractionDigits) {
+            return pendingTotalPrice;
+        }
+        fractionDigits = fractionDigits.substring(0, maxFractionDigits);
+        var pendingTotalPriceStr = integerDigits + "." + fractionDigits;
+        return pendingTotalPriceStr;
     });
 
     //时间转换

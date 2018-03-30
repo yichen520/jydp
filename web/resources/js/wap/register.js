@@ -69,11 +69,11 @@ $(function () {
         obj.attr("disabled", "disabled");/*按钮倒计时*/
         var time = 60;
         var set = setInterval(function () {
-            obj.text(--time + "s后重新获取");
+            obj.text("("+--time + ")s后重新获取");
             if(time < 0 ){
                 clearInterval(set);
                 Repeatedclicks = true;
-                obj.attr("disabled", false).text("再次获取");/*倒计时*/
+                obj.attr("disabled", false).text("获取验证码");/*倒计时*/
             }
         }, 1000);/*等待时间*/
     };

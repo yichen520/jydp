@@ -43,6 +43,7 @@
             <p>银行卡绑定</p>
             <img src="<%=path%>/resources/image/wap/nextIcon.png" />
         </div>
+        <div class="out" id="loginOut">退出登录</div>
     </div>
     <!-- loading图 -->
     <div id="loading">
@@ -57,7 +58,9 @@
 <script type="text/javascript" src="<%=path%>/resources/js/wap/simpleTips_wap.js"></script>
 
 <script type="text/javascript">
-
+        $("#loginOut").click(function () {
+            window.location.href="<%=path%>/userWap/userLogin/loginOut";
+        })
 </script>
 
 </html>

@@ -66,11 +66,11 @@
             </div>
             <div class="navLeft">
                 <ul>
-                    <li>数量：<span>{{currencyNumber}}</span></li>
-                    <li>单价：<span>{{transactionPrice}}</span></li>
-                    <li>总价：<span>{{currencyTotalPrice}}</span></li>
-                    <li>手续费：<span>{{feesConvert feeNumber currencyTotalPrice}}</span></li>
-                    <li>实际到账：<span>{{actualArrivalConvert feeNumber currencyTotalPrice}}</span></li>
+                    <li>数量：<span>{{formatNumber currencyNumber 4}}</span></li>
+                    <li>单价：<span>{{formatNumber transactionPrice 2}}</span></li>
+                    <li>总价：<span>{{formatNumber currencyTotalPrice 6}}</span></li>
+                    <li>手续费：<span>{{feesConvert feeNumber currencyTotalPrice 8}}</span></li>
+                    <li>实际到账：<span>{{actualArrivalConvert feeNumber currencyTotalPrice 6}}</span></li>
                     <li>完成时间：<span>{{addTimeConvert addTime}}</span></li>
                 </ul>
             </div>
@@ -115,6 +115,30 @@
         }
     });
 
+    //对位数进行控制
+    Handlebars.registerHelper("formatNumber", function (num,maxFractionDigits) {
+        if (isNaN(num) || isNaN(maxFractionDigits)) {
+            openTips("参数类型错误");
+            return false;
+        }
+        num = num.toString();
+        maxFractionDigits = parseInt(maxFractionDigits);
+        if (num.indexOf(".") === -1) {
+            return num;
+        }
+        var numField = num.split(".");
+        var integerDigits = numField[0];
+        var fractionDigits = numField[1];
+
+        if (fractionDigits.length <= maxFractionDigits) {
+            return num;
+        }
+        fractionDigits = fractionDigits.substring(0, maxFractionDigits);
+        var numStr = integerDigits + "." + fractionDigits;
+        return numStr;
+    });
+
+
     //收支类型
     Handlebars.registerHelper("paymentTypeConvert", function (type) {
         if (type == undefined || type == null || type == "" || isNaN(type)) {
@@ -133,13 +157,53 @@
     });
 
     //手续费
-    Handlebars.registerHelper("feesConvert", function (feeNumber, currencyTotalPrice) {
-        return feeNumber * currencyTotalPrice;
+    Handlebars.registerHelper("feesConvert", function (feeNumber, currencyTotalPrice,maxFractionDigits) {
+        var feePrice = feeNumber * currencyTotalPrice;
+
+        if (isNaN(feePrice) || isNaN(maxFractionDigits)) {
+            openTips("参数类型错误");
+            return false;
+        }
+        feePrice = feePrice.toString();
+        maxFractionDigits = parseInt(maxFractionDigits);
+        if (feePrice.indexOf(".") === -1) {
+            return feePrice;
+        }
+        var numField = feePrice.split(".");
+        var integerDigits = numField[0];
+        var fractionDigits = numField[1];
+
+        if (fractionDigits.length <= maxFractionDigits) {
+            return feePrice;
+        }
+        fractionDigits = fractionDigits.substring(0, maxFractionDigits);
+        var feePriceStr = integerDigits + "." + fractionDigits;
+        return feePriceStr;
     });
 
     //实际到账
-    Handlebars.registerHelper("actualArrivalConvert", function (feeNumber, currencyTotalPrice) {
-        return currencyTotalPrice - feeNumber * currencyTotalPrice;
+    Handlebars.registerHelper("actualArrivalConvert", function (feeNumber, currencyTotalPrice,maxFractionDigits) {
+        var actualArrivalPrice = currencyTotalPrice - feeNumber * currencyTotalPrice;
+        if (isNaN(actualArrivalPrice) || isNaN(maxFractionDigits)) {
+            openTips("参数类型错误");
+            return false;
+        }
+
+        actualArrivalPrice = actualArrivalPrice.toString();
+        maxFractionDigits = parseInt(maxFractionDigits);
+        if (actualArrivalPrice.indexOf(".") == -1) {
+            return actualArrivalPrice;
+        }
+        var numField = actualArrivalPrice.split(".");
+        var integerDigits = numField[0];
+        var fractionDigits = numField[1];
+
+        if (fractionDigits.length <= maxFractionDigits) {
+            return actualArrivalPrice;
+        }
+        fractionDigits = fractionDigits.substring(0, maxFractionDigits);
+        var feePriceStr = integerDigits + "." + fractionDigits;
+        return feePriceStr;
     });
 
     //买入 卖出 撤销的样式显示

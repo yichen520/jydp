@@ -231,6 +231,12 @@
     //获取短信验证码
     var getMesCodeFlag = false;
     function getMesCode(obj) {
+        if(getMesCodeFlag || waitBoo){
+            return false;
+        }else{
+            getMesCodeFlag = true;
+        }
+
         //号码检验
         var phoneNumber = $('#phoneNumber').val();
         var area = $('#chosePhoneNum').text();
@@ -263,9 +269,10 @@
                 if (code != 1 ) {
                     return;
                 }
-                getMesCodeFlag = true;
+                getMesCodeFlag = false;
             },
             error: function () {
+                getMesCodeFlag = false;
                 openTips("服务器错误");
             }
         });
@@ -273,20 +280,23 @@
 
     //时间倒计时
     var wait = 60;
+    var waitBoo = false;
     function time(obj) {
         if (wait == 0) {
             $(obj).attr("disabled", false);
             $(obj).text("获取验证码");
             wait = 60;
-            return false;
+            waitBoo = false;
         } else {
             $(obj).attr("disabled", true);
             $(obj).text("(" + wait + ")s重新发送");
             wait--;
+            waitBoo = true;
+             setTimeout(function() {
+                time(obj)
+            },
+            1000)
         }
-        setTimeout(function () {
-            time(obj)
-        }, 1000)
     }
 
     function register() {
