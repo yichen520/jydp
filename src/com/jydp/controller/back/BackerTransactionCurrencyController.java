@@ -1,15 +1,19 @@
 package com.jydp.controller.back;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.iqmkj.utils.*;
+import com.iqmkj.utils.BigDecimalUtil;
+import com.iqmkj.utils.DateUtil;
+import com.iqmkj.utils.FileWriteRemoteUtil;
+import com.iqmkj.utils.ImageReduceUtil;
+import com.iqmkj.utils.IpAddressUtil;
+import com.iqmkj.utils.LogUtil;
+import com.iqmkj.utils.NumberUtil;
+import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.BackerSessionBO;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.interceptor.BackerWebInterceptor;
 import com.jydp.service.ITransactionCurrencyService;
-import com.sun.xml.internal.ws.resources.HttpserverMessages;
 import config.FileUrlConfig;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -28,7 +32,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -236,13 +239,7 @@ public class BackerTransactionCurrencyController {
             return response;
         }
 
-        String imageUrl = "";
-        try {
-            imageUrl = FileWriteRemoteUtil.uploadFile(adsImageUrl.getOriginalFilename(),
-                    adsImageUrl.getInputStream(), FileUrlConfig.file_remote_adImage_url);
-        } catch (IOException e) {
-            LogUtil.printErrorLog(e);
-        }
+        String imageUrl = ImageReduceUtil.reduceImageUploadRemote(adsImageUrl, FileUrlConfig.file_remote_transactionCyrrency_url);
 
         if(imageUrl == "" || imageUrl == null){
             response.setCode(3);
@@ -332,12 +329,7 @@ public class BackerTransactionCurrencyController {
 
         String imageUrl = "";
         if (imgUrl != null && !imgUrl.isEmpty()) {
-            try {
-                imageUrl = FileWriteRemoteUtil.uploadFile(imgUrl.getOriginalFilename(),
-                        imgUrl.getInputStream(), FileUrlConfig.file_remote_adImage_url);
-            } catch (IOException e) {
-                LogUtil.printErrorLog(e);
-            }
+            imageUrl = ImageReduceUtil.reduceImageUploadRemote(imgUrl, FileUrlConfig.file_remote_transactionCyrrency_url);
             if(imageUrl == "" || imageUrl == null){
                 response.setCode(3);
                 response.setMessage("图片新增失败！");

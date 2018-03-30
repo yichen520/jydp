@@ -543,7 +543,7 @@
     var addBoo = false
     function add() {
         if (addBoo) {
-            return ;
+            return openTips("新增中...");
         } else {
             addBoo = true;
         }
