@@ -14,14 +14,14 @@
     <link rel="stylesheet" href="<%=path %>/resources/css/wap/simpleTips_wap.css">
     <link rel="stylesheet" href="<%=path %>/resources/css/wap/cash.css">
 
-    <title>币种提币</title>
+    <title>我要提币</title>
 </head>
 <body>
 <img src="<%=path %>/resources/image/wap/bztx-banner.png" class="topBanner" />
 <!-- 头部导航 -->
 <header>
     <img src="<%=path %>/resources/image/wap/backW.png" class="back"/>
-    <p>币种提币</p>
+    <p>我要提币</p>
 </header>
 <!-- 内容区域 -->
 <div class="content-box">

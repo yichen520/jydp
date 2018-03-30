@@ -28,7 +28,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <div class="title">修改手机号</div>
         <div class="registerContent">
             <div class="oldPhone">
-                <p>原手机号：<span id="oldAreaCode">${phoneAreaCode}</span>&nbsp;<span id="oldPhone">${phoneNumber}</span></p>
+                <p>原手机号：<span id="oldAreaCode">${phoneAreaCode}</span>&nbsp;<input type="hidden" value="${phoneNumber}" id="oldPhone"/><span id="oldPhoneText"></span></p>
             </div>
             <div class="oldPhoneCode">
                 <input type="number" placeholder="请输入6位短信验证码" oninput="if(value.length>6)value=value.slice(0,6)" class="oldCode" id="oldValidCode"/>
@@ -87,6 +87,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </script>
 
 <script>
+
+    $(function () {
+        var phone="<%=request.getAttribute("phoneNumber")%>";
+        if (phone.length==6) {
+            phone=phone.substring(0,3)+"***";
+        }
+        if (phone.length>6) {
+            phone=phone.substring(0,3)+"****"+phone.substring(7)
+        }
+        $("#oldPhoneText").text(phone);
+    })
+
     $(".back").click(function () {
         window.location.href="<%=path%>/userWap/userInfo/userCenter/show.htm";
     })

@@ -52,7 +52,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         <input type="password" placeholder="重复密码" maxlength="16" id="confirmPwdByPhone" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
                     </div>
                 <div class="userPhone">
-                    <p class="num">${phoneAreaCode} ${phoneNumber}</p>
+                    <p class="num"><span id="areaCode">${phoneAreaCode}</span>&nbsp;<input type="hidden" value="${phoneNumber}" id="phoneNumber"/><span id="phoneNumberText"></span></p>
                 </div>
                 <div class="userCode">
                     <input type="number" placeholder="请输入6位短信验证码" oninput="if(value.length>6)value=value.slice(0,6)" id="codeByPhone"/>
@@ -75,6 +75,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="<%=path%>/resources/js/wap/simpleTips_wap.js"></script>
 
 <script>
+
+    $(function () {
+        var phone="<%=request.getAttribute("phoneNumber")%>";
+        if (phone.length==6) {
+            phone=phone.substring(0,3)+"***";
+        }
+        if (phone.length>6) {
+            phone=phone.substring(0,3)+"****"+phone.substring(7)
+        }
+        $("#phoneNumberText").text(phone);
+    })
+
+
     $(".back").click(function () {
         window.location.href="<%=path%>/userWap/userInfo/userCenter/show.htm";
     })

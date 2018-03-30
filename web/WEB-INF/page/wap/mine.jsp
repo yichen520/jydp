@@ -97,7 +97,7 @@
                 </li>
                 <li id="userCoinWithdrawal" style="cursor: pointer;">
                     <img src="<%=path%>/resources/image/wap//cashIcon.png" class="icon"/>
-                    <p>币种提币
+                    <p>我要提币
                         <img src="<%=path%>/resources/image/wap/nextIcon.png" class="next" />
                     </p>
                     <div class="clear"></div>

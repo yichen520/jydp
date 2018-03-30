@@ -18,7 +18,7 @@ $(function () {
         }
         $('.code').on('click',function(){
             time(this);
-            var phone=$(".num").text().replace(/\ +/g,"");
+            var phone=$("#areaCode").text()+$("#phoneNumber").val();
             $.ajax({
                 url: "/jydp/sendCode/sendPhoneCode",
                 type:'post',
