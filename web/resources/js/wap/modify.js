@@ -74,7 +74,7 @@ $(function () {
         var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
         if ($(this).attr("id")=="oldPhoneCode") {
             areaCode=$("#oldAreaCode").text()
-            phone=$("#oldPhone").text();
+            phone=$("#oldPhone").val();
             timeOld(this);
         } else {
             areaCode=$("#newAreaCode").text()
