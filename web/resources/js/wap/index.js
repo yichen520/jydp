@@ -42,13 +42,7 @@ $(function () {
                 },450);
                 $('.choseBzBox').animate({left:'-82%'},"500");
             });
-            //选择货币进入交易页面
-            choseHb();
-            function choseHb() {
-                $('.choseBzBox-content ul').on('click','li',function(){
-                    window.location.href = "deal.html"
-                })
-            };
+           
 }
 
 });
