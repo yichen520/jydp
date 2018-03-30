@@ -115,7 +115,7 @@
             <img src="{{webAppPath}}/resources/image/wap/deal-chose.png"  class="deal-icon"/>
             <p class="chose">交易</p>
     </a>
-    <a href="{{webAppPath}}/userWap/userMine/show.htm" class="mine">
+    <a href="{{webAppPath}}/userWap/userInfo/show.htm" class="mine">
             <img src="{{webAppPath}}/resources/image/wap/mine-nochose.png"  class="mine-icon"/>
             <p>我的</p>
     </a>

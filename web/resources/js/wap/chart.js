@@ -36,9 +36,9 @@ var ChartParamsAndInit = {
         });
         Handlebars.registerHelper("isLogin", function (userSession, webAppPath) {
             if (userSession == undefined || userSession == null || userSession == "") {
-                return "<a href='" + webAppPath + "/userWap/userLogin/show'></a>";
+                return "<a href='" + webAppPath + "/userWap/userLogin/show'>登录</a>";
             } else {
-                return "<a style='display: block' class='name' href='#' >" + userSession.userAccount + "</a>";
+                return "";
             }
         });
         Handlebars.registerHelper("timeFormat", function (timestamp) {

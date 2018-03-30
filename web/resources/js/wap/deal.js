@@ -54,7 +54,7 @@ var ParamsAndInit = {
             if(userSession == undefined || userSession == null || userSession == ""){
                 return "<a href='" + webAppPath + "/userWap/userLogin/show'>登陆</a>";
             }else {
-                return "<a style='display: block' class='name' href='#' >" + userSession.userAccount + "</a>";
+                return "";
             }
         });
     },
@@ -508,7 +508,7 @@ var ParamsAndInit = {
             return;
         }
         $.ajax({
-            url: webAppPath + "/userWap/transactionPendOrder/revoke.htm",
+            url: webAppPath + "/userWap/transactionPendOrder/revokeForDeal.htm",
             data: {
                 //参数
                 pendingOrderNo: pendOrderNo
