@@ -113,10 +113,10 @@
             <div class="buy">
                 <div class="mainContent">
                     <div class="mainContent-priceBuy">
-                        <span class="name">单价</span><input type="number" id="buyPrice" name="buyPrice"  onkeyup="value=value.replace(/[^\d.]/g,'')"  oninput="if(value.length>9)value=value.slice(0,9)" >
+                        <span class="name">单价</span><input type="text" id="buyPrice" name="buyPrice" maxlength="9">
                     </div>
                     <div class="mainContent-numBuy">
-                        <span class="name">数量</span><input type="number" id="buyNum" name="buyNum"  onkeyup="value=value.replace(/[^\d.]/g,'')"  oninput="if(value.length>11)value=value.slice(0,11)" >
+                        <span class="name">数量</span><input type="text" id="buyNum" name="buyNum" maxlength="11">
                     </div>
                     <input type="hidden" id="buyFee" value="{{transactionCurrency.buyFee}}">
                     <input type="hidden" id="buyTotal">
@@ -147,10 +147,10 @@
             <div class="sell">
                 <div class="mainContent">
                     <div class="mainContent-priceSell">
-                        <span class="name">单价</span><input type="number" id="sellPrice" name="sellPrice" oninput="if(value.length>9)value=value.slice(0,9)" onkeyup="value=value.replace(/[^\d.]/g,'')">
+                        <span class="name">单价</span><input type="text" id="sellPrice" name="sellPrice" maxlength="9">
                     </div>
                     <div class="mainContent-numSell">
-                        <span class="name">数量</span><input type="number" id="sellNum" name="sellNum" oninput="if(value.length>11)value=value.slice(0,11)" onkeyup="value=value.replace(/[^\d.]/g,'')">
+                        <span class="name">数量</span><input type="text" id="sellNum" name="sellNum" maxlength="11">
                     </div>
                     <input type="hidden" id="sellFee" value="{{transactionCurrency.sellFee}}">
                     <input type="hidden" id="currencyNumber"
