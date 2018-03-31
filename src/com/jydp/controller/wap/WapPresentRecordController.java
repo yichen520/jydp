@@ -96,11 +96,6 @@ public class WapPresentRecordController {
         JSONObject response = new JSONObject();
         UserSessionBO userSession = (UserSessionBO) request.getSession().getAttribute("userSession");
 
-        if (userSession == null) {
-            response.put("code", 2);
-            response.put("message", "登录已失效，请重新登录!");
-        }
-
         String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
 
         int pageNumber = 0;
@@ -130,7 +125,7 @@ public class WapPresentRecordController {
     }
 
     /** 撤销用户币种转出申请 */
-    @RequestMapping("/withdrawCoinOutRecord.htm")
+    @RequestMapping(value = "/withdrawCoinOutRecord.htm", method = RequestMethod.POST)
     public @ResponseBody JsonObjectBO withdrawUserCoinOutRecord(HttpServletRequest request){
         JsonObjectBO resultJson = new JsonObjectBO();
 
