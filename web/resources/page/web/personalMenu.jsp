@@ -21,7 +21,7 @@
 
         <ul class="levelTwo">
             <li class="menuInfo"><a id="userMessage" href="<%=path %>/userWeb/userMessage/show.htm">个人信息</a></li>
-            <li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">银行卡绑定</a></li>
+            <%--<li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">银行卡绑定</a></li>--%>
         </ul>
     </li>
 
@@ -33,9 +33,9 @@
         </p>
 
         <ul class="levelTwo">
-            <li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">我要充值</a></li>
-            <li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">立即提现</a></li>
-            <li class="menuInfo"><a id="userCoinWithdrawal" href="<%=path %>/userWeb/userCoinWithdrawal/show.htm">币种提现</a></li>
+            <%--<li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">我要充值</a></li>--%>
+            <%--<li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">立即提现</a></li>--%>
+            <li class="menuInfo"><a id="userCoinWithdrawal" href="<%=path %>/userWeb/userCoinWithdrawal/show.htm">我要提币</a></li>
         </ul>
     </li>
 
@@ -50,9 +50,9 @@
             <%--<li class="menuInfo"><a id="accountRecord" href="<%=path %>/userWeb/accountRecord/show.htm">账户记录</a></li>--%>
             <li class="menuInfo"><a id="transactionPendOrderController" href="<%=path%>/userWeb/transactionPendOrderController/show.htm">委托记录</a></li>
             <li class="menuInfo"><a id="dealRecord" href="<%=path %>/userWeb/dealRecord/show.htm">成交记录</a></li>
-            <li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">充值记录</a></li>
-            <li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">提现记录</a></li>
-            <li class="menuInfo"><a id="jydpUserCoinOutRecord" href="<%=path %>/userWeb/jydpUserCoinOutRecord/show.htm">币种提出记录</a></li>
+            <%--<li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">充值记录</a></li>--%>
+            <%--<li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">提现记录</a></li> --%>
+            <li class="menuInfo"><a id="jydpUserCoinOutRecord" href="<%=path %>/userWeb/jydpUserCoinOutRecord/show.htm">提币记录</a></li>
         </ul>
     </li>
 
@@ -66,7 +66,7 @@
         <ul class="levelTwo">
             <li class="menuInfo"><a id="webSystemNotice" href="<%=path %>/userWeb/webSystemNotice/show">系统公告</a></li>
             <li class="menuInfo"><a id="webSystemHot" href="<%=path %>/userWeb/webSystemHot/show">热门话题</a></li>
-            <li class="menuInfo"><a id="webHelpCenter" href="<%=path %>/userWeb/webHelpCenter/show/101014">帮助中心</a></li>
+            <%--<li class="menuInfo"><a id="webHelpCenter" href="<%=path %>/userWeb/webHelpCenter/show/101014">帮助中心</a></li>--%>
             <li class="menuInfo"><a id="webCustomerService" href="<%=path %>/userWeb/webCustomerService/show.htm">联系客服</a></li>
         </ul>
     </li>

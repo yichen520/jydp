@@ -1,6 +1,5 @@
 package com.iqmkj.utils;
 
-import config.FileUrlConfig;
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -8,7 +7,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -88,37 +86,20 @@ public class ImageReduceUtil {
         }
 
         String fileName = "";
-        StringBuilder sb = new StringBuilder();
         try {
-            long startTime = System.currentTimeMillis();   //获取开始时间
-
             fileName = FileWriteLocalUtil.SaveInputStreamToFileByPath(img.getInputStream(),
                     path, NumberUtil.createNumberStr(6) + ".jpg");
 
-            long endTime = System.currentTimeMillis(); //获取结束时间
-            sb.append("文件压缩开始，大小：" + img.getSize() + "，存放本地耗时： " + (endTime - startTime) + "ms，文件名：" + fileName);
-
-            int n = 0;
             //压缩，直到目标文件大小小于desFileSize
             while (true) {
                 long fileSize = reducePicCycle(fileName, accuracy);
-
-                n++;
-                endTime = System.currentTimeMillis(); //获取结束时间
-                sb.append("\n压缩第" + n + "次，当前大小为" + fileSize + "，耗时： " + (endTime - startTime) + "ms");
                 if (fileSize <= desFileSize * 1024) {
                     break;
                 }
             }
-            sb.append("\n--------------压缩完毕-------------");
-            LogUtil.printInfoLog(sb.toString());
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
-            sb.append("\n!!!!!!!!!!!!!!!!压缩异常!!!!!!!!!!!!!!!!");
-
-            LogUtil.printInfoLog(sb.toString());
             FileWriteLocalUtil.deleteFileRealPath(fileName);
-            return null;
         }
         return fileName;
     }
@@ -157,33 +138,25 @@ public class ImageReduceUtil {
             return null;
         }
 
-        String remoteImageUrl;
-
+        String remoteImageUrl = "";
         long size = img.getSize();
+
         //文件小于400K直接上传至服务器
         if (size <= 400 * 1024) {
             try {
-                remoteImageUrl = FileWriteRemoteUtil.uploadFile(img.getOriginalFilename(),
-                        img.getInputStream(), FileUrlConfig.file_remote_adImage_url);
+                remoteImageUrl = FileWriteRemoteUtil.uploadFile(img.getOriginalFilename(), img.getInputStream(), remoteDir);
             } catch (IOException ex) {
                 LogUtil.printErrorLog(ex);
-                return null;
             }
             return remoteImageUrl;
         }
 
         InputStream inputStream = null;
-
         //压缩后的本地文件
         String localFileUrl = reducePicForScale(img, "tempReduceImage", 400, 0.7);
         try {
             inputStream = new FileInputStream(localFileUrl);
-        } catch (FileNotFoundException e) {
-            LogUtil.printErrorLog(e);
-        }
-
-        remoteImageUrl = FileWriteRemoteUtil.uploadFile(img.getOriginalFilename(), inputStream, remoteDir);
-        try {
+            remoteImageUrl = FileWriteRemoteUtil.uploadFile(img.getOriginalFilename(), inputStream, remoteDir);
             inputStream.close();
         } catch (IOException e) {
             LogUtil.printErrorLog(e);

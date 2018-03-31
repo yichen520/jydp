@@ -116,6 +116,12 @@
                                onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
                         <img src="<%=path %>/resources/image/web/setting.png" class="setting" />
                     </span>
+                    <c:if test="${payPasswordStatus == 2}" >
+                        <span class="settingTips">当前设置：<span id="buyPayStatus2">每次登录只输入一次交易密码</span></span>
+                    </c:if>
+                    <c:if test="${payPasswordStatus == 1}" >
+                        <span class="settingTips">当前设置：<span id="buyPayStatus1">每笔交易都输入交易密码</span></span>
+                    </c:if>
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">合计：</label>
@@ -160,6 +166,12 @@
                            onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
                         <img src="<%=path %>/resources/image/web/setting.png" class="setting" />
                     </span>
+                    <c:if test="${payPasswordStatus == 2}" >
+                        <span class="settingTips">当前设置：<span id="sellPayStatus2">每次登录只输入一次交易密码</span></span>
+                    </c:if>
+                    <c:if test="${payPasswordStatus == 1}" >
+                        <span class="settingTips">当前设置：<span id="sellPayStatus1">每笔交易都输入交易密码</span></span>
+                    </c:if>
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">合计：</label>
@@ -1202,6 +1214,20 @@
                 var data = result.data;
                 var isPwd = data.userIsPwd;
                 $("#userIsPwd").val(isPwd);
+
+                var isPwdS = "";
+                if (isPwd == 1) {
+                    isPwdS = "每笔交易都输入交易密码";
+                    document.getElementById("everyTrade").checked = true;
+                } else {
+                    isPwdS = "每次登录只输入一次交易密码";
+                    document.getElementById("onlyOneTrade").checked = true;
+                }
+                $("#buyPayStatus1").html(isPwdS);
+                $("#sellPayStatus1").html(isPwdS);
+                $("#buyPayStatus2").html(isPwdS);
+                $("#sellPayStatus2").html(isPwdS);
+
             }, error: function () {
                 PayPwdBoo = false;
                 $(".mask").fadeOut("fast");

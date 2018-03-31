@@ -5,6 +5,7 @@ import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.ISylToJydpChainDao;
 import com.jydp.entity.DO.syl.SylToJydpChainDO;
 import com.jydp.entity.DO.user.UserBalanceDO;
+import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.service.ISylToJydpChainService;
 import com.jydp.service.ITransactionCurrencyService;
@@ -104,6 +105,19 @@ public class SylToJydpChainServiceImpl implements ISylToJydpChainService {
         if(executeSuccess){
             executeSuccess = userCurrencyNumService.increaseCurrencyNumber(userId, transactionCurrency.getCurrencyId(), coin);
         }
+
+        if (!executeSuccess) {
+            UserCurrencyNumDO userCurrencyNum = new UserCurrencyNumDO();
+            userCurrencyNum.setCurrencyId(transactionCurrency.getCurrencyId());
+            userCurrencyNum.setUserId(userId);
+            userCurrencyNum.setCurrencyNumber(coin);
+            userCurrencyNum.setCurrencyNumberLock(0);
+            userCurrencyNum.setAddTime(date);
+            executeSuccess = userCurrencyNumService.insertUserCurrencyNum(userCurrencyNum);
+        }
+
+
+
 
         // 数据回滚
         if (!executeSuccess) {

@@ -96,20 +96,56 @@
 
     }
 
-    var pic = $('.pic').attr('src');
+    var formData = new FormData();
     $(".file").change(function () {
         if(this.files[0] == undefined){
-            $(this).next().attr('src',pic);
             return;
         }
         var check = checkFileImage(this);
         if(!check){
-            $(this).next().attr('src', pic);
             return;
         }
-        var objUrl = getObjectURL(this.files[0]) ;
+
+        //图片压缩
+        var fileObj = this.files[0];
+        var fileId = this.id;
+
+        var objUrl = getObjectURL(fileObj);
         if (objUrl) {
             $(this).parent().find("img").attr("src", objUrl)
+        }
+
+        if (fileId == "frontImg" && formData.has("frontImg")) {
+            formData.delete("frontImg");
+        }
+        if (fileId == "backImg" && formData.has("backImg")) {
+            formData.delete("backImg");
+        }
+
+        //大于400K，进行压缩上传
+        if (fileObj.size / 1024 > 400) {
+            var quality = 0.4;
+            if (fileObj.size / 1024 < 5 * 1024) {
+                //5M以内
+                quality = 0.7;
+            }
+
+            photoCompress(fileObj, {
+                quality: quality
+            }, function (base64Codes) {
+                var file = convertBase64UrlToBlob(base64Codes);
+                if (fileId == "frontImg") {
+                    formData.append("frontImg", file, "file_frontImg.jpg"); // 文件对象
+                } else {
+                    formData.append("backImg", file, "file_backImg.jpg"); // 文件对象
+                }
+            });
+        } else { //小于等于400k 原图上传
+            if (fileId == "frontImg") {
+                formData.append("frontImg", $('#frontImg')[0].files[0]);
+            } else {
+                formData.append("backImg", $('#backImg')[0].files[0]);
+            }
         }
     });
 
@@ -137,14 +173,14 @@
         img.src = path;
         img.onload = function () {
             var that = this;
-            // 默认按比例压缩
-            var w = that.width;
-            var h = that.height;
             // 图像质量
             var quality = 0.7;  // 默认图片质量为0.7
             if (obj.quality && obj.quality <= 1 && obj.quality > 0) {
                 quality = obj.quality;
             }
+            // 默认按比例压缩
+            var w = that.width * quality;
+            var h = that.height * quality;
             //生成canvas
             var canvas = document.createElement('canvas');
             var ctx = canvas.getContext('2d');
@@ -230,65 +266,24 @@
             }
         }
         $("#userName").val(userName);
-        if (frontImg == null || frontImg == "") {
+
+        var frontImg2 = formData.get("frontImg");
+        var backImg2 = formData.get("backImg");
+        if (frontImg2 == null || frontImg2 == "") {
             addBoo = false;
             return openTips("请上传您的证件正面照");
         }
-        if (backImg == null || backImg == "") {
+        if (backImg2 == null || backImg2 == "") {
             addBoo = false;
             return openTips("请上传您的证件反面照");
         }
 
-        var formData = new FormData();
         formData.append("userAccount", userAccount);
         formData.append("userId", userId);
         formData.append("userName", userName);
         formData.append("userCertType", userCertType);
         formData.append("userCertNo", userCertNo);
 
-        var fileObjF = document.getElementById("frontImg").files[0];
-        var fileObjB = document.getElementById("backImg").files[0];
-
-        if (fileObjF.size / 1024 > 400) { //大于400K，进行压缩上传
-            photoCompress(fileObjF, {
-                quality: 0.2
-            }, function (base64Codes) {
-                var frontFile = convertBase64UrlToBlob(base64Codes);
-                formData.append("frontImg", frontFile, "file_frontImg.jpg"); // 文件对象
-
-                if (fileObjB.size / 1024 > 400) {
-                    photoCompress(fileObjB, {
-                        quality: 0.2
-                    }, function (base64Codes) {
-                        var backFile = convertBase64UrlToBlob(base64Codes);
-                        formData.append("backImg", backFile, "file_backImg.jpg"); // 文件对象
-                        uploadFile(formData);
-                    });
-                } else {
-                    formData.append("backImg", $('#backImg')[0].files[0]);
-                    uploadFile(formData);
-                }
-            });
-        } else { //小于等于400k 原图上传
-            formData.append("frontImg", $('#frontImg')[0].files[0]);
-
-            if (fileObjB.size / 1024 > 400) {
-                photoCompress(fileObjB, {
-                    quality: 0.2
-                }, function (base64Codes) {
-                    var backFile = convertBase64UrlToBlob(base64Codes);
-                    formData.append("backImg", backFile, "file_backImg.jpg"); // 文件对象
-                    uploadFile(formData);
-                });
-            } else {
-                formData.append("backImg", $('#backImg')[0].files[0]);
-                uploadFile(formData);
-            }
-        }
-    }
-
-    //上传文件方法
-    function uploadFile(formData) {
         $.ajax({
             url: '<%=path %>' + "/userWeb/identificationController/add",
             type:'post',
@@ -412,7 +407,7 @@
 
     var mapMatch = {};
     mapMatch['ENumber'] = /[^\a-\z\A-\Z\d]/g;
-    mapMatch['rightful'] = /[%`~!@#$^&*()=|{}':;",_+\-\\\[\].<>/?！￥…（）—【】《》；：‘’”“。，、？]/g;
+    mapMatch['rightful'] = /[%`~!@#$^&*()=|{}':;",_+\-\\\[\].<>/?！￥…（）—【】《》；：‘’”“。，、？1234567890]/g;
     function matchUtil(o, str) {
         o.value = o.value.replace(mapMatch[str], '');
     }

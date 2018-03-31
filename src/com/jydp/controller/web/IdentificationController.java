@@ -276,6 +276,7 @@ public class IdentificationController {
         } catch (IOException e) {
             LogUtil.printErrorLog(e);
         }
+
         //删除本地缓存文件
         if (StringUtil.isNotNull(frontImgSrc)) {
             FileWriteLocalUtil.deleteFileRealPath(frontImgSrc);
@@ -283,6 +284,7 @@ public class IdentificationController {
         if (StringUtil.isNotNull(backImgSrc)) {
             FileWriteLocalUtil.deleteFileRealPath(backImgSrc);
         }
+
         if (imageUrlList == null || imageUrlList.size() < 2) {
             responseJson.setCode(5);
             responseJson.setMessage("服务器异常，图片上传失败！");

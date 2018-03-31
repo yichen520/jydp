@@ -80,8 +80,10 @@ public class UserCoinWithdrawalController {
         List<UserCoinConfigVO> userCoinConfigList = jydpCoinConfigService.listUserCoinConfigByUserId(userBo.getUserId());
 
         String phoneNumber = user.getPhoneNumber();
-        String phoneNumberEn = phoneNumber.substring(0, 3) + "***" + phoneNumber.substring(phoneNumber.length() - 3, phoneNumber.length());
-
+        String phoneNumberEn = null;
+        if (phoneNumber != null && phoneNumber.length() > 5) {
+            phoneNumberEn = phoneNumber.substring(0, 3) + "****" + phoneNumber.substring(phoneNumber.length() - 4, phoneNumber.length());
+        }
         request.setAttribute("userCoinConfigList",userCoinConfigList);
         request.setAttribute("phoneAreaCode",user.getPhoneAreaCode());
         request.setAttribute("phoneNumber",phoneNumber);
