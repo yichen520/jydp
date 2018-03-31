@@ -220,7 +220,7 @@
 	</update>
 
 	<select id="User_validateUserPhoneNumber" parameterType="java.util.Map" resultType="UserDO">
-		SELECT userId, userAccount, phoneAreaCode, phoneNumber, userBalance,
+		SELECT userId, userAccount, phoneAreaCode, phoneNumber, userBalance, payPassword,
 			userBalanceLock, accountStatus, addTime
 		FROM user_tab
 		WHERE userAccount = #{userAccount}
