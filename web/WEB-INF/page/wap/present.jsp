@@ -24,7 +24,9 @@
     <input type="hidden" id="queryPageNumber" name="pageNumber" value="${pageNumber}">
     <div class="wrapper">
     </div>
-    <p class="more" onclick="pageNext()">查看更多</p>
+    <c:if test="${pageNumber < totalPageNumber - 1}">
+        <p class="more" onclick="pageNext()">查看更多</p>
+    </c:if>
     <!-- 撤销弹窗 -->
     <div class="bg">
         <div class="showBox">
@@ -178,6 +180,9 @@
                             var transactionfunc = Handlebars.compile($('#template').html());
                             $('.wrapper').append(transactionfunc(presentList));
                             $('#queryPageNumber').val(result.pageNumber);
+                            if (result.pageNumber >= result.totalPageNumber - 1) {
+                                $(".more").remove();
+                            }
                         }
                     }
                 }
