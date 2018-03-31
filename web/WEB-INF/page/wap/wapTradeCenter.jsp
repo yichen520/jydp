@@ -127,7 +127,7 @@
                                                 onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
                         <span class="setting">设置</span>
                     </div>
-                    <p class="maxNum">当前设置: 每笔交易都输入密码</p>
+                    <p class="maxNum" id="bMaxNum">当前设置: 每笔交易都输入密码</p>
                 </div>
                 <div class="mainButtonBuy">买入</div>
                 <div class="mainMoney">
@@ -163,7 +163,7 @@
                                                 onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
                         <span class="setting">设置</span>
                     </div>
-                    <p class="maxNum">当前设置：每次登录都需要密码</p>
+                    <p class="maxNum" id="sMaxNum">当前设置: 每笔交易都输入密码</p>
                 </div>
                 <div class="mainButtonSell">卖出</div>
                 <div class="mainMoney">
@@ -316,7 +316,10 @@
     </div>
     <!--其他-->
     <!-- 密码设置弹窗 -->
-
+    <div>
+     <input type="hidden" id="payPasswordStatus" name="payPasswordStatus" value="{{payPasswordStatus}}"/>
+     <input type="hidden" id="userIsPwd" name="userIsPwd" value="{{userIsPwd}}"/>
+    </div>
     <div class="cin">
         <div class="settingBox">
             <div class="settingTitle">记住密码提示</div>
@@ -336,8 +339,6 @@
                 </p>
             </div>
             <div class="settingButton">
-                <input type="hidden" id="payPasswordStatus" name="payPasswordStatus" value="{{payPasswordStatus}}"/>
-                <input type="hidden" id="userIsPwd" name="userIsPwd" value="{{userIsPwd}}"/>
                 <div class="cancelSetting">取消</div>
                 <div class="okaySetting">确定</div>
             </div>
