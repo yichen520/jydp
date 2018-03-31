@@ -124,10 +124,14 @@
 
         //大于400K，进行压缩上传
         if (fileObj.size / 1024 > 400) {
-            var quality = 0.4;
+            var quality = 0.5;
             if (fileObj.size / 1024 < 5 * 1024) {
                 //5M以内
                 quality = 0.7;
+            }
+            if (fileObj.size / 1024 <= 10 * 1024 && fileObj.size / 1024 >= 7 * 1024) {
+                //7M - 10M
+                quality = 0.3;
             }
 
             photoCompress(fileObj, {

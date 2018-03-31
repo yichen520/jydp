@@ -97,7 +97,7 @@
 				AND addTime <![CDATA[ <= ]]> #{endTime}
 			</if>
 		</where>
-		ORDER BY addTime DESC
+		ORDER BY addTime DESC, id DESC
 		LIMIT #{startNumber}, #{pageSize}
 	</select>
 
