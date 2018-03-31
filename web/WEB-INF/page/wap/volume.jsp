@@ -186,8 +186,6 @@
         return "未知类型";
     });
 
-
-
     //手续费
     Handlebars.registerHelper("feesConvert", function (fee, maxFractionDigits) {
         if (isNaN(maxFractionDigits)) {
@@ -319,5 +317,4 @@
         });
     }
 </script>
-
 </html>
