@@ -42,11 +42,6 @@ var ChartParamsAndInit = {
             fractionDigits = fractionDigits.substring(0, maxFractionDigits);
             var numStr = integerDigits + "." + fractionDigits;
             return numStr;
-           /* if("0" == numStr){
-                return numStr;
-            }else{
-                return numStr +"万";
-            }*/
         });
         Handlebars.registerHelper("paymentTypeFormat", function (type, index) {
             if (type == undefined || type == null || type == "" || isNaN(type)) {
@@ -68,41 +63,35 @@ var ChartParamsAndInit = {
             }
         });
         Handlebars.registerHelper("timeFormat", function (timestamp) {
-            var date = new Date(timestamp);//10位需要乘以1000
-            var Y = date.getFullYear() + "-";
-            if (date.getMonth() + 1 < 10) {
-                M = '0' + (date.getMonth() + 1);
-            } else {
-                M = date.getMonth() + 1;
-            }
-            M = M + "-";
-            var D = date.getDate() + ' ';
-            var h = date.getHours() + ':';
-            var m = date.getMinutes() + ':';
-            var s = date.getSeconds();
-            if(s < 10){
-                s = "0" + s;
-            }
-            return Y + M + D + h + m + s;
+            var date = new Date(timestamp);
+            var y = date.getFullYear();
+            var m = date.getMonth() + 1;
+            m = m < 10 ? ('0' + m) : m;
+            var d = date.getDate();
+            d = d < 10 ? ('0' + d) : d;
+            var h = date.getHours();
+            h = h < 10 ? ('0' + h) : h;
+            var minute = date.getMinutes();
+            var second = date.getSeconds();
+            minute = minute < 10 ? ('0' + minute) : minute;
+            second = second < 10 ? ('0' + second) : second;
+            return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
         });
     },
     formatDate: function (timestamp) {
-        var date = new Date(timestamp);//10位需要乘以1000
-        var Y = date.getFullYear() + "-";
-        if (date.getMonth() + 1 < 10) {
-            M = '0' + (date.getMonth() + 1);
-        } else {
-            M = date.getMonth() + 1;
-        }
-        M = M + "-";
-        var D = date.getDate() + ' ';
-        var h = date.getHours() + ':';
-        var m = date.getMinutes() + ':';
-        var s = date.getSeconds();
-        if(s < 10){
-            s = "0" + s;
-        }
-        return Y + M + D + h + m + s;
+        var date = new Date(timestamp);
+        var y = date.getFullYear();
+        var m = date.getMonth() + 1;
+        m = m < 10 ? ('0' + m) : m;
+        var d = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        var h = date.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+        minute = minute < 10 ? ('0' + minute) : minute;
+        second = second < 10 ? ('0' + second) : second;
+        return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
     },
     open: function () {
         var bgHeight = $(document).height();
@@ -438,10 +427,8 @@ var ChartParamsAndInit = {
                         }
                     ]
                 });
-                window.setTimeout(ChartParamsAndInit.reloadData,5000);
             },
             error: function () {
-                openTips("页面数据错误，请刷新!");
                 return;
             }
         });
@@ -451,6 +438,7 @@ var ChartParamsAndInit = {
 
 $().ready(function () {
     t = "";
+    newTime = "5m";
     //方法注册
     ChartParamsAndInit.registerHandler();
     var currencyIdStr = $("#currencyIdStr").val()
@@ -479,7 +467,9 @@ $().ready(function () {
             //参数给与
             ChartParamsAndInit.openChart();
             ChartParamsAndInit.open();
+
             ChartParamsAndInit.gainGraphData("5m", 7);
+            window.setTimeout(ChartParamsAndInit.reloadData,5000);
         }
     });
 });

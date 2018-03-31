@@ -3,7 +3,6 @@ var ParamsAndInit = {
         //方法注册函数加载 数字 分隔位
         Handlebars.registerHelper('formatNumber', function (num, maxFractionDigits, options) {
             if (isNaN(num) || isNaN(maxFractionDigits)) {
-                openTips("参数类型错误");
                 return false;
             }
             num = num.toString();
@@ -71,7 +70,6 @@ var ParamsAndInit = {
         });
         Handlebars.registerHelper('formatNumberWithWan', function (num, maxFractionDigits, options) {
             if (isNaN(num) || isNaN(maxFractionDigits)) {
-                openTips("参数类型错误");
                 return false;
             }
             num = num.toString();
@@ -222,10 +220,8 @@ var ParamsAndInit = {
                 //设置购买总价格
                 $("#buyTotal").val("$" + number);
             }
-
             //可用美金
             var userBalance = parseFloat($("#userBalance").text().split("$")[1]);
-
             if (buyPrice > 0) {
                 //如果单价大于0，购买的手续费用乘以100
                 buyFee = buyFee * 100;
@@ -478,7 +474,7 @@ var ParamsAndInit = {
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (data) {
-                if (data.code != 0) {
+                if (data.code != 1) {
                     openTips(data.message);
                     return;
                 }
@@ -542,6 +538,14 @@ var ParamsAndInit = {
 
         var orderNum = $(this).children("input:hidden").val();
         $("#pendOrderNoCancle").val(orderNum);
+
+      /*  $('.cancelShow').on('click',function() {
+            $('.bg').css("height","0");
+            $('.showBox').animate({opacity:'0'},"100");
+            setTimeout(function(){
+                $('.showBox').css('display','none');
+            },100)
+        });*/
     },
     cancleOrder: function () {
         $('.bg').css("height","0");
@@ -823,7 +827,6 @@ var ParamsAndInit = {
     },
     formatNumber: function (num, maxFractionDigits) {
         if (isNaN(num) || isNaN(maxFractionDigits)) {
-            openTips("参数类型错误");
             return false;
         }
         num = num.toString();
@@ -931,6 +934,7 @@ $().ready(function () {
                 $(this).bind('click', ParamsAndInit.toCancel);
             });
             $("#cancleOrder").bind('click', ParamsAndInit.cancleOrder);
+            $(".cancelShow").bind('click', ParamsAndInit.cancleOpt);
             $("#buyHandler").unbind('click');
             $("#buyHandler").bind('click', ParamsAndInit.buyHandle);
             $("#sellHandler").unbind('click');
