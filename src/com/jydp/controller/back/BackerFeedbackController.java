@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
@@ -78,10 +79,6 @@ public class BackerFeedbackController {
 
         List<UserFeedbackDO> feedbackList = null;
         int totalNumber = userFeedbackService.countUserFeedback(userAccount, feedbackTitle, handleStatus, startTime, endTime);
-        if (totalNumber > 0) {
-            feedbackList = userFeedbackService.listUserFeedbackByPage(userAccount, feedbackTitle, handleStatus, pageNumber,
-                    pageSize, startTime, endTime);
-        }
 
         int totalPageNumber = (int) Math.ceil(totalNumber/(pageSize*1.0));
         if (totalPageNumber <= 0) {
@@ -91,6 +88,23 @@ public class BackerFeedbackController {
             pageNumber = totalPageNumber - 1;
         }
 
+        if (totalNumber > 0) {
+            feedbackList = userFeedbackService.listUserFeedbackByPage(userAccount, feedbackTitle, handleStatus, pageNumber,
+                    pageSize, startTime, endTime);
+        }
+
+        if(feedbackList != null && feedbackList.size() > 0){
+            for (UserFeedbackDO feedback:feedbackList) {
+                String feedbackTitles = HtmlUtils.htmlEscape(feedback.getFeedbackTitle());
+                feedback.setFeedbackTitle(feedbackTitles);
+
+                String feedbackContents = HtmlUtils.htmlEscape(feedback.getFeedbackContent());
+                feedback.setFeedbackContent(feedbackContents);
+
+                String handleContents = HtmlUtils.htmlEscape(feedback.getHandleContent());
+                feedback.setHandleContent(handleContents);
+            }
+        }
         request.setAttribute("totalNumber", totalNumber);
         request.setAttribute("pageNumber", pageNumber);
         request.setAttribute("totalPageNumber", totalPageNumber);
