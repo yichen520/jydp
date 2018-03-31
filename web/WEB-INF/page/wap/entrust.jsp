@@ -21,7 +21,6 @@
 <div class="wrapper">
     <div id="tableList"></div>
     <div class="more" id="seeMore" onclick="seeMore()">查看更多</div>
-
 </div>
 <div class="bg">
     <div class="showBox">
@@ -57,7 +56,7 @@
         <div class="nav">
             <div class="navTop">
                 <p class="name">{{currencyName}}</p>
-                <p class="mc">{{paymentTypeConvert paymentType}}</p>
+                <p class="{{paymentTypeClassConvert paymentType}}">{{paymentTypeConvert paymentType}}</p>
             </div>
             <div class="navLeft">
                 <ul>
@@ -70,7 +69,6 @@
                 <ul>
                     <li>成交数量：<span>{{formatNumber dealNumber 4}}</span></li>
                     <li>剩余数量：<span class="special">{{pendingRemainNumberConvert pendingNumber dealNumber 4}}</span></li>
-
                 </ul>
             </div>
         </div>
@@ -108,7 +106,6 @@
         var numStr = integerDigits + "." + fractionDigits;
         return numStr;
     });
-
 
     //收支类型转换
     Handlebars.registerHelper("paymentTypeConvert", function (type) {
@@ -214,6 +211,23 @@
             seconds = '0' + seconds;
         }
         return year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+    });
+
+    //买入卖出 区分显示
+    Handlebars.registerHelper("paymentTypeClassConvert", function (paymentType) {
+        if (paymentType == undefined || paymentType == null || paymentType == "" || isNaN(paymentType)) {
+            return "未知类型";
+        }
+        if (paymentType == 1) {
+            return "mr";
+        }
+        if (paymentType == 2) {
+            return "mc";
+        }
+        if (paymentType == 3) {
+            return "cx";
+        }
+        return "未知类型";
     });
 
     //底部显示转换
@@ -380,8 +394,6 @@
                 openTips("请求数据异常");
             }
         });
-
     }
-
 </script>
 </html>
