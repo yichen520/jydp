@@ -121,10 +121,12 @@
                     <input type="hidden" id="buyFee" value="{{transactionCurrency.buyFee}}">
                     <input type="hidden" id="buyTotal">
                     <p class="maxNum" id="buyMax">最大可买: 0</p>
-                    <div class="mainContent-passwordBuy">
-                        <span class="name">交易密码</span><input type="password" id="buyPwd" name="buyPwd" oninput="if(value.length>16)value=value.slice(0,16)"
+                    <div class="mainContent-passwordBuy"><%--
+                        <span class="name">交易密码</span><input type="password" id="buyPwd" name="buyPwd" maxlength="16"
                                                              onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')"
-                                                onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
+                                                onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>--%>
+
+                        <span class="name">交易密码</span><input type="password" id="buyPwd" name="buyPwd" maxlength="16"/>
                         <span class="setting">设置</span>
                     </div>
                     <p class="maxNum" id="bMaxNum">当前设置: 每笔交易都输入密码</p>
@@ -158,9 +160,10 @@
                     <input type="hidden" id="sellTotal">
                     <p class="maxNum" id="sellMax">最大可获得: 0</p>
                     <div class="mainContent-passwordSell">
-                        <span class="name">交易密码</span><input type="password" id="sellPwd" name="sellPwd" oninput="if(value.length>16)value=value.slice(0,16)" maxlength="16"
+                        <span class="name">交易密码</span><%--<input type="password" id="sellPwd" name="sellPwd" oninput="if(value.length>16)value=value.slice(0,16)" maxlength="16"
                                                              onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')"
-                                                onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
+                                                onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>--%>
+                        <input type="password" id="sellPwd" name="sellPwd"  maxlength="16"/>
                         <span class="setting">设置</span>
                     </div>
                     <p class="maxNum" id="sMaxNum">当前设置: 每笔交易都输入密码</p>
