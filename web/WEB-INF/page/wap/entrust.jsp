@@ -293,7 +293,19 @@
     var pendingOrderNoCancel;
     function applicationCanceled() {
         pendingOrderNoCancel = $(this).parent().children('.findClass').val();
-        show();
+        var bgHeight = $(document).height();
+            $('.bg').css("height", bgHeight + "px");
+            $('.bg').fadeIn();
+
+        $('.okay').on('click', function () {
+            $('.bg').css("height", "0");
+            $('.bg').fadeOut();
+        });
+
+        $('.cancelShow').on('click', function () {
+            $('.bg').css("height", "0");
+            $('.bg').fadeOut();
+        });
     }
 
     function cancleOrder() {
@@ -327,31 +339,6 @@
             }
         });
     }
-
-    function show() {
-        var bgHeight = $(document).height();
-        $('.cancel').on('click', function () {
-            $('.bg').css("height", bgHeight + "px");
-            $('.showBox').css("display", "block");
-            $('.showBox').animate({opacity: '1'}, "1000");
-        });
-
-        $('.okay').on('click', function () {
-            $('.bg').css("height", "0");
-            $('.showBox').animate({opacity: '0'}, "100");
-            setTimeout(function () {
-                $('.showBox').css('display', 'none');
-            }, 100)
-        });
-
-        $('.cancelShow').on('click', function () {
-            $('.bg').css("height", "0");
-            $('.showBox').animate({opacity: '0'}, "100");
-            setTimeout(function () {
-                $('.showBox').css('display', 'none');
-            }, 100)
-        });
-    };
 
     function seeMore() {
         pageNumber = Number(pageNumber) + 1;
