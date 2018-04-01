@@ -90,7 +90,7 @@
         success: function (result) {
             document.getElementById('blah').style.backgroundImage='url('+result.base64+')';
             var blob = dataURLtoBlob(result.base64);
-            formData.append("frontImg", blob, "file_frontImg.jpg");
+            formData.set("frontImg", blob, "file_frontImg.jpg");
             a = true;
         }
     });
@@ -100,7 +100,7 @@
         success: function (result) {
             document.getElementById('blahtwo').style.backgroundImage='url('+result.base64+')';
             var blob = dataURLtoBlob(result.base64);
-            formData.append("backImg", blob, "file_backImg.jpg");
+            formData.set("backImg", blob, "file_backImg.jpg");
             b = true;
         }
     });
