@@ -113,10 +113,10 @@
             <div class="buy">
                 <div class="mainContent">
                     <div class="mainContent-priceBuy">
-                        <span class="name">单价</span><input type="number" id="buyPrice" name="buyPrice"  onkeyup="value=value.replace(/[^\d.]/g,'')"  oninput="if(value.length>9)value=value.slice(0,9)" >
+                        <span class="name">单价</span><input type="text" id="buyPrice" name="buyPrice" maxlength="9">
                     </div>
                     <div class="mainContent-numBuy">
-                        <span class="name">数量</span><input type="number" id="buyNum" name="buyNum"  onkeyup="value=value.replace(/[^\d.]/g,'')"  oninput="if(value.length>11)value=value.slice(0,11)" >
+                        <span class="name">数量</span><input type="text" id="buyNum" name="buyNum" maxlength="11">
                     </div>
                     <input type="hidden" id="buyFee" value="{{transactionCurrency.buyFee}}">
                     <input type="hidden" id="buyTotal">
@@ -127,7 +127,7 @@
                                                 onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
                         <span class="setting">设置</span>
                     </div>
-                    <p class="maxNum">当前设置: 每笔交易都输入密码</p>
+                    <p class="maxNum" id="bMaxNum">当前设置: 每笔交易都输入密码</p>
                 </div>
                 <div class="mainButtonBuy">买入</div>
                 <div class="mainMoney">
@@ -147,10 +147,10 @@
             <div class="sell">
                 <div class="mainContent">
                     <div class="mainContent-priceSell">
-                        <span class="name">单价</span><input type="number" id="sellPrice" name="sellPrice" oninput="if(value.length>9)value=value.slice(0,9)" onkeyup="value=value.replace(/[^\d.]/g,'')">
+                        <span class="name">单价</span><input type="text" id="sellPrice" name="sellPrice" maxlength="9">
                     </div>
                     <div class="mainContent-numSell">
-                        <span class="name">数量</span><input type="number" id="sellNum" name="sellNum" oninput="if(value.length>11)value=value.slice(0,11)" onkeyup="value=value.replace(/[^\d.]/g,'')">
+                        <span class="name">数量</span><input type="text" id="sellNum" name="sellNum" maxlength="11">
                     </div>
                     <input type="hidden" id="sellFee" value="{{transactionCurrency.sellFee}}">
                     <input type="hidden" id="currencyNumber"
@@ -163,7 +163,7 @@
                                                 onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
                         <span class="setting">设置</span>
                     </div>
-                    <p class="maxNum">当前设置：每次登录都需要密码</p>
+                    <p class="maxNum" id="sMaxNum">当前设置: 每笔交易都输入密码</p>
                 </div>
                 <div class="mainButtonSell">卖出</div>
                 <div class="mainMoney">
@@ -316,18 +316,21 @@
     </div>
     <!--其他-->
     <!-- 密码设置弹窗 -->
-
+    <div>
+     <input type="hidden" id="payPasswordStatus" name="payPasswordStatus" value="{{payPasswordStatus}}"/>
+     <input type="hidden" id="userIsPwd" name="userIsPwd" value="{{userIsPwd}}"/>
+    </div>
     <div class="cin">
         <div class="settingBox">
             <div class="settingTitle">记住密码提示</div>
             <div class="settingContent">
                 <label style="position: relative">
-                    <input type="radio" name="remember" value="2" class="choose" style="position: absolute;top: 0.24rem;"/>
-                    <span style="position: absolute;left: 0.45rem">每次登录只输入一次密码</span>
+                    <input type="radio" name="remember" value="2" class="choose" style="position: absolute;top: 0.24rem;left:0.05rem"/>
+                    <span style="position: absolute;left: 0.6rem">每次登录只输入一次密码</span>
                 </label>
                 <label style="position: relative;margin-top: 0.3rem;margin-bottom: 0.6rem">
-                    <input type="radio" name="remember" value="1" class="choose"  style="position: absolute;top: 0.24rem;"/>
-                    <span style="position: absolute;left: 0.45rem">每笔交易都输入密码</span>
+                    <input type="radio" name="remember" value="1" class="choose"  style="position: absolute;top: 0.26rem;left:0.05rem"/>
+                    <span style="position: absolute;left: 0.6rem">每笔交易都输入密码</span>
                 </label>
                 <p >
                     交易密码<input type="password" class="pas" id="rememberPwd" maxlength="16"
@@ -336,8 +339,6 @@
                 </p>
             </div>
             <div class="settingButton">
-                <input type="hidden" id="payPasswordStatus" name="payPasswordStatus" value="{{payPasswordStatus}}"/>
-                <input type="hidden" id="userIsPwd" name="userIsPwd" value="{{userIsPwd}}"/>
                 <div class="cancelSetting">取消</div>
                 <div class="okaySetting">确定</div>
             </div>

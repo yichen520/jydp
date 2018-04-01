@@ -3,7 +3,6 @@ var ParamsAndInit = {
         //方法注册函数加载 数字 分隔位
         Handlebars.registerHelper('formatNumber', function (num, maxFractionDigits, options) {
             if (isNaN(num) || isNaN(maxFractionDigits)) {
-                openTips("参数类型错误");
                 return false;
             }
             num = num.toString();
@@ -71,7 +70,6 @@ var ParamsAndInit = {
         });
         Handlebars.registerHelper('formatNumberWithWan', function (num, maxFractionDigits, options) {
             if (isNaN(num) || isNaN(maxFractionDigits)) {
-                openTips("参数类型错误");
                 return false;
             }
             num = num.toString();
@@ -169,7 +167,6 @@ var ParamsAndInit = {
             //回显
             var payPasswordStatus = $("#payPasswordStatus").val();
             if( payPasswordStatus !=undefined && payPasswordStatus!= "" && !isNaN(payPasswordStatus) ){
-               //     $("input[name='remember']").removeAttr("checked");
                     $("input[name='remember']").each(function () {
                         if(payPasswordStatus == $(this).val()){
                             $(this).get(0).checked=true;
@@ -180,6 +177,9 @@ var ParamsAndInit = {
         });
         $('.cancelSetting').on('click',function() {
             $('.cin').fadeOut();
+            $("input[name='remember']").each(function () {
+                $(this).attr("checked",false)
+            });
         });
     },
     matchUtil: function (e) {
@@ -222,10 +222,8 @@ var ParamsAndInit = {
                 //设置购买总价格
                 $("#buyTotal").val("$" + number);
             }
-
             //可用美金
             var userBalance = parseFloat($("#userBalance").text().split("$")[1]);
-
             if (buyPrice > 0) {
                 //如果单价大于0，购买的手续费用乘以100
                 buyFee = buyFee * 100;
@@ -478,7 +476,7 @@ var ParamsAndInit = {
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (data) {
-                if (data.code != 0) {
+                if (data.code != 1) {
                     openTips(data.message);
                     return;
                 }
@@ -542,14 +540,6 @@ var ParamsAndInit = {
 
         var orderNum = $(this).children("input:hidden").val();
         $("#pendOrderNoCancle").val(orderNum);
-
-        $('.cancelShow').on('click',function() {
-            $('.bg').css("height","0");
-            $('.showBox').animate({opacity:'0'},"100");
-            setTimeout(function(){
-                $('.showBox').css('display','none');
-            },100)
-        });
     },
     cancleOrder: function () {
         $('.bg').css("height","0");
@@ -769,11 +759,11 @@ var ParamsAndInit = {
         }
         var userSession = $("#userSession").val();
         if(userSession != undefined && userSession != null && userSession != ""){
-                 window.setInterval(ParamsAndInit.userInfo, 1000);
-                 window.setInterval(ParamsAndInit.entrust, 1000);
+                 window.setInterval(ParamsAndInit.userInfo, 5000);
+                 window.setInterval(ParamsAndInit.entrust, 5000);
         }
-        window.setInterval(ParamsAndInit.pendOrder, 1000);
-        window.setInterval(ParamsAndInit.dealInfo, 1000);
+        window.setInterval(ParamsAndInit.pendOrder, 5000);
+        window.setInterval(ParamsAndInit.dealInfo, 5000);
     },
     updatePayPwd :function () {
         var payPasswordStatus = $("input[name='remember']:checked").val();
@@ -807,29 +797,35 @@ var ParamsAndInit = {
                     openTips(data.message);
                     return;
                 }
-                $('.cin').fadeOut();
                 var isPwd = data.userIsPwd;
                 $("#userIsPwd").val(isPwd);
                 $("#payPasswordStatus").val(payPasswordStatus);
                 $("#rememberPwd").val("");
                 if(payPasswordStatus == 1){
-                    $(".maxNum").text("当前设置: 每笔交易都输入密码");
+                    $("#bMaxNum").text("当前设置: 每笔交易都输入密码");
+                    $("#sMaxNum").text("当前设置: 每笔交易都输入密码");
                 }
                 if(payPasswordStatus == 2){
-                    $(".maxNum").text("当前设置: 每次登录只输入一次密码");
+                    $("#bMaxNum").text("当前设置: 每次登录只输入一次密码");
+                    $("#sMaxNum").text("当前设置: 每次登录只输入一次密码");
                 }
-
+                $('.cin').fadeOut();
                 openTips(data.message);
+                $("input[name='remember']").each(function () {
+                    $(this).attr("checked",false)
+                });
             }, error: function () {
                 $('.cin').fadeOut();
                 openTips("修改失败,请重新刷新页面后重试");
+                $("input[name='remember']").each(function () {
+                    $(this).attr("checked",false)
+                });
                 return ;
             }
         });
     },
     formatNumber: function (num, maxFractionDigits) {
         if (isNaN(num) || isNaN(maxFractionDigits)) {
-            openTips("参数类型错误");
             return false;
         }
         num = num.toString();
@@ -860,6 +856,31 @@ var ParamsAndInit = {
             return;
         }
         window.location.href = webAppPath + '/userWap/tradeCenter/toChartPage?currencyId=' + currencyId;
+    },
+    footInit: function () {
+        var h=$(window).height();
+        $(window).resize(function() {
+            if($(window).height()<h){
+                $('footer').hide();
+            }
+            if($(window).height()>=h){
+                $('footer').show();
+            }
+        });
+
+        //进入页面的时候判断
+        var payPasswordStatus = $("#payPasswordStatus").val();
+        if(payPasswordStatus == 2){
+            $("#bMaxNum").text("当前设置: 每次登录只输入一次密码");
+            $("#sMaxNum").text("当前设置: 每次登录只输入一次密码");
+        }
+        $('.cancelShow').on('click',function() {
+            $('.bg').css("height","0");
+            $('.showBox').animate({opacity:'0'},"100");
+            setTimeout(function(){
+                $('.showBox').css('display','none');
+            },100)
+        });
     }
 };
 $().ready(function () {
@@ -922,15 +943,7 @@ $().ready(function () {
             ParamsAndInit.reloadData();
             ParamsAndInit.seeting();
             ParamsAndInit.mask();
-            var h=$(window).height();
-            $(window).resize(function() {
-                if($(window).height()<h){
-                    $('footer').hide();
-                }
-                if($(window).height()>=h){
-                    $('footer').show();
-                }
-            });
+            ParamsAndInit.footInit();
         },
         error: function () {
             openTips("服务器异常，请稍后再试！")

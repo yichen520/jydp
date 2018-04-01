@@ -29,12 +29,12 @@
             {{#each userFeedbackList}}
             <div class="list">
                 <div class="titleBox">
-                    <p class="title">{{feedbackTitle}}</p>
-                    <p class="dcl">{{ContactTypeFormat handleStatus}}</p>
+                    <p class="title">{{{feedbackTitle}}}</p>
+                    <p class="dcl">{{{contactTypeFormat handleStatus}}}</p>
                 </div>
                 <div class="listContent">
-                    <p class="main">{{feedbackContent}}</p>
-                    <p class="date">{{ContactTimeFormat addTime}}</p>
+                    <p class="main">{{{feedbackContent}}}</p>
+                    <p class="date">{{contactTimeFormat addTime}}</p>
                 </div>
                 {{{showHandlerContent handleContent}}}
             </div>
@@ -47,7 +47,7 @@
         <div class="more">查看更多</div>
     </script>
 </div>
-<div class="submit">提 交</div>
+<div class="submit">提 交 问 题</div>
 <!-- 提交问题弹窗 -->
 <div class="bg">
     <div class="showBox">
@@ -60,7 +60,7 @@
             </div>
             <div class="contentBox">
                 <p>内容<span style="color: red">*</span></p>
-                <textarea id="feedbackContent" placeholder="问题内容" maxlength="500"></textarea>
+                <textarea id="feedbackContent" placeholder="问题内容" maxlength="400"></textarea>
                 <div class="clear"></div>
             </div>
         </div>

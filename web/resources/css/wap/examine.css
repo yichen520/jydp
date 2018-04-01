@@ -64,6 +64,11 @@ header .change{
     resize: none;
     color: #999
 }
+.clear{
+    margin-bottom: 0.2rem;
+    font-size: 0.3rem;
+    color: #999
+}
 .list-box .text{
     float: right;
     line-height: 0.88rem;
