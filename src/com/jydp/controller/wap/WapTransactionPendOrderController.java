@@ -1,10 +1,12 @@
 package com.jydp.controller.wap;
 
 import com.alibaba.fastjson.JSONObject;
+import com.iqmkj.utils.BigDecimalUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
+import com.jydp.entity.DO.transaction.WapTransactionUserDealDO;
 import com.jydp.interceptor.UserWapInterceptor;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.ITransactionPendOrderService;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -81,12 +84,40 @@ public class WapTransactionPendOrderController {
         int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
 
         List<TransactionPendOrderDO> transactionPendOrderRecord = null;
+        List<WapTransactionUserDealDO> wapTransactionPendOrderRecordList = new ArrayList();
         if (totalNumber > 0) {
             transactionPendOrderRecord = transactionPendOrderService.listPendOrderByUserId(userId, pageNumber, pageSize);
+            WapTransactionUserDealDO wapTransactionUserDealDO = null;
+            for (TransactionPendOrderDO transactionPendOrderDO : transactionPendOrderRecord){
+                wapTransactionUserDealDO = new WapTransactionUserDealDO();
+
+                wapTransactionUserDealDO.setPendingOrderNo(transactionPendOrderDO.getPendingOrderNo());
+                wapTransactionUserDealDO.setUserId(transactionPendOrderDO.getUserId());
+                wapTransactionUserDealDO.setUserAccount(transactionPendOrderDO.getUserAccount());
+                wapTransactionUserDealDO.setPaymentType(transactionPendOrderDO.getPaymentType());
+                wapTransactionUserDealDO.setCurrencyId(transactionPendOrderDO.getCurrencyId());
+                wapTransactionUserDealDO.setCurrencyName(transactionPendOrderDO.getCurrencyName());
+                wapTransactionUserDealDO.setPendingPrice(transactionPendOrderDO.getPendingPrice());
+                wapTransactionUserDealDO.setPendingNumber(transactionPendOrderDO.getPendingNumber());
+                wapTransactionUserDealDO.setDealNumber(transactionPendOrderDO.getDealNumber());
+                wapTransactionUserDealDO.setBuyFee(transactionPendOrderDO.getBuyFee());
+                wapTransactionUserDealDO.setRestBalanceLock(transactionPendOrderDO.getRestBalanceLock());
+                wapTransactionUserDealDO.setPendingStatus(transactionPendOrderDO.getPendingStatus());
+                wapTransactionUserDealDO.setRemark(transactionPendOrderDO.getRemark());
+                wapTransactionUserDealDO.setFeeRemark(transactionPendOrderDO.getFeeRemark());
+                wapTransactionUserDealDO.setAddTime(transactionPendOrderDO.getAddTime());
+                wapTransactionUserDealDO.setEndTime(transactionPendOrderDO.getEndTime());
+
+
+                String TotalPrice = BigDecimalUtil.mul2(String.valueOf(wapTransactionUserDealDO.getPendingPrice()),String.valueOf(wapTransactionUserDealDO.getPendingNumber()));
+                //总价
+                wapTransactionUserDealDO.setTotalPrice(TotalPrice);
+                wapTransactionPendOrderRecordList.add(wapTransactionUserDealDO);
+            }
         }
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("transactionPendOrderRecordList", transactionPendOrderRecord);
+        jsonObject.put("transactionPendOrderRecordList", wapTransactionPendOrderRecordList);
         jsonObject.put("totalPageNumber",totalPageNumber);
 
         responseJson.setData(jsonObject);

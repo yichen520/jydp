@@ -24,7 +24,7 @@ header .backimg{
 .editor{
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    width:100%;
 }
 .editor p{
     display: inline;

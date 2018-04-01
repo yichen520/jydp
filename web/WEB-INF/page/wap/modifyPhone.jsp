@@ -116,7 +116,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         var newValidCode=$("#newValidCode").val();
         var areaCode=$("#newAreaCode").text();
         var phone=$("#newPhone").val();
-        if (password=="" || validCode=="" || newValidCode=="" || areaCode=="" || phone=="") {
+        if (validCode=="" || newValidCode=="") {
+            openTips("验证码错误");
+            return;
+        }
+        if (password=="" || areaCode=="" || phone=="") {
             openTips("全部为必填项");
             return;
         }

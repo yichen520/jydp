@@ -90,8 +90,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         var newPwd=$("#newPwd").val();
         var confirmPwd=$("#confirmPwd").val();
         var validCode=$("#validCode").val();
-        if (oldPwd=="" || newPwd== ""|| confirmPwd=="" || validCode=="") {
-            openTips("全部为必填项");
+        if (oldPwd=="" || newPwd== ""|| confirmPwd=="") {
+            openTips("请输入密码");
+            return;
+        }
+        if (validCode=="") {
+            openTips("验证码错误");
             return;
         }
         if (!regx.test(newPwd) || !regx.test(confirmPwd) || newPwd!=confirmPwd) {
