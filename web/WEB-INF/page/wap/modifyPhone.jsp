@@ -39,14 +39,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <p class="num" id="newAreaCode">+86</p>
                     <img src="<%=path%>/resources/image/wap/iconDown.png" />
                 </div>
-                <input type="number" placeholder="您的新手机号" oninput="if(value.length>11)value=value.slice(0,11)" id="newPhone"/>
+                <input type="tel" placeholder="您的新手机号" oninput="if(value.length>11)value=value.slice(0,11)" id="newPhone"/>
             </div>
             <div class="newPhoneCode">
                 <input type="number" placeholder="请输入6位短信验证码" oninput="if(value.length>6)value=value.slice(0,6)" class="oldCode" id="newValidCode"/>
                 <input class="code" id="newPhoneCode" value="获取验证码"/>
             </div>
             <div class="userPassword">
-                <input type="password" placeholder="登录密码" maxlength="16" id="password" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                <input type="password" placeholder="登录密码" maxlength="16" id="password" onkeyup="formatPwd(this)"/>
             </div>
         </div>
         <div class="confirm">提 交</div>
@@ -98,6 +98,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         }
         $("#oldPhoneText").text(phone);
     })
+
+    function formatPwd(obj) {
+        var matchStr = /[^\a-\z\A-\Z\d]/g;
+        var value = $(obj).val();
+        if (matchStr.test(value)) {
+            $(obj).get(0).value=$(obj).get(0).value.replace(/[^\a-\z\A-\Z\d]/g,'');
+        }
+    }
 
     $(".back").click(function () {
         window.location.href="<%=path%>/userWap/userInfo/userCenter/show.htm";
