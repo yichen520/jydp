@@ -104,7 +104,7 @@
         <li>
             <img src="{{currencyImgUrl}}"/>
             <div>
-                <p>{{currencyName}}</p>
+                <p class="list-name">{{currencyName}}</p>
                 {{#compare change 0}}
                 <p class="red">$ {{latestPrice}}</p>
                 {{else}}

@@ -30,7 +30,7 @@
             <div class="list">
                 <div class="titleBox">
                     <p class="title">{{{feedbackTitle}}}</p>
-                    <p class="dcl">{{{contactTypeFormat handleStatus}}}</p>
+                    {{{contactTypeFormat handleStatus}}}</p>
                 </div>
                 <div class="listContent">
                     <p class="main">{{{feedbackContent}}}</p>

@@ -79,15 +79,15 @@ var ParamAndViewInit = {
             var $p1 =  $("<p/>").addClass("title").text(data[i].feedbackTitle);
             var handleStatusStr = "";
             if(data[i].handleStatus == 1){
-                handleStatusStr = "<span style='color: #C9C9C9'>待处理</span>";
+                handleStatusStr = "<p class='dcl'>待处理</p>";
             }
             if(data[i].handleStatus == 2){
-                handleStatusStr = "<span style='color: dodgerblue'>处理中</span>";
+                handleStatusStr = "<p class='clz'>处理中</p>";
             }
             if(data[i].handleStatus == 3){
-                handleStatusStr = "<span style='color: yellow'>已处理</span>";
+                handleStatusStr = "<p class='ycl'>已处理</p>";
             }
-            var $p2 = $("<p/>").addClass("dcl").html(handleStatusStr);
+            var $p2 = $("<p/>").html(handleStatusStr);
             var $div1 = $("<div/>").addClass("titleBox").append($p1).append($p2);
             $div0.append($div1);
             var $p3 =  $("<p/>").addClass("main").html(data[i].feedbackContent);
@@ -163,13 +163,13 @@ $(function () {
             return "未知类型";
         }
         if(type == 1){
-            return "<span style='color: #C9C9C9'>待处理</span>";
+            return "<p class='dcl'>待处理</p>";
         }
         if(type == 2){
-            return "<span style='color: dodgerblue'>处理中</span>";
+            return "<p class='clz'>处理中</p>";
         }
         if(type == 3){
-            return "<span style='color: yellow'>已处理</span>";
+            return "<p class='ycl'>已处理</p>";
         }
         return "未知类型";
     });
