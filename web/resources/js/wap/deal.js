@@ -461,7 +461,7 @@ var ParamsAndInit = {
         $('.maskSell').fadeIn();
     },
     sellHandle: function () {
-        $('.maskSell').fadeOut();
+        $('.maskSell').hide();
         var sellPrice = $("#sellPriceConfirm").val();
         var sellNum = $("#sellNumConfirm").val();
         var sellPwd = $("#sellPwdConfirm").val();
@@ -501,7 +501,7 @@ var ParamsAndInit = {
         });
     },
     buyHandle: function () {
-        $('.mask').fadeOut();
+        $('.mask').hide();
         var buyPrice = $("#buyPriceConfirm").val();
         var buyNum = $("#buyNumConfirm").val();
         var buyPwd = $("#buyPwdConfirm").val();
