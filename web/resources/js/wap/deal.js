@@ -167,7 +167,6 @@ var ParamsAndInit = {
             //回显
             var payPasswordStatus = $("#payPasswordStatus").val();
             if( payPasswordStatus !=undefined && payPasswordStatus!= "" && !isNaN(payPasswordStatus) ){
-               //     $("input[name='remember']").removeAttr("checked");
                     $("input[name='remember']").each(function () {
                         if(payPasswordStatus == $(this).val()){
                             $(this).get(0).checked=true;
@@ -178,6 +177,9 @@ var ParamsAndInit = {
         });
         $('.cancelSetting').on('click',function() {
             $('.cin').fadeOut();
+            $("input[name='remember']").each(function () {
+                $(this).attr("checked",false)
+            });
         });
     },
     matchUtil: function (e) {
@@ -538,14 +540,6 @@ var ParamsAndInit = {
 
         var orderNum = $(this).children("input:hidden").val();
         $("#pendOrderNoCancle").val(orderNum);
-
-      /*  $('.cancelShow').on('click',function() {
-            $('.bg').css("height","0");
-            $('.showBox').animate({opacity:'0'},"100");
-            setTimeout(function(){
-                $('.showBox').css('display','none');
-            },100)
-        });*/
     },
     cancleOrder: function () {
         $('.bg').css("height","0");
@@ -803,7 +797,6 @@ var ParamsAndInit = {
                     openTips(data.message);
                     return;
                 }
-                $('.cin').fadeOut();
                 var isPwd = data.userIsPwd;
                 $("#userIsPwd").val(isPwd);
                 $("#payPasswordStatus").val(payPasswordStatus);
@@ -816,11 +809,17 @@ var ParamsAndInit = {
                     $("#bMaxNum").text("当前设置: 每次登录只输入一次密码");
                     $("#sMaxNum").text("当前设置: 每次登录只输入一次密码");
                 }
-
+                $('.cin').fadeOut();
                 openTips(data.message);
+                $("input[name='remember']").each(function () {
+                    $(this).attr("checked",false)
+                });
             }, error: function () {
                 $('.cin').fadeOut();
                 openTips("修改失败,请重新刷新页面后重试");
+                $("input[name='remember']").each(function () {
+                    $(this).attr("checked",false)
+                });
                 return ;
             }
         });

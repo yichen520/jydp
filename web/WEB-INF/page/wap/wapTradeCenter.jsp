@@ -325,12 +325,12 @@
             <div class="settingTitle">记住密码提示</div>
             <div class="settingContent">
                 <label style="position: relative">
-                    <input type="radio" name="remember" value="2" class="choose" style="position: absolute;top: 0.24rem;"/>
-                    <span style="position: absolute;left: 0.45rem">每次登录只输入一次密码</span>
+                    <input type="radio" name="remember" value="2" class="choose" style="position: absolute;top: 0.24rem;left:0.05rem"/>
+                    <span style="position: absolute;left: 0.6rem">每次登录只输入一次密码</span>
                 </label>
                 <label style="position: relative;margin-top: 0.3rem;margin-bottom: 0.6rem">
-                    <input type="radio" name="remember" value="1" class="choose"  style="position: absolute;top: 0.24rem;"/>
-                    <span style="position: absolute;left: 0.45rem">每笔交易都输入密码</span>
+                    <input type="radio" name="remember" value="1" class="choose"  style="position: absolute;top: 0.26rem;left:0.05rem"/>
+                    <span style="position: absolute;left: 0.6rem">每笔交易都输入密码</span>
                 </label>
                 <p >
                     交易密码<input type="password" class="pas" id="rememberPwd" maxlength="16"
