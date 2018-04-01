@@ -190,6 +190,13 @@ var ParamsAndInit = {
             });
         });
     },
+    matchPassword:function () {
+        var matchStr = /[^a-zA-Z0-9]/;
+        var value = $(this).val();
+        if (matchStr.test(value)) {
+            $(this).val('');
+        }
+    },
     matchUtil: function (e) {
         var matchStr = /^-?\d+\.?\d{0,num}$/;
         //格式化显示值
@@ -935,6 +942,10 @@ $().ready(function () {
             $("#sellNum").bind("blur", {num: 4}, ParamsAndInit.matchUtil);
             $("#sellNum").unbind("keyup");
             $("#sellNum").bind("keyup", {num: 4}, ParamsAndInit.matchUtil);
+            $("#buyPwd").bind("keyup",ParamsAndInit.matchPassword);
+            $("#buyPwd").bind("blur",ParamsAndInit.matchPassword);
+            $("#sellPwd").bind("keyup",ParamsAndInit.matchPassword);
+            $("#sellPwd").bind("blur",ParamsAndInit.matchPassword);
             $(".mainButtonBuy").bind('click', ParamsAndInit.toBuy);
             $(".mainButtonSell").bind('click', ParamsAndInit.toSell);
             $(".toCancleOrder").each(function () {
