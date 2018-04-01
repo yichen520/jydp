@@ -194,7 +194,7 @@ var ParamsAndInit = {
         var matchStr = /[^a-zA-Z0-9]/;
         var value = $(this).val();
         if (matchStr.test(value)) {
-            $(this).val('');
+            $(this).get(0).value=$(this).get(0).value.replace(/[^a-zA-Z0-9]/g,'');
         }
     },
     matchUtil: function (e) {
