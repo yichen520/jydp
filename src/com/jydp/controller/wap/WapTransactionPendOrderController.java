@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,10 +109,12 @@ public class WapTransactionPendOrderController {
                 wapTransactionUserDealDO.setAddTime(transactionPendOrderDO.getAddTime());
                 wapTransactionUserDealDO.setEndTime(transactionPendOrderDO.getEndTime());
 
+                BigDecimal b1 = new BigDecimal(String.valueOf(wapTransactionUserDealDO.getPendingPrice()));
+                BigDecimal b2 = new BigDecimal(String.valueOf(wapTransactionUserDealDO.getPendingNumber()));
+                String totalPrice = b1.multiply(b2).stripTrailingZeros().toPlainString();
 
-                String TotalPrice = BigDecimalUtil.mul2(String.valueOf(wapTransactionUserDealDO.getPendingPrice()),String.valueOf(wapTransactionUserDealDO.getPendingNumber()));
                 //总价
-                wapTransactionUserDealDO.setTotalPrice(TotalPrice);
+                wapTransactionUserDealDO.setTotalPrice(totalPrice);
                 wapTransactionPendOrderRecordList.add(wapTransactionUserDealDO);
             }
         }

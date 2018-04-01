@@ -1,11 +1,10 @@
 package com.jydp.entity.DO.transaction;
 
 /**
+ * wap委托记录实体
  * @author cyfIverson
- * @description
- * @create 2018-04-01-18:23
+ * @create 2018-04-01
  */
-
 public class WapTransactionUserDealDO extends TransactionPendOrderDO {
 
     private String totalPrice; //总价
@@ -20,7 +19,7 @@ public class WapTransactionUserDealDO extends TransactionPendOrderDO {
 
     /**
      * 委托记录总价
-     * @param totalPrice the pendingOrderNo to set
+     * @param totalPrice the totalPrice to set
      */
     public void setTotalPrice(String totalPrice) {
         this.totalPrice = totalPrice;
