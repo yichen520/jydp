@@ -34,22 +34,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <!-- 原密码修改 -->
             <div class="registerContent" style="display:block">
                 <div class="userPasswordTwo">
-                    <input type="password" placeholder="原密码" maxlength="16" id="oldPwdPyPwd" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                    <input type="password" placeholder="原密码" maxlength="16" id="oldPwdPyPwd" onkeyup="formatPwd(this)"/>
                 </div>
                 <div class="userPassword">
-                    <input  style="width:100%" type="password" placeholder="新密码为字母、数字，6～16个字符" maxlength="16" id="newPwdByPwd" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                    <input  style="width:100%" type="password" placeholder="新密码为字母、数字，6～16个字符" maxlength="16" id="newPwdByPwd" onkeyup="formatPwd(this)"/>
                 </div>
                 <div class="userPassword">
-                        <input type="password" placeholder="重复密码" maxlength="16" id="confirmPwdByPwd" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                        <input type="password" placeholder="重复密码" maxlength="16" id="confirmPwdByPwd" onkeyup="formatPwd(this)"/>
                     </div>
             </div>
             <!-- 通过手机号修改 -->
             <div class="registerContent" style="display:none">
                 <div class="userPassword">
-                    <input style="width:100%" type="password" placeholder="新密码为字母、数字，6～16个字符" maxlength="16" id="newPwdByPhone" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                    <input style="width:100%" type="password" placeholder="新密码为字母、数字，6～16个字符" maxlength="16" id="newPwdByPhone" onkeyup="formatPwd(this)"/>
                 </div>
                 <div class="userPassword">
-                        <input type="password" placeholder="重复密码" maxlength="16" id="confirmPwdByPhone" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                        <input type="password" placeholder="重复密码" maxlength="16" id="confirmPwdByPhone" onkeyup="formatPwd(this)"/>
                     </div>
                 <div class="userPhone">
                     <p class="num"><span id="areaCode">${phoneAreaCode}</span>&nbsp;<input type="hidden" value="${phoneNumber}" id="phoneNumber"/><span id="phoneNumberText"></span></p>
@@ -75,7 +75,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="<%=path%>/resources/js/wap/simpleTips_wap.js"></script>
 
 <script>
-
+    
     $(function () {
         var phone="<%=request.getAttribute("phoneNumber")%>";
         if (phone.length==6) {
@@ -87,10 +87,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         $("#phoneNumberText").text(phone);
     })
 
-
     $(".back").click(function () {
         window.location.href="<%=path%>/userWap/userInfo/userCenter/show.htm";
     })
+    
+    function formatPwd(obj) {
+        var matchStr = /[^\a-\z\A-\Z\d]/g;
+        var value = $(obj).val();
+        if (matchStr.test(value)) {
+            $(obj).get(0).value=$(obj).get(0).value.replace(/[^\a-\z\A-\Z\d]/g,'');
+        }
+    }
 
     $(".confirm").click(function () {
         var oldPwd="";
@@ -141,8 +148,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             newPwd=$("#newPwdByPhone").val();
             confirmPwd=$("#confirmPwdByPhone").val();
             code=$("#codeByPhone").val().replace(/\ +/g,"");
-            if (newPwd== ""|| confirmPwd=="" || code=="") {
-                openTips("全部为必填项");
+            if (newPwd== ""|| confirmPwd=="") {
+                openTips("请输入密码");
+                return;
+            }
+            if (code=="") {
+                openTips("验证码错误");
                 return;
             }
             if (!regx.test(newPwd) || !regx.test(confirmPwd) || newPwd!=confirmPwd) {

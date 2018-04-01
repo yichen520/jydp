@@ -18,6 +18,7 @@ header .backimg{
 }
 .content img{
     width: 100%;
+    display: block;
 }
 .time{
     position: absolute;
@@ -38,5 +39,5 @@ video{
 .editor{
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    width:100%;
 }

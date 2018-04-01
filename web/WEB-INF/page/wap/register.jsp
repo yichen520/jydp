@@ -26,7 +26,7 @@
             <div class="userName">
                 <input type="text" id="userAccount" name="userAccount" placeholder="登录账号为字母、数字，6～16个字符 "
                        onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
-                       maxLength="16" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="validateUser(this)"/>
+                       maxLength="16" onkeyup="checkoutValue('userAccount')" onblur="validateUser(this)"/>
             </div>
             <div class="userPhone">
                 <div class="choseNumber" onclick="getPhoneArea()">
@@ -35,7 +35,7 @@
                 </div>
 
                 <input type="text" id="phoneNumber" name="phoneNumber" placeholder="您的手机号" maxlength="11"
-                       onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
+                       onkeyup="checkoutValueNum('phoneNumber')" onblur="checkoutValueNum('phoneNumber')"/>
             </div>
             <div class="userCode">
                 <input type="text" id="validateCode" name="validateCode" placeholder="请输入6位短信验证码" maxlength="6"
@@ -45,28 +45,28 @@
             <div class="userPassword">
                 <input type="password" id="password" name="password" placeholder="登录密码为字母、数字，6～16个字符" maxLength="16"
                        onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
-                       onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"
-                       onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                       onkeyup="checkoutValue('password')"
+                       onblur="checkoutValue('password')"/>
             </div>
             <div class="userPasswordTwo">
                 <input type="password" id="repeatPassword" name="repeatPassword" placeholder="请再次输入密码" maxLength="16"
                        onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
-                       onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"
-                       onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                       onkeyup="checkoutValue('repeatPassword')"
+                       onblur="checkoutValue('repeatPassword')"/>
             </div>
             <div class="userPassword">
                 <input type="password" id="payPassword" name="payPassword" placeholder="支付密码为字母、数字，6～16个字符"
                        maxLength="16"
                        onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
-                       onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"
-                       onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                       onkeyup="checkoutValue('payPassword')"
+                       onblur="checkoutValue('payPassword')"/>
             </div>
             <div class="userPasswordTwo">
                 <input type="password" id="repeatPayPassword" name="repeatPayPassword" placeholder="请再次输入支付密码"
                        maxLength="16"
                        onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
-                       onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"
-                       onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                       onkeyup="checkoutValue('repeatPayPassword')"
+                       onblur="checkoutValue('repeatPayPassword')"/>
             </div>
         </div>
         <div class="confirm" onclick="register()">注册</div>
@@ -269,7 +269,7 @@
                 if (code != 1 ) {
                     return;
                 }
-                getMesCodeFlag = true;
+                getMesCodeFlag = false;
             },
             error: function () {
                 getMesCodeFlag = false;
@@ -335,10 +335,10 @@
             return;
         }
 
-        if (!getMesCodeFlag) {
+        /*if (!getMesCodeFlag) {
             openTips("请先获取短信验证码");
             return;
-        }
+        }*/
 
         if (!validateCode || validateCode.length != 6) {
             openTips("请输入6位短信验证码");
@@ -482,5 +482,23 @@
     $('.backimg').on('click',function () {
         location.href = "<%=path %>/userWap/userLogin/show"
     });
+    
+    
+    function checkoutValue(id) {
+        var matchStr = /[^\a-\z\A-\Z\d]/g;
+        var value = $("#"+id+"").val();
+        if (matchStr.test(value)) {
+            $("#"+id+"").get(0).value=$("#"+id+"").get(0).value.replace(/[^\a-\z\A-\Z\d]/g,'');
+        }
+    }
+
+
+    function checkoutValueNum(id) {
+        var matchStr = /[^\d]/g;
+        var value = $("#"+id+"").val();
+        if (matchStr.test(value)) {
+            $("#"+id+"").get(0).value=$("#"+id+"").get(0).value.replace(/[^\d]/g,'');
+        }
+    }
 </script>
 </html>

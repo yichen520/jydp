@@ -62,7 +62,7 @@
                 <ul>
                     <li>委托数量：<span>{{formatNumber pendingNumber 4}}</span></li>
                     <li>委托单价：<span>{{formatNumber pendingPrice 6}}</span></li>
-                    <li>委托总价：<span>{{pendingTotalPriceConvert pendingNumber pendingPrice 6}}</span></li>
+                    <li>委托总价：<span>{{formatNumber totalPrice 6}}</span></li>
                 </ul>
             </div>
             <div class="navRight">
