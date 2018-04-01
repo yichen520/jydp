@@ -28,20 +28,24 @@
     <!-- 内容区域 -->
     <div class="wrapper">   
         <a href="<%=path%>/userWap/userInfo/modifyPayPassword/show.htm"><div class="content">
+            <img src="<%=path%>/resources/image/wap/xiugaizhifumima.png" class="logo"/>
             <p>修改支付密码</p>
-            <img src="<%=path%>/resources/image/wap/nextIcon.png" />
+            <img src="<%=path%>/resources/image/wap/nextIcon.png"  class="nextIcon"/>
         </div></a>
         <a href="<%=path%>/userWap/userInfo/modifyPassword/show.htm"><div class="content volume">
+            <img src="<%=path%>/resources/image/wap/xiugaimima.png" class="logo"/>
             <p>修改登录密码</p>
-            <img src="<%=path%>/resources/image/wap/nextIcon.png" />
+            <img src="<%=path%>/resources/image/wap/nextIcon.png"  class="nextIcon"/>
         </div></a>
         <a href="<%=path%>/userWap/userInfo/modifyPhone/show.htm"><div class="content">
+            <img src="<%=path%>/resources/image/wap/xiugaishoujihao.png" class="logo"/>
             <p>修改手机号</p>
-            <img src="<%=path%>/resources/image/wap/nextIcon.png" />
+            <img src="<%=path%>/resources/image/wap/nextIcon.png" class="nextIcon" />
         </div></a>
-        <div class="content">
+        <div class="content" style="display: none">
+            <img src="<%=path%>/resources/image/wap/yinhankabangding.png" class="logo"/>
             <p>银行卡绑定</p>
-            <img src="<%=path%>/resources/image/wap/nextIcon.png" />
+            <img src="<%=path%>/resources/image/wap/nextIcon.png"  class="nextIcon" />
         </div>
         <div class="out" id="loginOut">退出登录</div>
     </div>
