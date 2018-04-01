@@ -148,8 +148,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             newPwd=$("#newPwdByPhone").val();
             confirmPwd=$("#confirmPwdByPhone").val();
             code=$("#codeByPhone").val().replace(/\ +/g,"");
-            if (newPwd== ""|| confirmPwd=="" || code=="") {
-                openTips("全部为必填项");
+            if (newPwd== ""|| confirmPwd=="") {
+                openTips("请输入密码");
+                return;
+            }
+            if (code=="") {
+                openTips("验证码错误");
                 return;
             }
             if (!regx.test(newPwd) || !regx.test(confirmPwd) || newPwd!=confirmPwd) {
