@@ -39,7 +39,7 @@
             <p>修改手机号</p>
             <img src="<%=path%>/resources/image/wap/nextIcon.png" />
         </div></a>
-        <div class="content">
+        <div class="content" style="display: none">
             <p>银行卡绑定</p>
             <img src="<%=path%>/resources/image/wap/nextIcon.png" />
         </div>
