@@ -83,6 +83,8 @@
     //记录上传图片状态的
     var a = false;
     var b = false;
+    var frontImg, backImg;
+
 
     $('#icardone').localResizeIMG({
         width: 800,
@@ -90,7 +92,7 @@
         success: function (result) {
             document.getElementById('blah').style.backgroundImage='url('+result.base64+')';
             var blob = dataURLtoBlob(result.base64);
-            formData.set("frontImg", blob, "file_frontImg.jpg");
+            frontImg = blob;
             a = true;
         }
     });
@@ -100,7 +102,7 @@
         success: function (result) {
             document.getElementById('blahtwo').style.backgroundImage='url('+result.base64+')';
             var blob = dataURLtoBlob(result.base64);
-            formData.set("backImg", blob, "file_backImg.jpg");
+            backImg = blob;
             b = true;
         }
     });
@@ -124,8 +126,6 @@
         var userName = $("#userName").val();
         var userCertType = $("#userCertType").val();
         var userCertNo = $("#userCertNo").val();
-        var frontImg = $("#icardone").val();
-        var backImg = $("#icardtwo").val();
 
         if (!userName || userName == null || userName == "") {
             return openTips("请输入真实姓名");
@@ -165,6 +165,8 @@
         formData.append("userName", userName);
         formData.append("userCertType", userCertType);
         formData.append("userCertNo", userCertNo);
+        formData.append("backImg", backImg, "file_backImg.jpg");
+        formData.append("frontImg", frontImg, "file_frontImg.jpg");
         var url = "${pageContext.request.contextPath}/userWap/identificationController/add"
 
         $.ajax({
