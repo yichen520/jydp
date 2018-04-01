@@ -29,13 +29,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <!-- 原密码修改 -->
             <div class="registerContent" style="display:block">
                 <div class="userPasswordTwo">
-                    <input type="password" placeholder="原登录密码" maxlength="16" id="oldPwd" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                    <input type="password" placeholder="原登录密码" maxlength="16" id="oldPwd" onkeyup="formatPwd(this)"/>
                 </div>
                 <div class="userPassword">
-                    <input  style="width:100%" type="password" placeholder="新密码为字母、数字，6～16个字符" maxlength="16" id="newPwd" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                    <input  style="width:100%" type="password" placeholder="新密码为字母、数字，6～16个字符" maxlength="16" id="newPwd" onkeyup="formatPwd(this)"/>
                 </div>
                 <div class="userPassword">
-                        <input type="password" placeholder="再次输入新密码" maxlength="16" id="confirmPwd" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                        <input type="password" placeholder="再次输入新密码" maxlength="16" id="confirmPwd" onkeyup="formatPwd(this)"/>
                     </div>
                 <div class="userPhone">
                     <p class="num"><span id="areaCode">${phoneAreaCode}</span>&nbsp;<input type="hidden" value="${phoneNumber}" id="phoneNumber"/><span id="phoneNumberText"></span></p>
@@ -72,6 +72,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         }
         $("#phoneNumberText").text(phone);
     })
+
+    function formatPwd(obj) {
+        var matchStr = /[^\a-\z\A-\Z\d]/g;
+        var value = $(obj).val();
+        if (matchStr.test(value)) {
+            $(obj).get(0).value=$(obj).get(0).value.replace(/[^\a-\z\A-\Z\d]/g,'');
+        }
+    }
 
     $(".back").click(function () {
         window.location.href="<%=path%>/userWap/userInfo/userCenter/show.htm";
