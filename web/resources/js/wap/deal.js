@@ -191,7 +191,7 @@ var ParamsAndInit = {
         });
     },
     matchPassword:function () {
-        var matchStr = /[^a-zA-Z0-9]/;
+        var matchStr = /[^a-zA-Z0-9]/g;
         var value = $(this).val();
         if (matchStr.test(value)) {
             $(this).get(0).value=$(this).get(0).value.replace(/[^a-zA-Z0-9]/g,'');
