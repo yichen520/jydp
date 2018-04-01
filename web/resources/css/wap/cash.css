@@ -4,6 +4,7 @@ body{
 header{
     background: #f76767;
     border: 0;
+    position: relative;
 }
 header p {
     color: #fff
@@ -93,6 +94,7 @@ header .back{
     width: 4rem;
     margin-left: 0.48rem;
     float: left;
+    height: 0.6rem;
     line-height: 0.6rem;
     font-size: 0.28rem;
     color: #333;
