@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -879,10 +880,16 @@ public class WapTradeCenterController {
         currencyId = Integer.parseInt(currencyIdStr);
         transactionGraphList = transactionDealRedisService.gainGraphData(currencyId, node);
         if (null != transactionGraphList && !transactionGraphList.isEmpty()) {
-            Collections.reverse(transactionGraphList);
+            //Collections.reverse(transactionGraphList);
+            Collections.sort(transactionGraphList, new Comparator<TransactionGraphVO>() {
+                @Override
+                public int compare(TransactionGraphVO transactionGraphVO, TransactionGraphVO t1) {
+                    return transactionGraphVO.getDealDate().compareTo(t1.getDealDate());
+                }
+            });
         }
-        response.put("transactionGraphList", transactionGraphList);
 
+        response.put("transactionGraphList", transactionGraphList);
         response.put("code", 0);
         response.put("message", "查询成功");
         return response;
