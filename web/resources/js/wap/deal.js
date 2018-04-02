@@ -129,7 +129,7 @@ var ParamsAndInit = {
         var webAppPath = $("#webAppPath").val();
         var bgHeight = $(document).height();
         $('.open').on('click', function () {
-            $.get( webAppPath + "/userWap/tradeCenter/currencyInfo",function (result) {
+            $.get( path + "/userWap/tradeCenter/currencyInfo",function (result) {
                 if (result.code!=0) {
                     openTips(result.message)
                     return;
