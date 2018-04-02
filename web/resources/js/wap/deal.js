@@ -866,10 +866,6 @@ var ParamsAndInit = {
             openTips("页面数据错误，请刷新页面！");
             return;
         }
-        if (webAppPath == undefined || webAppPath == null || webAppPath == "") {
-            openTips("页面数据错误，请刷新页面！");
-            return;
-        }
         window.location.href = webAppPath + '/userWap/tradeCenter/toChartPage?currencyId=' + currencyId;
     },
     footInit: function () {
