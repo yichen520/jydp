@@ -56,7 +56,7 @@
     <div class="seller">
         <div class="sellerTitle">
             <div class="border"></div>
-            <p>合作商家</p>
+            <p>合作伙伴</p>
             <div class="clear"></div>
         </div>
         <div class="sellerContent">
