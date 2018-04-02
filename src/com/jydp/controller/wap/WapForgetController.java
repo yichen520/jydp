@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -53,11 +55,25 @@ public class WapForgetController {
     public @ResponseBody
     JsonObjectBO getPhoneArea(HttpServletRequest request){
         Map<String, String> phoneAreaMap = PhoneAreaConfig.phoneAreaMap;
-
+        Map<String, String> newMap = new LinkedHashMap<>();
+        String condition = StringUtil.stringNullHandle(request.getParameter("condition"));
+        if(StringUtil.isNotNull(condition)){
+            Iterator<Map.Entry<String, String>> iterator= phoneAreaMap.entrySet().iterator();
+            while(iterator.hasNext())
+            {
+                Map.Entry entry = iterator.next();
+                System.out.println(entry.getKey()+":"+entry.getValue());
+                if(entry.getKey().toString().contains(condition) || entry.getValue().toString().contains(condition)){
+                    newMap.put(entry.getKey().toString(), entry.getValue().toString());
+                }
+            }
+        }else{
+            newMap.putAll(phoneAreaMap);
+        }
         JsonObjectBO responseJson = new JsonObjectBO();
         responseJson.setCode(1);
         JSONObject object = new JSONObject();
-        object.put("phoneAreaMap", phoneAreaMap);
+        object.put("phoneAreaMap", newMap);
         responseJson.setData(object);
         return responseJson;
     }
