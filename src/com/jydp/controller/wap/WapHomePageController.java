@@ -119,11 +119,11 @@ public class WapHomePageController {
             }
         ObjectMapper mapper = new ObjectMapper();
         try{
-            //String systemAdsHomepagesListJson = mapper.writeValueAsString(systemAdsHomepagesList);
+            String systemAdsHomepagesListJson = mapper.writeValueAsString(systemAdsHomepagesList);
             String systemNoticeListJson = mapper.writeValueAsString(systemNoticeList);
             String systemBusinessesPartnerListJson = mapper.writeValueAsString(systemBusinessesPartnerList);
             String transactionUserDealListJson = mapper.writeValueAsString(transactionUserDealList);
-            request.setAttribute("systemAdsHomepagesList",systemAdsHomepagesList);
+            request.setAttribute("systemAdsHomepagesList",systemAdsHomepagesListJson);
             request.setAttribute("systemNoticeList",systemNoticeListJson);
             request.setAttribute("systemBusinessesPartnerList",systemBusinessesPartnerListJson);
             request.setAttribute("transactionUserDealList",transactionUserDealListJson);
