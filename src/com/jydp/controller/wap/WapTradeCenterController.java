@@ -231,10 +231,12 @@ public class WapTradeCenterController {
         double sellPrice = 0;
         if (StringUtil.isNotNull(sellPriceStr)) {
             sellPrice = Double.parseDouble(sellPriceStr);
+            sellPrice = NumberUtil.doubleFormat(sellPrice, 2);
         }
         double sellNum = 0;
         if (StringUtil.isNotNull(sellNumStr)) {
             sellNum = Double.parseDouble(sellNumStr);
+            sellNum = NumberUtil.doubleFormat(sellNum, 4);
         }
         int currencyId = 0;
         if (StringUtil.isNotNull(currencyIdStr)) {
@@ -382,11 +384,13 @@ public class WapTradeCenterController {
         double buyPrice = 0;
         if (StringUtil.isNotNull(buyPriceStr)) {
             buyPrice = Double.parseDouble(buyPriceStr);
+            buyPrice = NumberUtil.doubleFormat(buyPrice, 2);
         }
 
         double buyNum = 0;
         if (StringUtil.isNotNull(buyNumStr)) {
             buyNum = Double.parseDouble(buyNumStr);
+            buyNum = NumberUtil.doubleFormat(buyNum, 4);
         }
         int currencyId = 0;
         if (StringUtil.isNotNull(currencyIdStr)) {
