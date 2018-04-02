@@ -126,9 +126,10 @@ var ParamsAndInit = {
         });
     },
     open: function () {
+        var webAppPath = $("webAppPath").val();
         var bgHeight = $(document).height();
         $('.open').on('click', function () {
-            $.get("/jydp/userWap/tradeCenter/currencyInfo",function (result) {
+            $.get( webAppPath + "/userWap/tradeCenter/currencyInfo",function (result) {
                 if (result.code!=0) {
                     openTips(result.message)
                     return;
