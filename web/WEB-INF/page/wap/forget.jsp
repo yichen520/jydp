@@ -24,9 +24,9 @@
         <div class="registerContent">
             <form id="forgetForm" method="post">
             <div class="userName">
-                <input type="text" placeholder="您的登录账号" id="userAccount" name="userAccount"
+                <input type="text" placeholder="您的登录账号" id="userAccount" name="userAccount" maxlength="16"
                        onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
-                       oninput="if(value.length>16) value=value.slice(0,15)" maxLength="16" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                       onkeyup="checkoutValue(this)" onblur="checkoutValue(this)"/>
             </div>
             <div class="userPhone">
                 <div class="choseNumber">
@@ -34,20 +34,20 @@
                     <img src="${pageContext.request.contextPath}/resources/image/wap/iconDown.png" />
                 </div>
                 <input type="text" placeholder="您注册的手机号" id="phoneNumber" name="phoneNumber" maxlength="11"
-                       oninput="if(value.length>11) value=value.slice(0,10)" onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
+                       onkeyup="checkoutNumber(this)" onblur="checkoutNumber(this)" />
             </div>
             <div class="userCode">
                 <input type="text" id="validateCode" name="validateCode" placeholder="请输入6位短信验证码" maxlength="6"
-                       oninput="if(value.length>6) value=value.slice(0,5)"onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
+                       onkeyup="checkoutNumber(this)" onblur="checkoutNumber(this)"/>
                 <p onclick="getValidateCode()">获取验证码</p>
             </div>
             <div class="userPassword">
                 <input type="password" id="password" name="password" placeholder="新密码为字母、数字，6～16个字符" maxlength="16"
-                       oninput="if(value.length>16) value=value.slice(0,15)" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                       onkeyup="checkoutValue(this)" onblur="checkoutValue(this)"/>
             </div>
             <div class="userPasswordTwo">
                 <input type="password" id="repeatPassword" placeholder="请再次输入新密码" maxlength="16"
-                       oninput="if(value.length>16) value=value.slice(0,15)" onkeyup="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')" onblur="value=value.replace(/[^\a-\z\A-\Z\d]/g,'')"/>
+                       onkeyup="checkoutValue(this)" onblur="checkoutValue(this)"/>
             </div>
                 <input type="hidden" name="phoneAreaCode" id="phoneAreaCode">
             </form>
@@ -77,6 +77,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/wap/common.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/wap/zepto.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/wap/register.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/wap/checkout.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/wap/handlebars-v4.0.11.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/wap/simpleTips_wap.js"></script>
 <!-- 定义handlebars模板 -->
@@ -99,6 +100,7 @@
             return false;
         }
     }
+    
 
     $(function () {
         $("#backImg").click(function () {
@@ -118,7 +120,6 @@
         var validateCode = $("#validateCode").val();
         var password = $("#password").val();
         var repeatPassword = $("#repeatPassword").val();
-
 
         var commonReg = /^[A-Za-z0-9]{6,16}$/;
         var phoneReg = /^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$/;
