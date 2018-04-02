@@ -77,7 +77,9 @@
         var date = new Date(addTime);
         var year = date.getFullYear();
         var month = date.getMonth() + 1;
+        month=month < 10 ? ('0' + month) : month;
         var day = date.getDate();
+        day=day < 10 ? ('0' + day) : day;
         return year + "-" + month + "-" + day ;
     });
 
@@ -98,32 +100,39 @@
     var noticefunc = Handlebars.compile($('#template').html());
     $('.content ul').html(noticefunc(systemHotListData));
     //加载更多
+    var totalPageNumber = parseInt(${requestScope.totalPageNumber});
+    if (totalPageNumber == 0){
+        $(".more").remove();
+    }
+    //更多
     function pageNext() {
         var pageNumber = $("#queryPageNumber").html();
         var totalPageNumber = parseInt(${requestScope.totalPageNumber});
-
         if(pageNumber < totalPageNumber - 1){
             pageNumber = pageNumber + 1;
             $.ajax({
-                url: '<%=path %>/userWap/wapSystemHot/showMoreHot',
+                url: '<%=path %>/userWap/wapSystemNotice/showMoreNotice',
                 type: 'post',
                 dataType: 'json',
                 data:{pageNumber:pageNumber,},//参数
                 success: function (result) {
                     if (result.code == 1) {
-                        var noticeList = result.systemHotList;
+                        var noticeList = result.systemNoticeList;
                         if (noticeList != null) {
                             var transactionfunc = Handlebars.compile($('#template').html());
                             $('.content ul').append(transactionfunc(noticeList));
-                            $('#queryPageNumber').html(result.pageNumber)
+                            $('#queryPageNumber').html(result.pageNumber);
+                            if (noticeList.length < 10){
+                                $(".more").remove();
+                            }
                         }
                     }
                 }
             });
         } else {
-            openTips("已全部加载完成");
             $(".more").remove();
         }
     }
+
 </script>
 </html>

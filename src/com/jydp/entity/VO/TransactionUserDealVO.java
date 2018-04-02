@@ -18,6 +18,9 @@ public class TransactionUserDealVO extends TransactionUserDealDO {
     private double fee;  //手续费
     private double actualPrice;  //实际价
 
+    private String feeForWap; //wap端手续费
+    private String actualPriceForWap; //wap端实际总价
+
     /**
      * 用户账号
      * @return the userAccount
@@ -80,5 +83,38 @@ public class TransactionUserDealVO extends TransactionUserDealDO {
      */
     public void setActualPrice(double actualPrice) {
         this.actualPrice = actualPrice;
+    }
+
+
+    /**
+     * wap端手续费
+     * @return the feeForWap
+     */
+    public String getFeeForWap() {
+        return feeForWap;
+    }
+
+    /**
+     * wap端手续费
+     * @param feeForWap the feeForWap to set
+     */
+    public void setFeeForWap(String feeForWap) {
+        this.feeForWap = feeForWap;
+    }
+
+    /**
+     * wap端实际总价
+     * @return the actualPriceForWap
+     */
+    public String getActualPriceForWap() {
+        return actualPriceForWap;
+    }
+
+    /**
+     * wap端实际总价
+     * @param actualPriceForWap the actualPriceForWap to set
+     */
+    public void setActualPriceForWap(String actualPriceForWap) {
+        this.actualPriceForWap = actualPriceForWap;
     }
 }

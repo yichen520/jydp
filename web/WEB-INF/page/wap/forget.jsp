@@ -59,7 +59,7 @@
     <div class="chosePhone">
         <div class="search">
             <img src="${pageContext.request.contextPath}/resources/image/wap/searchIcon.png" />
-            <input type="type" placeholder="请选择国家或区号" id="country" oninput="if(value.length>16) value=value.slice(0,15)" onkeyup="showSearch()"/>
+            <input type="text" placeholder="请选择国家或区号" id="country" oninput="checkoutCountry(this)" onblur="checkoutCountry(this)"  onkeyup="showSearch()"/>
             <p>取消</p>
         </div>
         <div class="searchList">
@@ -222,6 +222,7 @@
 
     //搜索时动态显示区号
     function showSearch() {
+
         var value = $("#country").val();
         var arr = {};
         arr.phoneAreaMap = [];

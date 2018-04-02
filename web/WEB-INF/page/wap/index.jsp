@@ -109,9 +109,9 @@
                 <div>
                     <p class="list-name">{{currencyName}}</p>
                     {{#compare change 0}}
-                    <p class="red">{{latestPrice}} XT</p>
+                    <p class="red">XT{{latestPrice}}</p>
                     {{else}}
-                    <p class="green">{{latestPrice}} XT</p>
+                    <p class="green">XT{{latestPrice}}</p>
                     {{/compare}}
                 </div>
             </li>
@@ -228,7 +228,9 @@
         var date = new Date(addTime);
         var year = date.getFullYear();
         var month = date.getMonth() + 1;
+        month=month < 10 ? ('0' + month) : month;
         var day = date.getDate();
+        day=day < 10 ? ('0' + day) : day;
         return year + "-" + month + "-" + day;
     });
 
@@ -251,7 +253,7 @@
 
     $(document).ready(function () {
         //循环执行，每隔10秒钟执行一次 10000
-        var t1 = window.setInterval(refreshMarket, 10000);
+        //  var t1 = window.setInterval(refreshMarket, 10000);
         //判读session是否存在
 
     });

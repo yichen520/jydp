@@ -21,6 +21,16 @@ public interface ITransactionUserDealService {
      */
     List<TransactionUserDealVO> getTransactionUserDeallist(int userId, int pageNumber, int pageSize);
 
+
+    /**
+     * wap查询用户成交记录(web端)
+     * @param userId 用户Id
+     * @param pageNumber  当前页数
+     * @param pageSize  每页条数
+     * @return 查询成功：返回用户成交记录；查询失败：返回null
+     */
+    List<TransactionUserDealVO> getTransactionUserDeallistForWap(int userId, int pageNumber, int pageSize);
+
     /**
      * 新增成交记录
      * @param orderNo  记录号,业务类型（2）+日期（6）+随机位（10）
@@ -91,6 +101,17 @@ public interface ITransactionUserDealService {
      * @return  操作成功：返回成交记录集合，操作失败:返回null
      */
     List<TransactionUserDealVO> listTransactionUserDealByPendNo(String pendNo, int userId, int pageNumber, int pageSize);
+
+
+    /**
+     * wap端根据挂单记录号查询成交记录
+     * @param pendNo  挂单记录号
+     * @param userId  用户Id
+     * @param pageNumber  当前页数
+     * @param pageSize  每页条数
+     * @return  操作成功：返回成交记录集合，操作失败:返回null
+     */
+    List<TransactionUserDealVO> listTransactionUserDealByPendNoForWap(String pendNo, int userId, int pageNumber, int pageSize);
 
     /**
      * 查询用户成交记录总数
