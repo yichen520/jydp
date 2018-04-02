@@ -21,7 +21,6 @@
 </header>
 <form id="registerForm" method="post">
     <div class="registerBox">
-        <div class="title">注册</div>
         <div class="registerContent">
             <div class="userName">
                 <input type="text" id="userAccount" name="userAccount" placeholder="登录账号为字母、数字，6～16个字符 "
