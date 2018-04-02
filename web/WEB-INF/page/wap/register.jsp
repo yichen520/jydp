@@ -96,6 +96,10 @@
     <input type="hidden" id="userId" name="userId"/>
     <input type="hidden" id="userAccountIde" name="userAccount"/>
 </form>
+<!-- loading图 -->
+<div id="loading">
+    <i></i>
+</div>
 </body>
 
 <script src="<%=path %>/resources/js/wap/common.js"></script>

@@ -34,7 +34,7 @@
                     <div class="box">
                         <img src="${pageContext.request.contextPath}/resources/image/wap/iconPassword.png" />
                         <input type="password" placeholder="您的登录密码" id="password" name="password"
-                               onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false" maxLength="16"
+                               onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false" maxLength="16" autocomplete="new-password"
                                onkeyup="checkoutValue(this)" onblur="checkoutValue(this)"
                                onkeypress="keypressHandle(event);"/>
                     </div>
@@ -48,7 +48,10 @@
             </form>
         </div>
     </div>
-
+    <!-- loading图 -->
+    <div id="loading">
+        <i></i>
+    </div>
 </body>
 
 <script src="${pageContext.request.contextPath}/resources/js/wap/common.js"></script>
