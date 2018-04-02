@@ -29,8 +29,7 @@ var ParamAndViewInit = {
         return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
     },
     viewMore: function () {
-        var bgHeight = $(document).height();
-        $('.bg').css("height",bgHeight +"px");
+
         //拿到已有的list
         var $listUserFeedbackList  = $("div[class='list']");
         var pageNum = $("#pageNumber").val();
@@ -99,6 +98,8 @@ var ParamAndViewInit = {
                 $div0.append($div3);
             }
             $divContent.append($div0);
+            var bgHeight = $(document).height();
+            $('.bg').css("height",bgHeight +"px");
         }
     },
     addFeedFinish: function () {
