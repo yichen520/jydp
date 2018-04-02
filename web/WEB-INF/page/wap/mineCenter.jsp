@@ -62,6 +62,9 @@
 <script type="text/javascript" src="<%=path%>/resources/js/wap/simpleTips_wap.js"></script>
 
 <script type="text/javascript">
+
+        var path = "<%=path%>"
+
         $("#loginOut").click(function () {
             window.location.href="<%=path%>/userWap/userLogin/loginOut";
         })

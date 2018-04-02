@@ -26,16 +26,16 @@
                     <div class="box">
                         <img src="${pageContext.request.contextPath}/resources/image/wap/iconUser.png" />
                         <input type="text" placeholder="您的登录账号" id="userAccount" name="userAccount" value="${userAccount}"
-                               onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
-                               maxLength="16"  onkeyup="checkoutValue('userAccount')" onblur="checkoutValue('userAccount')"/>
+                               onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false" maxLength="16"
+                               onkeyup="checkoutValue(this)" onblur="checkoutValue(this)"/>
                     </div>
                 </div>
                 <div class="passwordBox">
                     <div class="box">
                         <img src="${pageContext.request.contextPath}/resources/image/wap/iconPassword.png" />
                         <input type="password" placeholder="您的登录密码" id="password" name="password"
-                               onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false"
-                               maxLength="16" onkeyup="checkoutValue('password')" onblur="checkoutValue('password')"
+                               onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false" maxLength="16" autocomplete="new-password"
+                               onkeyup="checkoutValue(this)" onblur="checkoutValue(this)"
                                onkeypress="keypressHandle(event);"/>
                     </div>
                 </div>
@@ -48,13 +48,18 @@
             </form>
         </div>
     </div>
-
+    <!-- loading图 -->
+    <div id="loading">
+        <i></i>
+    </div>
 </body>
 
 <script src="${pageContext.request.contextPath}/resources/js/wap/common.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/wap/zepto.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/wap/jquery-2.1.4.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/wap/simpleTips_wap.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/wap/checkout.js"></script>
+
 <script type="text/javascript">
     window.onload = function() {
         var code = '${code}';
@@ -105,14 +110,6 @@
     function keypressHandle(event) {
         if (event.keyCode == "13") {
             loginSubmit();
-        }
-    }
-
-    function checkoutValue(id) {
-        var matchStr = /[^\a-\z\A-\Z\d]/g;
-        var value = $("#"+id+"").val();
-        if (matchStr.test(value)) {
-            $("#"+id+"").get(0).value=$("#"+id+"").get(0).value.replace(/[^\a-\z\A-\Z\d]/g,'');
         }
     }
 

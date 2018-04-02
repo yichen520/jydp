@@ -35,11 +35,7 @@
     <div class="top">
         <div class="swiper-container">
             <div class="swiper-wrapper">
-                <c:forEach items="${systemAdsHomepagesList}" var="item">
-                    <a href="${item.wapLinkUrl }" class="swiper-slide" >
-                        <img src="${item.adsImageUrlFormat }"   />
-                    </a>
-                </c:forEach>
+
             </div>
             <div class="swiper-pagination"></div>
         </div>
@@ -68,9 +64,9 @@
     </div>
 </div>
 <!-- loading图 -->
-<%--<div id="loading">--%>
-    <%--<i></i>--%>
-<%--</div>--%>
+<div id="loading">
+    <i></i>
+</div>
 <!-- 选择币种 -->
 <div class="choseBz" >
     <div class="choseBzBox">
@@ -106,93 +102,97 @@
 <script id="template" type="text/x-handlebars-template">
     {{#each this}}
     <a href="<%=path%>/userWap/tradeCenter/show?currencyIdStr={{currencyId}}">
-    <ul>
+        <ul>
 
-        <li>
-            <img src="{{currencyImgUrl}}"/>
-            <div>
-                <p class="list-name">{{currencyName}}</p>
-                {{#compare change 0}}
-                <p class="red">$ {{latestPrice}}</p>
-                {{else}}
-                <p class="green">$ {{latestPrice}}</p>
-                {{/compare}}
-            </div>
-        </li>
-        <li>
-            <div>
-                <p>日成交量</p>
-
-                {{#compare change 0}}
-
-                <p class="red"> {{volume}}</p>
-
-                {{else}}
-
-                <p class="green"> {{volume}}</p>
-
-                {{/compare}}
-
-            </div>
-        </li>
-        <li>
-            <div>
-                <p>日涨跌</p>
-                <p>
+            <li>
+                <img src="{{currencyImgUrl}}"/>
+                <div>
+                    <p class="list-name">{{currencyName}}</p>
                     {{#compare change 0}}
-                    {{#if change}}
-                    <span class="red"> + </span>
-                    {{/if}}
-                    <span class="red"> {{change}}%</span>
+                    <p class="red">$ {{latestPrice}}</p>
                     {{else}}
-                    <span class="green"> {{change}}%</span>
+                    <p class="green">$ {{latestPrice}}</p>
                     {{/compare}}
-                </p>
-            </div>
-        </li>
-    </ul>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <p>日成交量</p>
+
+                    {{#compare change 0}}
+
+                    <p class="red"> {{volume}}</p>
+
+                    {{else}}
+
+                    <p class="green"> {{volume}}</p>
+
+                    {{/compare}}
+
+                </div>
+            </li>
+            <li>
+                <div>
+                    <p>日涨跌</p>
+                    <p>
+                        {{#compare change 0}}
+                        {{#if change}}
+                        <span class="red"> + </span>
+                        {{/if}}
+                        <span class="red"> {{change}}%</span>
+                        {{else}}
+                        <span class="green"> {{change}}%</span>
+                        {{/compare}}
+                    </p>
+                </div>
+            </li>
+        </ul>
     </a>
     {{/each}}
 
 </script>
 
-<%--<script id="swiperTemplate" type="text/x-handlebars-template">
-    {{#each this}}
-            <a href="{{wapLinkUrl}}" class="swiper-slide" >
-                <img src="{{adsImageUrlFormat}}"   />
-            </a>
-    {{/each}}
-</script>--%>
-
 <script id="sellerTemplate" type="text/x-handlebars-template">
-{{#each this}}
+    {{#each this}}
     {{#if webLinkUrl}}
-        <div class="iconBox">
-            <a target="_blank" href="{{webLinkUrl}}" class="link">
-                <img src="{{businessesImageUrlFormat}}"/>
-            </a>
-            <p>{{businessesName}}</p>
-        </div>
+    <div class="iconBox">
+        <a target="_blank" href="{{webLinkUrl}}" class="link">
+            <img src="{{businessesImageUrlFormat}}"/>
+        </a>
+        <p>{{businessesName}}</p>
+    </div>
     {{else}}
-        <div class="iconBox">
-            <a target="_blank"  class="link">
-                <img src="{{businessesImageUrlFormat}}"/>
-            </a>
-            <p>{{businessesName}}</p>
-        </div>
+    <div class="iconBox">
+        <a target="_blank"  class="link">
+            <img src="{{businessesImageUrlFormat}}"/>
+        </a>
+        <p>{{businessesName}}</p>
+    </div>
     {{/if}}
-{{/each}}
+    {{/each}}
+</script>
+
+<script id="swiperTemplate" type="text/x-handlebars-template">
+    {{#each this}}
+    {{#if wapLinkUrl}}
+    <a target="_blank" href="{{wapLinkUrl}}" class="swiper-slide" style="display: block;background: url({{adsImageUrlFormat}})"  >
+    </a>
+    {{else}}
+    <a class="swiper-slide" style="display: block;background: url({{adsImageUrlFormat}})">
+    </a>
+    {{/if}}
+    {{/each}}
 </script>
 
 <script id="noticeTemplate" type="text/x-handlebars-template">
-{{#each this}}
-<li class="noticebox">
-    <a target="_blank" href="<%=path%>/userWap/wapSystemNotice/showNoticeDetail/{{id}}" class="link">
-        <p class="noticeTitle">【公告】{{noticeTitle}}</p>
-        <span>{{addTimeDateConvert addTime}}</span>
-    </a>
-</li>
-{{/each}}
+    {{#each this}}
+    <li class="noticebox">
+        <a target="_blank" href="<%=path%>/userWap/wapSystemNotice/showNoticeDetail/{{id}}" class="link">
+            <p class="noticeTitle">【公告】{{noticeTitle}}</p>
+            <span>{{addTimeDateConvert addTime}}</span>
+        </a>
+    </li>
+    {{/each}}
 </script>
 
 <script id="table-template" type="text/x-handlebars-template">
@@ -222,17 +222,7 @@
 <script src="<%=path %>/resources/js/wap/index.js"></script>
 <script src="<%=path %>/resources/js/wap/handlebars-v4.0.11.js"></script>
 <script type="text/javascript">
-    var swiper = new Swiper('.top .swiper-container', {
-        pagination: '.swiper-pagination',
-        nextButton: '.swiper-button-next',
-        prevButton: '.swiper-button-prev',
-        paginationClickable: true,
-        spaceBetween: 30,
-        centeredSlides: true,
-        autoplay: 4000,
-        autoplayDisableOnInteraction: false
-    });
-
+    var path = "<%=path%>"
     //日期转换
     Handlebars.registerHelper("addTimeDateConvert", function (addTime) {
         var date = new Date(addTime);
@@ -266,51 +256,50 @@
 
     });
 
-    //首页banner数据填充
-    <%--var systemAdsHomepagesListData = ${requestScope.systemAdsHomepagesList};
+    var systemAdsHomepagesListData = ${requestScope.systemAdsHomepagesList};
     var systemAdsHomepagesfunc = Handlebars.compile($('#swiperTemplate').html());
-    $('.swiper-wrapper').html(systemAdsHomepagesfunc(systemAdsHomepagesListData));--%>
+    $('.swiper-wrapper').html(systemAdsHomepagesfunc(systemAdsHomepagesListData));
 
-//公告数据填充
-var systemNoticeListData = ${requestScope.systemNoticeList};
-var noticefunc = Handlebars.compile($('#noticeTemplate').html());
-$('.noticeContent').html(noticefunc(systemNoticeListData));
-//交易数据填充
-var transactionUserDealListData = ${requestScope.transactionUserDealList};
-var transactionfunc = Handlebars.compile($('#template').html());
-$('.content-list').html(transactionfunc(transactionUserDealListData));
+    //公告数据填充
+    var systemNoticeListData = ${requestScope.systemNoticeList};
+    var noticefunc = Handlebars.compile($('#noticeTemplate').html());
+    $('.noticeContent').html(noticefunc(systemNoticeListData));
+    //交易数据填充
+    var transactionUserDealListData = ${requestScope.transactionUserDealList};
+    var transactionfunc = Handlebars.compile($('#template').html());
+    $('.content-list').html(transactionfunc(transactionUserDealListData));
 
-//合作伙伴数据填充
-var systemBusinessesPartnerListData = ${requestScope.systemBusinessesPartnerList};
-var systemBusinessesfunc = Handlebars.compile($('#sellerTemplate').html());
-$('.sellerContent').html(systemBusinessesfunc(systemBusinessesPartnerListData));
+    //合作伙伴数据填充
+    var systemBusinessesPartnerListData = ${requestScope.systemBusinessesPartnerList};
+    var systemBusinessesfunc = Handlebars.compile($('#sellerTemplate').html());
+    $('.sellerContent').html(systemBusinessesfunc(systemBusinessesPartnerListData));
 
-//刷新币种行情
-function refreshMarket() {
-    $.ajax({
-        url: '<%=path %>/userWeb/homePage/getCurrencyMarket',
-        type: 'post',
-        dataType: 'json',
-        success: function (result) {
-            if (result.code == 1) {
-                var currencyMarket = result.data;
-                if (currencyMarket != null) {
-                    var marketList = currencyMarket.transactionUserDealList;
-                    if (marketList != null) {
-                        $(".content-list ul").remove();
-                        var transactionfunc = Handlebars.compile($('#template').html());
-                        $('.content-list').html(transactionfunc(marketList));
+    //刷新币种行情
+    function refreshMarket() {
+        $.ajax({
+            url: '<%=path %>/userWeb/homePage/getCurrencyMarket',
+            type: 'post',
+            dataType: 'json',
+            success: function (result) {
+                if (result.code == 1) {
+                    var currencyMarket = result.data;
+                    if (currencyMarket != null) {
+                        var marketList = currencyMarket.transactionUserDealList;
+                        if (marketList != null) {
+                            $(".content-list ul").remove();
+                            var transactionfunc = Handlebars.compile($('#template').html());
+                            $('.content-list').html(transactionfunc(marketList));
+                        }
                     }
                 }
             }
-        }
-    });
-}
+        });
+    }
 
-$('.choseBzBox-content ul').on('click', 'li', function () {
-    var currencyId=$(this).find("p").eq(0).text();
-    window.location.href="<%=path%>/userWap/tradeCenter/show?currencyIdStr="+currencyId
-})
+    $('.choseBzBox-content ul').on('click', 'li', function () {
+        var currencyId=$(this).find("p").eq(0).text();
+        window.location.href="<%=path%>/userWap/tradeCenter/show?currencyIdStr="+currencyId
+    })
 
 </script>
 </html>

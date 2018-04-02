@@ -32,7 +32,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             </div>
             <div class="oldPhoneCode">
                 <input type="number" placeholder="请输入6位短信验证码" oninput="if(value.length>6)value=value.slice(0,6)" class="oldCode" id="oldValidCode"/>
-                <input class="code" id="oldPhoneCode" value="获取验证码"/>
+                <input class="code" id="oldPhoneCode" value="获取验证码" readonly="readonly"/>
             </div>
             <div class="newPhone">
                 <div class="choseNumber">
@@ -43,7 +43,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             </div>
             <div class="newPhoneCode">
                 <input type="number" placeholder="请输入6位短信验证码" oninput="if(value.length>6)value=value.slice(0,6)" class="oldCode" id="newValidCode"/>
-                <input class="code" id="newPhoneCode" value="获取验证码"/>
+                <input class="code" id="newPhoneCode" value="获取验证码" readonly="readonly"/>
             </div>
             <div class="userPassword">
                 <input type="password" placeholder="登录密码" maxlength="16" id="password" onkeyup="formatPwd(this)"/>
@@ -88,6 +88,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <script>
 
+    var path = "<%=path%>"
+
     $(function () {
         var phone="<%=request.getAttribute("phoneNumber")%>";
         if (phone.length==6) {
@@ -116,11 +118,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         var newValidCode=$("#newValidCode").val();
         var areaCode=$("#newAreaCode").text();
         var phone=$("#newPhone").val();
-        if (validCode=="" || newValidCode=="") {
+        if ((validCode=="" || newValidCode=="") && (password!="" && areaCode!="" && phone!="")) {
             openTips("验证码错误");
             return;
         }
-        if (password=="" || areaCode=="" || phone=="") {
+        if (password=="" || areaCode=="" || phone=="" || validCode=="" || newValidCode=="") {
             openTips("全部为必填项");
             return;
         }

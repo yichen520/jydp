@@ -367,6 +367,9 @@
 <script src="<%=path %>/resources/js/wap/simpleTips_wap.js"></script>
 <script src="<%=path %>/resources/js/wap/deal.js"></script>
 <script type="text/javascript">
+
+    var path = "<%=path%>"
+
     //if比较
     Handlebars.registerHelper("compare", function (x1, x2, options) {
         if (x1 >= x2) {
