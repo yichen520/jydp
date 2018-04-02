@@ -118,11 +118,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         var newValidCode=$("#newValidCode").val();
         var areaCode=$("#newAreaCode").text();
         var phone=$("#newPhone").val();
-        if (validCode=="" || newValidCode=="") {
+        if ((validCode=="" || newValidCode=="") && (password!="" && areaCode!="" && phone!="")) {
             openTips("验证码错误");
             return;
         }
-        if (password=="" || areaCode=="" || phone=="") {
+        if (password=="" || areaCode=="" || phone=="" || validCode=="" || newValidCode=="") {
             openTips("全部为必填项");
             return;
         }
