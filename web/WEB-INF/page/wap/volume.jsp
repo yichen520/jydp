@@ -70,7 +70,7 @@
                     <li>单价：<span>{{formatNumber transactionPrice 2}}</span></li>
                     <li>总价：<span>{{formatNumber currencyTotalPrice 6}}</span></li>
                     <li>手续费：<span>{{feesConvert feeForWap 8}}</span></li>
-                    {{#compare actualPrice 0 }}
+                    {{#compare actualPriceForWap 0 }}
                         <li>{{formatPaymentType paymentType}}：<span>{{actualArrivalConvert actualPriceForWap 6}}</span></li>
                     {{/compare}}
                     <li>完成时间：<span>{{addTimeConvert addTime}}</span></li>

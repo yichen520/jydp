@@ -1,3 +1,7 @@
+header{
+    position: relative;
+    z-index: 1;
+}
 .back img{
     margin-top: 0.3rem;
     margin-left: 0.3rem;
@@ -8,7 +12,6 @@
 .registerBox{
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-    margin-top: 0.4rem;
 }
 .registerBox .title{
     font-size: 0.4rem;
@@ -103,7 +106,6 @@
 }
 /* 选择手机号弹窗 */
 .chosePhone{
-    margin-top: 0.91rem;
     position: absolute;
     top: 0;
     left: 0;

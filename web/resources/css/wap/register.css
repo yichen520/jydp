@@ -6,7 +6,10 @@ select:-webkit-autofill {
 input[type=text]:focus, input[type=password]:focus, textarea:focus {
     -webkit-box-shadow: 0 0 0 1000px white inset;
 }
-
+header{
+    position: relative;
+    z-index: 1
+}
 .back img{
     margin-top: 0.3rem;
     margin-left: 0.3rem;
@@ -17,7 +20,7 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
 .registerBox{
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-    margin-top: 0.91rem;
+
 }
 .registerBox .title{
     font-size: 0.4rem;
@@ -151,7 +154,6 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
     z-index: 10;
     background: #fff;
     display: none;
-    margin-top: 0.91rem;
 }
 .search{
     width: 100%;
