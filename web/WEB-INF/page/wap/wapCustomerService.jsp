@@ -31,8 +31,8 @@
             {{#each userFeedbackList}}
             <div class="list">
                 <div class="titleBox">
-                    <p class="title">{{{feedbackTitle}}}</p>
-                    {{{contactTypeFormat handleStatus}}}</p>
+                    <p class="title">{{feedbackTitle}}</p>
+                    <p>{{{contactTypeFormat handleStatus}}}</p>
                 </div>
                 <div class="listContent">
                     <p class="main">{{{feedbackContent}}}</p>
@@ -49,7 +49,7 @@
         <div class="more">查看更多</div>
     </script>
 </div>
-<div class="submit">提 交 问 题</div>
+<div class="submit">提交问题</div>
 <!-- 提交问题弹窗 -->
 <div class="bg">
     <div class="showBox">
