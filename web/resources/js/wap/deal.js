@@ -236,10 +236,10 @@ var ParamsAndInit = {
                 //价格 * 数量 除以 (10 * 小数点的位数的8位浮点数)
                 var number = parseFloat((Number(buyPrice.replace(".", "")) * Number(buyNum.replace(".", "")) / Math.pow(10, m)).toFixed(8));
                 //设置购买总价格
-                $("#buyTotal").val("$" + number);
+                $("#buyTotal").val(number);
             }
             //可用美金
-            var userBalance = parseFloat($("#userBalance").text().split("$")[1]);
+            var userBalance = parseFloat($("#userBalance").text().split(" XT")[0]);
             if (buyPrice > 0) {
                 //如果单价大于0，购买的手续费用乘以100
                 buyFee = buyFee * 100;
@@ -251,15 +251,15 @@ var ParamsAndInit = {
                 var totalCanBuy = userBalance / buyPrice;
                 //格式化可买的个数 返回字符串
                 var tota = ParamsAndInit.mulMaxNumber(totalCanBuy);
-                $("#buyMax").html("最大可买: " + Math.floor(tota * 1000000) / 1000000);
+                $("#buyMax").html("最大可买: " + Math.floor(tota * 1000000) / 1000000 +" XT");
             } else {
                 //如果价格小于0就直接返回0
-                $("#buyMax").html("最大可买: " + "0");
+                $("#buyMax").html("最大可买: " + "0 XT");
             }
         } else {
             //价格不正确直接返回
-            $("#buyMax").html("最大可买: " + "0");
-            $("#buyTotal").val("$0");
+            $("#buyMax").html("最大可买: " + "0 XT");
+            $("#buyTotal").val("0");
         }
         //卖出
         var s = 0;
@@ -293,7 +293,7 @@ var ParamsAndInit = {
                 var number = parseFloat((Number(sellPrice.replace(".", "")) * Number(sellNum.replace(".", "")) / Math.pow(10, s)).toFixed(8));
                 //格式化
                 number = ParamsAndInit.mulMaxNumber(number);
-                $("#sellTotal").val("$" + number);
+                $("#sellTotal").val(number);
             }
 
             //可用币
@@ -308,12 +308,12 @@ var ParamsAndInit = {
                 var number = parseFloat((Number(sellPrice.replace(".", "")) * Number(currencyNumber.replace(".", "")) / Math.pow(10, z)).toFixed(8));
                 //格式化
                 number = ParamsAndInit.mulMaxNumber(number);
-                $("#sellMax").html("最大可获得: " + "$" + number);
+                $("#sellMax").html("最大可获得: "  + number + " XT");
             }
         } else {
             //价格不正确
-            $("#sellMax").html("最大可获得: " + "$0");
-            $("#sellTotal").val("$0");
+            $("#sellMax").html("最大可获得: " + "0 XT");
+            $("#sellTotal").val("0");
         }
     },
     mulMaxNumber: function (value) {
@@ -372,8 +372,8 @@ var ParamsAndInit = {
         $("#buyPrice").val("");
         $("#buyNum").val("");
         $("#buyPwd").val("");
-        $("#buyMax").html("最大可买: " + "0");
-        $buyTotal.val("$0");
+        $("#buyMax").html("最大可买: " + "0 TX");
+        $buyTotal.val("0");
 
         var user = $("#userSession").val();
         if (user == undefined || user == null || user == "") {
@@ -407,9 +407,9 @@ var ParamsAndInit = {
         if (isNaN(buyPrice) || isNaN(buyNum)) {
             openTips("交易价格和购买数量必须是数字");
         }
-        $("#buyPriceTips").html("$" + buyPrice);
+        $("#buyPriceTips").html(buyPrice + " XT");
         $("#buyNumTips").html(buyNum);
-        $("#buySumTips").html(buyTotal);
+        $("#buySumTips").html(buyTotal + " XT");
         $('.mask').fadeIn();
     },
     toSell: function () {
@@ -427,8 +427,8 @@ var ParamsAndInit = {
         $("#sellPrice").val("");
         $("#sellNum").val("");
         $("#sellPwd").val("");
-        $("#sellMax").html("最大可获得: " + "$" + "0");
-        $sellTotal.val("$0");
+        $("#sellMax").html("最大可获得: 0 XT");
+        $sellTotal.val("0");
 
         var user = $("#userSession").val();
         if (user == undefined || user == null || user == "") {
@@ -463,9 +463,9 @@ var ParamsAndInit = {
             openTips("出售数量和价格必须都是数字");
             retrurn;
         }
-        $("#sellPriceTips").html("$" + sellPrice);
+        $("#sellPriceTips").html(sellPrice + " XT");
         $("#sellNumTips").html(sellNum);
-        $("#sellSumTips").html(sellTotal);
+        $("#sellSumTips").html(sellTotal + " XT");
         $('.maskSell').fadeIn();
     },
     sellHandle: function () {
@@ -478,8 +478,8 @@ var ParamsAndInit = {
         document.getElementById("buyPrice").value = "";
         document.getElementById("buyNum").value = "";
         document.getElementById("buyPwd").value = "";
-        $("#sellMax").html("最大可获得: " + "$0");
-        $("#sellTotal").val("$0");
+        $("#sellMax").html("最大可获得: " + "0 XT");
+        $("#sellTotal").val("0");
         $.ajax({
             url: webAppPath + "/userWap/tradeCenter/sell.htm", //方法路径URL
             data: {
@@ -519,8 +519,8 @@ var ParamsAndInit = {
         document.getElementById("buyPrice").value = "";
         document.getElementById("buyNum").value = "";
         document.getElementById("buyPwd").value = "";
-        $("#buyMax").html("最大可买: " + "0");
-        $("#buyTotal").val("$0");
+        $("#buyMax").html("最大可买: " + "0 XT");
+        $("#buyTotal").val("0");
         $.ajax({
             url: webAppPath + "/userWap/tradeCenter/buy.htm", //方法路径URL
             data: {
@@ -671,9 +671,9 @@ var ParamsAndInit = {
                     $("#currencyNumber").val(ParamsAndInit.formatNumber(userDealCapitalMessage.currencyNumber, 4));
                     $("#currencyNumberLockShow").html(ParamsAndInit.formatNumber(userDealCapitalMessage.currencyNumberLock, 6));
 
-                    $("#userBalance").html("$"+ParamsAndInit.formatNumber(userDealCapitalMessage.userBalance, 6));
-                    $("#userBalanceLockShow").html("$" + ParamsAndInit.formatNumber(userDealCapitalMessage.userBalanceLock, 6));
-                    $("#currencyNumberSumShow").html("$" + ParamsAndInit.formatNumber(userDealCapitalMessage.currencyNumberSum, 6));
+                    $("#userBalance").html(ParamsAndInit.formatNumber(userDealCapitalMessage.userBalance, 6) + " XT");
+                    $("#userBalanceLockShow").html(ParamsAndInit.formatNumber(userDealCapitalMessage.userBalanceLock, 6) + " XT");
+                    $("#currencyNumberSumShow").html(ParamsAndInit.formatNumber(userDealCapitalMessage.currencyNumberSum, 6) + " XT");
                 }
             },
             error: function () {
@@ -760,7 +760,7 @@ var ParamsAndInit = {
                         $("#dayTurnoveOne").text(dayTurnove);
                     }
 
-                    $("#nowPriceDiv").text("当前价格：$"+ParamsAndInit.formatNumber(standardParameter.nowPrice, 8));
+                    $("#nowPriceDiv").text("当前价格："+ParamsAndInit.formatNumber(standardParameter.nowPrice, 8)+" XT");
                 }
             },
             error: function () {
