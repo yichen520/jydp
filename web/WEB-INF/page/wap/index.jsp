@@ -222,7 +222,7 @@
 <script src="<%=path %>/resources/js/wap/index.js"></script>
 <script src="<%=path %>/resources/js/wap/handlebars-v4.0.11.js"></script>
 <script type="text/javascript">
-
+    var path = "<%=path%>"
     //日期转换
     Handlebars.registerHelper("addTimeDateConvert", function (addTime) {
         var date = new Date(addTime);
