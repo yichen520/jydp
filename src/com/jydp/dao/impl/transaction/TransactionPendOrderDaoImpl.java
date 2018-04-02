@@ -3,6 +3,7 @@ package com.jydp.dao.impl.transaction;
 import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.ITransactionPendOrderDao;
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
+import com.jydp.entity.DO.transaction.WapTransactionPendOrderDO;
 import com.jydp.entity.DTO.TransactionPendOrderDTO;
 import com.jydp.entity.VO.TransactionPendOrderVO;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -119,6 +120,30 @@ public class TransactionPendOrderDaoImpl implements ITransactionPendOrderDao{
 
         try {
             resultList = sqlSessionTemplate.selectList("TransactionPendOrder_listPendOrderByUserId", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return resultList;
+    }
+
+    /**
+     * wap端根据用户id分页查询挂单记录
+     * @param userId 用户Id
+     * @param pageNumber 起始页数
+     * @param pageSize 每页条数
+     * @return 操作成功：返回挂单记录列表，操作失败：返回null
+     */
+    public List<WapTransactionPendOrderDO> listPendOrderByUserIdForWap(int userId, int pageNumber, int pageSize){
+        List<WapTransactionPendOrderDO> resultList = new ArrayList<WapTransactionPendOrderDO>();
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("startNumber", pageNumber * pageSize);
+        map.put("pageSize", pageSize);
+
+        try {
+            resultList = sqlSessionTemplate.selectList("TransactionPendOrder_listPendOrderByUserIdForWap", map);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
