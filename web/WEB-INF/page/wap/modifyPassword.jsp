@@ -96,6 +96,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             openTips("请输入密码");
             return;
         }
+        if (oldPwd.length<6 || oldPwd.length>16) {
+            openTips("密码长度错误");
+            return;
+        }
         if(newPwd=="") {
             openTips("请输入新密码");
             return;
