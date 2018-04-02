@@ -77,6 +77,7 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
                 actualPriceForWap = currencyTotalPrice.add(feeForWap);
 
             } else if (userDeal.getPaymentType() == 2) {
+                currencyTotalPrice = new BigDecimal(userDeal.getCurrencyTotalPrice()+"");
                 actualPriceForWap =currencyTotalPrice.subtract(feeForWap);
             }
             userDeal.setFeeForWap(feeForWap.setScale(8,BigDecimal.ROUND_UP).stripTrailingZeros().toPlainString());
@@ -235,6 +236,7 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
                 currencyTotalPrice = new BigDecimal(userDeal.getCurrencyTotalPrice()+"");
                 actualPriceForWap = currencyTotalPrice.add(feeForWap);
             } else if (userDeal.getPaymentType() == 2) {
+                currencyTotalPrice = new BigDecimal(userDeal.getCurrencyTotalPrice()+"");
                 actualPriceForWap =currencyTotalPrice.subtract(feeForWap);
             }
             userDeal.setFeeForWap(feeForWap.setScale(8, BigDecimal.ROUND_UP).stripTrailingZeros().toPlainString());

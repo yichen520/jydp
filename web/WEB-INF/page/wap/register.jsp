@@ -83,7 +83,7 @@
 <script type="text/template" id="abcd">
     <div class="search">
         <img src="<%=path %>/resources/image/wap/searchIcon.png"/>
-        <input type="type" placeholder="请选择国家或区号" id="country" onkeyup="showSearch()"/>
+        <input type="type" placeholder="请选择国家或区号" id="country" oninput="showSearch()"/>
         <p onclick="backHome()">取消</p>
     </div>
     <div class="searchList" id="searchList">
