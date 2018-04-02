@@ -42,11 +42,11 @@
                 <p onclick="getValidateCode()">获取验证码</p>
             </div>
             <div class="userPassword">
-                <input type="password" id="password" name="password" placeholder="新密码为字母、数字，6～16个字符" maxlength="16"
+                <input type="password" id="password" name="password" placeholder="新密码为字母、数字，6～16个字符" maxlength="16" autocomplete="new-password"
                        onkeyup="checkoutValue(this)" onblur="checkoutValue(this)"/>
             </div>
             <div class="userPasswordTwo">
-                <input type="password" id="repeatPassword" placeholder="请再次输入新密码" maxlength="16"
+                <input type="password" id="repeatPassword" placeholder="请再次输入新密码" maxlength="16" autocomplete="new-password"
                        onkeyup="checkoutValue(this)" onblur="checkoutValue(this)"/>
             </div>
                 <input type="hidden" name="phoneAreaCode" id="phoneAreaCode">
