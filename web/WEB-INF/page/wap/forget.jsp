@@ -53,7 +53,7 @@
             </form>
         </div>
         <div class="confirm" onclick="forgetPwd()" >提 交</div>
-
+        <input id="pageContext" type="hidden" value="${pageContext.request.contextPath}" />
     </div>
     <!-- 选择手机号弹窗 -->
     <div class="chosePhone">
