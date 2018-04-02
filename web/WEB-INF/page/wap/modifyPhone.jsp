@@ -25,7 +25,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </header>
 
     <div class="registerBox">
-        <div class="title">修改手机号</div>
         <div class="registerContent">
             <div class="oldPhone">
                 <p>原手机号：<span id="oldAreaCode">${phoneAreaCode}</span>&nbsp;<input type="hidden" value="${phoneNumber}" id="oldPhone"/><span id="oldPhoneText"></span></p>
