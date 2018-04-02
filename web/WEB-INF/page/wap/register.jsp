@@ -69,7 +69,7 @@
                        onblur="checkoutValue('repeatPayPassword')"/>
             </div>
         </div>
-        <div class="confirm" onclick="register()">注册</div>
+        <div class="confirm" onclick="register()">注&nbsp册</div>
         <div class="footer">
             <div class="checkboxBox">
                 <input type="checkbox" checked="checked"/>

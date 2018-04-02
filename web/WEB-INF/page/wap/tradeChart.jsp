@@ -33,7 +33,7 @@
         <input type="hidden" id="currencyName"  value="{{transactionCurrency.currencyName}}"/>
     </div>
     <img src="{{webAppPath}}/resources/image/wap/header-open.png" class="open"/>
-    <p>{{transactionCurrency.currencyName}}({{transactionCurrency.currencyShortName}}/USD)</p>
+    <p>{{transactionCurrency.currencyName}}({{transactionCurrency.currencyShortName}}/XT)</p>
     {{{isLogin userSession webAppPath}}}
 </header>
 <div class="nav">
@@ -86,7 +86,7 @@
         <div class="entrust" style="display:block">
             <ul class="entrust-title">
                 <li>类型</li>
-                <li>单价($)</li>
+                <li>单价(XT)</li>
                 <li>数量</li>
                 <li>成交时间</li>
                 <li class="clear"></li>

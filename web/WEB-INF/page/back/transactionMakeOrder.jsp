@@ -88,7 +88,7 @@
                     <tr class="tableInfo">
                         <td class="number">${item.orderNo}</td>
                         <td class="coin">${item.currencyName}</td>
-                        <td class="amount">$<fmt:formatNumber type="number" value="${item.currencyPrice}" maxFractionDigits="6"/></td>
+                        <td class="amount"><fmt:formatNumber type="number" value="${item.currencyPrice}" maxFractionDigits="6"/> XT</td>
                         <td class="amount"><fmt:formatNumber type="number" value="${item.currencyNumber}" maxFractionDigits="6"/></td>
                         <td class="time"><fmt:formatDate type="time" value="${item.executeTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                         <c:if test="${item.executeStatus == 1}">

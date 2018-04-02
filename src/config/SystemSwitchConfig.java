@@ -16,7 +16,7 @@ public class SystemSwitchConfig {
         }
     };
 
-    /** 核对用户美金账户，数字货币账户开关编码 */
+    /** 核对用户XT账户，数字货币账户开关编码 */
     public static final int CHECK_AMOUNT_CODE = 100000;
 
 }

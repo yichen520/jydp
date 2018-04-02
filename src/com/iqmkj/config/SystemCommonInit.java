@@ -22,7 +22,7 @@ public class SystemCommonInit {
         systemSwitchCheckAmountInit();
     }
 
-    /** 初始化系统开关---核对用户美金账户，数字货币账户 */
+    /** 初始化系统开关---核对用户XT账户，数字货币账户 */
     public void systemSwitchCheckAmountInit() {
         //不存在则新增开关
         int switchStatus = systemSwitchRecordService.getNewestSendSwitchStatus(SystemSwitchConfig.CHECK_AMOUNT_CODE);

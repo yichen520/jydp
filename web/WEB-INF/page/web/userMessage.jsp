@@ -30,15 +30,15 @@
             <div class="accountInfo">
                 <p class="info">
                     <span class="infoTitle">总资产</span>
-                    <span class="allMoney">$<fmt:formatNumber type="number" value="${userBalanceSum }" maxFractionDigits="2"/></span>
+                    <span class="allMoney"><fmt:formatNumber type="number" value="${userBalanceSum }" maxFractionDigits="2"/> XT</span>
                 </p>
                 <p class="info">
                     <span class="infoTitle">可用资产</span>
-                    <span class="money">$<fmt:formatNumber type="number" value="${userMessage.userBalance }" maxFractionDigits="2"/></span>
+                    <span class="money"><fmt:formatNumber type="number" value="${userMessage.userBalance }" maxFractionDigits="2"/> XT</span>
                 </p>
                 <p class="info">
                     <span class="infoTitle">冻结资产</span>
-                    <span class="money">$<fmt:formatNumber type="number" value="${userMessage.userBalanceLock }" maxFractionDigits="2"/></span>
+                    <span class="money"><fmt:formatNumber type="number" value="${userMessage.userBalanceLock }" maxFractionDigits="2"/> XT</span>
                 </p>
             </div>
 
