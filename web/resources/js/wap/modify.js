@@ -1,7 +1,5 @@
 $(function () {
     show();
-    var list = {};
-    var newList= {};
     // 弹出选择手机
     function show() {
         var bgHeight = $(document).height();
@@ -9,6 +7,7 @@ $(function () {
             $('.chosePhone').css("height",bgHeight +"px");
             $.get(path+"/userWap/forgetPassword/phoneArea",function(result){
                 var myData = result.data.phoneAreaMap;
+                var list = {};
                 list.phoneAreaMap = [];
                 var i = 0;
                 for(var key in myData){
@@ -24,7 +23,7 @@ $(function () {
         });
         $('.search').on('click','p',function() {
             $('.chosePhone').css("height","0");
-            $('.chosePhone').hide(); 
+            $('.chosePhone').hide();
         });
         $('.searchList').on('click','li',function() {
             let cityNum = $(this).find('.cityNum').text();
@@ -34,22 +33,6 @@ $(function () {
         });
         
     };
-
-    $("#searchAreaCode").on("keyup",function () {
-        var condition=$(this).val();
-        newList.phoneAreaMap = [];
-        for(var i=0;i<list.phoneAreaMap.length;i++){
-            //如果字符串中不包含目标字符会返回-1
-            if(list.phoneAreaMap[i].cityNum.indexOf(condition)>=0||list.phoneAreaMap[i].city.indexOf(condition)>=0){
-                newList.phoneAreaMap.push(list.phoneAreaMap[i]);
-            }
-            var compileTemplate = $("#getPhoneArea").html();
-            var compileComplile = Handlebars.compile(compileTemplate);
-            var headerHtml = compileComplile(newList);
-            $("#phoneAreaContainer").html(headerHtml);
-        }
-    })
-
 
     var waitOld =60;
     var waitNew =60;

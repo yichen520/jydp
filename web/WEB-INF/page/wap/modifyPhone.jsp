@@ -54,7 +54,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <div class="chosePhone">
         <div class="search">
             <img src="<%=path%>/resources/image/wap/searchIcon.png" />
-            <input type="type" placeholder="请选择国家或区号" id="searchAreaCode"/>
+            <input type="type" placeholder="请选择国家或区号" id="searchAreaCode" oninput="showSearch()"/>
             <p>取消</p>
         </div>
         <div class="searchList">
@@ -88,6 +88,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script>
 
     var path = "<%=path%>"
+
+    //搜索时动态显示区号
+    function showSearch() {
+        var value = $("#searchAreaCode").val();
+        if (!value) {
+            $("#phoneAreaContainer li").each(function () {
+                $(this).show();
+            })
+            return;
+        }
+        $("#phoneAreaContainer li").each(function () {
+            var textKey = $(this).children("p:eq(0)").text();
+            var textkeyValue = $(this).children("p:eq(1)").text();
+            //如果字符串中不包含目标字符会返回-1
+            if(textKey.indexOf(value)>=0 || textkeyValue.indexOf(value)>=0 ){
+                $(this).show()
+            } else {
+                $(this).hide();
+            }
+        })
+    }
 
     $(function () {
         var phone="<%=request.getAttribute("phoneNumber")%>";
