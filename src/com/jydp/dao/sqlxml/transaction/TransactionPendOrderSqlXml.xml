@@ -42,6 +42,15 @@
 		LIMIT #{startNumber}, #{pageSize}
 	</select>
 
+	<select id="TransactionPendOrder_listPendOrderByUserIdForWap" parameterType="java.util.Map" resultType="WapTransactionPendOrderDO">
+		SELECT pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingPrice, buyFee, restBalanceLock,
+		pendingNumber, dealNumber, pendingStatus, remark, addTime, endTime
+		FROM transaction_pend_order_tab
+		WHERE userId = #{userId}
+		ORDER BY addTime DESC
+		LIMIT #{startNumber}, #{pageSize}
+	</select>
+
 	<update id="TransactionPendOrder_updatePendingStatus" parameterType="java.util.Map">
 		UPDATE transaction_pend_order_tab
 		SET pendingStatus = #{pendingStatus}
