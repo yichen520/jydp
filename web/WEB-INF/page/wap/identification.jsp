@@ -34,7 +34,7 @@
         <p>证件类型</p>
         <select id="userCertType">
             <option value="1">身份证</option>
-            <option value="2">护照</option>
+            <option value="2">&nbsp 护照</option>
         </select>
     </div>
     <div class="list-box">

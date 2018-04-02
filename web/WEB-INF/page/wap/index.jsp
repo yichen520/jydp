@@ -109,9 +109,9 @@
                 <div>
                     <p class="list-name">{{currencyName}}</p>
                     {{#compare change 0}}
-                    <p class="red">XT{{latestPrice}}</p>
+                    <p class="red">{{latestPrice}} XT</p>
                     {{else}}
-                    <p class="green">XT{{latestPrice}}</p>
+                    <p class="green">{{latestPrice}} XT</p>
                     {{/compare}}
                 </div>
             </li>
