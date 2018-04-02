@@ -5,7 +5,7 @@ $(function () {
         var bgHeight = $(document).height();
         $('.choseNumber').on('click',function() {
             $('.chosePhone').css("height",bgHeight +"px");
-            $.get("/jydp/userWap/forgetPassword/phoneArea",function(result){
+            $.get(path+"/userWap/forgetPassword/phoneArea",function(result){
                 var list = {};
                 var myData = result.data.phoneAreaMap;
                 list.phoneAreaMap = [];
@@ -93,7 +93,7 @@ $(function () {
             timeNew(this);
         }
         $.ajax({
-            url: "/jydp/sendCode/sendPhoneCode",
+            url: path+"/sendCode/sendPhoneCode",
             type:'post',
             dataType:'json',
             async:true,

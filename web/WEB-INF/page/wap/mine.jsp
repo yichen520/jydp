@@ -191,7 +191,7 @@
 </script>
 
 <script type="text/javascript">
-
+    var path = "<%=path%>"
     //if比较
     Handlebars.registerHelper("compare", function (x1, x2, options) {
 

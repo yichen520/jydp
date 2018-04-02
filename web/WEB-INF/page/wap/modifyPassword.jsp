@@ -62,6 +62,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <script>
 
+    var path = "<%=path%>"
+
     $(function () {
         var phone="<%=request.getAttribute("phoneNumber")%>";
         if (phone.length==6) {

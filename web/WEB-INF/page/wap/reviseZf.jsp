@@ -75,6 +75,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="<%=path%>/resources/js/wap/simpleTips_wap.js"></script>
 
 <script>
+
+    var path = "<%=path%>"
     
     $(function () {
         var phone="<%=request.getAttribute("phoneNumber")%>";
