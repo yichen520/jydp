@@ -237,7 +237,7 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
             } else if (userDeal.getPaymentType() == 2) {
                 actualPriceForWap =currencyTotalPrice.subtract(feeForWap);
             }
-            userDeal.setFeeForWap(feeForWap.stripTrailingZeros().toPlainString());
+            userDeal.setFeeForWap(feeForWap.setScale(8, BigDecimal.ROUND_UP).stripTrailingZeros().toPlainString());
             userDeal.setActualPriceForWap(actualPriceForWap.stripTrailingZeros().toPlainString());
         }
 
