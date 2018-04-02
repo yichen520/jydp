@@ -20,7 +20,6 @@
         <p>忘记密码</p>
     </header>
     <div class="registerBox">
-        <div class="title">忘记密码</div>
         <div class="registerContent">
             <form id="forgetForm" method="post">
             <div class="userName">
@@ -59,7 +58,7 @@
     <div class="chosePhone">
         <div class="search">
             <img src="${pageContext.request.contextPath}/resources/image/wap/searchIcon.png" />
-            <input type="text" placeholder="请选择国家或区号" id="country" oninput="checkoutCountry(this)" onblur="checkoutCountry(this)"  onkeyup="showSearch()"/>
+            <input type="text" placeholder="请选择国家或区号" id="country" oninput="showSearch()" onkeyup="checkoutCountry(this)"/>
             <p>取消</p>
         </div>
         <div class="searchList">
