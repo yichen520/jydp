@@ -70,9 +70,6 @@
                         <c:if test="${coinOutRecord.handleStatus == 2 and coinOutRecord.sendStatus == 4}">
                             <p>转出状态：转出失败</p>
                         </c:if>
-                        <%--<c:if test="${coinOutRecord.handleStatus != 2}">--%>
-                            <%--<p>转出状态：</p>--%>
-                        <%--</c:if>--%>
                     </td>
                     <td class="time"><fmt:formatDate type="time" value="${coinOutRecord.finishTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>
                     <td class="mark">${coinOutRecord.remark}</td>
