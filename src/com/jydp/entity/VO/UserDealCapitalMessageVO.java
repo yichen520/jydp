@@ -4,14 +4,14 @@ package com.jydp.entity.VO;
  * The type User deal capital message vo.
  */
 public class UserDealCapitalMessageVO {
-    private double userBalance;  //用户可用美金
-    private double userBalanceLock;  //用户锁定美金
+    private double userBalance;  //用户可用XT
+    private double userBalanceLock;  //用户锁定XT
     private double currencyNumber;  //用户币数量
     private double currencyNumberLock;  //用户币冻结数量
     private double currencyNumberSum;  //用户币总金额
 
     /**
-     * 用户可用美金
+     * 用户可用XT
      *
      * @return the user balance
      */
@@ -20,7 +20,7 @@ public class UserDealCapitalMessageVO {
     }
 
     /**
-     * 用户可用美金
+     * 用户可用XT
      *
      * @param userBalance the user balance
      */
@@ -29,7 +29,7 @@ public class UserDealCapitalMessageVO {
     }
 
     /**
-     * 用户锁定美金
+     * 用户锁定XT
      *
      * @return the user balance lock
      */
@@ -38,7 +38,7 @@ public class UserDealCapitalMessageVO {
     }
 
     /**
-     * 用户锁定美金
+     * 用户锁定XT
      *
      * @param userBalanceLock the user balance lock
      */

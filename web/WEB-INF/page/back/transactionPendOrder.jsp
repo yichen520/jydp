@@ -99,8 +99,8 @@
                         <td class="coin">${pend.currencyName}</td>
                         <td class="entrust">
                             <p>数量：<fmt:formatNumber type="number" value="${pend.pendingNumber }" maxFractionDigits="4"/></p>
-                            <p>单价：$<fmt:formatNumber type="number" value="${pend.pendingPrice }" maxFractionDigits="4"/></p>
-                            <p>总价：$<fmt:formatNumber type="number" value="${pend.pendingNumber * pend.pendingPrice }" maxFractionDigits="6"/></p>
+                            <p>单价：<fmt:formatNumber type="number" value="${pend.pendingPrice }" maxFractionDigits="4"/> XT</p>
+                            <p>总价：<fmt:formatNumber type="number" value="${pend.pendingNumber * pend.pendingPrice }" maxFractionDigits="6"/> XT</p>
                         </td>
                         <td class="amount"><fmt:formatNumber type="number" value="${pend.pendingNumber - pend.dealNumber }" maxFractionDigits="4"/></td>
                         <c:if test="${pend.paymentType == 1}">

@@ -144,7 +144,7 @@ public interface ITransactionPendOrderDao {
      * 修改挂单状态为部分成交（仅用于匹配交易）
      * @param pendingOrderNo 记录号,业务类型（2）+日期（6）+随机位（10）
      * @param dealNumber 成交数量
-     * @param restBalanceLock 剩余冻结美金
+     * @param restBalanceLock 剩余冻结XT
      * @param endTime 完成时间
      * @return 操作成功：返回true，操作失败：返回false
      */

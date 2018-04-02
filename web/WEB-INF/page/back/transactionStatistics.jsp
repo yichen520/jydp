@@ -68,8 +68,8 @@
                         <td class="coin">${item.currencyName}</td>
                         <td class="amount"><fmt:formatNumber type="number" value="${item.transactionTotalNumber }"
                                                              maxFractionDigits="4"/></td>
-                        <td class="amount">$<fmt:formatNumber type="number" value="${item.transactionTotalPrice }"
-                                                              maxFractionDigits="6"/></td>
+                        <td class="amount"><fmt:formatNumber type="number" value="${item.transactionTotalPrice }"
+                                                              maxFractionDigits="6"/> XT</td>
                         <td class="coefficient"><fmt:formatNumber type="number" value="${item.currencyCoefficient }"
                                                                   maxFractionDigits="2"/></td>
                     </tr>

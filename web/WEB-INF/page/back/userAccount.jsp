@@ -92,9 +92,9 @@
                             <p>账号：${user.userAccount}</p>
                             <p>手机：${user.phoneAreaCode}&nbsp;${user.phoneNumber}</p>
                         </td>
-                        <td class="money">$<fmt:formatNumber type="number" value="${user.userBalance }" maxFractionDigits="8"/></td>
-                        <td class="money">$<fmt:formatNumber type="number" value="${user.userBalanceLock }" maxFractionDigits="8"/></td>
-                        <td class="money">$<fmt:formatNumber type="number" value="${user.userBalance + user.userBalanceLock}" maxFractionDigits="8"/></td>
+                        <td class="money"><fmt:formatNumber type="number" value="${user.userBalance }" maxFractionDigits="8"/> XT</td>
+                        <td class="money"><fmt:formatNumber type="number" value="${user.userBalanceLock }" maxFractionDigits="8"/> XT</td>
+                        <td class="money"><fmt:formatNumber type="number" value="${user.userBalance + user.userBalanceLock}" maxFractionDigits="8"/> XT</td>
                         <c:if test="${user.authenticationStatus == 1}">
                             <td class="state">待审核</td>
                         </c:if>
