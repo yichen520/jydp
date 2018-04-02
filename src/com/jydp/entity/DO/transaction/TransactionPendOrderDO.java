@@ -19,7 +19,7 @@ public class TransactionPendOrderDO {
     private double pendingNumber;  //挂单数量
     private double dealNumber;  //成交数量
     private double buyFee;  //买入手续费
-    private double restBalanceLock;  //剩余冻结美金
+    private double restBalanceLock;  //剩余冻结XT
     private int pendingStatus;  //挂单状态，1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销
     private String remark;  //备注
     private String feeRemark;  //费率备注，手续费
@@ -270,7 +270,7 @@ public class TransactionPendOrderDO {
     }
 
     /**
-     * 剩余冻结美金
+     * 剩余冻结XT
      * @return the buyFee
      */
     public double getRestBalanceLock() {
@@ -278,7 +278,7 @@ public class TransactionPendOrderDO {
     }
 
     /**
-     * 剩余冻结美金
+     * 剩余冻结XT
      * @param restBalanceLock the buyFee to set
      */
     public void setRestBalanceLock(double restBalanceLock) {

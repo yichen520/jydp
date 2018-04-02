@@ -74,7 +74,7 @@
                         <c:if test="${backerHandle.typeHandle == 2}">
                             <td class="type">减少</td>
                         </c:if>
-                        <td class="money">$<fmt:formatNumber type="number" value="${backerHandle.userBalance }" maxFractionDigits="2"/></td>
+                        <td class="money"><fmt:formatNumber type="number" value="${backerHandle.userBalance }" maxFractionDigits="2"/> XT</td>
                         <td class="mark">${backerHandle.remarks }</td>
                         <td class="account">${backerHandle.backerAccount }</td>
                         <td class="ip">${backerHandle.ipAddress }</td>

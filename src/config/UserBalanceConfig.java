@@ -6,17 +6,17 @@ package config;
  */
 public class UserBalanceConfig {
 
-    /** 美金统一 */
+    /** XT统一 */
 
     /** 币种名称 */
-    public static final String DOLLAR = "美金";
+    public static final String DOLLAR = "XT";
     /** 币种id */
     public static final int DOLLAR_ID = 999;
 
     /** 记录来源 */
 
     /** 撤销买入挂单 */
-    public static final String REVOKE_BUY_ORDER = "撤销挂单返还冻结美金";
+    public static final String REVOKE_BUY_ORDER = "撤销挂单返还冻结XT";
     /** 撤销卖出挂单 */
     public static final String REVOKE_SELL_ORDER = "撤销挂单返还冻结币";
     /** 系统操作 */

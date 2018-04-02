@@ -89,22 +89,22 @@
                         <td class="coin">${item.currencyName}</td>
                         <td class="amount">
                             <p>数量：<fmt:formatNumber type="number" value="${item.currencyNumber }" maxFractionDigits="6"/></p>
-                            <p>单价：$<fmt:formatNumber type="number" value="${item.transactionPrice }" maxFractionDigits="6"/></p>
+                            <p>单价：<fmt:formatNumber type="number" value="${item.transactionPrice }" maxFractionDigits="6"/> XT</p>
                         </td>
                         <td class="amount">
                             <c:if test="${item.paymentType == 1}">
-                                <p>总计：$<fmt:formatNumber type="number" value="${item.currencyTotalPrice}" maxFractionDigits="6"/></p>
-                                <p>实际：$<fmt:formatNumber type="number" value="${item.actualPrice}" maxFractionDigits="6"/></p>
+                                <p>总计：<fmt:formatNumber type="number" value="${item.currencyTotalPrice}" maxFractionDigits="6"/> XT</p>
+                                <p>实际：<fmt:formatNumber type="number" value="${item.actualPrice}" maxFractionDigits="6"/> XT</p>
                             </c:if>
                             <c:if test="${item.paymentType == 2}">
-                                <p>总计：$<fmt:formatNumber type="number" value="${item.currencyTotalPrice}" maxFractionDigits="6"/></p>
-                                <p>实际：$<fmt:formatNumber type="number" value="${item.actualPrice}" maxFractionDigits="6"/></p>
+                                <p>总计：<fmt:formatNumber type="number" value="${item.currencyTotalPrice}" maxFractionDigits="6"/> XT</p>
+                                <p>实际：<fmt:formatNumber type="number" value="${item.actualPrice}" maxFractionDigits="6"/> XT</p>
                             </c:if>
                             <c:if test="${item.paymentType == 3}">
-                                <p>总计：$<fmt:formatNumber type="number" value="${item.currencyTotalPrice }" maxFractionDigits="6"/></p>
+                                <p>总计：<fmt:formatNumber type="number" value="${item.currencyTotalPrice }" maxFractionDigits="6"/> XT</p>
                             </c:if>
                             <c:if test="${item.paymentType != 3}">
-                                <p>手续费：$<fmt:formatNumber type="number" value="${item.fee}" maxFractionDigits="8"/></p>
+                                <p>手续费：<fmt:formatNumber type="number" value="${item.fee}" maxFractionDigits="8"/> XT</p>
                             </c:if>
                         </td>
                         <c:if test="${item.paymentType == 1}">

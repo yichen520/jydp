@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * 核对用户美金账户，数字货币账户
+ * 核对用户XT账户，数字货币账户
  * @author whx
  */
 @Component
@@ -45,7 +45,7 @@ public class CheckUserAmountTimer {
             return;
         }
 
-        boolean usdBoolean = checkUSD();//核对用户美金账户
+        boolean usdBoolean = checkUSD();//核对用户XT账户
         boolean coinBoolean = checkCoin();//核对用户数字货币账户
         if (!usdBoolean && !coinBoolean) {
             return;
@@ -63,9 +63,9 @@ public class CheckUserAmountTimer {
         systemSwitchRecordService.insertSystemSwitchRecord(systemSwitchRecordDO);
     }
 
-    /** 核对用户美金账户 */
+    /** 核对用户XT账户 */
     public boolean checkUSD() {
-        //用户美金账户出错总数
+        //用户XT账户出错总数
         int beyondUserTotal = userService.countCheckUserAmountForTimer(CheckUserAmountConfig.USD_CURRENCYID,
                 CheckUserAmountConfig.USD_BEYOND_MAX, CheckUserAmountConfig.USD_BEYOND_LOCK_MAX);
         if (beyondUserTotal <= 0) {

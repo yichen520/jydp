@@ -137,7 +137,7 @@ public class TradeServiceImpl implements ITradeService {
         double returnMoney = 0;
         //买方费率
         double buyFee = 0;
-        //减少的买方冻结美金
+        //减少的买方冻结XT
         double reduceBuyBalanceLock = 0;
         if(paymentType == 1){
             buyUserId = userId;
@@ -200,11 +200,11 @@ public class TradeServiceImpl implements ITradeService {
         //计算卖方获得金额
         double sellMoney = NumberUtil.doubleFormat(BigDecimalUtil.mul(tradeMoney, BigDecimalUtil.sub(1, sellFee)),8);
 
-        //减少买方用户锁定美金
+        //减少买方用户锁定XT
         if(excuteSuccess){
             excuteSuccess = userService.updateReduceUserBalanceLock(buyUserId, reduceBuyBalanceLock);
         }
-        //增加买方用户美金
+        //增加买方用户XT
         if(returnMoney > 0){
             if(excuteSuccess){
                 excuteSuccess = userService.updateAddUserAmount(buyUserId, returnMoney, 0);
@@ -219,7 +219,7 @@ public class TradeServiceImpl implements ITradeService {
         if(excuteSuccess){
             excuteSuccess = userCurrencyNumService.reduceCurrencyNumberLock(sellUsrId, currencyId, tradeNum);
         }
-        //增加卖方用户美金
+        //增加卖方用户XT
         if(excuteSuccess){
             excuteSuccess = userService.updateAddUserAmount(sellUsrId, sellMoney, 0);
         }
@@ -271,12 +271,12 @@ public class TradeServiceImpl implements ITradeService {
                     tradePrice, tradeNum, tradeMoney, curTime);
         }
 
-        //增加买方账户美金记录
+        //增加买方账户XT记录
         if(excuteSuccess){
             String orderNo = SystemCommonConfig.USER_BALANCE +
                     DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
                     NumberUtil.createNumberStr(10);
-            remark = "买入" + order.getCurrencyName() + "，扣除锁定美金";
+            remark = "买入" + order.getCurrencyName() + "，扣除锁定XT";
             if(returnMoney > 0){
                 remark = remark + ",返还差价金额";
             }
@@ -315,12 +315,12 @@ public class TradeServiceImpl implements ITradeService {
             excuteSuccess = userBalanceService.insertUserBalance(userBalance);
         }
 
-        //增加卖方账户美金记录
+        //增加卖方账户XT记录
         if(excuteSuccess){
             String orderNo = SystemCommonConfig.USER_BALANCE +
                     DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
                     NumberUtil.createNumberStr(10);
-            remark = "卖出" + order.getCurrencyName() + "所得美金";
+            remark = "卖出" + order.getCurrencyName() + "所得XT";
 
             UserBalanceDO userBalance = new UserBalanceDO();
             userBalance.setOrderNo(orderNo);
