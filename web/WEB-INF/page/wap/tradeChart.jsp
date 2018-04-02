@@ -66,7 +66,7 @@
             <li>1天</li>
             <li>1周</li>
             <li class='goto-trade'>
-                <a href='{{webAppPath}}/userWap/tradeCenter/show?currencyIdStr={{currencyId}}'>
+                <a href='{{webAppPath}}/userWap/tradeCenter/show/{{currencyId}}'>
                     <img src="{{webAppPath}}/resources/image/wap/trade.png">
                     <span>交易</span>
                 </a>

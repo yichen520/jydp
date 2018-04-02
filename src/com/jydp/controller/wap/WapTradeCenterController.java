@@ -18,6 +18,7 @@ import config.RedisKeyConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -76,9 +77,9 @@ public class WapTradeCenterController {
      * 跳转到交易中心界面
      */
     /*@RequestMapping(value = "/show", method = RequestMethod.POST )*/
-    @RequestMapping(value = "/show")
-    public String show(HttpServletRequest request) {
-        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyIdStr"));
+    @RequestMapping(value = "/show/{currencyIdStr}")
+    public String show(HttpServletRequest request, @PathVariable(value="currencyIdStr") String currencyIdStr) {
+        currencyIdStr = StringUtil.stringNullHandle(currencyIdStr);
         if (StringUtil.isNull(currencyIdStr)) {
             List<TransactionCurrencyVO> transactionCurrencyList = transactionCurrencyService.getOnlineAndSuspensionCurrencyForWap();
             if (transactionCurrencyList == null || transactionCurrencyList.size() <= 0) {
@@ -776,9 +777,9 @@ public class WapTradeCenterController {
     /**
      * 跳转到图表页面
      */
-    @RequestMapping("/toChartPage")
-    public String toChartPage(HttpServletRequest request) {
-        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+    @RequestMapping("/toChartPage/{currencyIdStr}")
+    public String toChartPage(HttpServletRequest request,@PathVariable(value="currencyIdStr") String currencyIdStr) {
+        currencyIdStr = StringUtil.stringNullHandle(currencyIdStr);
         if (!StringUtil.isNotNull(currencyIdStr)) {
             return "page/wap/wapTradeCenter";
         }

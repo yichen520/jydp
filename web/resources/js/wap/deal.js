@@ -27,7 +27,7 @@ var ParamsAndInit = {
         Handlebars.registerHelper("eachFortransactionCurrencyList", function (transactionUserDealList, standardParameter, webAppPath, options) {
             var out = "<ul>";
             for (var i = 0; i < transactionUserDealList.length; i++) {
-                myHref = "<a href='" + webAppPath + "/userWap/tradeCenter/show?currencyIdStr=" + transactionUserDealList[i].currencyId + "'>";
+                myHref = "<a href='" + webAppPath + "/userWap/tradeCenter/show/"+ transactionUserDealList[i].currencyId + ">";
                 out = out + '<li>' +
                     '<p>' + myHref + transactionUserDealList[i].currencyName + "(" + transactionUserDealList[i].currencyShortName + ")" + "</a></p>"
                     + "<p class='zhang'>" + transactionUserDealList[i].latestPrice + "</p>"
@@ -149,7 +149,7 @@ var ParamsAndInit = {
 
                 $('.choseBzBox-content ul').on('click', 'li', function () {
                     var currencyId=$(this).find("p").eq(0).text();
-                    window.location.href=webpath + "/userWap/tradeCenter/show?currencyIdStr="+currencyId
+                    window.location.href= webpath + "/userWap/tradeCenter/show/" + currencyId
                 })
             })
 
@@ -607,7 +607,7 @@ var ParamsAndInit = {
         }
 
         $.ajax({
-            url: 'entrust.htm',
+            url: path + '/userWap/tradeCenter/entrust.htm',
             type: 'POST',
             dataType: 'json',
             async: true,
@@ -654,7 +654,7 @@ var ParamsAndInit = {
             return;
         }
         $.ajax({
-            url: "userInfo.htm",
+            url: path + "/userWap/tradeCenter/userInfo.htm",
             data: {
                 currencyId : currencyId
             },//参数
@@ -686,7 +686,7 @@ var ParamsAndInit = {
             return;
         }
         $.ajax({
-            url: "pend", //方法路径URL
+            url: path + "/userWap/tradeCenter/pend", //方法路径URL
             data:{
                 currencyId : currencyId
             },
@@ -735,7 +735,7 @@ var ParamsAndInit = {
             return;
         }
         $.ajax({
-            url: "gainDealPrice",
+            url:path + "/userWap/tradeCenter/gainDealPrice",
             data: {
                 currencyId : currencyId
             },//参数
@@ -800,7 +800,7 @@ var ParamsAndInit = {
         }
 
         $.ajax({
-            url: "rememberPwd.htm", //方法路径URL
+            url: path + "/userWap/tradeCenter/rememberPwd.htm", //方法路径URL
             data:{
                 rememberPwd : rememberPwd,
                 payPasswordStatus : payPasswordStatus
@@ -867,7 +867,7 @@ var ParamsAndInit = {
             openTips("页面数据错误，请刷新页面！");
             return;
         }
-        window.location.href = webAppPath + '/userWap/tradeCenter/toChartPage?currencyId=' + currencyId;
+        window.location.href = webAppPath + '/userWap/tradeCenter/toChartPage/' + currencyId;
     },
     footInit: function () {
         var h=$(window).height();
@@ -908,7 +908,7 @@ $().ready(function () {
         currencyIdStr = "";
     }
     $.ajax({
-        url: 'getWapTradeCenterInfo',
+        url: path + '/userWap/tradeCenter/getWapTradeCenterInfo',
         type: 'POST',
         dataType: 'json',
         async: true,

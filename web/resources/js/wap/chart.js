@@ -117,7 +117,7 @@ var ChartParamsAndInit = {
 
                 $('.choseBzBox-content ul').on('click', 'li', function () {
                     var currencyId=$(this).find("p").eq(0).text();
-                    window.location.href="toChartPage?currencyId="+currencyId
+                    window.location.href= path + '/userWap/tradeCenter/toChartPage/'+currencyId
                 })
             })
         });
@@ -167,7 +167,7 @@ var ChartParamsAndInit = {
             return;
         }
         $.ajax({
-            url: "gainDealPrice",
+            url: path + "/userWap/tradeCenter/gainDealPrice",
             data: {
                 currencyId: currencyId
             },//参数
@@ -200,7 +200,7 @@ var ChartParamsAndInit = {
             return;
         }
         $.ajax({
-            url: "deal", //方法路径URL
+            url:path + '/userWap/tradeCenter/deal', //方法路径URL
             data: {
                 currencyId: currencyId
             },
@@ -278,7 +278,7 @@ var ChartParamsAndInit = {
             }
         });
         $.ajax({
-            url: "gainGraphData", //方法路径URL
+            url: path + '/userWap/tradeCenter/gainGraphData', //方法路径URL
             data: {
                 currencyId: currencyId,
                 node: time
@@ -452,7 +452,7 @@ $().ready(function () {
         currencyIdStr = "";
     }
     $.ajax({
-        url: 'getChartPageInfo',
+        url:  path + '/userWap/tradeCenter/getChartPageInfo',
         type: 'POST',
         dataType: 'json',
         async: true,
