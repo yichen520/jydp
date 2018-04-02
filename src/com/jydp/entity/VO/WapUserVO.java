@@ -27,6 +27,11 @@ public class WapUserVO {
     private double userBalanceLock;
 
     /**
+     * 用户账户总余额
+     */
+    private double totalUserBalance;
+
+    /**
      * 用户id
      */
     public int getUserId() {
@@ -65,13 +70,25 @@ public class WapUserVO {
     /**
      * 用户冻结余额
      */
-    public Double getUserBalanceLock() {
+    public double getUserBalanceLock() {
         return userBalanceLock;
     }
     /**
      * 用户冻结余额
      */
-    public void setUserBalanceLock(Double userBalanceLock) {
+    public void setUserBalanceLock(double userBalanceLock) {
         this.userBalanceLock = userBalanceLock;
+    }
+    /**
+     * 用户账户总余额
+     */
+    public double getTotalUserBalance() {
+        return totalUserBalance;
+    }
+    /**
+     * 用户账户总余额
+     */
+    public void setTotalUserBalance(double totalUserBalance) {
+        this.totalUserBalance = totalUserBalance;
     }
 }

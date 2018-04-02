@@ -3,6 +3,7 @@ package com.jydp.controller.wap;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.Base64Util;
+import com.iqmkj.utils.LogUtil;
 import com.iqmkj.utils.MD5Util;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
@@ -17,12 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * 忘记密码
+ *
  * @author yqz
  */
 @Controller
@@ -30,17 +33,23 @@ import java.util.Map;
 @Scope(value = "prototype")
 public class WapForgetController {
 
-    /** 用户账号 **/
+    /**
+     * 用户账号
+     **/
     @Autowired
     private IUserService userService;
 
-    /** 系统手机验证码 */
+    /**
+     * 系统手机验证码
+     */
     @Autowired
     private ISystemValidatePhoneService systemValidatePhoneService;
 
-    /** 跳转至忘记密码页面 */
+    /**
+     * 跳转至忘记密码页面
+     */
     @RequestMapping(value = "/show")
-    public String show(HttpServletRequest request){
+    public String show(HttpServletRequest request) {
         Map<String, String> phoneAreaMap = PhoneAreaConfig.phoneAreaMap;
         request.setAttribute("selectedArea", PhoneAreaConfig.PHONE_AREA_CHINA);
         request.setAttribute("phoneAreaMap", phoneAreaMap);
@@ -49,24 +58,32 @@ public class WapForgetController {
 
     /**
      * 获取电话域
+     *
      * @return 返回电话域
      */
     @RequestMapping(value = "/phoneArea")
-    public @ResponseBody
-    JsonObjectBO getPhoneArea(HttpServletRequest request){
+    public
+    @ResponseBody
+    JsonObjectBO getPhoneArea(HttpServletRequest request) {
         Map<String, String> phoneAreaMap = PhoneAreaConfig.phoneAreaMap;
         Map<String, String> newMap = new LinkedHashMap<>();
-        String condition = StringUtil.stringNullHandle(request.getParameter("condition"));
-        if(StringUtil.isNotNull(condition)){
-            Iterator<Map.Entry<String, String>> iterator= phoneAreaMap.entrySet().iterator();
-            while(iterator.hasNext())
-            {
+        String condition = null;
+        try {
+            if (StringUtil.isNotNull(request.getParameter("condition"))) {
+                condition = StringUtil.stringNullHandle(new String(request.getParameter("condition").getBytes("iso8859-1"), "utf-8"));
+            }
+        } catch (UnsupportedEncodingException e) {
+            LogUtil.printErrorLog(e);
+        }
+        if (StringUtil.isNotNull(condition)) {
+            Iterator<Map.Entry<String, String>> iterator = phoneAreaMap.entrySet().iterator();
+            while (iterator.hasNext()) {
                 Map.Entry entry = iterator.next();
-                if(entry.getKey().toString().contains(condition) || entry.getValue().toString().contains(condition)){
+                if (entry.getKey().toString().contains(condition) || entry.getValue().toString().contains(condition)) {
                     newMap.put(entry.getKey().toString(), entry.getValue().toString());
                 }
             }
-        }else{
+        } else {
             newMap.putAll(phoneAreaMap);
         }
         JsonObjectBO responseJson = new JsonObjectBO();
@@ -77,9 +94,13 @@ public class WapForgetController {
         return responseJson;
     }
 
-    /** 忘记密码 */
+    /**
+     * 忘记密码
+     */
     @RequestMapping(value = "/forgetPassword")
-    public @ResponseBody JsonObjectBO forgetPassword(HttpServletRequest request){
+    public
+    @ResponseBody
+    JsonObjectBO forgetPassword(HttpServletRequest request) {
         JsonObjectBO responseJson = new JsonObjectBO();
 
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
@@ -107,14 +128,14 @@ public class WapForgetController {
             return responseJson;
         }
 
-        UserDO user = userService.validateUserPhoneNumber(userAccount,phoneAreaCode,phoneNumber);
+        UserDO user = userService.validateUserPhoneNumber(userAccount, phoneAreaCode, phoneNumber);
         if (user == null) {
             responseJson.setCode(2);
             responseJson.setMessage("手机号与用户所绑手机号不匹配");
             return responseJson;
         }
 
-        responseJson = systemValidatePhoneService.validatePhone(phoneAreaCode+phoneNumber, validateCode);
+        responseJson = systemValidatePhoneService.validatePhone(phoneAreaCode + phoneNumber, validateCode);
         if (responseJson.getCode() != 1) {
             return responseJson;
         }

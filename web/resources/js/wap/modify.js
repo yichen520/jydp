@@ -34,6 +34,24 @@ $(function () {
         
     };
 
+    $("#searchAreaCode").on("keyup",function () {
+        var condition=$(this).val();
+        $.get(path+"/userWap/forgetPassword/phoneArea?condition="+condition,function(result){
+            var list = {};
+            var myData = result.data.phoneAreaMap;
+            list.phoneAreaMap = [];
+            var i = 0;
+            for(var key in myData){
+                var obj = {"cityNum":key,"city":myData[key]};
+                list.phoneAreaMap[i++] = obj;
+            }
+            var compileTemplate = $("#getPhoneArea").html();
+            var compileComplile = Handlebars.compile(compileTemplate);
+            var headerHtml = compileComplile(list);
+            $("#phoneAreaContainer").html(headerHtml);
+        });
+    })
+
 
     var waitOld =60;
     var waitNew =60;

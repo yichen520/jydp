@@ -196,7 +196,7 @@ header img{
 /* 选择手机号弹窗 */
 .chosePhone{
     position: absolute;
-    top: 0;
+    top: 0.91rem;
     left: 0;
     width: 100%;
     z-index: 10;

@@ -54,7 +54,7 @@
                     <div class="userBox">
                         <div class="usertitle">
                             <p>账户总资产（XT）</p>
-                            <p><fmt:formatNumber type="number" maxFractionDigits="2" value="${userInfo.userBalance+userInfo.userBalanceLock}"></fmt:formatNumber></p>
+                            <p><fmt:formatNumber type="number" maxFractionDigits="2" value="${userInfo.totalUserBalance}"></fmt:formatNumber></p>
                         </div>
                         <div class="usercontent">
                             <div class="canuserBox">

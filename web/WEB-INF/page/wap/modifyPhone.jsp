@@ -55,7 +55,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <div class="chosePhone">
         <div class="search">
             <img src="<%=path%>/resources/image/wap/searchIcon.png" />
-            <input type="type" placeholder="请选择国家或区号"/>
+            <input type="type" placeholder="请选择国家或区号" id="searchAreaCode"/>
             <p>取消</p>
         </div>
         <div class="searchList">
