@@ -104,6 +104,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             openTips("新密码格式不正确");
             return;
         }
+        if (newPwd.length<6 || newPwd.length>16) {
+            openTips("新密码长度错误");
+            return;
+        }
         if(confirmPwd=="") {
             openTips("请输入确认密码");
             return;
@@ -112,12 +116,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             openTips("确认密码格式不正确");
             return;
         }
-        if (newPwd!=confirmPwd) {
-            openTips("两次输入密码不一致");
+        if (confirmPwd.length<6 || confirmPwd.length>16) {
+            openTips("确认密码长度错误");
             return;
         }
-        if (newPwd.length<6 || newPwd.length>16) {
-            openTips("密码长度错误");
+        if (newPwd!=confirmPwd) {
+            openTips("两次输入密码不一致");
             return;
         }
         if (validCode=="" && oldPwd !="" && newPwd!="" && confirmPwd !="") {
