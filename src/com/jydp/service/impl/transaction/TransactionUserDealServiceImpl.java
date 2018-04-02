@@ -232,12 +232,8 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
             if (userDeal.getPaymentType() == 1) {
                 currencyTotalPrice = new BigDecimal(userDeal.getCurrencyTotalPrice()+"");
                 actualPriceForWap = currencyTotalPrice.add(feeForWap);
-
-               //actualPrice = BigDecimalUtil.add(userDeal.getCurrencyTotalPrice(), fee);
             } else if (userDeal.getPaymentType() == 2) {
                 actualPriceForWap =currencyTotalPrice.subtract(feeForWap);
-
-               // actualPrice = BigDecimalUtil.sub(userDeal.getCurrencyTotalPrice(), fee);
             }
             userDeal.setFeeForWap(feeForWap.toPlainString());
             userDeal.setActualPriceForWap(actualPriceForWap.toPlainString());
