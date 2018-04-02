@@ -1,3 +1,7 @@
+header{
+    position: relative;
+    z-index: 1;
+}
 header img{
     position: absolute;
     top: 0.28rem;
@@ -12,14 +16,12 @@ header img{
 .registerBox{
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-    margin-top: 0.4rem;
 }
 .registerBox .title{
     font-size: 0.4rem;
     color: #000;
 }
 .registerContent{
-    margin-top: 0.5rem;
     width: 100%;
 }
 .registerContent div{
@@ -196,7 +198,7 @@ header img{
 /* 选择手机号弹窗 */
 .chosePhone{
     position: absolute;
-    top: 0.91rem;
+    top: 0rem;
     left: 0;
     width: 100%;
     z-index: 10;
