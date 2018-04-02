@@ -62,7 +62,6 @@ public class WapForgetController {
             while(iterator.hasNext())
             {
                 Map.Entry entry = iterator.next();
-                System.out.println(entry.getKey()+":"+entry.getValue());
                 if(entry.getKey().toString().contains(condition) || entry.getValue().toString().contains(condition)){
                     newMap.put(entry.getKey().toString(), entry.getValue().toString());
                 }
