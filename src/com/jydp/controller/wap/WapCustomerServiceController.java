@@ -6,6 +6,7 @@ import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.user.UserFeedbackDO;
 import com.jydp.interceptor.UserWapInterceptor;
 import com.jydp.service.IUserFeedbackService;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -96,7 +97,6 @@ public class WapCustomerServiceController {
         response.put("message", "获取成功");
         return  response;
     }
-
     /**  意见反馈 */
     @RequestMapping("/feedback.htm")
     public @ResponseBody JSONObject feedback(HttpServletRequest request){
