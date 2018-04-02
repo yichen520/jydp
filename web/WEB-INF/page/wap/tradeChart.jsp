@@ -168,7 +168,7 @@
 <script type="text/javascript" src="<%=path %>/resources/js/wap/chart.js"></script>
 <script type="text/javascript" src="<%=path %>/resources/js/wap/simpleTips_wap.js"></script>
 <script type="text/javascript" src="<%=path %>/resources/js/wap/highstock.js"></script>
-<%--<script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>--%>
+<script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
 <script src="https://img.hcharts.cn/highcharts/themes/dark-unica.js"></script>
 <script type="text/javascript">
 

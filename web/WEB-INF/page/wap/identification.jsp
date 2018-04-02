@@ -28,7 +28,7 @@
     <div class="list-box">
         <p>姓名</p>
         <input type="text" id="userName" maxlength="16" placeholder="您的真实姓名"
-               oninput="if(value.length>16) value=value.slice(0,15)" onkeyup="matchUtil(this, 'rightful')" onblur="matchUtil(this, 'rightful')"/>
+               onkeyup="checkoutUserName(this)" onblur="checkoutUserName(this)"/>
     </div>
     <div class="list-box">
         <p>证件类型</p>
@@ -40,7 +40,7 @@
     <div class="list-box">
         <p>证件号</p>
         <input type="text" id="userCertNo" placeholder="您的证件号" maxlength="18"
-               oninput="if(value.length>18) value=value.slice(0,17)" onkeyup="matchUtil(this, 'ENumber')" onblur="matchUtil(this, 'ENumber')"/>
+               onkeyup="checkoutValue(this)" onblur="checkoutValue(this)"/>
     </div>
     <div class="idcard-box">
 
@@ -77,6 +77,7 @@
 <script src="${pageContext.request.contextPath}/resources/js/wap/simpleTips_wap.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/localResizeIMG.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/mobileBUGFix.mini.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/wap/checkout.js"></script>
 
 <script>
     var formData = new FormData();
@@ -85,7 +86,7 @@
     var b = false;
     var frontImg, backImg;
 
-
+    // 图片压缩
     $('#icardone').localResizeIMG({
         width: 800,
         quality: 0.2,
@@ -106,6 +107,7 @@
             b = true;
         }
     });
+    //base64转blob
     function dataURLtoBlob(dataurl) {
         var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
             bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
@@ -114,6 +116,7 @@
         }
         return new Blob([u8arr], { type: mime });
     }
+
     var mapMatch = {};
     mapMatch['ENumber'] = /[^\a-\z\A-\Z\d]/g;
     mapMatch['rightful'] = /[%`~!@#$^&*()=|{}':;",_+\-\\\[\].<>/?！￥…（）—【】《》；：‘’”“。，、？1234567890]/g;
