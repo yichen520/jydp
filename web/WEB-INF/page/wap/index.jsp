@@ -300,7 +300,7 @@
 
     $('.choseBzBox-content ul').on('click', 'li', function () {
         var currencyId=$(this).find("p").eq(0).text();
-        window.location.href="<%=path%>/userWap/tradeCenter/show?currencyIdStr="+currencyId
+        window.location.href="<%=path%>/userWap/tradeCenter/show/"+currencyId
     })
 
 </script>
