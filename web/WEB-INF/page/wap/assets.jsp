@@ -46,7 +46,6 @@
 <script type="text/javascript" src="<%=path%>/resources/js/wap/common.js"></script>
 <script type="text/javascript" src="<%=path%>/resources/js/wap/zepto.min.js"></script>
 <script type="text/javascript" src="<%=path%>/resources/js/wap/jquery-2.1.4.min.js"></script>
-<script type="text/javascript" src="<%=path%>/resources/js/wap/entrust.js"></script>
 <script type="text/javascript" src="<%=path %>/resources/js/wap/handlebars-v4.0.11.js"></script>
 <script type="text/javascript" src="<%=path%>/resources/js/wap/simpleTips_wap.js"></script>
 
