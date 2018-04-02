@@ -52,7 +52,7 @@
         </tr>
         <c:forEach items="${transactionUserDealList}" var="transactionUserDeal">
             <tr class="coinInfo">
-                <td class="coin"><img src="${transactionUserDeal.currencyImgUrl}" /><span>${transactionUserDeal.currencyName}(${transactionUserDeal.currencyShortName}/USD)</span></td>
+                <td class="coin"><img src="${transactionUserDeal.currencyImgUrl}" /><span>${transactionUserDeal.currencyName}(${transactionUserDeal.currencyShortName}/XT)</span></td>
                 <td class="new"><fmt:formatNumber type="number" value="${transactionUserDeal.latestPrice}" groupingUsed="FALSE" maxFractionDigits="2"/></td>
                 <td class="money"><fmt:formatNumber type="number" value="${transactionUserDeal.buyOnePrice}" groupingUsed="FALSE" maxFractionDigits="2"/></td>
                 <td class="money"><fmt:formatNumber type="number" value="${transactionUserDeal.sellOnePrice}" groupingUsed="FALSE" maxFractionDigits="2"/></td>
@@ -176,7 +176,7 @@
                                     '<tr class="coinInfo">' +
                                     '<td class="coin">' +
                                         '<img src="' + transactionUserDeal.currencyImgUrl + '"/>' +
-                                        '<span>' + transactionUserDeal.currencyName + '(' + transactionUserDeal.currencyShortName + '/USD)</span>' +
+                                        '<span>' + transactionUserDeal.currencyName + '(' + transactionUserDeal.currencyShortName + '/XT)</span>' +
                                     '</td>' +
                                     '<td class="new">' + parseFloat(transactionUserDeal.latestPrice).toString() + '</td>' +
                                     '<td class="money">' + parseFloat(transactionUserDeal.buyOnePrice).toString() + '</td>' +
