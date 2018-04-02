@@ -170,7 +170,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 openTips("两次输入密码不一致");
                 return;
             }
-            if (code.length !=6 || newPwd.length<6 || newPwd.length>16) {
+            if (newPwd.length<6 || newPwd.length>16) {
                 openTips("密码长度错误");
                 return;
             }
