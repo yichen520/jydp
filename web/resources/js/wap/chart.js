@@ -95,7 +95,7 @@ var ChartParamsAndInit = {
     },
     open: function () {
         var bgHeight = $(document).height();
-        var webAppPath = $("webAppPath").val();
+        var webAppPath = $("#webAppPath").val();
         $('.open').on('click', function () {
             $.get( webAppPath + "/userWap/tradeCenter/currencyInfo",function (result) {
                 if (result.code!=0) {

@@ -126,7 +126,7 @@ var ParamsAndInit = {
         });
     },
     open: function () {
-        var webAppPath = $("webAppPath").val();
+        var webAppPath = $("#webAppPath").val();
         var bgHeight = $(document).height();
         $('.open').on('click', function () {
             $.get( webAppPath + "/userWap/tradeCenter/currencyInfo",function (result) {
