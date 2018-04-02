@@ -19,12 +19,13 @@
 <body>
 <div id="contactDiv">
 
-        <!-- 头部导航 -->
-        <header>
-                <img src="<%=path %>/resources/image/wap/back.png"  onclick="window.location.href='<%=path %>/userWap/userInfo/show.htm'" class="back"/>
-            <p>联系客服</p>
-        </header>
+
         <script id="contactService" type="ext/x-handlebars-template">
+            <!-- 头部导航 -->
+            <header>
+                <img src="<%=path %>/resources/image/wap/back.png"  onclick="window.location.href='<%=path %>/userWap/userInfo/show.htm'" class="back"/>
+                <p>联系客服</p>
+            </header>
         <!-- 内容 -->
         <div class="content">
             {{#each userFeedbackList}}
