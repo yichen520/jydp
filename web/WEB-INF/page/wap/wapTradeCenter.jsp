@@ -135,7 +135,7 @@
                         <span>可用(XT)</span>
                     </p>
                     <p class="mainMoney-num">
-                        <span id="currencyNumberSumShow">{{formatNumber userDealCapitalMessage.currencyNumberSum 6}} XT</span>
+                        <span id="currencyNumberSumShow">{{formatNumber userDealCapitalMessage.currencyNumberSum 6}}</span>
                         <span id="userBalanceLockShow">{{formatNumber userDealCapitalMessage.userBalanceLock 6}}</span>
                         <span id="userBalance">{{formatNumber userDealCapitalMessage.userBalance 6}}</span></span>
                     </p>
