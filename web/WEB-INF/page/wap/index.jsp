@@ -32,10 +32,17 @@
 <!-- 内容区域 -->
 <div id="wrapper">
     <!-- 广告轮播图 -->
-    <div class="swiper-container banner">
-        <div class="swiper-wrapper">
+    <div class="top">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <c:forEach items="${systemAdsHomepagesList}" var="item">
+                    <a href="${item.wapLinkUrl }" class="swiper-slide" >
+                        <img src="${item.adsImageUrlFormat }"   />
+                    </a>
+                </c:forEach>
+            </div>
+            <div class="swiper-pagination"></div>
         </div>
-        <div class="swiper-pagination"></div>
     </div>
 
     <!-- 公告 -->
@@ -149,17 +156,13 @@
 
 </script>
 
-<script id="swiperTemplate" type="text/x-handlebars-template">
+<%--<script id="swiperTemplate" type="text/x-handlebars-template">
     {{#each this}}
-        {{#if wapLinkUrl}}
-            <a target="_blank" href="{{wapLinkUrl}}" class="swiper-slide"  >
-                <img src="{{adsImageUrlFormat}}" style="object-fit: cover;"/>
+            <a href="{{wapLinkUrl}}" class="swiper-slide" >
+                <img src="{{adsImageUrlFormat}}"   />
             </a>
-        {{else}}
-            <a class="swiper-slide" ><img src="{{adsImageUrlFormat}}"  style="object-fit: cover;"/></a>
-        {{/if}}
     {{/each}}
-</script>
+</script>--%>
 
 <script id="sellerTemplate" type="text/x-handlebars-template">
 {{#each this}}
@@ -219,7 +222,7 @@
 <script src="<%=path %>/resources/js/wap/index.js"></script>
 <script src="<%=path %>/resources/js/wap/handlebars-v4.0.11.js"></script>
 <script type="text/javascript">
-    var swiper = new Swiper('.swiper-container', {
+    var swiper = new Swiper('.top .swiper-container', {
         pagination: '.swiper-pagination',
         nextButton: '.swiper-button-next',
         prevButton: '.swiper-button-prev',
@@ -264,50 +267,50 @@
     });
 
     //首页banner数据填充
-    var systemAdsHomepagesListData = ${requestScope.systemAdsHomepagesList};
+    <%--var systemAdsHomepagesListData = ${requestScope.systemAdsHomepagesList};
     var systemAdsHomepagesfunc = Handlebars.compile($('#swiperTemplate').html());
-    $('.swiper-wrapper').html(systemAdsHomepagesfunc(systemAdsHomepagesListData));
+    $('.swiper-wrapper').html(systemAdsHomepagesfunc(systemAdsHomepagesListData));--%>
 
-    //公告数据填充
-    var systemNoticeListData = ${requestScope.systemNoticeList};
-    var noticefunc = Handlebars.compile($('#noticeTemplate').html());
-    $('.noticeContent').html(noticefunc(systemNoticeListData));
-    //交易数据填充
-    var transactionUserDealListData = ${requestScope.transactionUserDealList};
-    var transactionfunc = Handlebars.compile($('#template').html());
-    $('.content-list').html(transactionfunc(transactionUserDealListData));
+//公告数据填充
+var systemNoticeListData = ${requestScope.systemNoticeList};
+var noticefunc = Handlebars.compile($('#noticeTemplate').html());
+$('.noticeContent').html(noticefunc(systemNoticeListData));
+//交易数据填充
+var transactionUserDealListData = ${requestScope.transactionUserDealList};
+var transactionfunc = Handlebars.compile($('#template').html());
+$('.content-list').html(transactionfunc(transactionUserDealListData));
 
-    //合作伙伴数据填充
-    var systemBusinessesPartnerListData = ${requestScope.systemBusinessesPartnerList};
-    var systemBusinessesfunc = Handlebars.compile($('#sellerTemplate').html());
-    $('.sellerContent').html(systemBusinessesfunc(systemBusinessesPartnerListData));
+//合作伙伴数据填充
+var systemBusinessesPartnerListData = ${requestScope.systemBusinessesPartnerList};
+var systemBusinessesfunc = Handlebars.compile($('#sellerTemplate').html());
+$('.sellerContent').html(systemBusinessesfunc(systemBusinessesPartnerListData));
 
-    //刷新币种行情
-    function refreshMarket() {
-        $.ajax({
-            url: '<%=path %>/userWeb/homePage/getCurrencyMarket',
-            type: 'post',
-            dataType: 'json',
-            success: function (result) {
-                if (result.code == 1) {
-                    var currencyMarket = result.data;
-                    if (currencyMarket != null) {
-                        var marketList = currencyMarket.transactionUserDealList;
-                        if (marketList != null) {
-                            $(".content-list ul").remove();
-                            var transactionfunc = Handlebars.compile($('#template').html());
-                            $('.content-list').html(transactionfunc(marketList));
-                        }
+//刷新币种行情
+function refreshMarket() {
+    $.ajax({
+        url: '<%=path %>/userWeb/homePage/getCurrencyMarket',
+        type: 'post',
+        dataType: 'json',
+        success: function (result) {
+            if (result.code == 1) {
+                var currencyMarket = result.data;
+                if (currencyMarket != null) {
+                    var marketList = currencyMarket.transactionUserDealList;
+                    if (marketList != null) {
+                        $(".content-list ul").remove();
+                        var transactionfunc = Handlebars.compile($('#template').html());
+                        $('.content-list').html(transactionfunc(marketList));
                     }
                 }
             }
-        });
-    }
+        }
+    });
+}
 
-    $('.choseBzBox-content ul').on('click', 'li', function () {
-        var currencyId=$(this).find("p").eq(0).text();
-        window.location.href="<%=path%>/userWap/tradeCenter/show?currencyIdStr="+currencyId
-    })
+$('.choseBzBox-content ul').on('click', 'li', function () {
+    var currencyId=$(this).find("p").eq(0).text();
+    window.location.href="<%=path%>/userWap/tradeCenter/show?currencyIdStr="+currencyId
+})
 
 </script>
 </html>

@@ -71,7 +71,7 @@
             <img src="<%=path %>/resources/image/wap/tishi.png"  class="tishi"/>
             <span class="desc">将向手机 ${phoneAreaCode} ${phoneNumberEn}发送一条验证码</span>
             <span class="txt">交易密码<span>*</span></span>
-            <input  type="password" placeholder="交易密码" id="buypwd" maxlength="16" autocomplete="off"
+            <input  type="text" onfocus="this.type='password'" placeholder="交易密码" id="buypwd" maxlength="16"
                     onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')" />
             <span class="clear"></span>
         </p>

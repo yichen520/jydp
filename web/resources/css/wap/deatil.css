@@ -17,8 +17,8 @@ header .backimg{
     position: relative;
 }
 .content img{
-    width: 100%;
     display: block;
+    max-width: 100%;
 }
 .time{
     position: absolute;
