@@ -65,9 +65,7 @@
                 {{/sendStatusShow}}
             </p>
         <div class="footer">
-            {{#remarkShow handleStatus}}
-                <p class="remark">{{remark}}</p>
-            {{/remarkShow}}
+            <p class="remark">{{remark}}</p>
             {{#withdrawShow handleStatus}}
                 <p class="withdraw" onclick="showDialog('{{coinRecordNo}}')">撤回</p>
             {{/withdrawShow}}
@@ -158,14 +156,6 @@
         }
     });
 
-    //备注显示
-    Handlebars.registerHelper("remarkShow", function (handleStatus,options) {
-        //审核通过或拒绝显示备注
-        if (handleStatus == 2 || handleStatus == 3) {
-            //满足条件执行
-            return options.fn(this);
-        }
-    });
     //提币记录数据填充
     var presentListData = ${requestScope.coinOutRecordList};
     var presentfunc = Handlebars.compile($('#template').html());
