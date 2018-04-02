@@ -879,7 +879,12 @@ var ParamsAndInit = {
                 $('footer').show();
             }
         });
-
+        $("input").focus(function(){
+            $("footer").hide();
+        });
+        $("input").blur(function(){
+            $('footer').show();
+        });
         //进入页面的时候判断
         var payPasswordStatus = $("#payPasswordStatus").val();
         if(payPasswordStatus == 2){
