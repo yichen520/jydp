@@ -18,12 +18,13 @@
 </head>
 <body>
 <div id="contactDiv">
-    <script id="contactService" type="ext/x-handlebars-template">
+
         <!-- 头部导航 -->
         <header>
-                <img src="{{webAppPath}}/resources/image/wap/back.png"  onclick="window.location.href='{{webAppPath}}/userWap/userInfo/show.htm'" class="back"/>
+                <img src="<%=path %>/resources/image/wap/back.png"  onclick="window.location.href='<%=path %>/userWap/userInfo/show.htm'" class="back"/>
             <p>联系客服</p>
         </header>
+        <script id="contactService" type="ext/x-handlebars-template">
         <!-- 内容 -->
         <div class="content">
             {{#each userFeedbackList}}
@@ -83,5 +84,7 @@
 <script src="<%=path %>/resources/js/wap/simpleTips_wap.js"></script>
 <script src="<%=path %>/resources/js/wap/handlebars-v4.0.11.js"></script>
 <script src="<%=path %>/resources/js/wap/service.js"></script>
-
+<script>
+    ParamAndViewInit.webPath = '<%=path %>'
+</script>
 </html>

@@ -33,7 +33,7 @@
             <input type="hidden" id="userSession" name="userSession" value="{{userSession}}"/>
         </div>
         <img src="{{webAppPath}}/resources/image/wap/header-open.png" class="open"/>
-        <p>{{transactionCurrency.currencyName}}({{transactionCurrency.currencyShortName}}/USD)</p>
+        <p>{{transactionCurrency.currencyName}}({{transactionCurrency.currencyShortName}}/XT)</p>
         {{{isLogin userSession webAppPath}}}
     </header>
     <section class="nav">
@@ -55,7 +55,7 @@
     </section>
     <div id="wrapper">
         <div class="nowPrice">
-            <p class="title" id="nowPriceDiv">当前价格：\${{formatNumber standardParameter.nowPrice 8}}</p>
+            <p class="title" id="nowPriceDiv">当前价格：{{formatNumber standardParameter.nowPrice 8}} XT</p>
                 <p class="topRight">
                     <img src="{{webAppPath}}/resources/image/wap/deal-hq.png" />
                     <span>行情</span>
@@ -66,9 +66,9 @@
             <div class="payLeft">
                 <div class="leftTitle">
                     <span>卖/买</span>
-                    <span>价格($)</span>
+                    <span>价格(XT)</span>
                     <span>数量</span>
-                    <span>总额($)</span>
+                    <span>总额(XT)</span>
                 </div>
                 <p class="leftContent">
                     {{{eachForTransactionPendOrderSellList transactionPendOrderSellList}}}
@@ -120,24 +120,24 @@
                     </div>
                     <input type="hidden" id="buyFee" value="{{transactionCurrency.buyFee}}">
                     <input type="hidden" id="buyTotal">
-                    <p class="maxNum" id="buyMax">最大可买: 0</p>
+                    <p class="maxNum" id="buyMax">最大可买: 0 XT</p>
                     <div class="mainContent-passwordBuy">
                         <span class="name">交易密码</span><input type="password" id="buyPwd" name="buyPwd" maxlength="16"  autocomplete="new-password"/>
                         <span class="setting">设置</span>
                     </div>
-                    <p class="maxNum" id="bMaxNum">当前设置: 每笔交易都输入密码</p>
+                    <p class="maxNumTwo" id="bMaxNum">当前设置: 每笔交易都输入密码</p>
                 </div>
                 <div class="mainButtonBuy">买入</div>
                 <div class="mainMoney">
                     <p class="mainMoney-title">
                         <span>总资产</span>
-                        <span>冻结美金</span>
-                        <span>可用美金</span>
+                        <span>冻结 XT</span>
+                        <span>可用 XT</span>
                     </p>
                     <p class="mainMoney-num">
-                        <span id="currencyNumberSumShow">\${{formatNumber userDealCapitalMessage.currencyNumberSum 6}}</span>
-                        <span id="userBalanceLockShow">\${{formatNumber userDealCapitalMessage.userBalanceLock 6}}</span>
-                        <span id="userBalance">\${{formatNumber userDealCapitalMessage.userBalance 6}}</span></span>
+                        <span id="currencyNumberSumShow">{{formatNumber userDealCapitalMessage.currencyNumberSum 6}} XT</span>
+                        <span id="userBalanceLockShow">{{formatNumber userDealCapitalMessage.userBalanceLock 6}} XT</span>
+                        <span id="userBalance">{{formatNumber userDealCapitalMessage.userBalance 6}} XT</span></span>
                     </p>
                 </div>
             </div>
@@ -154,13 +154,13 @@
                     <input type="hidden" id="currencyNumber"
                            value="{{formatNumber userDealCapitalMessage.currencyNumber 4}}">
                     <input type="hidden" id="sellTotal">
-                    <p class="maxNum" id="sellMax">最大可获得: 0</p>
+                    <p class="maxNum" id="sellMax">最大可获得: 0 XT</p>
                     <div class="mainContent-passwordSell">
                         <span class="name">交易密码</span>
                         <input type="password" id="sellPwd" name="sellPwd"  maxlength="16"  autocomplete="new-password"/>
                         <span class="setting">设置</span>
                     </div>
-                    <p class="maxNum" id="sMaxNum">当前设置: 每笔交易都输入密码</p>
+                    <p class="maxNumTwo" id="sMaxNum">当前设置: 每笔交易都输入密码</p>
                 </div>
                 <div class="mainButtonSell">卖出</div>
                 <div class="mainMoney">
@@ -178,7 +178,7 @@
             <div class="entrust">
                 <ul class="entrust-title">
                     <li>类型</li>
-                    <li>单价($)</li>
+                    <li>单价(XT)</li>
                     <li>数量</li>
                     <li>已成交</li>
                     <li>操作</li>
