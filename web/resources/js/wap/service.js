@@ -62,7 +62,7 @@ var ParamAndViewInit = {
 
                 if(Number(data.totalPageNumber) == (Number(data.pageNumber) + 1) ){
                     $(".more").unbind('click');
-                    $(".more").text("已显示全部记录");
+                    $(".more").text("");
                 }
             },
             error: function () {
@@ -217,7 +217,7 @@ $(function () {
              $('.bg').css("height",bgHeight +"px");
             if(Number(data.totalPageNumber) == (Number(data.pageNumber) + 1) ){
                 $(".more").unbind('click');
-                $(".more").text("已显示全部记录");
+                $(".more").text("");
             }
         },
         error: function () {

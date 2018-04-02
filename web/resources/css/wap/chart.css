@@ -1,7 +1,4 @@
-html,body{
-    overflow:hidden;
-    overflow-y:auto;
-}
+
 /* 头部价格 */
 .nav{
     position: fixed;
@@ -101,9 +98,9 @@ html,body{
 #wrapper{
     padding-bottom: 1.2rem;
     width: 100%;
-    position: relative;
-    top: 2.2rem;
-    left: 0;
+   margin-top: 2.2rem;
+    overflow: hidden;
+    overflow-y: scroll;
 }
 /* 当前价格 */
 .nowPrice{
