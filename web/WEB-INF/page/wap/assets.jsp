@@ -94,7 +94,7 @@
 
                 $(".see").on("click",function () {
                     var currencyId=$(this).parent().parent().find("#currencyId").text()
-                    window.location.href="<%=path%>/userWap/tradeCenter/show?currencyIdStr="+currencyId
+                    window.location.href="<%=path%>/userWap/tradeCenter/show/"+currencyId
                 })
             },
             error: function () {
