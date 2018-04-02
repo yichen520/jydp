@@ -8,6 +8,7 @@ package com.jydp.entity.DO.transaction;
 public class WapTransactionPendOrderDO extends TransactionPendOrderDO {
 
     private double totalPrice; //总价
+    private double remainNum; //剩余数量
 
     /**
      * 委托记录总价
@@ -23,5 +24,21 @@ public class WapTransactionPendOrderDO extends TransactionPendOrderDO {
      */
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    /**
+     * 剩余数量
+     * @return the remainNum
+     */
+    public double getRemainNum() {
+        return remainNum;
+    }
+
+    /**
+     * 剩余数量
+     * @param remainNum the remainNum to set
+     */
+    public void setRemainNum(double remainNum) {
+        this.remainNum = remainNum;
     }
 }
