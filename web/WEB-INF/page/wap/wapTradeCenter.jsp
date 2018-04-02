@@ -130,14 +130,14 @@
                 <div class="mainButtonBuy">买入</div>
                 <div class="mainMoney">
                     <p class="mainMoney-title">
-                        <span>总资产</span>
-                        <span>冻结 XT</span>
-                        <span>可用 XT</span>
+                        <span>总资产(XT)</span>
+                        <span>冻结(XT)</span>
+                        <span>可用(XT)</span>
                     </p>
                     <p class="mainMoney-num">
                         <span id="currencyNumberSumShow">{{formatNumber userDealCapitalMessage.currencyNumberSum 6}} XT</span>
-                        <span id="userBalanceLockShow">{{formatNumber userDealCapitalMessage.userBalanceLock 6}} XT</span>
-                        <span id="userBalance">{{formatNumber userDealCapitalMessage.userBalance 6}} XT</span></span>
+                        <span id="userBalanceLockShow">{{formatNumber userDealCapitalMessage.userBalanceLock 6}}</span>
+                        <span id="userBalance">{{formatNumber userDealCapitalMessage.userBalance 6}}</span></span>
                     </p>
                 </div>
             </div>

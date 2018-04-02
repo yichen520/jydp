@@ -239,7 +239,7 @@ var ParamsAndInit = {
                 $("#buyTotal").val(number);
             }
             //可用美金
-            var userBalance = parseFloat($("#userBalance").text().split(" XT")[0]);
+            var userBalance = parseFloat($("#userBalance").text());
             if (buyPrice > 0) {
                 //如果单价大于0，购买的手续费用乘以100
                 buyFee = buyFee * 100;
@@ -671,9 +671,9 @@ var ParamsAndInit = {
                     $("#currencyNumber").val(ParamsAndInit.formatNumber(userDealCapitalMessage.currencyNumber, 4));
                     $("#currencyNumberLockShow").html(ParamsAndInit.formatNumber(userDealCapitalMessage.currencyNumberLock, 6));
 
-                    $("#userBalance").html(ParamsAndInit.formatNumber(userDealCapitalMessage.userBalance, 6) + " XT");
-                    $("#userBalanceLockShow").html(ParamsAndInit.formatNumber(userDealCapitalMessage.userBalanceLock, 6) + " XT");
-                    $("#currencyNumberSumShow").html(ParamsAndInit.formatNumber(userDealCapitalMessage.currencyNumberSum, 6) + " XT");
+                    $("#userBalance").html(ParamsAndInit.formatNumber(userDealCapitalMessage.userBalance, 6));
+                    $("#userBalanceLockShow").html(ParamsAndInit.formatNumber(userDealCapitalMessage.userBalanceLock, 6));
+                    $("#currencyNumberSumShow").html(ParamsAndInit.formatNumber(userDealCapitalMessage.currencyNumberSum, 6));
                 }
             },
             error: function () {
