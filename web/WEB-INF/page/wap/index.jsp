@@ -101,7 +101,7 @@
 </body>
 <script id="template" type="text/x-handlebars-template">
     {{#each this}}
-    <a href="<%=path%>/userWap/tradeCenter/show?currencyIdStr={{currencyId}}">
+    <a href="<%=path%>/userWap/tradeCenter/show/{{currencyId}}">
         <ul>
 
             <li>
@@ -175,10 +175,10 @@
 <script id="swiperTemplate" type="text/x-handlebars-template">
     {{#each this}}
     {{#if wapLinkUrl}}
-    <a target="_blank" href="{{wapLinkUrl}}" class="swiper-slide" style="display: block;background: url({{adsImageUrlFormat}})"  >
+    <a target="_blank" href="{{wapLinkUrl}}" class="swiper-slide" style="display: block;background: url({{adsImageUrlFormat}});background-size:cover !important;"  >
     </a>
     {{else}}
-    <a class="swiper-slide" style="display: block;background: url({{adsImageUrlFormat}})">
+    <a class="swiper-slide" style="display: block;background: url({{adsImageUrlFormat}});background-size:cover !important;">
     </a>
     {{/if}}
     {{/each}}
