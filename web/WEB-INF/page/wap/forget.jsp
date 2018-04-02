@@ -196,10 +196,11 @@
     $('.choseNumber').on('click',function() {
         getphoneArea();
     });
+    var list = {};
     function getphoneArea(){
         var url = "${pageContext.request.contextPath}/userWap/forgetPassword/phoneArea";
         $.get(url,function(result){
-            var list = {};
+            
             var myData = result.data.phoneAreaMap;
             list.phoneAreaMap = [];
             var i = 0;
@@ -207,30 +208,30 @@
                 var obj = {"cityNum":key,"city":myData[key]};
                 list.phoneAreaMap[i++] = obj;
             }
-            var compileTemplate = $("#getPhoneArea").html();
-            var compileComplile = Handlebars.compile(compileTemplate);
-            var headerHtml = compileComplile(list);
-            $("#phoneAreaContainer").html(headerHtml);
+            injection(list);
 
         });
+    }
+    
+    function injection(arr) {
+        var compileTemplate = $("#getPhoneArea").html();
+        var compileComplile = Handlebars.compile(compileTemplate);
+        var headerHtml = compileComplile(arr);
+        $("#phoneAreaContainer").html(headerHtml);
     }
 
     //搜索时动态显示区号
     function showSearch() {
         var value = $("#country").val();
-        if (!value) {
-            $("#phoneAreaContainer li").each(function () {
-                $(this).show();
-            })
-            return;
-        }
-        $("#phoneAreaContainer li").each(function () {
-            if ($(this).children("p:eq(0)").text() == value || $(this).children("p:eq(1)").text() == value) {
-                $(this).show()
-            } else {
-                $(this).hide();
+        var arr = {};
+        arr.phoneAreaMap = [];
+        for(var i=0;i<list.phoneAreaMap.length;i++){
+            //如果字符串中不包含目标字符会返回-1
+            if(list.phoneAreaMap[i].cityNum.indexOf(value)>=0||list.phoneAreaMap[i].city.indexOf(value)>=0){
+                arr.phoneAreaMap.push(list.phoneAreaMap[i]);
             }
-        })
+        }
+        injection(arr);
     }
 
 
