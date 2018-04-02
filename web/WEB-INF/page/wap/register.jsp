@@ -124,7 +124,6 @@
 
             //获取的数据存储
             jsonObject = result.data.jsonObject;
-
             var template = Handlebars.compile($("#abcd").html())
             $('#chosePhone').html(template(result.data));
 
@@ -204,12 +203,12 @@
         var userAccount = obj.value;
         var reg = /^[A-Za-z0-9]{6,16}$/;
         if (!reg.test(userAccount)) {
-            openTips("输入6-16位数字和字母账号");
+            openTips("请输入6-16位数字、字母账号");
         }
         var account = obj.value;
         if (account.length < 6 || account.length > 16) {
             validateUserBoo = false;
-            openTips("输入6-16数字和字母账号");
+            openTips("请输入6-16位数字、字母账号");
             return;
         }
 
@@ -341,11 +340,6 @@
             return;
         }
 
-        /*if (!getMesCodeFlag) {
-            openTips("请先获取短信验证码");
-            return;
-        }*/
-
         if (!validateCode || validateCode.length != 6) {
             openTips("请输入6位短信验证码");
             return;
@@ -402,7 +396,7 @@
 
         //注册协议
         if (!checked) {
-            openTips("请阅读用户注册协议");
+            openTips("请阅读并勾选用户注册协议");
             return;
         }
 
