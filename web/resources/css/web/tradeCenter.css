@@ -83,6 +83,7 @@ body{
     margin:0 auto
 }
 .wrapper ul{
+    display: none;
     padding: 10px;
     width: 745px;
     height: 25px;

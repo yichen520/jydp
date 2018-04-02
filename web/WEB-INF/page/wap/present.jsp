@@ -60,13 +60,12 @@
             <p class="serial">{{coinRecordNo}}</p>
             <p class="clear"></p>
         </div>
-        <p class="money-state">转出状态：
-            <span>{{sendShow sendStatus}}</span>
-        </p>
+            <p class="money-state">{{#sendStatusShow handleStatus}}转出状态：
+                <span>{{sendShow sendStatus}}</span>
+                {{/sendStatusShow}}
+            </p>
         <div class="footer">
-            {{#remarkShow handleStatus}}
-                <p class="remark">{{remark}}</p>
-            {{/remarkShow}}
+            <p class="remark">{{remark}}</p>
             {{#withdrawShow handleStatus}}
                 <p class="withdraw" onclick="showDialog('{{coinRecordNo}}')">撤回</p>
             {{/withdrawShow}}
@@ -139,6 +138,14 @@
         }
     });
 
+    //转出状态字段显示
+    Handlebars.registerHelper("sendStatusShow", function (handleStatus,options) {
+       if (handleStatus == 2) {
+           //满足条件执行
+           return options.fn(this);
+       }
+    });
+
     //转出状态显示
     Handlebars.registerHelper("sendShow", function (sendStatus) {
         switch (sendStatus) {
@@ -149,14 +156,6 @@
         }
     });
 
-    //备注显示
-    Handlebars.registerHelper("remarkShow", function (handleStatus,options) {
-        //审核通过或拒绝显示备注
-        if (handleStatus == 2 || handleStatus == 3) {
-            //满足条件执行
-            return options.fn(this);
-        }
-    });
     //提币记录数据填充
     var presentListData = ${requestScope.coinOutRecordList};
     var presentfunc = Handlebars.compile($('#template').html());
