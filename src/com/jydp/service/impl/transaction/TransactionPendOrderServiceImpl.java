@@ -251,7 +251,9 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
         //做总价赋值
         for (WapTransactionPendOrderDO wapTransactionPendOrder : wapTransactionPendOrderDOList){
             double totalPrice = BigDecimalUtil.mul(wapTransactionPendOrder.getPendingPrice(),wapTransactionPendOrder.getPendingNumber());
+            double remainNum = BigDecimalUtil.sub(wapTransactionPendOrder.getPendingNumber(),wapTransactionPendOrder.getDealNumber());
             wapTransactionPendOrder.setTotalPrice(totalPrice);
+            wapTransactionPendOrder.setRemainNum(remainNum);
         }
 
         return  wapTransactionPendOrderDOList;

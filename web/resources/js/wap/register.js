@@ -45,8 +45,9 @@ $(function () {
                 phoneBoo = false;
                 return openTips("请输入正确手机号");
             }
+            var pageContext = $("#pageContext").val();
             $.ajax({
-                url: "/jydp/sendCode/sendPhoneCode",
+                url: pageContext+"/sendCode/sendPhoneCode",
                 type:'post',
                 dataType:'json',
                 async:true,

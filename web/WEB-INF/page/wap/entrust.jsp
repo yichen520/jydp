@@ -68,7 +68,7 @@
             <div class="navRight">
                 <ul>
                     <li>成交数量：<span>{{formatNumber dealNumber 4}}</span></li>
-                    <li>剩余数量：<span class="special">{{pendingRemainNumberConvert pendingNumber dealNumber 4}}</span></li>
+                    <li>剩余数量：<span class="special">{{formatNumber remainNum 4}}</span></li>
                 </ul>
             </div>
         </div>
