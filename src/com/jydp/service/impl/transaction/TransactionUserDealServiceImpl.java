@@ -235,8 +235,8 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
             } else if (userDeal.getPaymentType() == 2) {
                 actualPriceForWap =currencyTotalPrice.subtract(feeForWap);
             }
-            userDeal.setFeeForWap(feeForWap.toPlainString());
-            userDeal.setActualPriceForWap(actualPriceForWap.toPlainString());
+            userDeal.setFeeForWap(feeForWap.stripTrailingZeros().toPlainString());
+            userDeal.setActualPriceForWap(actualPriceForWap.stripTrailingZeros().toPlainString());
         }
 
         return transactionUserDealVOS;
