@@ -72,16 +72,6 @@
         seconds=seconds < 10 ? ('0' + seconds) : seconds;
         return year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
     });
-    //日期转换
-    Handlebars.registerHelper("addTimeDateConvert", function (addTime) {
-        var date = new Date(addTime);
-        var year = date.getFullYear();
-        var month = date.getMonth() + 1;
-        month=month < 10 ? ('0' + month) : month;
-        var day = date.getDate();
-        day=day < 10 ? ('0' + day) : day;
-        return year + "-" + month + "-" + day ;
-    });
 
     //if比较
     Handlebars.registerHelper("compare",function(x1,x2,options){
@@ -101,7 +91,7 @@
     $('.content ul').html(noticefunc(systemHotListData));
     //加载更多
     var totalPageNumber = parseInt(${requestScope.totalPageNumber});
-    if (totalPageNumber == 0){
+    if (totalPageNumber == 0 ||totalPageNumber == 1){
         $(".more").remove();
     }
     //更多

@@ -85,13 +85,14 @@
         }
     });
 
+
     //公告数据填充
     var systemNoticeListData = ${requestScope.systemNoticeList};
     var noticefunc = Handlebars.compile($('#template').html());
     $('.content ul').html(noticefunc(systemNoticeListData));
 
     var totalPageNumber = parseInt(${requestScope.totalPageNumber});
-    if (totalPageNumber == 0){
+    if (totalPageNumber == 0 ||totalPageNumber == 1){
         $(".more").remove();
     }
     //更多
