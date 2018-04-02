@@ -171,7 +171,10 @@
             return;
         }
         $("#ultest li").each(function () {
-            if ($(this).children("p:eq(0)").text() == value || $(this).children("p:eq(1)").text() == value) {
+            var textKey = $(this).children("p:eq(0)").text();
+            var textkeyValue = $(this).children("p:eq(1)").text();
+            //如果字符串中不包含目标字符会返回-1
+            if(textKey.indexOf(value)>=0 || textkeyValue.indexOf(value)>=0 ){
                 $(this).show()
             } else {
                 $(this).hide();
