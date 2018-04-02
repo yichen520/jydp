@@ -118,12 +118,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         var newValidCode=$("#newValidCode").val();
         var areaCode=$("#newAreaCode").text();
         var phone=$("#newPhone").val();
-        if ((validCode=="" || newValidCode=="") && (password!="" && areaCode!="" && phone!="")) {
-            openTips("验证码错误");
+        if (validCode=="") {
+            openTips("请输入原手机验证码");
             return;
         }
-        if (password=="" || areaCode=="" || phone=="" || validCode=="" || newValidCode=="") {
-            openTips("全部为必填项");
+        if (phone=="") {
+            openTips("请输入新手机号");
+            return;
+        }
+        if (newValidCode=="") {
+            openTips("请输入新手机验证码");
+            return;
+        }
+        if (password=="") {
+            openTips("请输入登陆密码");
             return;
         }
         $.ajax({

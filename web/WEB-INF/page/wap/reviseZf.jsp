@@ -112,12 +112,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             oldPwd=$("#oldPwdPyPwd").val();
             newPwd=$("#newPwdByPwd").val();
             confirmPwd=$("#confirmPwdByPwd").val();
-            if (oldPwd=="" || newPwd== ""|| confirmPwd=="") {
-                openTips("全部为必填项");
+            if(oldPwd=="") {
+                openTips("请输入密码");
                 return;
             }
-            if (!regx.test(newPwd) || !regx.test(confirmPwd)) {
-                openTips("密码格式不正确");
+            if (newPwd=="") {
+                openTips("请输入新密码");
+                return;
+            }
+            if (!regx.test(newPwd)) {
+                openTips("新密码格式不正确");
+                return;
+            }
+            if(confirmPwd=="") {
+                openTips("请输入确认密码");
+                return;
+            }
+            if(!regx.test(confirmPwd)) {
+                openTips("确认密码格式不正确");
                 return;
             }
             if (newPwd!=confirmPwd) {
@@ -154,16 +166,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             newPwd=$("#newPwdByPhone").val();
             confirmPwd=$("#confirmPwdByPhone").val();
             code=$("#codeByPhone").val().replace(/\ +/g,"");
-            if (code=="" && newPwd!="" && confirmPwd !="") {
-                openTips("验证码错误");
+            if (newPwd=="") {
+                openTips("请输入新密码");
                 return;
             }
-            if (newPwd== ""|| confirmPwd=="" || code=="") {
-                openTips("全部为必填项");
+            if (!regx.test(newPwd)) {
+                openTips("新密码格式不正确");
                 return;
             }
-            if (!regx.test(newPwd) || !regx.test(confirmPwd)) {
-                openTips("密码格式不正确");
+            if (confirmPwd=="") {
+                openTips("请输入确认密码");
+                return;
+            }
+            if(!regx.test(confirmPwd)) {
+                openTips("确认密码格式不正确");
                 return;
             }
             if (newPwd!=confirmPwd) {
@@ -172,6 +188,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             }
             if (newPwd.length<6 || newPwd.length>16) {
                 openTips("密码长度错误");
+                return;
+            }
+            if (code=="" && newPwd!="" && confirmPwd !="") {
+                openTips("验证码错误");
                 return;
             }
             if (code.length !=6) {
