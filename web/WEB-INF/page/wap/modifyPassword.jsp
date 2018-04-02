@@ -92,16 +92,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         var newPwd=$("#newPwd").val();
         var confirmPwd=$("#confirmPwd").val();
         var validCode=$("#validCode").val();
-        if (validCode=="" && oldPwd !="" && newPwd!="" && confirmPwd !="") {
-            openTips("验证码错误");
+        if(oldPwd=="") {
+            openTips("请输入密码");
             return;
         }
-        if (oldPwd=="" || newPwd== ""|| confirmPwd=="" || validCode =="") {
-            openTips("全部为必填项");
+        if(newPwd=="") {
+            openTips("请输入新密码");
             return;
         }
-        if (!regx.test(newPwd) || !regx.test(confirmPwd)) {
-            openTips("密码格式不正确");
+        if (!regx.test(newPwd)) {
+            openTips("新密码格式不正确");
+            return;
+        }
+        if(confirmPwd=="") {
+            openTips("请输入确认密码");
+            return;
+        }
+        if(!regx.test(confirmPwd)) {
+            openTips("确认密码格式不正确");
             return;
         }
         if (newPwd!=confirmPwd) {
@@ -110,6 +118,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         }
         if (newPwd.length<6 || newPwd.length>16) {
             openTips("密码长度错误");
+            return;
+        }
+        if (validCode=="" && oldPwd !="" && newPwd!="" && confirmPwd !="") {
+            openTips("验证码错误");
             return;
         }
         if (validCode.length !=6) {
