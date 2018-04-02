@@ -6,6 +6,7 @@ import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.ITransactionPendOrderDao;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
+import com.jydp.entity.DO.transaction.WapTransactionPendOrderDO;
 import com.jydp.entity.DO.user.UserBalanceDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
@@ -236,6 +237,24 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
      */
     public List<TransactionPendOrderDO> listPendOrderByUserId(int userId, int pageNumber, int pageSize){
         return transactionPendOrderDao.listPendOrderByUserId(userId, pageNumber, pageSize);
+    }
+
+    /**
+     * wap端根据用户id分页查询挂单记录
+     * @param userId 用户Id
+     * @param pageNumber 起始页数
+     * @param pageSize 每页条数
+     * @return 操作成功：返回挂单记录列表，操作失败：返回null
+     */
+    public List<WapTransactionPendOrderDO> listPendOrderByUserIdForWap(int userId, int pageNumber, int pageSize){
+        List<WapTransactionPendOrderDO> wapTransactionPendOrderDOList = transactionPendOrderDao.listPendOrderByUserIdForWap(userId, pageNumber, pageSize);
+        //做总价赋值
+        for (WapTransactionPendOrderDO wapTransactionPendOrder : wapTransactionPendOrderDOList){
+            double totalPrice = BigDecimalUtil.mul(wapTransactionPendOrder.getPendingPrice(),wapTransactionPendOrder.getPendingNumber());
+            wapTransactionPendOrder.setTotalPrice(totalPrice);
+        }
+
+        return  wapTransactionPendOrderDOList;
     }
 
     /**
@@ -503,4 +522,23 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
         return transactionPendOrderList;
     }
 
+    /**
+     * 分页查询委托记录列表（wap交易中心）
+     * @param userId 用户id
+     * @param currencyId 币种id
+     * @param pageNumber 起始页数
+     * @param pageSize 每页条数
+     * @return 操作成功：返回挂单记录列表，操作失败：返回null
+     */
+    public List<TransactionPendOrderVO> listPendOrderForWap(int userId, int currencyId, int pageNumber, int pageSize){
+        List<TransactionPendOrderVO> transactionPendOrderList = transactionPendOrderDao.listPendOrderForWap(userId, currencyId, pageNumber, pageSize);
+        if(transactionPendOrderList == null){
+            return transactionPendOrderList;
+        }
+        for (TransactionPendOrderVO result : transactionPendOrderList) {
+            double countPrice = BigDecimalUtil.mul(result.getPendingPrice(), result.getPendingNumber());
+            result.setCountPrice(countPrice);
+        }
+        return transactionPendOrderList;
+    }
 }

@@ -143,7 +143,7 @@ public class BackerSessionDaoImpl implements IBackerSessionDao {
 
 	/**
 	 * 查询session数量
-	 * @param loginTime 登陆时间
+	 * @param loginTime 登录时间
 	 * @return 操作成功：返回数量，操作失败：返回0
 	 */
     public int countSession(Timestamp loginTime) {

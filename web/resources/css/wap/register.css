@@ -1,0 +1,192 @@
+.back img{
+    margin-top: 0.3rem;
+    margin-left: 0.3rem;
+    width: 0.19rem;
+    height: 0.35rem;
+    display: block;
+}
+.registerBox{
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    margin-top: 0.4rem;
+}
+.registerBox .title{
+    font-size: 0.4rem;
+    color: #000;
+}
+.registerContent{
+    width: 100%;
+}
+.registerContent div{
+    height: 0.98rem;
+    border-bottom: 1px solid #ececec;
+}
+.registerContent div p{
+    font-size: 0.3rem;
+    color: #333;
+    line-height: 0.98rem;
+}
+.registerContent div:nth-of-type(2) select{
+    width: 20%;
+    border: 0;
+    background: #fff;
+    height: 0.98rem;
+    float: left;
+    font-size: 0.34rem;
+    color: #333;
+    display: block;
+    line-height: 0.98rem;
+}
+.choseNumber{
+    float: left;
+}
+.num{
+    float: left;
+    font-size: 0.3rem;
+    color: #333;
+    line-height: 0.98rem;
+}
+.registerContent div:nth-of-type(2) input{
+    width: 79%;
+    float: right;
+}
+.registerContent div:nth-of-type(2) img{
+    margin-left: 0.2rem;
+    margin-top: 0.42rem;
+    width: 0.2rem;
+    height: 0.11rem;
+    float: left;
+}
+.registerContent div:nth-of-type(3) input{
+    width: 50%;
+    float: left;
+}
+.registerContent div:nth-of-type(3) p{
+    width: 50%;
+    float: right;
+    text-align: right;
+    color: #e83a33;
+    font-size: 0.28rem;
+    line-height: 0.98rem;
+}
+.registerContent div input{
+    width: 100%;
+    display: block;
+    height: 0.98rem;
+    line-height: 0.98rem;
+    background: #fff;
+    font-size: 0.3rem;
+    color: #333;
+}
+.confirm{
+    margin-top: 0.6rem;
+    width: 100%;
+    height: 0.98rem;
+    line-height: 0.98rem;
+    color: #fff;
+    font-size: 0.34rem;
+    text-align: center;
+    box-shadow: 0px 5px 15px rgba(248,183,180,0.6);
+    background: -ms-linear-gradient(top, #fe5c5c,  #e83e3a);        /* IE 10 */
+    background:-moz-linear-gradient(top,#fe5c5c,#e83e3a);/*火狐*/   
+    background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#fe5c5c), to(#e83e3a));/*谷歌*/   
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fe5c5c), to(#e83e3a));      /* Safari 4-5, Chrome 1-9*/  
+    background: -webkit-linear-gradient(top, #fe5c5c, #e83e3a);   /*Safari5.1 Chrome 10+*/  
+    background: -o-linear-gradient(top, #fe5c5c, #e83e3a);  /*Opera 11.10+*/  
+
+}
+.footer{
+    margin-top: 0.3rem;
+    width: 100%;display: table;
+}
+.footer .checkboxBox{
+    float: left;
+    width: 0.34rem;
+    height: 0.34rem;
+    background: url("../../image/wap/check-yes.png") no-repeat;
+    background-size:cover; 
+}
+.footer input{
+    opacity: 0;
+    vertical-align: top;
+    width: 0.34rem;
+    height: 0.34rem;
+    -webkit-appearance: none;
+}
+.footer p{
+    float: left;
+    font-size: 0.26rem;
+    margin-left: 0.2rem;
+}
+.footer p span{
+    color: #e83a33
+}
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #888;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #888;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #888;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:    #888;
+}
+/* 选择手机号弹窗 */
+.chosePhone{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    background: #fff;
+    display: none;
+    margin-top: 0.91rem;
+}
+.search{
+    width: 100%;
+    height: 0.84rem;
+    background: #fff;
+    box-shadow: 0px 5px 10px rgba(232,230,230,0.6);
+}
+.search img{
+    margin-left: 0.3rem;
+    margin-top: 0.28rem;
+    margin-right: 0.2rem;
+    width: 0.31rem;
+    height: 0.31rem;
+    float: left;
+}
+.search input{
+    float: left;
+    display: block;
+    height: 0.84rem;
+    line-height:0.84rem;
+    width: 50%;
+    font-size: 0.3rem;
+    color: #aaa;
+}
+.search p{
+    margin-right: 0.3rem;
+    line-height:0.84rem;
+    float: right;
+    font-size: 0.26rem;
+    color: #666;
+}
+.searchList{
+    padding: 0.4rem 0.3rem 0.4rem 0.3rem;
+}
+.searchList li{
+    margin-bottom: 0.5rem;
+}
+.city{
+    float: left;
+    font-size: 0.26rem;
+    color: #666;
+}
+.cityNum{
+    float: right;
+    font-size: 0.26rem;
+    color: #999;
+}

@@ -57,6 +57,13 @@ public interface IUserCurrencyNumDao {
     boolean insertUserCurrencyForWeb(List<UserCurrencyNumDO> userCurrencyNumList);
 
     /**
+     * wap端添加用户币数量(用户注册时添加记录，默认各币种数量为0)
+     * @param userCurrencyNumList 用户币种信息表
+     * @return 操作成功：返回true;操作失败：返回false
+     */
+    boolean insertUserCurrencyForWap(List<UserCurrencyNumDO> userCurrencyNumList);
+
+    /**
      * 增加用户货币数量
      * @param userCurrencyNum 增加信息
      * @return 操作成功：返回true;操作失败：返回false

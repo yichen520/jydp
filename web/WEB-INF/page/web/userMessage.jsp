@@ -425,7 +425,7 @@
     }
 
     var updateLogPasswordBoo = false;
-    //修改登陆密码
+    //修改登录密码
     function updateLogPassword() {
         var password = $("#password").val();
         var newPassword = $("#newPassword").val();
@@ -626,7 +626,7 @@
         });
     }
 
-    //返回登陆页
+    //返回登录页
     function webLogin(){
         window.location.href = "<%=path%>" + "/userWeb/userLogin/loginOut.htm";
     }

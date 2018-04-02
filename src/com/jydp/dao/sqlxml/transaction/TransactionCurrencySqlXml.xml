@@ -196,6 +196,13 @@
         ORDER BY rankNumber ASC
     </select>
 
+    <select id="TransactionCurrency_getTransactionCurrencyMarketForWap" resultType="TransactionUserDealDTO">
+        SELECT currencyId, currencyShortName, currencyName, currencyImg
+        FROM transaction_currency_tab
+        WHERE upStatus IN (2,3)
+        ORDER BY rankNumber ASC
+    </select>
+
     <select id="TransactionCurrency_getAllCurrencylistForWeb" resultType="TransactionCurrencyVO">
         SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, guidancePrice,
             paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
@@ -204,6 +211,14 @@
     </select>
 
     <select id="TransactionCurrency_getOnlineAndSuspensionCurrencyForWeb" resultType="TransactionCurrencyVO">
+        SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, guidancePrice,
+        paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
+        FROM transaction_currency_tab
+        WHERE upStatus IN (2,3)
+        ORDER BY rankNumber ASC
+    </select>
+
+    <select id="TransactionCurrency_getOnlineAndSuspensionCurrencyForWap" resultType="TransactionCurrencyVO">
         SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, guidancePrice,
         paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab

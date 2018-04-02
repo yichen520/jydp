@@ -1,6 +1,7 @@
 package com.jydp.service;
 
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
+import com.jydp.entity.DO.transaction.WapTransactionPendOrderDO;
 import com.jydp.entity.DTO.TransactionPendOrderDTO;
 import com.jydp.entity.VO.TransactionPendOrderVO;
 
@@ -61,6 +62,16 @@ public interface ITransactionPendOrderService {
      * @return 操作成功：返回挂单记录列表，操作失败：返回null
      */
     List<TransactionPendOrderDO> listPendOrderByUserId(int userId, int pageNumber, int pageSize);
+
+
+    /**
+     * wap端根据用户id分页查询挂单记录
+     * @param userId 用户Id
+     * @param pageNumber 起始页数
+     * @param pageSize 每页条数
+     * @return 操作成功：返回挂单记录列表，操作失败：返回null
+     */
+    List<WapTransactionPendOrderDO> listPendOrderByUserIdForWap(int userId, int pageNumber, int pageSize);
 
     /**
      * 修改挂单状态
@@ -159,4 +170,14 @@ public interface ITransactionPendOrderService {
      * @return 操作成功：返回挂单记录列表，操作失败：返回null
      */
     List<TransactionPendOrderVO> listPendOrderForWeb(int userId, int currencyId, int pageNumber, int pageSize);
+
+    /**
+     * 分页查询委托记录列表（wap交易中心）
+     * @param userId 用户id
+     * @param currencyId 币种id
+     * @param pageNumber 起始页数
+     * @param pageSize 每页条数
+     * @return 操作成功：返回挂单记录列表，操作失败：返回null
+     */
+    List<TransactionPendOrderVO> listPendOrderForWap(int userId, int currencyId, int pageNumber, int pageSize);
 }

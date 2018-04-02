@@ -87,6 +87,17 @@ public class UserFeedbackServiceImpl implements IUserFeedbackService {
     }
 
     /**
+     * 分页查询意见反馈 (wap端)
+     * @param userId 用户id
+     * @param pageNumber 当前页数
+     * @param pageSize 每页大小
+     * @return 查询成功:返回当前页的意见反馈列表, 查询失败:返回null
+     */
+    public List<UserFeedbackDO> listUserFeedbackForWapUser(int userId, int pageNumber, int pageSize) {
+        return userFeedbackDao.listUserFeedbackForWapUser(userId, pageNumber, pageSize);
+    }
+
+    /**
      * 新增意见反馈
      * @param userId 用户Id
      * @param userAccount 用户帐号
@@ -103,6 +114,17 @@ public class UserFeedbackServiceImpl implements IUserFeedbackService {
         userFeedbackDO.setAddTime(DateUtil.getCurrentTime());
         userFeedbackDO.setHandleStatus(1);
 
+        return userFeedbackDao.insertUserFeedback(userFeedbackDO);
+    }
+
+    /**
+     * wap新增意见反馈
+     * @param userFeedbackDO 插入的意见实体
+     * @return 操作成功:返回true, 操作失败:返回false
+     */
+    public boolean insertUserFeedbackForWap(UserFeedbackDO userFeedbackDO) {
+        userFeedbackDO.setAddTime(DateUtil.getCurrentTime());
+        userFeedbackDO.setHandleStatus(1);
         return userFeedbackDao.insertUserFeedback(userFeedbackDO);
     }
 }

@@ -243,7 +243,7 @@ public class UserCoinWithdrawalController {
             return response;
         }
 
-        //sylUserBound.getUserSylAccount()
+        // TODO: 2018/3/30 0030  aaaaa --> sylUserBound.getUserSylAccount()
         boolean resultBoo = jydpUserCoinOutRecordService.insertJydpUserCoinOutRecord(currencyId, jydpCoinConfig.getCurrencyName(), userBo.getUserId(),
                     userBo.getUserAccount(), "aaaaa", number);
 

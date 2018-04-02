@@ -130,6 +130,12 @@ public interface ITransactionCurrencyDao {
     List<TransactionUserDealDTO> getTransactionCurrencyMarketForWeb();
 
     /**
+     * 为币种行情获取所有币种信息(wap)
+     * @return 查询成功：返回各币种信息；查询失败：返回null
+     */
+    List<TransactionUserDealDTO> getTransactionCurrencyMarketForWap();
+
+    /**
      * 查询全部币种信息(web端用户注册时使用)
      * @return 操作成功：返回币种信息集合，操作失败：返回null
      */
@@ -140,6 +146,12 @@ public interface ITransactionCurrencyDao {
      * @return 操作成功：返回币种信息集合，操作失败：返回null
      */
     List<TransactionCurrencyVO> getOnlineAndSuspensionCurrencyForWeb();
+
+    /**
+     * 获取所有上线和停牌币种信息
+     * @return 操作成功：返回币种信息集合，操作失败：返回null
+     */
+    List<TransactionCurrencyVO> getOnlineAndSuspensionCurrencyForWap();
 
     /**
      * 根据币种排名位置获取币种信息id

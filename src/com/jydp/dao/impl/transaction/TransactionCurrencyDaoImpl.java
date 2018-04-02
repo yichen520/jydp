@@ -322,6 +322,21 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
     }
 
     /**
+     * 为币种行情查询所有币种信息
+     * @return 操作成功：返回币种信息；操作失败：返回null (wap)
+     */
+    @Override
+    public List<TransactionUserDealDTO> getTransactionCurrencyMarketForWap() {
+        List<TransactionUserDealDTO> transactionUserDealList = null;
+        try {
+            transactionUserDealList = sqlSessionTemplate.selectList("TransactionCurrency_getTransactionCurrencyMarketForWap");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return transactionUserDealList;
+    }
+
+    /**
      * 查询全部币种信息(web端用户注册时使用)
      * @return 操作成功：返回币种信息集合，操作失败：返回null
      */
@@ -347,6 +362,22 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
 
         try {
             transactionCurrencyList = sqlSessionTemplate.selectList("TransactionCurrency_getOnlineAndSuspensionCurrencyForWeb");
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return transactionCurrencyList;
+    }
+
+    /**
+     * 获取所有上线和停牌币种信息
+     * @return 操作成功：返回币种信息集合，操作失败：返回null
+     */
+    @Override
+    public List<TransactionCurrencyVO> getOnlineAndSuspensionCurrencyForWap() {
+        List<TransactionCurrencyVO> transactionCurrencyList = null;
+
+        try {
+            transactionCurrencyList = sqlSessionTemplate.selectList("TransactionCurrency_getOnlineAndSuspensionCurrencyForWap");
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }

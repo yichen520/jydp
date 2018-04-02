@@ -1,0 +1,48 @@
+.tipsMask
+{
+    display:none;
+    position:fixed;
+    width:100%;
+    background-color:rgba(0,0,0,0.6);
+    z-index:999;
+    top:0;
+}
+.tips_content
+{
+    position:fixed;
+    top: 50%;
+    left:50%;
+    margin-left: -2.82rem;
+    margin-top: -1.35rem;
+    width:5.64rem;
+    height: 2.7rem;
+    border:none;
+    background-color:white;
+    border-radius: 0.08rem;
+    font-size: 0.28rem;
+}
+.tipsMaskText
+{
+    padding:0.6rem;
+    text-align: center;
+    color: #333333;
+    font-size: 0.34rem;
+}
+.tipsYes
+{
+    width: 100%;
+    height: 0.9rem;
+    text-align: center;
+    font-size: 0.32rem;
+    font-family: "Microsoft Yahei";
+    border: none;
+    border-radius: 0 0 5px 5px ;
+    background-color: #ffffff;
+    color: #e83a33;
+    border-top: 1px solid #ececec;
+}
+.ButtonTwo
+{
+    text-align: center;
+
+}

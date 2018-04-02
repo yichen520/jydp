@@ -23,6 +23,12 @@
             <mvc:mapping path="/userWeb/**/*.htm"/>
             <bean class="com.jydp.interceptor.UserWebInterceptor"></bean>
         </mvc:interceptor>
+
+        <!--用户WAP拦截器(WAP端访问)-->
+        <mvc:interceptor>
+            <mvc:mapping path="/userWap/**/*.htm"/>
+            <bean class="com.jydp.interceptor.UserWapInterceptor"></bean>
+        </mvc:interceptor>
  	</mvc:interceptors>
 	
 </beans>

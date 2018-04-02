@@ -132,6 +132,25 @@ public class UserCurrencyNumDaoImpl implements IUserCurrencyNumDao {
     }
 
     /**
+     * wap端添加用户币数量(用户注册时添加记录，默认各币种数量为0)
+     * @return 操作成功：返回true;操作失败：返回false
+     */
+    @Override
+    public boolean insertUserCurrencyForWap(List<UserCurrencyNumDO> userCurrencyNumList) {
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.insert("UserCurrencyNum_insertUserCurrencyForWap",userCurrencyNumList);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 增加用户货币数量
      * @param userCurrencyNum 增加信息
      * @return 操作成功：返回true;操作失败：返回false
