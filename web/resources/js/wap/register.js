@@ -70,7 +70,7 @@ $(function () {
         obj.attr("disabled", "disabled");/*按钮倒计时*/
         var time = 60;
         var set = setInterval(function () {
-            obj.text("("+--time + ")s后重新获取");
+            obj.text("重新获取("+(--time) +")" );
             if(time < 0 ){
                 clearInterval(set);
                 Repeatedclicks = true;

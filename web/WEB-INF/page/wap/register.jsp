@@ -294,7 +294,7 @@
             waitBoo = false;
         } else {
             $(obj).attr("disabled", true);
-            $(obj).text("(" + wait + ")s重新发送");
+            $(obj).text("重新发送(" + wait + ")");
             wait--;
             waitBoo = true;
              setTimeout(function() {
