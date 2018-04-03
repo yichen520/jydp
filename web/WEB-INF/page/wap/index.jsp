@@ -68,7 +68,7 @@
     <i></i>
 </div>
 <!-- 选择币种 -->
-<div class="choseBz" >
+
     <div class="choseBzBox">
         <div class="closeAnthoer closeBox"></div>
         <div class="choseBzBox-title">
@@ -81,7 +81,8 @@
             </ul>
         </div>
     </div>
-</div>
+
+
 
 <!-- 底部tabBar -->
 <footer>

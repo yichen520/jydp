@@ -26,22 +26,23 @@ $(function () {
                 var myTemplate = Handlebars.compile($("#table-template").html());
                 $('#currencyList').html(myTemplate(result.transactionUserDealList));
             })
-
+            setTimeout(function () {
+                $('#wrapper').hide();
+            }, 450);
             $('.closeAnthoer').css("height", bgHeight + "px");
-            $('.choseBz').css("height", bgHeight + "px");
+            $('.choseBz').css("height", '100%');
             $('.choseBzBox').css("height", bgHeight + "px");
             $('.choseBzBox').show();
             $('.choseBzBox').animate({left: '0'}, "500");
         });
         $('.closeBox').on('click', function () {
-            // $('html').css('overflow','auto');
-            // $('body').css('overflow','auto');
+            $('#wrapper').show();
             setTimeout(function () {
                 $('.closeAnthoer').css("height", "0");
                 $('.choseBz').css("height", "0");
                 $('.choseBzBox').css("height", "0");
             }, 450);
-            $('.choseBzBox').animate({left: '-82%'}, "500");
+            $('.choseBzBox').animate({left: '-100%'}, "500");
         });
 
     }

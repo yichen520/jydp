@@ -199,7 +199,7 @@
     function getphoneArea(){
         var url = "${pageContext.request.contextPath}/userWap/forgetPassword/phoneArea";
         $.get(url,function(result){
-            
+
             var myData = result.data.phoneAreaMap;
             list.phoneAreaMap = [];
             var i = 0;
