@@ -292,7 +292,10 @@
     function seeDetails() {
         //直接通过id去取的值会是同一个值
         var pendingOrderNo = $(this).parent().children('.findClass').val();
-        window.location.href = webPath + "/userWap/wapDealRecord/show.htm?pendingOrderNo=" + pendingOrderNo;
+        if (pendingOrderNo == null || !pendingOrderNo) {
+            openTips("参数错误")
+        }
+        window.location.href = webPath + "/userWap/wapDealRecord/show/" + pendingOrderNo;
     }
 
     //撤销申请

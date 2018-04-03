@@ -195,7 +195,7 @@
     }
 
     function readUserAgree() {
-        window.location.href="<%=path %>/userWap/wapHelpCenter/show/101010?type=1";
+        window.location.href="<%=path %>/userWap/wapHelpCenter/show/101010";
     }
     //验证用户账号
     var validateUserBoo = false;
