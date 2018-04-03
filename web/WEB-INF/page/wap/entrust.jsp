@@ -248,6 +248,8 @@
         return out;
     });
 
+
+    $("#seeMore").hide();
     $.ajax({
         url: webPath + "/userWap/wapTransactionPendOrderController/getTransactionPendOrderList",
         data: {
@@ -269,7 +271,10 @@
 
             if (resultData.data.totalPageNumber <= Number(pageNumber) + 1) {
                 $("#seeMore").hide();
+            }else{
+                $("#seeMore").show();
             }
+
 
             $(".see").each(function () {
                 $(this).bind("click", seeDetails);

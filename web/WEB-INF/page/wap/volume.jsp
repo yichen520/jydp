@@ -86,6 +86,7 @@
     var pendingOrderNo = $("#pendingOrderNo").val();
     var pageNumber = $("#pageNumber").val();
 
+    $("#seeMore").hide();
     //加载页面数据
     $.ajax({
         url: wapPath + "/userWap/wapDealRecord/getAccountRecord.htm",
@@ -110,6 +111,8 @@
             //对查看更多做控制
             if (resultData.data.totalPageNumber <= Number(pageNumber) + 1) {
                 $("#seeMore").hide();
+            }else{
+                $("#seeMore").show();
             }
         },
         error: function () {
