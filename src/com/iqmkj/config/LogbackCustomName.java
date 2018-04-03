@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
  *
  */
 public class LogbackCustomName {
- //测试提交
+
 	public String getPropertyValue() {
 		//获取主机名 linux多网卡无法根据环境指定具体网卡
 		InetAddress netAddress = getInetAddress();
