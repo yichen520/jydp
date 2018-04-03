@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -158,31 +157,4 @@ public class WapForgetController {
         }
         return responseJson;
     }
-    /**
-     * 手机号码验重
-     */
-    @RequestMapping(value = "/phoneNumberCheck")
-    public
-    @ResponseBody
-    JsonObjectBO phoneNumberCheck(HttpServletRequest request) {
-        JsonObjectBO responseJson = new JsonObjectBO();
-        String phoneNumber = StringUtil.stringNullHandle(request.getParameter("phoneNumber"));
-        String phoneAreaCode = StringUtil.stringNullHandle(request.getParameter("phoneAreaCode"));
-        String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
-        if (!StringUtil.isNotNull(userAccount) || !StringUtil.isNotNull(phoneNumber) || !StringUtil.isNotNull(phoneAreaCode)) {
-            responseJson.setCode(2);
-            responseJson.setMessage("提交信息存在为空选项");
-            return responseJson;
-        }
-        UserDO userDO = userService.validateUserPhoneNumber(userAccount, phoneAreaCode, phoneNumber);
-        if(userDO != null){
-            responseJson.setCode(1);
-            responseJson.setMessage("账号可用");
-        }else{
-            responseJson.setCode(2);
-            responseJson.setMessage("账号或手机号不匹配");
-        }
-        return responseJson;
-    }
-
 }

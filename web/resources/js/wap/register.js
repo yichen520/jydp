@@ -29,48 +29,33 @@ $(function () {
             }
             var area =  $("#area").html();
             var phone = $("#phoneNumber").val();
-            var userAccount = $("#userAccount").val();
-            if(!userAccount){
-                return openTips("请输入您的账号");
-            }
-            if (userAccount.length < 6 || userAccount.length > 16) {
-                return openTips( "账号长度在6~16个字符之间");
-            }
-            var commonReg = /^[A-Za-z0-9]{6,16}$/;
-            if (!commonReg.test(userAccount)) {
-                return openTips( "账号格式不正确");
-            }
-
             var regPos = /^\d+(\.\d+)?$/; //非负浮点数
             var phoneReg = /^1([358][0-9]|4[579]|66|7[0135678]|9[89])[0-9]{8}$/;
             if (!phone) {
+                phoneBoo = false;
                 return openTips("请输入您的手机号");
             }
 
             if(!regPos.test(phone) || phone.length > 11 || phone.length < 6){
+                phoneBoo = false;
                 return openTips("请输入正确手机号");
             }
 
             if (area == "+86" && !phoneReg.test(phone)) {
+                phoneBoo = false;
                 return openTips("请输入正确手机号");
             }
             var pageContext = $("#pageContext").val();
             $.ajax({
-                url: pageContext+"/userWap/forgetPassword/phoneNumberCheck",
+                url: pageContext+"/sendCode/sendPhoneCode",
                 type:'post',
                 dataType:'json',
                 async:true,
                 data:{
-                    userAccount : userAccount,
-                    phoneNumber : phone,
-                    phoneAreaCode : area
+                    phoneNumber : area+phone
                 },
                 success:function(result){
-                    if(result.code == 1){
-                        sendCode(area+phone);
-                    } else {
-                        return openTips(result.message);
-                    }
+                    openTips(result.message);
                 },
                 error:function() {
                     return openTips("服务器错误");
@@ -78,29 +63,8 @@ $(function () {
             });
             clickButton(this);
             Repeatedclicks = false;
-
         });
     }
-    function sendCode(areaPhone) {
-
-        var pageContext = $("#pageContext").val();
-        $.ajax({
-            url: pageContext+"/sendCode/sendPhoneCode",
-            type:'post',
-            dataType:'json',
-            async:true,
-            data:{
-                phoneNumber : areaPhone
-            },
-            success:function(result){
-                openTips(result.message);
-            },
-            error:function() {
-                return openTips("服务器错误");
-            }
-        });
-    }
-
     function clickButton(name) {
         var obj = $(name);
         obj.attr("disabled", "disabled");/*按钮倒计时*/
