@@ -120,7 +120,7 @@
                     </div>
                     <input type="hidden" id="buyFee" value="{{transactionCurrency.buyFee}}">
                     <input type="hidden" id="buyTotal">
-                    <p class="maxNum" id="buyMax">最大可买: 0 XT</p>
+                    <p class="maxNum" id="buyMax">最大可买: 0</p>
                     <div class="mainContent-passwordBuy">
                         <span class="name">交易密码</span><input type="password" id="buyPwd" name="buyPwd" maxlength="16"  autocomplete="new-password"/>
                         <span class="setting">设置</span>
