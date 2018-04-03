@@ -89,6 +89,18 @@ public class ImageReduceUtil {
         try {
             fileName = FileWriteLocalUtil.SaveInputStreamToFileByPath(img.getInputStream(),
                     path, NumberUtil.createNumberStr(6) + ".jpg");
+            if (!StringUtil.isNotNull(fileName)) {
+                return null;
+            }
+
+            //转换为jpg图片
+            Thumbnails.of(fileName)
+                    .scale(1)
+                    .outputFormat("jpg")
+                    .toFile(fileName);
+            if (new File(fileName).length() <= desFileSize * 1024) {
+                return fileName;
+            }
 
             //压缩，直到目标文件大小小于desFileSize
             while (true) {
@@ -97,7 +109,7 @@ public class ImageReduceUtil {
                     break;
                 }
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             LogUtil.printErrorLog(e);
             FileWriteLocalUtil.deleteFileRealPath(fileName);
         }

@@ -79,7 +79,6 @@ public class FileWriteLocalUtil {
 		}
 
 		rootPath = rootPath.replaceAll("%20", " ");
-		String formatDate = DateUtil.longToTimeStr(DateUtil.getCurrentTimeMillis(), DateUtil.dateFormat11);
 		String fileDirectory = "/upload";
 		//创建保存文件的文件路劲
 		String targetDirectory = rootPath + fileDirectory + "/" + fileDir + "/";
