@@ -348,14 +348,14 @@
         <p style="display: none;">{{currencyId}}</p>
         <p>{{currencyName}}({{currencyShortName}})</p>
         {{#compare change 0}}
-        <p style="color: red">{{latestPrice}}</p>
+        <p class="red">{{latestPrice}}</p>
         {{else}}
-        <p style="color: green">{{latestPrice}}</p>
+        <p class="green">{{latestPrice}}</p>
         {{/compare}}
         {{#compare change 0}}
-        <p style="color: red">{{change}}%</p>
+        <p class="red">{{change}}%</p>
         {{else}}
-        <p style="color: green">{{change}}%</p>
+        <p class="green">{{change}}%</p>
         {{/compare}}
     </li>
     {{/each}}
