@@ -70,7 +70,6 @@
 <!-- 选择币种 -->
 
     <div class="choseBzBox">
-        <div class="closeAnthoer closeBox"></div>
         <div class="choseBzBox-title">
             <p>选择币种</p>
             <img src="<%=path%>/resources/image/wap/header-close.png" class="closeBox"/>
