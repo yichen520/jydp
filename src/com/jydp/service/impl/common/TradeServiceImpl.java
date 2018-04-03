@@ -6,7 +6,6 @@ import com.iqmkj.utils.BigDecimalUtil;
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.NumberUtil;
 import com.jydp.entity.BO.JsonObjectBO;
-import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
 import com.jydp.entity.DO.user.UserBalanceDO;
 import com.jydp.service.*;
@@ -28,10 +27,6 @@ import java.sql.Timestamp;
 @Service("tradeService")
 public class TradeServiceImpl implements ITradeService {
 
-    /** redis服务 */
-    @Autowired
-    private IRedisService redisService;
-
     /** 挂单记录 */
     @Autowired
     private ITransactionPendOrderService transactionPendOrderService;
@@ -48,10 +43,6 @@ public class TradeServiceImpl implements ITradeService {
     @Autowired
     private IUserCurrencyNumService userCurrencyNumService;
 
-    /** 交易币种 */
-    @Autowired
-    private ITransactionCurrencyService transactionCurrencyService;
-
     /** 用户账户记录 */
     @Autowired
     private IUserBalanceService userBalanceService;
@@ -67,56 +58,18 @@ public class TradeServiceImpl implements ITradeService {
     /**
      * 匹配交易（单笔）
      * @param order 挂单信息
+     * @param matchOrder 匹配的挂单信息
+     * @param sellFee 卖出手续费
      * @return JsonObjectBO 交易成功与否信息，若成功，同时返回成交后的此笔挂单信息
      */
     @Transactional
-    public JsonObjectBO tradeHandle(TransactionPendOrderDO order){
+    public JsonObjectBO tradeHandle(TransactionPendOrderDO order, TransactionPendOrderDO matchOrder, double sellFee){
         JsonObjectBO resultJson = new JsonObjectBO();
         //获取该挂单里信息
         int userId = order.getUserId();
         int currencyId = order.getCurrencyId();
         int paymentType = order.getPaymentType();
-        int pendingStatus = order.getPendingStatus();
 
-        if(pendingStatus != 1 && pendingStatus != 2){
-            resultJson.setCode(4);
-            resultJson.setMessage("该挂单不在交易状态");
-            return resultJson;
-        }
-
-        //获取币种信息
-        TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
-        if(transactionCurrency == null){
-            resultJson.setCode(3);
-            resultJson.setMessage("没有该币种");
-            return resultJson;
-        }
-        //获取卖出手续费
-        double sellFee = transactionCurrency.getSellFee();
-
-        //获取对应的最新的挂单记录
-        int matchPaymentType = 0;
-        if(paymentType == 1){
-            matchPaymentType = 2;
-        }else if (paymentType == 2){
-            matchPaymentType = 1;
-        }
-        TransactionPendOrderDO matchOrder = transactionPendOrderService.getLastTransactionPendOrder(0, currencyId, matchPaymentType);
-        if(matchOrder == null){
-            resultJson.setCode(1);
-            resultJson.setMessage("挂单成功");
-            return resultJson;
-        }
-        //如果匹配不上，直接返回false
-        if((paymentType == 1 && order.getPendingPrice() < matchOrder.getPendingPrice()) ||
-                (paymentType == 2 && order.getPendingPrice() > matchOrder.getPendingPrice())){
-            resultJson.setCode(1);
-            resultJson.setMessage("挂单成功");
-            return resultJson;
-        }
-
-        //业务执行状态
-        boolean excuteSuccess = true;
         //获取两挂单交易数量和最终交易数量
         double orderNum = BigDecimalUtil.sub(order.getPendingNumber(), order.getDealNumber());
         double matchOrderNum = BigDecimalUtil.sub(matchOrder.getPendingNumber(), matchOrder.getDealNumber());
@@ -162,6 +115,8 @@ public class TradeServiceImpl implements ITradeService {
             }
         }
 
+        //业务执行状态
+        boolean excuteSuccess = true;
         //修改两个订单的交易数量和状态
         Timestamp curTime = DateUtil.getCurrentTime();
         if(tradeNum == orderNum && orderNum != matchOrderNum){
