@@ -397,8 +397,18 @@ public class BackerBusinessesPartnerController {
             return responsJson;
         }
 
-        boolean deleteResult = systemBusinessesPartnerService.deleteSystemBusinessesPartner(id);
+        SystemBusinessesPartnerDO systemBusinessesPartner = systemBusinessesPartnerService.getSystemBusinessesPartnerById(id);
+        if (systemBusinessesPartner == null) {
+            responsJson.setCode(3);
+            responsJson.setMessage("参数错误");
+            return responsJson;
+        }
+
+        boolean deleteResult = systemBusinessesPartnerService.deleteSystemBusinessesPartner(systemBusinessesPartner);
         if (deleteResult) {
+            // 删除文件
+            FileWriteRemoteUtil.deleteFile(systemBusinessesPartner.getBusinessesImageUrl());
+
             responsJson.setCode(1);
             responsJson.setMessage("删除成功");
         } else {

@@ -748,14 +748,10 @@ public class TradeCenterController {
 
         //修改session中是否输入过密码标识
         JSONObject data = new JSONObject();
-        if(payPasswordStatus == 2){
-            user.setIsPwd(2);
+        if(payPasswordStatus == 2 || payPasswordStatus == 1){
+            user.setIsPwd(payPasswordStatus);
             request.getSession().setAttribute("userSession", user);
-            data.put("userIsPwd", 2);
-        }else if(payPasswordStatus == 1){
-            user.setIsPwd(1);
-            request.getSession().setAttribute("userSession", user);
-            data.put("userIsPwd", 1);
+            data.put("userIsPwd", payPasswordStatus);
         }
 
         resultJson.setCode(1);

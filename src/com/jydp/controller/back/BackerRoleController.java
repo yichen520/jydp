@@ -15,6 +15,7 @@ import com.jydp.entity.VO.BackerRoleVO;
 import com.jydp.interceptor.BackerWebInterceptor;
 import com.jydp.service.IBackerRolePowerMapService;
 import com.jydp.service.IBackerRoleService;
+import com.jydp.service.IBackerService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -49,6 +50,10 @@ public class BackerRoleController {
 	/** 角色权限映射  */
 	@Autowired
 	private IBackerRolePowerMapService rolePowerMapService;
+
+	/** 后台管理员 */
+	@Autowired
+	private IBackerService backerService;
 	
     /** 账号角色列表展示页面 */
     @RequestMapping(value = "/show.htm")
@@ -317,8 +322,16 @@ public class BackerRoleController {
             responseJson.setMessage("参数错误");
             return responseJson;
         }
-        
+
         int roleId = Integer.parseInt(roleIdStr);
+		//验证有无用户在使用该角色
+		int validateNumber = backerService.getBackerNumberByRoleId(roleId);
+		if (validateNumber > 0) {
+			responseJson.setCode(5);
+			responseJson.setMessage("有用户正在使用该角色，无法删除。");
+			return responseJson;
+		}
+
         JsonObjectBO deleteResult = roleService.deleteRoleForBacker(roleId);
 
         responseJson.setCode(deleteResult.getCode());

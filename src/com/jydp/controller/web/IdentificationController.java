@@ -307,6 +307,9 @@ public class IdentificationController {
             responseJson.setCode(1);
             responseJson.setMessage("提交成功");
         } else {
+            // 删除文件
+            FileWriteRemoteUtil.deleteFileList(imageUrlList);
+
             responseJson.setCode(5);
             responseJson.setMessage("提交失败");
         }

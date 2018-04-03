@@ -81,19 +81,14 @@ public class UserIdentificationServiceImpl implements IUserIdentificationService
         //修改用户表认证状态，改为待审核
         //实名认证状态：1：待审核，2：审核通过，3：审核拒绝，4：未提交
         if (executeSuccess) {
-            if (authenticationStatus == 3) {
-                executeSuccess = userService.updateUserAuthenticationStatus(userIdentificationDO.getUserId(), 1, 3);
-            }
-            if (authenticationStatus == 4) {
-                executeSuccess = userService.updateUserAuthenticationStatus(userIdentificationDO.getUserId(), 1, 4);
+            if (authenticationStatus == 3 || authenticationStatus == 4) {
+                executeSuccess = userService.updateUserAuthenticationStatus(userIdentificationDO.getUserId(), 1, authenticationStatus);
             }
         }
 
         // 数据回滚
         if (!executeSuccess) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            // 删除文件
-            FileWriteRemoteUtil.deleteFileList(imageUrlList);
         }
         return executeSuccess;
     }

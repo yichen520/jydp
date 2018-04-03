@@ -11,7 +11,9 @@ import com.jydp.service.ITransactionUserDealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,12 +43,21 @@ public class WapDealRecordController {
         if (userSession == null) {
             return "page/wap/login";
         }
-        String pendingOrderNo = request.getParameter("pendingOrderNo");
-        String requestSource = request.getParameter("type");
-        request.setAttribute("pendingOrderNo", pendingOrderNo);
         request.setAttribute("pageNumber", 0);
-        request.setAttribute("requestSource",requestSource);
+        return "page/wap/volume";
+    }
 
+    /**
+     * 委托记录的查看详情跳转到成交记录页面
+     */
+    @RequestMapping(value = "/show/{pendingOrderNoStr}",method = RequestMethod.GET)
+    public String showAccountRecordPageResultFor(HttpServletRequest request,@PathVariable String pendingOrderNoStr) {
+        UserSessionBO userSession = UserWapInterceptor.getUser(request);
+        if (userSession == null) {
+            return "page/wap/login";
+        }
+        request.setAttribute("pendingOrderNo", pendingOrderNoStr);
+        request.setAttribute("pageNumber", 0);
         return "page/wap/volume";
     }
 
