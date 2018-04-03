@@ -118,17 +118,7 @@
             <li>
                 <div>
                     <p>日成交量</p>
-
-                    {{#compare change 0}}
-
-                    <p class="red"> {{volume}}</p>
-
-                    {{else}}
-
-                    <p class="green"> {{volume}}</p>
-
-                    {{/compare}}
-
+                    <p> {{volume}}</p>
                 </div>
             </li>
             <li>
@@ -188,7 +178,7 @@
     {{#each this}}
     <li class="noticebox">
         <a target="_blank" href="<%=path%>/userWap/wapSystemNotice/showNoticeDetail/{{id}}" class="link">
-            <p class="noticeTitle">【公告】{{noticeTitle}}</p>
+            <p class="noticeTitle">【公告】{{{noticeTitle}}}</p>
             <span>{{addTimeDateConvert addTime}}</span>
         </a>
     </li>
@@ -253,9 +243,8 @@
 
     $(document).ready(function () {
         //循环执行，每隔10秒钟执行一次 10000
-        //  var t1 = window.setInterval(refreshMarket, 10000);
+        var t1 = window.setInterval(refreshMarket, 10000);
         //判读session是否存在
-
     });
 
     var systemAdsHomepagesListData = ${requestScope.systemAdsHomepagesList};
