@@ -81,7 +81,9 @@ public class UserIdentificationServiceImpl implements IUserIdentificationService
         //修改用户表认证状态，改为待审核
         //实名认证状态：1：待审核，2：审核通过，3：审核拒绝，4：未提交
         if (executeSuccess) {
-            executeSuccess = userService.updateUserAuthenticationStatus(userIdentificationDO.getUserId(), 1, authenticationStatus);
+            if (authenticationStatus == 3 || authenticationStatus == 4) {
+                executeSuccess = userService.updateUserAuthenticationStatus(userIdentificationDO.getUserId(), 1, authenticationStatus);
+            }
         }
 
         // 数据回滚
