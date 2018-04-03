@@ -24,12 +24,16 @@
     <!-- 内容区域 -->
     <div class="content">
         <p class="noticeTitle title">
-            <span class="nTitle title"><span>【公告】</span>{{noticeTitle}}</span>
+            <span class="nTitle title"><span>【公告】</span>{{{noticeTitle}}}</span>
             <span class="time date"> {{addTimeConvert addTime}}</span>
         </p>
         <div class="editor">
             {{{content}}}
         </div>
+    </div>
+    <!-- loading图 -->
+    <div id="loading">
+        <i></i>
     </div>
 </body>
 

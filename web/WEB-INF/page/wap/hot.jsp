@@ -43,7 +43,7 @@
             <img src="<%=path%>/upload/image/notic_hotTopic.jpg" class="noticeImg" />
         {{/compare}}
         <div class="noticeInfo list-box">
-            <p class="noticeTitle title">【<span>话题</span>】{{noticeTitle}}</p>
+            <p class="noticeTitle title">【<span>话题</span>】{{{noticeTitle}}}</p>
             <p class="time date">{{addTimeConvert addTime}}</p>
         </div>
         <div class="clear"></div>
