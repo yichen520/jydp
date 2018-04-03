@@ -157,7 +157,7 @@
                     <label class="tradeName">卖出数量：</label>
                     <input type="text" class="entry" placeholder="请输入您要卖出的该币种数量" id="sellNum" name="sellNum"
                            onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="11"/>
-                    <span class="max">最大可获得：<span id="sellMax">0</span></span>
+                    <span class="max">最大可获得：<span id="sellMax">0</span> XT</span>
                 </p>
                 <p class="phoneInput">
                     <label class="tradeName">支付密码：</label>

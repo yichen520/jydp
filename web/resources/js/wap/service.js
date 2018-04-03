@@ -124,6 +124,7 @@ var ParamAndViewInit = {
             openTips("反馈内容不能超过400个字符");
             return ;
         }
+        $('.bg').hide();
         $.ajax({
             url: "feedback.htm",
             type: "POST",
@@ -138,7 +139,6 @@ var ParamAndViewInit = {
                     openTips(data.message);
                     return;
                 }
-                $('.bg').fadeOut();
                 openTips(data.message);
                 window.setTimeout(ParamAndViewInit.addFeedFinish,1000);
             },

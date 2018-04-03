@@ -230,7 +230,7 @@
     </footer>
 
     <!-- 选择币种 -->
-    <div class="choseBz">
+
         <div class="choseBzBox">
 
             <div class="choseBzBox-title">
@@ -243,8 +243,7 @@
                   </ul>
             </div>
         </div>
-        <div class="closeAnthoer closeBox"></div>
-    </div>
+
 
     <!--买入 卖出提示-->
     <div class="mask">
