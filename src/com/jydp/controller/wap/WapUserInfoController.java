@@ -1,7 +1,9 @@
 package com.jydp.controller.wap;
 
 import com.alibaba.fastjson.JSONObject;
+import com.iqmkj.utils.BigDecimalUtil;
 import com.iqmkj.utils.MD5Util;
+import com.iqmkj.utils.NumberUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
@@ -81,12 +83,16 @@ public class WapUserInfoController {
             return "page/wap/mine";
         }
 
+        Double userBalance=NumberUtil.doubleFormat(userInfo.getUserBalance(), 2);
+        Double userBalanceLock=NumberUtil.doubleFormat(userInfo.getUserBalanceLock(), 2);
+        Double totalUserBalance=BigDecimalUtil.add(userBalance,userBalanceLock);
+
         WapUserVO wapUserVO = new WapUserVO();
         wapUserVO.setUserId(userInfo.getUserId());
         wapUserVO.setUserAccount(userInfo.getUserAccount());
-        wapUserVO.setUserBalance(userInfo.getUserBalance());
-        wapUserVO.setUserBalanceLock(userInfo.getUserBalanceLock());
-        wapUserVO.setTotalUserBalance(userInfo.getUserBalance()+userInfo.getUserBalanceLock());
+        wapUserVO.setUserBalance(userBalance);
+        wapUserVO.setUserBalanceLock(userBalanceLock);
+        wapUserVO.setTotalUserBalance(totalUserBalance);
 
         request.setAttribute("code", 1);
         request.setAttribute("userInfo", wapUserVO);
