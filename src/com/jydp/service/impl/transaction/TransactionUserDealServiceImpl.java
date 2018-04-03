@@ -81,7 +81,7 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
                 actualPriceForWap =currencyTotalPrice.subtract(feeForWap);
             }
             userDeal.setFeeForWap(feeForWap.setScale(8,BigDecimal.ROUND_UP).stripTrailingZeros().toPlainString());
-            userDeal.setActualPriceForWap(actualPriceForWap.stripTrailingZeros().toPlainString());
+            userDeal.setActualPriceForWap(actualPriceForWap.setScale(6,BigDecimal.ROUND_UP).stripTrailingZeros().toPlainString());
         }
         return transactionUserDealList;
     }
@@ -240,7 +240,7 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
                 actualPriceForWap =currencyTotalPrice.subtract(feeForWap);
             }
             userDeal.setFeeForWap(feeForWap.setScale(8, BigDecimal.ROUND_UP).stripTrailingZeros().toPlainString());
-            userDeal.setActualPriceForWap(actualPriceForWap.stripTrailingZeros().toPlainString());
+            userDeal.setActualPriceForWap(actualPriceForWap.setScale(6,BigDecimal.ROUND_UP).stripTrailingZeros().toPlainString());
         }
 
         return transactionUserDealVOS;
