@@ -102,11 +102,14 @@ var ChartParamsAndInit = {
                     openTips(result.message)
                     return;
                 }
-                $('html').css('overflow','hidden','height','100%');
-                $('body').css('overflow','hidden','height','100%');
                 $('.closeAnthoer').css("height", bgHeight + "px");
+                setTimeout(function () {
+                    $('#wrapper').hide();
+                    $('footer').hide();
+                }, 450);
+
                 $('.choseBz').css("height", bgHeight + "px");
-                $('.choseBzBox').css("height", bgHeight + "px");
+                $('.choseBzBox').css("height", '100%');
                 $('.choseBzBox').show();
                 $('.choseBzBox').animate({left: '0'}, "500");
 
@@ -127,17 +130,17 @@ var ChartParamsAndInit = {
                 $('.choseBz').css("height", "0");
                 $('.choseBzBox').css("height", "0");
             }, 450);
-            $('.choseBzBox').animate({left: '-82%'}, "500");
+            $('.choseBzBox').animate({left: '-100%'}, "500");
         });
         $(".closeBox").on('click', function () {
-            $('html').css('overflow','auto');
-            $('body').css('overflow','auto');
+            $('#wrapper').show();
+            $('footer').show();
             setTimeout(function () {
                 $('.closeAnthoer').css("height", "0");
                 $('.choseBz').css("height", "0");
                 $('.choseBzBox').css("height", "0");
             }, 450);
-            $('.choseBzBox').animate({left: '-82%'}, "500");
+            $('.choseBzBox').animate({left: '-100%'}, "500");
         });
     },
     formatNumber: function (num, maxFractionDigits) {

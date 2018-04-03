@@ -121,7 +121,7 @@
     </a>
 </footer>
 <!-- 选择币种 -->
-<div class="choseBz">
+
     <div class="choseBzBox">
 
         <div class="choseBzBox-title">
@@ -133,8 +133,8 @@
             <ul id="currencyList">
             </ul>
         </div>
-    </div>
-    <div id="closeAnthoer" class="closeAnthoer closeBox"></div>
+
+
 
 
 </div>
