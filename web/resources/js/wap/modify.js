@@ -5,9 +5,9 @@ $(function () {
         var bgHeight = $(document).height();
         $('.choseNumber').on('click',function() {
             $('.chosePhone').css("height",bgHeight +"px");
-            $.get("/jydp/userWap/forgetPassword/phoneArea",function(result){
-                var list = {};
+            $.get(path+"/userWap/forgetPassword/phoneArea",function(result){
                 var myData = result.data.phoneAreaMap;
+                var list = {};
                 list.phoneAreaMap = [];
                 var i = 0;
                 for(var key in myData){
@@ -23,7 +23,7 @@ $(function () {
         });
         $('.search').on('click','p',function() {
             $('.chosePhone').css("height","0");
-            $('.chosePhone').hide(); 
+            $('.chosePhone').hide();
         });
         $('.searchList').on('click','li',function() {
             let cityNum = $(this).find('.cityNum').text();
@@ -33,7 +33,6 @@ $(function () {
         });
         
     };
-
 
     var waitOld =60;
     var waitNew =60;
@@ -93,7 +92,7 @@ $(function () {
             timeNew(this);
         }
         $.ajax({
-            url: "/jydp/sendCode/sendPhoneCode",
+            url: path+"/sendCode/sendPhoneCode",
             type:'post',
             dataType:'json',
             async:true,

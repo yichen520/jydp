@@ -11,8 +11,7 @@ var ParamAndViewInit = {
         });
     },
     backToMine: function () {
-        var webAppPath = $("#webAppPath").val();
-        window.location.href = webAppPath + "/userWap/userInfo/show.htm";
+        window.location.href = ParamAndViewInit.webPath  + "/userWap/userInfo/show.htm";
     },
     formatDate: function(timestamp){
         var date = new Date(timestamp);
@@ -30,8 +29,7 @@ var ParamAndViewInit = {
         return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
     },
     viewMore: function () {
-        var bgHeight = $(document).height();
-        $('.bg').css("height",bgHeight +"px");
+
         //拿到已有的list
         var $listUserFeedbackList  = $("div[class='list']");
         var pageNum = $("#pageNumber").val();
@@ -64,7 +62,7 @@ var ParamAndViewInit = {
 
                 if(Number(data.totalPageNumber) == (Number(data.pageNumber) + 1) ){
                     $(".more").unbind('click');
-                    $(".more").text("已显示全部记录");
+                    $(".more").text("");
                 }
             },
             error: function () {
@@ -100,11 +98,12 @@ var ParamAndViewInit = {
                 $div0.append($div3);
             }
             $divContent.append($div0);
+            var bgHeight = $(document).height();
+            $('.bg').css("height",bgHeight +"px");
         }
     },
     addFeedFinish: function () {
-        var webAppPath = $("#webAppPath").val();
-        window.location.href = webAppPath + "/userWap/wapCustomerService/show";
+        window.location.href = "show";
     },
     addFeedback: function () {
         var feedbackTitleValue = $("#feedbackTitle").val();
@@ -218,7 +217,7 @@ $(function () {
              $('.bg').css("height",bgHeight +"px");
             if(Number(data.totalPageNumber) == (Number(data.pageNumber) + 1) ){
                 $(".more").unbind('click');
-                $(".more").text("已显示全部记录");
+                $(".more").text("");
             }
         },
         error: function () {

@@ -52,7 +52,7 @@
                         <c:if test="${item.paymentType == 2}">
                             <td class="type">卖出</td>
                         </c:if>
-                        <td class="amount">$<fmt:formatNumber type="number" value="${item.transactionPrice}" maxFractionDigits="6"/></td>
+                        <td class="amount"><fmt:formatNumber type="number" value="${item.transactionPrice}" maxFractionDigits="6"/> XT</td>
                         <td class="amount"><fmt:formatNumber type="number" value="${item.currencyNumber}" maxFractionDigits="6"/></td>
                         <td class="time"><fmt:formatDate type="time" value="${item.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                     </tr>

@@ -1,6 +1,4 @@
-body{
-    background: #f5f5f5;
-}
+
 header .backimg{
     position: absolute;
     top: 0.28rem;
@@ -10,8 +8,7 @@ header .backimg{
 }
 .wrapper{
     margin-top: 1.11rem;
-    background: #fff;   
-    border-bottom:1px solid #ececec; 
+    background: #fff;
 }
 .content{
     height: 1rem;
@@ -60,5 +57,5 @@ header .backimg{
     line-height: 0.9rem;
     background: #777;
     text-align: center;
-    box-shadow: 0px 0px 15px rgba(000,000,000,0.3);
+    box-shadow: 0px 0px 10px rgba(000,000,000,0.3);
 }

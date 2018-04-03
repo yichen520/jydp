@@ -1,3 +1,15 @@
+input:-webkit-autofill,
+textarea:-webkit-autofill,
+select:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px white inset;
+}
+input[type=text]:focus, input[type=password]:focus, textarea:focus {
+    -webkit-box-shadow: 0 0 0 1000px white inset;
+}
+header{
+    position: relative;
+    z-index: 1
+}
 .back img{
     margin-top: 0.3rem;
     margin-left: 0.3rem;
@@ -8,7 +20,7 @@
 .registerBox{
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-    margin-top: 0.4rem;
+
 }
 .registerBox .title{
     font-size: 0.4rem;
@@ -81,8 +93,8 @@
 .confirm{
     margin-top: 0.6rem;
     width: 100%;
-    height: 0.98rem;
-    line-height: 0.98rem;
+    height: 0.9rem;
+    line-height: 0.9rem;
     color: #fff;
     font-size: 0.34rem;
     text-align: center;
@@ -142,7 +154,6 @@
     z-index: 10;
     background: #fff;
     display: none;
-    margin-top: 0.91rem;
 }
 .search{
     width: 100%;

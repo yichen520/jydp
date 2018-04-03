@@ -20,7 +20,6 @@
         <p>忘记密码</p>
     </header>
     <div class="registerBox">
-        <div class="title">忘记密码</div>
         <div class="registerContent">
             <form id="forgetForm" method="post">
             <div class="userName">
@@ -42,24 +41,24 @@
                 <p onclick="getValidateCode()">获取验证码</p>
             </div>
             <div class="userPassword">
-                <input type="password" id="password" name="password" placeholder="新密码为字母、数字，6～16个字符" maxlength="16"
+                <input type="password" id="password" name="password" placeholder="新密码为字母、数字，6～16个字符" maxlength="16" autocomplete="new-password"
                        onkeyup="checkoutValue(this)" onblur="checkoutValue(this)"/>
             </div>
             <div class="userPasswordTwo">
-                <input type="password" id="repeatPassword" placeholder="请再次输入新密码" maxlength="16"
+                <input type="password" id="repeatPassword" placeholder="请再次输入新密码" maxlength="16" autocomplete="new-password"
                        onkeyup="checkoutValue(this)" onblur="checkoutValue(this)"/>
             </div>
                 <input type="hidden" name="phoneAreaCode" id="phoneAreaCode">
             </form>
         </div>
         <div class="confirm" onclick="forgetPwd()" >提 交</div>
-
+        <input id="pageContext" type="hidden" value="${pageContext.request.contextPath}" />
     </div>
     <!-- 选择手机号弹窗 -->
     <div class="chosePhone">
         <div class="search">
             <img src="${pageContext.request.contextPath}/resources/image/wap/searchIcon.png" />
-            <input type="type" placeholder="请选择国家或区号" id="country" oninput="if(value.length>16) value=value.slice(0,15)" onkeyup="showSearch()"/>
+            <input type="text" placeholder="请选择国家或区号" id="country" oninput="showSearch()" onkeyup="checkoutCountry(this)"/>
             <p>取消</p>
         </div>
         <div class="searchList">
@@ -196,10 +195,11 @@
     $('.choseNumber').on('click',function() {
         getphoneArea();
     });
+    var list = {};
     function getphoneArea(){
         var url = "${pageContext.request.contextPath}/userWap/forgetPassword/phoneArea";
         $.get(url,function(result){
-            var list = {};
+            
             var myData = result.data.phoneAreaMap;
             list.phoneAreaMap = [];
             var i = 0;
@@ -207,30 +207,31 @@
                 var obj = {"cityNum":key,"city":myData[key]};
                 list.phoneAreaMap[i++] = obj;
             }
-            var compileTemplate = $("#getPhoneArea").html();
-            var compileComplile = Handlebars.compile(compileTemplate);
-            var headerHtml = compileComplile(list);
-            $("#phoneAreaContainer").html(headerHtml);
+            injection(list);
 
         });
+    }
+    
+    function injection(arr) {
+        var compileTemplate = $("#getPhoneArea").html();
+        var compileComplile = Handlebars.compile(compileTemplate);
+        var headerHtml = compileComplile(arr);
+        $("#phoneAreaContainer").html(headerHtml);
     }
 
     //搜索时动态显示区号
     function showSearch() {
+
         var value = $("#country").val();
-        if (!value) {
-            $("#phoneAreaContainer li").each(function () {
-                $(this).show();
-            })
-            return;
-        }
-        $("#phoneAreaContainer li").each(function () {
-            if ($(this).children("p:eq(0)").text() == value || $(this).children("p:eq(1)").text() == value) {
-                $(this).show()
-            } else {
-                $(this).hide();
+        var arr = {};
+        arr.phoneAreaMap = [];
+        for(var i=0;i<list.phoneAreaMap.length;i++){
+            //如果字符串中不包含目标字符会返回-1
+            if(list.phoneAreaMap[i].cityNum.indexOf(value)>=0||list.phoneAreaMap[i].city.indexOf(value)>=0){
+                arr.phoneAreaMap.push(list.phoneAreaMap[i]);
             }
-        })
+        }
+        injection(arr);
     }
 
 

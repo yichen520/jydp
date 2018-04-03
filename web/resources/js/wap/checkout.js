@@ -22,3 +22,11 @@ function checkoutUserName(object) {
         object.value = object.value.replace(matchStr,'');
     }
 }
+//验证特殊匹配
+function checkoutCountry(object) {
+    var matchStr = /[%`~!@#$^&*()=|{}':;",_\-\\\[\].<>?！￥…（）—【】《》；：‘’”“。，、？]/g;
+    var value = object.value;
+    if (matchStr.test(value)) {
+        object.value = object.value.replace(matchStr,'');
+    }
+}

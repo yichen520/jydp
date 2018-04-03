@@ -8,8 +8,8 @@ public class UserAmountCheckDTO {
 
     private int userId; //用户id
     private int currencyId; //币种id
-    private double beyondAmount; //超出可用美金、币数量的最大值
-    private double beyondAmountLock; //超出锁定美金、币数量的最大值
+    private double beyondAmount; //超出可用XT、币数量的最大值
+    private double beyondAmountLock; //超出锁定XT、币数量的最大值
 
     /**
      * 用户id
@@ -44,32 +44,32 @@ public class UserAmountCheckDTO {
     }
 
     /**
-     * 超出可用美金、币数量的最大值
-     * @return 超出可用的美金、币数量
+     * 超出可用XT、币数量的最大值
+     * @return 超出可用的XT、币数量
      */
     public double getBeyondAmount() {
         return beyondAmount;
     }
 
     /**
-     * 超出可用美金、币数量的最大值
-     * @param beyondAmount 超出可用的美金、币数量
+     * 超出可用XT、币数量的最大值
+     * @param beyondAmount 超出可用的XT、币数量
      */
     public void setBeyondAmount(double beyondAmount) {
         this.beyondAmount = beyondAmount;
     }
 
     /**
-     * 超出锁定美金、币数量的最大值
-     * @return 超出锁定的美金、币数量
+     * 超出锁定XT、币数量的最大值
+     * @return 超出锁定的XT、币数量
      */
     public double getBeyondAmountLock() {
         return beyondAmountLock;
     }
 
     /**
-     * 超出锁定美金、币数量的最大值
-     * @param beyondAmountLock 超出锁定的美金、币数量
+     * 超出锁定XT、币数量的最大值
+     * @param beyondAmountLock 超出锁定的XT、币数量
      */
     public void setBeyondAmountLock(double beyondAmountLock) {
         this.beyondAmountLock = beyondAmountLock;

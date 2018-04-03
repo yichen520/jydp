@@ -53,16 +53,16 @@
                 <c:if test="${code==1}">
                     <div class="userBox">
                         <div class="usertitle">
-                            <p>账户总资产（$）</p>
-                            <p><fmt:formatNumber type="number" maxFractionDigits="2" value="${userInfo.userBalance+userInfo.userBalanceLock}"></fmt:formatNumber></p>
+                            <p>账户总资产（XT）</p>
+                            <p><fmt:formatNumber type="number" maxFractionDigits="2" value="${userInfo.totalUserBalance}"></fmt:formatNumber></p>
                         </div>
                         <div class="usercontent">
                             <div class="canuserBox">
-                                <p>可用资产（$）</p>
+                                <p>可用资产（XT）</p>
                                 <p><fmt:formatNumber type="number" maxFractionDigits="2" value="${userInfo.userBalance}"></fmt:formatNumber></p>
                             </div>
                             <div class="unuserBox">
-                                <p>冻结资产（$）</p>
+                                <p>冻结资产（XT）</p>
                                 <p><fmt:formatNumber type="number" maxFractionDigits="2" value="${userInfo.userBalanceLock}"></fmt:formatNumber></p>
                             </div>
                             <div class="recharge" style="display: none">充值</div>
@@ -163,6 +163,10 @@
             <p class="chose">我的</p>
         </a>
     </footer>
+    <!-- loading图 -->
+    <div id="loading">
+        <i></i>
+    </div>
 </body>
 
 <script src="<%=path%>/resources/js/wap/common.js"></script>
@@ -191,7 +195,7 @@
 </script>
 
 <script type="text/javascript">
-
+    var path = "<%=path%>"
     //if比较
     Handlebars.registerHelper("compare", function (x1, x2, options) {
 
@@ -238,7 +242,7 @@
 
     $('.choseBzBox-content ul').on('click', 'li', function () {
          var currencyId=$(this).find("p").eq(0).text();
-         window.location.href="<%=path%>/userWap/tradeCenter/show?currencyIdStr="+currencyId
+         window.location.href="<%=path%>/userWap/tradeCenter/show/"+currencyId
     })
 </script>
 </html>

@@ -280,7 +280,11 @@
 .maxNum{
     font-size: 0.22rem;
     color: #999;
-    margin-top: 0.2rem;
+}
+.maxNumTwo{
+    font-size: 0.22rem;
+    color: #999;
+    margin-top: 0.22rem;
 }
 .mainContent-passwordBuy{
     margin-top: 0.1rem;
@@ -619,7 +623,7 @@
 }
 .showBoxButton{
     margin-top: 0.4rem;
-    height: 0.9rem;
+    height: 0.89rem;
     display: flex;
 }
 .showBoxButton div{

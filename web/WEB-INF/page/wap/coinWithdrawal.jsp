@@ -64,7 +64,7 @@
             <span class="txt">短信验证码<span>*</span></span>
             <input  type="text" placeholder="短信验证码" class="codeTxt" id="validateCode" maxlength="6" autocomplete="off"
                     onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')" />
-            <input class="code" value="获取验证码" id="message" onclick="getMesCode(this)"/>
+            <input class="code" value="获取验证码" id="message" onclick="getMesCode(this)" readonly="readonly"/>
             <span class="clear"></span>
         </p>
         <p class="traPassword">

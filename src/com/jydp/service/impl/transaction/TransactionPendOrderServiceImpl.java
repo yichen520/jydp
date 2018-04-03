@@ -88,20 +88,20 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
         boolean excuteSuccess = true;
 
         if(paymentType == 1){
-            //减少用户美金
+            //减少用户XT
             if(excuteSuccess){
                 excuteSuccess = userService.updateReduceUserBalance(userId, tradePriceSum);
             }
-            //增加用户锁定美金
+            //增加用户锁定XT
             if(excuteSuccess){
                 excuteSuccess = userService.updateAddUserAmount(userId, 0, tradePriceSum);
             }
-            //增加买方账户美金记录
+            //增加买方账户XT记录
             if(excuteSuccess){
                 String orderNo = SystemCommonConfig.USER_BALANCE +
                         DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
                         NumberUtil.createNumberStr(10);
-                String remark = "委托买入" + currencyName + "，锁定美金";
+                String remark = "委托买入" + currencyName + "，锁定XT";
 
                 UserBalanceDO userBalance = new UserBalanceDO();
                 userBalance.setOrderNo(orderNo);
@@ -251,7 +251,9 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
         //做总价赋值
         for (WapTransactionPendOrderDO wapTransactionPendOrder : wapTransactionPendOrderDOList){
             double totalPrice = BigDecimalUtil.mul(wapTransactionPendOrder.getPendingPrice(),wapTransactionPendOrder.getPendingNumber());
+            double remainNum = BigDecimalUtil.sub(wapTransactionPendOrder.getPendingNumber(),wapTransactionPendOrder.getDealNumber());
             wapTransactionPendOrder.setTotalPrice(totalPrice);
+            wapTransactionPendOrder.setRemainNum(remainNum);
         }
 
         return  wapTransactionPendOrderDOList;
@@ -358,7 +360,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
         }
 
         if(paymentType == 1){ //如果是买入
-            //计算撤销的美金数量
+            //计算撤销的XT数量
             double balanceRevoke = transactionPendOrder.getRestBalanceLock();
             //判断冻结金额是否大于等于balanceRevoke
             if(user.getUserBalanceLock() < balanceRevoke){
@@ -368,11 +370,11 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
             if(excuteSuccess){
                 excuteSuccess = userService.updateReduceUserBalanceLock(userId, balanceRevoke);
             }
-            //增加美金数量
+            //增加XT数量
             if(excuteSuccess){
                 excuteSuccess = userService.updateAddUserAmount(userId, balanceRevoke,0);
             }
-            //增加美金记录
+            //增加XT记录
             if(excuteSuccess){
                 Timestamp curTime = DateUtil.getCurrentTime();
                 String orderNo = SystemCommonConfig.USER_BALANCE +
@@ -387,7 +389,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
                 userBalance.setFromType(UserBalanceConfig.REVOKE_BUY_ORDER);
                 userBalance.setBalanceNumber(balanceRevoke);
                 userBalance.setFrozenNumber(-balanceRevoke);
-                userBalance.setRemark("撤销买入挂单,返还冻结美金");
+                userBalance.setRemark("撤销买入挂单,返还冻结XT");
                 userBalance.setAddTime(curTime);
 
                 excuteSuccess = userBalanceService.insertUserBalance(userBalance);
@@ -481,7 +483,7 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
      * 修改挂单状态为部分成交（仅用于匹配交易）
      * @param pendingOrderNo 记录号,业务类型（2）+日期（6）+随机位（10）
      * @param dealNumber 成交数量
-     * @param restBalanceLock 剩余冻结美金
+     * @param restBalanceLock 剩余冻结XT
      * @param endTime 完成时间
      * @return 操作成功：返回true，操作失败：返回false
      */

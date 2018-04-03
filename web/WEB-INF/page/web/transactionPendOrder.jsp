@@ -50,8 +50,8 @@
                         </c:if>
                         <td class="amount">
                             <p>委托数量：<fmt:formatNumber type="number" value="${item.pendingNumber}" maxFractionDigits="4"/></p>
-                            <p>委托单价：$<fmt:formatNumber type="number" value="${item.pendingPrice }" maxFractionDigits="6"/></p>
-                            <p>委托总价：$<fmt:formatNumber type="number" value="${item.pendingNumber * item.pendingPrice }" maxFractionDigits="6"/></p>
+                            <p>委托单价：<fmt:formatNumber type="number" value="${item.pendingPrice }" maxFractionDigits="6"/> XT</p>
+                            <p>委托总价：<fmt:formatNumber type="number" value="${item.pendingNumber * item.pendingPrice }" maxFractionDigits="6"/> XT</p>
                         </td>
                         <td class="amount">
                             <p>已成交数量：<fmt:formatNumber type="number" value="${item.dealNumber }" maxFractionDigits="4"/></p>

@@ -52,18 +52,18 @@
                     </c:if>
                     <td class="amount">
                         <p>数量：<fmt:formatNumber type="number" value="${dealRecord.currencyNumber}" maxFractionDigits="4"/></p>
-                        <p>单价：$<fmt:formatNumber type="number" value="${dealRecord.transactionPrice}" maxFractionDigits="2"/></p>
+                        <p>单价：<fmt:formatNumber type="number" value="${dealRecord.transactionPrice}" maxFractionDigits="2"/> XT</p>
                     </td>
                     <td class="deal">
                         <c:if test="${dealRecord.paymentType != 3}">
-                            <p>成交总额：$<fmt:formatNumber type="number" value="${dealRecord.currencyTotalPrice}" maxFractionDigits="6"/></p>
-                            <p>手续费：$<fmt:formatNumber type="number" value="${dealRecord.fee}" maxFractionDigits="8"/></p>
+                            <p>成交总额：<fmt:formatNumber type="number" value="${dealRecord.currencyTotalPrice}" maxFractionDigits="6"/> XT</p>
+                            <p>手续费：<fmt:formatNumber type="number" value="${dealRecord.fee}" maxFractionDigits="8"/> XT</p>
                         </c:if>
                         <c:if test="${dealRecord.paymentType == 1}">
-                            <p>实际支出：$<fmt:formatNumber type="number" value="${dealRecord.actualPrice}" maxFractionDigits="6"/></p>
+                            <p>实际支出：<fmt:formatNumber type="number" value="${dealRecord.actualPrice}" maxFractionDigits="6"/> XT</p>
                         </c:if>
                         <c:if test="${dealRecord.paymentType == 2}">
-                            <p>实际到账：$<fmt:formatNumber type="number" value="${dealRecord.actualPrice }" maxFractionDigits="6"/></p>
+                            <p>实际到账：<fmt:formatNumber type="number" value="${dealRecord.actualPrice }" maxFractionDigits="6"/> XT</p>
                         </c:if>
                     </td>
                     <td class="time"><fmt:formatDate type="time" value="${dealRecord.addTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>

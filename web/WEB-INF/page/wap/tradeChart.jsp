@@ -33,7 +33,7 @@
         <input type="hidden" id="currencyName"  value="{{transactionCurrency.currencyName}}"/>
     </div>
     <img src="{{webAppPath}}/resources/image/wap/header-open.png" class="open"/>
-    <p>{{transactionCurrency.currencyName}}({{transactionCurrency.currencyShortName}}/USD)</p>
+    <p>{{transactionCurrency.currencyName}}({{transactionCurrency.currencyShortName}}/XT)</p>
     {{{isLogin userSession webAppPath}}}
 </header>
 <div class="nav">
@@ -66,7 +66,7 @@
             <li>1天</li>
             <li>1周</li>
             <li class='goto-trade'>
-                <a href='{{webAppPath}}/userWap/tradeCenter/show?currencyIdStr={{currencyId}}'>
+                <a href='{{webAppPath}}/userWap/tradeCenter/show/{{currencyId}}'>
                     <img src="{{webAppPath}}/resources/image/wap/trade.png">
                     <span>交易</span>
                 </a>
@@ -86,7 +86,7 @@
         <div class="entrust" style="display:block">
             <ul class="entrust-title">
                 <li>类型</li>
-                <li>单价($)</li>
+                <li>单价(XT)</li>
                 <li>数量</li>
                 <li>成交时间</li>
                 <li class="clear"></li>
@@ -171,6 +171,8 @@
 <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
 <script src="https://img.hcharts.cn/highcharts/themes/dark-unica.js"></script>
 <script type="text/javascript">
+
+    var path = "<%=path%>"
 
     //if比较
     Handlebars.registerHelper("compare", function (x1, x2, options) {

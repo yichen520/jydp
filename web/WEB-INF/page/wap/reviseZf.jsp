@@ -56,7 +56,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </div>
                 <div class="userCode">
                     <input type="number" placeholder="请输入6位短信验证码" oninput="if(value.length>6)value=value.slice(0,6)" id="codeByPhone"/>
-                    <input class="code" value="获取验证码"/>
+                    <input class="code" value="获取验证码" readonly="readonly"/>
                 </div>  
             </div>
         </div>
@@ -75,6 +75,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript" src="<%=path%>/resources/js/wap/simpleTips_wap.js"></script>
 
 <script>
+
+    var path = "<%=path%>"
     
     $(function () {
         var phone="<%=request.getAttribute("phoneNumber")%>";
@@ -110,16 +112,40 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             oldPwd=$("#oldPwdPyPwd").val();
             newPwd=$("#newPwdByPwd").val();
             confirmPwd=$("#confirmPwdByPwd").val();
-            if (oldPwd=="" || newPwd== ""|| confirmPwd=="") {
-                openTips("全部为必填项");
+            if(oldPwd=="") {
+                openTips("请输入密码");
                 return;
             }
-            if (!regx.test(newPwd) || !regx.test(confirmPwd) || newPwd!=confirmPwd) {
-                openTips("密码格式不正确或者两次输入密码不一致");
+            if (oldPwd.length<6 || oldPwd.length>16) {
+                openTips("密码长度错误");
+                return;
+            }
+            if (newPwd=="") {
+                openTips("请输入新密码");
                 return;
             }
             if (newPwd.length<6 || newPwd.length>16) {
-                openTips("密码长度错误");
+                openTips("新密码长度错误");
+                return;
+            }
+            if (!regx.test(newPwd)) {
+                openTips("新密码格式不正确");
+                return;
+            }
+            if(confirmPwd=="") {
+                openTips("请输入确认密码");
+                return;
+            }
+            if(!regx.test(confirmPwd)) {
+                openTips("确认密码格式不正确");
+                return;
+            }
+            if (confirmPwd.length<6 || confirmPwd.length>16) {
+                openTips("确认密码长度错误");
+                return;
+            }
+            if (newPwd!=confirmPwd) {
+                openTips("两次输入密码不一致");
                 return;
             }
             $.ajax({
@@ -148,20 +174,41 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             newPwd=$("#newPwdByPhone").val();
             confirmPwd=$("#confirmPwdByPhone").val();
             code=$("#codeByPhone").val().replace(/\ +/g,"");
-            if (newPwd== ""|| confirmPwd=="") {
-                openTips("请输入密码");
+            if (newPwd=="") {
+                openTips("请输入新密码");
                 return;
             }
-            if (code=="") {
+            if (!regx.test(newPwd)) {
+                openTips("新密码格式不正确");
+                return;
+            }
+            if (newPwd.length<6 || newPwd.length>16) {
+                openTips("新密码长度错误");
+                return;
+            }
+            if (confirmPwd=="") {
+                openTips("请输入确认密码");
+                return;
+            }
+            if(!regx.test(confirmPwd)) {
+                openTips("确认密码格式不正确");
+                return;
+            }
+            if (confirmPwd.length<6 || confirmPwd.length>16) {
+                openTips("确认密码长度错误");
+                return;
+            }
+            if (newPwd!=confirmPwd) {
+                openTips("两次输入密码不一致");
+                return;
+            }
+
+            if (code=="" && newPwd!="" && confirmPwd !="") {
                 openTips("验证码错误");
                 return;
             }
-            if (!regx.test(newPwd) || !regx.test(confirmPwd) || newPwd!=confirmPwd) {
-                openTips("密码格式不正确或者两次输入密码不一致");
-                return;
-            }
-            if (code.length !=6 || newPwd.length<6 || newPwd.length>16) {
-                openTips("验证码或者密码长度错误");
+            if (code.length !=6) {
+                openTips("验证码长度错误")
                 return;
             }
             $.ajax({

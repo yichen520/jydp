@@ -69,9 +69,9 @@
                     <li>数量：<span>{{formatNumber currencyNumber 4}}</span></li>
                     <li>单价：<span>{{formatNumber transactionPrice 2}}</span></li>
                     <li>总价：<span>{{formatNumber currencyTotalPrice 6}}</span></li>
-                    <li>手续费：<span>{{feesConvert fee 8}}</span></li>
-                    {{#compare actualPrice 0 }}
-                        <li>{{formatPaymentType paymentType}}：<span>{{actualArrivalConvert actualPrice 6}}</span></li>
+                    <li>手续费：<span>{{feesConvert feeForWap 8}}</span></li>
+                    {{#compare actualPriceForWap 0 }}
+                        <li>{{formatPaymentType paymentType}}：<span>{{actualArrivalConvert actualPriceForWap 6}}</span></li>
                     {{/compare}}
                     <li>完成时间：<span>{{addTimeConvert addTime}}</span></li>
                 </ul>
@@ -255,7 +255,13 @@
         var date = new Date(addTime);
         var year = date.getFullYear();
         var month = date.getMonth() + 1;
+        if (month < 10) {
+            month = '0' + month;
+        }
         var day = date.getDate();
+        if (day < 10) {
+            day = '0' + day;
+        }
         var hours = date.getHours();
         if (hours < 10) {
             hours = '0' + hours;

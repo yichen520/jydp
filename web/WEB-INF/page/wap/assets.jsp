@@ -46,7 +46,6 @@
 <script type="text/javascript" src="<%=path%>/resources/js/wap/common.js"></script>
 <script type="text/javascript" src="<%=path%>/resources/js/wap/zepto.min.js"></script>
 <script type="text/javascript" src="<%=path%>/resources/js/wap/jquery-2.1.4.min.js"></script>
-<script type="text/javascript" src="<%=path%>/resources/js/wap/entrust.js"></script>
 <script type="text/javascript" src="<%=path %>/resources/js/wap/handlebars-v4.0.11.js"></script>
 <script type="text/javascript" src="<%=path%>/resources/js/wap/simpleTips_wap.js"></script>
 
@@ -95,7 +94,7 @@
 
                 $(".see").on("click",function () {
                     var currencyId=$(this).parent().parent().find("#currencyId").text()
-                    window.location.href="<%=path%>/userWap/tradeCenter/show?currencyIdStr="+currencyId
+                    window.location.href="<%=path%>/userWap/tradeCenter/show/"+currencyId
                 })
             },
             error: function () {

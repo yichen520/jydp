@@ -100,7 +100,7 @@ header .back{
     height: 0.9rem;
     text-align: center;
     line-height: 0.9rem;
-    font-size: 0.34rem;
+    font-size: 0.3rem;
     color: #fff;
 }
 .bg{
@@ -139,6 +139,7 @@ header .back{
     padding-right: 0.3rem;
 }
 .contentTitle p{
+    padding-top: 0.05rem;
     font-size: 0.28rem;
     color: #666;
     line-height: 0.6rem;
@@ -164,6 +165,7 @@ header .back{
     line-height: 0.6rem;
     float: left;
     margin-right: 0.15rem;
+    padding-top: 0.05rem;
 }
 textarea{
     outline:none;
@@ -179,7 +181,7 @@ textarea{
 }
 .showFooter{
     width: 100%;
-    margin-top: 0.3rem;
+    margin-top: 0.29rem;
     height: 0.9rem;
     display: flex;
 }

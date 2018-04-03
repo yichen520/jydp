@@ -25,14 +25,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </header>
 
     <div class="registerBox">
-        <div class="title">修改手机号</div>
         <div class="registerContent">
             <div class="oldPhone">
                 <p>原手机号：<span id="oldAreaCode">${phoneAreaCode}</span>&nbsp;<input type="hidden" value="${phoneNumber}" id="oldPhone"/><span id="oldPhoneText"></span></p>
             </div>
             <div class="oldPhoneCode">
                 <input type="number" placeholder="请输入6位短信验证码" oninput="if(value.length>6)value=value.slice(0,6)" class="oldCode" id="oldValidCode"/>
-                <input class="code" id="oldPhoneCode" value="获取验证码"/>
+                <input class="code" id="oldPhoneCode" value="获取验证码" readonly="readonly"/>
             </div>
             <div class="newPhone">
                 <div class="choseNumber">
@@ -43,7 +42,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             </div>
             <div class="newPhoneCode">
                 <input type="number" placeholder="请输入6位短信验证码" oninput="if(value.length>6)value=value.slice(0,6)" class="oldCode" id="newValidCode"/>
-                <input class="code" id="newPhoneCode" value="获取验证码"/>
+                <input class="code" id="newPhoneCode" value="获取验证码" readonly="readonly"/>
             </div>
             <div class="userPassword">
                 <input type="password" placeholder="登录密码" maxlength="16" id="password" onkeyup="formatPwd(this)"/>
@@ -55,7 +54,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <div class="chosePhone">
         <div class="search">
             <img src="<%=path%>/resources/image/wap/searchIcon.png" />
-            <input type="type" placeholder="请选择国家或区号"/>
+            <input type="type" placeholder="请选择国家或区号" id="searchAreaCode" oninput="showSearch()"/>
             <p>取消</p>
         </div>
         <div class="searchList">
@@ -88,6 +87,29 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 <script>
 
+    var path = "<%=path%>"
+
+    //搜索时动态显示区号
+    function showSearch() {
+        var value = $("#searchAreaCode").val();
+        if (!value) {
+            $("#phoneAreaContainer li").each(function () {
+                $(this).show();
+            })
+            return;
+        }
+        $("#phoneAreaContainer li").each(function () {
+            var textKey = $(this).children("p:eq(0)").text();
+            var textkeyValue = $(this).children("p:eq(1)").text();
+            //如果字符串中不包含目标字符会返回-1
+            if(textKey.indexOf(value)>=0 || textkeyValue.indexOf(value)>=0 ){
+                $(this).show()
+            } else {
+                $(this).hide();
+            }
+        })
+    }
+
     $(function () {
         var phone="<%=request.getAttribute("phoneNumber")%>";
         if (phone.length==6) {
@@ -116,12 +138,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         var newValidCode=$("#newValidCode").val();
         var areaCode=$("#newAreaCode").text();
         var phone=$("#newPhone").val();
-        if (validCode=="" || newValidCode=="") {
-            openTips("验证码错误");
+        if (validCode=="") {
+            openTips("请输入原手机验证码");
             return;
         }
-        if (password=="" || areaCode=="" || phone=="") {
-            openTips("全部为必填项");
+        if (phone=="") {
+            openTips("请输入新手机号");
+            return;
+        }
+        if (newValidCode=="") {
+            openTips("请输入新手机验证码");
+            return;
+        }
+        if (password=="") {
+            openTips("请输入登陆密码");
             return;
         }
         $.ajax({

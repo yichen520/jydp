@@ -27,19 +27,19 @@
                         <img src="${pageContext.request.contextPath}/resources/image/wap/iconUser.png" />
                         <input type="text" placeholder="您的登录账号" id="userAccount" name="userAccount" value="${userAccount}"
                                onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false" maxLength="16"
-                               onkeyup="checkoutValue(this)" onblur="checkoutValue(this)"/>
+                               onkeyup="checkoutValue(this)" onblur="checkoutValue(this)" onfocus="inputFocus(this)"/>
                     </div>
                 </div>
                 <div class="passwordBox">
                     <div class="box">
                         <img src="${pageContext.request.contextPath}/resources/image/wap/iconPassword.png" />
                         <input type="password" placeholder="您的登录密码" id="password" name="password"
-                               onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false" maxLength="16"
+                               onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false" maxLength="16" autocomplete="new-password"
                                onkeyup="checkoutValue(this)" onblur="checkoutValue(this)"
                                onkeypress="keypressHandle(event);"/>
                     </div>
                 </div>
-                <div class="button" onclick="loginSubmit();" >登录</div>
+                <div class="button" onclick="loginSubmit();" >登 录</div>
                 <div class="footer">
                     <a href="${pageContext.request.contextPath}/userWap/forgetPassword/show">忘记密码</a>
                     <a href="${pageContext.request.contextPath}/userWap/userRegister/show">注册</a>
@@ -47,8 +47,14 @@
                 </div>
             </form>
         </div>
-    </div>
+        <div class="sstr"></div>
+        <div class="bstr"></div>
 
+    </div>
+    <!-- loading图 -->
+    <div id="loading">
+        <i></i>
+    </div>
 </body>
 
 <script src="${pageContext.request.contextPath}/resources/js/wap/common.js"></script>

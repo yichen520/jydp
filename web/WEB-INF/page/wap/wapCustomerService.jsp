@@ -18,19 +18,21 @@
 </head>
 <body>
 <div id="contactDiv">
-    <script id="contactService" type="ext/x-handlebars-template">
-        <!-- 头部导航 -->
-        <header>
-                <img src="{{webAppPath}}/resources/image/wap/back.png"  onclick="window.location.href='{{webAppPath}}/userWap/userInfo/show.htm'" class="back"/>
-            <p>联系客服</p>
-        </header>
+
+
+        <script id="contactService" type="ext/x-handlebars-template">
+            <!-- 头部导航 -->
+            <header>
+                <img src="<%=path %>/resources/image/wap/back.png"  onclick="window.location.href='<%=path %>/userWap/userInfo/show.htm'" class="back"/>
+                <p>联系客服</p>
+            </header>
         <!-- 内容 -->
         <div class="content">
             {{#each userFeedbackList}}
             <div class="list">
                 <div class="titleBox">
-                    <p class="title">{{{feedbackTitle}}}</p>
-                    {{{contactTypeFormat handleStatus}}}</p>
+                    <p class="title">{{feedbackTitle}}</p>
+                    <p>{{{contactTypeFormat handleStatus}}}</p>
                 </div>
                 <div class="listContent">
                     <p class="main">{{{feedbackContent}}}</p>
@@ -47,7 +49,7 @@
         <div class="more">查看更多</div>
     </script>
 </div>
-<div class="submit">提 交 问 题</div>
+<div class="submit">提交问题</div>
 <!-- 提交问题弹窗 -->
 <div class="bg">
     <div class="showBox">
@@ -83,5 +85,7 @@
 <script src="<%=path %>/resources/js/wap/simpleTips_wap.js"></script>
 <script src="<%=path %>/resources/js/wap/handlebars-v4.0.11.js"></script>
 <script src="<%=path %>/resources/js/wap/service.js"></script>
-
+<script>
+    ParamAndViewInit.webPath = '<%=path %>'
+</script>
 </html>

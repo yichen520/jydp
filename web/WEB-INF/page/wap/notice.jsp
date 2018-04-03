@@ -63,7 +63,9 @@
         var date = new Date(addTime);
         var year = date.getFullYear();
         var month = date.getMonth() + 1;
+        month=month < 10 ? ('0' + month) : month;
         var day = date.getDate();
+        day=day < 10 ? ('0' + day) : day;
         var hours = date.getHours();
         hours=hours < 10 ? ('0' + hours) : hours;
         var minutes = date.getMinutes();
@@ -83,11 +85,16 @@
         }
     });
 
+
     //公告数据填充
     var systemNoticeListData = ${requestScope.systemNoticeList};
     var noticefunc = Handlebars.compile($('#template').html());
     $('.content ul').html(noticefunc(systemNoticeListData));
 
+    var totalPageNumber = parseInt(${requestScope.totalPageNumber});
+    if (totalPageNumber == 0 ||totalPageNumber == 1){
+        $(".more").remove();
+    }
     //更多
     function pageNext() {
         var pageNumber = $("#queryPageNumber").html();
@@ -105,16 +112,19 @@
                             if (noticeList != null) {
                                 var transactionfunc = Handlebars.compile($('#template').html());
                                 $('.content ul').append(transactionfunc(noticeList));
-                                $('#queryPageNumber').html(result.pageNumber)
+                                $('#queryPageNumber').html(result.pageNumber);
+                                if (noticeList.length < 10){
+                                    $(".more").remove();
+                                }
                             }
                         }
                     }
             });
         } else {
             $(".more").remove();
-            openTips("已全部加载完成");
         }
     }
 
 </script>
+
 </html>

@@ -26,7 +26,7 @@
     <div class="top">
         <p class="coin">
             <img src="${transactionCurrency.currencyImgUrl }" class="coinLogo" /><br>
-            <span class="coinName">${transactionCurrency.currencyName }(${transactionCurrency.currencyShortName }/USD)</span>
+            <span class="coinName">${transactionCurrency.currencyName }(${transactionCurrency.currencyShortName }/XT)</span>
             <input type="hidden" id="currencyName" value="${transactionCurrency.currencyName }" >
         </p>
 
@@ -80,8 +80,8 @@
         </div>
 
         <p class="promt">
-            <span class="promtText"> 重要提示：今日最高价格：<span id="hintTodayMax">$<fmt:formatNumber type="number" value="${standardParameter.todayMax }" groupingUsed="FALSE" maxFractionDigits="6"/></span>，
-                今日最低价格：<span id="hintTodayMin">$<fmt:formatNumber type="number" value="${standardParameter.todayMin }" groupingUsed="FALSE" maxFractionDigits="6"/></span></span>
+            <span class="promtText"> 重要提示：今日最高价格：<span id="hintTodayMax"><fmt:formatNumber type="number" value="${standardParameter.todayMax }" groupingUsed="FALSE" maxFractionDigits="6"/> XT</span>，
+                今日最低价格：<span id="hintTodayMin"><fmt:formatNumber type="number" value="${standardParameter.todayMin }" groupingUsed="FALSE" maxFractionDigits="6"/> XT</span></span>
             <span  class="promptTime">交易时间：08:00:00-07:59:00</span>
         </p>
 
@@ -91,12 +91,12 @@
                 <p class="buyTitle">买入</p>
 
                 <p class="buyInput">
-                    <label class="tradeName">可用美金：</label>
-                    <span class="buyAmount rise" id="usableUserBalance">$<fmt:formatNumber type="number" value="${userDealCapitalMessage.userBalance }" groupingUsed="FALSE" maxFractionDigits="6"/></span>
+                    <label class="tradeName">可用XT：</label>
+                    <span class="buyAmount rise" id="usableUserBalance"><fmt:formatNumber type="number" value="${userDealCapitalMessage.userBalance }" groupingUsed="FALSE" maxFractionDigits="6"/> XT</span>
                 </p>
                 <p class="serviceInput">
                     <label class="tradeName">最佳买价：</label>
-                    <span class="service" id="optimumBuy" >$<fmt:formatNumber type="number" value="${standardParameter.sellOne }" groupingUsed="FALSE" maxFractionDigits="6"/></span>
+                    <span class="service" id="optimumBuy" ><fmt:formatNumber type="number" value="${standardParameter.sellOne }" groupingUsed="FALSE" maxFractionDigits="6"/> XT</span>
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">买入价格：</label>
@@ -125,7 +125,7 @@
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">合计：</label>
-                    <span class="all" id="buyTotal">$0</span>
+                    <span class="all" id="buyTotal">0 XT</span>
                 </p>
                 <p class="serviceInput">
                     <label class="tradeName">手续费：</label>
@@ -146,7 +146,7 @@
                 </p>
                 <p class="serviceInput">
                     <label class="tradeName">最佳卖价：</label>
-                    <span class="service" id="optimumSell">$<fmt:formatNumber type="number" value="${standardParameter.buyOne }" groupingUsed="FALSE" maxFractionDigits="6"/></span>
+                    <span class="service" id="optimumSell"><fmt:formatNumber type="number" value="${standardParameter.buyOne }" groupingUsed="FALSE" maxFractionDigits="6"/> XT</span>
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">卖出价格：</label>
@@ -157,7 +157,7 @@
                     <label class="tradeName">卖出数量：</label>
                     <input type="text" class="entry" placeholder="请输入您要卖出的该币种数量" id="sellNum" name="sellNum"
                            onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="11"/>
-                    <span class="max">最大可获得：$<span id="sellMax">0</span></span>
+                    <span class="max">最大可获得：<span id="sellMax">0</span> XT</span>
                 </p>
                 <p class="phoneInput">
                     <label class="tradeName">支付密码：</label>
@@ -175,7 +175,7 @@
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">合计：</label>
-                    <span class="all" id="sellTotal">$0</span>
+                    <span class="all" id="sellTotal">0 XT</span>
                 </p>
                 <p class="serviceInput">
                     <label class="tradeName">手续费：</label>
@@ -199,23 +199,23 @@
                 <span class="listMoney fall" id="currencyNumberLockShow"><fmt:formatNumber type="number" value="${userDealCapitalMessage.currencyNumberLock }" groupingUsed="FALSE" maxFractionDigits="4"/></span>
             </li>
             <li class="accountList">
-                <span class="listName">可用美金</span>
-                <span class="listMoney rise" id="userBalanceShow">$<fmt:formatNumber type="number" value="${userDealCapitalMessage.userBalance }" groupingUsed="FALSE" maxFractionDigits="6"/></span>
+                <span class="listName">可用XT</span>
+                <span class="listMoney rise" id="userBalanceShow"><fmt:formatNumber type="number" value="${userDealCapitalMessage.userBalance }" groupingUsed="FALSE" maxFractionDigits="6"/> XT</span>
                 <input type="hidden" id="userBalance" value="<fmt:formatNumber type="number" value="${userDealCapitalMessage.userBalance }" groupingUsed="FALSE" maxFractionDigits="6"/>">
             </li>
             <li class="accountList">
-                <span class="listName">冻结美金</span>
-                <span class="listMoney fall" id="userBalanceLockShow">$<fmt:formatNumber type="number" value="${userDealCapitalMessage.userBalanceLock }" groupingUsed="FALSE" maxFractionDigits="6"/></span>
+                <span class="listName">冻结XT</span>
+                <span class="listMoney fall" id="userBalanceLockShow"><fmt:formatNumber type="number" value="${userDealCapitalMessage.userBalanceLock }" groupingUsed="FALSE" maxFractionDigits="6"/> XT</span>
             </li>
             <li class="accountList">
                 <span class="listName">账户总资产</span>
-                <span class="listMoney fall" id="currencyNumberSumShow">$<fmt:formatNumber type="number" value="${userDealCapitalMessage.currencyNumberSum }" groupingUsed="FALSE" maxFractionDigits="6"/></span>
+                <span class="listMoney fall" id="currencyNumberSumShow"><fmt:formatNumber type="number" value="${userDealCapitalMessage.currencyNumberSum }" groupingUsed="FALSE" maxFractionDigits="6"/> XT</span>
             </li>
         </ul>
 
         <div class="entrust">
             <p class="entrustTop">
-                <span class="dealPrice" id="nowPriceShow">最新成交价：$<fmt:formatNumber type="number" value="${standardParameter.nowPrice}" groupingUsed="FALSE" maxFractionDigits="6"/></span>
+                <span class="dealPrice" id="nowPriceShow">最新成交价：<fmt:formatNumber type="number" value="${standardParameter.nowPrice}" groupingUsed="FALSE" maxFractionDigits="6"/> XT</span>
                 <span class="count"><span id="countNum"></span>s后刷新</span>
             </p>
 
@@ -289,9 +289,9 @@
                     <c:if test="${item.paymentType == 2}">
                         <td class="type fall">卖出</td>
                     </c:if>
-                    <td class="amount">$<fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2" groupingUsed="FALSE"/></td>
+                    <td class="amount"><fmt:formatNumber type="number" value="${item.pendingPrice}" maxFractionDigits="2" groupingUsed="FALSE"/> XT</td>
                     <td class="amount"><fmt:formatNumber type="number" value="${item.pendingNumber}" maxFractionDigits="4" groupingUsed="FALSE"/></td>
-                    <td class="amount rise">$<fmt:formatNumber type="number" value="${item.countPrice}" maxFractionDigits="6" groupingUsed="FALSE"/></td>
+                    <td class="amount rise"><fmt:formatNumber type="number" value="${item.countPrice}" maxFractionDigits="6" groupingUsed="FALSE"/> XT</td>
                     <td class="amount"><fmt:formatNumber type="number" value="${item.dealNumber}" maxFractionDigits="4" groupingUsed="FALSE"/></td>
                     <td class="operate"><input type="text" readonly="readonly" value="撤&nbsp;销" class="revoke" onclick="cancle('${item.pendingOrderNo}')" /></td>
                 </tr>
@@ -325,7 +325,7 @@
                         <c:if test="${item.paymentType == 2}">
                             <td class="type fall">卖出</td>
                         </c:if>
-                        <td class="dealAmount">$<fmt:formatNumber type="number" value="${item.transactionPrice}" maxFractionDigits="2" groupingUsed="FALSE"/></td>
+                        <td class="dealAmount"><fmt:formatNumber type="number" value="${item.transactionPrice}" maxFractionDigits="2" groupingUsed="FALSE"/> XT</td>
                         <td class="dealAmount"><fmt:formatNumber type="number" value="${item.currencyNumber}" maxFractionDigits="4" groupingUsed="FALSE"/></td>
                     </tr>
                 </c:forEach>
@@ -489,7 +489,7 @@
         document.getElementById("buyNum").value = "";
         document.getElementById("buyPwd").value = "";
         $("#buyMax").html("0" );
-        $("#buyTotal").html("$0");
+        $("#buyTotal").html("0 XT");
 
         $(".mask").fadeOut("fast");
         $(popObj).fadeOut("fast");
@@ -621,7 +621,7 @@
                 try{m+=buyNum.split(".")[1].length}catch(e){}
                 var number = parseFloat((Number(buyPrice.replace(".",""))*Number(buyNum.replace(".",""))/Math.pow(10,m)).toFixed(8));
                 number = mulMaxNumber(number);
-                $("#buyTotal").html("$" + number);
+                $("#buyTotal").html(number + " XT");
             }
 
             var userBalance = parseFloat($("#userBalance").val());
@@ -641,7 +641,7 @@
 
         } else {
             $("#buyMax").html("0" );
-            $("#buyTotal").html("$0");
+            $("#buyTotal").html("0 XT");
         }
 
 
@@ -659,7 +659,7 @@
                 try{s+=sellNum.split(".")[1].length}catch(e){}
                 var number = parseFloat((Number(sellPrice.replace(".",""))*Number(sellNum.replace(".",""))/Math.pow(10,s)).toFixed(8));
                 number = mulMaxNumber(number);
-                $("#sellTotal").html("$" + number);
+                $("#sellTotal").html(number + " XT");
             }
 
             var currencyNumber = $("#currencyNumber").val();
@@ -672,7 +672,7 @@
             }
         } else {
             $("#sellMax").html("0");
-            $("#sellTotal").html("$0");
+            $("#sellTotal").html("0 XT");
         }
 
     }
@@ -752,7 +752,7 @@
             document.getElementById("buyNum").value = "";
             document.getElementById("buyPwd").value = "";
             $("#buyMax").html("0");
-            $("#buyTotal").html("$0");
+            $("#buyTotal").html("0 XT");
 
             var user = '${userSession}';
             if (user == null || user == "") {
@@ -796,7 +796,7 @@
                 return;
             }
 
-            $("#buyPriceTips").html("$" + buyPrice );
+            $("#buyPriceTips").html(buyPrice + " XT" );
             $("#buyNumTips").html(buyNum );
             $("#buySumTips").html(buyTotal );
 
@@ -820,7 +820,7 @@
             document.getElementById("sellNum").value = "";
             document.getElementById("sellPwd").value = "";
             $("#sellMax").html("0");
-            $("#sellTotal").html("$0");
+            $("#sellTotal").html("0 XT");
 
             var user = '${userSession}';
             if (user == null || user == "") {
@@ -863,7 +863,7 @@
                 return;
             }
 
-            $("#sellPriceTips").html("$" + sellPrice );
+            $("#sellPriceTips").html(sellPrice + " XT" );
             $("#sellNumTips").html(sellNum );
             $("#sellSumTips").html(sellTotal );
 
@@ -1387,7 +1387,7 @@
                         newChild += "<tr class='tableInfo'>" +
                             "<td class='dealTime'>"+ addTime +"</td>" +
                             "<td class='type " + type + "'>" + paymentType + "</td>" +
-                            "<td class='dealAmount'>" + "$"+ transactionPrice + "</td>" +
+                            "<td class='dealAmount'>" + transactionPrice + " XT" + "</td>" +
                             "<td class='dealAmount'>" + currencyNumber +"</td>" +
                             "</tr>";
 
@@ -1543,9 +1543,9 @@
                         newChild += "<tr class='tableInfo'>" +
                             "<td class='time'>" + addTime + "</td>" +
                             "<td class='type " + type + "'>" + paymentType + "</td>" +
-                            "<td class='amount'>" + "$" + pendingPrice + "</td>" +
+                            "<td class='amount'>"  + pendingPrice + " XT" + "</td>" +
                             "<td class='amount'>" + pendingNumber + "</td>" +
-                            "<td class='amount rise'>" + "$" + currencyTotalPrice+ "</td>" +
+                            "<td class='amount rise'>" + currencyTotalPrice + " XT" + "</td>" +
                             "<td class='amount'>"+ dealNumber +"</td>" +
                             "<td class='operate'><input type='text' readonly='readonly' value='撤&nbsp;销' class='revoke' onclick="+ goCancle + "></td>" +
                             "</tr>";
@@ -1595,7 +1595,7 @@
                 var standardParameter = data.standardParameter;
                 if(standardParameter != null){
                     $("#nowPrice").html(standardParameter.nowPrice);
-                    $("#nowPriceShow").html("最新成交价：$" + standardParameter.nowPrice);
+                    $("#nowPriceShow").html("最新成交价：" + standardParameter.nowPrice + " XT");
                     if(standardParameter.todayRange >= 0){
                         $("#todayRangeRise").html("+" + standardParameter.todayRange + "%");
                         $("#todayRangeRise").removeClass("number fall");
@@ -1606,13 +1606,13 @@
                         $("#todayRangeRise").addClass("number fall");
                     }
                     $("#todayMax").html(standardParameter.todayMax);
-                    $("#hintTodayMax").html("$" + standardParameter.todayMax);
+                    $("#hintTodayMax").html(standardParameter.todayMax +" XT");
                     $("#todayMin").html(standardParameter.todayMin);
-                    $("#hintTodayMin").html("$" + standardParameter.todayMin);
+                    $("#hintTodayMin").html(standardParameter.todayMin + " XT");
                     $("#buyOne").html(standardParameter.buyOne);
-                    $("#optimumSell").html("$" + standardParameter.buyOne);
+                    $("#optimumSell").html(standardParameter.buyOne + " XT");
                     $("#sellOne").html(standardParameter.sellOne);
-                    $("#optimumBuy").html("$" + standardParameter.sellOne);
+                    $("#optimumBuy").html(standardParameter.sellOne + " XT");
                     $("#dayTurnove").html(standardParameter.dayTurnove);
                 }
             },
@@ -1659,11 +1659,11 @@
                     $("#currencyNumber").val(userDealCapitalMessage.currencyNumber);
                     $("#usableCurrencyNumber").html(userDealCapitalMessage.currencyNumber);
                     $("#currencyNumberLockShow").html(userDealCapitalMessage.currencyNumberLock);
-                    $("#userBalanceShow").html("$" + userDealCapitalMessage.userBalance);
+                    $("#userBalanceShow").html(userDealCapitalMessage.userBalance + " XT");
                     $("#userBalance").val(userDealCapitalMessage.userBalance);
-                    $("#usableUserBalance").html("$" + userDealCapitalMessage.userBalance);
-                    $("#userBalanceLockShow").html("$" + userDealCapitalMessage.userBalanceLock);
-                    $("#currencyNumberSumShow").html("$" + userDealCapitalMessage.currencyNumberSum);
+                    $("#usableUserBalance").html(userDealCapitalMessage.userBalance + " XT");
+                    $("#userBalanceLockShow").html(userDealCapitalMessage.userBalanceLock + " XT");
+                    $("#currencyNumberSumShow").html(userDealCapitalMessage.currencyNumberSum + " XT");
                 }
             },
 

@@ -86,6 +86,7 @@ public class WapUserInfoController {
         wapUserVO.setUserAccount(userInfo.getUserAccount());
         wapUserVO.setUserBalance(userInfo.getUserBalance());
         wapUserVO.setUserBalanceLock(userInfo.getUserBalanceLock());
+        wapUserVO.setTotalUserBalance(userInfo.getUserBalance()+userInfo.getUserBalanceLock());
 
         request.setAttribute("code", 1);
         request.setAttribute("userInfo", wapUserVO);

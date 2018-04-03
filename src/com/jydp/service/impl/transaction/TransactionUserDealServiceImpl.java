@@ -9,6 +9,7 @@ import com.jydp.service.ITransactionUserDealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -50,6 +51,41 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
         }
         return transactionUserDealList;
     }
+
+    /**
+     * 查询用户成交记录(wap端)
+     * @param userId 用户Id
+     * @param pageNumber  当前页数
+     * @param pageSize  每页条数
+     * @return 查询成功：返回用户成交记录；查询失败：返回null
+     */
+    @Override
+    public List<TransactionUserDealVO> getTransactionUserDeallistForWap(int userId, int pageNumber, int pageSize) {
+        List<TransactionUserDealVO>  transactionUserDealList = transactionUserDealDao.getTransactionUserDeallist(userId, pageNumber, pageSize);
+
+        for (TransactionUserDealVO userDeal: transactionUserDealList) {
+            //手续费
+            BigDecimal b1 = new BigDecimal(userDeal.getCurrencyTotalPrice()+"");
+            BigDecimal b2 = new BigDecimal(userDeal.getFeeNumber()+"");
+            BigDecimal feeForWap =b1.multiply(b2);
+
+            BigDecimal currencyTotalPrice = new BigDecimal(0);
+            BigDecimal actualPriceForWap = new BigDecimal(0);
+            if (userDeal.getPaymentType() == 1) {
+
+                currencyTotalPrice = new BigDecimal(userDeal.getCurrencyTotalPrice()+"");
+                actualPriceForWap = currencyTotalPrice.add(feeForWap);
+
+            } else if (userDeal.getPaymentType() == 2) {
+                currencyTotalPrice = new BigDecimal(userDeal.getCurrencyTotalPrice()+"");
+                actualPriceForWap =currencyTotalPrice.subtract(feeForWap);
+            }
+            userDeal.setFeeForWap(feeForWap.setScale(8,BigDecimal.ROUND_UP).stripTrailingZeros().toPlainString());
+            userDeal.setActualPriceForWap(actualPriceForWap.stripTrailingZeros().toPlainString());
+        }
+        return transactionUserDealList;
+    }
+
 
     /**
      * 新增成交记录
@@ -173,6 +209,38 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
 
             userDeal.setActualPrice(actualPrice);
             userDeal.setFee(NumberUtil.doubleUpFormat(fee, 8));
+        }
+
+        return transactionUserDealVOS;
+    }
+
+    /**
+     * wap端根据挂单记录号查询成交记录
+     * @param pendNo  挂单记录号
+     * @param userId  用户Id
+     * @param pageNumber  当前页数
+     * @param pageSize  每页条数
+     * @return  操作成功：返回成交记录集合，操作失败:返回null
+     */
+    public List<TransactionUserDealVO> listTransactionUserDealByPendNoForWap(String pendNo, int userId, int pageNumber, int pageSize){
+        List<TransactionUserDealVO> transactionUserDealVOS = transactionUserDealDao.listTransactionUserDealByPendNo(pendNo, userId, pageNumber, pageSize);
+        for (TransactionUserDealVO userDeal: transactionUserDealVOS) {
+            //手续费
+            BigDecimal b1 = new BigDecimal(userDeal.getCurrencyTotalPrice()+"");
+            BigDecimal b2 = new BigDecimal(userDeal.getFeeNumber()+"");
+            BigDecimal feeForWap =b1.multiply(b2);
+
+            BigDecimal currencyTotalPrice = new BigDecimal(0);
+            BigDecimal actualPriceForWap = new BigDecimal(0);
+            if (userDeal.getPaymentType() == 1) {
+                currencyTotalPrice = new BigDecimal(userDeal.getCurrencyTotalPrice()+"");
+                actualPriceForWap = currencyTotalPrice.add(feeForWap);
+            } else if (userDeal.getPaymentType() == 2) {
+                currencyTotalPrice = new BigDecimal(userDeal.getCurrencyTotalPrice()+"");
+                actualPriceForWap =currencyTotalPrice.subtract(feeForWap);
+            }
+            userDeal.setFeeForWap(feeForWap.setScale(8, BigDecimal.ROUND_UP).stripTrailingZeros().toPlainString());
+            userDeal.setActualPriceForWap(actualPriceForWap.stripTrailingZeros().toPlainString());
         }
 
         return transactionUserDealVOS;

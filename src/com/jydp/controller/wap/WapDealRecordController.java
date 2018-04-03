@@ -84,7 +84,7 @@ public class WapDealRecordController {
 
             List<TransactionUserDealVO> dealRecordList = null;
             if (totalNumber > 0) {
-                dealRecordList = transactionUserDealService.listTransactionUserDealByPendNo(pendingOrderNo, userId,pageNumber, pageSize);
+                dealRecordList = transactionUserDealService.listTransactionUserDealByPendNoForWap(pendingOrderNo, userId,pageNumber, pageSize);
             }
 
             jsonObject.put("dealRecordList", dealRecordList);
@@ -111,7 +111,7 @@ public class WapDealRecordController {
 
         List<TransactionUserDealVO> transactionUserDealList = null;
         if (totalNumber > 0) {
-            transactionUserDealList = transactionUserDealService.getTransactionUserDeallist(userId, pageNumber, pageSize);
+            transactionUserDealList = transactionUserDealService.getTransactionUserDeallistForWap(userId, pageNumber, pageSize);
         }
 
         jsonObject.put("dealRecordList", transactionUserDealList);

@@ -89,7 +89,7 @@ header img{
     font-size: 0.26rem
 }
 .noticeContent p{
-    width: 74%;
+    width: 60%;
     float: left;
     color: #333;
     overflow: hidden;
@@ -102,7 +102,7 @@ header img{
     margin-top: 0.36rem;
     width: 92%;
     margin: 0 auto;
-    height: 4.75rem;
+    max-height: 4.75rem;
     overflow: hidden;
     overflow-y:scroll;
 }
@@ -124,7 +124,9 @@ header img{
     display: flex;
     border-bottom: 1px solid #ececec
 }
-
+.content-list a:last-of-type ul{
+    border-bottom: 0
+}
 .content-list ul li{
     text-align: center;
     flex: 1;
@@ -175,7 +177,7 @@ header img{
     width: 0.06rem;
     background: #e83a33;
     float: left;
-    margin-top: 0.12rem;
+    margin-top: 0.14rem;
     margin-right: 0.2rem;
 }
 .sellerTitle{

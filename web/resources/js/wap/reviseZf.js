@@ -20,7 +20,7 @@ $(function () {
             time(this);
             var phone=$("#areaCode").text()+$("#phoneNumber").val();
             $.ajax({
-                url: "/jydp/sendCode/sendPhoneCode",
+                url: path+"/sendCode/sendPhoneCode",
                 type:'post',
                 dataType:'json',
                 async:true,

@@ -21,7 +21,6 @@
 </header>
 <form id="registerForm" method="post">
     <div class="registerBox">
-        <div class="title">注册</div>
         <div class="registerContent">
             <div class="userName">
                 <input type="text" id="userAccount" name="userAccount" placeholder="登录账号为字母、数字，6～16个字符 "
@@ -69,7 +68,7 @@
                        onblur="checkoutValue('repeatPayPassword')"/>
             </div>
         </div>
-        <div class="confirm" onclick="register()">注册</div>
+        <div class="confirm" onclick="register()">注&nbsp册</div>
         <div class="footer">
             <div class="checkboxBox">
                 <input type="checkbox" checked="checked"/>
@@ -84,7 +83,7 @@
 <script type="text/template" id="abcd">
     <div class="search">
         <img src="<%=path %>/resources/image/wap/searchIcon.png"/>
-        <input type="type" placeholder="请选择国家或区号" id="country" onkeyup="showSearch()"/>
+        <input type="type" placeholder="请选择国家或区号" id="country" oninput="showSearch()"/>
         <p onclick="backHome()">取消</p>
     </div>
     <div class="searchList" id="searchList">
@@ -96,6 +95,10 @@
     <input type="hidden" id="userId" name="userId"/>
     <input type="hidden" id="userAccountIde" name="userAccount"/>
 </form>
+<!-- loading图 -->
+<div id="loading">
+    <i></i>
+</div>
 </body>
 
 <script src="<%=path %>/resources/js/wap/common.js"></script>
@@ -121,7 +124,6 @@
 
             //获取的数据存储
             jsonObject = result.data.jsonObject;
-
             var template = Handlebars.compile($("#abcd").html())
             $('#chosePhone').html(template(result.data));
 
@@ -168,7 +170,10 @@
             return;
         }
         $("#ultest li").each(function () {
-            if ($(this).children("p:eq(0)").text() == value || $(this).children("p:eq(1)").text() == value) {
+            var textKey = $(this).children("p:eq(0)").text();
+            var textkeyValue = $(this).children("p:eq(1)").text();
+            //如果字符串中不包含目标字符会返回-1
+            if(textKey.indexOf(value)>=0 || textkeyValue.indexOf(value)>=0 ){
                 $(this).show()
             } else {
                 $(this).hide();
@@ -198,12 +203,12 @@
         var userAccount = obj.value;
         var reg = /^[A-Za-z0-9]{6,16}$/;
         if (!reg.test(userAccount)) {
-            openTips("输入6-16位数字和字母账号");
+            openTips("请输入6-16位数字、字母账号");
         }
         var account = obj.value;
         if (account.length < 6 || account.length > 16) {
             validateUserBoo = false;
-            openTips("输入6-16数字和字母账号");
+            openTips("请输入6-16位数字、字母账号");
             return;
         }
 
@@ -335,11 +340,6 @@
             return;
         }
 
-        /*if (!getMesCodeFlag) {
-            openTips("请先获取短信验证码");
-            return;
-        }*/
-
         if (!validateCode || validateCode.length != 6) {
             openTips("请输入6位短信验证码");
             return;
@@ -396,7 +396,7 @@
 
         //注册协议
         if (!checked) {
-            openTips("请阅读用户注册协议");
+            openTips("请阅读并勾选用户注册协议");
             return;
         }
 
