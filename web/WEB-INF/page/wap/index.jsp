@@ -211,8 +211,10 @@
 <script src="<%=path %>/resources/js/wap/swiper-3.4.2.min.js"></script>
 <script src="<%=path %>/resources/js/wap/index.js"></script>
 <script src="<%=path %>/resources/js/wap/handlebars-v4.0.11.js"></script>
+
 <script type="text/javascript">
     var path = "<%=path%>"
+
     //日期转换
     Handlebars.registerHelper("addTimeDateConvert", function (addTime) {
         var date = new Date(addTime);
@@ -235,6 +237,7 @@
             return options.inverse(this);
         }
     });
+
     //保留小数点后几位
     Handlebars.registerHelper("toDecimal", function (num, index) {
         var result = num.substring(0, num.indexOf(".") + index + 1);
