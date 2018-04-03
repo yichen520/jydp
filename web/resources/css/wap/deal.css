@@ -731,7 +731,7 @@
     color: #888;
     font-size: 0.24rem;
 }
-.maskBoxContent span{
+.maskBoxContent span:nth-of-type(1){
     display: inline-block;
     width: 1.5rem;
     color: #666;
@@ -807,9 +807,9 @@
     color: #888;
     font-size: 0.24rem;
 }
-.maskSellBoxContent span{
+.maskSellBoxContent span:nth-of-type(1){
     display: inline-block;
-    width: 1.5rem;
+    width: 1.7rem;
     color: #666;
     font-size: 0.24rem;
 }
