@@ -60,6 +60,9 @@
     text-align: center;
 }
 .nav-content .flex{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     margin-top: 0.2rem;
     flex: 1
 }
@@ -77,6 +80,10 @@
     margin-top: 0.16rem;
 }
 .list-desc{
+    width: 1.7rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     display: block;
     font-size: 0.26rem;
     color: #999;
@@ -96,7 +103,10 @@
     margin-bottom: 0;
 }
 .list-num{
-
+    width: 1.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     font-size: 0.24rem;
     color:#333;
     margin-left: 0.2rem;
@@ -396,6 +406,9 @@
 }
 .mainMoney-num span{
     flex: 1;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap
 }
 .mainMoney-num span:nth-of-type(2){
     text-align: center;

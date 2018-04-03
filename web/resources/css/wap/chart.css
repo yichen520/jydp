@@ -54,11 +54,15 @@
 .nav-content .topLeft{
     padding-top: 0.2rem;
     font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .right{
     text-align: center;
 }
 .nav-content div{
+
     margin-top: 0.2rem;
     flex: 1
 }
@@ -76,6 +80,10 @@
     margin-top: 0.16rem;
 }
 .list-desc{
+    width: 1.7rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     font-size: 0.26rem;
     color: #999;
     margin-bottom: 0.16rem;
@@ -93,7 +101,10 @@
 .list-num{  
     font-size: 0.24rem;
     color:#333;
-
+    width: 1.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 #wrapper{
     padding-bottom: 1.2rem;
