@@ -887,6 +887,7 @@ var ParamsAndInit = {
             $("footer").hide();
         });
         $("input").blur(function(){
+
             $('footer').show();
         });
         //进入页面的时候判断
