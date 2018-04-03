@@ -56,10 +56,10 @@ public interface ISystemBusinessesPartnerService {
 
     /**
      * 删除 合作商家, 同时删除合作商家图片
-     * @param id 合作商家 的记录id
+     * @param systemBusinessesPartner 合作商家
      * @return 删除成功：返回true，删除失败：返回false
      */
-    boolean deleteSystemBusinessesPartner(int id);
+    boolean deleteSystemBusinessesPartner(SystemBusinessesPartnerDO systemBusinessesPartner);
 
     /**
      * web用户端查询合作商家

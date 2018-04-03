@@ -130,19 +130,15 @@ public class SystemBusinessesPartnerServiceImpl implements ISystemBusinessesPart
 
     /**
      * 删除 合作商家, 同时删除合作商家图片
-     * @param id 合作商家 的记录id
+     * @param systemBusinessesPartner 合作商家
      * @return 删除成功：返回true，删除失败：返回false
      */
     @Transactional
-    public boolean deleteSystemBusinessesPartner(int id) {
-        boolean executeSuccess = false;
-        SystemBusinessesPartnerDO systemBusinessesPartner = systemBusinessesPartnerDao.getSystemBusinessesPartnerById(id);
-        if (systemBusinessesPartner == null) {
-            return executeSuccess;
-        }
+    public boolean deleteSystemBusinessesPartner(SystemBusinessesPartnerDO systemBusinessesPartner) {
+        boolean executeSuccess;
 
         int max = systemBusinessesPartnerDao.getMaxRankForBack();
-        executeSuccess = systemBusinessesPartnerDao.deleteSystemBusinessesPartner(id);
+        executeSuccess = systemBusinessesPartnerDao.deleteSystemBusinessesPartner(systemBusinessesPartner.getId());
         if (executeSuccess) {
             // 删除成功，处理排名变动
             if (systemBusinessesPartner.getRankNumber() < max) {
@@ -153,9 +149,6 @@ public class SystemBusinessesPartnerServiceImpl implements ISystemBusinessesPart
         // 数据回滚
         if (!executeSuccess) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-        } else {
-            // 删除文件
-            FileWriteRemoteUtil.deleteFile(systemBusinessesPartner.getBusinessesImageUrl());
         }
 
         return executeSuccess;

@@ -23,6 +23,7 @@
     <img src="<%=path %>/resources/image/wap/backW.png" class="back"/>
     <p>我要提币</p>
 </header>
+<div class="main"></div>
 <!-- 内容区域 -->
 <div class="content-box">
     <p class="top">

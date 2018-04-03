@@ -1,5 +1,10 @@
 body{
-    background: #f76767;
+    background: #fff;
+}
+.main{
+	 background: #f76767;
+	 height: 2rem;
+	 width: 100%;
 }
 header{
     background: #f76767;
@@ -20,7 +25,7 @@ header .back{
     position: absolute;
     top: 2.7rem;
     width: 100%;
-    height: 100%;
+   
 }
 .content-box{
     position: absolute;
@@ -31,7 +36,7 @@ header .back{
     top: 1.3rem;
     background:url('../../image/wap/cash-card.png');
     background-size:cover; 
-    
+    z-index: 2;
 }
 .top{
     width: 100%;
@@ -76,7 +81,7 @@ header .back{
     width: 2rem;
     float: right;
     font-size: 0.26rem;
-    color: #e83e3a;
+    color: #68adfa;
     line-height: 0.6rem;
     text-align: right
 }
@@ -92,9 +97,9 @@ header .back{
 }
 .txChose select{
     width: 4rem;
+    height: 0.6rem;
     margin-left: 0.48rem;
     float: left;
-    height: 0.6rem;
     line-height: 0.6rem;
     font-size: 0.28rem;
     color: #333;
@@ -166,8 +171,8 @@ option{
     width: 6.9rem;
     border-radius: 3px;
     box-shadow: 0px 5px 15px rgba(248,183,180,0.6);
-    height: 0.9rem;
-    line-height: 0.9rem;
+    height: 0.66rem;
+    line-height: 0.66rem;
     text-align: center;
     background: -ms-linear-gradient(top, #fe5c5c, #e83e3a);
     background: -moz-linear-gradient(top,#fe5c5c,#e83e3a);

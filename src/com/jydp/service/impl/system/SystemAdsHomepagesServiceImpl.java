@@ -85,20 +85,15 @@ public class SystemAdsHomepagesServiceImpl implements ISystemAdsHomepagesService
 
     /**
      * 删除 首页广告
-     * @param id 首页广告 的id
+     * @param systemAdsHomepagesDO 首页广告
      * @return 删除成功：返回true，删除失败：返回false
      */
     @Transactional
-    public boolean deleteSystemAdsHomePages(int id) {
-        SystemAdsHomepagesDO systemAdsHomepagesDO = systemAdsHomepagesDao.getSystemAdsHomePagesById(id);
-
-        // 广告不存在
-        if (systemAdsHomepagesDO == null) {
-            return false;
-        }
+    public boolean deleteSystemAdsHomePages(SystemAdsHomepagesDO systemAdsHomepagesDO) {
+        boolean executeSuccess;
 
         int max = systemAdsHomepagesDao.getMaxRankForBack();
-        boolean executeSuccess = systemAdsHomepagesDao.deleteSystemAdsHomePages(id);
+        executeSuccess = systemAdsHomepagesDao.deleteSystemAdsHomePages(systemAdsHomepagesDO.getId());
         if (executeSuccess) {
             // 删除成功，处理排名变动
             if (systemAdsHomepagesDO.getRankNumber() < max) {
@@ -109,10 +104,8 @@ public class SystemAdsHomepagesServiceImpl implements ISystemAdsHomepagesService
         // 数据回滚
         if (!executeSuccess) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-        } else {
-            // 删除文件
-            FileWriteRemoteUtil.deleteFile(systemAdsHomepagesDO.getAdsImageUrl());
         }
+
         return executeSuccess;
     }
 

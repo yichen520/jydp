@@ -119,7 +119,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <ul class="levelTwo">
             <li class="menuInfo" id="li_131000"><a id="a_131000" href="<%=path %>/backerWeb/backerRole/show.htm">账号角色</a></li>
             <li class="menuInfo" id="li_131100"><a id="a_131100" href="<%=path %>/backerWeb/backerAccount/show.htm">后台账号</a></li>
-            <li class="menuInfo" id="li_131200"><a id="a_131200" href="<%=path %>/backerWeb/backerOperationalRecord/show.htm">后台管理员登录记录</a></li>
+            <li class="menuInfo" id="li_131200"><a id="a_131200" href="<%=path %>/backerWeb/backerOperationalRecord/show.htm">管理员登录记录</a></li>
         </ul>
     </li>
 

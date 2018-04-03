@@ -251,14 +251,14 @@ var ParamsAndInit = {
                 var totalCanBuy = userBalance / buyPrice;
                 //格式化可买的个数 返回字符串
                 var tota = ParamsAndInit.mulMaxNumber(totalCanBuy);
-                $("#buyMax").html("最大可买: " + Math.floor(tota * 1000000) / 1000000 +" XT");
+                $("#buyMax").html("最大可买: " + Math.floor(tota * 1000000) / 1000000);
             } else {
                 //如果价格小于0就直接返回0
-                $("#buyMax").html("最大可买: " + "0 XT");
+                $("#buyMax").html("最大可买: 0");
             }
         } else {
             //价格不正确直接返回
-            $("#buyMax").html("最大可买: " + "0 XT");
+            $("#buyMax").html("最大可买: 0");
             $("#buyTotal").val("0");
         }
         //卖出
@@ -372,7 +372,7 @@ var ParamsAndInit = {
         $("#buyPrice").val("");
         $("#buyNum").val("");
         $("#buyPwd").val("");
-        $("#buyMax").html("最大可买: " + "0 TX");
+        $("#buyMax").html("最大可买: 0");
         $buyTotal.val("0");
 
         var user = $("#userSession").val();
@@ -519,7 +519,7 @@ var ParamsAndInit = {
         document.getElementById("buyPrice").value = "";
         document.getElementById("buyNum").value = "";
         document.getElementById("buyPwd").value = "";
-        $("#buyMax").html("最大可买: " + "0 XT");
+        $("#buyMax").html("最大可买: 0");
         $("#buyTotal").val("0");
         $.ajax({
             url: webAppPath + "/userWap/tradeCenter/buy.htm", //方法路径URL
