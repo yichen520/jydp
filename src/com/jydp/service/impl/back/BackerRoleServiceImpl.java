@@ -266,14 +266,6 @@ public class BackerRoleServiceImpl implements IBackerRoleService {
 	public JsonObjectBO deleteRoleForBacker(int roleId) {
 		JsonObjectBO resultData = new JsonObjectBO();
 		
-		//验证有无用户在使用该角色
-		int validateNumber = backerService.getBackerNumberByRoleId(roleId);
-		if (validateNumber > 0) {
-			resultData.setCode(5);
-			resultData.setMessage("有用户正在使用该角色，无法删除。");
-			return resultData;
-		}
-		
 		boolean executeSuccess = true;
 		//删除账号角色
 		if (executeSuccess) {

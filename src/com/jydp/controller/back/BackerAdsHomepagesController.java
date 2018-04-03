@@ -248,7 +248,7 @@ public class BackerAdsHomepagesController {
             return response;
         }
 
-        boolean deleteResult = systemAdsHomepagesService.deleteSystemAdsHomePages(id);
+        boolean deleteResult = systemAdsHomepagesService.deleteSystemAdsHomePages(systemAdsHomepagesDO);
         if (deleteResult) {
             // 删除图片
             FileWriteRemoteUtil.deleteFile(systemAdsHomepagesDO.getAdsImageUrl());

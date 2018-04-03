@@ -46,10 +46,10 @@ public interface ISystemAdsHomepagesService {
 
     /**
      * 删除 首页广告
-     * @param id 首页广告 的id
+     * @param systemAdsHomepagesDO 首页广告
      * @return 删除成功：返回true，删除失败：返回false
      */
-    boolean deleteSystemAdsHomePages(int id);
+    boolean deleteSystemAdsHomePages(SystemAdsHomepagesDO systemAdsHomepagesDO);
 
     /**
      * 上移首页广告

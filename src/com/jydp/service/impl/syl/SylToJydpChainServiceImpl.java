@@ -63,7 +63,7 @@ public class SylToJydpChainServiceImpl implements ISylToJydpChainService {
      */
     @Transactional
     public boolean operationSylToJydpChain(String orderNo,int userId, String userAccount, double coin, String coinType){
-        boolean executeSuccess = false;
+        boolean executeSuccess;
         SylToJydpChainDO sylToJydpChain = new SylToJydpChainDO();
 
         TransactionCurrencyVO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyShortName(coinType);//查询币种信息
@@ -115,9 +115,6 @@ public class SylToJydpChainServiceImpl implements ISylToJydpChainService {
             userCurrencyNum.setAddTime(date);
             executeSuccess = userCurrencyNumService.insertUserCurrencyNum(userCurrencyNum);
         }
-
-
-
 
         // 数据回滚
         if (!executeSuccess) {
