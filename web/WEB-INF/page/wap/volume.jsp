@@ -279,12 +279,7 @@
 
     //返回
     $('.back').on('click', function () {
-        //根据跳转源返回到对应的页面
-        if (pendingOrderNo == null || pendingOrderNo == "") {
-            window.location.href = wapPath + "/userWap/wapTransactionPendOrderController/showMyRecord";
-        } else {
-            window.location.href = wapPath + "/userWap/wapTransactionPendOrderController/show.htm";
-        }
+       window.history.go(-1);
     });
 
     //查看更多

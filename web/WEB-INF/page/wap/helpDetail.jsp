@@ -40,16 +40,11 @@
 
 
 <script type="text/javascript">
-    var requestSource = $("#requestSource").val();
-    if (!requestSource) {
-        $('.backimg').on('click', function () {
-            window.location.href = "<%=path %>/userWap/wapHelpCenter/showHelpCenter"
-        });
-    }else{
-        $('.backimg').on('click', function () {
-            window.location.href = "<%=path %>/userWap/userRegister/show"
-        });
-    }
+
+    //返回到请求的页面
+    $('.backimg').on('click', function () {
+        window.history.go(-1);
+    });
 </script>
 
 
