@@ -157,7 +157,7 @@
                     <label class="tradeName">卖出数量：</label>
                     <input type="text" class="entry" placeholder="请输入您要卖出的该币种数量" id="sellNum" name="sellNum"
                            onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="11"/>
-                    <span class="max">最大可获得：<span id="sellMax">0</span> XT</span>
+                    <span class="max">最大可获得：<span id="sellMax">0</span></span>
                 </p>
                 <p class="phoneInput">
                     <label class="tradeName">支付密码：</label>
@@ -216,7 +216,7 @@
         <div class="entrust">
             <p class="entrustTop">
                 <span class="dealPrice" id="nowPriceShow">最新成交价：<fmt:formatNumber type="number" value="${standardParameter.nowPrice}" groupingUsed="FALSE" maxFractionDigits="6"/> XT</span>
-                <span class="count"><span id="countNum"></span>s后刷新</span>
+                <span class="count"><span id="countNum"></span></span>
             </p>
 
             <div class="record">
@@ -1136,7 +1136,7 @@
     var step = -1;
     function count()
     {
-        document.getElementById("countNum").innerHTML = start;
+
         if (start <= 0) {
             var user = '${userSession}';
             if (user != null && user != "") {
