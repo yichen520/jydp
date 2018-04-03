@@ -882,6 +882,8 @@
             // popObj = ".revoke_pop"
         });
         $(".cancel").click(function(){
+            document.getElementById("buyPwdConfirm").value = "";
+            document.getElementById("sellPwdConfirm").value = "";
             $(".mask").fadeOut("fast");
             $(popObj).fadeOut("fast");
         });
