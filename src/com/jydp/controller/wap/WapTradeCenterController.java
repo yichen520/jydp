@@ -616,7 +616,7 @@ public class WapTradeCenterController {
             }
         }
         if (transactionPendOrderBuyList == null || transactionPendOrderBuyList.isEmpty()) {
-            transactionPendOrderBuyList = transactionPendOrderService.listLatestRecords(1, transactionCurrency.getCurrencyId(), 15);
+            transactionPendOrderBuyList = transactionPendOrderService.listLatestRecords(1, transactionCurrency.getCurrencyId(), 5);
         }
         List<TransactionPendOrderDTO> transactionPendOrderSellList = null;
         Object transactionPendOrderSellListStr = redisService.getValue(RedisKeyConfig.SELL_KEY + transactionCurrency.getCurrencyId());

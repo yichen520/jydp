@@ -816,12 +816,7 @@ var ParamsAndInit = {
                     $("#buyOneSpan").text(ParamsAndInit.formatNumber(standardParameter.buyOne, 6));
                     $("#sellOneOne").text(ParamsAndInit.formatNumber(standardParameter.sellOne, 6));
                     var dayTurnove =  ParamsAndInit.formatNumber(standardParameter.dayTurnove, 4);
-                    if(dayTurnove == 0){
-                        $("#dayTurnoveOne").text(dayTurnove);
-                    }else {
-                        $("#dayTurnoveOne").text(dayTurnove);
-                    }
-
+                    $("#dayTurnoveOne").text(dayTurnove);
                     $("#nowPriceDiv").text("当前价格："+ParamsAndInit.formatNumber(standardParameter.nowPrice, 8)+" XT");
                 }
             },
