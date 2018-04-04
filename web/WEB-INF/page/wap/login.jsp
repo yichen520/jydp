@@ -27,16 +27,17 @@
                         <img src="${pageContext.request.contextPath}/resources/image/wap/iconUser.png" />
                         <input type="text" placeholder="您的登录账号" id="userAccount" name="userAccount" value="${userAccount}"
                                onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false" maxLength="16"
-                               onkeyup="checkoutValue(this)" onblur="checkoutValue(this)" onfocus="inputFocus(this)"/>
+                               onkeyup="checkoutValue(this)" onblur="checkoutValue(this)"/>
                     </div>
                 </div>
                 <div class="passwordBox">
                     <div class="box">
                         <img src="${pageContext.request.contextPath}/resources/image/wap/iconPassword.png" />
-                        <input type="password" placeholder="您的登录密码" id="password" name="password"
+                        <input type="password" placeholder="您的登录密码" id="password"
                                onpaste="return false" oncontextmenu="return false" oncopy="return false" oncut="return false" maxLength="16" autocomplete="new-password"
                                onkeyup="checkoutValue(this)" onblur="checkoutValue(this)"
                                onkeypress="keypressHandle(event);"/>
+                        <input type="hidden" id="encodePwd" name="password"/>
                     </div>
                 </div>
                 <div class="button" onclick="loginSubmit();" >登 录</div>
@@ -93,8 +94,42 @@
             return;
         }
 
+        var pwd = encode64($("#password").val());
+        $("#encodePwd").val(pwd);
+
         $("#loginForm").submit();
     }
+
+    // base64加密开始
+    var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+    function encode64(input) {
+        var output = "";
+        var chr1, chr2, chr3 = "";
+        var enc1, enc2, enc3, enc4 = "";
+        var i = 0;
+        do {
+            chr1 = input.charCodeAt(i++);
+            chr2 = input.charCodeAt(i++);
+            chr3 = input.charCodeAt(i++);
+            enc1 = chr1 >> 2;
+            enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+            enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+            enc4 = chr3 & 63;
+            if (isNaN(chr2)) {
+                enc3 = enc4 = 64;
+            } else if (isNaN(chr3)) {
+                enc4 = 64;
+            }
+            output = output + keyStr.charAt(enc1) + keyStr.charAt(enc2)
+                + keyStr.charAt(enc3) + keyStr.charAt(enc4);
+            chr1 = chr2 = chr3 = "";
+            enc1 = enc2 = enc3 = enc4 = "";
+        } while (i < input.length);
+
+        return output;
+    }
+    // base64加密结束
 
     //字符串判空，为空返回true，非空返回false
     function isEmpty(validateStr) {

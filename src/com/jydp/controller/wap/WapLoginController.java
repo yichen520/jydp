@@ -1,5 +1,6 @@
 package com.jydp.controller.wap;
 
+import com.iqmkj.utils.Base64Util;
 import com.iqmkj.utils.MD5Util;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.UserSessionBO;
@@ -58,6 +59,7 @@ public class WapLoginController {
     public String userLogin(HttpServletRequest request){
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
         String password = StringUtil.stringNullHandle(request.getParameter("password"));
+        password = Base64Util.decode(password);
 
         if(!StringUtil.isNotNull(userAccount) || !StringUtil.isNotNull(password)){
             request.setAttribute("code", 2);
