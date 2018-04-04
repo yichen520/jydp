@@ -16,7 +16,7 @@ function openTips(showText)
             "</div>";
     $("body").append(str);
     $(".tipsMaskText").html("<span>" + showText + "</span>");
-    // $('.tipsMask').css("height","100%");
+     $('.tipsMask').css("height",bgHeight+"px");
     $(".tipsMask").css("display","block").delay(2500).hide(300);
     $(".tipsYes").click(function(){
         $(".tipsMask").hide();
