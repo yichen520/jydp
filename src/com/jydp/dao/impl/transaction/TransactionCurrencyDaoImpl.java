@@ -529,5 +529,20 @@ public class TransactionCurrencyDaoImpl implements ITransactionCurrencyDao{
         return resultList;
     }
 
+    /**
+     * 获取币种交易状态（1:待上线,2:上线中,3:停牌,4:已下线）
+     * @param currencyId  币种Id
+     * @return  操作成功：返回币种交易状态，操作失败：返回0
+     */
+    public int getCurrencyUpstatusByCurrencyId(int currencyId){
+        int result = 0;
 
+        try {
+            result = sqlSessionTemplate.selectOne("TransactionCurrency_getCurrencyUpstatusByCurrencyId", currencyId);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return  result;
+    }
 }

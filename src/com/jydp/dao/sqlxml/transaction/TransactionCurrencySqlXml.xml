@@ -275,4 +275,9 @@
         FROM transaction_currency_tab
     </select>
 
+    <select id="TransactionCurrency_getCurrencyUpstatusByCurrencyId" parameterType="int" resultType="int">
+        SELECT upStatus
+        FROM transaction_currency_tab
+        WHERE currencyId = #{currencyId}
+    </select>
 </mapper>
