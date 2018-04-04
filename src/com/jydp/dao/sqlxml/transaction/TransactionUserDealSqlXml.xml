@@ -54,8 +54,8 @@
 	</select>
 
 	<select id="TransactionUserDeal_listTransactionUserDealForBack" parameterType="java.util.Map" resultType="TransactionUserDealVO">
-		SELECT orderNo, pendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, transactionPrice,
-			currencyNumber, feeNumber, currencyTotalPrice, remark, pendTime, addTime
+		SELECT orderNo, pendingOrderNo, userAccount, paymentType, currencyName, transactionPrice,
+			currencyNumber, feeNumber, currencyTotalPrice, pendTime, addTime
 		FROM transaction_user_deal_tab
 		WHERE 1=1
 			<if test="orderNo != null and orderNo !=''">
