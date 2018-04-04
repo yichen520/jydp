@@ -203,6 +203,7 @@ var ParamsAndInit = {
         }
     },
     matchUtil: function (e) {
+
         var matchStr = /^-?\d+\.?\d{0,num}$/;
         //格式化显示值
         var value = $(this).val();
@@ -875,19 +876,17 @@ var ParamsAndInit = {
     },
     footInit: function () {
         var h=$(window).height();
-        $(window).resize(function() {
-            if($(window).height()<h){
-                $('footer').hide();
-            }
-            if($(window).height()>=h){
-                $('footer').show();
-            }
-        });
         $("input").focus(function(){
+            $("header").css({"position":"relative","top":0});
+            $("section").css({"position":"relative","top":'0'});
+            $("#wrapper").css({"position":"relative","top":'0'});
             $("footer").hide();
         });
         $("input").blur(function(){
+            $("header").css("position","fixed");
+            $("section").css({"position":"fixed","top":'0.92rem'});
 
+            $("#wrapper").css({"position":"relative","top":'2.3rem'});
             $('footer').show();
         });
         //进入页面的时候判断
