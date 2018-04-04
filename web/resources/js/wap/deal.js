@@ -104,7 +104,7 @@ var ParamsAndInit = {
             $('.borderSell').show();
             $('.borderBuy').hide();
             $('.borderEntrust').hide();
-            $('.sell').fadeIn();
+            $('.sell').show();
             $('.buy').hide();
             $('.entrust').hide();
         });
@@ -112,7 +112,7 @@ var ParamsAndInit = {
             $('.borderSell').hide();
             $('.borderBuy').hide();
             $('.borderEntrust').show();
-            $('.entrust').fadeIn();
+            $('.entrust').show();
             $('.sell').hide();
             $('.buy').hide();
         });
@@ -121,7 +121,7 @@ var ParamsAndInit = {
             $('.borderBuy').show();
             $('.borderEntrust').hide();
             $('.sell').hide();
-            $('.buy').fadeIn();
+            $('.buy').show();
             $('.entrust').hide();
         });
     },
