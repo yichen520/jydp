@@ -65,6 +65,17 @@
 <script src="${pageContext.request.contextPath}/resources/js/wap/checkout.js"></script>
 
 <script type="text/javascript">
+    var u = navigator.userAgent;
+    var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
+    if(isAndroid){
+        $("input").focus(function(){
+            $('.wrapper').css("height","15rem");
+        });
+        $("input").blur(function(){
+            $('.wrapper').css("height","100%");
+        });
+    }
+
     window.onload = function() {
         var code = '${code}';
         var message = '${message}';
