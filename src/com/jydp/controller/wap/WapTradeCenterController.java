@@ -76,7 +76,6 @@ public class WapTradeCenterController {
     /**
      * 跳转到交易中心界面
      */
-    /*@RequestMapping(value = "/show", method = RequestMethod.POST )*/
     @RequestMapping(value = "/show/{currencyIdStr}")
     public String show(HttpServletRequest request, @PathVariable(value="currencyIdStr") String currencyIdStr) {
         currencyIdStr = StringUtil.stringNullHandle(currencyIdStr);
@@ -789,6 +788,9 @@ public class WapTradeCenterController {
         return "page/wap/tradeChart";
     }
 
+    /**
+     * 获取表单页面数据信息
+     */
     @RequestMapping("/getChartPageInfo")
     public @ResponseBody JSONObject getChartPageInfo(HttpServletRequest request) {
         JSONObject response = new JSONObject();

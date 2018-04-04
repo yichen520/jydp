@@ -563,18 +563,19 @@ var ParamsAndInit = {
         $("#pendOrderNoCancle").val(orderNum);
     },
     cancleOrder: function () {
-        $('.bg').css("height","0");
-        $('.showBox').animate({opacity:'0'},"100");
-        setTimeout(function(){
-            $('.showBox').css('display','none');
-        },100)
+        //点击确定  撤销弹窗应该瞬间消失
+        $('.showBox').css('opacity','0');
+        $('.showBox').css('display','none');
+
         var pendOrderNo = $("#pendOrderNoCancle").val();
         var webAppPath = $("#webAppPath").val();
         var currencyId = $("#cucyId").val();
         if (pendOrderNo === undefined || pendOrderNo === null || pendOrderNo == "") {
             openTips("单号错误");
+            $('.bg').css("height","0");
             return;
         }
+
         $.ajax({
             url: webAppPath + "/userWap/wapTransactionPendOrderController/revokeForDeal.htm",
             data: {
@@ -587,15 +588,70 @@ var ParamsAndInit = {
             success: function (data) {
                 if (data.code != "0") {
                     openTips(data.message);
+                    $('.bg').css("height","0");
                     return;
                 }
                 //如果cancel成功
                 openTips(data.message);
                 //去重新加载数据
-                ParamsAndInit.entrust();
+                ParamsAndInit.entrust_ForRevoke();
             },
             error: function () {
                 openTips("数据加载出错，请稍候重试");
+                $('.bg').css("height","0");
+                return ;
+            }
+        });
+    },
+    entrust_ForRevoke: function () {
+        //获取currency数据
+        var currencyIdStr = $("#currencyId").val();
+        if (undefined == currencyIdStr || currencyIdStr == null || currencyIdStr == "") {
+            openTips("页面数据错误，请重新刷新页面");
+            $('.bg').css("height","0");
+            return;
+        }
+        var userSession = $("#userSession").val();
+        if (userSession == undefined || userSession == null || userSession == "") {
+            $('.bg').css("height","0");
+            return;
+        }
+        $.ajax({
+            url: path + '/userWap/tradeCenter/entrust.htm',
+            type: 'POST',
+            dataType: 'json',
+            async: true,
+            data: {
+                "currencyIdStr": currencyIdStr
+            },
+            success: function (data) {
+                if (data.code != 0) {
+                    $('.bg').css("height","0");
+                    return;
+                }
+                //删除元素 新增委托数量
+                $(".entrust .entrust-content").empty();
+                data = data.transactionPendOrderList;
+                var str = "";
+                for (i in data) {
+                    var paymentType =  data[i].paymentType == 1 ? "<span class='red'>买入</span>" : "<span class='green'>卖出</span>"
+                    str += "<li>"
+                        + "<p>" + paymentType +"</p>"
+                        + "<p>" + ParamsAndInit.formatNumber(data[i].pendingPrice, 2) + "</p>"
+                        + "<p>" + ParamsAndInit.formatNumber(data[i].pendingNumber, 4) +"</p>"
+                        +"<p>" +  ParamsAndInit.formatNumber(data[i].dealNumber, 4) + "</p>"
+                        +"<p class='toCancleOrder'>撤销"  + "<input type='hidden' value='"+ data[i].pendingOrderNo +"'/>"  + "</p>"
+                        +"<p class='clear'></p>"+"</li>";
+                }
+                $("#entrustUL").html(str);
+                $(".toCancleOrder").each(function () {
+                    $(this).bind('click', ParamsAndInit.toCancel);
+                });
+                $('.bg').css("height","0");
+            },
+            error: function () {
+                $('.bg').css("height","0");
+                return;
             }
         });
     },
@@ -641,6 +697,7 @@ var ParamsAndInit = {
                 $(".toCancleOrder").each(function () {
                     $(this).bind('click', ParamsAndInit.toCancel);
                 });
+
             },
             error: function () {
                 return;
