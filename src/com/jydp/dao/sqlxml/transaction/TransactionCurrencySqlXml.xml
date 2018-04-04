@@ -184,8 +184,7 @@
     </update>
 
     <select id="TransactionCurrency_listTransactionCurrencyAll" resultType="TransactionCurrencyDO">
-        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, guidancePrice,
-            paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
+        SELECT  currencyId, currencyShortName, currencyName, upStatus, upTime
         FROM transaction_currency_tab
     </select>
 
