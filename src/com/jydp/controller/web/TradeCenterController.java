@@ -177,7 +177,6 @@ public class TradeCenterController {
         String buyPriceStr = StringUtil.stringNullHandle(request.getParameter("buyPrice"));
         String buyNumStr = StringUtil.stringNullHandle(request.getParameter("buyNum"));
         String buyPwd = StringUtil.stringNullHandle(request.getParameter("buyPwd"));
-        buyPwd = Base64Util.decode(buyPwd);
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
 
         double buyPrice = 0;
@@ -276,10 +275,21 @@ public class TradeCenterController {
         //判断是否需要验证交易密码以及验证交易密码
         int isPwd = userSession.getIsPwd();
         int payPasswordStatus = user.getPayPasswordStatus();
-        if(payPasswordStatus == 1 ||(payPasswordStatus == 2 && isPwd == 1)) {
+        if(payPasswordStatus == 1 || (payPasswordStatus == 2 && isPwd == 1) || StringUtil.isNotNull(buyPwd)) {
+            buyPwd = Base64Util.decode(buyPwd);
             buyPwd = MD5Util.toMd5(buyPwd);
             boolean checkResult = userService.validateUserPay(user.getUserAccount(), buyPwd);
             if (!checkResult) {
+                //重置交易密码状态
+                userService.updateUserPayPasswordStatus(user.getUserId(), 1);
+
+                userSession.setIsPwd(1);
+                request.getSession().setAttribute("userSession", userSession);
+
+                JSONObject data = new JSONObject();
+                data.put("userIdPwd",1);
+                resultJson.setData(data);
+
                 resultJson.setCode(4);
                 resultJson.setMessage("支付密码错误");
                 return resultJson;
@@ -352,7 +362,6 @@ public class TradeCenterController {
         String sellPriceStr = StringUtil.stringNullHandle(request.getParameter("sellPrice"));
         String sellNumStr = StringUtil.stringNullHandle(request.getParameter("sellNum"));
         String sellPwd = StringUtil.stringNullHandle(request.getParameter("sellPwd"));
-        sellPwd = Base64Util.decode(sellPwd);
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
 
         double sellPrice = 0;
@@ -451,10 +460,21 @@ public class TradeCenterController {
         //判断是否需要验证交易密码以及验证交易密码
         int isPwd = userSession.getIsPwd();
         int payPasswordStatus = user.getPayPasswordStatus();
-        if(payPasswordStatus == 1 ||(payPasswordStatus == 2 && isPwd == 1)){
+        if(payPasswordStatus == 1 || (payPasswordStatus == 2 && isPwd == 1) || StringUtil.isNotNull(sellPwd)) {
+            sellPwd = Base64Util.decode(sellPwd);
             sellPwd = MD5Util.toMd5(sellPwd);
             boolean checkResult = userService.validateUserPay(user.getUserAccount(), sellPwd);
-            if(!checkResult){
+            if (!checkResult) {
+                //重置交易密码状态
+                userService.updateUserPayPasswordStatus(user.getUserId(), 1);
+
+                userSession.setIsPwd(1);
+                request.getSession().setAttribute("userSession", userSession);
+
+                JSONObject data = new JSONObject();
+                data.put("userIdPwd",1);
+                resultJson.setData(data);
+
                 resultJson.setCode(4);
                 resultJson.setMessage("支付密码错误");
                 return resultJson;
@@ -551,7 +571,6 @@ public class TradeCenterController {
         resultJson.setCode(1);
         resultJson.setMessage("查询成功");
         resultJson.setData(jsonObject);
-
         return resultJson;
     }
 
@@ -610,7 +629,6 @@ public class TradeCenterController {
         resultJson.setCode(1);
         resultJson.setMessage("查询成功");
         resultJson.setData(jsonObject);
-
         return resultJson;
     }
 
@@ -640,9 +658,7 @@ public class TradeCenterController {
         resultJson.setCode(1);
         resultJson.setMessage("查询成功");
         resultJson.setData(jsonObject);
-
         return resultJson;
-
     }
 
     /** 获取交易相关价格（基准信息） */
@@ -668,7 +684,6 @@ public class TradeCenterController {
         resultJson.setCode(1);
         resultJson.setMessage("查询成功");
         resultJson.setData(jsonObject);
-
         return resultJson;
 
     }
@@ -764,7 +779,7 @@ public class TradeCenterController {
     @RequestMapping(value = "/gainGraphData", method = RequestMethod.POST)
     public @ResponseBody JsonObjectBO gainGraphData(HttpServletRequest request) {
         JsonObjectBO resultJson = new JsonObjectBO();
-        List<TransactionGraphVO> transactionGraphList =  new ArrayList<TransactionGraphVO>();
+        List<TransactionGraphVO> transactionGraphList;
 
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
         String node = StringUtil.stringNullHandle(request.getParameter("node"));
@@ -775,7 +790,7 @@ public class TradeCenterController {
             return resultJson;
         }
 
-        int currencyId = 0;
+        int currencyId;
         currencyId = Integer.parseInt(currencyIdStr);
         transactionGraphList = transactionDealRedisService.gainGraphData(currencyId, node);
 
@@ -789,9 +804,4 @@ public class TradeCenterController {
         return resultJson;
     }
 
-    /** k线图参数获取 */
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public String test(HttpServletRequest request) {
-        return "page/web/test";
-    }
 }

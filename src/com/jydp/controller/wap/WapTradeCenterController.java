@@ -313,10 +313,17 @@ public class WapTradeCenterController {
         //判断是否需要验证交易密码以及验证交易密码
         int isPwd = userSession.getIsPwd();
         int payPasswordStatus = user.getPayPasswordStatus();
-        if (payPasswordStatus == 1 || (payPasswordStatus == 2 && isPwd == 1)) {
+        if (payPasswordStatus == 1 || (payPasswordStatus == 2 && isPwd == 1) || StringUtil.isNotNull(sellPwd)) {
             sellPwd = MD5Util.toMd5(sellPwd);
             boolean checkResult = userService.validateUserPay(user.getUserAccount(), sellPwd);
             if (!checkResult) {
+                //重置交易密码状态
+                userService.updateUserPayPasswordStatus(user.getUserId(), 1);
+
+                userSession.setIsPwd(1);
+                request.getSession().setAttribute("userSession", userSession);
+                response.put("userIdPwd", 1);
+
                 response.put("code", 4);
                 response.put("message", "支付密码错误");
                 return response;
@@ -468,10 +475,18 @@ public class WapTradeCenterController {
         //判断是否需要验证交易密码以及验证交易密码
         int isPwd = userSession.getIsPwd();
         int payPasswordStatus = user.getPayPasswordStatus();
-        if (payPasswordStatus == 1 || (payPasswordStatus == 2 && isPwd == 1)) {
+        if (payPasswordStatus == 1 || (payPasswordStatus == 2 && isPwd == 1) || StringUtil.isNotNull(buyPwd)) {
             buyPwd = MD5Util.toMd5(buyPwd);
             boolean checkResult = userService.validateUserPay(user.getUserAccount(), buyPwd);
             if (!checkResult) {
+                //重置交易密码状态
+                userService.updateUserPayPasswordStatus(user.getUserId(), 1);
+
+                userSession.setIsPwd(1);
+                request.getSession().setAttribute("userSession", userSession);
+
+                response.put("userIdPwd",1);
+
                 response.put("code", 4);
                 response.put("message", "支付密码错误");
                 return response;
