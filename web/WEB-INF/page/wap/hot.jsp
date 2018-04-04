@@ -63,7 +63,9 @@
         var date = new Date(addTime);
         var year = date.getFullYear();
         var month = date.getMonth() + 1;
+        month=month < 10 ? ('0' + month) : month;
         var day = date.getDate();
+        day=day < 10 ? ('0' + day) : day;
         var hours = date.getHours();
         hours=hours < 10 ? ('0' + hours) : hours;
         var minutes = date.getMinutes();
