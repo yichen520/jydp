@@ -105,6 +105,7 @@ public class WapForgetController {
 
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
         String password = StringUtil.stringNullHandle(request.getParameter("password"));
+        password = Base64Util.decode(password);
         String validateCode = StringUtil.stringNullHandle(request.getParameter("validateCode"));
         String phoneNumber = StringUtil.stringNullHandle(request.getParameter("phoneNumber"));
         String phoneAreaCode = StringUtil.stringNullHandle(request.getParameter("phoneAreaCode"));
