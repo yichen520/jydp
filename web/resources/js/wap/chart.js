@@ -362,7 +362,8 @@ var ChartParamsAndInit = {
                             load: function () {
                                 $('.wrapper ul').css('display', 'block');
                             }
-                        }
+                        },
+                        panning :true
                     },
                     exporting: {
                         enabled: false //用来设置是否显示‘打印’,'导出'等功能按钮，不设置时默认为显示
