@@ -486,7 +486,7 @@ public class WapTradeCenterController {
 
         //计算手续费及总价
         double buyFee = transactionCurrency.getBuyFee();
-        double sumPrice = NumberUtil.doubleUpFormat(BigDecimalUtil.mul(BigDecimalUtil.mul(buyNum, buyPrice), BigDecimalUtil.add(1, buyFee)), 6);
+        double sumPrice = NumberUtil.doubleUpFormat(BigDecimalUtil.mul(BigDecimalUtil.mul(buyNum, buyPrice), BigDecimalUtil.add(1, buyFee)), 8);
         if (user.getUserBalance() < sumPrice) {
             response.put("code", 5);
             response.put("message", "用户余额不足");
