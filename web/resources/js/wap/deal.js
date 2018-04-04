@@ -75,11 +75,6 @@ var ParamsAndInit = {
             num = num.toString();
             maxFractionDigits = parseInt(maxFractionDigits);
             if (num.indexOf(".") === -1) {
-              /*  if("0" == num){
-                    return num;
-                }else{
-                    return num +"万";
-                }*/
                 return num;
             }
             var numField = num.split(".");
@@ -92,11 +87,6 @@ var ParamsAndInit = {
             fractionDigits = fractionDigits.substring(0, maxFractionDigits);
             var numStr = integerDigits + "." + fractionDigits;
             return numStr;
-         /*   if("0" == numStr){
-                return numStr;
-            }else{
-                return numStr +"万";
-            }*/
         });
     },
     tabChange: function () {
@@ -135,7 +125,6 @@ var ParamsAndInit = {
                     return;
                 }
 
-
                 $('.closeAnthoer').css("height", bgHeight + "px");
                 $('.choseBz').css("height", bgHeight + "px");
                 $('.choseBzBox').css("height", '100%');
@@ -156,9 +145,6 @@ var ParamsAndInit = {
                     window.location.href= webpath + "/userWap/tradeCenter/show/" + currencyId
                 })
             })
-
-
-
             //加载数据
         });
         $('.closeBox').on('click', function () {
@@ -186,7 +172,6 @@ var ParamsAndInit = {
                         }
                     });
             }
-
         });
         $('.cancelSetting').on('click',function() {
             $('.cin').fadeOut();
@@ -697,7 +682,6 @@ var ParamsAndInit = {
                 $(".toCancleOrder").each(function () {
                     $(this).bind('click', ParamsAndInit.toCancel);
                 });
-
             },
             error: function () {
                 return;
@@ -1023,7 +1007,8 @@ $().ready(function () {
             ParamsAndInit.footInit();
         },
         error: function () {
-            openTips("服务器异常，请稍后再试！")
+            openTips("服务器异常，请稍后再试！");
+            return;
         }
     });
 });
