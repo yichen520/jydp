@@ -43,7 +43,7 @@
             <img src="<%=path%>/upload/image/notic_hotTopic.jpg" class="noticeImg" />
         {{/compare}}
         <div class="noticeInfo list-box">
-            <p class="noticeTitle title">【<span>话题</span>】{{{{noticeTitle}}}}</p>
+            <p class="noticeTitle title">【<span>话题</span>】{{{noticeTitle}}}</p>
             <p class="time date">{{addTimeConvert addTime}}</p>
         </div>
         <div class="clear"></div>
@@ -91,6 +91,7 @@
     var systemHotListData = ${requestScope.systemNoticeList};
     var noticefunc = Handlebars.compile($('#template').html());
     $('.content ul').html(noticefunc(systemHotListData));
+
     //加载更多
     var totalPageNumber = parseInt(${requestScope.totalPageNumber});
     if (totalPageNumber == 0 ||totalPageNumber == 1){
