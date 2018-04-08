@@ -482,6 +482,11 @@ var ParamsAndInit = {
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (data) {
+                if(data.code == 101){
+                    $("#bMaxNum").text("当前设置: 每笔交易都输入密码");
+                    $("#sMaxNum").text("当前设置: 每笔交易都输入密码");
+                    $("#payPasswordStatus").val(1);
+                }
                 if (data.code != 1) {
                     openTips(data.message);
                     return;
@@ -523,6 +528,11 @@ var ParamsAndInit = {
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (data) {
+                if(data.code == 101){
+                    $("#bMaxNum").text("当前设置: 每笔交易都输入密码");
+                    $("#sMaxNum").text("当前设置: 每笔交易都输入密码");
+                    $("#payPasswordStatus").val(1);
+                }
                 if (data.code != "1") {
                     openTips(data.message);
                     return;

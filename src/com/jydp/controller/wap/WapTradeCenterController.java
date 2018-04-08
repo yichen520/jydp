@@ -324,7 +324,7 @@ public class WapTradeCenterController {
                 request.getSession().setAttribute("userSession", userSession);
                 response.put("userIdPwd", 1);
 
-                response.put("code", 4);
+                response.put("code", 101);
                 response.put("message", "支付密码错误");
                 return response;
             }
@@ -487,7 +487,7 @@ public class WapTradeCenterController {
 
                 response.put("userIdPwd",1);
 
-                response.put("code", 4);
+                response.put("code", 101);
                 response.put("message", "支付密码错误");
                 return response;
             }
