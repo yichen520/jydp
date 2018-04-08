@@ -76,7 +76,6 @@ public class WapTradeCenterController {
     /**
      * 跳转到交易中心界面
      */
-    /*@RequestMapping(value = "/show", method = RequestMethod.POST )*/
     @RequestMapping(value = "/show/{currencyIdStr}")
     public String show(HttpServletRequest request, @PathVariable(value="currencyIdStr") String currencyIdStr) {
         currencyIdStr = StringUtil.stringNullHandle(currencyIdStr);
@@ -314,11 +313,18 @@ public class WapTradeCenterController {
         //判断是否需要验证交易密码以及验证交易密码
         int isPwd = userSession.getIsPwd();
         int payPasswordStatus = user.getPayPasswordStatus();
-        if (payPasswordStatus == 1 || (payPasswordStatus == 2 && isPwd == 1)) {
+        if (payPasswordStatus == 1 || (payPasswordStatus == 2 && isPwd == 1) || StringUtil.isNotNull(sellPwd)) {
             sellPwd = MD5Util.toMd5(sellPwd);
             boolean checkResult = userService.validateUserPay(user.getUserAccount(), sellPwd);
             if (!checkResult) {
-                response.put("code", 4);
+                //重置交易密码状态
+                userService.updateUserPayPasswordStatus(user.getUserId(), 1);
+
+                userSession.setIsPwd(1);
+                request.getSession().setAttribute("userSession", userSession);
+                response.put("userIdPwd", 1);
+
+                response.put("code", 101);
                 response.put("message", "支付密码错误");
                 return response;
             }
@@ -469,11 +475,19 @@ public class WapTradeCenterController {
         //判断是否需要验证交易密码以及验证交易密码
         int isPwd = userSession.getIsPwd();
         int payPasswordStatus = user.getPayPasswordStatus();
-        if (payPasswordStatus == 1 || (payPasswordStatus == 2 && isPwd == 1)) {
+        if (payPasswordStatus == 1 || (payPasswordStatus == 2 && isPwd == 1) || StringUtil.isNotNull(buyPwd)) {
             buyPwd = MD5Util.toMd5(buyPwd);
             boolean checkResult = userService.validateUserPay(user.getUserAccount(), buyPwd);
             if (!checkResult) {
-                response.put("code", 4);
+                //重置交易密码状态
+                userService.updateUserPayPasswordStatus(user.getUserId(), 1);
+
+                userSession.setIsPwd(1);
+                request.getSession().setAttribute("userSession", userSession);
+
+                response.put("userIdPwd",1);
+
+                response.put("code", 101);
                 response.put("message", "支付密码错误");
                 return response;
             }
@@ -487,7 +501,7 @@ public class WapTradeCenterController {
 
         //计算手续费及总价
         double buyFee = transactionCurrency.getBuyFee();
-        double sumPrice = NumberUtil.doubleUpFormat(BigDecimalUtil.mul(BigDecimalUtil.mul(buyNum, buyPrice), BigDecimalUtil.add(1, buyFee)), 6);
+        double sumPrice = NumberUtil.doubleUpFormat(BigDecimalUtil.mul(BigDecimalUtil.mul(buyNum, buyPrice), BigDecimalUtil.add(1, buyFee)), 8);
         if (user.getUserBalance() < sumPrice) {
             response.put("code", 5);
             response.put("message", "用户余额不足");
@@ -617,7 +631,7 @@ public class WapTradeCenterController {
             }
         }
         if (transactionPendOrderBuyList == null || transactionPendOrderBuyList.isEmpty()) {
-            transactionPendOrderBuyList = transactionPendOrderService.listLatestRecords(1, transactionCurrency.getCurrencyId(), 15);
+            transactionPendOrderBuyList = transactionPendOrderService.listLatestRecords(1, transactionCurrency.getCurrencyId(), 5);
         }
         List<TransactionPendOrderDTO> transactionPendOrderSellList = null;
         Object transactionPendOrderSellListStr = redisService.getValue(RedisKeyConfig.SELL_KEY + transactionCurrency.getCurrencyId());
@@ -789,6 +803,9 @@ public class WapTradeCenterController {
         return "page/wap/tradeChart";
     }
 
+    /**
+     * 获取表单页面数据信息
+     */
     @RequestMapping("/getChartPageInfo")
     public @ResponseBody JSONObject getChartPageInfo(HttpServletRequest request) {
         JSONObject response = new JSONObject();

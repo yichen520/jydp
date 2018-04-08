@@ -115,7 +115,7 @@
     <input type="hidden" id="userId" name="userId"/>
     <input type="hidden" id="userAccountIde" name="userAccount"/>
 </form>
-<div class="forgetFoot">盛临九洲版权所有</div>
+<div class="forgetFoot">盛源交易所版权所有</div>
 
 <script type="text/javascript">
     $(function(){

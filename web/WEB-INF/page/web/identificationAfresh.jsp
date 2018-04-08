@@ -84,7 +84,7 @@
 </form>
 
 
-<div class="forgetFoot">盛临九洲版权所有</div>
+<div class="forgetFoot">盛源交易所版权所有</div>
 
 <script type="text/javascript" src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" src="<%=path %>/resources/js/loadPageWeb.js"></script>

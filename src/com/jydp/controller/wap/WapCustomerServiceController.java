@@ -26,7 +26,6 @@ import java.util.List;
 @RequestMapping("/userWap/wapCustomerService")
 @Scope(value = "prototype")
 public class WapCustomerServiceController {
-    /**意见反馈**/
     /**  意见反馈 */
     @Autowired
     private IUserFeedbackService userFeedbackService;
@@ -97,6 +96,7 @@ public class WapCustomerServiceController {
         response.put("message", "获取成功");
         return  response;
     }
+
     /**  意见反馈 */
     @RequestMapping("/feedback.htm")
     public @ResponseBody JSONObject feedback(HttpServletRequest request){

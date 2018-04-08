@@ -6,7 +6,7 @@
 <mapper namespace="com.jydp.dao.impl.transaction.TranactionDealRedisDaoImpl">
 
 	<select id="TransactionDealRedis_listTransactionDealRedis" parameterType="java.util.Map" resultType="TransactionDealRedisDO">
-		SELECT id, orderNo, paymentType, currencyId, transactionPrice, currencyNumber, currencyTotalPrice, addTime
+		SELECT paymentType, transactionPrice, currencyNumber, addTime
 	  	FROM transaction_deal_redis_tab
 	  	WHERE currencyId = #{currencyId}
 			AND addTime <![CDATA[ <= ]]> #{addTime}

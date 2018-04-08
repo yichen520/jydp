@@ -184,8 +184,7 @@
     </update>
 
     <select id="TransactionCurrency_listTransactionCurrencyAll" resultType="TransactionCurrencyDO">
-        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, guidancePrice,
-            paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
+        SELECT  currencyId, currencyShortName, currencyName, upStatus, upTime
         FROM transaction_currency_tab
     </select>
 
@@ -275,4 +274,9 @@
         FROM transaction_currency_tab
     </select>
 
+    <select id="TransactionCurrency_getCurrencyUpstatusByCurrencyId" parameterType="int" resultType="int">
+        SELECT upStatus
+        FROM transaction_currency_tab
+        WHERE currencyId = #{currencyId}
+    </select>
 </mapper>

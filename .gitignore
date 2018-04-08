@@ -7,3 +7,8 @@
 *.iml
 out
 gen
+*.xml
+*.properties
+/resource/jdbc.properties
+/spring/spring-session-redis.xml
+
