@@ -50,7 +50,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	            <input type="text" value="登&nbsp;录" class="loginBtn" onfocus="this.blur()" onclick="loginSubmit();"/>
 			</form>
 		</div>
-		<div class="loginFooter">盛临九洲版权所有</div>
+        <div class="loginFooter">盛源交易所版权所有</div>
     </div>
 </div>
 

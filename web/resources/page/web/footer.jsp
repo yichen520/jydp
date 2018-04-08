@@ -7,6 +7,6 @@
 </head>
 
 <body>
-<div class="footer">盛临九洲版权所有</div>
+<div class="footer">盛源交易所版权所有</div>
 </body>
 </html>
