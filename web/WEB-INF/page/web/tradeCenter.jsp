@@ -522,6 +522,7 @@
                 }else if(result.code == 101){
                     $("#payPasswordStatus").val(1);
                     document.getElementById("everyTrade").checked = true;
+                    $("#userIsPwd").val(1);
                     var newTips = "每笔交易都输入交易密码";
                     $("#buyPayStatus1").html(newTips);
                     $("#sellPayStatus1").html(newTips);
@@ -580,6 +581,7 @@
                 }else if(result.code == 101){
                     $("#payPasswordStatus").val(1);
                     document.getElementById("everyTrade").checked = true;
+                    $("#userIsPwd").val(1);
                     var newTips = "每笔交易都输入交易密码";
                     $("#buyPayStatus1").html(newTips);
                     $("#sellPayStatus1").html(newTips);

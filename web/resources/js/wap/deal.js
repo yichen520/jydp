@@ -486,6 +486,7 @@ var ParamsAndInit = {
                     $("#bMaxNum").text("当前设置: 每笔交易都输入密码");
                     $("#sMaxNum").text("当前设置: 每笔交易都输入密码");
                     $("#payPasswordStatus").val(1);
+                    $("#userIsPwd").val(1);
                 }
                 if (data.code != 1) {
                     openTips(data.message);
@@ -532,6 +533,7 @@ var ParamsAndInit = {
                     $("#bMaxNum").text("当前设置: 每笔交易都输入密码");
                     $("#sMaxNum").text("当前设置: 每笔交易都输入密码");
                     $("#payPasswordStatus").val(1);
+                    $("#userIsPwd").val(1);
                 }
                 if (data.code != "1") {
                     openTips(data.message);
