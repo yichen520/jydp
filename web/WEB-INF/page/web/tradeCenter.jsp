@@ -167,10 +167,10 @@
                         <img src="<%=path %>/resources/image/web/setting.png" class="setting" />
                     </span>
                     <c:if test="${payPasswordStatus == 2}" >
-                        <span class="settingTips">当前设置：<span id="sellPayStatus2">每次登录只输入一次交易密码</span></span>
+                        <span class="settingTips" id="settingTips">当前设置：<span id="sellPayStatus2">每次登录只输入一次交易密码</span></span>
                     </c:if>
                     <c:if test="${payPasswordStatus == 1}" >
-                        <span class="settingTips">当前设置：<span id="sellPayStatus1">每笔交易都输入交易密码</span></span>
+                        <span class="settingTips" id="settingTips">当前设置：<span id="sellPayStatus1">每笔交易都输入交易密码</span></span>
                     </c:if>
                 </p>
                 <p class="buyInput">
@@ -494,7 +494,9 @@
         $(".mask").fadeOut("fast");
         $(popObj).fadeOut("fast");
 
-        buyPwd = encode64(buyPwd);
+        if(buyPwd != '' && buyPwd != null){
+            buyPwd = encode64(buyPwd);
+        }
 
         $.ajax({
             url: '<%=path%>' + "/userWeb/tradeCenter/buy.htm", //方法路径URL
@@ -517,6 +519,14 @@
                         var isPwd = data.userIsPwd;
                         $("#userIsPwd").val(isPwd);
                     }
+                }else if(result.code == 101){
+                    $("#payPasswordStatus").val(1);
+                    document.getElementById("everyTrade").checked = true;
+                    var newTips = "每笔交易都输入交易密码";
+                    $("#buyPayStatus1").html(newTips);
+                    $("#sellPayStatus1").html(newTips);
+                    $("#buyPayStatus2").html(newTips);
+                    $("#sellPayStatus2").html(newTips);
                 }
                 resultBoo = false;
             }, error: function () {
@@ -542,7 +552,9 @@
         $(".mask").fadeOut("fast");
         $(popObj).fadeOut("fast");
 
-        sellPwd = encode64(sellPwd);
+        if(sellPwd != '' && sellPwd != null){
+            sellPwd = encode64(sellPwd);
+        }
 
         $.ajax({
             url: '<%=path%>' + "/userWeb/tradeCenter/sell.htm", //方法路径URL
@@ -565,6 +577,14 @@
                         var isPwd = data.userIsPwd;
                         $("#userIsPwd").val(isPwd);
                     }
+                }else if(result.code == 101){
+                    $("#payPasswordStatus").val(1);
+                    document.getElementById("everyTrade").checked = true;
+                    var newTips = "每笔交易都输入交易密码";
+                    $("#buyPayStatus1").html(newTips);
+                    $("#sellPayStatus1").html(newTips);
+                    $("#buyPayStatus2").html(newTips);
+                    $("#sellPayStatus2").html(newTips);
                 }
                 resultBoo = false;
             }, error: function () {

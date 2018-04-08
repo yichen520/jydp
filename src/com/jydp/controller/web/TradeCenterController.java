@@ -290,7 +290,7 @@ public class TradeCenterController {
                 data.put("userIdPwd",1);
                 resultJson.setData(data);
 
-                resultJson.setCode(4);
+                resultJson.setCode(101);
                 resultJson.setMessage("支付密码错误");
                 return resultJson;
             }
@@ -475,7 +475,7 @@ public class TradeCenterController {
                 data.put("userIdPwd",1);
                 resultJson.setData(data);
 
-                resultJson.setCode(4);
+                resultJson.setCode(101);
                 resultJson.setMessage("支付密码错误");
                 return resultJson;
             }
