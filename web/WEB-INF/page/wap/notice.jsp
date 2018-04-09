@@ -23,7 +23,7 @@
     </header>
     <!-- 内容区域 -->
     <div class="content">
-        <div hidden="hidden" id="queryPageNumber" name="pageNumber"></div>
+        <div hidden="hidden" id="queryPageNumber" name="pageNumber">0</div>
         <ul>
         </ul>
     </div>
@@ -88,8 +88,11 @@
 
     //公告数据填充
     var systemNoticeListData = ${requestScope.systemNoticeList};
+    console.log(systemNoticeListData);
     var noticefunc = Handlebars.compile($('#template').html());
+    console.log(noticefunc);
     $('.content ul').html(noticefunc(systemNoticeListData));
+
 
     var totalPageNumber = parseInt(${requestScope.totalPageNumber});
     if (totalPageNumber == 0 ||totalPageNumber == 1){
@@ -97,7 +100,7 @@
     }
     //更多
     function pageNext() {
-        var pageNumber = $("#queryPageNumber").html();
+        var pageNumber = parseInt($("#queryPageNumber").html());
         var totalPageNumber = parseInt(${requestScope.totalPageNumber});
         if(pageNumber < totalPageNumber - 1){
             pageNumber = pageNumber + 1;
@@ -113,7 +116,7 @@
                                 var transactionfunc = Handlebars.compile($('#template').html());
                                 $('.content ul').append(transactionfunc(noticeList));
                                 $('#queryPageNumber').html(result.pageNumber);
-                                if (noticeList.length < 10){
+                                if (pageNumber == totalPageNumber - 1 || noticeList.length < 10 ){
                                     $(".more").remove();
                                 }
                             }

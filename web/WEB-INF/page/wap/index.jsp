@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="<%=path %>/resources/css/wap/common.css">
     <link rel="stylesheet" href="<%=path %>/resources/css/wap/index.css">
     <link rel="stylesheet" href="<%=path %>/resources/css/wap/swiper-3.4.2.min.css">
-    <%--<link rel="stylesheet" href="<%=path %>/resources/css/wap/deal.css">--%>
     <title>首页</title>
 </head>
 <body>
@@ -33,10 +32,8 @@
 <div id="wrapper">
     <!-- 广告轮播图 -->
     <div class="top">
-        <div class="swiper-container">
-            <div class="swiper-wrapper">
-
-            </div>
+        <div class="swiper-container banner">
+            <div class="swiper-wrapper"></div>
             <div class="swiper-pagination"></div>
         </div>
     </div>
@@ -49,6 +46,7 @@
         <div class="more"><a href="<%=path %>/userWap/wapSystemNotice/show">更多</a></div>
         <div class="clear"></div>
     </div>
+
     <!-- 列表 -->
     <div class="content-list"></div>
     <div class="str"></div>
@@ -59,16 +57,15 @@
             <p>合作伙伴</p>
             <div class="clear"></div>
         </div>
-        <div class="sellerContent">
-        </div>
+        <div class="sellerContent"></div>
     </div>
 </div>
 <!-- loading图 -->
 <div id="loading">
     <i></i>
 </div>
-<!-- 选择币种 -->
 
+<!-- 选择币种 -->
     <div class="choseBzBox">
         <div class="choseBzBox-title">
             <p>选择币种</p>
@@ -80,8 +77,6 @@
             </ul>
         </div>
     </div>
-
-
 
 <!-- 底部tabBar -->
 <footer>

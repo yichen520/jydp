@@ -99,7 +99,7 @@
     }
     //更多
     function pageNext() {
-        var pageNumber = $("#queryPageNumber").html();
+        var pageNumber = parseInt($("#queryPageNumber").html());
         var totalPageNumber = parseInt(${requestScope.totalPageNumber});
         if(pageNumber < totalPageNumber - 1){
             pageNumber = pageNumber + 1;
@@ -115,7 +115,7 @@
                             var transactionfunc = Handlebars.compile($('#template').html());
                             $('.content ul').append(transactionfunc(noticeList));
                             $('#queryPageNumber').html(result.pageNumber);
-                            if (noticeList.length < 10){
+                            if (pageNumber == totalPageNumber - 1 || noticeList.length < 10){
                                 $(".more").remove();
                             }
                         }

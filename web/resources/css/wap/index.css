@@ -235,6 +235,7 @@ header img{
     /* height: 100%; */
     background: #fff;
     z-index: 100;
+    overflow-y: scroll;
 }
 .choseBzBox-title{
     width: 100%;
@@ -265,14 +266,14 @@ header img{
 }
 .choseBzBox-content ul li{
     display: flex;
-    padding-bottom: 0.4rem;
+    height: 0.75rem;
+    line-height: 0.75rem;
 }
 .choseBzBox-content ul li p{
     flex: 1;
     font-size: 0.26rem;
     font-weight: 600;
     text-align: right;
-    width: 33%;
 }
 .zhang{
     color: #e83a33
