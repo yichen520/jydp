@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
  * @author yk
  */
 @Service("otcTransactionUserDealService")
-public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDealService {
+public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDealService{
 
     @Autowired
     private IOtcTransactionUserDealDao otcTransactionUserDealDao;
