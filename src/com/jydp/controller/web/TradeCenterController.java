@@ -330,8 +330,10 @@ public class TradeCenterController {
         }
 
         //匹配交易
-        resultJson = tradeCommonService.trade(transactionPendOrder);
-
+       // resultJson = tradeCommonService.trade(transactionPendOrder);
+        RabbitUtils.trdeOrder(transactionPendOrder);//放入队列
+        resultJson.setCode(1);
+        resultJson.setMessage("挂单成功");
         return resultJson;
 
     }
@@ -501,8 +503,10 @@ public class TradeCenterController {
         }
 
         //匹配交易
-        resultJson = tradeCommonService.trade(transactionPendOrder);
-
+      //  resultJson = tradeCommonService.trade(transactionPendOrder);
+        RabbitUtils.trdeOrder(transactionPendOrder);//放入队列
+        resultJson.setCode(1);
+        resultJson.setMessage("挂单成功");
         return resultJson;
     }
 
