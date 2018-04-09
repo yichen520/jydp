@@ -29,7 +29,7 @@ public interface ITransactionUserDealService {
      * @param pageSize  每页条数
      * @return 查询成功：返回用户成交记录；查询失败：返回null
      */
-    List<TransactionUserDealVO> getTransactionUserDeallistForWap(int userId, int pageNumber, int pageSize);
+    List<TransactionUserDealVO> getTransactionUserDealListForWap(int userId, int pageNumber, int pageSize);
 
     /**
      * 新增成交记录

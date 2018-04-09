@@ -105,9 +105,7 @@ public class WapDealRecordController {
             responseJson.setData(jsonObject);
             return responseJson;
         }
-
-
-       int totalNumber = transactionUserDealService.countUserDealForWap(userId);
+        int totalNumber = transactionUserDealService.countUserDealForWap(userId);
 
         //总页数
         int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
@@ -122,7 +120,7 @@ public class WapDealRecordController {
 
         List<TransactionUserDealVO> transactionUserDealList = null;
         if (totalNumber > 0) {
-            transactionUserDealList = transactionUserDealService.getTransactionUserDeallistForWap(userId, pageNumber, pageSize);
+            transactionUserDealList = transactionUserDealService.getTransactionUserDealListForWap(userId, pageNumber, pageSize);
         }
 
         jsonObject.put("dealRecordList", transactionUserDealList);

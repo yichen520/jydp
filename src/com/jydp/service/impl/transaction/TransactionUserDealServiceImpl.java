@@ -60,7 +60,7 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
      * @return 查询成功：返回用户成交记录；查询失败：返回null
      */
     @Override
-    public List<TransactionUserDealVO> getTransactionUserDeallistForWap(int userId, int pageNumber, int pageSize) {
+    public List<TransactionUserDealVO> getTransactionUserDealListForWap(int userId, int pageNumber, int pageSize) {
         List<TransactionUserDealVO>  transactionUserDealList = transactionUserDealDao.getTransactionUserDeallist(userId, pageNumber, pageSize);
 
         for (TransactionUserDealVO userDeal: transactionUserDealList) {
@@ -72,7 +72,6 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
             BigDecimal currencyTotalPrice = new BigDecimal(0);
             BigDecimal actualPriceForWap = new BigDecimal(0);
             if (userDeal.getPaymentType() == 1) {
-
                 currencyTotalPrice = new BigDecimal(userDeal.getCurrencyTotalPrice()+"");
                 actualPriceForWap = currencyTotalPrice.add(feeForWap);
 
@@ -80,8 +79,11 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
                 currencyTotalPrice = new BigDecimal(userDeal.getCurrencyTotalPrice()+"");
                 actualPriceForWap =currencyTotalPrice.subtract(feeForWap);
             }
+
+            //保留有效位、去除小数后多余的零、转String
             userDeal.setFeeForWap(feeForWap.setScale(8,BigDecimal.ROUND_UP).stripTrailingZeros().toPlainString());
-            userDeal.setActualPriceForWap(actualPriceForWap.setScale(6,BigDecimal.ROUND_UP).stripTrailingZeros().toPlainString());
+            //使用向"最接近"数字舍入
+            userDeal.setActualPriceForWap(actualPriceForWap.setScale(6,BigDecimal.ROUND_HALF_EVEN).stripTrailingZeros().toPlainString());
         }
         return transactionUserDealList;
     }
@@ -239,8 +241,11 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
                 currencyTotalPrice = new BigDecimal(userDeal.getCurrencyTotalPrice()+"");
                 actualPriceForWap =currencyTotalPrice.subtract(feeForWap);
             }
+
+            //保留有效位 去除小数后多余的零 转String
             userDeal.setFeeForWap(feeForWap.setScale(8, BigDecimal.ROUND_UP).stripTrailingZeros().toPlainString());
-            userDeal.setActualPriceForWap(actualPriceForWap.setScale(6,BigDecimal.ROUND_UP).stripTrailingZeros().toPlainString());
+            //使用向"最接近"数字舍入
+            userDeal.setActualPriceForWap(actualPriceForWap.setScale(6,BigDecimal.ROUND_HALF_EVEN).stripTrailingZeros().toPlainString());
         }
 
         return transactionUserDealVOS;
