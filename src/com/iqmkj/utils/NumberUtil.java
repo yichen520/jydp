@@ -113,6 +113,6 @@ public class NumberUtil {
     public static String doubleStringFormat(double doubleValue, int accuracy){
         BigDecimal bigDecimal = new BigDecimal(doubleValue + "");
         BigDecimal resultValue = bigDecimal.setScale(accuracy, BigDecimal.ROUND_DOWN);
-        return resultValue.toString();
+        return resultValue.stripTrailingZeros().toPlainString();
     }
 }
