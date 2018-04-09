@@ -1,6 +1,8 @@
 package com.jydp.service.impl.otc;
 
+import com.jydp.dao.IOtcBackerHandleUserCoinDao;
 import com.jydp.service.IOtcBackerHandleUserCoinService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -9,4 +11,7 @@ import org.springframework.stereotype.Service;
  */
 @Service("otcBackerHandleUserCoinService")
 public class OtcBackerHandleUserCoinServiceImpl implements IOtcBackerHandleUserCoinService{
+
+    @Autowired
+    private IOtcBackerHandleUserCoinDao otcBackerHandleUserCoinDao;
 }
