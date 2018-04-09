@@ -7,6 +7,7 @@ $(function () {
         var mySwiper = new Swiper('.banner', {
             autoplay: 1500,//可选选项，自动滑动
             speed: 200,
+            autoplayDisableOnInteraction : false,
             pagination: '.swiper-pagination',
         })
     };
