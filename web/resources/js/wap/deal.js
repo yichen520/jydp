@@ -1,5 +1,5 @@
 var ParamsAndInit = {
-    registerHandler : function () {
+    registerHandler: function () {
         //方法注册函数加载 数字 分隔位
         Handlebars.registerHelper('formatNumber', function (num, maxFractionDigits, options) {
             if (isNaN(num) || isNaN(maxFractionDigits)) {
@@ -27,7 +27,7 @@ var ParamsAndInit = {
         Handlebars.registerHelper("eachFortransactionCurrencyList", function (transactionUserDealList, standardParameter, webAppPath, options) {
             var out = "<ul>";
             for (var i = 0; i < transactionUserDealList.length; i++) {
-                myHref = "<a href='" + webAppPath + "/userWap/tradeCenter/show/"+ transactionUserDealList[i].currencyId + ">";
+                myHref = "<a href='" + webAppPath + "/userWap/tradeCenter/show/" + transactionUserDealList[i].currencyId + ">";
                 out = out + '<li>' +
                     '<p>' + myHref + transactionUserDealList[i].currencyName + "(" + transactionUserDealList[i].currencyShortName + ")" + "</a></p>"
                     + "<p class='zhang'>" + transactionUserDealList[i].latestPrice + "</p>"
@@ -50,15 +50,15 @@ var ParamsAndInit = {
             return "未知类型";
         });
         Handlebars.registerHelper("isLogin", function (userSession, webAppPath) {
-            if(userSession == undefined || userSession == null || userSession == ""){
+            if (userSession == undefined || userSession == null || userSession == "") {
                 return "<a href='" + webAppPath + "/userWap/userLogin/show'>登录</a>";
-            }else {
+            } else {
                 return "";
             }
         });
         Handlebars.registerHelper("eachForTransactionPendOrderSellList", function (transactionPendOrderSellList) {
             var newChildSell = "";
-            for(var i = transactionPendOrderSellList.length - 1; i >= 0; i--){
+            for (var i = transactionPendOrderSellList.length - 1; i >= 0; i--) {
                 newChildSell += '<span class="list-content">' +
                     '<span>卖' + (i + 1) + '</span>' +
                     '<span>' + ParamsAndInit.formatNumber(transactionPendOrderSellList[i].pendingPrice, 2) + '</span>' +
@@ -119,8 +119,8 @@ var ParamsAndInit = {
         var webAppPath = $("#webAppPath").val();
         var bgHeight = $(document).height();
         $('.open').on('click', function () {
-            $.get( path + "/userWap/tradeCenter/currencyInfo",function (result) {
-                if (result.code!=0) {
+            $.get(path + "/userWap/tradeCenter/currencyInfo", function (result) {
+                if (result.code != 0) {
                     openTips(result.message)
                     return;
                 }
@@ -141,8 +141,8 @@ var ParamsAndInit = {
                 $('#currencyList').html(myTemplate(result.transactionUserDealList));
 
                 $('.choseBzBox-content ul').on('click', 'li', function () {
-                    var currencyId=$(this).find("p").eq(0).text();
-                    window.location.href= webpath + "/userWap/tradeCenter/show/" + currencyId
+                    var currencyId = $(this).find("p").eq(0).text();
+                    window.location.href = webpath + "/userWap/tradeCenter/show/" + currencyId
                 })
             })
             //加载数据
@@ -158,33 +158,33 @@ var ParamsAndInit = {
             $('.choseBzBox').animate({left: '-100%'}, "500");
         });
     },
-    seeting:function () {
+    seeting: function () {
         var bgHeight = $(document).height();
-        $('.cin').css("height",bgHeight +"px");
-        $('.setting').on('click',function() {
+        $('.cin').css("height", bgHeight + "px");
+        $('.setting').on('click', function () {
             $('.cin').fadeIn();
             //回显
             var payPasswordStatus = $("#payPasswordStatus").val();
-            if( payPasswordStatus !=undefined && payPasswordStatus!= "" && !isNaN(payPasswordStatus) ){
-                    $("input[name='remember']").each(function () {
-                        if(payPasswordStatus == $(this).val()){
-                            $(this).get(0).checked=true;
-                        }
-                    });
+            if (payPasswordStatus != undefined && payPasswordStatus != "" && !isNaN(payPasswordStatus)) {
+                $("input[name='remember']").each(function () {
+                    if (payPasswordStatus == $(this).val()) {
+                        $(this).get(0).checked = true;
+                    }
+                });
             }
         });
-        $('.cancelSetting').on('click',function() {
+        $('.cancelSetting').on('click', function () {
             $('.cin').fadeOut();
             $("input[name='remember']").each(function () {
-                $(this).attr("checked",false)
+                $(this).attr("checked", false)
             });
         });
     },
-    matchPassword:function () {
+    matchPassword: function () {
         var matchStr = /[^a-zA-Z0-9]/g;
         var value = $(this).val();
         if (matchStr.test(value)) {
-            $(this).get(0).value=$(this).get(0).value.replace(/[^a-zA-Z0-9]/g,'');
+            $(this).get(0).value = $(this).get(0).value.replace(/[^a-zA-Z0-9]/g, '');
         }
     },
     matchUtil: function (e) {
@@ -298,7 +298,7 @@ var ParamsAndInit = {
                 var number = parseFloat((Number(sellPrice.replace(".", "")) * Number(currencyNumber.replace(".", "")) / Math.pow(10, z)).toFixed(8));
                 //格式化
                 number = ParamsAndInit.mulMaxNumber(number);
-                $("#sellMax").html("最大可获得: "  + number + " XT");
+                $("#sellMax").html("最大可获得: " + number + " XT");
             }
         } else {
             //价格不正确
@@ -334,16 +334,16 @@ var ParamsAndInit = {
         }
         return prefix + suffix;
     },
-    mask:function () {
+    mask: function () {
         var bgHeight = $(document).height();
-        $('.mask').css("height",bgHeight +"px");
-        $('.maskSell').css("height",bgHeight +"px");
+        $('.mask').css("height", bgHeight + "px");
+        $('.maskSell').css("height", bgHeight + "px");
 
-        $('.cancelmask').on('click',function() {
+        $('.cancelmask').on('click', function () {
             $('.mask').fadeOut();
         });
 
-        $('.cancelmaskSell').on('click',function() {
+        $('.cancelmaskSell').on('click', function () {
             $('.maskSell').fadeOut();
         });
     },
@@ -358,6 +358,9 @@ var ParamsAndInit = {
         $("#buyPriceConfirm").val(buyPrice);
         $("#buyNumConfirm").val(buyNum);
         $("#buyPwdConfirm").val(buyPwd);
+
+        var buyPriceStr = ParamsAndInit.priceAndNumFormate(buyPrice);
+        var buyNumStr = ParamsAndInit.priceAndNumFormate(buyNum);
 
         $("#buyPrice").val("");
         $("#buyNum").val("");
@@ -397,8 +400,8 @@ var ParamsAndInit = {
         if (isNaN(buyPrice) || isNaN(buyNum)) {
             openTips("交易价格和购买数量必须是数字");
         }
-        $("#buyPriceTips").html(buyPrice + " XT");
-        $("#buyNumTips").html(buyNum);
+        $("#buyPriceTips").html(buyPriceStr + " XT");
+        $("#buyNumTips").html(buyNumStr);
         $("#buySumTips").html(buyTotal + " XT");
         $('.mask').fadeIn();
     },
@@ -413,6 +416,9 @@ var ParamsAndInit = {
         $("#sellPriceConfirm").val(sellPrice);
         $("#sellNumConfirm").val(sellNum);
         $("#sellPwdConfirm").val(sellPwd);
+
+        var sellPriceStr = ParamsAndInit.priceAndNumFormate(sellPrice);
+        var sellNumStr = ParamsAndInit.priceAndNumFormate(sellNum);
 
         $("#sellPrice").val("");
         $("#sellNum").val("");
@@ -453,10 +459,22 @@ var ParamsAndInit = {
             openTips("出售数量和价格必须都是数字");
             retrurn;
         }
-        $("#sellPriceTips").html(sellPrice + " XT");
-        $("#sellNumTips").html(sellNum);
+        $("#sellPriceTips").html(sellPriceStr + " XT");
+        $("#sellNumTips").html(sellNumStr);
         $("#sellSumTips").html(sellTotal + " XT");
         $('.maskSell').fadeIn();
+    },
+    priceAndNumFormate: function (str) {
+        if (isNaN(str) || null == str || "" == str) {
+            return;
+        }
+        if (str.indexOf(".") == -1) {
+            return Number(str);
+        } else {
+            var fields = str.split(".");
+            fields[0] = new Number(fields[0]);
+            return fields.join(".");
+        }
     },
     sellHandle: function () {
         $('.maskSell').hide();
@@ -482,7 +500,7 @@ var ParamsAndInit = {
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (data) {
-                if(data.code == 101){
+                if (data.code == 101) {
                     $("#bMaxNum").text("当前设置: 每笔交易都输入密码");
                     $("#sMaxNum").text("当前设置: 每笔交易都输入密码");
                     $("#payPasswordStatus").val(1);
@@ -529,7 +547,7 @@ var ParamsAndInit = {
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (data) {
-                if(data.code == 101){
+                if (data.code == 101) {
                     $("#bMaxNum").text("当前设置: 每笔交易都输入密码");
                     $("#sMaxNum").text("当前设置: 每笔交易都输入密码");
                     $("#payPasswordStatus").val(1);
@@ -552,24 +570,24 @@ var ParamsAndInit = {
     },
     toCancel: function () {
         var bgHeight = $(document).height();
-        $('.bg').css("height",bgHeight +"px");
-        $('.showBox').css("display","block");
-        $('.showBox').animate({opacity:'1'},"1000");
+        $('.bg').css("height", bgHeight + "px");
+        $('.showBox').css("display", "block");
+        $('.showBox').animate({opacity: '1'}, "1000");
 
         var orderNum = $(this).children("input:hidden").val();
         $("#pendOrderNoCancle").val(orderNum);
     },
     cancleOrder: function () {
         //点击确定  撤销弹窗应该瞬间消失
-        $('.showBox').css('opacity','0');
-        $('.showBox').css('display','none');
+        $('.showBox').css('opacity', '0');
+        $('.showBox').css('display', 'none');
 
         var pendOrderNo = $("#pendOrderNoCancle").val();
         var webAppPath = $("#webAppPath").val();
         var currencyId = $("#cucyId").val();
         if (pendOrderNo === undefined || pendOrderNo === null || pendOrderNo == "") {
             openTips("单号错误");
-            $('.bg').css("height","0");
+            $('.bg').css("height", "0");
             return;
         }
 
@@ -585,7 +603,7 @@ var ParamsAndInit = {
             success: function (data) {
                 if (data.code != "0") {
                     openTips(data.message);
-                    $('.bg').css("height","0");
+                    $('.bg').css("height", "0");
                     return;
                 }
                 //如果cancel成功
@@ -595,8 +613,8 @@ var ParamsAndInit = {
             },
             error: function () {
                 openTips("数据加载出错，请稍候重试");
-                $('.bg').css("height","0");
-                return ;
+                $('.bg').css("height", "0");
+                return;
             }
         });
     },
@@ -605,12 +623,12 @@ var ParamsAndInit = {
         var currencyIdStr = $("#currencyId").val();
         if (undefined == currencyIdStr || currencyIdStr == null || currencyIdStr == "") {
             openTips("页面数据错误，请重新刷新页面");
-            $('.bg').css("height","0");
+            $('.bg').css("height", "0");
             return;
         }
         var userSession = $("#userSession").val();
         if (userSession == undefined || userSession == null || userSession == "") {
-            $('.bg').css("height","0");
+            $('.bg').css("height", "0");
             return;
         }
         $.ajax({
@@ -623,7 +641,7 @@ var ParamsAndInit = {
             },
             success: function (data) {
                 if (data.code != 0) {
-                    $('.bg').css("height","0");
+                    $('.bg').css("height", "0");
                     return;
                 }
                 //删除元素 新增委托数量
@@ -631,23 +649,23 @@ var ParamsAndInit = {
                 data = data.transactionPendOrderList;
                 var str = "";
                 for (i in data) {
-                    var paymentType =  data[i].paymentType == 1 ? "<span class='red'>买入</span>" : "<span class='green'>卖出</span>"
+                    var paymentType = data[i].paymentType == 1 ? "<span class='red'>买入</span>" : "<span class='green'>卖出</span>"
                     str += "<li>"
-                        + "<p>" + paymentType +"</p>"
+                        + "<p>" + paymentType + "</p>"
                         + "<p>" + ParamsAndInit.formatNumber(data[i].pendingPrice, 2) + "</p>"
-                        + "<p>" + ParamsAndInit.formatNumber(data[i].pendingNumber, 4) +"</p>"
-                        +"<p>" +  ParamsAndInit.formatNumber(data[i].dealNumber, 4) + "</p>"
-                        +"<p class='toCancleOrder'>撤销"  + "<input type='hidden' value='"+ data[i].pendingOrderNo +"'/>"  + "</p>"
-                        +"<p class='clear'></p>"+"</li>";
+                        + "<p>" + ParamsAndInit.formatNumber(data[i].pendingNumber, 4) + "</p>"
+                        + "<p>" + ParamsAndInit.formatNumber(data[i].dealNumber, 4) + "</p>"
+                        + "<p class='toCancleOrder'>撤销" + "<input type='hidden' value='" + data[i].pendingOrderNo + "'/>" + "</p>"
+                        + "<p class='clear'></p>" + "</li>";
                 }
                 $("#entrustUL").html(str);
                 $(".toCancleOrder").each(function () {
                     $(this).bind('click', ParamsAndInit.toCancel);
                 });
-                $('.bg').css("height","0");
+                $('.bg').css("height", "0");
             },
             error: function () {
-                $('.bg').css("height","0");
+                $('.bg').css("height", "0");
                 return;
             }
         });
@@ -681,14 +699,14 @@ var ParamsAndInit = {
                 data = data.transactionPendOrderList;
                 var str = "";
                 for (i in data) {
-                    var paymentType =  data[i].paymentType == 1 ? "<span class='red'>买入</span>" : "<span class='green'>卖出</span>"
+                    var paymentType = data[i].paymentType == 1 ? "<span class='red'>买入</span>" : "<span class='green'>卖出</span>"
                     str += "<li>"
-                            + "<p>" + paymentType +"</p>"
-                            + "<p>" + ParamsAndInit.formatNumber(data[i].pendingPrice, 2) + "</p>"
-                            + "<p>" + ParamsAndInit.formatNumber(data[i].pendingNumber, 4) +"</p>"
-                            +"<p>" +  ParamsAndInit.formatNumber(data[i].dealNumber, 4) + "</p>"
-                            +"<p class='toCancleOrder'>撤销"  + "<input type='hidden' value='"+ data[i].pendingOrderNo +"'/>"  + "</p>"
-                            +"<p class='clear'></p>"+"</li>";
+                        + "<p>" + paymentType + "</p>"
+                        + "<p>" + ParamsAndInit.formatNumber(data[i].pendingPrice, 2) + "</p>"
+                        + "<p>" + ParamsAndInit.formatNumber(data[i].pendingNumber, 4) + "</p>"
+                        + "<p>" + ParamsAndInit.formatNumber(data[i].dealNumber, 4) + "</p>"
+                        + "<p class='toCancleOrder'>撤销" + "<input type='hidden' value='" + data[i].pendingOrderNo + "'/>" + "</p>"
+                        + "<p class='clear'></p>" + "</li>";
                 }
                 $("#entrustUL").html(str);
                 $(".toCancleOrder").each(function () {
@@ -714,7 +732,7 @@ var ParamsAndInit = {
         $.ajax({
             url: path + "/userWap/tradeCenter/userInfo.htm",
             data: {
-                currencyId : currencyId
+                currencyId: currencyId
             },//参数
             dataType: "json",
             type: 'POST',
@@ -724,7 +742,7 @@ var ParamsAndInit = {
                     return;
                 }
                 var userDealCapitalMessage = data.userDealCapitalMessage;
-                if(userDealCapitalMessage != null){
+                if (userDealCapitalMessage != null) {
                     $("#currencyNumberShow").html(ParamsAndInit.formatNumber(userDealCapitalMessage.currencyNumber, 6));
                     $("#currencyNumber").val(ParamsAndInit.formatNumber(userDealCapitalMessage.currencyNumber, 4));
                     $("#currencyNumberLockShow").html(ParamsAndInit.formatNumber(userDealCapitalMessage.currencyNumberLock, 6));
@@ -745,8 +763,8 @@ var ParamsAndInit = {
         }
         $.ajax({
             url: path + "/userWap/tradeCenter/pend", //方法路径URL
-            data:{
-                currencyId : currencyId
+            data: {
+                currencyId: currencyId
             },
             dataType: 'json',
             type: 'POST',
@@ -760,19 +778,19 @@ var ParamsAndInit = {
 
                 $(".leftContent").empty();
                 var newChildSell = "";
-                for(var i = orderSellList.length - 1; i >= 0; i--){
+                for (var i = orderSellList.length - 1; i >= 0; i--) {
                     newChildSell += '<span class="list-content">' +
-                            '<span>卖' + (i + 1) + '</span>' +
-                            '<span>' + ParamsAndInit.formatNumber(orderSellList[i].pendingPrice, 2) + '</span>' +
-                            '<span>' + ParamsAndInit.formatNumber(orderSellList[i].restNumber, 4) + '</span>' +
-                            '<span>' + ParamsAndInit.formatNumber(orderSellList[i].sumPrice, 6) + '</span>' +
-                            '</span>';
+                        '<span>卖' + (i + 1) + '</span>' +
+                        '<span>' + ParamsAndInit.formatNumber(orderSellList[i].pendingPrice, 2) + '</span>' +
+                        '<span>' + ParamsAndInit.formatNumber(orderSellList[i].restNumber, 4) + '</span>' +
+                        '<span>' + ParamsAndInit.formatNumber(orderSellList[i].sumPrice, 6) + '</span>' +
+                        '</span>';
                 }
                 $(".leftContent").html(newChildSell);
 
                 $(".rightContent").empty();
-                var newChildBuy= "";
-                for (var i=0; i <= orderBuyList.length - 1; i++) {
+                var newChildBuy = "";
+                for (var i = 0; i <= orderBuyList.length - 1; i++) {
                     newChildBuy += '<span class="list-content">' +
                         '<span>买' + (i + 1) + '</span>' +
                         '<span>' + ParamsAndInit.formatNumber(orderBuyList[i].pendingPrice, 2) + '</span>' +
@@ -783,7 +801,7 @@ var ParamsAndInit = {
                 $(".rightContent").html(newChildBuy);
             },
             error: function () {
-                return ;
+                return;
             }
         });
     },
@@ -793,27 +811,27 @@ var ParamsAndInit = {
             return;
         }
         $.ajax({
-            url:path + "/userWap/tradeCenter/gainDealPrice",
+            url: path + "/userWap/tradeCenter/gainDealPrice",
             data: {
-                currencyId : currencyId
+                currencyId: currencyId
             },//参数
             dataType: "json",
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
-            success:function (data) {
+            success: function (data) {
                 if (data.code != 0) {
                     return;
                 }
                 var standardParameter = data.standardParameter;
-                if(standardParameter != null){
+                if (standardParameter != null) {
                     $(".topLeft").text(ParamsAndInit.formatNumber(standardParameter.nowPrice, 8));
                     $("#todayMaxSpan").text(ParamsAndInit.formatNumber(standardParameter.todayMax, 6));
                     $("#todayMinSpan").text(ParamsAndInit.formatNumber(standardParameter.todayMin, 6));
                     $("#buyOneSpan").text(ParamsAndInit.formatNumber(standardParameter.buyOne, 6));
                     $("#sellOneOne").text(ParamsAndInit.formatNumber(standardParameter.sellOne, 6));
-                    var dayTurnove =  ParamsAndInit.formatNumber(standardParameter.dayTurnove, 4);
+                    var dayTurnove = ParamsAndInit.formatNumber(standardParameter.dayTurnove, 4);
                     $("#dayTurnoveOne").text(dayTurnove);
-                    $("#nowPriceDiv").text("当前价格："+ParamsAndInit.formatNumber(standardParameter.nowPrice, 8)+" XT");
+                    $("#nowPriceDiv").text("当前价格：" + ParamsAndInit.formatNumber(standardParameter.nowPrice, 8) + " XT");
                 }
             },
             error: function () {
@@ -821,20 +839,20 @@ var ParamsAndInit = {
             }
         });
     },
-    reloadData:function () {
+    reloadData: function () {
         var currencyId = $("#currencyId").val();
         if (undefined == currencyId || currencyId == null || currencyId == "") {
             return;
         }
         var userSession = $("#userSession").val();
-        if(userSession != undefined && userSession != null && userSession != ""){
-                 window.setInterval(ParamsAndInit.userInfo, 5000);
-                 window.setInterval(ParamsAndInit.entrust, 5000);
+        if (userSession != undefined && userSession != null && userSession != "") {
+            window.setInterval(ParamsAndInit.userInfo, 5000);
+            window.setInterval(ParamsAndInit.entrust, 5000);
         }
         window.setInterval(ParamsAndInit.pendOrder, 5000);
         window.setInterval(ParamsAndInit.dealInfo, 5000);
     },
-    updatePayPwd :function () {
+    updatePayPwd: function () {
         var payPasswordStatus = $("input[name='remember']:checked").val();
         var rememberPwd = $("#rememberPwd").val();
 
@@ -843,20 +861,20 @@ var ParamsAndInit = {
             openTips("请先登录再操作");
             return;
         }
-        if(payPasswordStatus != 1 && payPasswordStatus != 2){
+        if (payPasswordStatus != 1 && payPasswordStatus != 2) {
             openTips("参数错误，请刷新页面重试");
             return;
         }
-        if(rememberPwd == undefined|| rememberPwd == null || rememberPwd == "" ){
+        if (rememberPwd == undefined || rememberPwd == null || rememberPwd == "") {
             openTips("交易密码不能为空");
             return;
         }
 
         $.ajax({
             url: path + "/userWap/tradeCenter/rememberPwd.htm", //方法路径URL
-            data:{
-                rememberPwd : rememberPwd,
-                payPasswordStatus : payPasswordStatus
+            data: {
+                rememberPwd: rememberPwd,
+                payPasswordStatus: payPasswordStatus
             },
             dataType: 'json',
             type: 'POST',
@@ -870,26 +888,26 @@ var ParamsAndInit = {
                 $("#userIsPwd").val(isPwd);
                 $("#payPasswordStatus").val(payPasswordStatus);
                 $("#rememberPwd").val("");
-                if(payPasswordStatus == 1){
+                if (payPasswordStatus == 1) {
                     $("#bMaxNum").text("当前设置: 每笔交易都输入密码");
                     $("#sMaxNum").text("当前设置: 每笔交易都输入密码");
                 }
-                if(payPasswordStatus == 2){
+                if (payPasswordStatus == 2) {
                     $("#bMaxNum").text("当前设置: 每次登录只输入一次密码");
                     $("#sMaxNum").text("当前设置: 每次登录只输入一次密码");
                 }
                 $('.cin').fadeOut();
                 openTips(data.message);
                 $("input[name='remember']").each(function () {
-                    $(this).attr("checked",false)
+                    $(this).attr("checked", false)
                 });
             }, error: function () {
                 $('.cin').fadeOut();
                 openTips("修改失败,请重新刷新页面后重试");
                 $("input[name='remember']").each(function () {
-                    $(this).attr("checked",false)
+                    $(this).attr("checked", false)
                 });
-                return ;
+                return;
             }
         });
     },
@@ -913,7 +931,7 @@ var ParamsAndInit = {
         var numStr = integerDigits + "." + fractionDigits;
         return numStr;
     },
-    toChartPage:function () {
+    toChartPage: function () {
         var currencyId = $("#currencyId").val();
         var webAppPath = $("#webAppPath").val();
         if (currencyId == undefined || currencyId == null || currencyId == "") {
@@ -923,32 +941,31 @@ var ParamsAndInit = {
         window.location.href = webAppPath + '/userWap/tradeCenter/toChartPage/' + currencyId;
     },
     footInit: function () {
-        var h=$(window).height();
-        $("input").focus(function(){
-            $("header").css({"position":"relative","top":0});
-            $("section").css({"position":"relative","top":'0'});
-            $("#wrapper").css({"position":"relative","top":'0'});
+        var h = $(window).height();
+        $("#sellPrice,#sellNum,#sellPwd,#buyPrice,#buyNum,#buyPwd").focus(function () {
+            $("header").css({"position": "relative", "top": 0});
+            $("section").css({"position": "relative", "top": '0'});
+            $("#wrapper").css({"position": "relative", "top": '0'});
             $("footer").hide();
         });
-        $("input").blur(function(){
-            $("header").css("position","fixed");
-            $("section").css({"position":"fixed","top":'0.92rem'});
-
-            $("#wrapper").css({"position":"relative","top":'2.3rem'});
+        $("#sellPrice,#sellNum,#sellPwd,#buyPrice,#buyNum,#buyPwd").blur(function () {
+            $("header").css("position", "fixed");
+            $("section").css({"position": "fixed", "top": '0.92rem'});
+            $("#wrapper").css({"position": "relative", "top": '2.3rem'});
             $('footer').show();
         });
         //进入页面的时候判断
         var payPasswordStatus = $("#payPasswordStatus").val();
-        if(payPasswordStatus == 2){
+        if (payPasswordStatus == 2) {
             $("#bMaxNum").text("当前设置: 每次登录只输入一次密码");
             $("#sMaxNum").text("当前设置: 每次登录只输入一次密码");
         }
-        $('.cancelShow').on('click',function() {
-            $('.bg').css("height","0");
-            $('.showBox').animate({opacity:'0'},"100");
-            setTimeout(function(){
-                $('.showBox').css('display','none');
-            },100)
+        $('.cancelShow').on('click', function () {
+            $('.bg').css("height", "0");
+            $('.showBox').animate({opacity: '0'}, "100");
+            setTimeout(function () {
+                $('.showBox').css('display', 'none');
+            }, 100)
         });
     }
 };
@@ -996,10 +1013,10 @@ $().ready(function () {
             $("#sellNum").bind("blur", {num: 4}, ParamsAndInit.matchUtil);
             $("#sellNum").unbind("keyup");
             $("#sellNum").bind("keyup", {num: 4}, ParamsAndInit.matchUtil);
-            $("#buyPwd").bind("keyup",ParamsAndInit.matchPassword);
-            $("#buyPwd").bind("blur",ParamsAndInit.matchPassword);
-            $("#sellPwd").bind("keyup",ParamsAndInit.matchPassword);
-            $("#sellPwd").bind("blur",ParamsAndInit.matchPassword);
+            $("#buyPwd").bind("keyup", ParamsAndInit.matchPassword);
+            $("#buyPwd").bind("blur", ParamsAndInit.matchPassword);
+            $("#sellPwd").bind("keyup", ParamsAndInit.matchPassword);
+            $("#sellPwd").bind("blur", ParamsAndInit.matchPassword);
             $(".mainButtonBuy").bind('click', ParamsAndInit.toBuy);
             $(".mainButtonSell").bind('click', ParamsAndInit.toSell);
             $(".toCancleOrder").each(function () {
