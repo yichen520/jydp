@@ -64,6 +64,8 @@ public class UserWapInterceptor implements HandlerInterceptor {
             if (request.getHeader("x-requested-with") != null
                     && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) {
                 JSONObject jsonObject = new JSONObject();
+                jsonObject.put("code", 4);
+                jsonObject.put("message", "登录过期，请重新登录");
                 PrintWriter out = null;
                 out = response.getWriter();
                 out.append(jsonObject.toString());
