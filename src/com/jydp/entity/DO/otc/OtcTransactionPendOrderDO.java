@@ -7,7 +7,7 @@ import java.sql.Timestamp;
  * @Author yk
  */
 public class OtcTransactionPendOrderDO {
-    private String otcPendingOrderNo; //记录号 业务类型（2）+日期（6）+随机位（10）
+    private String otcPendingOrderNo; //挂单记录号 业务类型（2）+日期（6）+随机位（10）
     private int userId; //用户Id
     private String userAccount; //用户帐号
     private int paymentType; //挂单类型 1：出售，2：回购
@@ -20,15 +20,15 @@ public class OtcTransactionPendOrderDO {
     private double dealNumber; //已成交数量
     private double buyFee; //买入手续费
     private double restBalanceLock; //剩余冻结金额
-    private String area; //地区
-    private int pendingStatus; //挂单状态 1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销
+    private String area; //地区(默认CN)
+    private int pendingStatus; //挂单状态(默认1) 1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销
     private Timestamp endTime; //完成时间
     private String remark; //备注
     private Timestamp updateTime; //修改时间
     private Timestamp addTime; //添加时间
 
     /**
-     * 获取 记录号
+     * 获取 挂单记录号
      * @return otcPendingOrderNo
      */
     public String getOtcPendingOrderNo() {
@@ -36,8 +36,8 @@ public class OtcTransactionPendOrderDO {
     }
 
     /**
-     * 设置 记录号
-     * @param otcPendingOrderNo 记录号
+     * 设置 挂单记录号
+     * @param otcPendingOrderNo 挂单记录号
      */
     public void setOtcPendingOrderNo(String otcPendingOrderNo) {
         this.otcPendingOrderNo = otcPendingOrderNo;

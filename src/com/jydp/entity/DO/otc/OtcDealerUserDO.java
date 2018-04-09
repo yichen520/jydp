@@ -13,7 +13,7 @@ public class OtcDealerUserDO {
     private String dealerName; //经销商名称
     private String ipAddress; //操作时的ip地址
     private int backerId; //后台管理员Id
-    private String userStatus; //经销商状态：1：启用，2：禁用，-1：删除
+    private int userStatus; //经销商状态(默认值1)：1：启用，2：禁用，-1：删除
     private String remark; //备注
     private Timestamp updateTime;//修改时间
     private Timestamp addTime;  //添加时间
@@ -118,7 +118,7 @@ public class OtcDealerUserDO {
      * 获取 经销商状态
      * @return userStatus
      */
-    public String getUserStatus() {
+    public int getUserStatus() {
         return userStatus;
     }
 
@@ -126,7 +126,7 @@ public class OtcDealerUserDO {
      * 设置 经销商状态
      * @param userStatus 经销商状态
      */
-    public void setUserStatus(String userStatus) {
+    public void setUserStatus(int userStatus) {
         this.userStatus = userStatus;
     }
 

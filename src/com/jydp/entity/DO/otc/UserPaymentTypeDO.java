@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 public class UserPaymentTypeDO {
     private int typeId; //主键Id
     private int userId; //用户Id
+    private String otcPendingOrderNo; //挂单记录号 业务类型（2）+日期（6）+随机位（10）
     private int paymentType; //收款方式标识：1：银行卡，2：支付宝，3：微信
     private String paymentAccount; //收款账号
     private String bankName; //收款银行
@@ -52,6 +53,22 @@ public class UserPaymentTypeDO {
      */
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    /**
+     * 获取 挂单记录号
+     * @return otcPendingOrderNo
+     */
+    public String getOtcPendingOrderNo() {
+        return otcPendingOrderNo;
+    }
+
+    /**
+     * 设置 挂单记录号
+     * @param otcPendingOrderNo 挂单记录号
+     */
+    public void setOtcPendingOrderNo(String otcPendingOrderNo) {
+        this.otcPendingOrderNo = otcPendingOrderNo;
     }
 
     /**
