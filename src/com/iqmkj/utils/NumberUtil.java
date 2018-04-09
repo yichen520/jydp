@@ -105,14 +105,14 @@ public class NumberUtil {
     }
 
     /**
-     * double精度（直接截取，不舍入）
+     * double精度（类fmt处理，四舍六入）
      * @param doubleValue 要处理的值
      * @param accuracy 保留的小数点位数
      * @return 返回精度的double
      */
     public static String doubleStringFormat(double doubleValue, int accuracy){
         BigDecimal bigDecimal = new BigDecimal(doubleValue + "");
-        BigDecimal resultValue = bigDecimal.setScale(accuracy, BigDecimal.ROUND_DOWN);
+        BigDecimal resultValue = bigDecimal.setScale(accuracy, BigDecimal.ROUND_HALF_EVEN);
         return resultValue.stripTrailingZeros().toPlainString();
     }
 }
