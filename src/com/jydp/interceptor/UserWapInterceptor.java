@@ -67,6 +67,9 @@ public class UserWapInterceptor implements HandlerInterceptor {
                 jsonObject.put("code", 4);
                 jsonObject.put("message", "登录过期，请重新登录");
                 PrintWriter out = null;
+                response.setContentType("text/xml;charset=UTF-8");
+                response.setHeader("Cache-Control", "no-cache");
+                response.setCharacterEncoding("UTF-8");
                 out = response.getWriter();
                 out.append(jsonObject.toString());
                 out.close();
