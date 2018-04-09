@@ -80,14 +80,14 @@
 
 <!-- 选择手机号弹窗 -->
 <div class="chosePhone" id="chosePhone"></div>
-<script type="text/template" id="abcd">
+<script type="text/template" id="phoneAreaNumber">
     <div class="search">
         <img src="<%=path %>/resources/image/wap/searchIcon.png"/>
         <input type="type" placeholder="请选择国家或区号" id="country" oninput="showSearch()"/>
         <p onclick="backHome()">取消</p>
     </div>
     <div class="searchList" id="searchList">
-        {{{phoneArea jsonObject}}}
+        {{{phoneArea phoneAreaMapJson}}}
     </div>
 </script>
 
@@ -121,10 +121,9 @@
                 validateUserBoo = false;
                 return;
             }
-
             //获取的数据存储
-            jsonObject = result.data.jsonObject;
-            var template = Handlebars.compile($("#abcd").html())
+            jsonObject = result.data.phoneAreaMapJson;
+            var template = Handlebars.compile($("#phoneAreaNumber").html())
             $('#chosePhone').html(template(result.data));
 
             $("li[name='phoneName']").each(function () {
@@ -137,8 +136,8 @@
         }
     });
 
-    Handlebars.registerHelper("phoneArea", function (jsonObject123) {
-        var jsonObjectString = eval('(' + jsonObject123 + ')');
+    Handlebars.registerHelper("phoneArea", function (jsonObjectPhoneArea) {
+        var jsonObjectString = eval('(' + jsonObjectPhoneArea + ')');
         var out = "<ul id='ultest'>";
         for (var prop in jsonObjectString) {
             out = out + "<li name='phoneName'>";
@@ -150,7 +149,6 @@
         out = out + "</ul>";
         return out;
     });
-
 
     //获取手机区号并赋值
     function search() {
@@ -194,6 +192,7 @@
         $('.chosePhone').hide();
     }
 
+    //注册协议跳转
     function readUserAgree() {
         window.location.href="<%=path %>/userWap/wapHelpCenter/show/101010";
     }
@@ -304,6 +303,7 @@
         }
     }
 
+    //注册
     function register() {
         //取值
         var userAccount = $("#userAccount").val();
@@ -443,7 +443,6 @@
         });
     }
 
-
    $("#payPassword").blur(function () {
        var password = $("#password").val();
        var payPassword = $("#payPassword").val();
@@ -478,11 +477,9 @@
         }
     })
 
-
     $('.backimg').on('click',function () {
         location.href = "<%=path %>/userWap/userLogin/show"
     });
-    
     
     function checkoutValue(id) {
         var matchStr = /[^\a-\z\A-\Z\d]/g;
@@ -491,7 +488,6 @@
             $("#"+id+"").get(0).value=$("#"+id+"").get(0).value.replace(/[^\a-\z\A-\Z\d]/g,'');
         }
     }
-
 
     function checkoutValueNum(id) {
         var matchStr = /[^\d]/g;

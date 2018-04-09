@@ -59,7 +59,7 @@ public class WapRegisterController {
         //对map数据进行转换
         String jsonObjectStr = JSONObject.toJSONString(phoneAreaMap);
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("jsonObject",jsonObjectStr);
+        jsonObject.put("phoneAreaMapJson",jsonObjectStr);
 
         JsonObjectBO responseJson = new JsonObjectBO();
         responseJson.setCode(1);
