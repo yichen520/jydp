@@ -16,7 +16,7 @@ public class TransactionUserDealVO extends TransactionUserDealDO {
     private Timestamp pendTime;  //挂单时间
 
     private double fee;  //手续费
-    private double actualPrice;  //实际价
+    private String actualPrice;  //实际价
 
     private String feeForWap; //wap端手续费
     private String actualPriceForWap; //wap端实际总价
@@ -73,7 +73,7 @@ public class TransactionUserDealVO extends TransactionUserDealDO {
      * 实际价
      * @return the actualPrice
      */
-    public double getActualPrice() {
+    public String getActualPrice() {
         return actualPrice;
     }
 
@@ -81,7 +81,7 @@ public class TransactionUserDealVO extends TransactionUserDealDO {
      * 实际价
      * @param actualPrice the actualPrice to set
      */
-    public void setActualPrice(double actualPrice) {
+    public void setActualPrice(String actualPrice) {
         this.actualPrice = actualPrice;
     }
 

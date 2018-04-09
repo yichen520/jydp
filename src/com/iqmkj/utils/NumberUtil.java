@@ -103,5 +103,16 @@ public class NumberUtil {
         BigDecimal resultValue = bigDecimal.setScale(accuracy, BigDecimal.ROUND_UP);
         return Double.valueOf(resultValue.toString());
     }
-    
+
+    /**
+     * double精度（直接截取，不舍入）
+     * @param doubleValue 要处理的值
+     * @param accuracy 保留的小数点位数
+     * @return 返回精度的double
+     */
+    public static String doubleStringFormat(double doubleValue, int accuracy){
+        BigDecimal bigDecimal = new BigDecimal(doubleValue + "");
+        BigDecimal resultValue = bigDecimal.setScale(accuracy, BigDecimal.ROUND_DOWN);
+        return resultValue.toString();
+    }
 }

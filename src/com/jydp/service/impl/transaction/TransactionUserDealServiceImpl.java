@@ -46,7 +46,7 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
                 actualPrice = BigDecimalUtil.sub(userDeal.getCurrencyTotalPrice(), fee);
             }
 
-            userDeal.setActualPrice(actualPrice);
+            userDeal.setActualPrice(NumberUtil.doubleStringFormat(actualPrice, 6));
             userDeal.setFee(NumberUtil.doubleUpFormat(fee, 8));
         }
         return transactionUserDealList;
@@ -172,7 +172,7 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
                 actualPrice = BigDecimalUtil.sub(userDeal.getCurrencyTotalPrice(), fee);
             }
 
-            userDeal.setActualPrice(actualPrice);
+            userDeal.setActualPrice(NumberUtil.doubleStringFormat(actualPrice, 6));
             userDeal.setFee(NumberUtil.doubleUpFormat(fee, 8));
         }
 
@@ -209,7 +209,7 @@ public class TransactionUserDealServiceImpl implements ITransactionUserDealServi
                 actualPrice = BigDecimalUtil.sub(userDeal.getCurrencyTotalPrice(), fee);
             }
 
-            userDeal.setActualPrice(actualPrice);
+            userDeal.setActualPrice(NumberUtil.doubleStringFormat(actualPrice, 6));
             userDeal.setFee(NumberUtil.doubleUpFormat(fee, 8));
         }
 

@@ -60,10 +60,10 @@
                             <p>手续费：<fmt:formatNumber type="number" value="${dealRecord.fee}" maxFractionDigits="8"/> XT</p>
                         </c:if>
                         <c:if test="${dealRecord.paymentType == 1}">
-                            <p>实际支出：<fmt:formatNumber type="number" value="${dealRecord.actualPrice}" maxFractionDigits="6"/> XT</p>
+                            <p>实际支出：${dealRecord.actualPrice} XT</p>
                         </c:if>
                         <c:if test="${dealRecord.paymentType == 2}">
-                            <p>实际到账：<fmt:formatNumber type="number" value="${dealRecord.actualPrice }" maxFractionDigits="6"/> XT</p>
+                            <p>实际到账：${dealRecord.actualPrice } XT</p>
                         </c:if>
                     </td>
                     <td class="time"><fmt:formatDate type="time" value="${dealRecord.addTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></td>

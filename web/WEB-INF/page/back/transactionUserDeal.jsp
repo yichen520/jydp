@@ -94,11 +94,11 @@
                         <td class="amount">
                             <c:if test="${item.paymentType == 1}">
                                 <p>总计：<fmt:formatNumber type="number" value="${item.currencyTotalPrice}" maxFractionDigits="6"/> XT</p>
-                                <p>实际：<fmt:formatNumber type="number" value="${item.actualPrice}" maxFractionDigits="6"/> XT</p>
+                                <p>实际：${item.actualPrice} XT</p>
                             </c:if>
                             <c:if test="${item.paymentType == 2}">
                                 <p>总计：<fmt:formatNumber type="number" value="${item.currencyTotalPrice}" maxFractionDigits="6"/> XT</p>
-                                <p>实际：<fmt:formatNumber type="number" value="${item.actualPrice}" maxFractionDigits="6"/> XT</p>
+                                <p>实际：${item.actualPrice} XT</p>
                             </c:if>
                             <c:if test="${item.paymentType == 3}">
                                 <p>总计：<fmt:formatNumber type="number" value="${item.currencyTotalPrice }" maxFractionDigits="6"/> XT</p>
