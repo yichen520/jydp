@@ -360,11 +360,12 @@
     {{/each}}
 </script>
 </div>
-<script src="<%=path %>/resources/js/wap/common.js"></script>
-<script src="<%=path %>/resources/js/wap/jquery-2.1.4.min.js"></script>
-<script src="<%=path %>/resources/js/wap/handlebars-v4.0.11.js"></script>
-<script src="<%=path %>/resources/js/wap/simpleTips_wap.js"></script>
-<script src="<%=path %>/resources/js/wap/deal.js"></script>
+
+<script type="text/javascript" src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/handlebars.js/4.0.11/handlebars.min.js"></script>
+<script type="text/javascript" src="<%=path %>/resources/js/wap/common.js"></script>
+<script type="text/javascript" src="<%=path %>/resources/js/wap/simpleTips_wap.js"></script>
+<script type="text/javascript" src="<%=path %>/resources/js/wap/deal.js"></script>
 <script type="text/javascript">
 
     var path = "<%=path%>"
