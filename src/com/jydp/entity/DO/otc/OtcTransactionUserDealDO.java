@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 /**
  * 场外交易成交记录
- * @Author yk
+ * @author yk
  */
 public class OtcTransactionUserDealDO {
     private String otcOrderNo; //记录号 业务类型（2）+日期（6）+随机位（10）

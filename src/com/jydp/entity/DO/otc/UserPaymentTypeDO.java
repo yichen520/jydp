@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 /**
  * 用户收款方式
- * @Author yk
+ * @author yk
  */
 public class UserPaymentTypeDO {
     private int typeId; //主键Id

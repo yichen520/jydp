@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 /**
  * 后台管理员增减经销商用户可用币记录
- * @Author yk
+ * @author yk
  */
 public class OtcBackerHandleUserCoinDO {
     private long id; //记录Id
