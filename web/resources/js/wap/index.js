@@ -1,7 +1,8 @@
 $(function () {
     // 首页轮播图
     banner();
-    //notice();
+    //dom加载完loading图消失
+    $("#loading").fadeOut();
     open();
     function banner() {
         var mySwiper = new Swiper('.banner', {
@@ -13,8 +14,6 @@ $(function () {
     };
     //公告
     setInterval('AutoScroll(".notice")', 2500)
-
-
     // 弹出货币选择
     function open() {
         var bgHeight = $(document).height();
@@ -27,17 +26,20 @@ $(function () {
                 var myTemplate = Handlebars.compile($("#table-template").html());
                 $('#currencyList').html(myTemplate(result.transactionUserDealList));
             })
-            setTimeout(function () {
-                $('#wrapper').hide();
-            }, 450);
+
             $('.closeAnthoer').css("height", bgHeight + "px");
-            $('.choseBz').css("height", '100%');
-            $('.choseBzBox').css("height", bgHeight + "px");
+            $('.choseBz').css("height", bgHeight + "px");
+            $('.choseBzBox').css("height", '100%');
             $('.choseBzBox').show();
             $('.choseBzBox').animate({left: '0'}, "500");
+            setTimeout(function () {
+                $('#wrapper').hide();
+                $('footer').hide();
+            }, 450);
         });
         $('.closeBox').on('click', function () {
             $('#wrapper').show();
+            $('footer').show();
             setTimeout(function () {
                 $('.closeAnthoer').css("height", "0");
                 $('.choseBz').css("height", "0");
