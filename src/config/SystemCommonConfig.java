@@ -39,4 +39,7 @@ public class SystemCommonConfig {
 
 	/** 场外交易挂单记录 -业务类型（2）+日期（6）+随机位（10） */
 	public static final String TRANSACTION_OTC_PEND_ORDER = "60";
+
+	/** 场外交易成交记录 -业务类型（2）+日期（6）+随机位（10） */
+	public static final String TRANSACTION_OTC_USER_DEAL = "61";
 }

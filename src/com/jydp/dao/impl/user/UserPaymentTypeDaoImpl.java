@@ -8,6 +8,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 用户标识经销商相关操作
  *
@@ -39,4 +42,29 @@ public class UserPaymentTypeDaoImpl implements IUserPaymentTypeDao {
             return false;
         }
     }
+
+    /**
+     * 根据用户id、挂单号、支付方式查询 收款记录
+     * @param userId  用户id
+     * @param otcPendingOrderNo 挂单号
+     * @param paymentType 支付方式
+     * @return 新增成功：返回用户收款记录, 新增失败：返回null
+     */
+    public UserPaymentTypeDO getUserPaymentType(int userId, String otcPendingOrderNo, int paymentType){
+
+        UserPaymentTypeDO userPaymentType = null;
+        Map<String,Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("otcPendingOrderNo", otcPendingOrderNo);
+        map.put("paymentType", paymentType);
+
+        try {
+            userPaymentType = sqlSessionTemplate.selectOne("UserPaymentType_getUserPaymentType",map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return userPaymentType;
+    }
+
 }

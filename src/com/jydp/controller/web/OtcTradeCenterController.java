@@ -5,6 +5,8 @@ import com.iqmkj.utils.*;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.otc.OtcTransactionPendOrderDO;
+import com.jydp.entity.DO.otc.OtcTransactionUserDealDO;
+import com.jydp.entity.DO.otc.UserPaymentTypeDO;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
@@ -41,6 +43,10 @@ public class OtcTradeCenterController {
     @Autowired
     private IOtcTransactionPendOrderService otcTransactionPendOrderService;
 
+   /** 场外交易 成交记录 */
+    @Autowired
+    private IOtcTransactionUserDealService otcTransactionUserDealService;
+
     /** 用户账号 */
     @Autowired
     private IUserService userService;
@@ -52,6 +58,10 @@ public class OtcTradeCenterController {
     /** 交易币种 */
     @Autowired
     private ITransactionCurrencyService transactionCurrencyService;
+
+    /** 用户收款记录 */
+    @Autowired
+    private IUserPaymentTypeService userPaymentTypeService;
 
     /** 购买出售单 */
     @RequestMapping(value = "/buy.htm", method = RequestMethod.POST)
@@ -69,7 +79,6 @@ public class OtcTradeCenterController {
         String buyNumStr = StringUtil.stringNullHandle(request.getParameter("buyNum"));
         String paymentTypeStr = StringUtil.stringNullHandle(request.getParameter("paymentType"));
 
-
         double buyNum = 0;
         if (StringUtil.isNotNull(buyNumStr)) {
             buyNum = Double.parseDouble(buyNumStr);
@@ -77,6 +86,28 @@ public class OtcTradeCenterController {
         int paymentType = 0;
         if (StringUtil.isNotNull(paymentTypeStr)) {
             paymentType = Integer.parseInt(paymentTypeStr);
+        }
+
+        //判断交易时间限制
+        boolean timeBoo = DateUtil.isTradeTime();
+        if(timeBoo){
+            resultJson.setCode(3);
+            resultJson.setMessage("不在交易时间段内");
+            return resultJson;
+        }
+
+        //交易数量限制
+        if(buyNum <= 0){
+            resultJson.setCode(3);
+            resultJson.setMessage("交易数量不能小于等于0");
+            return resultJson;
+        }
+
+        //交易数量限制
+        if(paymentType <= 0){
+            resultJson.setCode(3);
+            resultJson.setMessage("交易数量不能小于等于0");
+            return resultJson;
         }
 
         //获取用户信息
@@ -101,26 +132,97 @@ public class OtcTradeCenterController {
             return resultJson;
         }
 
-        //获取币种信息
-        TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(otcTransactionPendOrder.getCurrencyId());
-        if(transactionCurrency == null){
+        if(otcTransactionPendOrder.getPendingStatus() == -1){
+            resultJson.setCode(2);
+            resultJson.setMessage("该广告已被删除");
+            return resultJson;
+        }
+
+        double sum = BigDecimalUtil.mul(otcTransactionPendOrder.getPendingRatio(),buyNum);
+
+        if(sum < otcTransactionPendOrder.getMinNumber()){
             resultJson.setCode(3);
-            resultJson.setMessage("币种信息获取失败,请稍候再试");
+            resultJson.setMessage("交易额度不能低于最低限额");
             return resultJson;
         }
 
-        if(transactionCurrency.getUpStatus() == 4){
-            resultJson.setCode(5);
-            resultJson.setMessage("该币种已下线");
+        if(sum > otcTransactionPendOrder.getMaxNumber()){
+            resultJson.setCode(3);
+            resultJson.setMessage("交易额度不能高于最高限额");
             return resultJson;
         }
 
-        if(transactionCurrency.getPaymentType() != 1){
-            resultJson.setCode(4);
-            resultJson.setMessage("该币种不在交易状态");
+        if(otcTransactionPendOrder.getCurrencyId() == 999){
+            if(user.getUserBalance() < buyNum){
+                resultJson.setCode(5);
+                resultJson.setMessage("经销商币不足");
+                return resultJson;
+            }
+        }else {
+            //获取币种信息
+            TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(otcTransactionPendOrder.getCurrencyId());
+            if(transactionCurrency == null){
+                resultJson.setCode(3);
+                resultJson.setMessage("币种信息获取失败,请稍候再试");
+                return resultJson;
+            }
+
+            if(transactionCurrency.getUpStatus() == 4){
+                resultJson.setCode(5);
+                resultJson.setMessage("该币种已下线");
+                return resultJson;
+            }
+
+            if(transactionCurrency.getPaymentType() != 1){
+                resultJson.setCode(4);
+                resultJson.setMessage("该币种不在交易状态");
+                return resultJson;
+            }
+
+            //获取经销商币信息
+            UserCurrencyNumDO userCurrencyNum = userCurrencyNumService.getUserCurrencyNumByUserIdAndCurrencyId(otcTransactionPendOrder.getUserId(),
+                    otcTransactionPendOrder.getCurrencyId());
+            if(userCurrencyNum == null){
+                UserCurrencyNumDO userCurrencyNumDO = new UserCurrencyNumDO();
+                userCurrencyNumDO.setUserId(user.getUserId());
+                userCurrencyNumDO.setCurrencyId(otcTransactionPendOrder.getCurrencyId());
+                userCurrencyNumDO.setCurrencyNumber(0);
+                userCurrencyNumDO.setCurrencyNumberLock(0);
+                userCurrencyNumDO.setAddTime(DateUtil.getCurrentTime());
+
+                userCurrencyNumService.insertUserCurrencyNum(userCurrencyNumDO);
+
+                resultJson.setCode(5);
+                resultJson.setMessage("经销商币不足");
+                return resultJson;
+            }
+
+            if(userCurrencyNum.getCurrencyNumber() < buyNum){
+                resultJson.setCode(5);
+                resultJson.setMessage("经销商币不足");
+                return resultJson;
+            }
+        }
+
+        //获取经销商收款信息
+        UserPaymentTypeDO userPaymentType = userPaymentTypeService.getUserPaymentType(otcTransactionPendOrder.getUserId(),
+                otcPendingOrderNo, paymentType);
+        if(userPaymentType == null){
+            resultJson.setCode(3);
+            resultJson.setMessage("参数错误");
             return resultJson;
         }
 
+        //新增成交记录
+        JsonObjectBO jsonObject = otcTransactionUserDealService.insertOtcTransactionUserDeal(
+                otcPendingOrderNo, user.getUserId(), otcTransactionPendOrder.getUserId(), userPaymentType.getTypeId(),
+                user.getUserAccount(), 1, otcTransactionPendOrder.getCurrencyId(), otcTransactionPendOrder.getCurrencyName(),
+                otcTransactionPendOrder.getPendingRatio(), buyNum, sum, otcTransactionPendOrder.getAddTime());
+        if(jsonObject.getCode() != 1){
+            resultJson.setCode(jsonObject.getCode());
+            resultJson.setMessage(jsonObject.getMessage());
+            return resultJson;
+        }
 
         resultJson.setCode(1);
         resultJson.setMessage("下单成功");

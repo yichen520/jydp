@@ -12,7 +12,7 @@ public class OtcTransactionUserDealDO {
     private int userId; //用户Id
     private int typeId; //收款方式Id
     private String userAccount; //用户帐号
-    private int paymentType; //收支类型：1：买入，2：卖出，3：撤销
+    private int dealType; //收支类型：1：买入，2：卖出，3：撤销
     private int currencyId; //币种Id
     private String currencyName; //货币名称
     private double transactionPrice; //成交单价
@@ -108,19 +108,19 @@ public class OtcTransactionUserDealDO {
     }
 
     /**
-     * 获取 收支类型
+     * 获取 收支类型1：买入，2：卖出，3：撤销
      * @return paymentType
      */
-    public int getPaymentType() {
-        return paymentType;
+    public int getDealType() {
+        return dealType;
     }
 
     /**
-     * 设置 收支类型
-     * @param paymentType 收支类型
+     * 设置 收支类型1：买入，2：卖出，3：撤销
+     * @param dealType 收支类型
      */
-    public void setPaymentType(int paymentType) {
-        this.paymentType = paymentType;
+    public void setDealType(int dealType) {
+        this.dealType = dealType;
     }
 
     /**
