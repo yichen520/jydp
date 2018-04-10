@@ -10,7 +10,7 @@ public class OtcTransactionPendOrderDO {
     private String otcPendingOrderNo; //挂单记录号 业务类型（2）+日期（6）+随机位（10）
     private int userId; //用户Id
     private String userAccount; //用户帐号
-    private int paymentType; //挂单类型 1：出售，2：回购
+    private int orderType; //挂单类型 1：出售，2：回购
     private int currencyId; //币种Id
     private String currencyName; //货币名称
     private double pendingRatio; //挂单比例
@@ -77,18 +77,18 @@ public class OtcTransactionPendOrderDO {
 
     /**
      * 获取 挂单类型
-     * @return paymentType
+     * @return orderType
      */
-    public int getPaymentType() {
-        return paymentType;
+    public int getOrderType() {
+        return orderType;
     }
 
     /**
      * 设置 挂单类型
-     * @param paymentType 挂单类型
+     * @param orderType 挂单类型
      */
-    public void setPaymentType(int paymentType) {
-        this.paymentType = paymentType;
+    public void setOrderType(int orderType) {
+        this.orderType = orderType;
     }
 
     /**

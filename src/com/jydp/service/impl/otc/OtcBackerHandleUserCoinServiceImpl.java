@@ -12,6 +12,4 @@ import org.springframework.stereotype.Service;
 @Service("otcBackerHandleUserCoinService")
 public class OtcBackerHandleUserCoinServiceImpl implements IOtcBackerHandleUserCoinService{
 
-    @Autowired
-    private IOtcBackerHandleUserCoinDao otcBackerHandleUserCoinDao;
 }
