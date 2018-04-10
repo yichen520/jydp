@@ -18,5 +18,6 @@
 		FROM otc_dealer_user_tab
 		WHERE userId = #{userId}
 		AND dealStatus = 1
+		ORDER BY DESC addTime
 	</select>
 </mapper>
