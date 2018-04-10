@@ -17,7 +17,7 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
 
     /** 场外交易成交记录 */
     @Autowired
-    private IOtcTransactionUserDealDao tcTransactionUserDealService;
+    private IOtcTransactionUserDealDao otcTransactionUserDealDao;
 
     /**
      * 根据记录号查询成交记录信息
@@ -25,7 +25,7 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
      * @return 查询成功：返回记录信息, 查询失败或者没有相应记录：返回null
      */
     public OtcTransactionUserDealDO getOtcTransactionUsealByOrderNo(String orderNo) {
-        return tcTransactionUserDealService.getOtcTransactionUsealByOrderNo(orderNo);
+        return otcTransactionUserDealDao.getOtcTransactionUsealByOrderNo(orderNo);
     }
 
     /**

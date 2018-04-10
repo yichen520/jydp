@@ -10,6 +10,7 @@ public class OtcTransactionUserDealDO {
     private String otcOrderNo; //记录号 业务类型（2）+日期（6）+随机位（10）
     private String otcPendingOrderNo; //挂单记录号
     private int userId; //用户Id
+    private int typeId; //收款方式Id
     private String userAccount; //用户帐号
     private int paymentType; //收支类型：1：买入，2：卖出，3：撤销
     private int currencyId; //币种Id
@@ -79,6 +80,23 @@ public class OtcTransactionUserDealDO {
      */
     public String getUserAccount() {
         return userAccount;
+    }
+
+    /**
+     * 获取 收款方式Id
+     * @return userAccount
+     */
+    public int getTypeId() {
+        return typeId;
+    }
+
+
+    /**
+     * 设置 收款方式Id
+     * @param typeId 用户Id
+     */
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
     }
 
     /**
