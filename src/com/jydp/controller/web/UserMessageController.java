@@ -13,6 +13,7 @@ import com.jydp.entity.VO.UserCurrencyNumVO;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.other.SendMessage;
 import com.jydp.service.*;
+import config.FileUrlConfig;
 import config.PhoneAreaConfig;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.jydp.service.IOtcTransactionPendOrderService;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
@@ -566,7 +568,7 @@ public class UserMessageController {
      */
     @RequestMapping(value = "/otcReleaseOrder.htm")//, method = RequestMethod.POST
     public @ResponseBody
-    JsonObjectBO buy(HttpServletRequest request, OtcTransactionPendOrderDTO otcOrderVO) {
+    JsonObjectBO buy(HttpServletRequest request, OtcTransactionPendOrderDTO otcOrderVO, MultipartFile alipayImageUrl, MultipartFile wechatImageUrl) {
         JsonObjectBO resultJson = new JsonObjectBO();
         UserSessionBO userSession = UserWebInterceptor.getUser(request);
         if (userSession == null) {
@@ -577,13 +579,13 @@ public class UserMessageController {
         otcOrderVO.setUserId(userSession.getUserId());
         otcOrderVO.setUserAccount(userSession.getUserAccount());
         // 校验参数
-        if (otcOrderVO.getCurrencyId() == 0 || otcOrderVO.getOrderType() == 0 || otcOrderVO.getPendingRatio() == 0 || otcOrderVO.getMaxNumber() <= 0 ) {//最大限额不能为0
+        if (otcOrderVO.getCurrencyId() == 0 || otcOrderVO.getOrderType() == 0 || otcOrderVO.getPendingRatio() == 0 || otcOrderVO.getMaxNumber() <= 0 || otcOrderVO.getOrderType() != 1 || otcOrderVO.getOrderType() != 2) {
             resultJson.setCode(3);
             resultJson.setMessage("参数错误");
             return resultJson;
         }
         // 判断是否选择付款方式
-        if(!StringUtil.isNotNull(otcOrderVO.getBankAccount()) && !StringUtil.isNotNull(otcOrderVO.getAlipayAccount()) && !StringUtil.isNotNull(otcOrderVO.getWechatAccount())){
+        if (!StringUtil.isNotNull(otcOrderVO.getBankAccount()) && !StringUtil.isNotNull(otcOrderVO.getAlipayAccount()) && !StringUtil.isNotNull(otcOrderVO.getWechatAccount())) {
             resultJson.setCode(3);
             resultJson.setMessage("付款方式参数错误");
             return resultJson;
@@ -598,18 +600,32 @@ public class UserMessageController {
             }
         }
         if (StringUtil.isNotNull(otcOrderVO.getAlipayAccount())) {//支付宝
-            if (!StringUtil.isNotNull(otcOrderVO.getAlipayImage())) {
+            if (alipayImageUrl == null || alipayImageUrl.isEmpty()) {
                 resultJson.setCode(3);
                 resultJson.setMessage("支付宝参数错误");
                 return resultJson;
             }
+            String alipayImage = ImageReduceUtil.reduceImageUploadRemote(alipayImageUrl, FileUrlConfig.file_remote_qeCodeImage_url);
+            if (alipayImage.equals("") || alipayImage == null) {
+                resultJson.setCode(3);
+                resultJson.setMessage("微信二维码上传失败");
+                return resultJson;
+            }
+            otcOrderVO.setAlipayImage(alipayImage);
         }
         if (StringUtil.isNotNull(otcOrderVO.getWechatAccount())) {//微信
-            if (!StringUtil.isNotNull(otcOrderVO.getWechatImage())) {
+            if (wechatImageUrl == null || wechatImageUrl.isEmpty()) {
                 resultJson.setCode(3);
                 resultJson.setMessage("微信参数错误");
                 return resultJson;
             }
+            String wechatImage = ImageReduceUtil.reduceImageUploadRemote(wechatImageUrl, FileUrlConfig.file_remote_qeCodeImage_url);
+            if (wechatImage.equals("") || wechatImage == null) {
+                resultJson.setCode(3);
+                resultJson.setMessage("微信二维码上传失败");
+                return resultJson;
+            }
+            otcOrderVO.setWechatImage(wechatImage);
         }
         // 根据挂单类型判断 出售单：1 回购单：2   出售单 判断币种信息   回购单不做判断
         if (otcOrderVO.getOrderType() == 1) {

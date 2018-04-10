@@ -50,6 +50,7 @@ public class OtcTransactionPendOrderServiceImpl implements IOtcTransactionPendOr
             //插入挂单表
         OtcTransactionPendOrderDO otcTransactionPendOrder = new OtcTransactionPendOrderDO();
         otcTransactionPendOrder.setAddTime(curTime);//添加时间
+        otcTransactionPendOrder.setOrderType(otcOrderVO.getOrderType());//挂单类型:1：出售，2：回购
         otcTransactionPendOrder.setOtcPendingOrderNo(pendingOrderNo);//主键 订单号
         otcTransactionPendOrder.setUserId(otcOrderVO.getUserId());//用户id
         otcTransactionPendOrder.setUserAccount(otcOrderVO.getUserAccount());//用户名称
