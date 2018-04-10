@@ -10,7 +10,7 @@
             currencyName,transactionPrice,pendingRatio,currencyNumber,feeNumber,currencyTotalPrice,
             pendTime,dealStatus,remark,updateTime,addTime
         FROM otc_transaction_user_deal_tab
-        WHERE otcPendingOrderNo = #{orderNo}
+        WHERE otcOrderNo = #{orderNo}
     </select>
 
     <update id="OtcTransactionUserDeal_updateDealStatusByOtcOrderNo" parameterType="java.util.Map">
