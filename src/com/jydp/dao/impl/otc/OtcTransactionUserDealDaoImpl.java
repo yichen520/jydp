@@ -6,6 +6,8 @@ import com.jydp.entity.DO.otc.OtcTransactionUserDealDO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,16 +43,18 @@ public class OtcTransactionUserDealDaoImpl implements IOtcTransactionUserDealDao
      * @param otcOrderNo 记录号
      * @param dealStatus 原成交记录状态
      * @param changedStatus 修改后的成交记录状态
-     * @return
+     * @param updateTime 修改时间
+     * @return 修改成功：返回true; 修改失败：返回false
      */
     @Override
-    public boolean updateDealStatusByOtcOrderNo(String otcOrderNo, int dealStatus, int changedStatus) {
+    public boolean updateDealStatusByOtcOrderNo(String otcOrderNo, int dealStatus, int changedStatus, Timestamp updateTime) {
 
         int result = 0;
         Map<String,Object> map = new HashMap<>();
         map.put("otcOrderNo", otcOrderNo);
         map.put("dealStatus", dealStatus);
         map.put("changedStatus", changedStatus);
+        map.put("updateTime", updateTime);
 
         try {
             result = sqlSessionTemplate.update("OtcTransactionUserDeal_updateDealStatusByOtcOrderNo",map);

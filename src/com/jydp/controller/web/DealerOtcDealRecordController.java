@@ -70,4 +70,45 @@ public class DealerOtcDealRecordController {
             return responseJson;
         }
     }
+
+    /** 经销商出售币-确认收款 **/
+    @RequestMapping(value = "/confirmTakeCoin.html", method = RequestMethod.POST)
+    public @ResponseBody JsonObjectBO confirmTakeCoin(HttpServletRequest request){
+        JsonObjectBO responseJson = new JsonObjectBO();
+
+        String otcOrderNo = StringUtil.stringNullHandle(request.getParameter("otcOrderNo"));
+
+        if (!StringUtil.isNotNull(otcOrderNo)) {
+            responseJson.setCode(3);
+            responseJson.setMessage("参数错误");
+            return responseJson;
+        }
+
+        UserSessionBO userSession = UserWebInterceptor.getUser(request);
+        if (userSession == null) {
+            responseJson.setCode(4);
+            responseJson.setMessage("未登录");
+            return responseJson;
+        }
+
+        OtcTransactionUserDealDO otcTransactionUserDeal =  otcTransactionUserDealService.getOtcTransactionUsealByOrderNo(otcOrderNo);
+
+        if (otcTransactionUserDeal == null) {
+            responseJson.setCode(3);
+            responseJson.setMessage("该笔订单不存在");
+            return responseJson;
+        }
+
+        boolean result = otcTransactionUserDealService.dealerConfirmTakeForSellCoin(otcTransactionUserDeal,userSession.getUserId());
+
+        if (result) {
+            responseJson.setCode(1);
+            responseJson.setMessage("确认收款成功");
+            return responseJson;
+        } else {
+            responseJson.setCode(1);
+            responseJson.setMessage("确认收款失败");
+            return responseJson;
+        }
+    }
 }
