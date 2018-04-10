@@ -1,4 +1,3 @@
-body {padding-bottom:1.2rem }
 /* 内容区域 */
 #wrapper{
     width: 100%;
@@ -113,7 +112,7 @@ body {padding-bottom:1.2rem }
 /* 列表 */
 .mine-list{
     width:6.9rem;
-    padding: 0.2rem 0.3rem 0 0.3rem;
+    padding: 0.2rem 0.3rem 1.2rem 0.3rem;
     overflow-y: scroll;
 }
 .mine-list ul{
