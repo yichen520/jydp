@@ -21,4 +21,10 @@ public interface IOtcTransactionPendOrderService {
      */
     OtcTransactionPendOrderDO insertPendOrder();
 
+    /**
+     * 根据挂单号查询 挂单记录
+     * @param otcPendingOrderNo
+     * @return
+     */
+    OtcTransactionPendOrderDO getPendOrderByOrderNo(String otcPendingOrderNo);
 }
