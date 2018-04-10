@@ -26,7 +26,7 @@
 		SELECT  COUNT(otcPendingOrderNo)
 		FROM otc_transaction_pend_order_tab
 		WHERE
-			pendingStatus != 5
+			pendingStatus = 1
 		<if test="currencyId != 0">
 			AND currencyId = #{currencyId}
 		</if>
@@ -44,7 +44,7 @@
 			remark,updateTime,addTime
 		FROM otc_transaction_pend_order_tab
 		WHERE
-				pendingStatus != 5
+				pendingStatus = 1
 			<if test="currencyId != 0">
 				AND currencyId = #{currencyId}
 			</if>
