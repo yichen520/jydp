@@ -79,13 +79,6 @@ public class UserMessageController {
     private ITransactionCurrencyService transactionCurrencyService;
 
     /**
-     * 经销商标识
-     */
-    @Autowired
-    private IOtcDealerUserService otcDealerUserService;
-
-
-    /**
      * 用户个人信息查询
      */
     @RequestMapping(value = "/show.htm")
@@ -148,9 +141,8 @@ public class UserMessageController {
             }
         }
 
-        //TODO  判定是否是经销商
-        OtcDealerUserDO otcDealerUser = otcDealerUserService.getOtcDealerUserByUserId(user.getUserId());
-        if(otcDealerUser != null){
+        //判断用户是否为经销商
+        if(user.getIsDealer() == 2){
             List<OtcTransactionPendOrderDO> otcTransactionPendOrderList = otcTransactionPendOrderService.getOtcTransactionPendOrderByUserId(user.getUserId());
             request.setAttribute("otcTransactionPendOrderList", otcTransactionPendOrderList);
         }
