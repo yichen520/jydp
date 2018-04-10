@@ -5,7 +5,7 @@
 
 <mapper namespace="com.jydp.dao.impl.otc.otcTransactionPendOrderDaoImpl">
 
-	<insert id="OtcDealerUser_insertOtcTransactionPendOrder" parameterType="OtcTransactionPendOrderDO">
+	<insert id="OtcTransactionPendOrde_insertOtcTransactionPendOrder" parameterType="OtcTransactionPendOrderDO">
 		INSERT INTO otc_transaction_pend_order_tab
 		(otcPendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingRatio, minNumber,
 		 maxNumber, addTime)
