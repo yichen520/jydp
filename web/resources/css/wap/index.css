@@ -211,6 +211,7 @@ header img{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    line-height: 0.36rem;
 }
 /* 选择币种 */
 .choseBz{
