@@ -56,12 +56,6 @@ public class DealerOtcDealRecordController {
             return responseJson;
         }
 
-        if (otcTransactionUserDeal.getUserId() != userSession.getUserId()) {
-            responseJson.setCode(3);
-            responseJson.setMessage("非挂单本人操作");
-            return responseJson;
-        }
-
         boolean result = otcTransactionUserDealService.updateDealStatusByOtcOrderNo(otcOrderNo,1,2);
 
         if (result) {
