@@ -94,7 +94,7 @@ public class OtcTradeCenterController {
         }
 
         //获取挂单信息
-        OtcTransactionPendOrderDO otcTransactionPendOrder = otcTransactionPendOrderService.getPendOrderByOrderNo(otcPendingOrderNo);
+        OtcTransactionPendOrderDO otcTransactionPendOrder = otcTransactionPendOrderService.getOtcTransactionPendOrderByOrderNo(otcPendingOrderNo);
         if(otcTransactionPendOrder == null){
             resultJson.setCode(2);
             resultJson.setMessage("参数错误");

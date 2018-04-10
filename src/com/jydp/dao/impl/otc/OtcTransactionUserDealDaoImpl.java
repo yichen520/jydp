@@ -20,15 +20,15 @@ public class OtcTransactionUserDealDaoImpl implements IOtcTransactionUserDealDao
     private SqlSessionTemplate sqlSessionTemplate;
 
     /**
-     * 根据记录好查询成交记录信息
+     * 根据记录号查询成交记录信息
      * @param orderNo 记录号
      * @return 查询成功：返回记录信息, 查询失败或者没有相应记录：返回null
      */
-    public OtcTransactionUserDealDO getOtcTransactionUsealBytcOrderNo(String orderNo){
+    public OtcTransactionUserDealDO getOtcTransactionUsealByOrderNo(String orderNo){
         OtcTransactionUserDealDO result = null;
 
         try {
-            result = sqlSessionTemplate.selectOne("OtcTransactionUserDeal_getOtcTransactionUsealBytcOrderNo", orderNo);
+            result = sqlSessionTemplate.selectOne("OtcTransactionUserDeal_getOtcTransactionUsealByOrderNo", orderNo);
         } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }

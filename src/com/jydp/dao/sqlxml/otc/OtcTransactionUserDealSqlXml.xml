@@ -5,10 +5,10 @@
 
 <mapper namespace="com.jydp.dao.impl.otc.OtcTransactionUserDealDaoImpl">
 
-    <select id="OtcTransactionUserDeal_getOtcTransactionUsealBytcOrderNo" parameterType="java.lang.String" resultType="OtcTransactionUserDealDO">
-        SELECT otcPendingOrderNo,userId,userAccount,paymentType,currencyId,currencyName,
-            pendingRatio,minNumber,maxNumber,pendingNumber,dealNumber,buyFee,restBalanceLock,
-            area,pendingStatus,endTime,remark,updateTime,addTime
+    <select id="OtcTransactionUserDeal_getOtcTransactionUsealByOrderNo" parameterType="java.lang.String" resultType="OtcTransactionUserDealDO">
+		SELECT otcOrderNo,otcPendingOrderNo,userId,userAccount,paymentType,currencyId,
+            currencyName,transactionPrice,pendingRatio,currencyNumber,feeNumber,currencyTotalPrice,
+            pendTime,dealStatus,remark,updateTime,addTime
         FROM otc_transaction_user_deal_tab
         WHERE otcPendingOrderNo = #{orderNo}
     </select>

@@ -37,4 +37,21 @@ public class otcTransactionPendOrderDaoImpl implements IOtcTransactionPendOrderD
             return false;
         }
     }
+
+    /**
+     * 根据记录号查询挂单记录信息
+     * @param orderNo 记录号
+     * @return 查询成功：返回记录信息, 查询失败或者没有相应记录：返回null
+     */
+    public OtcTransactionPendOrderDO getOtcTransactionPendOrderByOrderNo(String orderNo){
+        OtcTransactionPendOrderDO result = null;
+
+        try {
+            result = sqlSessionTemplate.selectOne("OtcTransactionPendOrde_getOtcTransactionPendOrderByOrderNo", orderNo);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return result;
+    }
 }

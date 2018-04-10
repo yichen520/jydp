@@ -14,4 +14,11 @@ public interface IOtcTransactionPendOrderDao {
      * @return 新增成功：返回true, 新增失败：返回false
      */
     boolean insertOtcTransactionPendOrder(OtcTransactionPendOrderDO otcTransactionPendOrderDO);
+
+    /**
+     * 根据记录号查询挂单记录信息
+     * @param orderNo 记录号
+     * @return 查询成功：返回记录信息, 查询失败或者没有相应记录：返回null
+     */
+    OtcTransactionPendOrderDO getOtcTransactionPendOrderByOrderNo(String orderNo);
 }

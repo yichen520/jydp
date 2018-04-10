@@ -8,11 +8,11 @@ import com.jydp.entity.DO.otc.OtcTransactionUserDealDO;
  */
 public interface IOtcTransactionUserDealDao {
     /**
-     * 根据记录好查询成交记录信息
+     * 根据记录号查询成交记录信息
      * @param orderNo 记录号
      * @return 查询成功：返回记录信息, 查询失败或者没有相应记录：返回null
      */
-    OtcTransactionUserDealDO getOtcTransactionUsealBytcOrderNo(String orderNo);
+    OtcTransactionUserDealDO getOtcTransactionUsealByOrderNo(String orderNo);
 
     /**
      * 根据记录号修改成交记录状态
@@ -22,4 +22,5 @@ public interface IOtcTransactionUserDealDao {
      * @return  修改成功：返回true; 修改失败：返回false
      */
     boolean updateDealStatusByOtcOrderNo(String otcOrderNo, int dealStatus, int changedStatus);
+
 }
