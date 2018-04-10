@@ -5,7 +5,7 @@
 
 <mapper namespace="com.jydp.dao.impl.user.UserPaymentTypeDaoImpl">
 
-	<insert id="UserPaymentType_insertUserPaymentType" parameterType="UserPaymentTypeDO">
+	<insert id="UserPaymentType_insertUserPaymentType" useGeneratedKeys="true" keyProperty="typeId" parameterType="UserPaymentTypeDO">
 		INSERT INTO user_payment_type_tab
 		(userId, otcPendingOrderNo, paymentType, paymentAccount, bankName, bankCode, bankBranch,
 		 paymentName, paymentPhone, paymentImage, remark,addTime)
