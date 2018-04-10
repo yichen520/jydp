@@ -14,4 +14,10 @@
 		 #{minNumber}, #{maxNumber}, #{addTime})
 	</insert>
 
+	<select id="OtcTransactionPendOrde_getOtcTransactionPendOrderByOrderNo" parameterType="java.lang.String" resultType="OtcTransactionPendOrderDO">
+		SELECT otcPendingOrderNo,userId,userAccount,orderType,currencyId,currencyName,pendingRatio,
+			minNumber,maxNumber,pendingNumber,dealNumber,buyFee,restBalanceLock,area,pendingStatus,endTime,
+			remark,updateTime,addTime
+		FROM otc_transaction_pend_order_tab = #{orderNo}
+	</select>
 </mapper>

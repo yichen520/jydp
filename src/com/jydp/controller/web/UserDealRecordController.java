@@ -3,6 +3,7 @@ package com.jydp.controller.web;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
+import com.jydp.entity.DO.otc.OtcTransactionUserDealDO;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.IOtcTransactionUserDealService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * 用户成交记录
+ * 场外交易用户成交记录
  * @Author: sy
  */
 @Controller
@@ -56,6 +57,26 @@ public class UserDealRecordController {
             return response;
         }
 
+        OtcTransactionUserDealDO otcTransactionUserDeal = otcTransactionUserDealService.getOtcTransactionUsealByOrderNo(otcOrderNo);
+        if(otcTransactionUserDeal == null){
+            response.setCode(3);
+            response.setMessage("此订单不存在");
+            return response;
+        }
+
+        //用户确认收货
+        if(otcTransactionUserDeal.getPaymentType() == 1){
+
+
+        //用户确认收款
+        } else if(otcTransactionUserDeal.getPaymentType() == 2){
+
+
+        } else {
+            response.setCode(3);
+            response.setMessage("该订单无法确认");
+            return response;
+        }
 
         return response;
     }

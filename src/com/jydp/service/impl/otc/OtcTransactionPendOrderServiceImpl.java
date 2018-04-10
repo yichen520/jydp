@@ -1,6 +1,5 @@
 package com.jydp.service.impl.otc;
 
-import com.iqmkj.utils.DateUtil;
 import com.jydp.dao.IOtcTransactionPendOrderDao;
 import com.jydp.entity.DO.otc.OtcTransactionPendOrderDO;
 import com.jydp.service.IOtcTransactionPendOrderService;
@@ -28,5 +27,14 @@ public class OtcTransactionPendOrderServiceImpl implements IOtcTransactionPendOr
         OtcTransactionPendOrderDO otcTransactionPendOrder = new OtcTransactionPendOrderDO();
         otcTransactionPendOrderDao.insertOtcTransactionPendOrder(otcTransactionPendOrder);
      return null;
+    }
+
+    /**
+     * 根据记录号查询挂单记录信息
+     * @param orderNo 记录号
+     * @return 查询成功：返回记录信息, 查询失败或者没有相应记录：返回null
+     */
+    public OtcTransactionPendOrderDO getOtcTransactionPendOrderByOrderNo(String orderNo) {
+        return otcTransactionPendOrderDao.getOtcTransactionPendOrderByOrderNo(orderNo);
     }
 }
