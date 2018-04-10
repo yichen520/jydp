@@ -479,6 +479,12 @@ public class OtcTradeCenterController {
         return resultJson;
     }
 
+    @RequestMapping("/show.html")
+    public String show(HttpServletRequest request){
+        list(request);
+        return "";
+    }
+
     /** 查询数据 */
     public void list(HttpServletRequest request) {
 
