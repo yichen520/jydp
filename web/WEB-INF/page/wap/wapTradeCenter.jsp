@@ -113,16 +113,16 @@
             <div class="buy">
                 <div class="mainContent">
                     <div class="mainContent-priceBuy">
-                        <span class="name">单价</span><input type="text" id="buyPrice" name="buyPrice" maxlength="9">
+                        <span class="name">单价</span><input type="text" id="buyPrice" name="buyPrice" maxlength="9" style="line-height: 0.24rem">
                     </div>
                     <div class="mainContent-numBuy">
-                        <span class="name">数量</span><input type="text" id="buyNum" name="buyNum" maxlength="11" autocomplete="new-password">
+                        <span class="name">数量</span><input type="text" id="buyNum" name="buyNum" maxlength="11" autocomplete="new-password" style="line-height: 0.24rem">
                     </div>
                     <input type="hidden" id="buyFee" value="{{transactionCurrency.buyFee}}">
                     <input type="hidden" id="buyTotal">
                     <p class="maxNum" id="buyMax">最大可买: 0</p>
                     <div class="mainContent-passwordBuy">
-                        <span class="name">交易密码</span><input type="password" id="buyPwd" name="buyPwd" maxlength="16"  autocomplete="new-password"/>
+                        <span class="name">交易密码</span><input type="password" id="buyPwd" name="buyPwd" maxlength="16"  autocomplete="new-password" style="line-height: 0.24rem"/>
                         <span class="setting">设置</span>
                     </div>
                     <p class="maxNumTwo" id="bMaxNum">当前设置: 每笔交易都输入密码</p>
@@ -145,10 +145,10 @@
             <div class="sell">
                 <div class="mainContent">
                     <div class="mainContent-priceSell">
-                        <span class="name">单价</span><input type="text" id="sellPrice" name="sellPrice" maxlength="9">
+                        <span class="name">单价</span><input type="text" id="sellPrice" name="sellPrice" maxlength="9" style="line-height: 0.24rem;">
                     </div>
                     <div class="mainContent-numSell">
-                        <span class="name">数量</span><input type="text" id="sellNum" name="sellNum" maxlength="11" autocomplete="new-password">
+                        <span class="name">数量</span><input type="text" id="sellNum" name="sellNum" maxlength="11" autocomplete="new-password" style="line-height: 0.24rem">
                     </div>
                     <input type="hidden" id="sellFee" value="{{transactionCurrency.sellFee}}">
                     <input type="hidden" id="currencyNumber"
@@ -157,7 +157,7 @@
                     <p class="maxNum" id="sellMax">最大可获得: 0 XT</p>
                     <div class="mainContent-passwordSell">
                         <span class="name">交易密码</span>
-                        <input type="password" id="sellPwd" name="sellPwd"  maxlength="16"  autocomplete="new-password"/>
+                        <input type="password" id="sellPwd" name="sellPwd"  maxlength="16"  autocomplete="new-password" style="line-height: 0.24rem"/>
                         <span class="setting">设置</span>
                     </div>
                     <p class="maxNumTwo" id="sMaxNum">当前设置: 每笔交易都输入密码</p>
@@ -232,7 +232,6 @@
     <!-- 选择币种 -->
 
         <div class="choseBzBox">
-
             <div class="choseBzBox-title">
                 <p>选择币种</p>
                 <img src="{{webAppPath}}/resources/image/wap/header-close.png" class="closeBox"/>
@@ -331,7 +330,7 @@
                 <p >
                     交易密码<input type="password" class="pas" id="rememberPwd" maxlength="16" autocomplete="new-password"
                                onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')"
-                               onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
+                               onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')" style="line-height: 0.24rem"/>
                 </p>
             </div>
             <div class="settingButton">
