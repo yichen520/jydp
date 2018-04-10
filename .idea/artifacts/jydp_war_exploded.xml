@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="jydp:war exploded">
+  <artifact type="war" name="jydp:war exploded">
     <output-path>$PROJECT_DIR$/out/artifacts/jydp_war_exploded</output-path>
-    <root id="root">
+    <root id="archive" name="jydp_war exploded.war">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="jydp" />
@@ -9,6 +9,12 @@
         <element id="directory" name="lib">
           <element id="library" level="project" name="junit-4.12" />
           <element id="library" level="project" name="hamcrest-core-1.3" />
+          <element id="library" level="project" name="commons-codec-1.10" />
+          <element id="file-copy" path="$PROJECT_DIR$/../rabbitmq-client-1.3.0.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/../spring-amqp-1.6.0.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/../spring-rabbit-1.6.0.RELEASE.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/../amqp-client-3.6.0.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/../spring-retry-1.1.2.RELEASE.jar" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="jydp/web/Web" />
