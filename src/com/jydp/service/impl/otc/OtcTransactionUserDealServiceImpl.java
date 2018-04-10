@@ -8,6 +8,8 @@ import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.otc.OtcTransactionPendOrderDO;
 import com.jydp.entity.DO.otc.OtcTransactionUserDealDO;
+import com.jydp.entity.DO.otc.UserPaymentTypeDO;
+import com.jydp.entity.DTO.UserPaymentTypeDTO;
 import com.jydp.entity.VO.OtcTransactionUserDealVO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserBalanceDO;
@@ -60,6 +62,10 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
     @Autowired
     private IUserBalanceService userBalanceService;
 
+    /** 用户收款记录 */
+    @Autowired
+    private IUserPaymentTypeService userPaymentTypeService;
+
     /**
      * 新增成交记录
      * @param otcPendingOrderNo 挂单记录号
@@ -67,26 +73,68 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
      * @param dealerId 卖方用户Id
      * @param typeId 收款方式Id
      * @param userAccount 用户帐号
-     * @param paymentType 收支类型：1：买入，2：卖出，3：撤销
+     * @param dealType 收支类型：1：买入，2：卖出，3：撤销
      * @param currencyId 币种Id
      * @param currencyName 货币名称
      * @param pendingRatio 挂单比例
      * @param currencyNumber 成交数量
      * @param currencyTotalPrice 成交总价
      * @param pendTime 挂单时间
+     * @param paymentType 收款方式标识：1：银行卡，2：支付宝，3：微信
+     * @param userPaymentType 用户收款方式
      * @return 新增成功：返回记录信息, 新增失败：返回null
      */
     @Transactional
     public JsonObjectBO insertOtcTransactionUserDeal(String otcPendingOrderNo, int userId, int dealerId, int typeId, String userAccount,
-                                                     int paymentType, int currencyId, String currencyName, double pendingRatio, double currencyNumber,
-                                                     double currencyTotalPrice, Timestamp pendTime){
+                                                     int dealType, int currencyId, String currencyName, double pendingRatio, double currencyNumber,
+                                                     double currencyTotalPrice, Timestamp pendTime, int paymentType, UserPaymentTypeDTO userPaymentType){
         JsonObjectBO resultJson = new JsonObjectBO();
-        //业务执行状态
-        boolean excuteSuccess = true;
+
         Timestamp curTime = DateUtil.getCurrentTime();
-        String remark;
         int code = 1;
         String message = "新增成功";
+
+        UserPaymentTypeDO userPaymentTypeDO = new UserPaymentTypeDO();
+        userPaymentTypeDO.setUserId(dealerId);
+        userPaymentTypeDO.setOtcPendingOrderNo(otcPendingOrderNo);
+        userPaymentTypeDO.setPaymentType(paymentType);
+        userPaymentTypeDO.setAddTime(curTime);
+
+        //业务执行状态
+        boolean excuteSuccess = true;
+        //新增用户收款方式
+        if(paymentType == 1){
+            userPaymentTypeDO.setPaymentAccount(userPaymentType.getPaymentAccount());
+            userPaymentTypeDO.setBankName(userPaymentType.getBankName());
+            userPaymentTypeDO.setBankBranch(userPaymentType.getBankBranch());
+            userPaymentTypeDO.setPaymentName(userPaymentType.getPaymentName());
+            userPaymentTypeDO.setPaymentPhone(userPaymentType.getPaymentPhone());
+
+            UserPaymentTypeDO userPayment = userPaymentTypeService.insertUserPaymentType(userPaymentTypeDO);
+            if(userPayment == null){
+                excuteSuccess = false;
+            }
+            typeId = userPayment.getTypeId();
+            if(!excuteSuccess){
+                code = 2;
+                message = "新增用户收款方式失败";
+            }
+        }else if(paymentType == 2 || paymentType == 3){
+            userPaymentTypeDO.setPaymentAccount(userPaymentType.getPaymentAccount());
+            userPaymentTypeDO.setPaymentImage(userPaymentType.getPaymentImage());
+
+            UserPaymentTypeDO userPayment = userPaymentTypeService.insertUserPaymentType(userPaymentTypeDO);
+            if(userPayment == null){
+                excuteSuccess = false;
+            }
+            typeId = userPayment.getTypeId();
+            if(!excuteSuccess){
+                code = 2;
+                message = "新增用户收款方式失败";
+            }
+        }
+
+        String remark;
         if(currencyId == 999){
             //增加买方用户冻结XT
             if(excuteSuccess){
@@ -228,9 +276,10 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
                     NumberUtil.createNumberStr(10);
             otcTransactionUserDeal.setOtcOrderNo(otcOrderNo);
             otcTransactionUserDeal.setOtcPendingOrderNo(otcPendingOrderNo);
+            otcTransactionUserDeal.setTypeId(typeId);
             otcTransactionUserDeal.setUserId(userId);
             otcTransactionUserDeal.setUserAccount(userAccount);
-            otcTransactionUserDeal.setDealType(paymentType);
+            otcTransactionUserDeal.setDealType(dealType);
             otcTransactionUserDeal.setCurrencyId(currencyId);
             otcTransactionUserDeal.setCurrencyName(currencyName);
             otcTransactionUserDeal.setPendingRatio(pendingRatio);

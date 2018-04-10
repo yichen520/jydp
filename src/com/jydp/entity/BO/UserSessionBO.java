@@ -16,6 +16,7 @@ public class UserSessionBO implements Serializable {
 	private String userAccount;  //用户帐号
 	private long outTime;  //过期时间
 	private int isPwd;  //是否输入过密码，1：未输入过，2：已输入过
+	private int isDealer;  //是否是经销商 1：不是 2 是
 
 	public String getSessionId() {
 		return sessionId;
@@ -87,5 +88,21 @@ public class UserSessionBO implements Serializable {
 	 */
 	public void setIsPwd(int isPwd) {
 		this.isPwd = isPwd;
+	}
+
+	/**
+	 * 是否是经销商 1 否 2 是
+	 * @return the isDealer
+	 */
+	public int getIsDealer() {
+		return isDealer;
+	}
+
+	/**
+	 * 是否是经销商 1 否 2 是
+	 * @param isDealer the isDealer
+	 */
+	public void setIsDealer(int isDealer) {
+		this.isDealer = isDealer;
 	}
 }

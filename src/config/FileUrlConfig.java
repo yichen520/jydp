@@ -40,4 +40,7 @@ public class FileUrlConfig {
 	/** 公告、热门默认图片标识 */
 	public static final String notice_hotTopic_defaultImage ="1";
 
+	/** 支付宝 微信二维码 */
+	public static final String file_remote_qeCodeImage_url ="qeCodeImage";
+
 }

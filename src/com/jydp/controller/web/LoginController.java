@@ -9,16 +9,13 @@ import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DO.user.UserIdentificationDO;
 import com.jydp.entity.DO.user.UserIdentificationImageDO;
 import com.jydp.interceptor.UserWebInterceptor;
-import com.jydp.service.IUserCurrencyNumService;
-import com.jydp.service.IUserIdentificationImageService;
-import com.jydp.service.IUserIdentificationService;
-import com.jydp.service.IUserService;
+import com.jydp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
+import com.jydp.entity.DO.otc.OtcDealerUserDO;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -47,6 +44,9 @@ public class LoginController {
     @Autowired
     private IUserCurrencyNumService userCurrencyNumService;
 
+    /** 用户币数量 */
+    @Autowired
+    private IOtcDealerUserService otcDealerUserService;
     /**  跳转至登录页面 */
     @RequestMapping(value = "/show")
     public String show() {
@@ -122,6 +122,13 @@ public class LoginController {
         userSessionBO.setUserId(user.getUserId());
         userSessionBO.setUserAccount(user.getUserAccount());
         userSessionBO.setIsPwd(1);
+        //判断用户是不是经销商 存入session
+        OtcDealerUserDO otcDealerUserDO = otcDealerUserService.getOtcDealerUserByUserId(user.getUserId());
+        if(otcDealerUserDO != null){
+            userSessionBO.setIsDealer(2);//是经销商
+        }else{
+            userSessionBO.setIsDealer(1);//不是经销商
+        }
         UserWebInterceptor.loginSuccess(request, userSessionBO);
         return "redirect:/userWeb/homePage/show";
     }

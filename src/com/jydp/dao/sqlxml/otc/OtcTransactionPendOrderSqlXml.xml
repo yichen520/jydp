@@ -57,4 +57,22 @@
 		ORDER BY addTime DESC
 		LIMIT #{startNumber}, #{pageSize}
 	</select>
+
+	<select id="OtcTransactionPendOrde_getOtcTransactionPendOrderByUserId" parameterType="int" resultType="OtcTransactionPendOrderDO">
+		SELECT otcPendingOrderNo,userId,userAccount,orderType,currencyId,currencyName,pendingRatio,
+		minNumber,maxNumber,pendingNumber,dealNumber,buyFee,restBalanceLock,area,pendingStatus,endTime,
+		remark,updateTime,addTime
+		FROM otc_transaction_pend_order_tab
+		WHERE userId = #{userId}
+	    AND pendingStatus = 1
+	    ORDER BY DESC addTime
+	</select>
+
+    <update id="OtcTransactionPendOrde_deleteOtcTransactionPendOrderByOtcPendingOrderNo" parameterType="java.util.Map">
+        UPDATE otc_transaction_pend_order_tab
+        SET pendingStatus = -1,
+        updateTime = #{updateTime}
+        WHERE otcPendingOrderNo = #{otcPendingOrderNo}
+        AND userId = #{userId}
+    </update>
 </mapper>

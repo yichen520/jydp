@@ -68,7 +68,9 @@
         <if test="endddTime != null">
             AND OTUD.addTime <![CDATA[ <= ]]> #{endddTime}
         </if>
+        ORDER BY DESC addTime
         LIMIT #{startNumber}, #{pageSize}
+
     </select>
 
     <update id="OtcTransactionUserDeal_updateDealStatusByOtcOrderNo" parameterType="java.util.Map">

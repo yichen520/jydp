@@ -50,6 +50,7 @@ public class OtcTransactionPendOrderServiceImpl implements IOtcTransactionPendOr
             //插入挂单表
         OtcTransactionPendOrderDO otcTransactionPendOrder = new OtcTransactionPendOrderDO();
         otcTransactionPendOrder.setAddTime(curTime);//添加时间
+        otcTransactionPendOrder.setOrderType(otcOrderVO.getOrderType());//挂单类型:1：出售，2：回购
         otcTransactionPendOrder.setOtcPendingOrderNo(pendingOrderNo);//主键 订单号
         otcTransactionPendOrder.setUserId(otcOrderVO.getUserId());//用户id
         otcTransactionPendOrder.setUserAccount(otcOrderVO.getUserAccount());//用户名称
@@ -73,7 +74,10 @@ public class OtcTransactionPendOrderServiceImpl implements IOtcTransactionPendOr
                 userPaymentTypA.setPaymentName(otcOrderVO.getPaymentName());//预留名
                 userPaymentTypA.setPaymentPhone(otcOrderVO.getPaymentPhone());//预留手机
                 userPaymentTypA.setAddTime(curTime);//添加时间
-                excuteSuccess = userPaymentTypeService.insertUserPaymentType(userPaymentTypA);
+                UserPaymentTypeDO  userPaymentTypeDOA= userPaymentTypeService.insertUserPaymentType(userPaymentTypA);
+                if (userPaymentTypeDOA == null) {
+                    excuteSuccess = false;
+                }
             }
         }
         if(excuteSuccess) {
@@ -85,7 +89,10 @@ public class OtcTransactionPendOrderServiceImpl implements IOtcTransactionPendOr
                 userPaymentTypB.setPaymentAccount(otcOrderVO.getAlipayAccount()); //账号
                 userPaymentTypB.setPaymentImage(otcOrderVO.getAlipayImage());//二维码地址
                 userPaymentTypB.setAddTime(curTime);//添加时间
-                excuteSuccess = userPaymentTypeService.insertUserPaymentType(userPaymentTypB);
+                UserPaymentTypeDO  userPaymentTypeDOB= userPaymentTypeService.insertUserPaymentType(userPaymentTypB);
+                if (userPaymentTypeDOB == null) {
+                    excuteSuccess = false;
+                }
             }
         }
         if(excuteSuccess) {
@@ -97,7 +104,10 @@ public class OtcTransactionPendOrderServiceImpl implements IOtcTransactionPendOr
                 userPaymentTypC.setPaymentAccount(otcOrderVO.getWechatAccount()); //账号
                 userPaymentTypC.setPaymentImage(otcOrderVO.getWechatImage());//二维码地址
                 userPaymentTypC.setAddTime(curTime);//添加时间
-                excuteSuccess = userPaymentTypeService.insertUserPaymentType(userPaymentTypC);
+                UserPaymentTypeDO  userPaymentTypeDOC= userPaymentTypeService.insertUserPaymentType(userPaymentTypC);
+                if (userPaymentTypeDOC == null) {
+                    excuteSuccess = false;
+                }
             }
         }
         if(!excuteSuccess){
@@ -142,5 +152,25 @@ public class OtcTransactionPendOrderServiceImpl implements IOtcTransactionPendOr
     @Override
     public List<OtcTransactionPendOrderDO> getOtcTransactionPendOrderlist(int currencyId, int orderType, String area, int pageNumber, int pageSize) {
         return otcTransactionPendOrderDao.getOtcTransactionPendOrderlist(currencyId,orderType,area,pageNumber,pageSize);
+    }
+
+    /**
+     * 根据用户id查询场外可用交易挂单列表
+     * @param userId 用户id
+     * @return 查询成功：返回记录信息，查询失败：返回null
+     */
+    public List<OtcTransactionPendOrderDO> getOtcTransactionPendOrderByUserId(int userId){
+        return otcTransactionPendOrderDao.getOtcTransactionPendOrderByUserId(userId);
+    }
+
+    /**
+     * 根据订单号删除该用户订单
+     * @param userId 用户id
+     * @param otcPendingOrderNo 订单id
+     * @param updateTime 更新时间
+     * @return 新增成功：返回true, 新增失败：返回false
+     */
+    public boolean deleteOtcTransactionPendOrderByOtcPendingOrderNo(int userId, String otcPendingOrderNo, Timestamp updateTime){
+        return otcTransactionPendOrderDao.deleteOtcTransactionPendOrderByOtcPendingOrderNo(userId, otcPendingOrderNo, updateTime);
     }
 }

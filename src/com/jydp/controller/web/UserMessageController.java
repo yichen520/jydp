@@ -3,6 +3,8 @@ package com.jydp.controller.web;
 import com.iqmkj.utils.*;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
+import com.jydp.entity.DO.otc.OtcDealerUserDO;
+import com.jydp.entity.DO.otc.OtcTransactionPendOrderDO;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DTO.BackerUserCurrencyNumDTO;
@@ -11,6 +13,7 @@ import com.jydp.entity.VO.UserCurrencyNumVO;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.other.SendMessage;
 import com.jydp.service.*;
+import config.FileUrlConfig;
 import config.PhoneAreaConfig;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +24,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.jydp.service.IOtcTransactionPendOrderService;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -136,6 +141,12 @@ public class UserMessageController {
             }
         }
 
+        //判断用户是否为经销商
+        if(user.getIsDealer() == 2){
+            List<OtcTransactionPendOrderDO> otcTransactionPendOrderList = otcTransactionPendOrderService.getOtcTransactionPendOrderByUserId(user.getUserId());
+            request.setAttribute("otcTransactionPendOrderList", otcTransactionPendOrderList);
+        }
+
         Map<String, String> phoneAreaMap = PhoneAreaConfig.phoneAreaMap;
         userService.countCheckUserAmountForTimer(user.getUserId(), 1);
         request.setAttribute("code", 1);
@@ -144,6 +155,7 @@ public class UserMessageController {
         request.setAttribute("userBalanceSum", userBalanceSum);
         request.setAttribute("userMessage", userMessage);
         request.setAttribute("userCurrencyList", userCurrencyList);
+
         return "page/web/userMessage";
     }
 
@@ -544,11 +556,11 @@ public class UserMessageController {
     }
 
     /**
-     * OTC 场外交易挂单 发布订单  包括出售和回购订单   对应的是  前台页面的 orderType 购买1 和 出售 2
+     * OTC 场外交易挂单 经销商发布订单  包括出售和回购订单
      */
-    @RequestMapping(value = "/otcReleaseOrder.htm")//, method = RequestMethod.POST
+    @RequestMapping(value = "/otcReleaseOrder.htm", method = RequestMethod.POST)
     public @ResponseBody
-    JsonObjectBO buy(HttpServletRequest request, OtcTransactionPendOrderDTO otcOrderVO) {
+    JsonObjectBO buy(HttpServletRequest request, OtcTransactionPendOrderDTO otcOrderVO, MultipartFile alipayImageUrl, MultipartFile wechatImageUrl) {
         JsonObjectBO resultJson = new JsonObjectBO();
         UserSessionBO userSession = UserWebInterceptor.getUser(request);
         if (userSession == null) {
@@ -556,16 +568,22 @@ public class UserMessageController {
             resultJson.setMessage("未登录");
             return resultJson;
         }
+        //判断用户是否为经销商
+        if(userSession.getIsDealer() != 2){//不是经销商
+            resultJson.setCode(3);
+            resultJson.setMessage("当前用户不是经销商");
+            return resultJson;
+        }
         otcOrderVO.setUserId(userSession.getUserId());
         otcOrderVO.setUserAccount(userSession.getUserAccount());
         // 校验参数
-        if (otcOrderVO.getCurrencyId() == 0 || otcOrderVO.getOrderType() == 0 || otcOrderVO.getPendingRatio() == 0 || otcOrderVO.getMaxNumber() <= 0 ) {//最大限额不能为0
+        if (otcOrderVO.getCurrencyId() == 0 || otcOrderVO.getOrderType() == 0 || otcOrderVO.getPendingRatio() == 0 || otcOrderVO.getMaxNumber() <= 0 || otcOrderVO.getOrderType() != 1 || otcOrderVO.getOrderType() != 2) {
             resultJson.setCode(3);
             resultJson.setMessage("参数错误");
             return resultJson;
         }
         // 判断是否选择付款方式
-        if(!StringUtil.isNotNull(otcOrderVO.getBankAccount()) && !StringUtil.isNotNull(otcOrderVO.getAlipayAccount()) && !StringUtil.isNotNull(otcOrderVO.getWechatAccount())){
+        if (!StringUtil.isNotNull(otcOrderVO.getBankAccount()) && !StringUtil.isNotNull(otcOrderVO.getAlipayAccount()) && !StringUtil.isNotNull(otcOrderVO.getWechatAccount())) {
             resultJson.setCode(3);
             resultJson.setMessage("付款方式参数错误");
             return resultJson;
@@ -580,18 +598,32 @@ public class UserMessageController {
             }
         }
         if (StringUtil.isNotNull(otcOrderVO.getAlipayAccount())) {//支付宝
-            if (!StringUtil.isNotNull(otcOrderVO.getAlipayImage())) {
+            if (alipayImageUrl == null || alipayImageUrl.isEmpty()) {
                 resultJson.setCode(3);
                 resultJson.setMessage("支付宝参数错误");
                 return resultJson;
             }
+            String alipayImage = ImageReduceUtil.reduceImageUploadRemote(alipayImageUrl, FileUrlConfig.file_remote_qeCodeImage_url);
+            if (alipayImage.equals("") || alipayImage == null) {
+                resultJson.setCode(3);
+                resultJson.setMessage("微信二维码上传失败");
+                return resultJson;
+            }
+            otcOrderVO.setAlipayImage(alipayImage);
         }
         if (StringUtil.isNotNull(otcOrderVO.getWechatAccount())) {//微信
-            if (!StringUtil.isNotNull(otcOrderVO.getWechatImage())) {
+            if (wechatImageUrl == null || wechatImageUrl.isEmpty()) {
                 resultJson.setCode(3);
                 resultJson.setMessage("微信参数错误");
                 return resultJson;
             }
+            String wechatImage = ImageReduceUtil.reduceImageUploadRemote(wechatImageUrl, FileUrlConfig.file_remote_qeCodeImage_url);
+            if (wechatImage.equals("") || wechatImage == null) {
+                resultJson.setCode(3);
+                resultJson.setMessage("微信二维码上传失败");
+                return resultJson;
+            }
+            otcOrderVO.setWechatImage(wechatImage);
         }
         // 根据挂单类型判断 出售单：1 回购单：2   出售单 判断币种信息   回购单不做判断
         if (otcOrderVO.getOrderType() == 1) {
@@ -644,5 +676,39 @@ public class UserMessageController {
         resultJson = otcTransactionPendOrderService.insertPendOrder(otcOrderVO);
 
         return resultJson;
+    }
+
+    /**
+     * 根据订单号删除用户挂单信息
+     */
+    @RequestMapping(value = "/deleteOtcTransactionPendOrder.htm", method = RequestMethod.POST)
+    public @ResponseBody JsonObjectBO deleteOtcTransactionPendOrder(HttpServletRequest request) {
+        JsonObjectBO responseJson = new JsonObjectBO();
+
+        UserSessionBO user = UserWebInterceptor.getUser(request);
+        if (user == null) {
+            responseJson.setCode(2);
+            responseJson.setMessage("未登录");
+            return responseJson;
+        }
+
+        String otcPendingOrderNo = StringUtil.stringNullHandle(request.getParameter("otcPendingOrderNo"));
+        if (!StringUtil.isNotNull(otcPendingOrderNo)) {
+            responseJson.setCode(3);
+            responseJson.setMessage("参数错误");
+            return responseJson;
+        }
+
+        Timestamp currentTime = DateUtil.getCurrentTime();
+        boolean deleteOtcTransaction = otcTransactionPendOrderService.deleteOtcTransactionPendOrderByOtcPendingOrderNo(user.getUserId(), otcPendingOrderNo, currentTime);
+        if(!deleteOtcTransaction){
+            responseJson.setCode(3);
+            responseJson.setMessage("删除失败");
+            return responseJson;
+        }
+
+        responseJson.setCode(1);
+        responseJson.setMessage("删除成功");
+        return responseJson;
     }
 }

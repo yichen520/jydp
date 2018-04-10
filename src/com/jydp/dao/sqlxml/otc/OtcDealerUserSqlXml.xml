@@ -12,4 +12,12 @@
 		(#{userId}, #{userAccount}, #{dealerName}, #{ipAddress}, #{backerId}, #{remark}, #{updateTime},#{addTime})
 	</insert>
 
+	<select id="OtcDealerUser_getOtcDealerUserByUserId" parameterType="int" resultType="OtcDealerUserDO">
+		SELECT dealerId,userId,userAccount,dealerName,ipAddress,backerId,dealStatus,
+			remark,updateTime,addTime
+		FROM otc_dealer_user_tab
+		WHERE userId = #{userId}
+		AND dealStatus = 1
+		ORDER BY DESC addTime
+	</select>
 </mapper>
