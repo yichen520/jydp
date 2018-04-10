@@ -23,9 +23,4 @@ public class UserPaymenTypeServiceImpl implements IUserPaymentTypeService {
     public boolean insertUserPaymentType(UserPaymentTypeDO userPaymentType){
         return userPaymentTypeDao.insertUserPaymentType(userPaymentType);
     }
-
-    @Override
-    public UserPaymentTypeDO getUserPaymentType(int userId, String otcPendingOrderNo, int paymentType) {
-        return null;
-    }
 }
