@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
-<html>
+<html  style="font-size: 50px">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -103,9 +103,9 @@
                 <div>
                     <p class="list-name">{{currencyName}}</p>
                     {{#compare change 0}}
-                    <p class="red">{{latestPrice}}</p>
+                    <p class="red">{{latestPrice}} </p>
                     {{else}}
-                    <p class="green">{{latestPrice}}</p>
+                    <p class="green">{{latestPrice}} </p>
                     {{/compare}}
                 </div>
             </li>

@@ -1,4 +1,4 @@
-body {padding-bottom:0.98rem }
+/*body {padding-bottom:0.98rem }*/
 header img{
     position: absolute;
     top: 0.24rem;
@@ -43,6 +43,7 @@ header img{
     height:3rem;
     float: left;
     overflow: hidden;
+    background-position:center center!important;
 }
 .swiper-slide img{
     width: 100%;
