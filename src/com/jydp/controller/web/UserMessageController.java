@@ -577,7 +577,7 @@ public class UserMessageController {
         otcOrderVO.setUserId(userSession.getUserId());
         otcOrderVO.setUserAccount(userSession.getUserAccount());
         // 校验参数
-        if (otcOrderVO.getCurrencyId() == 0 || otcOrderVO.getOrderType() == 0 || otcOrderVO.getPendingRatio() == 0 || otcOrderVO.getMaxNumber() <= 0 || otcOrderVO.getOrderType() != 1 || otcOrderVO.getOrderType() != 2) {
+        if (otcOrderVO.getCurrencyId() == 0 || otcOrderVO.getOrderType() == 0 || otcOrderVO.getPendingRatio() == 0 || otcOrderVO.getMaxNumber() <= 0) {
             resultJson.setCode(3);
             resultJson.setMessage("参数错误");
             return resultJson;
