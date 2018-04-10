@@ -7,10 +7,10 @@
 
 	<insert id="OtcTransactionPendOrde_insertOtcTransactionPendOrder" parameterType="OtcTransactionPendOrderDO">
 		INSERT INTO otc_transaction_pend_order_tab
-		(otcPendingOrderNo, userId, userAccount, paymentType, currencyId, currencyName, pendingRatio, minNumber,
+		(otcPendingOrderNo, userId, userAccount, orderType, currencyId, currencyName, pendingRatio, minNumber,
 		 maxNumber, addTime)
 		VALUES
-		(#{otcPendingOrderNo}, #{userId}, #{userAccount}, #{paymentType}, #{currencyId}, #{currencyName}, #{pendingRatio},
+		(#{otcPendingOrderNo}, #{userId}, #{userAccount}, #{orderType}, #{currencyId}, #{currencyName}, #{pendingRatio},
 		 #{minNumber}, #{maxNumber}, #{addTime})
 	</insert>
 
