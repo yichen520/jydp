@@ -564,9 +564,9 @@ public class UserMessageController {
     }
 
     /**
-     * OTC 场外交易挂单 发布订单  包括出售和回购订单   对应的是  前台页面的 orderType 购买1 和 出售 2
+     * OTC 场外交易挂单 经销商发布订单  包括出售和回购订单
      */
-    @RequestMapping(value = "/otcReleaseOrder.htm")//, method = RequestMethod.POST
+    @RequestMapping(value = "/otcReleaseOrder.htm", method = RequestMethod.POST)
     public @ResponseBody
     JsonObjectBO buy(HttpServletRequest request, OtcTransactionPendOrderDTO otcOrderVO, MultipartFile alipayImageUrl, MultipartFile wechatImageUrl) {
         JsonObjectBO resultJson = new JsonObjectBO();
@@ -574,6 +574,12 @@ public class UserMessageController {
         if (userSession == null) {
             resultJson.setCode(4);
             resultJson.setMessage("未登录");
+            return resultJson;
+        }
+        //判断用户是否为经销商
+        if(userSession.getIsDealer() != 2){//不是经销商
+            resultJson.setCode(3);
+            resultJson.setMessage("当前用户不是经销商");
             return resultJson;
         }
         otcOrderVO.setUserId(userSession.getUserId());
