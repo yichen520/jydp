@@ -154,4 +154,72 @@ public class OtcTransactionUserDealDaoImpl implements IOtcTransactionUserDealDao
             return false;
         }
     }
+
+    /**
+     * 根据经销商Id查询经销商成交记录
+     * @param userId 经销商id (必填)
+     * @param userAccount 用户账号（非必填）
+     * @param currencyId 币种id（非必填）
+     * @param dealStatus 交易状态（非必填）
+     * @param startAddTime 申请开始时间（非必填）
+     * @param endAddTime 申请结束时间（非必填）
+     * @param paymentType 收款方式 （非必填）
+     * @return 查询成功：返回记录信息列表, 查询失败或者没有相应记录：返回null
+     */
+    @Override
+    public int countOtcTransactionUserDeallistByDealerId(int userId, String userAccount, int currencyId, int dealStatus, Timestamp startAddTime, Timestamp endAddTime, int paymentType) {
+
+        int count = 0;
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("userAccount", userAccount);
+        map.put("currencyId", currencyId);
+        map.put("dealStatus", dealStatus);
+        map.put("startAddTime", startAddTime);
+        map.put("endAddTime", endAddTime);
+        map.put("paymentType", paymentType);
+
+        try {
+            count = sqlSessionTemplate.selectOne("OtcTransactionUserDeal_countOtcTransactionUserDeallistByDealerId", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return count;
+    }
+
+    /**
+     * 根据经销商Id查询经销商成交记录
+     * @param userId 经销商id (必填)
+     * @param userAccount 用户账号（非必填）
+     * @param currencyId 币种id（非必填）
+     * @param dealStatus 交易状态（非必填）
+     * @param startAddTime 申请开始时间（非必填）
+     * @param endAddTime 申请结束时间（非必填）
+     * @param paymentType 收款方式 （非必填）
+     * @param pageNumber 当前页（必填）
+     * @param pageSize 每页条数（必填）
+     * @return 查询成功：返回记录信息列表, 查询失败或者没有相应记录：返回null
+     */
+    @Override
+    public List<OtcTransactionUserDealVO> getOtcTransactionUserDeallistByDealerId(int userId, String userAccount, int currencyId, int dealStatus, Timestamp startAddTime, Timestamp endAddTime, int paymentType, int pageNumber, int pageSize) {
+
+        List<OtcTransactionUserDealVO> otcTransactionUserDealList = null;
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("userAccount", userAccount);
+        map.put("currencyId", currencyId);
+        map.put("dealStatus", dealStatus);
+        map.put("startAddTime", startAddTime);
+        map.put("endAddTime", endAddTime);
+        map.put("paymentType", paymentType);
+        map.put("startNumber", pageNumber * pageSize);
+        map.put("pageSize", pageSize);
+
+        try {
+            otcTransactionUserDealList = sqlSessionTemplate.selectList("OtcTransactionUserDeal_getOtcTransactionUserDealByDealerId", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return otcTransactionUserDealList;
+    }
 }
