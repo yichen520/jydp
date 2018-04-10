@@ -13,6 +13,7 @@ import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DTO.TransactionPendOrderDTO;
+import com.jydp.entity.DTO.UserPaymentTypeDTO;
 import com.jydp.entity.VO.*;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.*;
@@ -240,7 +241,7 @@ public class OtcTradeCenterController {
         JsonObjectBO jsonObject = otcTransactionUserDealService.insertOtcTransactionUserDeal(
                 otcPendingOrderNo, user.getUserId(), otcTransactionPendOrder.getUserId(), userPaymentType.getTypeId(),
                 user.getUserAccount(), 1, otcTransactionPendOrder.getCurrencyId(), otcTransactionPendOrder.getCurrencyName(),
-                otcTransactionPendOrder.getPendingRatio(), buyNum, sum, otcTransactionPendOrder.getAddTime());
+                otcTransactionPendOrder.getPendingRatio(), buyNum, sum, otcTransactionPendOrder.getAddTime(),0,null);
         if(jsonObject.getCode() != 1){
             resultJson.setCode(jsonObject.getCode());
             resultJson.setMessage(jsonObject.getMessage());
@@ -290,13 +291,14 @@ public class OtcTradeCenterController {
             return resultJson;
         }
 
-        String paymentAccount = "";
-        String bankName = "";
-        String bankBranch = "";
-        String paymentName = "";
-        String paymentPhone = "";
-        MultipartFile paymentImage = null;
+        String paymentAccount;
+        String bankName;
+        String bankBranch;
+        String paymentName;
+        String paymentPhone;
+        MultipartFile paymentImage;
         String imageUrl = "";
+        UserPaymentTypeDTO userPaymentType = new UserPaymentTypeDTO();
 
         //支付方式判断
         if(paymentType <= 0){
@@ -317,6 +319,11 @@ public class OtcTradeCenterController {
                 resultJson.setMessage("参数错误");
                 return resultJson;
             }
+            userPaymentType.setPaymentAccount(paymentAccount);
+            userPaymentType.setBankName(bankName);
+            userPaymentType.setBankBranch(bankBranch);
+            userPaymentType.setPaymentName(paymentName);
+            userPaymentType.setPaymentPhone(paymentPhone);
         }else if(paymentType == 2 || paymentType == 3){
             //获取微信/支付宝参数
             paymentAccount = StringUtil.stringNullHandle(request.getParameter("paymentAccount"));
@@ -327,7 +334,14 @@ public class OtcTradeCenterController {
                 resultJson.setMessage("参数错误");
                 return resultJson;
             }
-            imageUrl = ImageReduceUtil.reduceImageUploadRemote(paymentImage, FileUrlConfig.file_remote_adImage_url);
+            imageUrl = ImageReduceUtil.reduceImageUploadRemote(paymentImage, FileUrlConfig.file_remote_qeCodeImage_url);
+            if (imageUrl.equals("") || imageUrl == null) {
+                resultJson.setCode(2);
+                resultJson.setMessage("上传二维码失败");
+                return resultJson;
+            }
+            userPaymentType.setPaymentAccount(paymentAccount);
+            userPaymentType.setPaymentImage(imageUrl);
         }
 
         //判断交易时间限制
@@ -446,22 +460,23 @@ public class OtcTradeCenterController {
             }
         }
 
-//        //新增成交记录
-//        JsonObjectBO jsonObject = otcTransactionUserDealService.insertOtcTransactionUserDeal(
-//                otcPendingOrderNo, user.getUserId(), otcTransactionPendOrder.getUserId(), userPaymentType.getTypeId(),
-//                user.getUserAccount(), 1, otcTransactionPendOrder.getCurrencyId(), otcTransactionPendOrder.getCurrencyName(),
-//                otcTransactionPendOrder.getPendingRatio(), buyNum, sum, otcTransactionPendOrder.getAddTime());
-//        if(jsonObject.getCode() != 1){
-//            resultJson.setCode(jsonObject.getCode());
-//            resultJson.setMessage(jsonObject.getMessage());
-//            return resultJson;
-//        }
+        //新增成交记录
+        JsonObjectBO jsonObject = otcTransactionUserDealService.insertOtcTransactionUserDeal(
+                otcPendingOrderNo, otcTransactionPendOrder.getUserId(), user.getUserId(), 0,
+                otcTransactionPendOrder.getUserAccount(), 2, otcTransactionPendOrder.getCurrencyId(), otcTransactionPendOrder.getCurrencyName(),
+                otcTransactionPendOrder.getPendingRatio(), sellNum, sum, otcTransactionPendOrder.getAddTime(),paymentType,userPaymentType);
+        if(jsonObject.getCode() != 1){
+            // 删除图片
+            FileWriteRemoteUtil.deleteFile(imageUrl);
+
+            resultJson.setCode(jsonObject.getCode());
+            resultJson.setMessage(jsonObject.getMessage());
+            return resultJson;
+        }
 
         resultJson.setCode(1);
         resultJson.setMessage("下单成功");
         return resultJson;
-
-
     }
 
     /** 查询数据 */
