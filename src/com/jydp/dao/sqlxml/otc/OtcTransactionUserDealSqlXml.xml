@@ -15,7 +15,8 @@
 
     <update id="OtcTransactionUserDeal_updateDealStatusByOtcOrderNo" parameterType="java.util.Map">
         UPDATE otc_transaction_user_deal_tab
-        SET dealStatus = #{changedStatus}
+        SET dealStatus = #{changedStatus},
+            updateTime = #{updateTime}
         WHERE otcOrderNo = #{otcOrderNo}
         AND dealStatus = #{dealStatus}
     </update>
