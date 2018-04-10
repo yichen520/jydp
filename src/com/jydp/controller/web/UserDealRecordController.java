@@ -103,10 +103,10 @@ public class UserDealRecordController {
     }
 
     /**
-     * 查询用户成交记录
+     * 分页查询用户成交记录
      */
-    @RequestMapping("/getAccountRecord.htm")
-    public @ResponseBody JsonObjectBO getAccountRecordPage(HttpServletRequest request) {
+    @RequestMapping("/separateQueryUserDeal.htm")
+    public @ResponseBody JsonObjectBO separateQueryUserDeal(HttpServletRequest request) {
         UserSessionBO userBo = UserWapInterceptor.getUser(request);
         JsonObjectBO responseJson = new JsonObjectBO();
         if (userBo == null) {
