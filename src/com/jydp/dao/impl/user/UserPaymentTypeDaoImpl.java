@@ -27,7 +27,7 @@ public class UserPaymentTypeDaoImpl implements IUserPaymentTypeDao {
      * @param userPaymentType 待新增的 收款方式
      * @return 新增成功：返回true, 新增失败：返回false
      */
-    public boolean insertUserPaymentType(UserPaymentTypeDO userPaymentType) {
+    public UserPaymentTypeDO insertUserPaymentType(UserPaymentTypeDO userPaymentType) {
         int result = 0;
 
         try {
@@ -37,9 +37,9 @@ public class UserPaymentTypeDaoImpl implements IUserPaymentTypeDao {
         }
 
         if (result > 0) {
-            return true;
+            return userPaymentType;
         } else {
-            return false;
+            return null;
         }
     }
 

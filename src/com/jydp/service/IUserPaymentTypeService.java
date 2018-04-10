@@ -12,7 +12,7 @@ public interface IUserPaymentTypeService {
      * @param userPaymentType 待新增的 收款记录
      * @return 新增成功：返回true, 新增失败：返回false
      */
-    boolean insertUserPaymentType(UserPaymentTypeDO userPaymentType);
+    UserPaymentTypeDO insertUserPaymentType(UserPaymentTypeDO userPaymentType);
 
     /**
      * 根据用户id、挂单号、支付方式查询 收款记录
