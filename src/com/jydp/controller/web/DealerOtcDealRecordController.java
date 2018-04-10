@@ -2,6 +2,9 @@ package com.jydp.controller.web;
 
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
+import com.jydp.entity.BO.UserSessionBO;
+import com.jydp.entity.DO.otc.OtcTransactionUserDealDO;
+import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.IOtcTransactionUserDealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -35,6 +38,27 @@ public class DealerOtcDealRecordController {
         if (!StringUtil.isNotNull(otcOrderNo)) {
             responseJson.setCode(3);
             responseJson.setMessage("参数错误");
+            return responseJson;
+        }
+
+        UserSessionBO userSession = UserWebInterceptor.getUser(request);
+        if (userSession == null) {
+            responseJson.setCode(4);
+            responseJson.setMessage("未登录");
+            return responseJson;
+        }
+
+        OtcTransactionUserDealDO otcTransactionUserDeal =  otcTransactionUserDealService.getOtcTransactionUsealByOrderNo(otcOrderNo);
+
+        if (otcTransactionUserDeal == null) {
+            responseJson.setCode(3);
+            responseJson.setMessage("该笔订单不存在");
+            return responseJson;
+        }
+
+        if (otcTransactionUserDeal.getUserId() != userSession.getUserId()) {
+            responseJson.setCode(3);
+            responseJson.setMessage("非挂单本人操作");
             return responseJson;
         }
 
