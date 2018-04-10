@@ -37,4 +37,21 @@ public class OtcDealerUserDaoImpl implements IOtcDealerUserDao {
             return false;
         }
     }
+
+    /**
+     * 根据用户id查询标识信息
+     * @param userId 用户id
+     * @return 查询成功：返回标识信息, 查询失败或者无信息：返回null
+     */
+    public OtcDealerUserDO getOtcDealerUserByUserId(int userId){
+        OtcDealerUserDO result = null;
+
+        try {
+            result = sqlSessionTemplate.selectOne("OtcDealerUser_getOtcDealerUserByUserId", userId);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return result;
+    }
 }

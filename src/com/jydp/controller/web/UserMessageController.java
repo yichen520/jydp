@@ -3,6 +3,8 @@ package com.jydp.controller.web;
 import com.iqmkj.utils.*;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
+import com.jydp.entity.DO.otc.OtcDealerUserDO;
+import com.jydp.entity.DO.otc.OtcTransactionPendOrderDO;
 import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DTO.BackerUserCurrencyNumDTO;
@@ -23,6 +25,7 @@ import com.jydp.service.IOtcTransactionPendOrderService;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +75,13 @@ public class UserMessageController {
      */
     @Autowired
     private ITransactionCurrencyService transactionCurrencyService;
+
+    /**
+     * 经销商标识
+     */
+    @Autowired
+    private IOtcDealerUserService otcDealerUserService;
+
 
     /**
      * 用户个人信息查询
@@ -136,6 +146,13 @@ public class UserMessageController {
             }
         }
 
+        //TODO  判定是否是经销商
+        OtcDealerUserDO otcDealerUser = otcDealerUserService.getOtcDealerUserByUserId(user.getUserId());
+        if(otcDealerUser != null){
+            List<OtcTransactionPendOrderDO> otcTransactionPendOrderList = otcTransactionPendOrderService.getOtcTransactionPendOrderByUserId(user.getUserId());
+            request.setAttribute("otcTransactionPendOrderList", otcTransactionPendOrderList);
+        }
+
         Map<String, String> phoneAreaMap = PhoneAreaConfig.phoneAreaMap;
         userService.countCheckUserAmountForTimer(user.getUserId(), 1);
         request.setAttribute("code", 1);
@@ -144,6 +161,7 @@ public class UserMessageController {
         request.setAttribute("userBalanceSum", userBalanceSum);
         request.setAttribute("userMessage", userMessage);
         request.setAttribute("userCurrencyList", userCurrencyList);
+
         return "page/web/userMessage";
     }
 
@@ -644,5 +662,39 @@ public class UserMessageController {
         resultJson = otcTransactionPendOrderService.insertPendOrder(otcOrderVO);
 
         return resultJson;
+    }
+
+    /**
+     * 根据订单号删除用户挂单信息
+     */
+    @RequestMapping(value = "/deleteOtcTransactionPendOrder.htm", method = RequestMethod.POST)
+    public @ResponseBody JsonObjectBO deleteOtcTransactionPendOrder(HttpServletRequest request) {
+        JsonObjectBO responseJson = new JsonObjectBO();
+
+        UserSessionBO user = UserWebInterceptor.getUser(request);
+        if (user == null) {
+            responseJson.setCode(2);
+            responseJson.setMessage("未登录");
+            return responseJson;
+        }
+
+        String otcPendingOrderNo = StringUtil.stringNullHandle(request.getParameter("otcPendingOrderNo"));
+        if (!StringUtil.isNotNull(otcPendingOrderNo)) {
+            responseJson.setCode(3);
+            responseJson.setMessage("参数错误");
+            return responseJson;
+        }
+
+        Timestamp currentTime = DateUtil.getCurrentTime();
+        boolean deleteOtcTransaction = otcTransactionPendOrderService.deleteOtcTransactionPendOrderByOtcPendingOrderNo(user.getUserId(), otcPendingOrderNo, currentTime);
+        if(!deleteOtcTransaction){
+            responseJson.setCode(3);
+            responseJson.setMessage("删除失败");
+            return responseJson;
+        }
+
+        responseJson.setCode(1);
+        responseJson.setMessage("删除成功");
+        return responseJson;
     }
 }

@@ -232,6 +232,9 @@ public class UserDealRecordController {
             response.setMessage("该订单确认失败，请刷新页面后重试");
             return response;
         }
+
+        response.setCode(1);
+        response.setMessage("确认成功");
         return response;
     }
 }

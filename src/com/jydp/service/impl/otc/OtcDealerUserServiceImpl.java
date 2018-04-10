@@ -24,4 +24,13 @@ public class OtcDealerUserServiceImpl implements IOtcDealerUserService {
     public boolean insertOtcDealerUser(OtcDealerUserDO otcDealerUser){
         return itcDealerUserDao.insertOtcDealerUser(otcDealerUser);
     }
+
+    /**
+     * 根据用户id查询标识信息
+     * @param userId 用户id
+     * @return 查询成功：返回标识信息, 查询失败或者无信息：返回null
+     */
+    public OtcDealerUserDO getOtcDealerUserByUserId(int userId){
+        return itcDealerUserDao.getOtcDealerUserByUserId(userId);
+    }
 }
