@@ -48,8 +48,13 @@ public class WebCustomerServiceController {
 
         if (userFeedbackList != null && userFeedbackList.size() > 0) {
             for (UserFeedbackDO userFeedback : userFeedbackList) {
+                String feedbackTitle = userFeedback.getFeedbackTitle();
                 String feedbackContent = userFeedback.getFeedbackContent();
                 String handleContent = userFeedback.getHandleContent();
+                if (StringUtil.isNotNull(feedbackTitle)) {
+                    feedbackTitle = HtmlUtils.htmlEscape(feedbackTitle);
+                    userFeedback.setFeedbackTitle(feedbackTitle);
+                }
                 if (StringUtil.isNotNull(handleContent)) {
                     handleContent = HtmlUtils.htmlEscape(handleContent);
                     userFeedback.setHandleContent(handleContent);
