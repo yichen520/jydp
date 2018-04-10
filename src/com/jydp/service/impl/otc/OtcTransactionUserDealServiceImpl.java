@@ -11,7 +11,4 @@ import org.springframework.stereotype.Service;
  */
 @Service("otcTransactionUserDealService")
 public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDealService{
-
-    @Autowired
-    private IOtcTransactionUserDealDao otcTransactionUserDealDao;
 }
