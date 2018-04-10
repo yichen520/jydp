@@ -21,7 +21,7 @@ public class OtcTransactionPendOrderDO {
     private double buyFee; //买入手续费
     private double restBalanceLock; //剩余冻结金额
     private String area; //地区(默认CN)
-    private int pendingStatus; //挂单状态(默认1) 1：未成交，2：部分成交，3：全部成交，4：部分撤销，5：全部撤销
+    private int pendingStatus; //挂单状态(默认1) 1：挂单中，-1删除
     private Timestamp endTime; //完成时间
     private String remark; //备注
     private Timestamp updateTime; //修改时间
