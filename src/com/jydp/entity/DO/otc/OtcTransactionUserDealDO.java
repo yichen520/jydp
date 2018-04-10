@@ -12,7 +12,7 @@ public class OtcTransactionUserDealDO {
     private int userId; //用户Id
     private int typeId; //收款方式Id
     private String userAccount; //用户帐号
-    private int dealType; //收支类型：1：买入，2：卖出，3：撤销
+    private int dealType; //收支类型：1：买入，2：卖出
     private int currencyId; //币种Id
     private String currencyName; //货币名称
     private double transactionPrice; //成交单价
