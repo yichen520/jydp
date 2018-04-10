@@ -146,15 +146,30 @@
             return openTips( "请输入正确手机号");
         }
 
+        if(!b){
+            return openTips("请获取验证码");
+        }
+
         if (!validateCode || validateCode.length!=6) {
             return openTips( "请输入6位短信验证码");
+        }
+
+        if (!password) {
+            return openTips( "请输入密码,字母、数字，6~16个字符 ");
+        }
+
+        if (password.length < 6 || password.length > 16) {
+            return openTips( "密码长度在6~16个字符之间");
+        }
+        if (!commonReg.test(password)) {
+            return openTips( "密码格式不正确");
         }
 
         if (!repeatPassword) {
             return openTips( "请输入重复密码 ");
         }
         if (repeatPassword.length < 6 || repeatPassword.length > 16) {
-            return openTips( "密码长度在6~16个字符之间");
+            return openTips( "重复密码长度在6~16个字符之间");
         }
         if (!commonReg.test(repeatPassword)) {
             return openTips( "重复密码格式不正确");
@@ -162,9 +177,7 @@
         if (repeatPassword != password) {
             return openTips("两次密码不匹配");
         }
-        if(!b){
-            return openTips("请获取验证码");
-        }
+
         $("#phoneAreaCode").val(area);
         var pwd = encode64($("#password").val());
         $("#encodePwd").val(pwd);
