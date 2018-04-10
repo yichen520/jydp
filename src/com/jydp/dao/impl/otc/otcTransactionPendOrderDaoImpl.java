@@ -7,6 +7,10 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * 场外交易挂单记录相关操作
  *
@@ -53,5 +57,57 @@ public class otcTransactionPendOrderDaoImpl implements IOtcTransactionPendOrderD
         }
 
         return result;
+    }
+
+    /**
+     * 按条件查询全部场外交易挂单总数
+     * @param currencyId 币种Id
+     * @param orderType 挂单类型:1：出售，2：回购
+     * @param area 地区
+     * @return 查询成功：返回记录总条数，查询失败：返回0
+     */
+    @Override
+    public int countOtcTransactionPendOrder(int currencyId, int orderType, String area){
+
+        int count = 0;
+        Map<String,Object> map = new HashMap<>();
+        map.put("currencyId", currencyId);
+        map.put("orderType", orderType);
+        map.put("area", area);
+
+        try {
+            count = sqlSessionTemplate.selectOne("OtcTransactionPendOrde_countOtcTransactionPendOrder",map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return count;
+    }
+
+    /**
+     * 查询全部场外交易挂单列表
+     * @param currencyId 币种Id
+     * @param orderType 挂单类型:1：出售，2：回购
+     * @param area 地区
+     * @param pageNumber 当前页数
+     * @param pageSize 每页条数
+     * @return 查询成功：返回记录信息，查询失败：返回null
+     */
+    @Override
+    public List<OtcTransactionPendOrderDO> getOtcTransactionPendOrderlist(int currencyId, int orderType, String area, int pageNumber, int pageSize) {
+
+        List<OtcTransactionPendOrderDO> otcTransactionPendOrderList = null;
+        Map<String,Object> map = new HashMap<>();
+        map.put("currencyId", currencyId);
+        map.put("orderType", orderType);
+        map.put("area", area);
+        map.put("startNumber", pageNumber * pageSize);
+        map.put("pageSize", pageSize);
+
+        try {
+            otcTransactionPendOrderList = sqlSessionTemplate.selectList("OtcTransactionPendOrde_getOtcTransactionPendOrderlist",map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return otcTransactionPendOrderList;
     }
 }

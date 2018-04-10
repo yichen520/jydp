@@ -126,4 +126,51 @@ public class OtcTradeCenterController {
         resultJson.setMessage("下单成功");
         return resultJson;
     }
+
+    /** 查询数据 */
+    public void list(HttpServletRequest request) {
+
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+        String orderTypeStr = StringUtil.stringNullHandle(request.getParameter("orderType"));
+        String area = StringUtil.stringNullHandle(request.getParameter("area"));
+        String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
+
+        int currencyId = 0;
+        int orderType = 0;
+        int pageNumber = 0;
+
+        if (StringUtil.isNotNull(currencyIdStr)) {
+            currencyId = Integer.parseInt(currencyIdStr);
+        }
+
+        if (StringUtil.isNotNull(orderTypeStr)) {
+            orderType = Integer.parseInt(orderTypeStr);
+        }
+
+        if (StringUtil.isNotNull(pageNumberStr)) {
+            pageNumber = Integer.parseInt(pageNumberStr);
+        }
+
+        int pageSize = 20;
+
+        int totalNumber = otcTransactionPendOrderService.countOtcTransactionPendOrder(currencyId,orderType,area);
+
+        int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
+        if (totalPageNumber <= 0) {
+            totalPageNumber = 1;
+        }
+        if (totalPageNumber <= pageNumber) {
+            pageNumber = totalPageNumber - 1;
+        }
+
+        List<OtcTransactionPendOrderDO> otcTransactionPendOrderList = null;
+        if (totalNumber > 0) {
+            otcTransactionPendOrderList = otcTransactionPendOrderService.getOtcTransactionPendOrderlist(currencyId,orderType,area,pageNumber,pageSize);
+        }
+
+        request.setAttribute("pageNumber", pageNumber);
+        request.setAttribute("totalNumber", totalNumber);
+        request.setAttribute("totalPageNumber", totalPageNumber);
+        request.setAttribute("otcTransactionPendOrderList", otcTransactionPendOrderList);
+    }
 }

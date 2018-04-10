@@ -21,4 +21,40 @@
 		FROM otc_transaction_pend_order_tab
 		WHERE otcPendingOrderNo = #{orderNo}
 	</select>
+
+	<select id="OtcTransactionPendOrde_countOtcTransactionPendOrder" parameterType="java.util.Map" resultType="int">
+		SELECT  COUNT(otcPendingOrderNo)
+		FROM otc_transaction_pend_order_tab
+		WHERE
+			pendingStatus != 5
+		<if test="currencyId != 0">
+			AND currencyId = #{currencyId}
+		</if>
+		<if test="orderType != 0 ">
+			AND orderType = #{orderType}
+		</if>
+		<if test="area != null and area != ''">
+			AND area = #{area}
+		</if>
+	</select>
+
+	<select id="OtcTransactionPendOrde_getOtcTransactionPendOrderlist" parameterType="java.util.Map" resultType="OtcTransactionPendOrderDO">
+		SELECT otcPendingOrderNo,userId,userAccount,orderType,currencyId,currencyName,pendingRatio,
+			minNumber,maxNumber,pendingNumber,dealNumber,buyFee,restBalanceLock,area,pendingStatus,endTime,
+			remark,updateTime,addTime
+		FROM otc_transaction_pend_order_tab
+		WHERE
+				pendingStatus != 5
+			<if test="currencyId != 0">
+				AND currencyId = #{currencyId}
+			</if>
+			<if test="orderType != 0 ">
+				AND orderType = #{orderType}
+			</if>
+			<if test="area != null and area != ''">
+				AND area = #{area}
+			</if>
+		ORDER BY addTime DESC
+		LIMIT #{startNumber}, #{pageSize}
+	</select>
 </mapper>
