@@ -31,4 +31,13 @@ public interface IOtcTransactionUserDealService {
      */
     boolean updateDealStatusByOtcOrderNo(String otcOrderNo, int dealStatus, int changedStatus);
 
+    /**
+     * 经销商回购币-确认收货
+     * @param otcOrderNo  成交记录号
+     * @param otcPendingOrderNo 挂单记录号
+     * @param userId 操作用户Id
+     * @return  修改成功：返回true; 修改失败：返回false
+     */
+    boolean dealerConfirmTakeForBuyBack(String otcOrderNo, String otcPendingOrderNo, int userId);
+
 }

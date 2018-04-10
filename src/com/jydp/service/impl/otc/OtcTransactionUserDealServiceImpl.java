@@ -1,7 +1,11 @@
 package com.jydp.service.impl.otc;
 
 import com.jydp.dao.IOtcTransactionUserDealDao;
+import com.jydp.entity.BO.UserSessionBO;
+import com.jydp.entity.DO.otc.OtcTransactionPendOrderDO;
 import com.jydp.entity.DO.otc.OtcTransactionUserDealDO;
+import com.jydp.interceptor.UserWebInterceptor;
+import com.jydp.service.IOtcTransactionPendOrderService;
 import com.jydp.service.IOtcTransactionUserDealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +22,10 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
     /** 场外交易成交记录 */
     @Autowired
     private IOtcTransactionUserDealDao otcTransactionUserDealDao;
+
+    /** 场外交易挂单记录 **/
+    @Autowired
+    private IOtcTransactionPendOrderService otcTransactionPendOrderService;
 
     /**
      * 根据记录号查询成交记录信息
@@ -56,5 +64,29 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
     @Override
     public boolean updateDealStatusByOtcOrderNo(String otcOrderNo, int dealStatus, int changedStatus) {
         return otcTransactionUserDealDao.updateDealStatusByOtcOrderNo(otcOrderNo,dealStatus,changedStatus);
+    }
+
+    /**
+     * 经销商回购币-确认收货
+     * @param otcOrderNo  成交记录号
+     * @param otcPendingOrderNo 挂单记录号
+     * @param userId 操作用户Id
+     * @return 修改成功：返回true; 修改失败：返回false
+     */
+    @Override
+    public boolean dealerConfirmTakeForBuyBack(String otcOrderNo, String otcPendingOrderNo, int userId) {
+
+        OtcTransactionPendOrderDO otcTransactionPendOrder = otcTransactionPendOrderService.getOtcTransactionPendOrderByOrderNo(otcPendingOrderNo);
+
+        if (otcTransactionPendOrder == null) {
+            return false;
+        }
+
+        //确认收货操作非挂单本人
+        if (otcTransactionPendOrder.getUserId() != userId) {
+            return false;
+        }
+
+        return otcTransactionUserDealDao.updateDealStatusByOtcOrderNo(otcOrderNo,1,2);
     }
 }

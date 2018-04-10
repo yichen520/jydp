@@ -56,7 +56,9 @@ public class DealerOtcDealRecordController {
             return responseJson;
         }
 
-        boolean result = otcTransactionUserDealService.updateDealStatusByOtcOrderNo(otcOrderNo,1,2);
+        String otcPendingOrderNo = otcTransactionUserDeal.getOtcPendingOrderNo();
+
+        boolean result = otcTransactionUserDealService.dealerConfirmTakeForBuyBack(otcOrderNo,otcPendingOrderNo,userSession.getUserId());
 
         if (result) {
             responseJson.setCode(1);
