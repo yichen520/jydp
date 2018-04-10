@@ -561,13 +561,13 @@ public class UserMessageController {
         otcOrderVO.setUserId(userSession.getUserId());
         otcOrderVO.setUserAccount(userSession.getUserAccount());
         // 校验参数
-        if (otcOrderVO.getCurrencyId() == 0 || otcOrderVO.getOrderType() == 0 || otcOrderVO.getPendingRatio() == 0 || otcOrderVO.getMaxNumber() <= 0 ) {//最大限额不能为0
+        if (otcOrderVO.getCurrencyId() == 0 || otcOrderVO.getOrderType() == 0 || otcOrderVO.getPendingRatio() == 0 || otcOrderVO.getMaxNumber() <= 0 || otcOrderVO.getOrderType() != 1 || otcOrderVO.getOrderType() != 2) {
             resultJson.setCode(3);
             resultJson.setMessage("参数错误");
             return resultJson;
         }
         // 判断是否选择付款方式
-        if(!StringUtil.isNotNull(otcOrderVO.getBankAccount()) && !StringUtil.isNotNull(otcOrderVO.getAlipayAccount()) && !StringUtil.isNotNull(otcOrderVO.getWechatAccount())){
+        if (!StringUtil.isNotNull(otcOrderVO.getBankAccount()) && !StringUtil.isNotNull(otcOrderVO.getAlipayAccount()) && !StringUtil.isNotNull(otcOrderVO.getWechatAccount())) {
             resultJson.setCode(3);
             resultJson.setMessage("付款方式参数错误");
             return resultJson;
@@ -587,7 +587,7 @@ public class UserMessageController {
                 resultJson.setMessage("支付宝参数错误");
                 return resultJson;
             }
-            String alipayImage = ImageReduceUtil.reduceImageUploadRemote(alipayImageUrl, FileUrlConfig.file_remote_adImage_url);
+            String alipayImage = ImageReduceUtil.reduceImageUploadRemote(alipayImageUrl, FileUrlConfig.file_remote_qeCodeImage_url);
             if (alipayImage.equals("") || alipayImage == null) {
                 resultJson.setCode(3);
                 resultJson.setMessage("微信二维码上传失败");
@@ -601,7 +601,7 @@ public class UserMessageController {
                 resultJson.setMessage("微信参数错误");
                 return resultJson;
             }
-            String wechatImage = ImageReduceUtil.reduceImageUploadRemote(wechatImageUrl, FileUrlConfig.file_remote_adImage_url);
+            String wechatImage = ImageReduceUtil.reduceImageUploadRemote(wechatImageUrl, FileUrlConfig.file_remote_qeCodeImage_url);
             if (wechatImage.equals("") || wechatImage == null) {
                 resultJson.setCode(3);
                 resultJson.setMessage("微信二维码上传失败");
