@@ -24,9 +24,10 @@
 
 	<select id="OtcTransactionPendOrde_countOtcTransactionPendOrder" parameterType="java.util.Map" resultType="int">
 		SELECT  COUNT(otcPendingOrderNo)
-		FROM otc_transaction_pend_order_tab
+		FROM otc_transaction_pend_order_tab OTAB,otc_dealer_user_tab UTAB
 		WHERE
-			pendingStatus = 1
+			OTAB.userId = UTAB.userId
+			AND pendingStatus = 1
 		<if test="currencyId != 0">
 			AND currencyId = #{currencyId}
 		</if>
@@ -38,13 +39,14 @@
 		</if>
 	</select>
 
-	<select id="OtcTransactionPendOrde_getOtcTransactionPendOrderlist" parameterType="java.util.Map" resultType="OtcTransactionPendOrderDO">
-		SELECT otcPendingOrderNo,userId,userAccount,orderType,currencyId,currencyName,pendingRatio,
+	<select id="OtcTransactionPendOrde_getOtcTransactionPendOrderlist" parameterType="java.util.Map" resultType="OtcTransactionPendOrderVO">
+		SELECT otcPendingOrderNo,OTAB.userId,OTAB.userAccount,UTAB.dealerName,orderType,currencyId,currencyName,pendingRatio,
 			minNumber,maxNumber,pendingNumber,dealNumber,buyFee,restBalanceLock,area,pendingStatus,endTime,
-			remark,updateTime,addTime
-		FROM otc_transaction_pend_order_tab
+			OTAB.remark,OTAB.updateTime,OTAB.addTime
+		FROM otc_transaction_pend_order_tab OTAB,otc_dealer_user_tab UTAB
 		WHERE
-				pendingStatus = 1
+				OTAB.userId = UTAB.userId
+				AND pendingStatus = 1
 			<if test="currencyId != 0">
 				AND currencyId = #{currencyId}
 			</if>

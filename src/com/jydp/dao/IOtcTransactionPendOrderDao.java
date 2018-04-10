@@ -1,6 +1,7 @@
 package com.jydp.dao;
 
 import com.jydp.entity.DO.otc.OtcTransactionPendOrderDO;
+import com.jydp.entity.VO.OtcTransactionPendOrderVO;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -44,7 +45,7 @@ public interface IOtcTransactionPendOrderDao {
      * @param pageSize 每页条数
      * @return 查询成功：返回记录信息，查询失败：返回null
      */
-    List<OtcTransactionPendOrderDO> getOtcTransactionPendOrderlist(int currencyId, int orderType, String area, int pageNumber, int pageSize);
+    List<OtcTransactionPendOrderVO> getOtcTransactionPendOrderlist(int currencyId, int orderType, String area, int pageNumber, int pageSize);
 
     /**
      * 根据用户id查询场外可用交易挂单列表

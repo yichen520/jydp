@@ -8,6 +8,7 @@ import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.otc.OtcTransactionPendOrderDO;
 import com.jydp.entity.DO.otc.UserPaymentTypeDO;
 import com.jydp.entity.DTO.OtcTransactionPendOrderDTO;
+import com.jydp.entity.VO.OtcTransactionPendOrderVO;
 import com.jydp.service.IOtcTransactionPendOrderService;
 import com.jydp.service.IUserPaymentTypeService;
 import config.SystemCommonConfig;
@@ -150,7 +151,7 @@ public class OtcTransactionPendOrderServiceImpl implements IOtcTransactionPendOr
      * @return 查询成功：返回记录信息，查询失败：返回null
      */
     @Override
-    public List<OtcTransactionPendOrderDO> getOtcTransactionPendOrderlist(int currencyId, int orderType, String area, int pageNumber, int pageSize) {
+    public List<OtcTransactionPendOrderVO> getOtcTransactionPendOrderlist(int currencyId, int orderType, String area, int pageNumber, int pageSize) {
         return otcTransactionPendOrderDao.getOtcTransactionPendOrderlist(currencyId,orderType,area,pageNumber,pageSize);
     }
 

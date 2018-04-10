@@ -521,7 +521,7 @@ public class OtcTradeCenterController {
             pageNumber = totalPageNumber - 1;
         }
 
-        List<OtcTransactionPendOrderDO> otcTransactionPendOrderList = null;
+        List<OtcTransactionPendOrderVO> otcTransactionPendOrderList = null;
         if (totalNumber > 0) {
             otcTransactionPendOrderList = otcTransactionPendOrderService.getOtcTransactionPendOrderlist(currencyId,orderType,area,pageNumber,pageSize);
         }
