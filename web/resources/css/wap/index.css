@@ -189,7 +189,8 @@ header img{
     float: left;
 }
 .sellerContent{
-    padding-bottom: 0.3rem;
+    overflow: hidden;
+    padding-bottom: 1rem;
 }
 .iconBox{
     float: left;
