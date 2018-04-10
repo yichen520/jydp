@@ -88,7 +88,7 @@
     });
 
     //公告数据填充
-    var systemHotListData = ${requestScope.systemNoticeList};
+    var systemHotListData = ${requestScope.systemHotList};
     var noticefunc = Handlebars.compile($('#template').html());
     $('.content ul').html(noticefunc(systemHotListData));
 
@@ -104,13 +104,13 @@
         if(pageNumber < totalPageNumber - 1){
             pageNumber = pageNumber + 1;
             $.ajax({
-                url: '<%=path %>/userWap/wapSystemNotice/showMoreNotice',
+                url: '<%=path %>/userWap/wapSystemHot/showMoreHot',
                 type: 'post',
                 dataType: 'json',
                 data:{pageNumber:pageNumber,},//参数
                 success: function (result) {
                     if (result.code == 1) {
-                        var noticeList = result.systemNoticeList;
+                        var noticeList = result.systemHotList;
                         if (noticeList != null) {
                             var transactionfunc = Handlebars.compile($('#template').html());
                             $('.content ul').append(transactionfunc(noticeList));

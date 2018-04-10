@@ -98,7 +98,6 @@
     {{#each this}}
     <a href="<%=path%>/userWap/tradeCenter/show/{{currencyId}}">
         <ul>
-
             <li>
                 <img src="{{currencyImgUrl}}"/>
                 <div>
@@ -134,26 +133,25 @@
         </ul>
     </a>
     {{/each}}
-
 </script>
 
 <script id="sellerTemplate" type="text/x-handlebars-template">
     {{#each this}}
-    {{#if webLinkUrl}}
-    <div class="iconBox">
-        <a target="_blank" href="{{webLinkUrl}}" class="link">
-            <img src="{{businessesImageUrlFormat}}"/>
-        </a>
-        <p>{{businessesName}}</p>
-    </div>
-    {{else}}
-    <div class="iconBox">
-        <a target="_blank"  class="link">
-            <img src="{{businessesImageUrlFormat}}"/>
-        </a>
-        <p>{{businessesName}}</p>
-    </div>
-    {{/if}}
+        {{#if webLinkUrl}}
+        <div class="iconBox">
+            <a target="_blank" href="{{webLinkUrl}}" class="link">
+                <img src="{{businessesImageUrlFormat}}"/>
+            </a>
+            <p>{{businessesName}}</p>
+        </div>
+        {{else}}
+        <div class="iconBox">
+            <a target="_blank"  class="link">
+                <img src="{{businessesImageUrlFormat}}"/>
+            </a>
+            <p>{{businessesName}}</p>
+        </div>
+        {{/if}}
     {{/each}}
 </script>
 
@@ -242,7 +240,6 @@
     $(document).ready(function () {
         //循环执行，每隔10秒钟执行一次 10000
         var t1 = window.setInterval(refreshMarket, 10000);
-        //判读session是否存在
     });
 
     var systemAdsHomepagesListData = ${requestScope.systemAdsHomepagesList};
@@ -289,6 +286,5 @@
         var currencyId=$(this).find("p").eq(0).text();
         window.location.href="<%=path%>/userWap/tradeCenter/show/"+currencyId
     })
-
 </script>
 </html>

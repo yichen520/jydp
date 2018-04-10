@@ -162,6 +162,11 @@ var ParamsAndInit = {
         var bgHeight = $(document).height();
         $('.cin').css("height", bgHeight + "px");
         $('.setting').on('click', function () {
+            var userSession = $("#userSession").val();
+            if(userSession == undefined || userSession == null || userSession == ""){
+                openTips("请先登录再操作")
+                return ;
+            }
             $('.cin').fadeIn();
             //回显
             var payPasswordStatus = $("#payPasswordStatus").val();
@@ -176,7 +181,7 @@ var ParamsAndInit = {
         $('.cancelSetting').on('click', function () {
             $('.cin').fadeOut();
             $("input[name='remember']").each(function () {
-                $(this).attr("checked", false)
+                $(this).attr("checked", false);
             });
         });
     },
@@ -213,14 +218,14 @@ var ParamsAndInit = {
         if (buyPrice != null && buyPrice != "") {
             buyPrice = buyPrice.toString();
             try {
-                m += buyPrice.split(".")[1].length
+                m += buyPrice.split(".")[1].length;
             } catch (e) {
             }
             if (buyNum != null && buyNum != "") {
                 buyNum = buyNum.toString();
                 try {
                     //拿到价格小数点后的数字
-                    m += buyNum.split(".")[1].length
+                    m += buyNum.split(".")[1].length;
                 } catch (e) {
                 }
                 //价格 * 数量 除以 (10 * 小数点的位数的8位浮点数)
@@ -236,7 +241,7 @@ var ParamsAndInit = {
                 //购买的手续费 * （单价 * 100）
                 var number = buyFee * (buyPrice * 100);
                 //购买价格 * 1000000 + number / 100 00 00 求出每个单价(包含手续费的单价)
-                buyPrice = ((buyPrice * 1000000) + (number)) / 1000000
+                buyPrice = ((buyPrice * 1000000) + (number)) / 1000000;
                 //或得可以购买的个数
                 var totalCanBuy = userBalance / buyPrice;
                 //格式化可买的个数 返回字符串
@@ -941,19 +946,35 @@ var ParamsAndInit = {
         window.location.href = webAppPath + '/userWap/tradeCenter/toChartPage/' + currencyId;
     },
     footInit: function () {
-        var h = $(window).height();
-        $("#sellPrice,#sellNum,#sellPwd,#buyPrice,#buyNum,#buyPwd").focus(function () {
-            $("header").css({"position": "relative", "top": 0});
-            $("section").css({"position": "relative", "top": '0'});
-            $("#wrapper").css({"position": "relative", "top": '0'});
-            $("footer").hide();
-        });
-        $("#sellPrice,#sellNum,#sellPwd,#buyPrice,#buyNum,#buyPwd").blur(function () {
-            $("header").css("position", "fixed");
-            $("section").css({"position": "fixed", "top": '0.92rem'});
-            $("#wrapper").css({"position": "relative", "top": '2.3rem'});
-            $('footer').show();
-        });
+        ParamsAndInit.bgHeight = $(document).height();
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isAndroid){
+            var h=$(window).height();
+            $(window).resize(function() {
+                if($(window).height()<h){
+                    $('footer').hide();
+                }
+                if($(window).height()>=h){
+                    $('footer').show();
+                }
+            });
+        };
+        if(isiOS){
+            $("#sellPrice,#sellNum,#sellPwd,#buyPrice,#buyNum,#buyPwd").focus(function () {
+                $("header").css({"position": "relative", "top": 0});
+                $("section").css({"position": "relative", "top": '0'});
+                $("#wrapper").css({"position": "relative", "top": '0'});
+                $("footer").hide();
+            });
+            $("#sellPrice,#sellNum,#sellPwd,#buyPrice,#buyNum,#buyPwd").blur(function () {
+                $("header").css("position", "fixed");
+                $("section").css({"position": "fixed", "top": '0.92rem'});
+                $("#wrapper").css({"position": "relative", "top": '2.3rem'});
+                $('footer').show();
+            });
+        }
         //进入页面的时候判断
         var payPasswordStatus = $("#payPasswordStatus").val();
         if (payPasswordStatus == 2) {

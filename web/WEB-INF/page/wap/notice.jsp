@@ -88,9 +88,7 @@
 
     //公告数据填充
     var systemNoticeListData = ${requestScope.systemNoticeList};
-    console.log(systemNoticeListData);
     var noticefunc = Handlebars.compile($('#template').html());
-    console.log(noticefunc);
     $('.content ul').html(noticefunc(systemNoticeListData));
 
 

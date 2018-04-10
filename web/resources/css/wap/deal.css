@@ -326,8 +326,9 @@
     float: left;
     padding-left: 0.62rem;
     width: 50%;
-    height: 0.7rem;
-    line-height: 0.7rem;
+    height: 0.5rem;
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
     font-size: 0.24rem;
     color:#666;
 

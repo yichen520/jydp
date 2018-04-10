@@ -6,9 +6,9 @@ ul, ol{list-style: none;}
 a{color: black;text-decoration: none;}
 a:hover {text-decoration: none;}
 a {border: none;-webkit-tap-highlight-color: rgba(0,0,0,0);-webkit-tap-highlight-color: transparent;outline: none;}
-html{font-family: "微软雅黑",Arial;}
+html{font-family: "微软雅黑",Arial;height: 100%}
 select{-moz-appearance:none;-webkit-appearance:none;-webkit-linearappearance:none;outline: none}
-body{-webkit-overflow-scrolling: touch;-webkit-overflow-scrolling : touch; }
+body{-webkit-overflow-scrolling: touch;-webkit-overflow-scrolling : touch;height: 100% }
 textarea, a {
     -webkit-tap-highlight-color: transparent;
     outline: none

@@ -78,7 +78,7 @@ public class WapHotController {
         ObjectMapper mapper = new ObjectMapper();
         try{
             String systemHotListJson = mapper.writeValueAsString(systemHotList);
-            request.setAttribute("systemNoticeList",systemHotListJson);
+            request.setAttribute("systemHotList",systemHotListJson);
             request.setAttribute("pageNumber",pageNumber);
             request.setAttribute("totalNumber",totalNumber);
             request.setAttribute("totalPageNumber",totalPageNumber);
