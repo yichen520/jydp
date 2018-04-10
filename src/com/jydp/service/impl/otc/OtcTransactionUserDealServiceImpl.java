@@ -8,11 +8,13 @@ import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.otc.OtcTransactionPendOrderDO;
 import com.jydp.entity.DO.otc.OtcTransactionUserDealDO;
+import com.jydp.entity.VO.OtcTransactionUserDealVO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserBalanceDO;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.IOtcTransactionPendOrderService;
 import com.jydp.service.IOtcTransactionUserDealService;
+import com.jydp.service.IUserService;
 import com.jydp.service.IUserCurrencyNumService;
 import com.jydp.service.*;
 import config.SystemCommonConfig;
@@ -21,6 +23,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
+
+import java.sql.Timestamp;
+import java.util.List;
 
 import java.sql.Timestamp;
 
@@ -38,6 +43,10 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
     /** 场外交易挂单记录 **/
     @Autowired
     private IOtcTransactionPendOrderService otcTransactionPendOrderService;
+
+    /** 用户信息 */
+    @Autowired
+    private IUserService serService;
 
     /** 用户账号 */
     @Autowired
@@ -221,7 +230,7 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
             otcTransactionUserDeal.setOtcPendingOrderNo(otcPendingOrderNo);
             otcTransactionUserDeal.setUserId(userId);
             otcTransactionUserDeal.setUserAccount(userAccount);
-            otcTransactionUserDeal.setPaymentType(paymentType);
+            otcTransactionUserDeal.setDealType(paymentType);
             otcTransactionUserDeal.setCurrencyId(currencyId);
             otcTransactionUserDeal.setCurrencyName(currencyName);
             otcTransactionUserDeal.setPendingRatio(pendingRatio);
@@ -259,6 +268,40 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
     }
 
     /**
+     * 根据用户Id查询成交记录信息
+     * @param userId 用户id (必填)
+     * @param dealerName 经销商名称（非必填）
+     * @param currencyId 币种id（非必填）
+     * @param dealStatus 交易状态（非必填）
+     * @param startAddTime 申请开始时间（非必填）
+     * @param endddTime 申请结束时间（非必填）
+     * @return 查询成功：返回记录信息数量, 查询失败或者没有相应记录：返回0
+     */
+    public int numberOtcTransactionUsealByUserId(int userId, String dealerName, int currencyId, int dealStatus, Timestamp startAddTime,
+                                          Timestamp endddTime){
+        return otcTransactionUserDealDao.numberOtcTransactionUsealByUserId(userId, dealerName, currencyId, dealStatus, startAddTime,
+                endddTime);
+    }
+
+    /**
+     * 根据用户Id查询成交记录信息
+     * @param userId 用户id (必填)
+     * @param dealerName 经销商名称（非必填）
+     * @param currencyId 币种id（非必填）
+     * @param dealStatus 交易状态（非必填）
+     * @param startAddTime 申请开始时间（非必填）
+     * @param endddTime 申请结束时间（非必填）
+     * @param pageNumber 当前页（必填）
+     * @param pageSize 每页条数（必填）
+     * @return 查询成功：返回记录信息列表, 查询失败或者没有相应记录：返回null
+     */
+    public List<OtcTransactionUserDealVO> listOtcTransactionUsealByUserId(int userId, String dealerName, int currencyId, int dealStatus, Timestamp startAddTime,
+                                                                          Timestamp endddTime, int pageNumber, int pageSize){
+        return otcTransactionUserDealDao.listOtcTransactionUsealByUserId(userId, dealerName, currencyId, dealStatus, startAddTime,
+                endddTime, pageNumber, pageSize);
+    }
+
+    /**
      * 用户确认收款
      * @param otcTransactionUserDeal 记录信息
      * @return 确认成功：返回true，确认失败：返回false
@@ -266,8 +309,29 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
     @Transactional
     public boolean userConfirmationOfReceipts(OtcTransactionUserDealDO otcTransactionUserDeal){
         boolean executeSuccess = false;
+        //查询委托记录
+        OtcTransactionPendOrderDO otcTransactionPendOrder = otcTransactionPendOrderService.getOtcTransactionPendOrderByOrderNo(otcTransactionUserDeal.getOtcPendingOrderNo());
+        if(otcTransactionPendOrder == null){
+            return false;
+        }
+
+        Timestamp currentTime = DateUtil.getCurrentTime();
+        //交易记录状态修改
+        executeSuccess = updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),1,3, currentTime);
+        if(!executeSuccess){
+            executeSuccess = updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),2,3, currentTime);
+        }
+
+        if(!executeSuccess){
+            return false;
+        }
 
 
+        //经销商币解冻
+        executeSuccess = serService.updateAddUserAmount(otcTransactionPendOrder.getUserId(), otcTransactionUserDeal.getCurrencyNumber(), 0);
+        if(executeSuccess){
+            executeSuccess = serService.updateReduceUserBalanceLock(otcTransactionPendOrder.getUserId(), otcTransactionUserDeal.getCurrencyNumber());
+        }
 
         // 数据回滚
         if (!executeSuccess) {

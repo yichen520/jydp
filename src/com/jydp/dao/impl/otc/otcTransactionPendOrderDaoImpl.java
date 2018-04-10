@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,5 +110,49 @@ public class otcTransactionPendOrderDaoImpl implements IOtcTransactionPendOrderD
             LogUtil.printErrorLog(e);
         }
         return otcTransactionPendOrderList;
+    }
+
+    /**
+     * 根据用户id查询场外可用交易挂单列表
+     * @param userId 用户id
+     * @return 查询成功：返回记录信息，查询失败：返回null
+     */
+    public List<OtcTransactionPendOrderDO> getOtcTransactionPendOrderByUserId(int userId){
+        List<OtcTransactionPendOrderDO> result = null;
+
+        try {
+            result = sqlSessionTemplate.selectList("OtcTransactionPendOrde_getOtcTransactionPendOrderByUserId", userId);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return result;
+    }
+
+    /**
+     * 根据订单号删除该用户订单
+     * @param userId 用户id
+     * @param otcPendingOrderNo 订单id
+     * @param updateTime 更新时间
+     * @return 新增成功：返回true, 新增失败：返回false
+     */
+    public boolean deleteOtcTransactionPendOrderByOtcPendingOrderNo(int userId, String otcPendingOrderNo, Timestamp updateTime){
+        int result = 0;
+        Map<String,Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("otcPendingOrderNo", otcPendingOrderNo);
+        map.put("updateTime", updateTime);
+
+        try {
+            result = sqlSessionTemplate.delete("OtcTransactionPendOrde_deleteOtcTransactionPendOrderByOtcPendingOrderNo", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
