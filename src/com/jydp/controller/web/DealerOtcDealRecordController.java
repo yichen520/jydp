@@ -131,7 +131,7 @@ public class DealerOtcDealRecordController {
         }
     }
 
-    @RequestMapping("/show.html")
+    @RequestMapping(value = "/show.html", method = RequestMethod.POST)
     public String show(HttpServletRequest request){
         list(request);
         return "";
