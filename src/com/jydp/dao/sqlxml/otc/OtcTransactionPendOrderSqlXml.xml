@@ -18,6 +18,7 @@
 		SELECT otcPendingOrderNo,userId,userAccount,orderType,currencyId,currencyName,pendingRatio,
 			minNumber,maxNumber,pendingNumber,dealNumber,buyFee,restBalanceLock,area,pendingStatus,endTime,
 			remark,updateTime,addTime
-		FROM otc_transaction_pend_order_tab = #{orderNo}
+		FROM otc_transaction_pend_order_tab
+		WHERE otcPendingOrderNo = #{orderNo}
 	</select>
 </mapper>
