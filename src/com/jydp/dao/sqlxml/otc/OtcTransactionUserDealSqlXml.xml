@@ -5,6 +5,11 @@
 
 <mapper namespace="com.jydp.dao.impl.otc.OtcTransactionUserDealDaoImpl">
 
-
+    <update id="OtcTransactionUserDeal_updateDealStatusByOtcOrderNo" parameterType="java.util.Map">
+        UPDATE otc_transaction_user_deal_tab
+        SET dealStatus = #{changedStatus}
+        WHERE otcOrderNo = #{otcOrderNo}
+        AND dealStatus = #{dealStatus}
+    </update>
 
 </mapper>

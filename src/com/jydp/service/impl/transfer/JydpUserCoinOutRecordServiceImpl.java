@@ -89,7 +89,12 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
         //根据转出流水号查询记录信息
         JydpUserCoinOutRecordDO jydpUserCoinOutRecord = jydpUserCoinOutRecordDao.getJydpUserCoinOutRecordByRecordNo(coinRecordNo);
 
-        if (jydpUserCoinOutRecord == null || jydpUserCoinOutRecord.getHandleStatus() != 1) {
+        if (jydpUserCoinOutRecord == null || jydpUserCoinOutRecord.getHandleStatus() != 1 ) {
+            return false;
+        }
+
+        //撤单操作非本人
+        if (jydpUserCoinOutRecord.getUserId() != userId) {
             return false;
         }
 
