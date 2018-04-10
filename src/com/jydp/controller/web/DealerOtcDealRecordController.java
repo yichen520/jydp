@@ -53,6 +53,13 @@ public class DealerOtcDealRecordController {
             return responseJson;
         }
 
+        //判断用户是否为经销商
+        if(userSession.getIsDealer() != 2){//不是经销商
+            responseJson.setCode(3);
+            responseJson.setMessage("当前用户不是经销商");
+            return responseJson;
+        }
+
         OtcTransactionUserDealDO otcTransactionUserDeal =  otcTransactionUserDealService.getOtcTransactionUsealByOrderNo(otcOrderNo);
 
         if (otcTransactionUserDeal == null) {
@@ -93,6 +100,13 @@ public class DealerOtcDealRecordController {
         if (userSession == null) {
             responseJson.setCode(4);
             responseJson.setMessage("未登录");
+            return responseJson;
+        }
+
+        //判断用户是否为经销商
+        if(userSession.getIsDealer() != 2){//不是经销商
+            responseJson.setCode(3);
+            responseJson.setMessage("当前用户不是经销商");
             return responseJson;
         }
 
