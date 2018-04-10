@@ -1,5 +1,8 @@
 package com.jydp.entity.VO;
 
+import com.iqmkj.utils.StringUtil;
+import config.FileUrlConfig;
+
 import java.sql.Timestamp;
 
 /**
@@ -20,7 +23,8 @@ public class OtcTransactionUserDealVO {
     private String bankBranch; //收款支行
     private String paymentName; //收款人姓名
     private String paymentPhone; //收款人手机号
-    private String paymentImage; //二维码地址
+    private String paymentImage; //二维码地址（绝对路径）
+    private String imageUrl;  //二维码地址
     private int dealType; //收支类型：1：买入，2：卖出，3：撤销
     private int dealStatus; //状态：1：待付款，2：已付款（待确认），3：已完成，4：用户取消，5：商家取消
     private String remark; //备注
@@ -252,6 +256,27 @@ public class OtcTransactionUserDealVO {
     }
 
     /**
+     * 二维码地址（绝对路径）
+     *
+     * @return the image url
+     */
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    /**
+     * 二维码地址（绝对路径）
+     *
+     * @param imageUrl the image url
+     */
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+        if (StringUtil.isNotNull(imageUrl)) {
+            setPaymentImage(FileUrlConfig.file_visit_url + imageUrl);
+        }
+    }
+
+    /**
      * 收支类型：1：买入，2：卖出，3：撤销
      * @return
      */
@@ -330,4 +355,6 @@ public class OtcTransactionUserDealVO {
     public void setAddTime(Timestamp addTime) {
         this.addTime = addTime;
     }
+
+
 }
