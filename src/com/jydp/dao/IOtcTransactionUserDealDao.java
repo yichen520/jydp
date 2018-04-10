@@ -9,6 +9,14 @@ import java.sql.Timestamp;
  * @author yk
  */
 public interface IOtcTransactionUserDealDao {
+
+    /**
+     * 新增场外交易成交记录
+     * @param otcTransactionUserDeal 场外交易成交记录
+     * @return 新增成功：返回true; 新增失败：返回false
+     */
+    boolean insertOtcTransactionUserDeal(OtcTransactionUserDealDO otcTransactionUserDeal);
+
     /**
      * 根据记录号查询成交记录信息
      * @param orderNo 记录号

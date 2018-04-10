@@ -29,6 +29,10 @@ public class UserBalanceConfig {
     public static final String SELL_ENTRUST = "卖出挂单";
     /** 币种提现 */
     public static final String COIN_WITHDRAWAL = "币种提现";
+    /** 买入线下广告 */
+    public static final String BUY_OFFLINE_AD = "线下买入广告";
+    /** 卖出线下广告 */
+    public static final String SELL_OFFLINE_AD = "线下卖出广告";
 
 
 }

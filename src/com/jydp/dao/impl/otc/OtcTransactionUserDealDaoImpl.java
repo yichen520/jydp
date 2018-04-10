@@ -22,6 +22,28 @@ public class OtcTransactionUserDealDaoImpl implements IOtcTransactionUserDealDao
     private SqlSessionTemplate sqlSessionTemplate;
 
     /**
+     * 新增场外交易成交记录
+     * @param otcTransactionUserDeal 场外交易成交记录
+     * @return 新增成功：返回true; 新增失败：返回false
+     */
+    @Override
+    public boolean insertOtcTransactionUserDeal(OtcTransactionUserDealDO otcTransactionUserDeal){
+        int result = 0;
+
+        try {
+            result = sqlSessionTemplate.insert("OtcTransactionUserDeal_insertOtcTransactionUserDeal",otcTransactionUserDeal);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        if (result > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 根据记录号查询成交记录信息
      * @param orderNo 记录号
      * @return 查询成功：返回记录信息, 查询失败或者没有相应记录：返回null

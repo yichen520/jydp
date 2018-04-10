@@ -1,5 +1,6 @@
 package com.jydp.service;
 
+import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.otc.OtcTransactionUserDealDO;
 
 import java.sql.Timestamp;
@@ -9,6 +10,26 @@ import java.sql.Timestamp;
  * @author yk
  */
 public interface IOtcTransactionUserDealService {
+
+    /**
+     * 新增成交记录
+     * @param otcPendingOrderNo 挂单记录号
+     * @param userId 买方用户Id
+     * @param dealerId 卖方用户Id
+     * @param typeId 收款方式Id
+     * @param userAccount 用户帐号
+     * @param paymentType 收支类型：1：买入，2：卖出，3：撤销
+     * @param currencyId 币种Id
+     * @param currencyName 货币名称
+     * @param pendingRatio 挂单比例
+     * @param currencyNumber 成交数量
+     * @param currencyTotalPrice 成交总价
+     * @param pendTime 挂单时间
+     * @return 新增成功：返回记录信息, 新增失败：返回null
+     */
+    JsonObjectBO insertOtcTransactionUserDeal(String otcPendingOrderNo, int userId, int dealerId, int typeId, String userAccount,
+                                              int paymentType, int currencyId, String currencyName, double pendingRatio, double currencyNumber,
+                                              double currencyTotalPrice, Timestamp pendTime);
 
     /**
      * 根据记录号查询成交记录信息

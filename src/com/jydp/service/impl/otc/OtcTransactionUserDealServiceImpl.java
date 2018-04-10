@@ -1,15 +1,22 @@
 package com.jydp.service.impl.otc;
 
 import com.iqmkj.utils.DateUtil;
+import com.iqmkj.utils.DateUtil;
+import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.IOtcTransactionUserDealDao;
+import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.otc.OtcTransactionPendOrderDO;
 import com.jydp.entity.DO.otc.OtcTransactionUserDealDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
+import com.jydp.entity.DO.user.UserBalanceDO;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.IOtcTransactionPendOrderService;
 import com.jydp.service.IOtcTransactionUserDealService;
 import com.jydp.service.IUserCurrencyNumService;
+import com.jydp.service.*;
+import config.SystemCommonConfig;
+import config.UserBalanceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,9 +39,215 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
     @Autowired
     private IOtcTransactionPendOrderService otcTransactionPendOrderService;
 
-    /** 用户币数量 **/
+    /** 用户账号 */
+    @Autowired
+    private IUserService userService;
+
+    /** 用户币数量 */
     @Autowired
     private IUserCurrencyNumService userCurrencyNumService;
+
+    /** 用户账户记录 */
+    @Autowired
+    private IUserBalanceService userBalanceService;
+
+    /**
+     * 新增成交记录
+     * @param otcPendingOrderNo 挂单记录号
+     * @param userId 买方用户Id
+     * @param dealerId 卖方用户Id
+     * @param typeId 收款方式Id
+     * @param userAccount 用户帐号
+     * @param paymentType 收支类型：1：买入，2：卖出，3：撤销
+     * @param currencyId 币种Id
+     * @param currencyName 货币名称
+     * @param pendingRatio 挂单比例
+     * @param currencyNumber 成交数量
+     * @param currencyTotalPrice 成交总价
+     * @param pendTime 挂单时间
+     * @return 新增成功：返回记录信息, 新增失败：返回null
+     */
+    @Transactional
+    public JsonObjectBO insertOtcTransactionUserDeal(String otcPendingOrderNo, int userId, int dealerId, int typeId, String userAccount,
+                                                     int paymentType, int currencyId, String currencyName, double pendingRatio, double currencyNumber,
+                                                     double currencyTotalPrice, Timestamp pendTime){
+        JsonObjectBO resultJson = new JsonObjectBO();
+        //业务执行状态
+        boolean excuteSuccess = true;
+        Timestamp curTime = DateUtil.getCurrentTime();
+        String remark;
+        int code = 1;
+        String message = "新增成功";
+        if(currencyId == 999){
+            //增加买方用户冻结XT
+            if(excuteSuccess){
+                excuteSuccess = userService.updateAddUserAmount(userId, 0, currencyNumber);
+                if(!excuteSuccess){
+                    code = 2;
+                    message = "增加买方用户冻结XT失败";
+                }
+            }
+            //减少卖方用户XT
+            if(excuteSuccess){
+                excuteSuccess = userService.updateReduceUserBalance(dealerId, currencyNumber);
+                if(!excuteSuccess){
+                    code = 2;
+                    message = "减少卖方用户XT失败";
+                }
+            }
+            //增加买方账户XT记录
+            if(excuteSuccess){
+                String orderNo = SystemCommonConfig.USER_BALANCE +
+                        DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
+                        NumberUtil.createNumberStr(10);
+                remark = "线下买入" + currencyName + "广告，增加锁定XT";
+
+                UserBalanceDO userBalance = new UserBalanceDO();
+                userBalance.setOrderNo(orderNo);
+                userBalance.setUserId(userId);
+                userBalance.setCurrencyId(UserBalanceConfig.DOLLAR_ID);
+                userBalance.setCurrencyName(UserBalanceConfig.DOLLAR);
+                userBalance.setFromType(UserBalanceConfig.BUY_OFFLINE_AD);
+                userBalance.setBalanceNumber(0);
+                userBalance.setFrozenNumber(currencyNumber);
+                userBalance.setRemark(remark);
+                userBalance.setAddTime(curTime);
+
+                excuteSuccess = userBalanceService.insertUserBalance(userBalance);
+                if(!excuteSuccess){
+                    code = 2;
+                    message = "增加买方账户XT记录失败";
+                }
+            }
+            //增加卖方账户XT记录
+            if(excuteSuccess){
+                String orderNo = SystemCommonConfig.USER_BALANCE +
+                        DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
+                        NumberUtil.createNumberStr(10);
+                remark = "线下卖出" + currencyName + "广告，扣除XT";
+
+                UserBalanceDO userBalance = new UserBalanceDO();
+                userBalance.setOrderNo(orderNo);
+                userBalance.setUserId(dealerId);
+                userBalance.setCurrencyId(UserBalanceConfig.DOLLAR_ID);
+                userBalance.setCurrencyName(UserBalanceConfig.DOLLAR);
+                userBalance.setFromType(UserBalanceConfig.SELL_OFFLINE_AD);
+                userBalance.setBalanceNumber(-currencyNumber);
+                userBalance.setFrozenNumber(0);
+                userBalance.setRemark(remark);
+                userBalance.setAddTime(curTime);
+
+                excuteSuccess = userBalanceService.insertUserBalance(userBalance);
+                if(!excuteSuccess){
+                    code = 2;
+                    message = "增加卖方账户XT记录失败";
+                }
+            }
+
+        }else {
+            //增加买方冻结币数量
+            if(excuteSuccess){
+                excuteSuccess = userCurrencyNumService.increaseCurrencyNumberLock(userId, currencyId, currencyNumber);
+                if(!excuteSuccess){
+                    code = 2;
+                    message = "增加买方用户冻结XT失败";
+                }
+            }
+            //减少卖方用户币数量
+            if(excuteSuccess){
+                excuteSuccess = userCurrencyNumService.reduceCurrencyNumber(dealerId, currencyId, currencyNumber);
+                if(!excuteSuccess){
+                    code = 2;
+                    message = "减少卖方用户XT失败";
+                }
+            }
+            //增加买方币记录
+            if(excuteSuccess){
+                String orderNo = SystemCommonConfig.USER_BALANCE +
+                        DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
+                        NumberUtil.createNumberStr(10);
+                remark = "线下买入" + currencyName + "广告,增加锁定" + currencyName;
+
+                UserBalanceDO userBalance = new UserBalanceDO();
+                userBalance.setOrderNo(orderNo);
+                userBalance.setUserId(userId);
+                userBalance.setCurrencyId(currencyId);
+                userBalance.setCurrencyName(currencyName);
+                userBalance.setFromType(UserBalanceConfig.BUY_OFFLINE_AD);
+                userBalance.setBalanceNumber(0);
+                userBalance.setFrozenNumber(currencyNumber);
+                userBalance.setRemark(remark);
+                userBalance.setAddTime(curTime);
+
+                excuteSuccess = userBalanceService.insertUserBalance(userBalance);
+                if(!excuteSuccess){
+                    code = 2;
+                    message = "增加买方账户XT记录失败";
+                }
+            }
+            //增加卖方币记录
+            if(excuteSuccess){
+                String orderNo = SystemCommonConfig.USER_BALANCE +
+                        DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
+                        NumberUtil.createNumberStr(10);
+                remark = "线下卖出" + currencyName + "广告，扣除" + currencyName;
+
+                UserBalanceDO userBalance = new UserBalanceDO();
+                userBalance.setOrderNo(orderNo);
+                userBalance.setUserId(dealerId);
+                userBalance.setCurrencyId(currencyId);
+                userBalance.setCurrencyName(currencyName);
+                userBalance.setFromType(UserBalanceConfig.SELL_OFFLINE_AD);
+                userBalance.setBalanceNumber(-currencyNumber);
+                userBalance.setFrozenNumber(0);
+                userBalance.setRemark(remark);
+                userBalance.setAddTime(curTime);
+
+                excuteSuccess = userBalanceService.insertUserBalance(userBalance);
+                if(!excuteSuccess){
+                    code = 2;
+                    message = "增加卖方账户XT记录失败";
+                }
+            }
+        }
+
+        //新增成交记录
+        if(excuteSuccess){
+            OtcTransactionUserDealDO otcTransactionUserDeal = new OtcTransactionUserDealDO();
+            String otcOrderNo = SystemCommonConfig.TRANSACTION_OTC_USER_DEAL +
+                    DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
+                    NumberUtil.createNumberStr(10);
+            otcTransactionUserDeal.setOtcOrderNo(otcOrderNo);
+            otcTransactionUserDeal.setOtcPendingOrderNo(otcPendingOrderNo);
+            otcTransactionUserDeal.setUserId(userId);
+            otcTransactionUserDeal.setUserAccount(userAccount);
+            otcTransactionUserDeal.setPaymentType(paymentType);
+            otcTransactionUserDeal.setCurrencyId(currencyId);
+            otcTransactionUserDeal.setCurrencyName(currencyName);
+            otcTransactionUserDeal.setPendingRatio(pendingRatio);
+            otcTransactionUserDeal.setCurrencyNumber(currencyNumber);
+            otcTransactionUserDeal.setCurrencyTotalPrice(currencyTotalPrice);
+            otcTransactionUserDeal.setPendTime(pendTime);
+            otcTransactionUserDeal.setDealStatus(1);
+            otcTransactionUserDeal.setAddTime(curTime);
+
+
+            excuteSuccess = otcTransactionUserDealDao.insertOtcTransactionUserDeal(otcTransactionUserDeal);
+            if(!excuteSuccess){
+                code = 2;
+                message = "增加卖方账户XT记录失败";
+            }
+        }
+
+        if(!excuteSuccess){
+            //数据回滚
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+
+        resultJson.setCode(code);
+        resultJson.setMessage(message);
+        return  resultJson;
+    }
 
     /**
      * 根据记录号查询成交记录信息

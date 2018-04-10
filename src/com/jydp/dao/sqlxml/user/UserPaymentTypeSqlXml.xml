@@ -14,4 +14,14 @@
 		 #{paymentName}, #{paymentPhone}, #{paymentImage}, #{remark}, #{addTime})
 	</insert>
 
+	<select id="UserPaymentType_getUserPaymentType" parameterType="java.util.Map" resultType="UserPaymentTypeDO">
+		SELECT typeId,userId,otcPendingOrderNo,paymentType,paymentAccount,bankName,
+		bankCode,bankBranch,paymentName,paymentPhone,paymentImage,typeStatus,
+		remark,updateTime,addTime
+		FROM user_payment_type_tab
+		WHERE userId = #{userId}
+		  AND otcPendingOrderNo = #{otcPendingOrderNo}
+		  AND paymentType = #{paymentType}
+	</select>
+
 </mapper>
