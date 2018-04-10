@@ -179,6 +179,13 @@ public class TradeCenterController {
         String buyPwd = StringUtil.stringNullHandle(request.getParameter("buyPwd"));
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
 
+        if (!StringUtil.isNotNull(buyPriceStr) || !StringUtil.isNotNull(buyNumStr) || !StringUtil.isNotNull(buyPwd)
+                ||!StringUtil.isNotNull(currencyIdStr)) {
+            resultJson.setCode(2);
+            resultJson.setMessage("参数错误");
+            return resultJson;
+        }
+
         double buyPrice = 0;
         if (StringUtil.isNotNull(buyPriceStr)) {
             buyPrice = Double.parseDouble(buyPriceStr);
@@ -363,6 +370,13 @@ public class TradeCenterController {
         String sellNumStr = StringUtil.stringNullHandle(request.getParameter("sellNum"));
         String sellPwd = StringUtil.stringNullHandle(request.getParameter("sellPwd"));
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+
+        if (!StringUtil.isNotNull(sellPriceStr) || !StringUtil.isNotNull(sellNumStr) || !StringUtil.isNotNull(sellPwd)
+                ||!StringUtil.isNotNull(currencyIdStr)) {
+            resultJson.setCode(2);
+            resultJson.setMessage("参数错误");
+            return resultJson;
+        }
 
         double sellPrice = 0;
         if (StringUtil.isNotNull(sellPriceStr)) {
