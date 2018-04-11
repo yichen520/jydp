@@ -479,10 +479,10 @@ public class OtcTradeCenterController {
         return resultJson;
     }
 
-    @RequestMapping(value = "/show.html", method = RequestMethod.POST)
+    @RequestMapping("/show")
     public String show(HttpServletRequest request){
         list(request);
-        return "";
+        return "page/web/tradeOut";
     }
 
     /** 查询数据 */

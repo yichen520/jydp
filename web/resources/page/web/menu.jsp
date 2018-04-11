@@ -25,7 +25,7 @@
             <ul class="coinLink">
             </ul>
         </li>
-        <%--<li class="navInfo"><a href="javascript:void(0)" onclick="disableTip()">我要充值</a></li>--%>
+        <li class="navInfo"><a id="otcTradeCenter" href="<%=path%>/userWeb/otcTradeCenter/show">场外交易</a></li>
         <li class="navInfo"><a id="message" href="<%=path %>/userWeb/userMessage/show.htm">个人中心</a></li>
     </ul>
 
@@ -112,6 +112,10 @@
 
         if (curUrl.indexOf("/userWeb/tradeCenter/show") > 0) {
             menuObj = $("#tradeCenter");
+        }
+
+        if (curUrl.indexOf("/userWeb/otcTradeCenter/show") > 0) {
+            menuObj = $("#otcTradeCenter");
         }
 
         if(menuObj != null){
