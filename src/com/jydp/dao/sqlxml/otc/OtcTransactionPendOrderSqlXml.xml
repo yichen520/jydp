@@ -67,7 +67,7 @@
 		FROM otc_transaction_pend_order_tab
 		WHERE userId = #{userId}
 	    AND pendingStatus = 1
-	    ORDER BY DESC addTime
+	    ORDER BY addTime DESC
 	</select>
 
     <update id="OtcTransactionPendOrde_deleteOtcTransactionPendOrderByOtcPendingOrderNo" parameterType="java.util.Map">

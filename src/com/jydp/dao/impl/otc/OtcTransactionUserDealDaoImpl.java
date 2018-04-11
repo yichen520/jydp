@@ -67,21 +67,23 @@ public class OtcTransactionUserDealDaoImpl implements IOtcTransactionUserDealDao
      * @param userId 用户id (必填)
      * @param dealerName 经销商名称（非必填）
      * @param currencyId 币种id（非必填）
-     * @param dealStatus 交易状态（非必填）
+     * @param dealType 交易类型（非必填）收支类型：1：买入，2：卖出，3：撤销
+     * @param dealStatus 交易状态（非必填） //状态：1：待付款，2：已付款（待确认），3：已完成，4：用户取消，5：商家取消
      * @param startAddTime 申请开始时间（非必填）
-     * @param endddTime 申请结束时间（非必填）
+     * @param endAddTime 申请结束时间（非必填）
      * @return 查询成功：返回记录信息数量, 查询失败或者没有相应记录：返回0
      */
-    public int numberOtcTransactionUsealByUserId(int userId, String dealerName, int currencyId, int dealStatus, Timestamp startAddTime,
-                                                 Timestamp endddTime){
+    public int numberOtcTransactionUsealByUserId(int userId, String dealerName, int currencyId, int dealType, int dealStatus, Timestamp startAddTime,
+                                                 Timestamp endAddTime){
         int result = 0;
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
         map.put("dealerName", dealerName);
         map.put("currencyId", currencyId);
+        map.put("dealType", dealType);
         map.put("dealStatus", dealStatus);
         map.put("startAddTime", startAddTime);
-        map.put("endddTime", endddTime);
+        map.put("endAddTime", endAddTime);
 
         try {
             result = sqlSessionTemplate.selectOne("OtcTransactionUserDeal_numberOtcTransactionUsealByUserId", map);
@@ -99,13 +101,13 @@ public class OtcTransactionUserDealDaoImpl implements IOtcTransactionUserDealDao
      * @param currencyId 币种id（非必填）
      * @param dealStatus 交易状态（非必填）
      * @param startAddTime 申请开始时间（非必填）
-     * @param endddTime 申请结束时间（非必填）
+     * @param endAddTime 申请结束时间（非必填）
      * @param pageNumber 当前页（必填）
      * @param pageSize 每页条数（必填）
      * @return 查询成功：返回记录信息列表, 查询失败或者没有相应记录：返回null
      */
     public List<OtcTransactionUserDealVO> listOtcTransactionUsealByUserId(int userId, String dealerName, int currencyId, int dealStatus, Timestamp startAddTime,
-                                                                          Timestamp endddTime, int pageNumber, int pageSize){
+                                                                          Timestamp endAddTime, int pageNumber, int pageSize){
         List<OtcTransactionUserDealVO> resultList = null;
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
@@ -113,7 +115,7 @@ public class OtcTransactionUserDealDaoImpl implements IOtcTransactionUserDealDao
         map.put("currencyId", currencyId);
         map.put("dealStatus", dealStatus);
         map.put("startAddTime", startAddTime);
-        map.put("endddTime", endddTime);
+        map.put("endAddTime", endAddTime);
         map.put("startNumber", pageNumber * pageSize);
         map.put("pageSize", pageSize);
         try {
