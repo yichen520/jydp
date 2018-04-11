@@ -131,6 +131,12 @@ public class DealerOtcDealRecordController {
         }
     }
 
+    @RequestMapping(value = "/show.html", method = RequestMethod.POST)
+    public String show(HttpServletRequest request){
+        list(request);
+        return "";
+    }
+
     /** 查询记录 **/
     public void list(HttpServletRequest request){
 

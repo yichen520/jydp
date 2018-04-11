@@ -3,6 +3,7 @@ package com.jydp.dao.impl.otc;
 import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.IOtcTransactionPendOrderDao;
 import com.jydp.entity.DO.otc.OtcTransactionPendOrderDO;
+import com.jydp.entity.VO.OtcTransactionPendOrderVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -94,9 +95,9 @@ public class otcTransactionPendOrderDaoImpl implements IOtcTransactionPendOrderD
      * @return 查询成功：返回记录信息，查询失败：返回null
      */
     @Override
-    public List<OtcTransactionPendOrderDO> getOtcTransactionPendOrderlist(int currencyId, int orderType, String area, int pageNumber, int pageSize) {
+    public List<OtcTransactionPendOrderVO> getOtcTransactionPendOrderlist(int currencyId, int orderType, String area, int pageNumber, int pageSize) {
 
-        List<OtcTransactionPendOrderDO> otcTransactionPendOrderList = null;
+        List<OtcTransactionPendOrderVO> otcTransactionPendOrderList = null;
         Map<String,Object> map = new HashMap<>();
         map.put("currencyId", currencyId);
         map.put("orderType", orderType);

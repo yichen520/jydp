@@ -479,6 +479,12 @@ public class OtcTradeCenterController {
         return resultJson;
     }
 
+    @RequestMapping(value = "/show.html", method = RequestMethod.POST)
+    public String show(HttpServletRequest request){
+        list(request);
+        return "";
+    }
+
     /** 查询数据 */
     public void list(HttpServletRequest request) {
 
@@ -515,7 +521,7 @@ public class OtcTradeCenterController {
             pageNumber = totalPageNumber - 1;
         }
 
-        List<OtcTransactionPendOrderDO> otcTransactionPendOrderList = null;
+        List<OtcTransactionPendOrderVO> otcTransactionPendOrderList = null;
         if (totalNumber > 0) {
             otcTransactionPendOrderList = otcTransactionPendOrderService.getOtcTransactionPendOrderlist(currencyId,orderType,area,pageNumber,pageSize);
         }
