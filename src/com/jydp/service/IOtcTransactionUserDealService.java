@@ -8,8 +8,6 @@ import com.jydp.entity.VO.OtcTransactionUserDealVO;
 import java.sql.Timestamp;
 import java.util.List;
 
-import java.sql.Timestamp;
-
 /**
  * 场外交易成交记录
  * @author yk
@@ -50,13 +48,14 @@ public interface IOtcTransactionUserDealService {
      * @param userId 用户id (必填)
      * @param dealerName 经销商名称（非必填）
      * @param currencyId 币种id（非必填）
-     * @param dealStatus 交易状态（非必填）
+     * @param dealType 交易类型（非必填）收支类型：1：买入，2：卖出，3：撤销
+     * @param dealStatus 交易状态（非必填） //状态：1：待付款，2：已付款（待确认），3：已完成，4：用户取消，5：商家取消
      * @param startAddTime 申请开始时间（非必填）
-     * @param endddTime 申请结束时间（非必填）
+     * @param endAddTime 申请结束时间（非必填）
      * @return 查询成功：返回记录信息数量, 查询失败或者没有相应记录：返回0
      */
-    int numberOtcTransactionUsealByUserId(int userId, String dealerName, int currencyId, int dealStatus, Timestamp startAddTime,
-                                                                   Timestamp endddTime);
+    int numberOtcTransactionUsealByUserId(int userId, String dealerName, int currencyId, int dealType, int dealStatus, Timestamp startAddTime,
+                                                                   Timestamp endAddTime);
 
     /**
      * 根据用户Id查询成交记录信息
@@ -65,13 +64,13 @@ public interface IOtcTransactionUserDealService {
      * @param currencyId 币种id（非必填）
      * @param dealStatus 交易状态（非必填）
      * @param startAddTime 申请开始时间（非必填）
-     * @param endddTime 申请结束时间（非必填）
+     * @param endAddTime 申请结束时间（非必填）
      * @param pageNumber 当前页（必填）
      * @param pageSize 每页条数（必填）
      * @return 查询成功：返回记录信息列表, 查询失败或者没有相应记录：返回null
      */
     List<OtcTransactionUserDealVO> listOtcTransactionUsealByUserId(int userId, String dealerName, int currencyId, int dealStatus, Timestamp startAddTime,
-                                                                          Timestamp endddTime, int pageNumber, int pageSize);
+                                                                          Timestamp endAddTime, int pageNumber, int pageSize);
 
     /**
      * 用户确认收款

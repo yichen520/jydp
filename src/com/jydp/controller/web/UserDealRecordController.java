@@ -45,14 +45,20 @@ public class UserDealRecordController {
 
         String dealerName = StringUtil.stringNullHandle(request.getParameter("dealerName"));
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+        String dealTypeStr = StringUtil.stringNullHandle(request.getParameter("dealType"));
         String dealStatusStr = StringUtil.stringNullHandle(request.getParameter("dealStatus"));
         String startAddTimeStr = StringUtil.stringNullHandle(request.getParameter("startAddTime"));
-        String endddTimeStr = StringUtil.stringNullHandle(request.getParameter("endddTime"));
+        String endAddTimeStr = StringUtil.stringNullHandle(request.getParameter("endAddTime"));
         String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
 
         int currencyId = 0;
         if(StringUtil.isNotNull(currencyIdStr)){
             currencyId = Integer.parseInt(currencyIdStr);
+        }
+
+        int dealType = 0;
+        if(StringUtil.isNotNull(dealTypeStr)){
+            dealType = Integer.parseInt(dealTypeStr);
         }
 
         int dealStatus = 0;
@@ -65,9 +71,9 @@ public class UserDealRecordController {
             startAddTime = Timestamp.valueOf(startAddTimeStr);
         }
 
-        Timestamp endddTime = null;
-        if(StringUtil.isNotNull(endddTimeStr)){
-            endddTime = Timestamp.valueOf(endddTimeStr);
+        Timestamp endAddTime = null;
+        if(StringUtil.isNotNull(endAddTimeStr)){
+            endAddTime = Timestamp.valueOf(endAddTimeStr);
         }
 
         int pageNumber = 0;
@@ -76,7 +82,7 @@ public class UserDealRecordController {
         }
 
         int pageSize = 20;
-        int totalNumber = otcTransactionUserDealService.numberOtcTransactionUsealByUserId(userBo.getUserId(), dealerName, currencyId, dealStatus, startAddTime, endddTime);
+        int totalNumber = otcTransactionUserDealService.numberOtcTransactionUsealByUserId(userBo.getUserId(), dealerName, currencyId, dealType, dealStatus, startAddTime, endAddTime);
         int totalPageNumber = (int) Math.ceil(totalNumber/1.0/pageSize);   //总页码数
         if(totalPageNumber <= 0){
             totalPageNumber = 1;
@@ -87,7 +93,7 @@ public class UserDealRecordController {
         List<OtcTransactionUserDealVO> otcTransactionUserDealList = null;
         if(totalNumber > 0){
             otcTransactionUserDealList = otcTransactionUserDealService.listOtcTransactionUsealByUserId(userBo.getUserId(),
-                    dealerName, currencyId, dealStatus, startAddTime, endddTime, pageNumber, pageSize);
+                    dealerName, currencyId, dealStatus, startAddTime, endAddTime, pageNumber, pageSize);
         }
 
         request.setAttribute("pageNumber", pageNumber);
@@ -95,11 +101,12 @@ public class UserDealRecordController {
         request.setAttribute("totalPageNumber", totalPageNumber);
         request.setAttribute("otcTransactionUserDealList", otcTransactionUserDealList);
         request.setAttribute("dealerName", dealerName);
-        request.setAttribute("currencyId", currencyIdStr);
-        request.setAttribute("dealStatus", dealStatusStr);
+        request.setAttribute("currencyId", currencyId);
+        request.setAttribute("dealType", dealType);
+        request.setAttribute("dealStatus", dealStatus);
         request.setAttribute("startAddTime", startAddTimeStr);
-        request.setAttribute("endddTime", endddTimeStr);
-        return "page/web/login";
+        request.setAttribute("endAddTime", endAddTimeStr);
+        return "page/web/userCurbExchangeRecord";
     }
 
     /**
@@ -117,14 +124,20 @@ public class UserDealRecordController {
 
         String dealerName = StringUtil.stringNullHandle(request.getParameter("dealerName"));
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+        String dealTypeStr = StringUtil.stringNullHandle(request.getParameter("dealType"));
         String dealStatusStr = StringUtil.stringNullHandle(request.getParameter("dealStatus"));
         String startAddTimeStr = StringUtil.stringNullHandle(request.getParameter("startAddTime"));
-        String endddTimeStr = StringUtil.stringNullHandle(request.getParameter("endddTime"));
+        String endAddTimeStr = StringUtil.stringNullHandle(request.getParameter("endAddTime"));
         String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
 
         int currencyId = 0;
         if(StringUtil.isNotNull(currencyIdStr)){
             currencyId = Integer.parseInt(currencyIdStr);
+        }
+
+        int dealType = 0;
+        if(StringUtil.isNotNull(dealTypeStr)){
+            dealType = Integer.parseInt(dealTypeStr);
         }
 
         int dealStatus = 0;
@@ -137,9 +150,9 @@ public class UserDealRecordController {
             startAddTime = Timestamp.valueOf(startAddTimeStr);
         }
 
-        Timestamp endddTime = null;
-        if(StringUtil.isNotNull(endddTimeStr)){
-            endddTime = Timestamp.valueOf(endddTimeStr);
+        Timestamp endAddTime = null;
+        if(StringUtil.isNotNull(endAddTimeStr)){
+            endAddTime = Timestamp.valueOf(endAddTimeStr);
         }
 
         int pageNumber = 0;
@@ -148,7 +161,7 @@ public class UserDealRecordController {
         }
 
         int pageSize = 20;
-        int totalNumber = otcTransactionUserDealService.numberOtcTransactionUsealByUserId(userBo.getUserId(), dealerName, currencyId, dealStatus, startAddTime, endddTime);
+        int totalNumber = otcTransactionUserDealService.numberOtcTransactionUsealByUserId(userBo.getUserId(), dealerName, currencyId, dealType, dealStatus, startAddTime, endAddTime);
         int totalPageNumber = (int) Math.ceil(totalNumber/1.0/pageSize);   //总页码数
         if(totalPageNumber <= 0){
             totalPageNumber = 1;
@@ -159,7 +172,7 @@ public class UserDealRecordController {
         List<OtcTransactionUserDealVO> otcTransactionUserDealList = null;
         if(totalNumber > 0){
             otcTransactionUserDealList = otcTransactionUserDealService.listOtcTransactionUsealByUserId(userBo.getUserId(),
-                    dealerName, currencyId, dealStatus, startAddTime, endddTime, pageNumber, pageSize);
+                    dealerName, currencyId, dealStatus, startAddTime, endAddTime, pageNumber, pageSize);
         }
         //返回对象
         JSONObject jsonObject = new JSONObject();
@@ -205,7 +218,7 @@ public class UserDealRecordController {
             return response;
         }
         if(otcTransactionUserDeal.getDealStatus() == 3){
-            response.setCode(1);
+            response.setCode(2);
             response.setMessage("此订单已完成");
             return response;
         }
@@ -214,22 +227,26 @@ public class UserDealRecordController {
         Timestamp currentTime = DateUtil.getCurrentTime();
         //用户确认收货
         if(otcTransactionUserDeal.getDealType() == 1){
-            userConfirmation = otcTransactionUserDealService.updateDealStatusByOtcOrderNo(otcOrderNo,1,3, currentTime);
+            userConfirmation = otcTransactionUserDealService.updateDealStatusByOtcOrderNo(otcOrderNo,2,3, currentTime);
+
             if(!userConfirmation){
-                userConfirmation = otcTransactionUserDealService.updateDealStatusByOtcOrderNo(otcOrderNo,2,3, currentTime);
+                response.setCode(3);
+                response.setMessage("请等待经销商进行收款确认");
+                return response;
             }
+
         //用户确认收款
         } else if(otcTransactionUserDeal.getDealType() == 2){
             userConfirmation = otcTransactionUserDealService.userConfirmationOfReceipts(otcTransactionUserDeal);
+
+            if(!userConfirmation){
+                response.setCode(3);
+                response.setMessage("该订单确认失败，请刷新页面后重试");
+                return response;
+            }
         } else {
             response.setCode(3);
             response.setMessage("该订单无法确认");
-            return response;
-        }
-
-        if(!userConfirmation){
-            response.setCode(3);
-            response.setMessage("该订单确认失败，请刷新页面后重试");
             return response;
         }
 
