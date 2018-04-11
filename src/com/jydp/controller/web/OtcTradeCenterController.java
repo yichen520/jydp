@@ -136,6 +136,12 @@ public class OtcTradeCenterController {
 
         //获取挂单信息
         OtcTransactionPendOrderDO otcTransactionPendOrder = otcTransactionPendOrderService.getOtcTransactionPendOrderByOrderNo(otcPendingOrderNo);
+        if(otcTransactionPendOrder.getOrderType() != 1){
+            resultJson.setCode(2);
+            resultJson.setMessage("参数错误");
+            return resultJson;
+        }
+
         if(otcTransactionPendOrder == null){
             resultJson.setCode(2);
             resultJson.setMessage("参数错误");
@@ -279,6 +285,7 @@ public class OtcTradeCenterController {
         if (StringUtil.isNotNull(sellNumStr)) {
             sellNum = Double.parseDouble(sellNumStr);
         }
+
         int paymentType = 0;
         if (StringUtil.isNotNull(paymentTypeStr)) {
             paymentType = Integer.parseInt(paymentTypeStr);
@@ -368,6 +375,12 @@ public class OtcTradeCenterController {
 
         //获取挂单信息
         OtcTransactionPendOrderDO otcTransactionPendOrder = otcTransactionPendOrderService.getOtcTransactionPendOrderByOrderNo(otcPendingOrderNo);
+        if(otcTransactionPendOrder.getOrderType() != 2){
+            resultJson.setCode(2);
+            resultJson.setMessage("参数错误");
+            return resultJson;
+        }
+
         if(otcTransactionPendOrder == null){
             resultJson.setCode(2);
             resultJson.setMessage("参数错误");
@@ -479,10 +492,11 @@ public class OtcTradeCenterController {
         return resultJson;
     }
 
-    @RequestMapping(value = "/show.html", method = RequestMethod.POST)
+    /** 展示页面 */
+    @RequestMapping(value = "/show.htm", method = RequestMethod.POST)
     public String show(HttpServletRequest request){
         list(request);
-        return "";
+        return "page/web/otcTradeCenter";
     }
 
     /** 查询数据 */
