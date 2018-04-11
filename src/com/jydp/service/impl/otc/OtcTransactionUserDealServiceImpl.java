@@ -341,7 +341,11 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
             otcTransactionUserDeal.setOtcOrderNo(otcOrderNo);
             otcTransactionUserDeal.setOtcPendingOrderNo(otcPendingOrderNo);
             otcTransactionUserDeal.setTypeId(typeId);
-            otcTransactionUserDeal.setUserId(userId);
+            if(dealType == 1){
+                otcTransactionUserDeal.setUserId(userId);
+            }else if(dealType == 2){
+                otcTransactionUserDeal.setUserId(dealerId);
+            }
             otcTransactionUserDeal.setUserAccount(userAccount);
             otcTransactionUserDeal.setDealType(dealType);
             otcTransactionUserDeal.setCurrencyId(currencyId);
