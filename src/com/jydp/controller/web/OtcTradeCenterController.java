@@ -493,10 +493,13 @@ public class OtcTradeCenterController {
     }
 
     /** 展示页面 */
-    @RequestMapping(value = "/show.htm", method = RequestMethod.POST)
+    @RequestMapping(value = "/show", method = RequestMethod.POST)
     public String show(HttpServletRequest request){
         list(request);
-        return "page/web/otcTradeCenter";
+        request.setAttribute("code", 1);
+        request.setAttribute("message", "查询成功!");
+//        return "page/web/otcTradeCenter";
+        return "page/web/tradeOut";
     }
 
     /** 查询数据 */

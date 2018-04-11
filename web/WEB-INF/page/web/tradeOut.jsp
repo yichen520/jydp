@@ -1,13 +1,19 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@include file="/resources/page/common/path.jsp"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="images/icon.ico" type="image/x-ico" />
-
-    <link rel="stylesheet" type="text/css" href="css/tradeOut.css" />
-    <link rel="stylesheet" type="text/css" href="css/public.css" />
-    <link rel="stylesheet" type="text/css" href="css/simpleTips.css" />
-
+    <link rel="icon" href="<%=path %>/resources/image/web/icon.ico" type="image/x-ico" />
+    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/tradeOut.css" />
+    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/public.css" />
+    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/simpleTips.css" />
+    <script type="text/javascript" src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="<%=path %>/resources/js/loadPageWeb.js"></script>
+    <script type="text/javascript" src="<%=path %>/resources/js/simpleTips.js"></script>
     <title>场外交易</title>
 </head>
 <body>
@@ -53,40 +59,36 @@
                 <td class="proportion">购买比例</td>
                 <td class="operate">操作</td>
             </tr>
-            <tr class="tableInfo">
-                <td class="name">浙江省经销商</td>
-                <td class="coin">XT</td>
-                <td class="area">中国(CN)</td>
-                <td class="type buy">购买</td>
-                <td class="limit"><span>11000</span>~<span>14000</span>CNY</td>
-                <td class="proportion">1:100</td>
-                <td class="operate"><input type="text" value="我要购买" class="tradeBuy" onfocus="this.blur()" /></td>
-            </tr>
-            <tr class="tableInfo">
-                <td class="name">浙江省经销商</td>
-                <td class="coin">XT</td>
-                <td class="area">中国(CN)</td>
-                <td class="type sale">出售</td>
-                <td class="limit"><span>11000</span>~<span>14000</span>CNY</td>
-                <td class="proportion">1:100</td>
-                <td class="operate"><input type="text" value="我要出售" class="tradeSale" onfocus="this.blur()" /></td>
-            </tr>
+            <c:forEach items="${otcTransactionPendOrderList}" var="pendOrder">
+                <tr class="tableInfo">
+                    <td class="name">${pendOrder.dealerName}</td>
+                    <td class="coin">${pendOrder.currencyName}</td>
+                    <td class="area">${pendOrder.area}</td>
+                    <c:if test="${pendOrder.orderType == 1}">
+                        <td class="type buy">购买</td>
+                    </c:if>
+                    <c:if test="${pendOrder.orderType == 2}">
+                        <td class="type sale">出售</td>
+                    </c:if>
+                    <td class="limit"><span>${pendOrder.minNumber}</span>~<span>${pendOrder.maxNumber}</span>CNY</td>
+                    <td class="proportion">1:${pendOrder.pendingRatio}</td>
+                    <td class="operate">
+                        <c:if test="${pendOrder.orderType == 1}">
+                            <input type="text" value="我要购买" class="tradeBuy" onfocus="this.blur()" />
+                        </c:if>
+                        <c:if test="${pendOrder.orderType == 2}">
+                            <input type="text" value="我要出售" class="tradeSale" onfocus="this.blur()" />
+                        </c:if>
+                    </td>
+                </tr>
+            </c:forEach>
         </table>
 
-        <div class="changePage">
-            <p class="total">共21条</p>
-            <p class="jump">
-                <input type="text" />
-                <input type="text" value="跳&nbsp;转" class="jumpButton" onfocus="this.blur()" />
-            </p>
-            <p class="page">
-                <input type="text" class="first" value="首页" onfocus="this.blur()" />
-                <input type="text" class="upPage" value="<上一页" onfocus="this.blur()" />
-                <span class="pageNumber"><span>1</span>/<span>3</span></span>
-                <input type="text" class="downPage" value="下一页>" onfocus="this.blur()" />
-                <input type="text" class="end" value="尾页" onfocus="this.blur()" />
-            </p>
-        </div>
+        <jsp:include page="/resources/page/common/paging.jsp"></jsp:include>
+
+        <form id="queryForm" action="<%=path %>/userWeb/otcTradeCenter/show" method="post">
+            <input type="hidden" id="queryPageNumber" name="pageNumber">
+        </form>
     </div>
 </div>
 
@@ -405,9 +407,7 @@
 </div>
 
 
-<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
-<script type="text/javascript" src="js/public.js"></script>
-<script type="text/javascript" src="js/simpleTips.js"></script>
+
 
 <script type="text/javascript">
     var popObj;
