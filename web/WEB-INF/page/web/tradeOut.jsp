@@ -939,7 +939,7 @@
             paymentAccount = $("#sellAliAccount").val();
             paymentImage = document.getElementById("changead_a1").files[0];
         }else if(payType == 3){
-            paymentAccount = $("#sellAliAccount").val();
+            paymentAccount = $("#sellWxAccount").val();
             paymentImage = document.getElementById("changead_a2").files[0];
         }
         var bankName = $("#sellBankName").val();
