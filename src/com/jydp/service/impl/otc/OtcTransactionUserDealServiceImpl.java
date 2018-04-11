@@ -138,11 +138,21 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
         String remark;
         if(currencyId == 999){
             //增加买方用户冻结XT
-            if(excuteSuccess){
-                excuteSuccess = userService.updateAddUserAmount(userId, 0, currencyNumber);
-                if(!excuteSuccess){
-                    code = 2;
-                    message = "增加买方用户冻结XT失败";
+            if(dealType == 1){
+                if(excuteSuccess){
+                    excuteSuccess = userService.updateAddUserAmount(dealerId, 0, currencyNumber);
+                    if(!excuteSuccess){
+                        code = 2;
+                        message = "增加买方用户冻结XT失败";
+                    }
+                }
+            }else if(dealType == 2){
+                if(excuteSuccess){
+                    excuteSuccess = userService.updateAddUserAmount(userId, 0, currencyNumber);
+                    if(!excuteSuccess){
+                        code = 2;
+                        message = "增加买方用户冻结XT失败";
+                    }
                 }
             }
             //减少卖方用户XT
@@ -155,60 +165,88 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
             }
             //增加买方账户XT记录
             if(excuteSuccess){
-                String orderNo = SystemCommonConfig.USER_BALANCE +
-                        DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
-                        NumberUtil.createNumberStr(10);
-                remark = "线下买入" + currencyName + "广告，增加锁定XT";
+                if(dealType == 1){
+                    String orderNo = SystemCommonConfig.USER_BALANCE +
+                            DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
+                            NumberUtil.createNumberStr(10);
+                    remark = "线下买入" + currencyName + "广告，增加锁定XT";
 
-                UserBalanceDO userBalance = new UserBalanceDO();
-                userBalance.setOrderNo(orderNo);
-                userBalance.setUserId(userId);
-                userBalance.setCurrencyId(UserBalanceConfig.DOLLAR_ID);
-                userBalance.setCurrencyName(UserBalanceConfig.DOLLAR);
-                userBalance.setFromType(UserBalanceConfig.BUY_OFFLINE_AD);
-                userBalance.setBalanceNumber(0);
-                userBalance.setFrozenNumber(currencyNumber);
-                userBalance.setRemark(remark);
-                userBalance.setAddTime(curTime);
+                    UserBalanceDO userBalance = new UserBalanceDO();
+                    userBalance.setOrderNo(orderNo);
+                    userBalance.setUserId(dealerId);
+                    userBalance.setCurrencyId(UserBalanceConfig.DOLLAR_ID);
+                    userBalance.setCurrencyName(UserBalanceConfig.DOLLAR);
+                    userBalance.setFromType(UserBalanceConfig.BUY_OFFLINE_AD);
+                    userBalance.setBalanceNumber(-currencyNumber);
+                    userBalance.setFrozenNumber(currencyNumber);
+                    userBalance.setRemark(remark);
+                    userBalance.setAddTime(curTime);
 
-                excuteSuccess = userBalanceService.insertUserBalance(userBalance);
+                    excuteSuccess = userBalanceService.insertUserBalance(userBalance);
+                }else if(dealType == 2){
+                    String orderNo = SystemCommonConfig.USER_BALANCE +
+                            DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
+                            NumberUtil.createNumberStr(10);
+                    remark = "线下买入" + currencyName + "广告，增加锁定XT";
+
+                    UserBalanceDO userBalance = new UserBalanceDO();
+                    userBalance.setOrderNo(orderNo);
+                    userBalance.setUserId(userId);
+                    userBalance.setCurrencyId(UserBalanceConfig.DOLLAR_ID);
+                    userBalance.setCurrencyName(UserBalanceConfig.DOLLAR);
+                    userBalance.setFromType(UserBalanceConfig.BUY_OFFLINE_AD);
+                    userBalance.setBalanceNumber(0);
+                    userBalance.setFrozenNumber(currencyNumber);
+                    userBalance.setRemark(remark);
+                    userBalance.setAddTime(curTime);
+
+                    excuteSuccess = userBalanceService.insertUserBalance(userBalance);
+                }
                 if(!excuteSuccess){
                     code = 2;
                     message = "增加买方账户XT记录失败";
                 }
-            }
-            //增加卖方账户XT记录
-            if(excuteSuccess){
-                String orderNo = SystemCommonConfig.USER_BALANCE +
-                        DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
-                        NumberUtil.createNumberStr(10);
-                remark = "线下卖出" + currencyName + "广告，扣除XT";
+                //增加卖方账户XT记录
+                if(excuteSuccess){
+                    String orderNo = SystemCommonConfig.USER_BALANCE +
+                            DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
+                            NumberUtil.createNumberStr(10);
+                    remark = "线下卖出" + currencyName + "广告，扣除XT";
 
-                UserBalanceDO userBalance = new UserBalanceDO();
-                userBalance.setOrderNo(orderNo);
-                userBalance.setUserId(dealerId);
-                userBalance.setCurrencyId(UserBalanceConfig.DOLLAR_ID);
-                userBalance.setCurrencyName(UserBalanceConfig.DOLLAR);
-                userBalance.setFromType(UserBalanceConfig.SELL_OFFLINE_AD);
-                userBalance.setBalanceNumber(-currencyNumber);
-                userBalance.setFrozenNumber(0);
-                userBalance.setRemark(remark);
-                userBalance.setAddTime(curTime);
+                    UserBalanceDO userBalance = new UserBalanceDO();
+                    userBalance.setOrderNo(orderNo);
+                    userBalance.setUserId(dealerId);
+                    userBalance.setCurrencyId(UserBalanceConfig.DOLLAR_ID);
+                    userBalance.setCurrencyName(UserBalanceConfig.DOLLAR);
+                    userBalance.setFromType(UserBalanceConfig.SELL_OFFLINE_AD);
+                    userBalance.setBalanceNumber(-currencyNumber);
+                    userBalance.setFrozenNumber(0);
+                    userBalance.setRemark(remark);
+                    userBalance.setAddTime(curTime);
 
-                excuteSuccess = userBalanceService.insertUserBalance(userBalance);
-                if(!excuteSuccess){
-                    code = 2;
-                    message = "增加卖方账户XT记录失败";
+                    excuteSuccess = userBalanceService.insertUserBalance(userBalance);
+                    if(!excuteSuccess){
+                        code = 2;
+                        message = "增加卖方账户XT记录失败";
+                    }
                 }
             }
 
         }else {
             //增加买方冻结币数量
-            if(excuteSuccess){
-                excuteSuccess = userCurrencyNumService.increaseCurrencyNumberLock(userId, currencyId, currencyNumber);
-                if(!excuteSuccess){
-                    code = 2;
-                    message = "增加买方用户冻结XT失败";
+            if(excuteSuccess) {
+                if (dealType == 1) {
+                    excuteSuccess = userCurrencyNumService.increaseCurrencyNumberLock(dealerId, currencyId, currencyNumber);
+                    if (!excuteSuccess) {
+                        code = 2;
+                        message = "增加买方用户冻结XT失败";
+                    }
+                }else if (dealType == 2) {
+                    excuteSuccess = userCurrencyNumService.increaseCurrencyNumberLock(userId, currencyId, currencyNumber);
+                    if (!excuteSuccess) {
+                        code = 2;
+                        message = "增加买方用户冻结XT失败";
+                    }
                 }
             }
             //减少卖方用户币数量
@@ -221,50 +259,75 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
             }
             //增加买方币记录
             if(excuteSuccess){
-                String orderNo = SystemCommonConfig.USER_BALANCE +
-                        DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
-                        NumberUtil.createNumberStr(10);
-                remark = "线下买入" + currencyName + "广告,增加锁定" + currencyName;
+                if (dealType == 1) {
+                    String orderNo = SystemCommonConfig.USER_BALANCE +
+                            DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
+                            NumberUtil.createNumberStr(10);
+                    remark = "线下买入" + currencyName + "广告,增加锁定" + currencyName;
 
-                UserBalanceDO userBalance = new UserBalanceDO();
-                userBalance.setOrderNo(orderNo);
-                userBalance.setUserId(userId);
-                userBalance.setCurrencyId(currencyId);
-                userBalance.setCurrencyName(currencyName);
-                userBalance.setFromType(UserBalanceConfig.BUY_OFFLINE_AD);
-                userBalance.setBalanceNumber(0);
-                userBalance.setFrozenNumber(currencyNumber);
-                userBalance.setRemark(remark);
-                userBalance.setAddTime(curTime);
+                    UserBalanceDO userBalance = new UserBalanceDO();
+                    userBalance.setOrderNo(orderNo);
+                    userBalance.setUserId(userId);
+                    userBalance.setCurrencyId(currencyId);
+                    userBalance.setCurrencyName(currencyName);
+                    userBalance.setFromType(UserBalanceConfig.BUY_OFFLINE_AD);
+                    userBalance.setBalanceNumber(-currencyNumber);
+                    userBalance.setFrozenNumber(currencyNumber);
+                    userBalance.setRemark(remark);
+                    userBalance.setAddTime(curTime);
 
-                excuteSuccess = userBalanceService.insertUserBalance(userBalance);
-                if(!excuteSuccess){
-                    code = 2;
-                    message = "增加买方账户XT记录失败";
+                    excuteSuccess = userBalanceService.insertUserBalance(userBalance);
+                    if(!excuteSuccess){
+                        code = 2;
+                        message = "增加买方账户XT记录失败";
+                    }
+                }else if(dealType == 2){
+                    String orderNo = SystemCommonConfig.USER_BALANCE +
+                            DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
+                            NumberUtil.createNumberStr(10);
+                    remark = "线下买入" + currencyName + "广告,增加锁定" + currencyName;
+
+                    UserBalanceDO userBalance = new UserBalanceDO();
+                    userBalance.setOrderNo(orderNo);
+                    userBalance.setUserId(userId);
+                    userBalance.setCurrencyId(currencyId);
+                    userBalance.setCurrencyName(currencyName);
+                    userBalance.setFromType(UserBalanceConfig.BUY_OFFLINE_AD);
+                    userBalance.setBalanceNumber(0);
+                    userBalance.setFrozenNumber(currencyNumber);
+                    userBalance.setRemark(remark);
+                    userBalance.setAddTime(curTime);
+
+                    excuteSuccess = userBalanceService.insertUserBalance(userBalance);
+                    if(!excuteSuccess){
+                        code = 2;
+                        message = "增加买方账户XT记录失败";
+                    }
                 }
-            }
-            //增加卖方币记录
-            if(excuteSuccess){
-                String orderNo = SystemCommonConfig.USER_BALANCE +
-                        DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
-                        NumberUtil.createNumberStr(10);
-                remark = "线下卖出" + currencyName + "广告，扣除" + currencyName;
 
-                UserBalanceDO userBalance = new UserBalanceDO();
-                userBalance.setOrderNo(orderNo);
-                userBalance.setUserId(dealerId);
-                userBalance.setCurrencyId(currencyId);
-                userBalance.setCurrencyName(currencyName);
-                userBalance.setFromType(UserBalanceConfig.SELL_OFFLINE_AD);
-                userBalance.setBalanceNumber(-currencyNumber);
-                userBalance.setFrozenNumber(0);
-                userBalance.setRemark(remark);
-                userBalance.setAddTime(curTime);
+                //增加卖方币记录
+                if(excuteSuccess){
+                    String orderNo = SystemCommonConfig.USER_BALANCE +
+                            DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
+                            NumberUtil.createNumberStr(10);
+                    remark = "线下卖出" + currencyName + "广告，扣除" + currencyName;
 
-                excuteSuccess = userBalanceService.insertUserBalance(userBalance);
-                if(!excuteSuccess){
-                    code = 2;
-                    message = "增加卖方账户XT记录失败";
+                    UserBalanceDO userBalance = new UserBalanceDO();
+                    userBalance.setOrderNo(orderNo);
+                    userBalance.setUserId(dealerId);
+                    userBalance.setCurrencyId(currencyId);
+                    userBalance.setCurrencyName(currencyName);
+                    userBalance.setFromType(UserBalanceConfig.SELL_OFFLINE_AD);
+                    userBalance.setBalanceNumber(-currencyNumber);
+                    userBalance.setFrozenNumber(0);
+                    userBalance.setRemark(remark);
+                    userBalance.setAddTime(curTime);
+
+                    excuteSuccess = userBalanceService.insertUserBalance(userBalance);
+                    if(!excuteSuccess){
+                        code = 2;
+                        message = "增加卖方账户XT记录失败";
+                    }
                 }
             }
         }
