@@ -102,11 +102,11 @@
                             <td class="my"></td>
                             <td class="state">
                             <c:if test="${item.dealStatus == 1}">
-                                <p>状态：<span class="wait">待完成</span></p>
+                                <p>状态：<span class="wait_confirm">待确认</span></p>
                                 <p>完成时间：<span></span></p>
                             </c:if>
                             <c:if test="${item.dealStatus == 2}">
-                                <p>状态：<span class="wait_confirm">待确认</span></p>
+                                <p>状态：<span class="wait">待完成</span></p>
                                 <p>完成时间：<span></span></p>
                             </c:if>
                             <c:if test="${item.dealStatus == 3}">
@@ -143,19 +143,19 @@
                                     <p>收款人：${item.paymentName}</p>
                                 </c:if>
                                 <c:if test="${item.paymentType == 2}">
-                                    <p>支付宝账号；<span>${item.paymentAccount}</span></p>
+                                    <p>支付宝账号:<span>${item.paymentAccount}</span></p>
                                 </c:if>
                                 <c:if test="${item.paymentType == 3}">
-                                    <p>微信账号；<span>${item.paymentAccount}</span></p>
+                                    <p>微信账号:<span>${item.paymentAccount}</span></p>
                                 </c:if>
                             </td>
                             <td class="state">
                                 <c:if test="${item.dealStatus == 1}">
-                                    <p>状态：<span class="wait">待完成</span></p>
+                                    <p>状态：<span class="wait_confirm">待确认</span></p>
                                     <p>完成时间：<span></span></p>
                                 </c:if>
                                 <c:if test="${item.dealStatus == 2}">
-                                    <p>状态：<span class="wait_confirm">待确认</span></p>
+                                    <p>状态：<span class="wait">待完成</span></p>
                                     <p>完成时间：<span></span></p>
                                 </c:if>
                                 <c:if test="${item.dealStatus == 3}">
