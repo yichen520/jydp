@@ -57,7 +57,7 @@
             <li class="menuInfo"><a id="jydpUserCoinOutRecord" href="<%=path %>/userWeb/jydpUserCoinOutRecord/show.htm">提币记录</a></li>
             <li class="menuInfo"><a id="userDealRecord" href="<%=path %>/userWeb/userDealRecord/show.htm" >场外交易记录</a></li>
             <c:if test="${userSession.isDealer == 2}">
-                <li class="menuInfo"><a id="dealerOtcDealRecord" href="javascript:toOtcDealRecord();" >场外交易记录-经销商</a></li>
+                <li class="menuInfo"><a id="dealerOtcDealRecord" href="<%=path %>/userWeb/dealerOtcDealRecord/show.htm" >场外交易记录-经销商</a></li>
             </c:if>
         </ul>
     </li>
@@ -77,8 +77,6 @@
         </ul>
     </li>
 </ul>
-<form id="DealerDealRecordMenuForm" action="<%=path %>/userWeb/dealerOtcDealRecord/show.htm" method="post">
-</form>
 <script type="text/javascript">
     $(function() {
         $(".menuTitle").click(function () {
@@ -121,11 +119,6 @@
         }
     }
     var showPersonalMenu = setInterval(showPersonalMenu, 20);
-
-    //跳转至经销商成交记录
-    function toOtcDealRecord() {
-        $('#DealerDealRecordMenuForm').submit();
-    }
 
     function disableTip() {
         openTips("该功能暂未开放");

@@ -41,9 +41,10 @@
                 <p class="condition">币种：
                     <select class="askSelect" id="currencyId" name="currencyId">
                         <option value="0">全部</option>
-                        <c:forEach items="${transactionCurrencyList}" var="currency">
-                            <option value="${currency.currencyId}">${currency.currencyName}</option>
-                        </c:forEach>
+                        <option value="999">XT</option>
+                        <%--<c:forEach items="${transactionCurrencyList}" var="currency">--%>
+                            <%--<option value="${currency.currencyId}">${currency.currencyName}</option>--%>
+                        <%--</c:forEach>--%>
                     </select>
                 </p>
                 <p class="condition">类型：

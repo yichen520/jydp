@@ -627,11 +627,14 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
                                                 int currencyId, int dealStatus, Timestamp startAddTime, Timestamp endAddTime, int paymentType, int dealType, int pageNumber, int pageSize) {
         List<OtcTransactionUserDealVO> otcTransactionUserDealList =  otcTransactionUserDealDao.getOtcTransactionUserDeallistByDealerId(userId,userAccount,currencyId,
                 dealStatus,startAddTime,endAddTime,paymentType,dealType,pageNumber,pageSize);
+
         for (OtcTransactionUserDealVO otcTransactionUserDeal : otcTransactionUserDealList) {
-            String paymentAccount = otcTransactionUserDeal.getPaymentAccount();
-            if (paymentAccount != null && paymentAccount.length() > 5) {
-                String paymentAccountEn = paymentAccount.substring(0, 4) + "****" + paymentAccount.substring(paymentAccount.length() - 4, paymentAccount.length());
-                otcTransactionUserDeal.setPaymentAccount(paymentAccountEn);
+            if (otcTransactionUserDeal.getDealType() == 1) {
+                String paymentAccount = otcTransactionUserDeal.getPaymentAccount();
+                if (paymentAccount != null && paymentAccount.length() > 5) {
+                    String paymentAccountEn = paymentAccount.substring(0, 4) + "****" + paymentAccount.substring(paymentAccount.length() - 4, paymentAccount.length());
+                    otcTransactionUserDeal.setPaymentAccount(paymentAccountEn);
+                }
             }
         }
         return otcTransactionUserDealList;
