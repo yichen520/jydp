@@ -166,7 +166,7 @@
             <p class="popInput">
                 <label class="popName">比例<span class="star">*</span>：</label>
                 <input type="text" id="pendingRatio" onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" name="pendingRatio" class="entry" placeholder="交易比例" />
-                <span class="remind">交易比例为：XT:兑换的货币单位，如1:100</span>
+                <span class="remind">交易比例为 XT:兑换的货币单位如1:100填100</span>
             </p>
             <p class="popInput">
                 <label class="popName">交易限额<span class="star">*</span>：</label>
@@ -1176,7 +1176,7 @@
             openTips("最大限额要大于0");
             return;
         }
-        if(maxNumber <= minNumber){
+        if(parseInt(maxNumber) <= parseInt(minNumber)){
             openTips("最大限额要大于最小限额");
             return;
         }
