@@ -577,56 +577,60 @@ public class UserMessageController {
         otcOrderVO.setUserId(userSession.getUserId());
         otcOrderVO.setUserAccount(userSession.getUserAccount());
         // 校验参数
-        if (otcOrderVO.getCurrencyId() == 0 || otcOrderVO.getOrderType() == 0 || otcOrderVO.getPendingRatio() == 0 || otcOrderVO.getMaxNumber() <= 0) {
+        if (otcOrderVO.getCurrencyId() == 0 || otcOrderVO.getOrderType() == 0 || otcOrderVO.getPendingRatio() == 0 || otcOrderVO.getMaxNumber() <= 0 || otcOrderVO.getMaxNumber() <= otcOrderVO.getMinNumber()) {
             resultJson.setCode(3);
             resultJson.setMessage("参数错误");
             return resultJson;
         }
-        // 判断是否选择付款方式
-        if (!StringUtil.isNotNull(otcOrderVO.getBankAccount()) && !StringUtil.isNotNull(otcOrderVO.getAlipayAccount()) && !StringUtil.isNotNull(otcOrderVO.getWechatAccount())) {
-            resultJson.setCode(3);
-            resultJson.setMessage("付款方式参数错误");
-            return resultJson;
-        }
-        //根据不同支付方式校验 不同的 必填参数
-        if (StringUtil.isNotNull(otcOrderVO.getBankAccount())) {//银行卡
-            if (!StringUtil.isNotNull(otcOrderVO.getBankAccount()) || !StringUtil.isNotNull(otcOrderVO.getBankName()) || !StringUtil.isNotNull(otcOrderVO.getBankBranch())
-                    || !StringUtil.isNotNull(otcOrderVO.getPaymentName()) || !StringUtil.isNotNull(otcOrderVO.getPaymentPhone())) {
+        if (otcOrderVO.getOrderType() == 1) {//出售单需要判断 回购单不需要判断支付方式
+            // 判断是否选择付款方式
+            if (!StringUtil.isNotNull(otcOrderVO.getBankAccount()) && !StringUtil.isNotNull(otcOrderVO.getAlipayAccount()) && !StringUtil.isNotNull(otcOrderVO.getWechatAccount())) {
                 resultJson.setCode(3);
-                resultJson.setMessage("银行参数错误");
+                resultJson.setMessage("付款方式参数错误");
                 return resultJson;
+            }
+            //根据不同支付方式校验 不同的 必填参数
+            if (StringUtil.isNotNull(otcOrderVO.getBankAccount())) {//银行卡
+                if (!StringUtil.isNotNull(otcOrderVO.getBankAccount()) || !StringUtil.isNotNull(otcOrderVO.getBankName()) || !StringUtil.isNotNull(otcOrderVO.getBankBranch())
+                        || !StringUtil.isNotNull(otcOrderVO.getPaymentName()) || !StringUtil.isNotNull(otcOrderVO.getPaymentPhone())) {
+                    resultJson.setCode(3);
+                    resultJson.setMessage("银行参数错误");
+                    return resultJson;
+                }
+            }
+            if (StringUtil.isNotNull(otcOrderVO.getAlipayAccount())) {//支付宝
+                if (alipayImageUrl == null || alipayImageUrl.isEmpty()) {
+                    resultJson.setCode(3);
+                    resultJson.setMessage("支付宝参数错误");
+                    return resultJson;
+                }
+                String alipayImage = ImageReduceUtil.reduceImageUploadRemote(alipayImageUrl, FileUrlConfig.file_remote_qeCodeImage_url);
+                if (alipayImage.equals("") || alipayImage == null) {
+                    resultJson.setCode(3);
+                    resultJson.setMessage("微信二维码上传失败");
+                    return resultJson;
+                }
+                otcOrderVO.setAlipayImage(alipayImage);
+            }
+            if (StringUtil.isNotNull(otcOrderVO.getWechatAccount())) {//微信
+                if (wechatImageUrl == null || wechatImageUrl.isEmpty()) {
+                    resultJson.setCode(3);
+                    resultJson.setMessage("微信参数错误");
+                    return resultJson;
+                }
+                String wechatImage = ImageReduceUtil.reduceImageUploadRemote(wechatImageUrl, FileUrlConfig.file_remote_qeCodeImage_url);
+                if (wechatImage.equals("") || wechatImage == null) {
+                    resultJson.setCode(3);
+                    resultJson.setMessage("微信二维码上传失败");
+                    return resultJson;
+                }
+                otcOrderVO.setWechatImage(wechatImage);
             }
         }
-        if (StringUtil.isNotNull(otcOrderVO.getAlipayAccount())) {//支付宝
-            if (alipayImageUrl == null || alipayImageUrl.isEmpty()) {
-                resultJson.setCode(3);
-                resultJson.setMessage("支付宝参数错误");
-                return resultJson;
-            }
-            String alipayImage = ImageReduceUtil.reduceImageUploadRemote(alipayImageUrl, FileUrlConfig.file_remote_qeCodeImage_url);
-            if (alipayImage.equals("") || alipayImage == null) {
-                resultJson.setCode(3);
-                resultJson.setMessage("微信二维码上传失败");
-                return resultJson;
-            }
-            otcOrderVO.setAlipayImage(alipayImage);
-        }
-        if (StringUtil.isNotNull(otcOrderVO.getWechatAccount())) {//微信
-            if (wechatImageUrl == null || wechatImageUrl.isEmpty()) {
-                resultJson.setCode(3);
-                resultJson.setMessage("微信参数错误");
-                return resultJson;
-            }
-            String wechatImage = ImageReduceUtil.reduceImageUploadRemote(wechatImageUrl, FileUrlConfig.file_remote_qeCodeImage_url);
-            if (wechatImage.equals("") || wechatImage == null) {
-                resultJson.setCode(3);
-                resultJson.setMessage("微信二维码上传失败");
-                return resultJson;
-            }
-            otcOrderVO.setWechatImage(wechatImage);
+        if(otcOrderVO.getCurrencyId() == 999) {//如果是999  即为xt 币
+            otcOrderVO.setCurrencyName("XT");
         }
         // 根据挂单类型判断 出售单：1 回购单：2   出售单 判断币种信息   回购单不做判断
-
         if(otcOrderVO.getCurrencyId() != 999){//如果是xt 币    不用判断币种信息  直接允许挂单
         if (otcOrderVO.getOrderType() == 1) {
             //获取币种信息
