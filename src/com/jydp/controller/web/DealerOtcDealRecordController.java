@@ -40,7 +40,7 @@ public class DealerOtcDealRecordController {
     @Autowired
     private ITransactionCurrencyService transactionCurrencyService;
 
-    @RequestMapping(value = "/show.htm", method = RequestMethod.POST)
+    @RequestMapping("/show.htm")
     public String show(HttpServletRequest request){
         list(request);
         request.setAttribute("code", 1);
