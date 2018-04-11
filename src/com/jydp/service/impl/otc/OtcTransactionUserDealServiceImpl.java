@@ -9,6 +9,7 @@ import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.otc.OtcTransactionPendOrderDO;
 import com.jydp.entity.DO.otc.OtcTransactionUserDealDO;
 import com.jydp.entity.DO.otc.UserPaymentTypeDO;
+import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DTO.UserPaymentTypeDTO;
 import com.jydp.entity.VO.OtcTransactionUserDealVO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
@@ -456,12 +457,25 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
         double currencyNumber = otcTransactionUserDeal.getCurrencyNumber();
         String otcOrderNo = otcTransactionUserDeal.getOtcOrderNo();
 
-        UserCurrencyNumDO userCurrencyNum = userCurrencyNumService.getUserCurrencyNumByUserIdAndCurrencyId(transactionUserId,currencyId);
+        double userLockCoin = 0;
+
+        if (currencyId == UserBalanceConfig.DOLLAR_ID) {
+            UserDO user = userService.getUserByUserId(transactionUserId);
+            if (user != null) {
+                userLockCoin = user.getUserBalanceLock();
+            }
+        } else {
+            UserCurrencyNumDO userCurrencyNum = userCurrencyNumService.getUserCurrencyNumByUserIdAndCurrencyId(transactionUserId,currencyId);
+            if (userCurrencyNum != null) {
+                userLockCoin = userCurrencyNum.getCurrencyNumberLock();
+            }
+        }
+
+        if (userLockCoin  < currencyNumber) {
+            return false;
+        }
 
         boolean excuteSuccess = true;
-        if (userCurrencyNum == null || userCurrencyNum.getCurrencyNumberLock() < currencyNumber) {
-           return false;
-        }
 
         Timestamp updateTime = DateUtil.getCurrentTime();
         //修改成交记录状态
