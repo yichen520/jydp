@@ -881,11 +881,10 @@
                 openTips("最大限额要大于0");
                 return;
             }
-            if(maxNumber <= minNumber){
+            if(parseInt(maxNumber) <= parseInt(minNumber)){
                 openTips("最大限额要大于最小限额");
                 return;
             }
-
             if(orderType == 2){
              addOrder();
             }else{
