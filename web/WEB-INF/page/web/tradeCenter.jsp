@@ -611,7 +611,7 @@
     }
 
     function matchDouble(o, num){
-        var matchStr = /^((?:0\.\d*[1-9]|(?!0)\d+(?:\.\d*[1-9])?)|0)-(?:0\.\d*[1-9]|(?!0)\d+(?:\.\d*[1-9])?)$/;
+        var matchStr = /^-?\d+\.?\d{0,num}$/;
         if(!matchStr.test(o.value)){
             if(isNaN(o.value)){
                 o.value = '';

@@ -32,8 +32,8 @@
             <p class="condition">类型：
                 <select class="askSelect" id="orderType" name="orderType">
                     <option value="0">全部</option>
-                    <option value="1">出售</option>
-                    <option value="2">购买</option>
+                    <option value="1">购买</option>
+                    <option value="2">出售</option>
                 </select>
             </p>
             <p class="condition">地区：
@@ -63,10 +63,10 @@
                     <td class="coin">${pendOrder.currencyName}</td>
                     <td class="area">${pendOrder.area}</td>
                     <c:if test="${pendOrder.orderType == 1}">
-                        <td class="type buy">出售</td>
+                        <td class="type buy">购买</td>
                     </c:if>
                     <c:if test="${pendOrder.orderType == 2}">
-                        <td class="type sale">购买</td>
+                        <td class="type sale">出售</td>
                     </c:if>
                     <td class="limit"><span>${pendOrder.minNumber}</span>~<span>${pendOrder.maxNumber}</span>CNY</td>
                     <td class="proportion">1:${pendOrder.pendingRatio}</td>
@@ -76,7 +76,8 @@
                                    onclick="buy('${pendOrder.otcPendingOrderNo}','${pendOrder.userId}','${pendOrder.pendingRatio}');"/>
                         </c:if>
                         <c:if test="${pendOrder.orderType == 2}">
-                            <input type="text" value="我要出售" class="tradeSale" onfocus="this.blur()" />
+                            <input type="text" value="我要出售" class="tradeSale" onfocus="this.blur()"
+                                    onclick="sell('${pendOrder.otcPendingOrderNo}','${pendOrder.dealerName}','${pendOrder.pendingRatio}');"/>
                         </c:if>
                     </td>
                 </tr>
@@ -99,14 +100,15 @@
 
             <p class="popInput">
                 <label class="popName">购买数量<span class="star">*</span>：</label>
-                <input type="text" class="entry" placeholder="您要购买的数量，单位：个" id="buyNumber"/>
+                <input type="text" class="entry" placeholder="您要购买的数量，单位：个" id="buyNumber"
+                       onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="11"/>
                 <input type="hidden" name="pendingRatio" id="pendingRatio" value="0" />
                 <input type="hidden" name="orderNo" id="orderNo" value="0" />
-                <span class="remind">交易比例为：<span id="ratio">1：100</span>，<span>XT</span>：兑换货币</span>
+                <span class="remind">交易比例为：<span id="ratio"></span>，<span>XT</span>：兑换货币</span>
             </p>
             <p class="popInput">
                 <label class="popName">总价：</label>
-                <span class="popMoney" id="buySum">¥1000.000</span>
+                <span class="popMoney" id="buySum">¥0</span>
             </p>
             <p class="popInput">
                 <label class="popName">支付方式<span class="star">*</span>：</label>
@@ -291,62 +293,67 @@
             <div class="overflow">
                 <p class="popInput">
                     <label class="popName">经销商名称：</label>
-                    <span class="popWord">浙江省经销商</span>
+                    <span class="popWord" id="sellDealerName"></span>
                 </p>
                 <p class="popInput">
                     <label class="popName">出售数量<span class="star">*</span>：</label>
-                    <input type="text" class="entry" placeholder="您要出售的数量，单位：个" />
-                    <span class="remind">交易比例为：<span>1：100</span>，<span>XT</span>：兑换货币</span>
+                    <input type="hidden" name="pendingRatio" id="sellRatio" value="0" />
+                    <input type="hidden" name="orderNo" id="sellOrderNo" value="0" />
+                    <input type="text" class="entry" placeholder="您要出售的数量，单位：个" id="sellNumber"
+                           onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="11"/>
+                    <span class="remind">交易比例为：<span id="ratioSell"></span>，<span>XT</span>：兑换货币</span>
                 </p>
                 <p class="popInput">
                     <label class="popName">总价：</label>
-                    <span class="popMoney">¥1000.000</span>
+                    <span class="popMoney" id="sellSum">¥0</span>
                 </p>
 
                 <p class="popInput">
                     <label class="popName">收款方式<span class="star">*</span>：</label>
-                    <select class="popSelected" onchange="change(this.value)">
-                        <option disabled selected>选择收款方式</option>
-                        <option value="0">银行卡转账</option>
-                        <option value="1">支付宝转账</option>
-                        <option value="2">微信转账</option>
+                    <select class="popSelected" onchange="change(this.value)" id="sellPayType">
+                        <option value="0" disabled selected>选择收款方式</option>
+                        <option value="1">银行卡转账</option>
+                        <option value="2">支付宝转账</option>
+                        <option value="3">微信转账</option>
                     </select>
                 </p>
 
                 <div class="card">
                     <p class="popInput">
                         <label class="popName">银行卡号<span class="star">*</span>：</label>
-                        <input type="text" class="entry" placeholder="您的银行卡号" />
+                        <input type="text" class="entry" placeholder="您的银行卡号" id="sellBankCard"
+                               onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
                     </p>
                     <p class="popInput">
                         <label class="popName">银行名称<span class="star">*</span>：</label>
-                        <input type="text" class="entry" placeholder="该银行卡的银行名称" />
+                        <input type="text" class="entry" placeholder="该银行卡的银行名称" id="sellBankName"/>
                     </p>
                     <p class="popInput">
                         <label class="popName">支行名称<span class="star">*</span>：</label>
-                        <input type="text" class="entry" placeholder="该卡的支行名称" />
+                        <input type="text" class="entry" placeholder="该卡的支行名称" id="sellBankBranch"/>
                     </p>
                     <p class="popInput">
                         <label class="popName">预留姓名<span class="star">*</span>：</label>
-                        <input type="text" class="entry" placeholder="该银行卡的银行预留姓名" />
+                        <input type="text" class="entry" placeholder="该银行卡的银行预留姓名" id="sellPaymentName"/>
                     </p>
                     <p class="popInput">
                         <label class="popName">预留电话<span class="star">*</span>：</label>
-                        <input type="text" class="entry" placeholder="该银行卡的银行预留电话" />
+                        <input type="text" class="entry" placeholder="该银行卡的银行预留电话" id="sellPaymentPhone"
+                               maxlength="11" onkeyup="matchUtil(this, 'number')" onblur="matchUtil(this, 'number')"/>
                     </p>
                 </div>
 
                 <div class="ali">
                     <p class="popInput">
                         <label class="popName">支付宝账号<span class="star">*</span>：</label>
-                        <input type="text" class="entry" placeholder="您的支付宝账号" />
+                        <input type="text" class="entry" placeholder="您的支付宝账号" id="sellAliAccount"/>
                     </p>
                     <p class="popInput">
                         <label class="popName">收款码<span class="star">*</span>：</label>
                         <span class="pic">
                         <input type="text" id="changead_t1"  class="choosePic" placeholder="请选择二维码图片" onfocus="this.blur()" />
                         <input type="text"  onclick="document.getElementById('changead_a1').click();"  value="选择文件" class="choose_button" onfocus="this.blur();" />
-                        <input type="file" class="file" id="changead_a1" onchange="document.getElementById('changead_t1').value = this.value;" />
+                        <input type="file" class="file" id="changead_a1" onchange="checkFileImageTwo(this, 'changead_t1');" />
                     </span>
                     </p>
                 </div>
@@ -354,14 +361,14 @@
                 <div class="wechat">
                     <p class="popInput">
                         <label class="popName">微信账号<span class="star">*</span>：</label>
-                        <input type="text" class="entry" placeholder="您的微信账号" />
+                        <input type="text" class="entry" placeholder="您的微信账号" id="sellWxAccount"/>
                     </p>
                     <p class="popInput">
                         <label class="popName">收款码<span class="star">*</span>：</label>
                         <span class="pic">
                             <input type="text" id="changead_t2"  class="choosePic" placeholder="请选择二维码图片" onfocus="this.blur()" />
                             <input type="text"  onclick="document.getElementById('changead_a2').click();"  value="选择文件" class="choose_button" onfocus="this.blur();" />
-                            <input type="file" class="file" id="changead_a2" onchange="document.getElementById('changead_t2').value = this.value;" />
+                            <input type="file" class="file" id="changead_a2" onchange="checkFileImageTwo(this, 'changead_t2');" />
                         </span>
                     </p>
                 </div>
@@ -369,37 +376,113 @@
 
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="confirm" onfocus="this.blur()" />
+                <input type="text" value="确&nbsp;定" class="confirm" onfocus="this.blur()" onclick="toSell();"/>
             </div>
         </div>
 
-        <div class="confirm_pop">
+        <div class="confirm_pop" id="bankConfirm">
             <p class="popTitle">出售确认</p>
 
             <p class="popInfo">
                 <label class="popName">经销商名称：</label>
-                <span class="popWord">浙江省经销商</span>
+                <span class="popWord" id="bankConfirmDealer"></span>
             </p>
             <p class="popInfo">
                 <label class="popName">出售数量：</label>
-                <span class="popWord">1.0000</span>
+                <span class="popWord" id="bankConfirmNum"></span>
             </p>
             <p class="popInfo">
                 <label class="popName">总价：</label>
-                <span class="popWord">¥12.000</span>
+                <span class="popWord" id="bankConfirmSum"></span>
+            </p>
+            <p class="popInfo">
+                <label class="popName">收款方式：</label>
+                <span class="popWord" >银行转账</span>
+            </p>
+            <p class="popInfo" >
+                <label class="popName">银行卡号：</label>
+                <span class="popWord" id="bankConfirmBankCard"></span>
+            </p>
+            <p class="popInfo" >
+                <label class="popName">银行名称：</label>
+                <span class="popWord" id="bankConfirmBankName"></span>
+            </p>
+            <p class="popInfo" >
+                <label class="popName">支行名称：</label>
+                <span class="popWord" id="bankConfirmBankBranch"></span>
+            </p>
+            <p class="popInfo" >
+                <label class="popName">预留姓名：</label>
+                <span class="popWord" id="bankConfirmPaymentName"></span>
+            </p>
+            <p class="popInfo" >
+                <label class="popName">预留电话：</label>
+                <span class="popWord" id="bankConfirmPaymentPhone"></span>
+            </p>
+
+            <div class="buttons">
+                <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="sellFinal(1);"/>
+            </div>
+        </div>
+
+        <div class="confirm_pop" id="aliConfirm">
+            <p class="popTitle">出售确认</p>
+
+            <p class="popInfo">
+                <label class="popName">经销商名称：</label>
+                <span class="popWord" id="aliConfirmDealer"></span>
+            </p>
+            <p class="popInfo">
+                <label class="popName">出售数量：</label>
+                <span class="popWord" id="aliConfirmNum"></span>
+            </p>
+            <p class="popInfo">
+                <label class="popName">总价：</label>
+                <span class="popWord" id="aliConfirmSum"></span>
             </p>
             <p class="popInfo">
                 <label class="popName">收款方式：</label>
                 <span class="popWord">支付宝转账</span>
             </p>
-            <p class="popInfo">
+            <p class="popInfo" >
                 <label class="popName"><span>支付宝</span>账号：</label>
-                <span class="popWord">qweqeqwewqwq</span>
+                <span class="popWord" id="aliConfirmAccount"></span>
             </p>
 
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="sellFinal(2);"/>
+            </div>
+        </div>
+
+        <div class="confirm_pop" id="wxConfirm">
+            <p class="popTitle">出售确认</p>
+
+            <p class="popInfo">
+                <label class="popName">经销商名称：</label>
+                <span class="popWord" id="wxConfirmDealer"></span>
+            </p>
+            <p class="popInfo">
+                <label class="popName">出售数量：</label>
+                <span class="popWord" id="wxConfirmNum"></span>
+            </p>
+            <p class="popInfo">
+                <label class="popName">总价：</label>
+                <span class="popWord" id="wxConfirmSum"></span>
+            </p>
+            <p class="popInfo">
+                <label class="popName">收款方式：</label>
+                <span class="popWord">微信转账</span>
+            </p>
+            <p class="popInfo" >
+                <label class="popName"><span>微信</span>账号：</label>
+                <span class="popWord" id="wxConfirmAccount"></span>
+            </p>
+
+            <div class="buttons">
+                <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="sellFinal(3);"/>
             </div>
         </div>
     </div>
@@ -423,19 +506,25 @@
             // popObj = ".pay_pop"
         });
         $(".tradeSale").click(function(){
-            $(".mask").fadeIn();
-            $(".sell_pop").fadeIn();
-            popObj = ".sell_pop"
+            // $(".mask").fadeIn();
+            // $(".sell_pop").fadeIn();
+            // popObj = ".sell_pop"
         });
         $(".confirm").click(function(){
-            $(".mask").fadeIn();
-            $(".sell_pop").hide();
-            $(".confirm_pop").fadeIn();
-            popObj = ".confirm_pop"
+            // $(".mask").fadeIn();
+            // $(".sell_pop").hide();
+            // $(".confirm_pop").fadeIn();
+            // popObj = ".confirm_pop"
         });
         $(".cancel").click(function(){
             $(".mask").fadeOut("fast");
             $(popObj).fadeOut("fast");
+
+            $("#buyNumber").val("");
+            $("#sellNumber").val("");
+            $("#buySum").html("¥0");
+            $("#sellSum").html("¥0");
+
         });
         $(".yes").click(function(){
             $(".mask").fadeOut("fast");
@@ -445,19 +534,19 @@
 
     function change(valueNum)
     {
-        if(valueNum == 0)
+        if(valueNum == 1)
         {
             $(".card").css("display" , "inline-block");
             $(".ali").hide();
             $(".wechat").hide();
         }
-        if(valueNum == 1)
+        if(valueNum == 2)
         {
             $(".card").hide();
             $(".ali").css("display" , "inline-block");
             $(".wechat").hide();
         }
-        if(valueNum == 2)
+        if(valueNum == 3)
         {
             $(".card").hide();
             $(".ali").hide();
@@ -675,14 +764,13 @@
             data:{
                 otcPendingOrderNo : orderNo,
                 paymentType : payType,
-                buyNum : buyNumber,
+                buyNum : buyNumber
             },//参数
             dataType: 'json',
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (result) {
                 buyFinalBoo = false;
-                var code = result.code;
                 var message = result.message;
                 $(".mask").fadeOut("fast");
                 $(popObj).fadeOut("fast");
@@ -694,6 +782,351 @@
             }
         });
     }
+
+    function sell(otcPendingOrderNo, dealerName, pendingRatio) {
+        var user = '${userSession}';
+        if (user == null || user == "") {
+            openTips("请先登录再操作");
+            return;
+        }
+
+        $("#sellDealerName").html(dealerName);
+        $("#sellRatio").val(pendingRatio);
+        $("#sellOrderNo").val(otcPendingOrderNo);
+        var ratio = "1:" + pendingRatio;
+        $("#ratioSell").html(ratio);
+        $(".mask").fadeIn();
+        $(".sell_pop").fadeIn();
+        popObj = ".sell_pop"
+    }
+
+    function toSell() {
+        var sellPayType = $("#sellPayType").val();
+
+        if(sellPayType == 0){
+            openTips("请选择支付方式");
+            return;
+        }
+
+        var dealer = $("#sellDealerName").html();
+        var num = $("#sellNumber").val();
+        var sum = $("#sellSum").html();
+
+        if(sellPayType == 1){
+            var sellBankCard = $("#sellBankCard").val();
+            var sellBankName = $("#sellBankName").val();
+            var sellBankBranch = $("#sellBankBranch").val();
+            var sellPaymentName = $("#sellPaymentName").val();
+            var sellPaymentPhone = $("#sellPaymentPhone").val();
+
+            if(sellBankCard == null || sellBankCard == ''){
+                openTips("请输入银行卡号");
+                return;
+            }
+            if(sellBankName == null || sellBankName == ''){
+                openTips("请输入银行名称");
+                return;
+            }
+            if(sellBankBranch == null || sellBankBranch == ''){
+                openTips("请输入支行名称");
+                return;
+            }
+            if(sellPaymentName == null || sellPaymentName == ''){
+                openTips("请输入银行预留姓名");
+                return;
+            }
+            if(sellPaymentPhone == null || sellPaymentPhone == ''){
+                openTips("请输入银行预留电话");
+                return;
+            }
+
+            $("#bankConfirmDealer").html(dealer);
+            $("#bankConfirmNum").html(num);
+            $("#bankConfirmSum").html(sum);
+
+            $("#bankConfirmBankCard").html(sellBankCard);
+            $("#bankConfirmBankName").html(sellBankName);
+            $("#bankConfirmBankBranch").html(sellBankBranch);
+            $("#bankConfirmPaymentName").html(sellPaymentName);
+            $("#bankConfirmPaymentPhone").html(sellPaymentPhone);
+
+            $(".mask").fadeIn();
+            $(".sell_pop").hide();
+            $("#bankConfirm").fadeIn();
+            popObj = ".confirm_pop"
+
+        }else if(sellPayType == 2){
+            var sellAliAccount = $("#sellAliAccount").val();
+            var qrCode = document.getElementById("changead_a1").files[0];
+
+            if (sellAliAccount == null || sellAliAccount == '') {
+                return openTips("请输入支付宝账户");
+            }
+            if (qrCode == null || qrCode == '') {
+                return openTips("请上传二维码");
+            }
+
+            $("#aliConfirmDealer").html(dealer);
+            $("#aliConfirmNum").html(num);
+            $("#aliConfirmSum").html(sum);
+
+            $("#aliConfirmAccount").html(sellAliAccount);
+
+            $(".mask").fadeIn();
+            $(".sell_pop").hide();
+            $("#aliConfirm").fadeIn();
+            popObj = ".confirm_pop"
+
+        }else if(sellPayType == 3){
+            var sellWxAccount = $("#sellWxAccount").val();
+            var qrCode = document.getElementById("changead_a2").files[0];
+
+            if (sellWxAccount == null || sellWxAccount == '') {
+                return openTips("请输入微信账户");
+            }
+            if (qrCode == null || qrCode == '') {
+                return openTips("请上传二维码");
+            }
+
+            $("#wxConfirmDealer").html(dealer);
+            $("#wxConfirmNum").html(num);
+            $("#wxConfirmSum").html(sum);
+
+            $("#wxConfirmAccount").html(sellWxAccount);
+
+            $(".mask").fadeIn();
+            $(".sell_pop").hide();
+            $("#wxConfirm").fadeIn();
+            popObj = ".confirm_pop"
+        }
+    }
+
+    var sellFinalBoo = false;
+    function sellFinal(payType) {
+        if (sellFinalBoo) {
+            return;
+        } else {
+            sellFinalBoo = true;
+        }
+
+        var num = $("#sellNumber").val();
+        var orderNo = $("#sellOrderNo").val();
+
+        var paymentAccount = "";
+        var paymentImage = "";
+        if(payType == 1){
+            paymentAccount = $("#sellBankCard").val();
+        }else if(payType == 2){
+            paymentAccount = $("#sellAliAccount").val();
+            paymentImage = document.getElementById("changead_a1").files[0];
+        }else if(payType == 3){
+            paymentAccount = $("#sellAliAccount").val();
+            paymentImage = document.getElementById("changead_a2").files[0];
+        }
+        var bankName = $("#sellBankName").val();
+        var bankBranch = $("#sellBankBranch").val();
+        var paymentName = $("#sellPaymentName").val();
+        var paymentPhone = $("#sellPaymentPhone").val();
+
+        var formData = new FormData();
+        formData.append("otcPendingOrderNo", orderNo);
+        formData.append("paymentType", payType);
+        formData.append("sellNum", num);
+        formData.append("paymentAccount", paymentAccount);
+        formData.append("paymentImage", paymentImage);
+        formData.append("bankName", bankName);
+        formData.append("bankBranch", bankBranch);
+        formData.append("paymentName", paymentName);
+        formData.append("paymentPhone", paymentPhone);
+
+        $.ajax({
+            url: '<%=path%>' + "/userWeb/otcTradeCenter/sell.htm", //方法路径URL
+            data:formData,//参数
+            dataType: 'json',
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            processData : false,
+            contentType : false,
+            success: function (result) {
+                sellFinalBoo = false;
+                var message = result.message;
+                $(".mask").fadeOut("fast");
+                $(popObj).fadeOut("fast");
+                openTips(message);
+
+            }, error: function () {
+                sellFinalBoo = false;
+                openTips("请重新刷新页面后重试");
+            }
+        });
+
+    }
+</script>
+
+<script type="text/javascript">
+    var mapMatch = {};
+    mapMatch['number'] = /[^\d]/g;
+    mapMatch['ENumber'] = /[^\a-\z\A-\Z\d]/g;
+    mapMatch['double'] = true;
+    mapMatch['phone'] = /[^\d]/g;
+    mapMatch['email'] = /([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+    function matchUtil(o, str, nu) {
+        if(mapMatch[str] === true){
+            matchDouble(o, nu);
+        }else {
+            o.value = o.value.replace(mapMatch[str], '');
+        }
+    }
+
+    function matchDouble(o, num){
+        var matchStr = /^-?\d+\.?\d{0,num}$/;
+        if(!matchStr.test(o.value)){
+            if(isNaN(o.value)){
+                o.value = '';
+            }else{
+                var n = o.value.indexOf('.');
+                var m = n + num + 1;
+                if(n > -1 && o.value.length > m){
+                    o.value = o.value.substring(0, m);
+                }
+            }
+        }
+        mul();
+    }
+
+    //动态计算总价
+    function mul() {
+        var m = 0;
+        var f = 0;
+
+        var buyNumber = $("#buyNumber").val();
+        var pendingRatio = $("#pendingRatio").val();
+
+        //买入
+        if (buyNumber != null && buyNumber != "" && pendingRatio != null && pendingRatio != "") {
+            buyNumber = buyNumber.toString();
+            try{m+=buyNumber.split(".")[1].length}catch(e){}
+            pendingRatio = pendingRatio.toString();
+            try{m+=pendingRatio.split(".")[1].length}catch(e){}
+            var number = parseFloat((Number(buyNumber.replace(".",""))*Number(pendingRatio.replace(".",""))/Math.pow(10,m)).toFixed(8));
+            number = mulMaxNumber(number);
+            $("#buySum").html("¥" + number);
+        }
+
+        var sellNumber = $("#sellNumber").val();
+        var sellRatio = $("#sellRatio").val();
+
+        //卖出
+        if (sellNumber != null && sellNumber != "" && sellRatio != null && sellRatio != "") {
+            sellNumber = sellNumber.toString();
+            try{f+=sellNumber.split(".")[1].length}catch(e){}
+            sellRatio = sellRatio.toString();
+            try{f+=sellRatio.split(".")[1].length}catch(e){}
+            var number = parseFloat((Number(sellNumber.replace(".",""))*Number(sellRatio.replace(".",""))/Math.pow(10,f)).toFixed(8));
+            number = mulMaxNumber(number);
+            $("#sellSum").html("¥" + number);
+        }
+
+
+
+    }
+
+    //超大位数显示   返回字符串
+    function mulMaxNumber(value) {
+        value = "" + value;
+        var mulArray = value.split("e+");
+        if (mulArray == null) {
+            return 0;
+        }
+        if (mulArray.length == 1) {
+            return mulArray[0];
+        }
+
+        var decimal = new Number(mulArray[1]);
+        var suffix = "";
+        for (var i = 0; i < decimal; i++) {
+            suffix += "0";
+        }
+
+        var pointArray = mulArray[0].split(".");
+        if (pointArray == null) {
+            return 0;
+        }
+
+        var prefix = "";
+        var pointLength = pointArray.length;
+        if (pointLength == 1) {
+            prefix = "" + pointArray[0]
+        }
+        if (pointLength == 2) {
+            prefix = "" + pointArray[0] + pointArray[1];
+        }
+
+        return prefix + suffix;
+    }
+
+    function checkFileImageTwo(target, id){
+        var flag = false;
+        flag = checkFileImage(target);
+        document.getElementById(id).value = target.value;
+        if(flag == true){
+            document.getElementById(id).value = target.value;
+        }
+    }
+
+    //判断图片格式
+    function checkFileImage(target) {
+        var fileSize = 0;
+        var filetypes = [".jpg", ".jpeg", ".png", ".JPG", ".JPEG", ".PNG"];
+        var filepath = target.value;
+        var filemaxsize = 1024 * 10;//10M
+        if (filepath) {
+            var isnext = false;
+            var fileend = filepath.substring(filepath.lastIndexOf("."));
+            if (filetypes && filetypes.length > 0) {
+                for (var i = 0; i < filetypes.length; i++) {
+                    if (filetypes[i] == fileend) {
+                        isnext = true;
+                        break;
+                    }
+                }
+            }
+            if (!isnext) {
+                openTips("图片格式必须是jpeg,jpg,png中的一种！");
+                target.value = "";
+                return false;
+            }
+        } else {
+            return false;
+        }
+        if (!target.files) {
+            var filePath = target.value;
+            var fileSystem = new ActiveXObject("Scripting.FileSystemObject");
+            if (!fileSystem.FileExists(filePath)) {
+                openTips("图片不存在，请重新输入！");
+                return false;
+            }
+            var file = fileSystem.GetFile(filePath);
+            fileSize = file.Size;
+        } else {
+            fileSize = target.files[0].size;
+        }
+
+        var size = fileSize / 1024;
+        if (size > filemaxsize) {
+            openTips("图片大小不能大于" + filemaxsize / 1024 + "M！");
+            target.value = "";
+            return false;
+        }
+        if (size <= 0) {
+            openTips("图片大小不能为0M！");
+            target.value = "";
+            return false;
+        }
+
+        return true;
+    }
+
 </script>
 
 </body>
