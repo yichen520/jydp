@@ -48,7 +48,7 @@ public class OtcTransactionPendOrderServiceImpl implements IOtcTransactionPendOr
         String pendingOrderNo = SystemCommonConfig.TRANSACTION_OTC_PEND_ORDER +
                 DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
                 NumberUtil.createNumberStr(10);
-            //插入挂单表
+        //插入挂单表
         OtcTransactionPendOrderDO otcTransactionPendOrder = new OtcTransactionPendOrderDO();
         otcTransactionPendOrder.setAddTime(curTime);//添加时间
         otcTransactionPendOrder.setOrderType(otcOrderVO.getOrderType());//挂单类型:1：出售，2：回购
@@ -63,7 +63,8 @@ public class OtcTransactionPendOrderServiceImpl implements IOtcTransactionPendOr
         excuteSuccess = otcTransactionPendOrderDao.insertOtcTransactionPendOrder(otcTransactionPendOrder);
         //插入收款方式表 关联挂单
         //根据填的付款方式数据  决定插入几条数据
-        if(excuteSuccess) {
+        if(otcOrderVO.getOrderType() == 1){
+        if (excuteSuccess) {
             if (StringUtil.isNotNull(otcOrderVO.getBankAccount())) {//银行卡
                 UserPaymentTypeDO userPaymentTypA = new UserPaymentTypeDO();
                 userPaymentTypA.setUserId(otcOrderVO.getUserId());//用户
@@ -75,13 +76,13 @@ public class OtcTransactionPendOrderServiceImpl implements IOtcTransactionPendOr
                 userPaymentTypA.setPaymentName(otcOrderVO.getPaymentName());//预留名
                 userPaymentTypA.setPaymentPhone(otcOrderVO.getPaymentPhone());//预留手机
                 userPaymentTypA.setAddTime(curTime);//添加时间
-                UserPaymentTypeDO  userPaymentTypeDOA= userPaymentTypeService.insertUserPaymentType(userPaymentTypA);
+                UserPaymentTypeDO userPaymentTypeDOA = userPaymentTypeService.insertUserPaymentType(userPaymentTypA);
                 if (userPaymentTypeDOA == null) {
                     excuteSuccess = false;
                 }
             }
         }
-        if(excuteSuccess) {
+        if (excuteSuccess) {
             if (StringUtil.isNotNull(otcOrderVO.getAlipayAccount())) {//支付宝
                 UserPaymentTypeDO userPaymentTypB = new UserPaymentTypeDO();
                 userPaymentTypB.setUserId(otcOrderVO.getUserId());//用户
@@ -90,13 +91,13 @@ public class OtcTransactionPendOrderServiceImpl implements IOtcTransactionPendOr
                 userPaymentTypB.setPaymentAccount(otcOrderVO.getAlipayAccount()); //账号
                 userPaymentTypB.setPaymentImage(otcOrderVO.getAlipayImage());//二维码地址
                 userPaymentTypB.setAddTime(curTime);//添加时间
-                UserPaymentTypeDO  userPaymentTypeDOB= userPaymentTypeService.insertUserPaymentType(userPaymentTypB);
+                UserPaymentTypeDO userPaymentTypeDOB = userPaymentTypeService.insertUserPaymentType(userPaymentTypB);
                 if (userPaymentTypeDOB == null) {
                     excuteSuccess = false;
                 }
             }
         }
-        if(excuteSuccess) {
+        if (excuteSuccess) {
             if (StringUtil.isNotNull(otcOrderVO.getWechatAccount())) {//微信
                 UserPaymentTypeDO userPaymentTypC = new UserPaymentTypeDO();
                 userPaymentTypC.setUserId(otcOrderVO.getUserId());//用户
@@ -105,12 +106,13 @@ public class OtcTransactionPendOrderServiceImpl implements IOtcTransactionPendOr
                 userPaymentTypC.setPaymentAccount(otcOrderVO.getWechatAccount()); //账号
                 userPaymentTypC.setPaymentImage(otcOrderVO.getWechatImage());//二维码地址
                 userPaymentTypC.setAddTime(curTime);//添加时间
-                UserPaymentTypeDO  userPaymentTypeDOC= userPaymentTypeService.insertUserPaymentType(userPaymentTypC);
+                UserPaymentTypeDO userPaymentTypeDOC = userPaymentTypeService.insertUserPaymentType(userPaymentTypC);
                 if (userPaymentTypeDOC == null) {
                     excuteSuccess = false;
                 }
             }
         }
+    }
         if(!excuteSuccess){
             //数据回滚
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

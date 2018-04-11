@@ -7,6 +7,19 @@
     background-color: #ffffff;
     border: 1px solid #f5f5f5;
 }
+.identity{
+    vertical-align: top;
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: 15px;
+    width: 40px;
+    height: 20px;
+    line-height:20px;
+    font-size: 12px;
+    color: #ffffff;
+    text-align: center;
+    background-color: #e83a33;
+}
 .accountInfo{
     display: table;
     margin: 10px;
@@ -76,6 +89,50 @@
 .link:hover{
     color: #52a1f9;
 }
+.add_adv{
+    margin: 20px 15px 10px 0;
+    width: 100px;
+    height: 35px;
+    background-color: #e83a33;
+    color: #ffffff;
+    text-align: center;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+.sellerInfo{
+    width: 1018px;
+    background-color: #ffffff;
+    border: 1px solid #f5f5f5;
+}
+.add_adv:hover{
+    background-color: #d0342e;
+}
+.advTable{
+    margin-bottom: 10px;
+    width: 1018px;
+}
+.type,.area{
+    width: 120px;
+}
+.proportion,.limit{
+    width: 200px;
+}
+.limit span{
+    margin: 0 3px;
+}
+.delete{
+    width: 50px;
+    text-align: center;
+    color: #e83a33;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+}
+.delete:hover{
+    color: #d0342e;
+}
 .safety{
     margin-top: 20px;
     width: 1018px;
@@ -139,7 +196,7 @@
     font-size: 12px;
 }
 
-.changePay_pop,.changePhone_pop,.changePassword_pop,.tel_pop{
+.changePay_pop,.changePhone_pop,.changePassword_pop,.tel_pop,.add_pop,.pay_pop,.delete_pop{
     display: none;
 }
 .popName{
@@ -166,8 +223,8 @@
 .popTel{
     float: right;
     width: 257px;
-    height: 35px;
-    line-height: 35px;
+    height: 30px;
+    line-height: 30px;
     font-size: 12px;
     color: #333333;
 }
@@ -311,4 +368,129 @@
     width: 360px;
     font-size: 12px;
     color: #666666;
+}
+.popSelected{
+    float: right;
+    padding-left: 5px;
+    border: 1px solid #ececec;
+    width: 257px;
+    height: 35px;
+}
+.remind{
+    float: left;
+    margin-left: 103px;
+    width: 250px;
+    font-size: 12px;
+    color: #999999;
+}
+.lowLimit,.highLimit{
+    padding-left: 5px;
+    border: 1px solid #cccccc;
+    width: 111px;
+    height: 35px;
+    font-size: 12px;
+    color: #777777;
+}
+.choose{
+    display: none;
+    margin-top: 15px;
+    padding: 0 20px;
+    width: 360px;
+    text-align: left;
+}
+.chooseType{
+    float: right;
+    width: 257px;
+}
+.typeInfo{
+    display: inline-block;
+    margin-right: 20px;
+    height: 35px;
+    line-height:35px;
+    font-size: 14px;
+    color: #777777;
+}
+.box{
+    width: 15px;
+    height:15px;
+    margin-right: 5px;
+}
+.overflow{
+    max-height:360px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.popSecond{
+    display: inline-block;
+    margin-top: 15px;
+    padding: 0 20px;
+    width: 360px;
+    text-align: left;
+    font-size: 15px;
+    color: #333333;
+}
+.pic{
+    position: relative;
+    float: right;
+    padding-left: 5px;
+    border: 1px solid #cccccc;
+    width: 250px;
+    height: 35px;
+    font-size: 12px;
+    color: #777777;
+}
+.choosePic{
+    width: 160px;
+    border: none;
+    height: 34px;
+}
+.file{
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: -1;
+    width: 70px;
+    height: 35px;
+}
+.choose_button{
+    margin-top: -1px;
+    vertical-align: top;
+    float: right;
+    width: 85px;
+    text-align: center;
+    color: #ffffff;
+    border: none;
+    height: 37px;
+    background-color: #e83a33;
+    cursor: pointer;
+}
+.choose_button:hover{
+    background-color: #d0342e;
+}
+.confirm{
+    width: 65px;
+    height: 30px;
+    border: 1px solid #e83a33;
+    background-color: #e83a33;
+    text-align: center;
+    font-size: 14px;
+    color: #ffffff;
+    cursor: pointer;
+}
+.confirm:hover{
+    background-color: #d0342e;
+}
+.back{
+    margin-right: 20px;
+    width: 65px;
+    height: 30px;
+    border: 1px solid #cccccc;
+    background-color: #ffffff;
+    text-align: center;
+    font-size: 14px;
+    color: #333333;
+    cursor: pointer;
+}
+.back:hover{
+    opacity: 0.8;
 }
