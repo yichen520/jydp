@@ -24,4 +24,13 @@
 		  AND paymentType = #{paymentType}
 	</select>
 
+	<select id="UserPaymentType_listUserPaymentType" parameterType="java.util.Map" resultType="UserPaymentTypeDO">
+		SELECT typeId,userId,otcPendingOrderNo,paymentType,paymentAccount,bankName,
+		bankCode,bankBranch,paymentName,paymentPhone,paymentImage,typeStatus,
+		remark,updateTime,addTime
+		FROM user_payment_type_tab
+		WHERE userId = #{userId}
+		  AND otcPendingOrderNo = #{otcPendingOrderNo}
+	</select>
+
 </mapper>

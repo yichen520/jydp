@@ -293,7 +293,7 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
             excuteSuccess = otcTransactionUserDealDao.insertOtcTransactionUserDeal(otcTransactionUserDeal);
             if(!excuteSuccess){
                 code = 2;
-                message = "增加卖方账户XT记录失败";
+                message = "增加成交记录失败";
             }
         }
 

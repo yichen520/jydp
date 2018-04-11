@@ -101,11 +101,11 @@ public class UserDealRecordController {
         request.setAttribute("totalPageNumber", totalPageNumber);
         request.setAttribute("otcTransactionUserDealList", otcTransactionUserDealList);
         request.setAttribute("dealerName", dealerName);
-        request.setAttribute("currencyId", currencyIdStr);
-        request.setAttribute(" dealType",  dealTypeStr);
-        request.setAttribute("dealStatus", dealStatusStr);
+        request.setAttribute("currencyId", currencyId);
+        request.setAttribute("dealType", dealType);
+        request.setAttribute("dealStatus", dealStatus);
         request.setAttribute("startAddTime", startAddTimeStr);
-        request.setAttribute("endAddTime", endAddTime);
+        request.setAttribute("endAddTime", endAddTimeStr);
         return "page/web/userCurbExchangeRecord";
     }
 
@@ -218,7 +218,7 @@ public class UserDealRecordController {
             return response;
         }
         if(otcTransactionUserDeal.getDealStatus() == 3){
-            response.setCode(1);
+            response.setCode(2);
             response.setMessage("此订单已完成");
             return response;
         }
@@ -227,22 +227,26 @@ public class UserDealRecordController {
         Timestamp currentTime = DateUtil.getCurrentTime();
         //用户确认收货
         if(otcTransactionUserDeal.getDealType() == 1){
-            userConfirmation = otcTransactionUserDealService.updateDealStatusByOtcOrderNo(otcOrderNo,1,3, currentTime);
+            userConfirmation = otcTransactionUserDealService.updateDealStatusByOtcOrderNo(otcOrderNo,2,3, currentTime);
+
             if(!userConfirmation){
-                userConfirmation = otcTransactionUserDealService.updateDealStatusByOtcOrderNo(otcOrderNo,2,3, currentTime);
+                response.setCode(3);
+                response.setMessage("请等待经销商进行收款确认");
+                return response;
             }
+
         //用户确认收款
         } else if(otcTransactionUserDeal.getDealType() == 2){
             userConfirmation = otcTransactionUserDealService.userConfirmationOfReceipts(otcTransactionUserDeal);
+
+            if(!userConfirmation){
+                response.setCode(3);
+                response.setMessage("该订单确认失败，请刷新页面后重试");
+                return response;
+            }
         } else {
             response.setCode(3);
             response.setMessage("该订单无法确认");
-            return response;
-        }
-
-        if(!userConfirmation){
-            response.setCode(3);
-            response.setMessage("该订单确认失败，请刷新页面后重试");
             return response;
         }
 
