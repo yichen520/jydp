@@ -481,14 +481,20 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
         //修改成交记录状态
         excuteSuccess = otcTransactionUserDealDao.updateDealStatusByOtcOrderNo(otcOrderNo,1,2,updateTime);
 
-        //减少用户冻结币数量
-        if (excuteSuccess) {
-            excuteSuccess = userCurrencyNumService.reduceCurrencyNumberLock(transactionUserId,currencyId,currencyNumber);
-        }
+        //增加用户可用XT
+        if (currencyId == UserBalanceConfig.DOLLAR_ID) {
+            excuteSuccess = userService.updateAddUserAmount(transactionUserId,currencyNumber,-currencyNumber);
+        } else {
 
-        //增加用户货币数量
-        if (excuteSuccess) {
-            excuteSuccess = userCurrencyNumService.increaseCurrencyNumber(transactionUserId,currencyId,currencyNumber);
+            //减少用户冻结币数量
+            if (excuteSuccess) {
+                excuteSuccess = userCurrencyNumService.reduceCurrencyNumberLock(transactionUserId,currencyId,currencyNumber);
+            }
+
+            //增加用户货币数量
+            if (excuteSuccess) {
+                excuteSuccess = userCurrencyNumService.increaseCurrencyNumber(transactionUserId,currencyId,currencyNumber);
+            }
         }
 
         if (!excuteSuccess) {
