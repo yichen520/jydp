@@ -73,11 +73,13 @@
                     <td class="operate">
                         <c:if test="${pendOrder.orderType == 1}">
                             <input type="text" value="我要购买" class="tradeBuy" onfocus="this.blur()"
-                                   onclick="buy('${pendOrder.otcPendingOrderNo}','${pendOrder.userId}','${pendOrder.pendingRatio}');"/>
+                                   onclick="buy('${pendOrder.otcPendingOrderNo}','${pendOrder.userId}','${pendOrder.pendingRatio}',
+                                           '${pendOrder.minNumber}','${pendOrder.maxNumber}');"/>
                         </c:if>
                         <c:if test="${pendOrder.orderType == 2}">
                             <input type="text" value="我要出售" class="tradeSale" onfocus="this.blur()"
-                                    onclick="sell('${pendOrder.otcPendingOrderNo}','${pendOrder.dealerName}','${pendOrder.pendingRatio}');"/>
+                                    onclick="sell('${pendOrder.otcPendingOrderNo}','${pendOrder.dealerName}','${pendOrder.pendingRatio}',
+                                            '${pendOrder.minNumber}','${pendOrder.maxNumber}');"/>
                         </c:if>
                     </td>
                 </tr>
@@ -109,6 +111,8 @@
             <p class="popInput">
                 <label class="popName">总价：</label>
                 <span class="popMoney" id="buySum">¥0</span>
+                <input type="hidden" id="buyMin">
+                <input type="hidden" id="buyMax">
             </p>
             <p class="popInput">
                 <label class="popName">支付方式<span class="star">*</span>：</label>
@@ -306,6 +310,8 @@
                 <p class="popInput">
                     <label class="popName">总价：</label>
                     <span class="popMoney" id="sellSum">¥0</span>
+                    <input type="hidden" id="sellMin">
+                    <input type="hidden" id="sellMax">
                 </p>
 
                 <p class="popInput">
@@ -533,16 +539,11 @@
             $("#sellWxAccount").val("");
             $("#changead_t2").val("");
 
-            $("#paymentType option").each(function(){
-                if($(this).val() == 0){
-                    $(this).attr('selected',true);
-                }
-            });
-            $("#sellPayType option").each(function(){
-                if($(this).val()== 0){
-                    $(this).attr('selected',true);
-                }
-            });
+            $("#paymentType").val(0);
+            $("#sellPayType").val(0);
+            $(".card").hide();
+            $(".ali").hide();
+            $(".wechat").hide();
 
         });
         $(".yes").click(function(){
@@ -605,7 +606,7 @@
     }
 
     var buyBoo = false;
-    function buy(otcPendingOrderNo, userId, pendingRatio) {
+    function buy(otcPendingOrderNo, userId, pendingRatio, min, max) {
         if (buyBoo) {
             return;
         } else {
@@ -619,6 +620,8 @@
             return;
         }
 
+        $("#buyMin").val(min);
+        $("#buyMax").val(max);
         $("#pendingRatio").val(pendingRatio);
         $("#orderNo").val(otcPendingOrderNo);
         var ratio = "1:" + pendingRatio;
@@ -635,6 +638,9 @@
             async: true, //默认异步调用 (false：同步)
             success: function (result) {
                 buyBoo = false;
+                $("#paymentType option").each(function(){
+                    $(this).show();
+                });
 
                 var data = result.data;
                 var hasBank = data.hasBank;
@@ -685,9 +691,25 @@
         var orderNo = $("#orderNo").val();
         var paymentType = $("#paymentType").val();
 
+
         if(buyNumber <= 0 || buyNumber == '' || buyNumber == null){
             toPayBoo = false;
             openTips("请输入正确的数量");
+            return;
+        }
+
+        var min = parseInt($("#buyMin").val());
+        var max = parseInt($("#buyMax").val());
+
+        var buySumNum = parseInt(buySum.substring(1));
+        if(buySumNum < min){
+            toPayBoo = false;
+            openTips("交易额度不能小于最小限额");
+            return;
+        }
+        if(buySumNum > max){
+            toPayBoo = false;
+            openTips("交易额度不能大于最大限额");
             return;
         }
 
@@ -802,13 +824,15 @@
         });
     }
 
-    function sell(otcPendingOrderNo, dealerName, pendingRatio) {
+    function sell(otcPendingOrderNo, dealerName, pendingRatio, min, max) {
         var user = '${userSession}';
         if (user == null || user == "") {
             openTips("请先登录再操作");
             return;
         }
 
+        $("#sellMin").val(min);
+        $("#sellMax").val(max);
         $("#sellDealerName").html(dealerName);
         $("#sellRatio").val(pendingRatio);
         $("#sellOrderNo").val(otcPendingOrderNo);
@@ -835,6 +859,22 @@
             openTips("请输入正确的数量");
             return;
         }
+
+        var min = parseInt($("#sellMin").val());
+        var max = parseInt($("#sellMax").val());
+
+        var sellSumNum = parseInt(sum.substring(1));
+        if(sellSumNum < min){
+            toPayBoo = false;
+            openTips("交易额度不能小于最小限额");
+            return;
+        }
+        if(sellSumNum > max){
+            toPayBoo = false;
+            openTips("交易额度不能大于最大限额");
+            return;
+        }
+
 
         if(sellPayType == 1){
             var sellBankCard = $("#sellBankCard").val();

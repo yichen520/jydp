@@ -91,6 +91,13 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
                                                      double currencyTotalPrice, Timestamp pendTime, int paymentType, UserPaymentTypeDTO userPaymentType){
         JsonObjectBO resultJson = new JsonObjectBO();
 
+        UserDO dealer = userService.getUserByUserId(dealerId);
+        if(dealer == null){
+            resultJson.setCode(2);
+            resultJson.setMessage("新增失败");
+            return  resultJson;
+        }
+
         Timestamp curTime = DateUtil.getCurrentTime();
         int code = 1;
         String message = "新增成功";
@@ -343,10 +350,11 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
             otcTransactionUserDeal.setTypeId(typeId);
             if(dealType == 1){
                 otcTransactionUserDeal.setUserId(userId);
+                otcTransactionUserDeal.setUserAccount(userAccount);
             }else if(dealType == 2){
                 otcTransactionUserDeal.setUserId(dealerId);
+                otcTransactionUserDeal.setUserAccount(dealer.getUserAccount());
             }
-            otcTransactionUserDeal.setUserAccount(userAccount);
             otcTransactionUserDeal.setDealType(dealType);
             otcTransactionUserDeal.setCurrencyId(currencyId);
             otcTransactionUserDeal.setCurrencyName(currencyName);
