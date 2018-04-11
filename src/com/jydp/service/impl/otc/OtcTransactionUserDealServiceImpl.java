@@ -527,12 +527,13 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
         double userLockCoin = 0;
 
         if (currencyId == UserBalanceConfig.DOLLAR_ID) {
-            UserDO user = userService.getUserByUserId(transactionUserId);
+            //查询经销商资产信息
+            UserDO user = userService.getUserByUserId(userId);
             if (user != null) {
                 userLockCoin = user.getUserBalanceLock();
             }
         } else {
-            UserCurrencyNumDO userCurrencyNum = userCurrencyNumService.getUserCurrencyNumByUserIdAndCurrencyId(transactionUserId,currencyId);
+            UserCurrencyNumDO userCurrencyNum = userCurrencyNumService.getUserCurrencyNumByUserIdAndCurrencyId(userId,currencyId);
             if (userCurrencyNum != null) {
                 userLockCoin = userCurrencyNum.getCurrencyNumberLock();
             }
@@ -550,12 +551,21 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
 
         //增加用户可用XT
         if (currencyId == UserBalanceConfig.DOLLAR_ID) {
-            excuteSuccess = userService.updateAddUserAmount(transactionUserId,currencyNumber,-currencyNumber);
+
+            //减少经销商锁定资产
+            if (excuteSuccess) {
+                excuteSuccess = userService.updateReduceUserBalanceLock(userId,currencyNumber);
+            }
+
+            //增加用户可用资产
+            if (excuteSuccess) {
+                excuteSuccess = userService.updateAddUserAmount(transactionUserId,currencyNumber,0);
+            }
         } else {
 
-            //减少用户冻结币数量
+            //减少经销商冻结币数量
             if (excuteSuccess) {
-                excuteSuccess = userCurrencyNumService.reduceCurrencyNumberLock(transactionUserId,currencyId,currencyNumber);
+                excuteSuccess = userCurrencyNumService.reduceCurrencyNumberLock(userId,currencyId,currencyNumber);
             }
 
             //增加用户货币数量

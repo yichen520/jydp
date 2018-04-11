@@ -156,6 +156,7 @@
         <if test="endAddTime != null">
             AND OTUD.addTime <![CDATA[ <= ]]> #{endAddTime}
         </if>
+        ORDER BY addTime DESC
         LIMIT #{startNumber}, #{pageSize}
     </select>
 </mapper>
