@@ -25,15 +25,13 @@
             <ul class="coinLink">
             </ul>
         </li>
-        <li class="navInfo"><a id="otcTradeCenter" href="javascript:toOtcTradeCenter();">场外交易</a></li>
+        <li class="navInfo"><a id="otcTradeCenter" href="<%=path%>/userWeb/otcTradeCenter/show">场外交易</a></li>
         <li class="navInfo"><a id="message" href="<%=path %>/userWeb/userMessage/show.htm">个人中心</a></li>
     </ul>
 
 
     <form id="tradeCenterForm" action="<%=path %>/userWeb/tradeCenter/show" method="post">
         <input id="menuCurrencyId" name="currencyId" type="hidden"/>
-    </form>
-    <form id="otcTradeCenterForm" action="<%=path%>/userWeb/otcTradeCenter/show" method="post">
     </form>
 </div>
 <script type="text/javascript">
@@ -133,9 +131,6 @@
         $("#tradeCenterForm").submit();
     }
 
-    function toOtcTradeCenter() {
-        $("#otcTradeCenterForm").submit();
-    }
     function disableTip() {
         openTips("该功能暂未开放");
     }

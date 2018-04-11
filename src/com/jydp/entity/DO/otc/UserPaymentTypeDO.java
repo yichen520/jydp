@@ -1,5 +1,7 @@
 package com.jydp.entity.DO.otc;
 
+import config.FileUrlConfig;
+
 import java.sql.Timestamp;
 
 /**
@@ -22,6 +24,24 @@ public class UserPaymentTypeDO {
     private String remark; //备注
     private Timestamp updateTime; //修改时间
     private Timestamp addTime; //添加时间
+
+    private String paymentImageFormat; //二维码绝对路径地址
+
+    /**
+     * 获取 二维码绝对路径地址
+     * @return paymentImageFormat
+     */
+    public String getPaymentImageFormat() {
+        return paymentImageFormat;
+    }
+
+    /**
+     * 设置 二维码绝对路径地址
+     * @param paymentImageFormat 二维码绝对路径地址
+     */
+    public void setPaymentImageFormat(String paymentImageFormat) {
+        this.paymentImageFormat = paymentImageFormat;
+    }
 
     /**
      * 获取 主键Id
@@ -197,6 +217,9 @@ public class UserPaymentTypeDO {
      */
     public void setPaymentImage(String paymentImage) {
         this.paymentImage = paymentImage;
+        if (paymentImage != null) {
+            setPaymentImageFormat(FileUrlConfig.file_visit_url + paymentImage);
+        }
     }
 
     /**

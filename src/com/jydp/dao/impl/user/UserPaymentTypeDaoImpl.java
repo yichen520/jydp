@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,7 +49,7 @@ public class UserPaymentTypeDaoImpl implements IUserPaymentTypeDao {
      * @param userId  用户id
      * @param otcPendingOrderNo 挂单号
      * @param paymentType 支付方式
-     * @return 新增成功：返回用户收款记录, 新增失败：返回null
+     * @return 查询成功：返回用户收款记录, 查询失败：返回null
      */
     public UserPaymentTypeDO getUserPaymentType(int userId, String otcPendingOrderNo, int paymentType){
 
@@ -65,6 +66,27 @@ public class UserPaymentTypeDaoImpl implements IUserPaymentTypeDao {
         }
 
         return userPaymentType;
+    }
+
+    /**
+     * 根据用户id、挂单号查询 收款记录列表
+     * @param userId  用户id
+     * @param otcPendingOrderNo 挂单号
+     * @return 查询成功：返回用户收款记录, 查询失败：返回null
+     */
+    public List<UserPaymentTypeDO> listUserPaymentType(int userId, String otcPendingOrderNo){
+        List<UserPaymentTypeDO> list = null;
+        Map<String,Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("otcPendingOrderNo", otcPendingOrderNo);
+
+        try {
+            list = sqlSessionTemplate.selectList("UserPaymentType_listUserPaymentType",map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return list;
     }
 
 }

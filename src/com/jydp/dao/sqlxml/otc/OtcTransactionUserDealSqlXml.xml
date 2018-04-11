@@ -6,10 +6,10 @@
 <mapper namespace="com.jydp.dao.impl.otc.OtcTransactionUserDealDaoImpl">
 
     <insert id="OtcTransactionUserDeal_insertOtcTransactionUserDeal" parameterType="OtcTransactionUserDealDO">
-        INSERT INTO otc_transaction_user_deal_tab(otcOrderNo, otcPendingOrderNo, userId, userAccount, paymentType,
+        INSERT INTO otc_transaction_user_deal_tab(otcOrderNo, otcPendingOrderNo, userId, userAccount, dealType, typeId,
         currencyId, currencyName, pendingRatio, currencyNumber, currencyTotalPrice, pendTime, dealStatus, addTime)
         VALUES
-        (#{otcOrderNo}, #{otcPendingOrderNo}, #{userId}, #{userAccount}, #{paymentType}, #{currencyId}, #{currencyName}, #{pendingRatio},
+        (#{otcOrderNo}, #{otcPendingOrderNo}, #{userId}, #{userAccount}, #{dealType}, #{typeId}, #{currencyId}, #{currencyName}, #{pendingRatio},
         #{currencyNumber}, #{currencyTotalPrice}, #{pendTime}, #{dealStatus}, #{addTime})
     </insert>
 

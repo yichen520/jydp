@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.*;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
+import com.jydp.entity.DO.otc.OtcDealerUserDO;
 import com.jydp.entity.DO.otc.OtcTransactionPendOrderDO;
 import com.jydp.entity.DO.otc.OtcTransactionUserDealDO;
 import com.jydp.entity.DO.otc.UserPaymentTypeDO;
@@ -12,6 +13,7 @@ import com.jydp.entity.DO.transaction.TransactionDealRedisDO;
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
+import com.jydp.entity.DO.user.UserIdentificationDO;
 import com.jydp.entity.DTO.TransactionPendOrderDTO;
 import com.jydp.entity.DTO.UserPaymentTypeDTO;
 import com.jydp.entity.VO.*;
@@ -63,9 +65,149 @@ public class OtcTradeCenterController {
     @Autowired
     private ITransactionCurrencyService transactionCurrencyService;
 
+    /** 用户标识经销商相关操作 */
+    @Autowired
+    private IOtcDealerUserService otcDealerUserService;
+
     /** 用户收款记录 */
     @Autowired
     private IUserPaymentTypeService userPaymentTypeService;
+
+    /** 用户认证 */
+    @Autowired
+    private IUserIdentificationService userIdentificationService;
+
+    /** 获取经销商收款方式 */
+    @RequestMapping(value = "/getPayType.htm", method = RequestMethod.POST)
+    public @ResponseBody JsonObjectBO getPayType(HttpServletRequest request){
+        JsonObjectBO resultJson = new JsonObjectBO();
+        UserSessionBO userSession = (UserSessionBO) request.getSession().getAttribute("userSession");
+        if(userSession == null){
+            resultJson.setCode(4);
+            resultJson.setMessage("未登录");
+            return resultJson;
+        }
+
+        //获取参数
+        String otcPendingOrderNo = StringUtil.stringNullHandle(request.getParameter("otcPendingOrderNo"));
+        String userIdStr = StringUtil.stringNullHandle(request.getParameter("userId"));
+
+        if (!StringUtil.isNotNull(otcPendingOrderNo) || !StringUtil.isNotNull(userIdStr)) {
+            resultJson.setCode(2);
+            resultJson.setMessage("参数错误");
+            return resultJson;
+        }
+
+        int userId = 0;
+        if (StringUtil.isNotNull(userIdStr)) {
+            userId = Integer.parseInt(userIdStr);
+        }
+
+        //根据用户id、挂单号查询 收款记录列表
+        List<UserPaymentTypeDO> userPaymentType = userPaymentTypeService.listUserPaymentType(userId, otcPendingOrderNo);
+        if(userPaymentType == null || userPaymentType.size() == 0){
+            resultJson.setCode(2);
+            resultJson.setMessage("参数错误");
+            return resultJson;
+        }
+
+        int hasBank = 0;
+        int hasWeiXin = 0;
+        int hasAliPay = 0;
+        for (UserPaymentTypeDO paymentType : userPaymentType) {
+            if(paymentType.getPaymentType() == 1){
+                hasBank = 1;
+            }else if(paymentType.getPaymentType() == 2){
+                hasWeiXin = 1;
+            }else if(paymentType.getPaymentType() == 3){
+                hasAliPay = 1;
+            }
+        }
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("hasBank", hasBank);
+        jsonObject.put("hasWeiXin", hasWeiXin);
+        jsonObject.put("hasAliPay", hasAliPay);
+
+        resultJson.setCode(1);
+        resultJson.setMessage("获取信息成功");
+        resultJson.setData(jsonObject);
+        return resultJson;
+    }
+
+    /** 获取经销商收款详情 */
+    @RequestMapping(value = "/getPayDetails.htm", method = RequestMethod.POST)
+    public @ResponseBody JsonObjectBO getPayDetails(HttpServletRequest request){
+        JsonObjectBO resultJson = new JsonObjectBO();
+        UserSessionBO userSession = (UserSessionBO) request.getSession().getAttribute("userSession");
+        if(userSession == null){
+            resultJson.setCode(4);
+            resultJson.setMessage("未登录");
+            return resultJson;
+        }
+
+        //获取参数
+        String otcPendingOrderNo = StringUtil.stringNullHandle(request.getParameter("otcPendingOrderNo"));
+        String paymentTypeStr = StringUtil.stringNullHandle(request.getParameter("paymentType"));
+
+        if (!StringUtil.isNotNull(otcPendingOrderNo) || !StringUtil.isNotNull(paymentTypeStr)) {
+            resultJson.setCode(2);
+            resultJson.setMessage("参数错误");
+            return resultJson;
+        }
+
+        int paymentType = 0;
+        if (StringUtil.isNotNull(paymentTypeStr)) {
+            paymentType = Integer.parseInt(paymentTypeStr);
+        }
+
+        //获取挂单信息
+        OtcTransactionPendOrderDO otcTransactionPendOrder = otcTransactionPendOrderService.getOtcTransactionPendOrderByOrderNo(otcPendingOrderNo);
+        if(otcTransactionPendOrder == null){
+            resultJson.setCode(2);
+            resultJson.setMessage("参数错误");
+            return resultJson;
+        }
+        //查询用户信息
+        UserIdentificationDO userIdentification = userIdentificationService.getUserIdentificationByUserIdLately(otcTransactionPendOrder.getUserId());
+        if(userIdentification == null){
+            resultJson.setCode(2);
+            resultJson.setMessage("参数错误");
+            return resultJson;
+        }
+        if(userIdentification.getIdentificationStatus() != 2){
+            resultJson.setCode(2);
+            resultJson.setMessage("参数错误");
+            return resultJson;
+        }
+
+        //查询经销商信息
+        OtcDealerUserDO otcDealerUser = otcDealerUserService.getOtcDealerUserByUserId(otcTransactionPendOrder.getUserId());
+        if(otcDealerUser == null){
+            resultJson.setCode(2);
+            resultJson.setMessage("参数错误");
+            return resultJson;
+        }
+
+        //根据用户id、挂单号、支付方式查询 收款记录
+        UserPaymentTypeDO userPaymentType = userPaymentTypeService.getUserPaymentType(otcTransactionPendOrder.getUserId(), otcPendingOrderNo, paymentType);
+        if(userPaymentType == null){
+            resultJson.setCode(2);
+            resultJson.setMessage("参数错误");
+            return resultJson;
+        }
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("dealerName", otcDealerUser.getDealerName());
+        jsonObject.put("userName", userIdentification.getUserName());
+        jsonObject.put("userPhone", userIdentification.getUserPhone());
+        jsonObject.put("userPaymentType", userPaymentType);
+
+        resultJson.setCode(1);
+        resultJson.setMessage("获取信息成功");
+        resultJson.setData(jsonObject);
+        return resultJson;
+    }
 
     /** 购买出售单 */
     @RequestMapping(value = "/buy.htm", method = RequestMethod.POST)
@@ -93,6 +235,7 @@ public class OtcTradeCenterController {
         if (StringUtil.isNotNull(buyNumStr)) {
             buyNum = Double.parseDouble(buyNumStr);
         }
+
         int paymentType = 0;
         if (StringUtil.isNotNull(paymentTypeStr)) {
             paymentType = Integer.parseInt(paymentTypeStr);
@@ -493,12 +636,11 @@ public class OtcTradeCenterController {
     }
 
     /** 展示页面 */
-    @RequestMapping(value = "/show", method = RequestMethod.POST)
+    @RequestMapping(value = "/show")
     public String show(HttpServletRequest request){
         list(request);
         request.setAttribute("code", 1);
         request.setAttribute("message", "查询成功!");
-//        return "page/web/otcTradeCenter";
         return "page/web/tradeOut";
     }
 
@@ -543,6 +685,9 @@ public class OtcTradeCenterController {
             otcTransactionPendOrderList = otcTransactionPendOrderService.getOtcTransactionPendOrderlist(currencyId,orderType,area,pageNumber,pageSize);
         }
 
+        request.setAttribute("currencyId", currencyId);
+        request.setAttribute("orderType", orderType);
+        request.setAttribute("area", area);
         request.setAttribute("pageNumber", pageNumber);
         request.setAttribute("totalNumber", totalNumber);
         request.setAttribute("totalPageNumber", totalPageNumber);
