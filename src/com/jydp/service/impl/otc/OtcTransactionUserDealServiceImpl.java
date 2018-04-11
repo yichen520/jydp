@@ -493,13 +493,14 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
      * @param startAddTime 申请开始时间（非必填）
      * @param endAddTime 申请结束时间（非必填）
      * @param paymentType 收款方式 （非必填）
+     * @param dealType 交易类型 （非必填）
      * @return 查询成功：返回记录信息列表, 查询失败或者没有相应记录：返回null
      */
     @Override
     public int countOtcTransactionUserDeallistByDealerId(int userId, String userAccount, int currencyId,
-                                int dealStatus, Timestamp startAddTime, Timestamp endAddTime, int paymentType) {
+                                int dealStatus, Timestamp startAddTime, Timestamp endAddTime, int paymentType, int dealType) {
         return otcTransactionUserDealDao.countOtcTransactionUserDeallistByDealerId(userId,userAccount,currencyId,
-                dealStatus,startAddTime,endAddTime,paymentType);
+                dealStatus,startAddTime,endAddTime,paymentType,dealType);
     }
 
     /**
@@ -511,14 +512,15 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
      * @param startAddTime 申请开始时间（非必填）
      * @param endAddTime 申请结束时间（非必填）
      * @param paymentType 收款方式 （非必填）
+     * @param dealType 交易类型 （非必填）
      * @param pageNumber 当前页（必填）
      * @param pageSize 每页条数（必填）
      * @return 查询成功：返回记录信息列表, 查询失败或者没有相应记录：返回null
      */
     @Override
     public List<OtcTransactionUserDealVO> getOtcTransactionUserDeallistByDealerId(int userId, String userAccount,
-                                                int currencyId, int dealStatus, Timestamp startAddTime, Timestamp endAddTime, int paymentType, int pageNumber, int pageSize) {
+                                                int currencyId, int dealStatus, Timestamp startAddTime, Timestamp endAddTime, int paymentType, int dealType, int pageNumber, int pageSize) {
         return otcTransactionUserDealDao.getOtcTransactionUserDeallistByDealerId(userId,userAccount,currencyId,
-                dealStatus,startAddTime,endAddTime,paymentType,pageNumber,pageSize);
+                dealStatus,startAddTime,endAddTime,paymentType,dealType,pageNumber,pageSize);
     }
 }

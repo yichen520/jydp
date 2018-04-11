@@ -75,7 +75,7 @@
         </ul>
     </li>
 </ul>
-<form id="otcTradeCenterMenuForm" action="<%=path %>/userWeb/dealerOtcDealRecord/show.html" method="post">
+<form id="otcTradeCenterMenuForm" action="<%=path %>/userWeb/dealerOtcDealRecord/show.htm" method="post">
 </form>
 <script type="text/javascript">
     $(function() {

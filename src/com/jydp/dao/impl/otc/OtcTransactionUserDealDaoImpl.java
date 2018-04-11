@@ -166,10 +166,11 @@ public class OtcTransactionUserDealDaoImpl implements IOtcTransactionUserDealDao
      * @param startAddTime 申请开始时间（非必填）
      * @param endAddTime 申请结束时间（非必填）
      * @param paymentType 收款方式 （非必填）
+     * @param dealType 交易类型 （非必填）
      * @return 查询成功：返回记录信息列表, 查询失败或者没有相应记录：返回null
      */
     @Override
-    public int countOtcTransactionUserDeallistByDealerId(int userId, String userAccount, int currencyId, int dealStatus, Timestamp startAddTime, Timestamp endAddTime, int paymentType) {
+    public int countOtcTransactionUserDeallistByDealerId(int userId, String userAccount, int currencyId, int dealStatus, Timestamp startAddTime, Timestamp endAddTime, int paymentType, int dealType) {
 
         int count = 0;
         Map<String, Object> map = new HashMap<>();
@@ -180,6 +181,7 @@ public class OtcTransactionUserDealDaoImpl implements IOtcTransactionUserDealDao
         map.put("startAddTime", startAddTime);
         map.put("endAddTime", endAddTime);
         map.put("paymentType", paymentType);
+        map.put("dealType", dealType);
 
         try {
             count = sqlSessionTemplate.selectOne("OtcTransactionUserDeal_countOtcTransactionUserDeallistByDealerId", map);
@@ -198,12 +200,13 @@ public class OtcTransactionUserDealDaoImpl implements IOtcTransactionUserDealDao
      * @param startAddTime 申请开始时间（非必填）
      * @param endAddTime 申请结束时间（非必填）
      * @param paymentType 收款方式 （非必填）
+     * @param dealType 交易类型 （非必填）
      * @param pageNumber 当前页（必填）
      * @param pageSize 每页条数（必填）
      * @return 查询成功：返回记录信息列表, 查询失败或者没有相应记录：返回null
      */
     @Override
-    public List<OtcTransactionUserDealVO> getOtcTransactionUserDeallistByDealerId(int userId, String userAccount, int currencyId, int dealStatus, Timestamp startAddTime, Timestamp endAddTime, int paymentType, int pageNumber, int pageSize) {
+    public List<OtcTransactionUserDealVO> getOtcTransactionUserDeallistByDealerId(int userId, String userAccount, int currencyId, int dealStatus, Timestamp startAddTime, Timestamp endAddTime, int paymentType, int dealType, int pageNumber, int pageSize) {
 
         List<OtcTransactionUserDealVO> otcTransactionUserDealList = null;
         Map<String, Object> map = new HashMap<>();
@@ -214,6 +217,7 @@ public class OtcTransactionUserDealDaoImpl implements IOtcTransactionUserDealDao
         map.put("startAddTime", startAddTime);
         map.put("endAddTime", endAddTime);
         map.put("paymentType", paymentType);
+        map.put("dealType", dealType);
         map.put("startNumber", pageNumber * pageSize);
         map.put("pageSize", pageSize);
 

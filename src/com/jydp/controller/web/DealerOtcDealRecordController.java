@@ -1,5 +1,6 @@
 package com.jydp.controller.web;
 
+import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
@@ -7,8 +8,10 @@ import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.otc.OtcTransactionPendOrderDO;
 import com.jydp.entity.DO.otc.OtcTransactionUserDealDO;
 import com.jydp.entity.VO.OtcTransactionUserDealVO;
+import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.IOtcTransactionUserDealService;
+import com.jydp.service.ITransactionCurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -33,7 +36,11 @@ public class DealerOtcDealRecordController {
     @Autowired
     private IOtcTransactionUserDealService otcTransactionUserDealService;
 
-    @RequestMapping(value = "/show.html", method = RequestMethod.POST)
+    /** 交易币种 */
+    @Autowired
+    private ITransactionCurrencyService transactionCurrencyService;
+
+    @RequestMapping(value = "/show.htm", method = RequestMethod.POST)
     public String show(HttpServletRequest request){
         list(request);
         request.setAttribute("code", 1);
@@ -49,16 +56,27 @@ public class DealerOtcDealRecordController {
 
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+        String dealTypeStr = StringUtil.stringNullHandle(request.getParameter("dealType"));
         String dealStatusStr = StringUtil.stringNullHandle(request.getParameter("dealStatus"));
         String startAddTimeStr = StringUtil.stringNullHandle(request.getParameter("startAddTime"));
         String endAddTimeStr = StringUtil.stringNullHandle(request.getParameter("endAddTime"));
         String paymentTypeStr = StringUtil.stringNullHandle(request.getParameter("paymentType"));
         String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
 
+        JSONObject queryParams = new JSONObject();
+        queryParams.put("userAccount",userAccount);
+        queryParams.put("currencyId",currencyIdStr);
+        queryParams.put("dealType",dealTypeStr);
+        queryParams.put("dealStatus",dealStatusStr);
+        queryParams.put("startAddTime",startAddTimeStr);
+        queryParams.put("endAddTime",endAddTimeStr);
+        queryParams.put("paymentType",paymentTypeStr);
+
         int currencyId = 0;
         int dealStatus = 0;
         int pageNumber = 0;
         int paymentType = 0;
+        int dealType = 0;
 
         if (StringUtil.isNotNull(currencyIdStr)) {
             currencyId = Integer.parseInt(currencyIdStr);
@@ -76,6 +94,10 @@ public class DealerOtcDealRecordController {
             pageNumber = Integer.parseInt(pageNumberStr);
         }
 
+        if (StringUtil.isNotNull(dealTypeStr)) {
+            dealType = Integer.parseInt(dealTypeStr);
+        }
+
         Timestamp startAddTime = null;
         if (StringUtil.isNotNull(startAddTimeStr)) {
             startAddTime = DateUtil.stringToTimestamp(startAddTimeStr);
@@ -88,7 +110,7 @@ public class DealerOtcDealRecordController {
 
         int pageSize = 20;
 
-        int totalNumber = otcTransactionUserDealService.countOtcTransactionUserDeallistByDealerId(userId,userAccount,currencyId,dealStatus,startAddTime,endAddTime,paymentType);
+        int totalNumber = otcTransactionUserDealService.countOtcTransactionUserDeallistByDealerId(userId,userAccount,currencyId,dealStatus,startAddTime,endAddTime,paymentType,dealType);
 
         int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
         if (totalPageNumber <= 0) {
@@ -100,18 +122,22 @@ public class DealerOtcDealRecordController {
 
         List<OtcTransactionUserDealVO> otcTransactionUserDealList = null;
         if (totalNumber > 0) {
-            otcTransactionUserDealList = otcTransactionUserDealService.getOtcTransactionUserDeallistByDealerId(userId,userAccount,currencyId,dealStatus,startAddTime,endAddTime,paymentType,pageNumber,pageSize);
+            otcTransactionUserDealList = otcTransactionUserDealService.getOtcTransactionUserDeallistByDealerId(userId,userAccount,currencyId,dealStatus,startAddTime,endAddTime,paymentType,dealType,pageNumber,pageSize);
         }
 
+        //获取所有币种信息
+        List<TransactionCurrencyVO>  transactionCurrencyList = transactionCurrencyService.getOnlineAndSuspensionCurrencyForWeb();
         request.setAttribute("pageNumber", pageNumber);
         request.setAttribute("totalNumber", totalNumber);
         request.setAttribute("totalPageNumber", totalPageNumber);
+        request.setAttribute("queryParams", queryParams);
+        request.setAttribute("transactionCurrencyList", transactionCurrencyList);
         request.setAttribute("otcTransactionUserDealList", otcTransactionUserDealList);
     }
 
     /** 经销商回购币-确认收货 **/
-    @RequestMapping(value = "/confirmTake.html", method = RequestMethod.POST)
-    public @ResponseBody JsonObjectBO confirmTake(HttpServletRequest request){
+    @RequestMapping(value = "/confirmTakeCoin.htm", method = RequestMethod.POST)
+    public @ResponseBody JsonObjectBO confirmTakeCoin(HttpServletRequest request){
         JsonObjectBO responseJson = new JsonObjectBO();
 
         String otcOrderNo = StringUtil.stringNullHandle(request.getParameter("otcOrderNo"));
@@ -153,15 +179,15 @@ public class DealerOtcDealRecordController {
             responseJson.setMessage("确认收货成功");
             return responseJson;
         } else {
-            responseJson.setCode(1);
+            responseJson.setCode(2);
             responseJson.setMessage("确认收货失败");
             return responseJson;
         }
     }
 
     /** 经销商出售币-确认收款 **/
-    @RequestMapping(value = "/confirmTakeCoin.html", method = RequestMethod.POST)
-    public @ResponseBody JsonObjectBO confirmTakeCoin(HttpServletRequest request){
+    @RequestMapping(value = "/confirmTakeMoney.htm", method = RequestMethod.POST)
+    public @ResponseBody JsonObjectBO confirmTakeMoney(HttpServletRequest request){
         JsonObjectBO responseJson = new JsonObjectBO();
 
         String otcOrderNo = StringUtil.stringNullHandle(request.getParameter("otcOrderNo"));
@@ -201,7 +227,7 @@ public class DealerOtcDealRecordController {
             responseJson.setMessage("确认收款成功");
             return responseJson;
         } else {
-            responseJson.setCode(1);
+            responseJson.setCode(2);
             responseJson.setMessage("确认收款失败");
             return responseJson;
         }

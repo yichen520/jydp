@@ -100,6 +100,9 @@
         <if test="paymentType != null and paymentType != 0">
             AND UPT.paymentType = #{paymentType}
         </if>
+        <if test="dealType != null and dealType != 0">
+            AND OTUD.dealType = #{dealType}
+        </if>
         <if test="currencyId != null and currencyId != 0">
             AND OTUD.currencyId = #{currencyId}
         </if>
@@ -130,6 +133,9 @@
         </if>
         <if test="paymentType != null and paymentType != 0">
             AND UPT.paymentType = #{paymentType}
+        </if>
+        <if test="dealType != null and dealType != 0">
+            AND OTUD.dealType = #{dealType}
         </if>
         <if test="currencyId != null and currencyId != 0">
             AND OTUD.currencyId = #{currencyId}
