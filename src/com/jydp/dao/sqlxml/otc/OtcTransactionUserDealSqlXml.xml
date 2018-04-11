@@ -22,9 +22,13 @@
     </select>
 
     <select id="OtcTransactionUserDeal_numberOtcTransactionUsealByUserId" parameterType="java.util.Map" resultType="int">
-        SELECT COUNT(otcOrderNo)
-        FROM otc_transaction_user_deal_tab
-        WHERE userId = #{userId}
+        SELECT COUNT(OTUD.otcOrderNo)
+        FROM otc_transaction_user_deal_tab OTUD
+        LEFT JOIN otc_transaction_pend_order_tab OTPO
+          ON OTUD.otcPendingOrderNo = OTPO.otcPendingOrderNo
+        LEFT JOIN otc_dealer_user_tab ODU
+        ON OTPO.userId = ODU.userId
+        WHERE OTUD.userId = #{userId}
         <if test="dealerName != null and dealerName != ''">
             AND ODU.dealerName LIKE CONCAT('%', #{dealerName}, '%')
         </if>
@@ -48,13 +52,16 @@
     <select id="OtcTransactionUserDeal_listOtcTransactionUsealByUserId" parameterType="java.util.Map" resultType="OtcTransactionUserDealVO">
         SELECT OTUD.otcOrderNo,OTUD.currencyNumber,OTUD.currencyTotalPrice,OTUD.currencyName,ODU.dealerName,UPT.paymentType,
             UPT.paymentAccount,UPT.bankName,UPT.bankCode,UPT.bankBranch,UPT.paymentName,UPT.paymentPhone,UPT.paymentImage imageUrl,
-            OTUD.dealType,OTUD.dealStatus,OTUD.typeId,OTUD.remark,OTUD.updateTime, OTPO.area,OTUD.addTime
-        FROM otc_transaction_user_deal_tab OTUD LEFT JOIN user_payment_type_tab UPT
+            OTUD.dealType,OTUD.dealStatus,OTUD.typeId,OTUD.remark,OTUD.updateTime, OTPO.area,OTUD.addTime,u.phoneNumber
+        FROM otc_transaction_user_deal_tab OTUD
+        LEFT JOIN user_payment_type_tab UPT
           ON OTUD.typeId = UPT.typeId
         LEFT JOIN otc_transaction_pend_order_tab OTPO
           ON OTUD.otcPendingOrderNo = OTPO.otcPendingOrderNo
         LEFT JOIN otc_dealer_user_tab ODU
           ON OTPO.userId = ODU.userId
+        LEFT JOIN user_tab U
+          ON OTPO.userId = U.userId
         WHERE OTUD.userId = #{userId}
         <if test="dealerName != null and dealerName != ''">
             AND ODU.dealerName LIKE CONCAT('%', #{dealerName}, '%')

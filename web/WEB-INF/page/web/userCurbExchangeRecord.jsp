@@ -36,12 +36,12 @@
                     <p class="condition">经销商名称：<input type="text" class="askInput" name="dealerName" id="dealerName" value="${dealerName }"  /></p>
                     <p class="condition">币种：
                         <select class="askSelect" name="currencyId" id="currencyId" >
-                            <option value="0">全部</option>
+                            <option value="0" >全部</option>
                             <option value="999">XT</option>
                         </select>
                     </p>
                     <p class="condition">类型：
-                        <select class="askSelect" name=" dealType" id=" dealType">
+                        <select class="askSelect" name="dealType" id="dealType">
                             <option value="0">全部</option>
                             <option value="1">购买</option>
                             <option value="2">出售</option>
@@ -49,10 +49,10 @@
                     </p>
                     <p class="condition">交易状态：
                         <select class="askSelect" name="dealStatus" id="dealStatus">
-                            <option>全部</option>
-                            <option>待完成</option>
-                            <option>待确认</option>
-                            <option>已完成</option>
+                            <option value="0">全部</option>
+                            <option value="1">待完成</option>
+                            <option value="2">待确认</option>
+                            <option value="3">已完成</option>
                         </select>
                     </p>
 
@@ -115,7 +115,9 @@
                             </c:if>
                             </td>
                             <td class="operate">
-                                <input type="text" value="确认收货" class="confirm_coin" onfocus="this.blur()" />
+                            <c:if test="${item.dealStatus != 3}">
+                                <input type="text" value="确认收货" class="confirm_coin" onfocus="this.blur()" onclick="affirmGet(${item.otcOrderNo})"/>
+                            </c:if>
                             </td>
                         </tr>
                     </c:if>
@@ -134,23 +136,19 @@
                                 <p>经销商名称：<span>${item.dealerName}</span></p>
                                 <p>经销商电话：<span>${item.phoneNumber}</span></p>
                             </td>
-                            <c:if test="${item.paymentType == 1}">
-                                <td class="my">
+                            <td class="my">
+                                <c:if test="${item.paymentType == 1}">
                                     <p>银行卡号：<span>${item.paymentAccount}</span></p>
                                     <p>银行：<span>${item.bankName}</span></p>
                                     <p>收款人：${item.paymentName}</p>
-                                </td>
-                            </c:if>
-                            <c:if test="${item.paymentType == 2}">
-                                <td class="my">
+                                </c:if>
+                                <c:if test="${item.paymentType == 2}">
                                     <p>支付宝账号；<span>${item.paymentAccount}</span></p>
-                                </td>
-                            </c:if>
-                            <c:if test="${item.paymentType == 3}">
-                                <td class="my">
+                                </c:if>
+                                <c:if test="${item.paymentType == 3}">
                                     <p>微信账号；<span>${item.paymentAccount}</span></p>
-                                </td>
-                            </c:if>
+                                </c:if>
+                            </td>
                             <td class="state">
                                 <c:if test="${item.dealStatus == 1}">
                                     <p>状态：<span class="wait">待完成</span></p>
@@ -166,7 +164,9 @@
                                 </c:if>
                             </td>
                             <td class="operate">
-                                <input type="text" value="确认收款" class="confirm_money" onfocus="this.blur()" />
+                                <c:if test="${item.dealStatus != 3}">
+                                    <input type="text" value="确认收款" class="confirm_money" onfocus="this.blur()" onclick="affirmGet(${item.otcOrderNo})"/>
+                                </c:if>
                             </td>
                         </tr>
                     </c:if>
@@ -188,24 +188,24 @@
         <div class="coin_pop">
             <p class="popTitle">确认收货</p>
             <p class="popTips"><img src="<%=path %>/resources/image/web/tips.png" class="tipsImg" />确认已收到商品？</p>
-
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="openTip()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="sureGet()" />
             </div>
         </div>
 
         <div class="money_pop">
             <p class="popTitle">确认收款</p>
             <p class="popTips"><img src="<%=path %>/resources/image/web/tips.png" class="tipsImg" />确认已收到货款？</p>
-
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="openTip()" />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" onclick="sureGet()" />
             </div>
         </div>
     </div>
 </div>
+
+<input type="hidden" value="" id="affirmGet"/>
 
 <script type="text/javascript" src="<%=path %>/resources/js/laydate.js"></script>
 <script type="text/javascript" src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
@@ -225,10 +225,47 @@
         }
     }
 
-    function openTip()
-    {
-        openTips("阿萨德芳");
+    //确认收货订单号存入
+    function affirmGet(otcOrderNo) {
+        $("#affirmGet").val(otcOrderNo)
     }
+
+    //确认收货
+    var sureGetBoo = false;
+    function sureGet() {
+        if (sureGetBoo) {
+            return;
+        } else {
+            sureGetBoo = true;
+        }
+
+        var otcOrderNo = $("#affirmGet").val();
+        $.ajax({
+            url: '<%=path %>' + "/userWeb/userDealRecord/userConfirm.htm",
+            data: {
+                otcOrderNo : otcOrderNo
+            },//参数
+            dataType: "json",
+            type: 'POST',
+            async: true, //默认异步调用 (false：同步)
+            success: function (resultData) {
+                sureGetBoo = false;
+                var code = resultData.code;
+                var message = resultData.message;
+                if (code != 1 && message != "") {
+                    openTips(message);
+                    return;
+                }
+                $("#queryForm").submit();
+            },
+
+            error: function () {
+            userMessageBoo = false;
+            //openTips("数据加载出错，请稍候重试");
+            }
+        });
+    }
+
 
     function queryForm() {
         $("#queryPageNumber").val("0");
