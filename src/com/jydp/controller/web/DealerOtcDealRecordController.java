@@ -63,15 +63,6 @@ public class DealerOtcDealRecordController {
         String paymentTypeStr = StringUtil.stringNullHandle(request.getParameter("paymentType"));
         String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
 
-        JSONObject queryParams = new JSONObject();
-        queryParams.put("userAccount",userAccount);
-        queryParams.put("currencyId",currencyIdStr);
-        queryParams.put("dealType",dealTypeStr);
-        queryParams.put("dealStatus",dealStatusStr);
-        queryParams.put("startAddTime",startAddTimeStr);
-        queryParams.put("endAddTime",endAddTimeStr);
-        queryParams.put("paymentType",paymentTypeStr);
-
         int currencyId = 0;
         int dealStatus = 0;
         int pageNumber = 0;
@@ -107,6 +98,15 @@ public class DealerOtcDealRecordController {
         if (StringUtil.isNotNull(endAddTimeStr)) {
             endAddTime = DateUtil.stringToTimestamp(endAddTimeStr);
         }
+
+        JSONObject queryParams = new JSONObject();
+        queryParams.put("userAccount",userAccount);
+        queryParams.put("currencyId",currencyId);
+        queryParams.put("dealType",dealType);
+        queryParams.put("dealStatus",dealStatus);
+        queryParams.put("startAddTime",startAddTime);
+        queryParams.put("endAddTime",endAddTime);
+        queryParams.put("paymentType",paymentType);
 
         int pageSize = 20;
 
