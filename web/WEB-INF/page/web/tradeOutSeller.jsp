@@ -150,7 +150,10 @@
                                     <span class="finish">已完成</span>
                                 </c:if>
                             </p>
-                            <p>完成时间：<span><fmt:formatDate type="time" value="${userDeal.updateTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></span></p>
+                            <p>完成时间：<span><c:if test="${userDeal.dealStatus == 3}">
+                                                <fmt:formatDate type="time" value="${userDeal.updateTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate>
+                                              </c:if>
+                                        </span></p>
                         </td>
                         <td class="operate">
                             <c:if test="${userDeal.dealStatus == 1 and userDeal.dealType == 1 }">
