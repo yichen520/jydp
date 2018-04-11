@@ -143,9 +143,9 @@
         }
 
         if (userCertType == 1) {
-            var reg = /[^\u4e00-\u9fa5]/.test(userName);
-            if (!userName || reg) {
-                return openTips("身份证的姓名必须是全中文");
+            var reg = /^[\u4e00-\u9fa5]+(·[\u4e00-\u9fa5]+)*$/.test(userName);
+            if (!userName || !reg) {
+                return openTips("请输入正确的身份证姓名");
             }
             if (!IdentityCodeValid(userCertNo)) {
                 return openTips("请输入正确的身份证号码");
