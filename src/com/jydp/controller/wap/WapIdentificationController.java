@@ -1,11 +1,18 @@
 package com.jydp.controller.wap;
 
-import com.iqmkj.utils.*;
+import com.iqmkj.utils.DateUtil;
+import com.iqmkj.utils.FileDataEntity;
+import com.iqmkj.utils.FileFomat;
+import com.iqmkj.utils.FileWriteLocalUtil;
+import com.iqmkj.utils.FileWriteRemoteUtil;
+import com.iqmkj.utils.ImageReduceUtil;
+import com.iqmkj.utils.LogUtil;
+import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DO.user.UserIdentificationDO;
 import com.jydp.entity.DO.user.UserIdentificationImageDO;
-import com.jydp.interceptor.BackerWebInterceptor;
+import com.jydp.interceptor.UserWapInterceptor;
 import com.jydp.service.IUserIdentificationImageService;
 import com.jydp.service.IUserIdentificationService;
 import com.jydp.service.IUserService;
@@ -25,8 +32,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * wap端用户认证
@@ -56,14 +61,14 @@ public class WapIdentificationController {
         if (!StringUtil.isNotNull(userAccount)) {
             request.setAttribute("code", 2);
             request.setAttribute("message", "参数为空");
-            return "page/web/login";
+            return "page/wap/login";
         }
 
         UserDO userDO = userService.getUserByUserAccount(userAccount);
         if(userDO == null){
             request.setAttribute("code", 2);
             request.setAttribute("message", "参数不正确");
-            return "page/web/login";
+            return "page/wap/login";
         }
 
         //待审核，审核拒绝，进入查看实名认证信息页
@@ -102,7 +107,7 @@ public class WapIdentificationController {
         if(userDO == null){
             request.setAttribute("code", 2);
             request.setAttribute("message", "参数不正确");
-            return "page/web/login";
+            return "page/wap/login";
         }
 
         request.setAttribute("userAccount", userAccount);
@@ -113,7 +118,7 @@ public class WapIdentificationController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public @ResponseBody JsonObjectBO add(HttpServletRequest request) {
         JsonObjectBO responseJson = new JsonObjectBO();
-        boolean handleFrequent = BackerWebInterceptor.handleFrequent(request);
+        boolean handleFrequent = UserWapInterceptor.handleFrequent(request);
         if (handleFrequent) {
             responseJson.setCode(6);
             responseJson.setMessage("您的操作太频繁");
@@ -140,7 +145,7 @@ public class WapIdentificationController {
         int userCertType = Integer.parseInt(userCertTypeStr);
         if (userCertType == 1) {
             //证件类型为身份证：姓名，身份证 格式判断
-            JsonObjectBO validateJson = validateNameAndCertNo(userName, userCertNo);
+            JsonObjectBO validateJson = StringUtil.validateNameAndCertNo(userName, userCertNo);
             if (validateJson.getCode() != 1) {
                 responseJson.setCode(validateJson.getCode());
                 responseJson.setMessage(validateJson.getMessage());
@@ -148,8 +153,8 @@ public class WapIdentificationController {
             }
         } else if (userCertType == 2) {
             //证件类型为护照：非法字符过滤
-            userName = rightfulString(userName);
-            userCertNo = rightfulString(userCertNo);
+            userName = StringUtil.rightfulString(userName);
+            userCertNo = StringUtil.rightfulString(userCertNo);
         } else {
             responseJson.setCode(3);
             responseJson.setMessage("参数错误！");
@@ -171,13 +176,13 @@ public class WapIdentificationController {
             return responseJson;
         }
         //判断图片格式和大小
-        JsonObjectBO frontImgJson = checkImageFile(frontImg);
+        JsonObjectBO frontImgJson = FileFomat.checkImageFile(frontImg, 10 * 1024);
         if (frontImgJson.getCode() != 1) {
             responseJson.setCode(frontImgJson.getCode());
             responseJson.setMessage(frontImgJson.getMessage());
             return responseJson;
         }
-        JsonObjectBO backImgJson = checkImageFile(backImg);
+        JsonObjectBO backImgJson = FileFomat.checkImageFile(backImg, 10 * 1024);
         if (backImgJson.getCode() != 1) {
             responseJson.setCode(backImgJson.getCode());
             responseJson.setMessage(backImgJson.getMessage());
@@ -215,15 +220,15 @@ public class WapIdentificationController {
         }
 
         //本地缓存目录
-        String path = request.getServletContext().getRealPath("/upload") + "/tempReduceImage/";
+        String path = "tempReduceImage";
         //图片大于400k，压缩图片到本地缓存目录，再上传至图片服务器，最后删除缓存文件
         String frontImgSrc = "";
         if (frontImg.getSize() > 400*1024 ) {
-            frontImgSrc = ImageReduceUtil.reduceImage(frontImg, path);
+            frontImgSrc = ImageReduceUtil.reducePicForScale(frontImg, path, 400, 0.4);
         }
         String backImgSrc = "";
         if (backImg.getSize() > 400*1024 ) {
-            backImgSrc = ImageReduceUtil.reduceImage(backImg, path);
+            backImgSrc = ImageReduceUtil.reducePicForScale(backImg, path, 400, 0.4);
         }
 
         //上传图片到图片服务器
@@ -292,146 +297,13 @@ public class WapIdentificationController {
             responseJson.setCode(1);
             responseJson.setMessage("提交成功");
         } else {
+            // 删除文件
+            FileWriteRemoteUtil.deleteFileList(imageUrlList);
+
             responseJson.setCode(5);
             responseJson.setMessage("提交失败");
         }
         return responseJson;
-    }
-
-    /**
-     * 验证图片格式 和限制图片大小
-     * @param uploadImg 上传的文件
-     * @return 验证通过：返回code=1，验证失败：返回code!=1
-     */
-    private JsonObjectBO checkImageFile(MultipartFile uploadImg) {
-        JsonObjectBO responseJson = new JsonObjectBO();
-
-        String fileName = uploadImg.getOriginalFilename();
-        boolean isImage = FileFomat.isImage(fileName);
-        if (!isImage) {
-            responseJson.setCode(3);
-            responseJson.setMessage("请上传jpg、jpeg、png格式的图片");
-            return responseJson;
-        }
-
-        if (uploadImg.getSize() >= 10*1024*1024) {
-            responseJson.setCode(3);
-            responseJson.setMessage("您的证件照太大了");
-            return responseJson;
-        }
-
-        responseJson.setCode(1);
-        responseJson.setMessage("验证通过");
-        return responseJson;
-    }
-
-    /**
-     * 验证身份证姓名和身份证号码
-     * @param userName 身份证姓名
-     * @param userCertNo 身份证号码
-     * @return 验证通过：返回code=1，验证失败：返回code!=1
-     */
-    private JsonObjectBO validateNameAndCertNo(String userName, String userCertNo) {
-        JsonObjectBO responseJson = new JsonObjectBO();
-        //姓名校验
-        Pattern patternName = Pattern.compile("[\\u4e00-\\u9fa5]{2,16}");
-        Matcher matcherName = patternName.matcher(userName);
-        if (!matcherName.matches()) {
-            responseJson.setCode(3);
-            responseJson.setMessage("姓名只允许中文，长度为2到16");
-            return responseJson;
-        }
-
-        //身份证校验
-        Pattern pattern1 = Pattern.compile("^(\\d{6})(19|20)(\\d{2})(0[1-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])(\\d{3})(\\d|X|x)?$"); //粗略的校验
-        Matcher matcher = pattern1.matcher(userCertNo);
-        if(!matcher.matches()){
-            responseJson.setCode(3);
-            responseJson.setMessage("身份证号码有误！");
-            return responseJson;
-        }
-
-        // 1-17位相乘因子数组
-        int[] factor = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2};
-        // 18位随机码数组
-        char[] random = "10X98765432".toCharArray();
-        // 计算1-17位与相应因子乘积之和
-        int total = 0;
-        char[] userCertNoArray = userCertNo.toCharArray();
-        for (int i = 0; i < 17; i++){
-            int certNoNum = Character.getNumericValue(userCertNoArray[i]);
-            total += certNoNum * factor[i];
-        }
-        if (userCertNoArray[17] == 'x') {
-            userCertNoArray[17] = 'X';
-        }
-        // 判断随机码是否相等
-        char r = random[total % 11];
-        if (r != userCertNoArray[17]) {
-            responseJson.setCode(3);
-            responseJson.setMessage("身份证号码错误");
-            return responseJson;
-        }
-
-        responseJson.setCode(1);
-        responseJson.setMessage("验证通过");
-        return responseJson;
-    }
-
-    /**
-     * 处理页面传递的特殊字符，将<>()&;:/\'"替换为" "
-     * @param source 处理前的字符串
-     * @return 处理后的字符串
-     */
-    private String rightfulString(String source) {
-        if (source == null) {
-            return "";
-        }
-        StringBuffer buffer = new StringBuffer();
-        for (int i = 0; i < source.length(); i++) {
-            char c = source.charAt(i);
-            switch (c) {
-                case '<':
-                    buffer.append(" ");
-                    break;
-                case '>':
-                    buffer.append(" ");
-                    break;
-                case '(':
-                    buffer.append(" ");
-                    break;
-                case ')':
-                    buffer.append(" ");
-                    break;
-                case '&':
-                    buffer.append(" ");
-                    break;
-                case ':':
-                    buffer.append(" ");
-                    break;
-                case ';':
-                    buffer.append(" ");
-                    break;
-                case '\'':
-                    buffer.append(" ");
-                    break;
-                case '\"':
-                    buffer.append(" ");
-                    break;
-                case '\\':
-                    buffer.append(" ");
-                    break;
-                case '/':
-                    buffer.append(" ");
-                    break;
-                case '*':
-                    buffer.append(" ");
-                    break;
-                default:
-                    buffer.append(c);
-            }
-        }
-        return buffer.toString();
     }
 
 }

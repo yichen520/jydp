@@ -12,7 +12,7 @@ import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DO.user.UserIdentificationDO;
 import com.jydp.entity.DO.user.UserIdentificationImageDO;
-import com.jydp.interceptor.BackerWebInterceptor;
+import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.IUserIdentificationImageService;
 import com.jydp.service.IUserIdentificationService;
 import com.jydp.service.IUserService;
@@ -56,7 +56,7 @@ public class IdentificationController {
     private IUserIdentificationImageService userIdentificationImageService;
 
     /** 实名认证页面入口 */
-    @RequestMapping("/show")
+    @RequestMapping(value = "/show", method = RequestMethod.POST)
     public String show(HttpServletRequest request) {
         String userIdStr = StringUtil.stringNullHandle(request.getParameter("userId"));
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
@@ -97,7 +97,7 @@ public class IdentificationController {
     }
 
     /** 重新认证，新增实名认证 */
-    @RequestMapping("/showAdd")
+    @RequestMapping(value = "/showAdd", method = RequestMethod.POST)
     public String showAdd(HttpServletRequest request) {
         String userIdStr = StringUtil.stringNullHandle(request.getParameter("userId"));
         String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
@@ -116,7 +116,7 @@ public class IdentificationController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public @ResponseBody JsonObjectBO add(HttpServletRequest request) {
         JsonObjectBO responseJson = new JsonObjectBO();
-        boolean handleFrequent = BackerWebInterceptor.handleFrequent(request);
+        boolean handleFrequent = UserWebInterceptor.handleFrequent(request);
         if (handleFrequent) {
             responseJson.setCode(6);
             responseJson.setMessage("您的操作太频繁");

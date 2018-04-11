@@ -63,7 +63,6 @@
 
     //公告数据填充
     var systemHotData = ${requestScope.systemHot};
-    console.log(systemHotData);
     var noticefunc = Handlebars.compile($('.content').html());
     $('.content').html(noticefunc(systemHotData));
 

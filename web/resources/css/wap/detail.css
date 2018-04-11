@@ -7,6 +7,7 @@ header .backimg{
     left: 0.3rem;
     width: 0.19rem;
     height: 0.35rem;
+    
 }
 .content{
     margin-top: 1.11rem;
@@ -25,6 +26,7 @@ header .backimg{
     overflow: hidden;
     text-overflow: ellipsis;
     width:100%;
+    word-wrap:break-word;
 }
 .editor p{
     display: inline;
