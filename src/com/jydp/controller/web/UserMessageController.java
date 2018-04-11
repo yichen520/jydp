@@ -626,6 +626,8 @@ public class UserMessageController {
             otcOrderVO.setWechatImage(wechatImage);
         }
         // 根据挂单类型判断 出售单：1 回购单：2   出售单 判断币种信息   回购单不做判断
+
+        if(otcOrderVO.getCurrencyId() != 999){//如果是xt 币    不用判断币种信息  直接允许挂单
         if (otcOrderVO.getOrderType() == 1) {
             //获取币种信息
             TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(otcOrderVO.getCurrencyId());
@@ -671,7 +673,7 @@ public class UserMessageController {
                 return resultJson;
             }
         }
-
+        }
         //挂单操作
         resultJson = otcTransactionPendOrderService.insertPendOrder(otcOrderVO);
 
