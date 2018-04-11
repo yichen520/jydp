@@ -1044,7 +1044,6 @@ $().ready(function () {
                 $(this).bind('click', ParamsAndInit.toCancel);
             });
             $("#cancleOrder").bind('click', ParamsAndInit.cancleOrder);
-            $(".cancelShow").bind('click', ParamsAndInit.cancleOpt);
             $("#buyHandler").unbind('click');
             $("#buyHandler").bind('click', ParamsAndInit.buyHandle);
             $("#sellHandler").unbind('click');

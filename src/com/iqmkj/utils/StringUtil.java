@@ -78,12 +78,23 @@ public class StringUtil {
      */
     public static JsonObjectBO validateNameAndCertNo(String userName, String userCertNo) {
         JsonObjectBO responseJson = new JsonObjectBO();
-        //姓名校验
-        Pattern patternName = Pattern.compile("[\\u4e00-\\u9fa5]{2,16}");
+        if (!isNotNull(userName) || !isNotNull(userCertNo)) {
+            responseJson.setCode(2);
+            responseJson.setMessage("空参数");
+            return responseJson;
+        }
+
+        if (userName.length() < 2 || userName.length() > 16) {
+            responseJson.setCode(3);
+            responseJson.setMessage("请输入长度为2到16的姓名！");
+            return responseJson;
+        }
+        //姓名校验/^[\u4e00-\u9fa5]+(·[\u4e00-\u9fa5]+)*$/
+        Pattern patternName = Pattern.compile("[\\u4e00-\\u9fa5]+(·[\\u4e00-\\u9fa5]+)*");
         Matcher matcherName = patternName.matcher(userName);
         if (!matcherName.matches()) {
             responseJson.setCode(3);
-            responseJson.setMessage("姓名只允许中文，长度为2到16");
+            responseJson.setMessage("姓名格式不正确");
             return responseJson;
         }
 
