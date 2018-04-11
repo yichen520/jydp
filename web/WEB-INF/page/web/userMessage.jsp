@@ -63,6 +63,9 @@
                 </table>
             </c:if>
         </div>
+
+        <c:if test="${userSession.isDealer == 2}">
+
         <input type="text" class="add_adv" value="+ 发起广告" onfocus="this.blur()" />
         <div class="sellerInfo">
             <div class="title">我的广告</div>
@@ -91,6 +94,7 @@
             </table>
         </c:if>
         </div>
+        </c:if>
         <div class="safety">
             <div class="title">安全中心</div>
 
