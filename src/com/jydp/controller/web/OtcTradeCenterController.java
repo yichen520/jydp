@@ -479,9 +479,11 @@ public class OtcTradeCenterController {
         return resultJson;
     }
 
-    @RequestMapping("/show")
+    @RequestMapping(value = "/show", method = RequestMethod.POST)
     public String show(HttpServletRequest request){
         list(request);
+        request.setAttribute("code", 1);
+        request.setAttribute("message", "查询成功!");
         return "page/web/tradeOut";
     }
 
