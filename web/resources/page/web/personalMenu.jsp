@@ -54,6 +54,7 @@
             <%--<li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">充值记录</a></li>--%>
             <%--<li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">提现记录</a></li> --%>
             <li class="menuInfo"><a id="jydpUserCoinOutRecord" href="<%=path %>/userWeb/jydpUserCoinOutRecord/show.htm">提币记录</a></li>
+            <li class="menuInfo"><a id="userOtcDealRecord" href="javascript:toUserDealRecord();" >场外交易记录</a></li>
             <c:if test="${userSession.isDealer == 2}">
                 <li class="menuInfo"><a id="dealerOtcDealRecord" href="javascript:toOtcDealRecord();" >场外交易记录-经销商</a></li>
             </c:if>
@@ -75,7 +76,9 @@
         </ul>
     </li>
 </ul>
-<form id="otcTradeCenterMenuForm" action="<%=path %>/userWeb/dealerOtcDealRecord/show.htm" method="post">
+<form id="DealerDealRecordMenuForm" action="<%=path %>/userWeb/dealerOtcDealRecord/show.htm" method="post">
+</form>
+<form id="UserDealRecordMenuForm" action="<%=path %>/userWeb/userWeb/userDealRecord/show.htm">
 </form>
 <script type="text/javascript">
     $(function() {
@@ -120,9 +123,14 @@
     }
     var showPersonalMenu = setInterval(showPersonalMenu, 20);
 
+    //跳转至用户成交记录
+    function toUserDealRecord() {
+        $('#UserDealRecordMenuForm').submit();
+    }
+
     //跳转至经销商成交记录
     function toOtcDealRecord() {
-        $('#otcTradeCenterMenuForm').submit();
+        $('#DealerDealRecordMenuForm').submit();
     }
 
     function disableTip() {
