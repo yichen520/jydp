@@ -685,13 +685,13 @@
         var orderNo = $("#orderNo").val();
         var paymentType = $("#paymentType").val();
 
-        if(buyNumber <= 0 || buyNumber == ''){
+        if(buyNumber <= 0 || buyNumber == '' || buyNumber == null){
             toPayBoo = false;
             openTips("请输入正确的数量");
             return;
         }
 
-        if(paymentType <= 0 || paymentType == ''){
+        if(paymentType <= 0 || paymentType == '' || paymentType == null){
             toPayBoo = false;
             openTips("请选择支付方式");
             return;
@@ -822,7 +822,7 @@
     function toSell() {
         var sellPayType = $("#sellPayType").val();
 
-        if(sellPayType == 0){
+        if(sellPayType == 0 || sellPayType == null || sellPayType == ''){
             openTips("请选择支付方式");
             return;
         }
@@ -830,6 +830,11 @@
         var dealer = $("#sellDealerName").html();
         var num = $("#sellNumber").val();
         var sum = $("#sellSum").html();
+
+        if(num <= 0 || num == null || num == ''){
+            openTips("请输入正确的数量");
+            return;
+        }
 
         if(sellPayType == 1){
             var sellBankCard = $("#sellBankCard").val();
