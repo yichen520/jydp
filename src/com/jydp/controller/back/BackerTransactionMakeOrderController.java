@@ -273,7 +273,7 @@ public class BackerTransactionMakeOrderController {
                 return response;
             }
 
-            if (execTimeL <= 0 || currencyPrice <= 0 || currencyNumber <= 0) {
+            if (execTimeL < 0 || currencyPrice <= 0 || currencyNumber <= 0) {
                 response.setCode(5);
                 response.setMessage("执行命令内容错误");
                 return response;
