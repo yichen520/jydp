@@ -33,6 +33,82 @@ public class DealerOtcDealRecordController {
     @Autowired
     private IOtcTransactionUserDealService otcTransactionUserDealService;
 
+    @RequestMapping(value = "/show.html", method = RequestMethod.POST)
+    public String show(HttpServletRequest request){
+        list(request);
+        request.setAttribute("code", 1);
+        request.setAttribute("message", "查询成功!");
+        return "page/web/tradeOutSeller";
+    }
+
+    /** 查询记录 **/
+    public void list(HttpServletRequest request){
+
+        UserSessionBO userSession = UserWebInterceptor.getUser(request);
+        int userId = userSession.getUserId();
+
+        String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+        String dealStatusStr = StringUtil.stringNullHandle(request.getParameter("dealStatus"));
+        String startAddTimeStr = StringUtil.stringNullHandle(request.getParameter("startAddTime"));
+        String endAddTimeStr = StringUtil.stringNullHandle(request.getParameter("endAddTime"));
+        String paymentTypeStr = StringUtil.stringNullHandle(request.getParameter("paymentType"));
+        String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
+
+        int currencyId = 0;
+        int dealStatus = 0;
+        int pageNumber = 0;
+        int paymentType = 0;
+
+        if (StringUtil.isNotNull(currencyIdStr)) {
+            currencyId = Integer.parseInt(currencyIdStr);
+        }
+
+        if (StringUtil.isNotNull(dealStatusStr)) {
+            dealStatus = Integer.parseInt(dealStatusStr);
+        }
+
+        if (StringUtil.isNotNull(paymentTypeStr)) {
+            paymentType = Integer.parseInt(paymentTypeStr);
+        }
+
+        if (StringUtil.isNotNull(pageNumberStr)) {
+            pageNumber = Integer.parseInt(pageNumberStr);
+        }
+
+        Timestamp startAddTime = null;
+        if (StringUtil.isNotNull(startAddTimeStr)) {
+            startAddTime = DateUtil.stringToTimestamp(startAddTimeStr);
+        }
+
+        Timestamp endAddTime = null;
+        if (StringUtil.isNotNull(endAddTimeStr)) {
+            endAddTime = DateUtil.stringToTimestamp(endAddTimeStr);
+        }
+
+        int pageSize = 20;
+
+        int totalNumber = otcTransactionUserDealService.countOtcTransactionUserDeallistByDealerId(userId,userAccount,currencyId,dealStatus,startAddTime,endAddTime,paymentType);
+
+        int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
+        if (totalPageNumber <= 0) {
+            totalPageNumber = 1;
+        }
+        if (totalPageNumber <= pageNumber) {
+            pageNumber = totalPageNumber - 1;
+        }
+
+        List<OtcTransactionUserDealVO> otcTransactionUserDealList = null;
+        if (totalNumber > 0) {
+            otcTransactionUserDealList = otcTransactionUserDealService.getOtcTransactionUserDeallistByDealerId(userId,userAccount,currencyId,dealStatus,startAddTime,endAddTime,paymentType,pageNumber,pageSize);
+        }
+
+        request.setAttribute("pageNumber", pageNumber);
+        request.setAttribute("totalNumber", totalNumber);
+        request.setAttribute("totalPageNumber", totalPageNumber);
+        request.setAttribute("otcTransactionUserDealList", otcTransactionUserDealList);
+    }
+
     /** 经销商回购币-确认收货 **/
     @RequestMapping(value = "/confirmTake.html", method = RequestMethod.POST)
     public @ResponseBody JsonObjectBO confirmTake(HttpServletRequest request){
@@ -131,79 +207,4 @@ public class DealerOtcDealRecordController {
         }
     }
 
-    @RequestMapping(value = "/show.html", method = RequestMethod.POST)
-    public String show(HttpServletRequest request){
-        list(request);
-        request.setAttribute("code", 1);
-        request.setAttribute("message", "查询成功!");
-        return "page/web/tradeOutSeller";
-    }
-
-    /** 查询记录 **/
-    public void list(HttpServletRequest request){
-
-        UserSessionBO userSession = UserWebInterceptor.getUser(request);
-        int userId = userSession.getUserId();
-
-        String userAccount = StringUtil.stringNullHandle(request.getParameter("userAccount"));
-        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
-        String dealStatusStr = StringUtil.stringNullHandle(request.getParameter("dealStatus"));
-        String startAddTimeStr = StringUtil.stringNullHandle(request.getParameter("startAddTime"));
-        String endAddTimeStr = StringUtil.stringNullHandle(request.getParameter("endAddTime"));
-        String paymentTypeStr = StringUtil.stringNullHandle(request.getParameter("paymentType"));
-        String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
-
-        int currencyId = 0;
-        int dealStatus = 0;
-        int pageNumber = 0;
-        int paymentType = 0;
-
-        if (StringUtil.isNotNull(currencyIdStr)) {
-            currencyId = Integer.parseInt(currencyIdStr);
-        }
-
-        if (StringUtil.isNotNull(dealStatusStr)) {
-            dealStatus = Integer.parseInt(dealStatusStr);
-        }
-
-        if (StringUtil.isNotNull(paymentTypeStr)) {
-            paymentType = Integer.parseInt(paymentTypeStr);
-        }
-
-        if (StringUtil.isNotNull(pageNumberStr)) {
-            pageNumber = Integer.parseInt(pageNumberStr);
-        }
-
-        Timestamp startAddTime = null;
-        if (StringUtil.isNotNull(startAddTimeStr)) {
-            startAddTime = DateUtil.stringToTimestamp(startAddTimeStr);
-        }
-
-        Timestamp endAddTime = null;
-        if (StringUtil.isNotNull(endAddTimeStr)) {
-            endAddTime = DateUtil.stringToTimestamp(endAddTimeStr);
-        }
-
-        int pageSize = 20;
-
-        int totalNumber = otcTransactionUserDealService.countOtcTransactionUserDeallistByDealerId(userId,userAccount,currencyId,dealStatus,startAddTime,endAddTime,paymentType);
-
-        int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
-        if (totalPageNumber <= 0) {
-            totalPageNumber = 1;
-        }
-        if (totalPageNumber <= pageNumber) {
-            pageNumber = totalPageNumber - 1;
-        }
-
-        List<OtcTransactionUserDealVO> otcTransactionUserDealList = null;
-        if (totalNumber > 0) {
-            otcTransactionUserDealList = otcTransactionUserDealService.getOtcTransactionUserDeallistByDealerId(userId,userAccount,currencyId,dealStatus,startAddTime,endAddTime,paymentType,pageNumber,pageSize);
-        }
-
-        request.setAttribute("pageNumber", pageNumber);
-        request.setAttribute("totalNumber", totalNumber);
-        request.setAttribute("totalPageNumber", totalPageNumber);
-        request.setAttribute("otcTransactionUserDealList", otcTransactionUserDealList);
-    }
 }

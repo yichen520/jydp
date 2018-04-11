@@ -78,133 +78,88 @@
                     <td class="state">交易状态</td>
                     <td class="operate">操作</td>
                 </tr>
-                <tr class="tableInfo">
-                    <c:forEach items="${otcTransactionUserDealList}" var="userDeal">
+
+                <c:forEach items="${otcTransactionUserDealList}" var="userDeal">
+                    <tr class="tableInfo">
                         <td class="apply">
                             <p>流水号：<span>${userDeal.otcOrderNo}</span></p>
                             <p>币种：<span>${userDeal.currencyName}</span></p>
-                            <p>数量：<span>${userDeal.currencyNumber}</span></p>
-                            <p>金额：<span>¥${userDeal.currencyTotalPrice}</span></p>
-                            <p>类型：<span class="buy">${userDeal.}</span></p>
-                            <p>地区：<span>${userDeal.}</span></p>
-                            <p>申请时间：<span>${userDeal.}</span></p>
+                            <p>数量：<span><fmt:formatNumber type="number" value="${userDeal.currencyNumber}" maxFractionDigits="4"/></span></p>
+                            <p>金额：<span>¥<fmt:formatNumber type="number" value="${userDeal.currencyTotalPrice}" maxFractionDigits="6"/></span></p>
+                            <c:if test="${userDeal.dealType == 1}">
+                                <p>类型：<span class="buy">购买</span></p>
+                            </c:if>
+                            <c:if test="${userDeal.dealType == 2}">
+                                <p>类型：<span class="buy">出售</span></p>
+                            </c:if>
+                            <p>地区：<span>${userDeal.area}</span></p>
+                            <p>申请时间：<span><fmt:formatDate type="time" value="${userDeal.addTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate></span></p>
                         </td>
-                    </c:forEach>
-
-                    <td class="apply">
-                        <p>流水号：<span>12345678901</span></p>
-                        <p>币种：<span>盛源链</span></p>
-                        <p>数量：<span>1.000</span></p>
-                        <p>金额：<span>¥10000.0000</span></p>
-                        <p>类型：<span class="buy">购买</span></p>
-                        <p>地区：<span>中国(CN)</span></p>
-                        <p>申请时间：<span>2016-06-06&nbsp;06:06:06</span></p>
-                    </td>
-                    <td class="seller">
-                        <p>用户账号：<span>ASDFGHJKLASDFGHJ</span></p>
-                        <p>用户手机号：<span>12345678901</span></p>
-                        <p>转账方式：<span>支付宝转账</span></p>
-                    </td>
-                    <td class="my">
-                        <p>支付宝账号：1234****1234</p>
-                    </td>
-                    <td class="state">
-                        <p>状态：<span class="wait">待完成</span></p>
-                        <p>完成时间：<span></span></p>
-                    </td>
-                    <td class="operate">
-                        <input type="text" value="确认收款" class="confirm_money" onfocus="this.blur()" />
-                    </td>
-                </tr>
-                <tr class="tableInfo">
-                    <td class="apply">
-                        <p>流水号：<span>12345678901</span></p>
-                        <p>币种：<span>盛源链</span></p>
-                        <p>数量：<span>1.000</span></p>
-                        <p>金额：<span>¥10000.0000</span></p>
-                        <p>类型：<span class="sale">出售</span></p>
-                        <p>地区：<span>中国(CN)</span></p>
-                        <p>申请时间：<span>2016-06-06&nbsp;06:06:06</span></p>
-                    </td>
-                    <td class="seller">
-                        <p>用户账号：<span>ASDFGHJKLASDFGHJ</span></p>
-                        <p>用户手机号：<span>12345678901</span></p>
-                        <p>转账方式：<span>支付宝转账</span></p>
-                        <p><img src="images/test/test_300.jpg" class="code" /></p>
-                    </td>
-                    <td class="my"></td>
-                    <td class="state">
-                        <p>状态：<span class="wait_confirm">待确认</span></p>
-                        <p>完成时间：<span></span></p>
-                    </td>
-                    <td class="operate">
-                        <input type="text" value="确认收货" class="confirm_coin" onfocus="this.blur()" />
-                    </td>
-                </tr>
-                <tr class="tableInfo">
-                    <td class="apply">
-                        <p>流水号：<span>12345678901</span></p>
-                        <p>币种：<span>盛源链</span></p>
-                        <p>数量：<span>1.000</span></p>
-                        <p>金额：<span>¥10000.0000</span></p>
-                        <p>类型：<span class="buy">购买</span></p>
-                        <p>地区：<span>中国(CN)</span></p>
-                        <p>申请时间：<span>2016-06-06&nbsp;06:06:06</span></p>
-                    </td>
-                    <td class="seller">
-                        <p>用户账号：<span>ASDFGHJKLASDFGHJ</span></p>
-                        <p>用户手机号：<span>12345678901</span></p>
-                        <p>转账方式：<span>微信转账</span></p>
-                    </td>
-                    <td class="my">  <p>微信账号：1234****1234</p></td>
-                    <td class="state">
-                        <p>状态：<span class="finish">已完成</span></p>
-                        <p>完成时间：<span>2016-06-06&nbsp;06:06:06</span></p>
-                    </td>
-                    <td class="operate"></td>
-                </tr>
-                <tr class="tableInfo">
-                    <td class="apply">
-                        <p>流水号：<span>12345678901</span></p>
-                        <p>币种：<span>盛源链</span></p>
-                        <p>数量：<span>1.000</span></p>
-                        <p>金额：<span>¥10000.0000</span></p>
-                        <p>类型：<span class="sale">出售</span></p>
-                        <p>地区：<span>中国(CN)</span></p>
-                        <p>申请时间：<span>2016-06-06&nbsp;06:06:06</span></p>
-                    </td>
-                    <td class="seller">
-                        <p>用户账号：<span>ASDFGHJKLASDFGHJ</span></p>
-                        <p>用户手机号：<span>12345678900</span></p>
-                        <p>转账方式：<span>银行卡转账</span></p>
-                        <p>银行卡号：<span>12341231231</span></p>
-                        <p>银行：<span>中国工商银行浙江省XXXXXX支行</span></p>
-                        <p>银行预留电话：<span>12345678900</span></p>
-                        <p>收款人：<span>张三</span></p>
-                    </td>
-                    <td class="my"></td>
-                    <td class="state">
-                        <p>状态：<span class="finish">已完成</span></p>
-                        <p>完成时间：<span>2016-06-06&nbsp;06:06:06</span></p>
-                    </td>
-                    <td class="operate"></td>
-                </tr>
+                        <td class="seller">
+                            <p>用户账号：<span>${userDeal.userAccount}</span></p>
+                            <p>用户手机号：<span>${userDeal.userPhone}</span></p>
+                            <p>转账方式：
+                                <c:if test="${userDeal.paymentType == 1}">
+                                    <span>银行卡转账</span></p>
+                                    <c:if test="${userDeal.dealType == 2}">
+                                        <p>银行卡号：<span>${userDeal.paymentAccount}</span></p>
+                                        <p>银行：<span>${userDeal.bankName}${userDeal.bankBranch}</span></p>
+                                        <p>银行预留电话：<span>${userDeal.paymentPhone}</span></p>
+                                        <p>收款人：<span>${userDeal.paymentName}</span></p>
+                                    </c:if>
+                                </c:if>
+                                <c:if test="${userDeal.paymentType == 2}">
+                                    <span>支付宝转账</span>
+                                    <c:if test="${userDeal.dealType == 2}">
+                                        <p><img src="${userDeal.paymentImage}" class="code" /></p>
+                                    </c:if>
+                                </c:if>
+                                <c:if test="${userDeal.paymentType == 3}">
+                                    <span>微信转账</span>
+                                    <c:if test="${userDeal.dealType == 2}">
+                                        <p><img src="${userDeal.paymentImage}" class="code" /></p>
+                                    </c:if>
+                                </c:if>
+                        </td>
+                        <td class="my">
+                            <c:if test="${userDeal.paymentType == 1 and userDeal.dealType == 1}">
+                                <p>银行账号：${userDeal.paymentAccount}</p>
+                            </c:if>
+                            <c:if test="${userDeal.paymentType == 2 and userDeal.dealType == 1}">
+                                <p>支付宝账号：${userDeal.paymentAccount}</p>
+                            </c:if>
+                            <c:if test="${userDeal.paymentType == 3 and userDeal.dealType == 1}">
+                                <p>微信账号：${userDeal.paymentAccount}</p>
+                            </c:if>
+                        </td>
+                        <td class="state">
+                            <p>状态：
+                                <c:if test="${userDeal.dealStatus == 1}">
+                                    <span class="wait">待完成</span>
+                                </c:if>
+                                <c:if test="${userDeal.dealStatus == 2}">
+                                    <span class="wait">已确认</span>
+                                </c:if>
+                                <c:if test="${userDeal.dealStatus == 3}">
+                                    <span class="wait">已完成</span>
+                                </c:if>
+                            </p>
+                            <p>完成时间：<span>${userDeal.updateTime}</span></p>
+                        </td>
+                        <td class="operate">
+                            <c:if test="${userDeal.dealStatus == 1}">
+                                <input type="text" value="确认收款" class="confirm_money" onfocus="this.blur()" />
+                            </c:if>
+                        </td>
+                    </tr>
+                </c:forEach>
             </table>
 
-            <div class="changePage">
-                <p class="total">共21条</p>
-                <p class="jump">
-                    <input type="text" />
-                    <input type="text" value="跳&nbsp;转" class="jumpButton" onfocus="this.blur()" />
-                </p>
-                <p class="page">
-                    <input type="text" class="first" value="首页" onfocus="this.blur()" />
-                    <input type="text" class="upPage" value="<上一页" onfocus="this.blur()" />
-                    <span class="pageNumber"><span>1</span>/<span>3</span></span>
-                    <input type="text" class="downPage" value="下一页>" onfocus="this.blur()" />
-                    <input type="text" class="end" value="尾页" onfocus="this.blur()" />
-                </p>
-            </div>
+            <jsp:include page="/resources/page/common/paging.jsp"></jsp:include>
+
+            <form id="queryForm" action="<%=path %>/userWeb/dealerOtcDealRecord/show.htm" method="post">
+                <input type="hidden" id="queryPageNumber" name="pageNumber">
+            </form>
         </div>
     </div>
 </div>

@@ -55,7 +55,7 @@
             <%--<li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">提现记录</a></li> --%>
             <li class="menuInfo"><a id="jydpUserCoinOutRecord" href="<%=path %>/userWeb/jydpUserCoinOutRecord/show.htm">提币记录</a></li>
             <c:if test="${userSession.isDealer == 2}">
-                <li class="menuInfo"><a id="dealerOtcDealRecord" href="javascript:;" >场外交易记录-经销商</a></li>
+                <li class="menuInfo"><a id="dealerOtcDealRecord" href="javascript:toOtcDealRecord();" >场外交易记录-经销商</a></li>
             </c:if>
         </ul>
     </li>

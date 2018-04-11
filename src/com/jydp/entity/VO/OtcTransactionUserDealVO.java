@@ -11,6 +11,8 @@ import java.sql.Timestamp;
  */
 public class OtcTransactionUserDealVO {
     private String otcOrderNo; //记录号 业务类型（2）+日期（6）+随机位（10）
+    private String userAccount;//用户账号
+    private String userPhone; //用户手机号
     private double currencyNumber; //成交数量
     private double currencyTotalPrice; //成交总价
     private int typeId; //收款方式Id
@@ -47,6 +49,38 @@ public class OtcTransactionUserDealVO {
      */
     public void setOtcOrderNo(String otcOrderNo) {
         this.otcOrderNo = otcOrderNo;
+    }
+
+    /**
+     * 用户账号
+     * @return
+     */
+    public String getUserAccount() {
+        return userAccount;
+    }
+
+    /**
+     * 用户账号
+     * @param userAccount
+     */
+    public void setUserAccount(String userAccount) {
+        this.userAccount = userAccount;
+    }
+
+    /**
+     * 用户手机号
+     * @return
+     */
+    public String getUserPhone() {
+        return userPhone;
+    }
+
+    /**
+     * 用户手机号
+     * @param userPhone
+     */
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
     }
 
     /**
