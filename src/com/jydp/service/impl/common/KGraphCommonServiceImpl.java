@@ -139,7 +139,7 @@ public class KGraphCommonServiceImpl implements IKGraphCommonService {
             KGraphFiveMinutesDO fiveMinutes = kGraph.getFiveMap().get(fiveMinutesNode);
             //最近的五分钟节点无交易信息，并且无下一个节点
             if (kGraph.getFiveMap().size() == 1 && fiveMinutes != null
-                    && fiveMinutesKGraph.getTransactionTotal() <= fiveMinutes.getTransactionTotal()) {
+                    && fiveMinutes.getTransactionTotal() <= fiveMinutesKGraph.getTransactionTotal()) {
                 continue;
             }
 
