@@ -116,7 +116,7 @@
                             </td>
                             <td class="operate">
                             <c:if test="${item.dealStatus != 3}">
-                                <input type="text" value="确认收货" class="confirm_coin" onfocus="this.blur()" onclick="affirmGet(${item.otcOrderNo})"/>
+                                <input type="text" value="确认收货" class="confirm_coin" onfocus="this.blur()" onclick="affirmGet('${item.otcOrderNo}')"/>
                             </c:if>
                             </td>
                         </tr>
@@ -165,7 +165,7 @@
                             </td>
                             <td class="operate">
                                 <c:if test="${item.dealStatus != 3}">
-                                    <input type="text" value="确认收款" class="confirm_money" onfocus="this.blur()" onclick="affirmGet(${item.otcOrderNo})"/>
+                                    <input type="text" value="确认收款" class="confirm_money" onfocus="this.blur()" onclick="affirmGet('${item.otcOrderNo}')"/>
                                 </c:if>
                             </td>
                         </tr>
@@ -205,7 +205,7 @@
     </div>
 </div>
 
-<input type="hidden" value="" id="affirmGet"/>
+<input type="hidden" value="" id="affirmGetId"/>
 
 <script type="text/javascript" src="<%=path %>/resources/js/laydate.js"></script>
 <script type="text/javascript" src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
@@ -227,7 +227,7 @@
 
     //确认收货订单号存入
     function affirmGet(otcOrderNo) {
-        $("#affirmGet").val(otcOrderNo)
+        $("#affirmGetId").val(otcOrderNo);
     }
 
     //确认收货
@@ -239,7 +239,7 @@
             sureGetBoo = true;
         }
 
-        var otcOrderNo = $("#affirmGet").val();
+        var otcOrderNo = $("#affirmGetId").val();
         $.ajax({
             url: '<%=path %>' + "/userWeb/userDealRecord/userConfirm.htm",
             data: {

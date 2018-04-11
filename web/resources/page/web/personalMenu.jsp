@@ -47,6 +47,7 @@
             <img src="<%=path %>/resources/image/web/up.png" class="menu_up" />
         </p>
 
+
         <ul class="levelTwo">
             <%--<li class="menuInfo"><a id="accountRecord" href="<%=path %>/userWeb/accountRecord/show.htm">账户记录</a></li>--%>
             <li class="menuInfo"><a id="transactionPendOrderController" href="<%=path%>/userWeb/transactionPendOrderController/show.htm">委托记录</a></li>
