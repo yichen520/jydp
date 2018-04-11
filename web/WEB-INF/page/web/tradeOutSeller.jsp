@@ -36,7 +36,7 @@
                     从&nbsp;<input placeholder="请选择起始时间" name="startAddTime" class="askTime" onfocus="this.blur()" value="${queryParams.startAddTime}" />
                     到&nbsp;<input placeholder="请选择结束时间" name="endAddTime" class="askTime" onfocus="this.blur()" value="${queryParams.endAddTime}"/>
                 </p>
-                <p class="condition">用户账号：<input type="text" id="userAccount" class="askInput" maxlength="16" value="${queryParams.userAccount}"
+                <p class="condition">用户账号：<input type="text" name="userAccount" class="askInput" maxlength="16" value="${queryParams.userAccount}"
                                                  onkeyup="matchUtil(this, 'ENumber')" onblur="matchUtil(this, 'ENumber')"/></p>
                 <p class="condition">币种：
                     <select class="askSelect" id="currencyId" name="currencyId">
