@@ -16,6 +16,8 @@ public class OtcTransactionUserDealVO {
     private int typeId; //收款方式Id
     private String currencyName; //货币名称
     private String dealerName;  //经销商名称
+    private String phoneNumber;  //经销商电话
+    private String area;  //地区
     private int paymentType; //收款方式标识：1：银行卡，2：支付宝，3：微信
     private String paymentAccount; //收款账号
     private String bankName; //收款银行
@@ -125,6 +127,38 @@ public class OtcTransactionUserDealVO {
      */
     public void setDealerName(String dealerName) {
         this.dealerName = dealerName;
+    }
+
+    /**
+     * 经销商电话
+     * @return
+     */
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    /**
+     * 经销商电话
+     * @param phoneNumber
+     */
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    /**
+     * 地区
+     * @return
+     */
+    public String getArea() {
+        return area;
+    }
+
+    /**
+     * 地区
+     * @param area
+     */
+    public void setArea(String area) {
+        this.area = area;
     }
 
     /**
@@ -240,7 +274,7 @@ public class OtcTransactionUserDealVO {
     }
 
     /**
-     * 二维码地址
+     * 二维码地址（绝对路径）
      * @return
      */
     public String getPaymentImage() {
@@ -248,7 +282,7 @@ public class OtcTransactionUserDealVO {
     }
 
     /**
-     * 二维码地址
+     * 二维码地址（绝对路径）
      * @param paymentImage
      */
     public void setPaymentImage(String paymentImage) {
@@ -256,7 +290,7 @@ public class OtcTransactionUserDealVO {
     }
 
     /**
-     * 二维码地址（绝对路径）
+     * 二维码地址
      *
      * @return the image url
      */
@@ -265,7 +299,7 @@ public class OtcTransactionUserDealVO {
     }
 
     /**
-     * 二维码地址（绝对路径）
+     * 二维码地址
      *
      * @param imageUrl the image url
      */
