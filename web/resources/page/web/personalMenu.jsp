@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%
     String path = request.getContextPath();
@@ -53,6 +54,9 @@
             <%--<li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">充值记录</a></li>--%>
             <%--<li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">提现记录</a></li> --%>
             <li class="menuInfo"><a id="jydpUserCoinOutRecord" href="<%=path %>/userWeb/jydpUserCoinOutRecord/show.htm">提币记录</a></li>
+            <c:if test="${userSession.isDealer == 2}">
+                <li class="menuInfo"><a id="dealerOtcDealRecord" href="javascript:;" >场外交易记录-经销商</a></li>
+            </c:if>
         </ul>
     </li>
 
@@ -71,7 +75,8 @@
         </ul>
     </li>
 </ul>
-
+<form id="otcTradeCenterMenuForm" action="<%=path %>/userWeb/dealerOtcDealRecord/show.html" method="post">
+</form>
 <script type="text/javascript">
     $(function() {
         $(".menuTitle").click(function () {
@@ -114,6 +119,11 @@
         }
     }
     var showPersonalMenu = setInterval(showPersonalMenu, 20);
+
+    //跳转至经销商成交记录
+    function toOtcDealRecord() {
+        $('#otcTradeCenterMenuForm').submit();
+    }
 
     function disableTip() {
         openTips("该功能暂未开放");

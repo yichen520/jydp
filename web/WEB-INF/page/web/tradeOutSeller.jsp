@@ -1,13 +1,21 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@include file="/resources/page/common/path.jsp"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <link rel="icon" href="images/icon.ico" type="image/x-ico" />
-
-    <link rel="stylesheet" type="text/css" href="css/tradeOut_record.css" />
-    <link rel="stylesheet" type="text/css" href="css/public.css" />
-    <link rel="stylesheet" type="text/css" href="css/simpleTips.css" />
-
+    <link rel="icon" href="<%=path %>/resources/image/web/icon.ico" type="image/x-ico" />
+    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/tradeOutSeller.css" />
+    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/public.css" />
+    <link rel="stylesheet" type="text/css" href="<%=path %>/resources/css/web/simpleTips.css" />
+    <script type="text/javascript" src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" src="<%=path %>/resources/js/loadPageWeb.js"></script>
+    <script type="text/javascript" src="<%=path %>/resources/js/simpleTips.js"></script>
+    <script type="text/javascript" src="<%=path %>/resources/js/laydate.js"></script>
     <title>场外交易记录-经销商</title>
 </head>
 <body>
@@ -71,6 +79,18 @@
                     <td class="operate">操作</td>
                 </tr>
                 <tr class="tableInfo">
+                    <c:forEach items="${otcTransactionUserDealList}" var="userDeal">
+                        <td class="apply">
+                            <p>流水号：<span>${userDeal.otcOrderNo}</span></p>
+                            <p>币种：<span>${userDeal.currencyName}</span></p>
+                            <p>数量：<span>${userDeal.currencyNumber}</span></p>
+                            <p>金额：<span>¥${userDeal.currencyTotalPrice}</span></p>
+                            <p>类型：<span class="buy">${userDeal.}</span></p>
+                            <p>地区：<span>${userDeal.}</span></p>
+                            <p>申请时间：<span>${userDeal.}</span></p>
+                        </td>
+                    </c:forEach>
+
                     <td class="apply">
                         <p>流水号：<span>12345678901</span></p>
                         <p>币种：<span>盛源链</span></p>
@@ -219,10 +239,7 @@
     </div>
 </div>
 
-<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
-<script type="text/javascript" src="js/public.js"></script>
-<script type="text/javascript" src="js/simpleTips.js"></script>
-<script type="text/javascript" src="js/laydate.js"></script>
+
 
 <script type="text/javascript">
     lay('.askTime').each(function(){

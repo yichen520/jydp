@@ -131,10 +131,12 @@ public class DealerOtcDealRecordController {
         }
     }
 
-    @RequestMapping("/show")
+    @RequestMapping(value = "/show.html", method = RequestMethod.POST)
     public String show(HttpServletRequest request){
         list(request);
-        return "";
+        request.setAttribute("code", 1);
+        request.setAttribute("message", "查询成功!");
+        return "page/web/tradeOutSeller";
     }
 
     /** 查询记录 **/
