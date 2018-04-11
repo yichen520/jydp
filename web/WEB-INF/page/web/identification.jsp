@@ -251,10 +251,10 @@
         userName = userName.replace(regEx, ' ');
         //证件类型是身份证
         if (userCertType == 1) {
-            var reg = /[^\u4e00-\u9fa5]/.test(userName);
-            if(!userName || reg){
+            var reg = /^[\u4e00-\u9fa5]+(·[\u4e00-\u9fa5]+)*$/.test(userName);
+            if (!userName || !reg) {
                 addBoo = false;
-                return openTips("身份证的姓名必须是全中文");
+                return openTips("请输入正确的身份证姓名！");
             }
             if (!IdentityCodeValid(userCertNo)) {
                 addBoo = false;
