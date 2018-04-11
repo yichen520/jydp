@@ -113,7 +113,7 @@
             <p class="popInput">
                 <label class="popName">支付方式<span class="star">*</span>：</label>
                 <select class="popSelected" id="paymentType" name="paymentType">
-                    <option disabled selected>选择支付方式</option>
+                    <option value="0" disabled selected>选择支付方式</option>
                     <option value="1">银行卡转账</option>
                     <option value="2">支付宝转账</option>
                     <option value="3">微信转账</option>
@@ -488,9 +488,6 @@
     </div>
 </div>
 
-
-
-
 <script type="text/javascript">
     var popObj;
     $(function(){
@@ -524,6 +521,28 @@
             $("#sellNumber").val("");
             $("#buySum").html("¥0");
             $("#sellSum").html("¥0");
+            $("#sellNumber").val("");
+            $("#sellSum").html("¥0");
+            $("#sellBankCard").val("");
+            $("#sellBankName").val("");
+            $("#sellBankBranch").val("");
+            $("#sellPaymentName").val("");
+            $("#sellPaymentPhone").val("");
+            $("#sellAliAccount").val("");
+            $("#changead_t1").val("");
+            $("#sellWxAccount").val("");
+            $("#changead_t2").val("");
+
+            $("#paymentType option").each(function(){
+                if($(this).val() == 0){
+                    $(this).attr('selected',true);
+                }
+            });
+            $("#sellPayType option").each(function(){
+                if($(this).val()== 0){
+                    $(this).attr('selected',true);
+                }
+            });
 
         });
         $(".yes").click(function(){
