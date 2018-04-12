@@ -53,7 +53,7 @@
                             <option value="0">全部</option>
                             <option value="1">待完成</option>
                             <option value="2">待确认</option>
-                            <option value="3">已完成</option>
+                            <option value="4">已完成</option>
                         </select>
                     </p>
                     <input type="hidden" id="queryPageNumber" name="pageNumber" value="${pageNumber}">
@@ -103,20 +103,21 @@
                             <td class="my"></td>
                             <td class="state">
                             <c:if test="${item.dealStatus == 1}">
+                                <p>状态：<span class="wait">待完成</span></p>
+                                <p>完成时间：<span></span></p>
+
+                            </c:if>
+                            <c:if test="${item.dealStatus == 2 || item.dealStatus == 3}">
                                 <p>状态：<span class="wait_confirm">待确认</span></p>
                                 <p>完成时间：<span></span></p>
                             </c:if>
-                            <c:if test="${item.dealStatus == 2}">
-                                <p>状态：<span class="wait">待完成</span></p>
-                                <p>完成时间：<span></span></p>
-                            </c:if>
-                            <c:if test="${item.dealStatus == 3}">
+                            <c:if test="${item.dealStatus == 4}">
                                 <p>状态：<span class="finish">已完成</span></p>
                                 <p>完成时间：<span><fmt:formatDate type="time" value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm:ss" /></span></p>
                             </c:if>
                             </td>
                             <td class="operate">
-                            <c:if test="${item.dealStatus != 3}">
+                            <c:if test="${item.dealStatus == 1 || item.dealStatus == 3}">
                                 <input type="text" value="确认收货" class="confirm_coin" onfocus="this.blur()" onclick="affirmGet('${item.otcOrderNo}')"/>
                             </c:if>
                             </td>
@@ -152,20 +153,21 @@
                             </td>
                             <td class="state">
                                 <c:if test="${item.dealStatus == 1}">
-                                    <p>状态：<span class="wait_confirm">待确认</span></p>
-                                    <p>完成时间：<span></span></p>
-                                </c:if>
-                                <c:if test="${item.dealStatus == 2}">
+
                                     <p>状态：<span class="wait">待完成</span></p>
                                     <p>完成时间：<span></span></p>
                                 </c:if>
-                                <c:if test="${item.dealStatus == 3}">
+                                <c:if test="${item.dealStatus == 2 || item.dealStatus == 3}">
+                                    <p>状态：<span class="wait_confirm">待确认</span></p>
+                                    <p>完成时间：<span></span></p>
+                                </c:if>
+                                <c:if test="${item.dealStatus == 4}">
                                     <p>状态：<span class="finish">已完成</span></p>
                                     <p>完成时间：<span><fmt:formatDate type="time" value="${item.updateTime}" pattern="yyyy-MM-dd HH:mm:ss" /></span></p>
                                 </c:if>
                             </td>
                             <td class="operate">
-                                <c:if test="${item.dealStatus != 3}">
+                                <c:if test="${item.dealStatus == 1 || item.dealStatus == 3}">
                                     <input type="text" value="确认收款" class="confirm_money" onfocus="this.blur()" onclick="affirmGet('${item.otcOrderNo}')"/>
                                 </c:if>
                             </td>
