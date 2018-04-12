@@ -198,6 +198,13 @@ public class UserDealRecordController {
             return response;
         }
 
+        boolean fq =UserWebInterceptor.handleFrequent(request);
+        if(fq){
+            response.setCode(2);
+            response.setMessage("操作过于频繁");
+            return response;
+        }
+
         String otcOrderNo = StringUtil.stringNullHandle(request.getParameter("otcOrderNo"));
         if (!StringUtil.isNotNull(otcOrderNo)){
             response.setCode(2);
