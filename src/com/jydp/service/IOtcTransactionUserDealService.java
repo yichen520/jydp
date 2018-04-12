@@ -74,7 +74,7 @@ public interface IOtcTransactionUserDealService {
                                                                           Timestamp endAddTime, int pageNumber, int pageSize);
 
     /**
-     * 用户确认操作
+     * 用户确认出售操作
      * @param otcTransactionUserDeal 订单信息
      * @param userId 用户id
      * @return 确认成功：返回true，确认失败：返回false
