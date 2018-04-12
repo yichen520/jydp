@@ -894,7 +894,7 @@
                 openTips("最小限额要小于挂单比例");
                 return;
             }
-            if(parseInt(maxNumber) <= parseInt(pendingRatio)){
+            if(parseInt(maxNumber) < parseInt(pendingRatio)){
                 openTips("挂单比例要小于最大限额");
                 return;
             }
@@ -1137,7 +1137,11 @@
                 deleteOrderBoo = false;
                 var code = resultData.code;
                 var message = resultData.message;
-                if (code != 1 && message != "") {
+                if (code == -1) {
+                    openTipsLoad(message);
+                    return;
+                }else if (code != 1 && message != "") {
+                    deleteOrderBoo = false;
                     openTips(message);
                     return;
                 }else{
@@ -1332,8 +1336,11 @@
                 addOrderBoo =false;
                 var code = resultData.code;
                 var message = resultData.message;
-                if (code != 1 && message != "") {
-                    deleteOrderBoo = false;
+                if (code == -1) {
+                    openTipsLoad(message);
+                    return;
+                }else if (code != 1 && message != "") {
+                    addOrderBoo = false;
                     openTips(message);
                     return;
                 }else{
@@ -1497,7 +1504,20 @@
             }
         }
     }
-
+    function openTipsLoad(showText)
+    {
+        var bgHeight = $(document).height()
+        $(".tipsMask").remove();
+        var str = "<div class='tipsMask'><div class='tips_content'><div class='empty_pop'><p class='tipsMaskText'></p>"+
+            "<div class='Button'><input type='text' class='tipsYes' value='确&nbsp;&nbsp;定' onfocus='this.blur()'/>"+
+            "</div></div></div></div>";
+        $("body").append(str);
+        $(".tipsMaskText").html("<span>" + showText + "</span>");
+        $(".tipsMask").css("display","block");
+        $(".tipsYes").click(function(){
+            location.reload(true)
+        })
+    }
 </script>
 
 </body>
