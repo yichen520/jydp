@@ -628,11 +628,11 @@
             return;
         }
 
-        $("#buyMin").val(min);
-        $("#buyMax").val(max);
+        $("#buyMin").val(parseFloat(min));
+        $("#buyMax").val(parseFloat(max));
         $("#pendingRatio").val(pendingRatio);
         $("#orderNo").val(otcPendingOrderNo);
-        var ratio = "1:" + pendingRatio;
+        var ratio = "1:" + parseFloat(pendingRatio);
         $("#ratio").html(ratio);
 
         $.ajax({
@@ -841,12 +841,12 @@
             return;
         }
 
-        $("#sellMin").val(parseInt(min));
-        $("#sellMax").val(parseInt(max));
+        $("#sellMin").val(parseFloat(min));
+        $("#sellMax").val(parseFloat(max));
         $("#sellDealerName").html(dealerName);
         $("#sellRatio").val(pendingRatio);
         $("#sellOrderNo").val(otcPendingOrderNo);
-        var ratio = "1:" + pendingRatio;
+        var ratio = "1:" + parseFloat(pendingRatio);
         $("#ratioSell").html(ratio);
         $(".mask").fadeIn();
         $(".sell_pop").fadeIn();
@@ -1084,6 +1084,9 @@
         var f = 0;
 
         var buyNumber = $("#buyNumber").val();
+        if(buyNumber == null || buyNumber == ""){
+            $("#buySum").html("¥0");
+        }
         var pendingRatio = $("#pendingRatio").val();
 
         //买入
@@ -1098,6 +1101,9 @@
         }
 
         var sellNumber = $("#sellNumber").val();
+        if(sellNumber == null || sellNumber == ""){
+            $("#sellSum").html("¥0");
+        }
         var sellRatio = $("#sellRatio").val();
 
         //卖出
