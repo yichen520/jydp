@@ -542,16 +542,15 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
         //交易记录状态修改
         if(otcTransactionUserDeal.getDealStatus() == 1){
             executeSuccess = otcTransactionUserDealDao.updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),1,3, updateTime);
-            if(!executeSuccess){
-                response.setCode(2);
-                response.setMessage("确认收货失败");
+            if(executeSuccess){
+                response.setCode(1);
+                response.setMessage("确认收货成功");
                 return response;
             }
-
-            response.setCode(1);
-            response.setMessage("确认收货成功");
-            return response;
-        } else if(otcTransactionUserDeal.getDealStatus() == 2){
+        }
+        //查询交易记录(防止用户并发操作) 状态由1--> 3更新失败，原因可能是用户进行了操作
+        otcTransactionUserDeal = otcTransactionUserDealService.getOtcTransactionUsealByOrderNo(otcOrderNo);
+        if(otcTransactionUserDeal.getDealStatus() == 2){
             executeSuccess = otcTransactionUserDealDao.updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),2,4, updateTime);
             if(!executeSuccess){
                 response.setCode(2);
@@ -645,20 +644,19 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
         //交易记录状态修改
         if(otcTransactionUserDeal.getDealStatus() == 1){
             executeSuccess = otcTransactionUserDealDao.updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),1,3, updateTime);
-            if(!executeSuccess){
-                response.setCode(2);
-                response.setMessage("确认收款失败");
+            if(executeSuccess){
+                response.setCode(1);
+                response.setMessage("确认收款成功");
                 return response;
             }
-
-            response.setCode(1);
-            response.setMessage("确认收款成功");
-            return response;
-        } else if(otcTransactionUserDeal.getDealStatus() == 2){
+        }
+        //查询交易记录(防止用户并发操作) 状态由1--> 3更新失败，原因可能是用户进行了操作
+        otcTransactionUserDeal = otcTransactionUserDealService.getOtcTransactionUsealByOrderNo(otcOrderNo);
+        if(otcTransactionUserDeal.getDealStatus() == 2){
             executeSuccess = otcTransactionUserDealDao.updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),2,4, updateTime);
             if(!executeSuccess){
                 response.setCode(2);
-                response.setMessage("确认收款失败");
+                response.setMessage("确认收款失败,请重新尝试");
                 return response;
             }
         }
