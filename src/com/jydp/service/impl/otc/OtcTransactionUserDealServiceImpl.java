@@ -443,8 +443,10 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
 
         Timestamp currentTime = DateUtil.getCurrentTime();
         //交易记录状态修改
-        executeSuccess = updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),1,3, currentTime);
-        if(!executeSuccess){
+        if(otcTransactionUserDeal.getDealStatus() == 1){
+            executeSuccess = updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),1,2, currentTime);
+            return executeSuccess;
+        } else {
             executeSuccess = updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),2,3, currentTime);
         }
 

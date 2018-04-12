@@ -33,7 +33,8 @@
                         从&nbsp;<input placeholder="请选择起始时间" class="askTime" onfocus="this.blur()" value="${startAddTime }" name="startAddTime" id="startAddTime"/>
                         到&nbsp;<input placeholder="请选择结束时间" class="askTime" onfocus="this.blur()" value="${endAddTime }" name="endAddTime" id="endAddTime" />
                     </p>
-                    <p class="condition">经销商名称：<input type="text" class="askInput" name="dealerName" id="dealerName" value="${dealerName }"  /></p>
+                    <p class="condition">经销商名称：<input type="text" class="askInput" name="dealerName" id="dealerName" value="${dealerName }" maxlength="32"
+                                                      onkeyup="value=value.replace(/[^a-zA-Z0-9\_\u4e00-\u9fa5]/,'')" onblur="value=value.replace(/[^a-zA-Z0-9\_\u4e00-\u9fa5]/,'')"/></p>
                     <p class="condition">币种：
                         <select class="askSelect" name="currencyId" id="currencyId" >
                             <option value="0" >全部</option>
@@ -55,7 +56,7 @@
                             <option value="3">已完成</option>
                         </select>
                     </p>
-
+                    <input type="hidden" id="queryPageNumber" name="pageNumber" value="${pageNumber}">
                     <input type="text" value="查&nbsp;询" class="ask" onfocus="this.blur()" onclick="queryForm()" />
                 </form>
             </div>
