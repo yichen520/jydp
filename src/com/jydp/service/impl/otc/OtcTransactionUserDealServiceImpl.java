@@ -456,7 +456,7 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
             response.setMessage("非法访问");
             return response;
         }
-        if(otcTransactionUserDeal.getDealStatus() == 3){
+        if(otcTransactionUserDeal.getDealStatus() == 4){
             response.setCode(2);
             response.setMessage("此订单已完成");
             return response;
