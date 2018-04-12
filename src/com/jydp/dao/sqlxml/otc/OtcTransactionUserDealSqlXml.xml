@@ -108,7 +108,7 @@
           ON OTUD.otcPendingOrderNo = OTPO.otcPendingOrderNo
         WHERE OTPO.userId = #{userId}
         <if test="userAccount != null and userAccount != ''">
-            AND OTUD.userAccount = #{userAccount}
+            AND OTUD.userAccount LIKE CONCAT('%', #{userAccount}, '%')
         </if>
         <if test="paymentType != null and paymentType != 0">
             AND UPT.paymentType = #{paymentType}
@@ -145,7 +145,7 @@
             ON  OTUD.userId = UTAB.userId
         WHERE OTPO.userId = #{userId}
         <if test="userAccount != null and userAccount != ''">
-            AND OTUD.userAccount = #{userAccount}
+            AND OTUD.userAccount LIKE CONCAT('%', #{userAccount}, '%')
         </if>
         <if test="paymentType != null and paymentType != 0">
             AND UPT.paymentType = #{paymentType}
