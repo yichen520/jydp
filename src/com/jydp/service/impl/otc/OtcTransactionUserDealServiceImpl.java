@@ -691,9 +691,9 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
         //增加用户可用XT
         if (currencyId == UserBalanceConfig.DOLLAR_ID) {
 
-            //减少经销商锁定资产
+            //减少用户锁定资产
             if (executeSuccess) {
-                executeSuccess = userService.updateReduceUserBalanceLock(userId,currencyNumber);
+                executeSuccess = userService.updateReduceUserBalanceLock(transactionUserId,currencyNumber);
             }
 
             //增加用户可用资产
@@ -702,9 +702,9 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
             }
         } else {
 
-            //减少经销商冻结币数量
+            //减少用户冻结币数量
             if (executeSuccess) {
-                executeSuccess = userCurrencyNumService.reduceCurrencyNumberLock(userId,currencyId,currencyNumber);
+                executeSuccess = userCurrencyNumService.reduceCurrencyNumberLock(transactionUserId,currencyId,currencyNumber);
             }
 
             //增加用户货币数量
