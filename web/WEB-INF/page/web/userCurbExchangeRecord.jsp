@@ -76,7 +76,7 @@
                                 <p>流水号：<span>${item.otcOrderNo}</span></p>
                                 <p>币种：<span>${item.currencyName}</span></p>
                                 <p>数量：<span><fmt:formatNumber type="number" value="${item.currencyNumber }" maxFractionDigits="4"/></span></p>
-                                <p>金额：<span>¥<fmt:formatNumber type="number" value="${item.currencyTotalPrice }" maxFractionDigits="2"/></span></p>
+                                <p>金额：<span>¥<fmt:formatNumber type="number" value="${item.currencyTotalPrice }" maxFractionDigits="6"/></span></p>
                                 <p>类型：<span class="buy">购买</span></p>
                                 <p>地区：<span>${item.area }</span></p>
                                 <p>申请时间：<span><fmt:formatDate type="time" value="${item.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></span></p>
@@ -129,7 +129,7 @@
                                 <p>流水号：<span>${item.otcOrderNo}</span></p>
                                 <p>币种：<span>${item.currencyName}</span></p>
                                 <p>数量：<span><fmt:formatNumber type="number" value="${item.currencyNumber }" maxFractionDigits="4"/></span></p>
-                                <p>金额：<span>¥<fmt:formatNumber type="number" value="${item.currencyTotalPrice }" maxFractionDigits="2"/></span></p>
+                                <p>金额：<span>¥<fmt:formatNumber type="number" value="${item.currencyTotalPrice }" maxFractionDigits="6"/></span></p>
                                 <p>类型：<span class="sale">出售</span></p>
                                 <p>地区：<span>${item.area }</span></p>
                                 <p>申请时间：<span><fmt:formatDate type="time" value="${item.addTime}" pattern="yyyy-MM-dd HH:mm:ss" /></span></p>

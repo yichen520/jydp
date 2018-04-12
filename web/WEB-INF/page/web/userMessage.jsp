@@ -165,13 +165,13 @@
             </p>
             <p class="popInput">
                 <label class="popName">比例<span class="star">*</span>：</label>
-                <input type="text" id="pendingRatio" maxlength="10"  onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" name="pendingRatio" class="entry" placeholder="交易比例" />
+                <input type="text" id="pendingRatio" maxlength="9"  onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" name="pendingRatio" class="entry" placeholder="交易比例" />
                 <span class="remind">交易比例为：XT:兑换的货币单位；若比例为1:100，则填100。</span>
             </p>
             <p class="popInput">
                 <label class="popName">交易限额<span class="star">*</span>：</label>
-                <input type="text"  id="minNumber" maxlength="10"  onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)"  name="minNumber" class="lowLimit" placeholder="最低限额,单位:CNY" />&nbsp;～
-                <input type="text"  id="maxNumber" maxlength="10" onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)"  name="maxNumber" class="highLimit" placeholder="最高限额,单位:CNY" />
+                <input type="text"  id="minNumber" maxlength="9"  onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)"  name="minNumber" class="lowLimit" placeholder="最低限额,单位:CNY" />&nbsp;～
+                <input type="text"  id="maxNumber" maxlength="9" onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)"  name="maxNumber" class="highLimit" placeholder="最高限额,单位:CNY" />
             </p>
             <p class="choose">
                 <label class="popName">支付方式<span class="star">*</span>：</label>
@@ -867,37 +867,37 @@
                 return;
             }
             if(minNumber == ""){
-                openTips("请输入最小限额");
+                openTips("请输入最低限额");
                 return;
             }
             if(minNumber <= 0){
-                openTips("最小限额要大于0");
+                openTips("最低限额要大于0");
                 return;
             }
             if(maxNumber == ""){
-                openTips("请输入最大限额");
+                openTips("请输入最高限额");
                 return;
             }
             if(maxNumber <= 0){
-                openTips("最大限额要大于0");
+                openTips("最高限额要大于0");
                 return;
             }
-            if(parseInt(maxNumber) > parseInt(1000000)){
-                openTips("最大限额不能大于一百万");
+            if(Number(pendingRatio) > Number(999999.99)){
+                openTips("挂单比例要小于一百万");
                 return;
             }
-            if(parseInt(maxNumber) <= parseInt(minNumber)){
-                openTips("最大限额要大于最小限额");
+            if(Number(maxNumber) > Number(999999.99)){
+                openTips("最高限额要小于一百万");
                 return;
             }
-         /*   if(parseInt(minNumber) > parseInt(pendingRatio)){
-                openTips("最小限额要小于挂单比例");
+            if(Number(maxNumber) <= Number(minNumber)){
+                openTips("最高限额要大于最低限额");
                 return;
             }
-            if(parseInt(maxNumber) < parseInt(pendingRatio)){
-                openTips("挂单比例要小于最大限额");
+            if(accMul(accMul(pendingRatio,0.0001),10000) > accMul(maxNumber,10000)){
+                openTips("最高限额过小");
                 return;
-            }*/
+            }
             if(orderType == 2){
              addOrder();
             }else{
@@ -1218,27 +1218,27 @@
         }
         if(minNumber == ""){
             addOrderBoo =false;
-            openTips("请输入最小限额");
+            openTips("请输入最低限额");
             return;
         }
-        if(minNumber <= 0){
+        if(minNumber < 0){
             addOrderBoo =false;
-            openTips("最小限额要大于0");
+            openTips("最低限额不能小于0");
             return;
         }
         if(maxNumber == ""){
             addOrderBoo =false;
-            openTips("请输入最大限额");
+            openTips("请输入最高限额");
             return;
         }
         if(maxNumber <= 0){
             addOrderBoo =false;
-            openTips("最大限额要大于0");
+            openTips("最高限额要大于0");
             return;
         }
-        if(parseInt(maxNumber) <= parseInt(minNumber)){
+        if(Number(maxNumber) <= Number(minNumber)){
             addOrderBoo =false;
-            openTips("最大限额要大于最小限额");
+            openTips("最高限额要大于最低限额");
             return;
         }
         //若为购买类型 需验证付款方式
@@ -1517,6 +1517,13 @@
         $(".tipsYes").click(function(){
             location.reload(true)
         })
+    }
+
+    function accMul(arg1,arg2){
+        var m=0,s1=arg1.toString(),s2=arg2.toString();
+        try{m+=s1.split(".")[1].length}catch(e){}
+        try{m+=s2.split(".")[1].length}catch(e){}
+        return Number(s1.replace(".",""))*Number(s2.replace(".",""))/Math.pow(10,m)
     }
 </script>
 
