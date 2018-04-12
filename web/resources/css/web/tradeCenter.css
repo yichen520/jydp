@@ -79,11 +79,10 @@ body{
 }
 .wrapper{
     width:765px;
-    height:370px;
+    height:415px;
     margin:0 auto
 }
 .wrapper ul{
-    display: none;
     padding: 10px;
     width: 745px;
     height: 25px;
