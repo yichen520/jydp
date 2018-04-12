@@ -165,7 +165,7 @@
             </p>
             <p class="popInput">
                 <label class="popName">比例<span class="star">*</span>：</label>
-                <input type="text" id="pendingRatio" maxlength="9"  onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" name="pendingRatio" class="entry" placeholder="交易比例" />
+                <input type="text" id="pendingRatio" maxlength="4"  onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)" name="pendingRatio" class="entry" placeholder="交易比例" />
                 <span class="remind">交易比例为：XT:兑换的货币单位；若比例为1:100，则填100。</span>
             </p>
             <p class="popInput">
@@ -225,7 +225,7 @@
 
                     <p class="popInput">
                         <label class="popName">支付宝账号<span class="star">*</span>：</label>
-                        <input type="text" id="alipayAccount" maxlength="30" name="alipayAccount" class="entry" placeholder="您的支付宝账号" />
+                        <input type="text" id="alipayAccount" onkeyup="value=value.replace(/[^a-zA-Z0-9\.@_-]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9\.@_-]/g,'')" maxlength="30" name="alipayAccount" class="entry" placeholder="您的支付宝账号" />
                     </p>
                     <p class="popInput">
                         <label class="popName">收款码<span class="star">*</span>：</label>
@@ -242,7 +242,7 @@
 
                     <p class="popInput">
                         <label class="popName">微信账号<span class="star">*</span>：</label>
-                        <input type="text" id="wechatAccount" maxlength="30" name="wechatAccount" class="entry" placeholder="您的微信账号" />
+                        <input type="text" id="wechatAccount" onkeyup="value=value.replace(/[^a-zA-Z0-9\_-]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9\_-]/g,'')" maxlength="30" name="wechatAccount" class="entry" placeholder="您的微信账号" />
                     </p>
                     <p class="popInput">
                         <label class="popName">收款码<span class="star">*</span>：</label>

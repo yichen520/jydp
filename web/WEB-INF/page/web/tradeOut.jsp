@@ -70,7 +70,7 @@
                     </c:if>
                     <td class="limit"><span><fmt:formatNumber type="number" value="${pendOrder.minNumber }" groupingUsed="FALSE" maxFractionDigits="2"/>
                             </span>~<span><fmt:formatNumber type="number" value="${pendOrder.maxNumber }" groupingUsed="FALSE" maxFractionDigits="2"/></span>CNY</td>
-                    <td class="proportion">1:<fmt:formatNumber type="number" value="${pendOrder.pendingRatio }" groupingUsed="FALSE" maxFractionDigits="4"/></td>
+                    <td class="proportion">1:<fmt:formatNumber type="number" value="${pendOrder.pendingRatio }" groupingUsed="FALSE" maxFractionDigits="2"/></td>
                     <td class="operate">
                         <c:if test="${pendOrder.orderType == 1}">
                             <input type="text" value="我要购买" class="tradeBuy" onfocus="this.blur()"
@@ -356,7 +356,8 @@
                 <div class="ali">
                     <p class="popInput">
                         <label class="popName">支付宝账号<span class="star">*</span>：</label>
-                        <input type="text" class="entry" placeholder="您的支付宝账号" id="sellAliAccount" maxlength="30"/>
+                        <input type="text" class="entry" placeholder="您的支付宝账号" id="sellAliAccount" maxlength="30"
+                               onkeyup="value=value.replace(/[^a-zA-Z0-9\.@_-]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9\.@_-]/g,'')"/>
                     </p>
                     <p class="popInput">
                         <label class="popName">收款码<span class="star">*</span>：</label>
@@ -372,7 +373,7 @@
                     <p class="popInput">
                         <label class="popName">微信账号<span class="star">*</span>：</label>
                         <input type="text" class="entry" placeholder="您的微信账号" id="sellWxAccount" maxlength="30"
-                               onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
+                               onkeyup="value=value.replace(/[^a-zA-Z0-9\_-]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9\_-]/g,'')"/>
                     </p>
                     <p class="popInput">
                         <label class="popName">收款码<span class="star">*</span>：</label>
@@ -1091,10 +1092,13 @@
 
         //买入
         if (buyNumber != null && buyNumber != "" && pendingRatio != null && pendingRatio != "") {
+            buyNumber = buyNumber * 10;
+            pendingRatio = pendingRatio * 10;
             buyNumber = buyNumber.toString();
             try{m+=buyNumber.split(".")[1].length}catch(e){}
             pendingRatio = pendingRatio.toString();
             try{m+=pendingRatio.split(".")[1].length}catch(e){}
+            m += 2;
             var number = parseFloat((Number(buyNumber.replace(".",""))*Number(pendingRatio.replace(".",""))/Math.pow(10,m)).toFixed(8));
             number = mulMaxNumber(number);
             $("#buySum").html("¥" + number);
@@ -1108,10 +1112,13 @@
 
         //卖出
         if (sellNumber != null && sellNumber != "" && sellRatio != null && sellRatio != "") {
+            sellNumber = sellNumber * 10;
+            sellRatio = sellRatio * 10;
             sellNumber = sellNumber.toString();
             try{f+=sellNumber.split(".")[1].length}catch(e){}
             sellRatio = sellRatio.toString();
             try{f+=sellRatio.split(".")[1].length}catch(e){}
+            f += 2;
             var number = parseFloat((Number(sellNumber.replace(".",""))*Number(sellRatio.replace(".",""))/Math.pow(10,f)).toFixed(8));
             number = mulMaxNumber(number);
             $("#sellSum").html("¥" + number);
