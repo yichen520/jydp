@@ -890,14 +890,14 @@
                 openTips("最大限额要大于最小限额");
                 return;
             }
-            if(parseInt(minNumber) > parseInt(pendingRatio)){
+         /*   if(parseInt(minNumber) > parseInt(pendingRatio)){
                 openTips("最小限额要小于挂单比例");
                 return;
             }
             if(parseInt(maxNumber) < parseInt(pendingRatio)){
                 openTips("挂单比例要小于最大限额");
                 return;
-            }
+            }*/
             if(orderType == 2){
              addOrder();
             }else{

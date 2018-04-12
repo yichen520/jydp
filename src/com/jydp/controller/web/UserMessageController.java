@@ -587,7 +587,7 @@ public class UserMessageController {
             resultJson.setMessage("最大限额要大于最小限额");
             return resultJson;
         }
-        if(otcOrderVO.getMinNumber() > otcOrderVO.getPendingRatio()){
+      /*  if(otcOrderVO.getMinNumber() > otcOrderVO.getPendingRatio()){
             resultJson.setCode(3);
             resultJson.setMessage("最小限额要小于挂单比例");
             return resultJson;
@@ -596,7 +596,7 @@ public class UserMessageController {
             resultJson.setCode(3);
             resultJson.setMessage("最大限额要大于挂单比例");
             return resultJson;
-        }
+        }*/
         if (otcOrderVO.getOrderType() == 1) {//出售单需要判断 回购单不需要判断支付方式
             // 判断是否选择付款方式
             if (!StringUtil.isNotNull(otcOrderVO.getBankAccount()) && !StringUtil.isNotNull(otcOrderVO.getAlipayAccount()) && !StringUtil.isNotNull(otcOrderVO.getWechatAccount())) {

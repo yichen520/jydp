@@ -392,25 +392,18 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
         //交易记录状态修改
         if(otcTransactionUserDeal.getDealStatus() == 1){
             executeSuccess = updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),1,2, currentTime);
-            if(!executeSuccess){
-                response.setCode(3);
-                response.setMessage("确认失败请重试");
+            if(executeSuccess){
+                response.setCode(1);
+                response.setMessage("确认完成");
                 return response;
             }
+        }
 
-            response.setCode(1);
-            response.setMessage("确认完成");
-            return response;
-        } else if(otcTransactionUserDeal.getDealStatus() == 3){
-            executeSuccess = updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),3,4, currentTime);
-            if(!executeSuccess){
-                response.setCode(3);
-                response.setMessage("确认失败请重试");
-                return response;
-            }
-        } else {
+        //若状态不为1
+        executeSuccess = updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),3,4, currentTime);
+        if(!executeSuccess){
             response.setCode(3);
-            response.setMessage("该订单已被确认或已完成，请刷新页面后重试");
+            response.setMessage("确认失败请重试");
             return response;
         }
 
@@ -425,7 +418,7 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
             UserBalanceDO userBalanceDO = new UserBalanceDO();
             userBalanceDO.setOrderNo(orderNo);  //记录号：业务类型（2）+日期（6）+随机位（10）
             userBalanceDO.setUserId(userId);
-            userBalanceDO.setFromType("系统操作");
+            userBalanceDO.setFromType("线下出售广告");
             userBalanceDO.setCurrencyId(UserBalanceConfig.DOLLAR_ID);  //币种Id,美元id=999
             userBalanceDO.setCurrencyName(UserBalanceConfig.DOLLAR);  //货币名称
             userBalanceDO.setBalanceNumber(otcTransactionUserDeal.getCurrencyNumber());  //交易数量
@@ -461,25 +454,18 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
         //交易记录状态修改
         if(otcTransactionUserDeal.getDealStatus() == 1){
             executeSuccess = updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),1,2, currentTime);
-            if(!executeSuccess){
-                response.setCode(3);
-                response.setMessage("确认失败请重试");
+            if(executeSuccess){
+                response.setCode(1);
+                response.setMessage("确认完成");
                 return response;
             }
+        }
 
-            response.setCode(1);
-            response.setMessage("确认完成");
-            return response;
-        } else if(otcTransactionUserDeal.getDealStatus() == 3){
-            executeSuccess = updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),3,4, currentTime);
-            if(!executeSuccess){
-                response.setCode(3);
-                response.setMessage("确认失败请重试");
-                return response;
-            }
-        } else {
+        //若状态不为1
+        executeSuccess = updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),3,4, currentTime);
+        if(!executeSuccess){
             response.setCode(3);
-            response.setMessage("该订单已被确认或已完成，请刷新页面后重试");
+            response.setMessage("确认失败请重试");
             return response;
         }
 
