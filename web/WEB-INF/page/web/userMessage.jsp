@@ -225,7 +225,7 @@
 
                     <p class="popInput">
                         <label class="popName">支付宝账号<span class="star">*</span>：</label>
-                        <input type="text" id="alipayAccount" maxlength="30" name="alipayAccount" class="entry" placeholder="您的支付宝账号" />
+                        <input type="text" id="alipayAccount" onkeyup="value=value.replace(/[^a-zA-Z0-9\.@_-]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9\.@_-]/g,'')" maxlength="30" name="alipayAccount" class="entry" placeholder="您的支付宝账号" />
                     </p>
                     <p class="popInput">
                         <label class="popName">收款码<span class="star">*</span>：</label>
@@ -242,7 +242,7 @@
 
                     <p class="popInput">
                         <label class="popName">微信账号<span class="star">*</span>：</label>
-                        <input type="text" id="wechatAccount" maxlength="30" name="wechatAccount" class="entry" placeholder="您的微信账号" />
+                        <input type="text" id="wechatAccount" onkeyup="value=value.replace(/[^a-zA-Z0-9\_-]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9\_-]/g,'')" maxlength="30" name="wechatAccount" class="entry" placeholder="您的微信账号" />
                     </p>
                     <p class="popInput">
                         <label class="popName">收款码<span class="star">*</span>：</label>
