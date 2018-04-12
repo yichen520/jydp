@@ -165,7 +165,7 @@
             </p>
             <p class="popInput">
                 <label class="popName">比例<span class="star">*</span>：</label>
-                <input type="text" id="pendingRatio" maxlength="9"  onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" name="pendingRatio" class="entry" placeholder="交易比例" />
+                <input type="text" id="pendingRatio" maxlength="4"  onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)" name="pendingRatio" class="entry" placeholder="交易比例" />
                 <span class="remind">交易比例为：XT:兑换的货币单位；若比例为1:100，则填100。</span>
             </p>
             <p class="popInput">
