@@ -93,7 +93,7 @@ public class UserDealRecordController {
         List<OtcTransactionUserDealVO> otcTransactionUserDealList = null;
         if(totalNumber > 0){
             otcTransactionUserDealList = otcTransactionUserDealService.listOtcTransactionUsealByUserId(userBo.getUserId(),
-                    dealerName, currencyId, dealStatus, startAddTime, endAddTime, pageNumber, pageSize);
+                    dealerName, currencyId, dealType, dealStatus, startAddTime, endAddTime, pageNumber, pageSize);
         }
 
         request.setAttribute("pageNumber", pageNumber);
@@ -172,7 +172,7 @@ public class UserDealRecordController {
         List<OtcTransactionUserDealVO> otcTransactionUserDealList = null;
         if(totalNumber > 0){
             otcTransactionUserDealList = otcTransactionUserDealService.listOtcTransactionUsealByUserId(userBo.getUserId(),
-                    dealerName, currencyId, dealStatus, startAddTime, endAddTime, pageNumber, pageSize);
+                    dealerName, currencyId, dealType, dealStatus, startAddTime, endAddTime, pageNumber, pageSize);
         }
         //返回对象
         JSONObject jsonObject = new JSONObject();

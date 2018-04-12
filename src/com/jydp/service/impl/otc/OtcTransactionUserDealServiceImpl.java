@@ -418,6 +418,7 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
      * @param userId 用户id (必填)
      * @param dealerName 经销商名称（非必填）
      * @param currencyId 币种id（非必填）
+     * @param dealType 交易类型（非必填）收支类型：1：买入，2：卖出，3：撤销
      * @param dealStatus 交易状态（非必填）
      * @param startAddTime 申请开始时间（非必填）
      * @param endAddTime 申请结束时间（非必填）
@@ -425,9 +426,9 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
      * @param pageSize 每页条数（必填）
      * @return 查询成功：返回记录信息列表, 查询失败或者没有相应记录：返回null
      */
-    public List<OtcTransactionUserDealVO> listOtcTransactionUsealByUserId(int userId, String dealerName, int currencyId, int dealStatus, Timestamp startAddTime,
+    public List<OtcTransactionUserDealVO> listOtcTransactionUsealByUserId(int userId, String dealerName, int currencyId, int dealType, int dealStatus, Timestamp startAddTime,
                                                                           Timestamp endAddTime, int pageNumber, int pageSize){
-        return otcTransactionUserDealDao.listOtcTransactionUsealByUserId(userId, dealerName, currencyId, dealStatus, startAddTime,
+        return otcTransactionUserDealDao.listOtcTransactionUsealByUserId(userId, dealerName, currencyId, dealType, dealStatus, startAddTime,
                 endAddTime, pageNumber, pageSize);
     }
 
