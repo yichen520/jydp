@@ -602,6 +602,9 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
         // 数据回滚
         if (!executeSuccess) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            response.setCode(1);
+            response.setMessage("确认收货失败");
+            return response;
         }
 
         response.setCode(1);
