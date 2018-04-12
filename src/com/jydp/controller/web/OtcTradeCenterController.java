@@ -311,12 +311,6 @@ public class OtcTradeCenterController {
             return resultJson;
         }
 
-        if(user.getUserBalance() < sum){
-            resultJson.setCode(3);
-            resultJson.setMessage("用户余额不足");
-            return resultJson;
-        }
-
         //获取经销商信息
         UserDO dealer = userService.getUserByUserId(otcTransactionPendOrder.getUserId());
         if(user == null){
@@ -555,12 +549,6 @@ public class OtcTradeCenterController {
         if(user == null){
             resultJson.setCode(3);
             resultJson.setMessage("该经销商不存在");
-            return resultJson;
-        }
-
-        if(dealer.getUserBalance() < sum){
-            resultJson.setCode(3);
-            resultJson.setMessage("该经销商余额不足");
             return resultJson;
         }
 
