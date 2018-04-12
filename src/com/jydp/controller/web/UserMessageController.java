@@ -582,6 +582,21 @@ public class UserMessageController {
             resultJson.setMessage("参数错误");
             return resultJson;
         }
+        if(otcOrderVO.getMaxNumber() > 999999.99){
+            resultJson.setCode(3);
+            resultJson.setMessage("最大限额要小于一百万");
+            return resultJson;
+        }
+        if(otcOrderVO.getPendingRatio() > 999999.99){
+            resultJson.setCode(3);
+            resultJson.setMessage("挂单比例要小于一百万");
+            return resultJson;
+        }
+        if(BigDecimalUtil.mul( BigDecimalUtil.mul(otcOrderVO.getPendingRatio(),0.0001),10000)>BigDecimalUtil.mul(otcOrderVO.getMaxNumber(),10000)){
+            resultJson.setCode(3);
+            resultJson.setMessage("最大限额过小");
+            return resultJson;
+        }
         if(otcOrderVO.getMaxNumber() <= otcOrderVO.getMinNumber()){
             resultJson.setCode(3);
             resultJson.setMessage("最大限额要大于最小限额");
