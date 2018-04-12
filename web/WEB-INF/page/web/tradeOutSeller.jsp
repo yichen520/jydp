@@ -27,7 +27,7 @@
     <div id="personalMenu"></div>
 
     <div class="contentRight">
-        <div class="title">场外交易记录</div>
+        <div class="title">场外交易记录-经销商</div>
 
         <div class="main">
             <form id="queryForm" action="<%=path %>/userWeb/dealerOtcDealRecord/show.htm" method="post">
@@ -57,9 +57,9 @@
                 <p class="condition">交易状态：
                     <select class="askSelect" id="dealStatus" name="dealStatus">
                         <option value="0">全部</option>
-                        <option value="2">待完成</option>
-                        <option value="1">待确认</option>
-                        <option value="3">已完成</option>
+                        <option value="1">待完成</option>
+                        <option value="2">待确认</option>
+                        <option value="4">已完成</option>
                     </select>
                 </p>
                 <p class="condition">转账方式：
@@ -142,25 +142,25 @@
                         <td class="state">
                             <p>状态：
                                 <c:if test="${userDeal.dealStatus == 1}">
-                                    <span class="wait_confirm">待确认</span>
-                                </c:if>
-                                <c:if test="${userDeal.dealStatus == 2}">
                                     <span class="wait">待完成</span>
                                 </c:if>
-                                <c:if test="${userDeal.dealStatus == 3}">
+                                <c:if test="${userDeal.dealStatus == 2 || userDeal.dealStatus == 3}">
+                                    <span class="wait_confirm">待确认</span>
+                                </c:if>
+                                <c:if test="${userDeal.dealStatus == 4}">
                                     <span class="finish">已完成</span>
                                 </c:if>
                             </p>
-                            <p>完成时间：<span><c:if test="${userDeal.dealStatus == 3}">
+                            <p>完成时间：<span><c:if test="${userDeal.dealStatus == 4}">
                                                 <fmt:formatDate type="time" value="${userDeal.updateTime}" pattern="yyyy-MM-dd HH:mm:ss"></fmt:formatDate>
                                               </c:if>
                                         </span></p>
                         </td>
                         <td class="operate">
-                            <c:if test="${userDeal.dealStatus == 1 and userDeal.dealType == 1 }">
+                            <c:if test="${userDeal.dealType == 1 and (userDeal.dealStatus == 1 or userDeal.dealStatus == 2)}">
                                 <input type="text" value="确认收款" class="confirm_money" onfocus="this.blur()" onclick="showMoney('${userDeal.otcOrderNo}')"/>
                             </c:if>
-                            <c:if test="${userDeal.dealStatus == 1 and userDeal.dealType == 2 }">
+                            <c:if test="${userDeal.dealType == 2 and (userDeal.dealStatus == 1 or userDeal.dealStatus == 2)}">
                                 <input type="text" value="确认收货" class="confirm_coin" onfocus="this.blur()" onclick="showCoin('${userDeal.otcOrderNo}')"/>
                             </c:if>
                         </td>
