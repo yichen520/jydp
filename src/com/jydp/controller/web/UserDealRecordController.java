@@ -205,7 +205,36 @@ public class UserDealRecordController {
             return response;
         }
 
-        JsonObjectBO userConfirmation = otcTransactionUserDealService.userConfirmationOfReceipts(otcOrderNo, userBo.getUserId());
+        //查询交易记录
+        OtcTransactionUserDealDO otcTransactionUserDeal = otcTransactionUserDealService.getOtcTransactionUsealByOrderNo(otcOrderNo);
+        if(otcTransactionUserDeal == null){
+            response.setCode(3);
+            response.setMessage("此订单不存在");
+            return response;
+        }
+
+        if(otcTransactionUserDeal.getUserId() != userBo.getUserId()){
+            response.setCode(3);
+            response.setMessage("非法访问");
+            return response;
+        }
+        if(otcTransactionUserDeal.getDealStatus() == 4){
+            response.setCode(2);
+            response.setMessage("此订单已完成");
+            return response;
+        }
+
+        JsonObjectBO userConfirmation = null;
+        if(otcTransactionUserDeal.getDealType() == 1){
+            userConfirmation = otcTransactionUserDealService.userConfirmationOfReceipts(otcTransactionUserDeal, userBo.getUserId());
+        } else if(otcTransactionUserDeal.getDealType() == 2){
+            userConfirmation = otcTransactionUserDealService.userConfirmationOfReceiptsurchase(otcTransactionUserDeal, userBo.getUserId());
+        } else {
+            response.setCode(3);
+            response.setMessage("非法类型");
+            return response;
+        }
+
 
         return userConfirmation;
     }

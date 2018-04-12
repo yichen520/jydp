@@ -85,6 +85,12 @@
         if (curUrl.indexOf("/userWeb/userMessage/show.htm") > 0) {
             menuObj = $("#message");
         }
+        if (curUrl.indexOf("/userWeb/userDealRecord/show.htm") > 0) {
+            menuObj = $("#message");
+        }
+        if (curUrl.indexOf("/userWeb/dealerOtcDealRecord/show.htm") > 0) {
+            menuObj = $("#message");
+        }
         if (curUrl.indexOf("/userWeb/accountRecord/show.htm") > 0) {
             menuObj = $("#message");
         }

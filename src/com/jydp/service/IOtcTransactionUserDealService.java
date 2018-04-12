@@ -74,12 +74,20 @@ public interface IOtcTransactionUserDealService {
                                                                           Timestamp endAddTime, int pageNumber, int pageSize);
 
     /**
-     * 双方确认操作
-     * @param otcOrderNo 订单号
+     * 用户确认操作
+     * @param otcTransactionUserDeal 订单信息
      * @param userId 用户id
      * @return 确认成功：返回true，确认失败：返回false
      */
-    JsonObjectBO userConfirmationOfReceipts(String otcOrderNo, int userId);
+    JsonObjectBO userConfirmationOfReceipts(OtcTransactionUserDealDO otcTransactionUserDeal, int userId);
+
+    /**
+     * 用户确认购买操作
+     * @param otcTransactionUserDeal 订单信息
+     * @param userId 用户id
+     * @return 确认成功：返回true，确认失败：返回false
+     */
+    JsonObjectBO userConfirmationOfReceiptsurchase(OtcTransactionUserDealDO otcTransactionUserDeal, int userId);
 
     /**
      * 根据记录号修改成交记录状态

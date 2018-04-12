@@ -433,34 +433,15 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
     }
 
     /**
-     * 用户确认操作
-     * @param otcOrderNo 订单号
+     * 用户确认出售操作
+     * @param otcTransactionUserDeal 订单信息
      * @param userId 用户id
      * @return 确认成功：返回true，确认失败：返回false
      */
     @Transactional
-    public JsonObjectBO userConfirmationOfReceipts(String otcOrderNo, int userId){
+    public JsonObjectBO userConfirmationOfReceipts(OtcTransactionUserDealDO otcTransactionUserDeal, int userId){
         JsonObjectBO response = new JsonObjectBO();
         boolean executeSuccess = false;
-
-        //查询交易记录
-        OtcTransactionUserDealDO otcTransactionUserDeal = otcTransactionUserDealService.getOtcTransactionUsealByOrderNo(otcOrderNo);
-        if(otcTransactionUserDeal == null){
-            response.setCode(3);
-            response.setMessage("此订单不存在");
-            return response;
-        }
-
-        if(otcTransactionUserDeal.getUserId() != userId){
-            response.setCode(3);
-            response.setMessage("非法访问");
-            return response;
-        }
-        if(otcTransactionUserDeal.getDealStatus() == 4){
-            response.setCode(2);
-            response.setMessage("此订单已完成");
-            return response;
-        }
 
         //查询委托记录
         OtcTransactionPendOrderDO otcTransactionPendOrder = otcTransactionPendOrderService.getOtcTransactionPendOrderByOrderNo(otcTransactionUserDeal.getOtcPendingOrderNo());
@@ -500,6 +481,59 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
         executeSuccess = serService.updateAddUserAmount(otcTransactionPendOrder.getUserId(), otcTransactionUserDeal.getCurrencyNumber(), 0);
         if(executeSuccess){
             executeSuccess = serService.updateReduceUserBalanceLock(otcTransactionPendOrder.getUserId(), otcTransactionUserDeal.getCurrencyNumber());
+        }
+
+        // 数据回滚
+        if (!executeSuccess) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+
+        response.setCode(1);
+        response.setMessage("确认完成");
+        return response;
+    }
+
+    /**
+     * 用户确认购买操作
+     * @param otcTransactionUserDeal 订单信息
+     * @param userId 用户id
+     * @return 确认成功：返回true，确认失败：返回false
+     */
+    @Transactional
+    public JsonObjectBO userConfirmationOfReceiptsurchase(OtcTransactionUserDealDO otcTransactionUserDeal, int userId){
+        JsonObjectBO response = new JsonObjectBO();
+        boolean executeSuccess = false;
+
+        Timestamp currentTime = DateUtil.getCurrentTime();
+        //交易记录状态修改
+        if(otcTransactionUserDeal.getDealStatus() == 1){
+            executeSuccess = updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),1,2, currentTime);
+            if(!executeSuccess){
+                response.setCode(3);
+                response.setMessage("确认失败请重试");
+                return response;
+            }
+
+            response.setCode(1);
+            response.setMessage("确认完成");
+            return response;
+        } else if(otcTransactionUserDeal.getDealStatus() == 3){
+            executeSuccess = updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),3,4, currentTime);
+            if(!executeSuccess){
+                response.setCode(3);
+                response.setMessage("确认失败请重试");
+                return response;
+            }
+        } else {
+            response.setCode(3);
+            response.setMessage("该订单已被确认或已完成，请刷新页面后重试");
+            return response;
+        }
+
+        //经销商币解冻
+        executeSuccess = serService.updateAddUserAmount(otcTransactionUserDeal.getUserId(), otcTransactionUserDeal.getCurrencyNumber(), 0);
+        if(executeSuccess){
+            executeSuccess = serService.updateReduceUserBalanceLock(otcTransactionUserDeal.getUserId(), otcTransactionUserDeal.getCurrencyNumber());
         }
 
         // 数据回滚
