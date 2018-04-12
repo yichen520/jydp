@@ -58,4 +58,11 @@ public interface IJydpCoinConfigDao {
      * @return 查询成功:返回币种转出管理信息, 查询失败:返回null
      */
     JydpCoinConfigDO getJydpCoinConfigByCurrencyId(int currencyId);
+
+    /**
+     * 查询币种转出管理
+     * @param currentTime 当前时间
+     * @return 查询成功:返回币种转出管理, 查询失败:返回null;
+     */
+    List<JydpCoinConfigDO> listUserCoinConfig(Timestamp currentTime);
 }

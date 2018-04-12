@@ -279,4 +279,21 @@ public class UserCurrencyNumDaoImpl implements IUserCurrencyNumDao {
         return result;
     }
 
+    /**
+     * 查询用户币数量,(上线中,停牌的状态)
+     * @param userId 用户Id
+     * @return 查询成功:返回用户币数量集合, 查询失败:返回null
+     */
+    public List<UserCurrencyNumDO> listUserCurrencyNumByUserId(int userId) {
+        List<UserCurrencyNumDO> resultList = null;
+
+        try {
+            resultList = sqlSessionTemplate.selectList("UserCurrencyNum_listUserCurrencyNumByUserId", userId);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return resultList;
+    }
+
 }

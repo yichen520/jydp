@@ -145,4 +145,21 @@ public class JydpCoinConfigDaoImpl implements IJydpCoinConfigDao {
 
         return result;
     }
+
+    /**
+     * 查询币种转出管理
+     * @param currentTime 当前时间
+     * @return 查询成功:返回币种转出管理, 查询失败:返回null;
+     */
+    public List<JydpCoinConfigDO> listUserCoinConfig(Timestamp currentTime) {
+        List<JydpCoinConfigDO> resultList = null;
+
+        try {
+            resultList = sqlSessionTemplate.selectList("JydpCoinConfig_listUserCoinConfig", currentTime);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return resultList;
+    }
 }

@@ -109,4 +109,11 @@ public interface IUserCurrencyNumDao {
      */
     List<UserAmountCheckDTO> listCheckUserAmountForTimer(double checkAmount, double checkAmountLock,
                                                          int pageNumber, int pageSize);
+
+    /**
+     * 查询用户币数量,(上线中,停牌的状态)
+     * @param userId 用户Id
+     * @return 查询成功:返回用户币数量集合, 查询失败:返回null
+     */
+    List<UserCurrencyNumDO> listUserCurrencyNumByUserId(int userId);
 }

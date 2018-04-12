@@ -53,6 +53,13 @@ public interface IJydpCoinConfigService {
     List<UserCoinConfigVO> listUserCoinConfigByUserId(int userId);
 
     /**
+     * 查询币种转出管理
+     * @param currentTime 当前时间
+     * @return 查询成功:返回币种转出管理, 查询失败:返回null;
+     */
+    List<JydpCoinConfigDO> listUserCoinConfig(Timestamp currentTime);
+
+    /**
      * 查询币种转出管理,根据币种id
      * @param currencyId 币种id
      * @return 查询成功:返回币种转出管理信息, 查询失败:返回null

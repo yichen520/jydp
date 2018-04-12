@@ -132,4 +132,14 @@
         LIMIT #{startNumber}, #{pageSize}
     </select>
 
+    <select id="UserCurrencyNum_listUserCurrencyNumByUserId" parameterType="int" resultType="UserCurrencyNumDO">
+        SELECT userId, currencyId, currencyNumber, currencyNumberLock, addTime
+        FROM user_currency_num_tab
+        WHERE currencyId IN
+            ( SELECT currencyId
+                FROM transaction_currency_tab
+                WHERE upStatus = 2 OR upStatus = 3
+            )
+        AND userId = #{userId}
+    </select>
 </mapper>

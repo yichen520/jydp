@@ -79,4 +79,19 @@
         ORDER BY addTime DESC
         LIMIT 1
     </select>
+
+    <select id="JydpCoinConfig_listUserCoinConfig" parameterType="java.sql.Timestamp" resultType="JydpCoinConfigDO">
+        SELECT recordNo, currencyId, currencyName, freeCurrencyNumber, minCurrencyNumber,
+				ipAddress, backerId, backerAccount, configStatus, addTime
+        FROM(
+            SELECT recordNo, currencyId, currencyName, freeCurrencyNumber, minCurrencyNumber,
+				ipAddress, backerId, backerAccount, configStatus, addTime
+            FROM jydp_coin_config_tab
+            WHERE addTime <![CDATA[ <= ]]> #{currentTime}
+            AND configStatus = 1
+            GROUP BY currencyId, addTime
+            ORDER BY addTime DESC
+            ) JYDPCTB
+       GROUP BY currencyId
+    </select>
 </mapper>
