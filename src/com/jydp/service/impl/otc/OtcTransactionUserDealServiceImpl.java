@@ -47,6 +47,10 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
     @Autowired
     private IOtcTransactionPendOrderService otcTransactionPendOrderService;
 
+    /**  场外交易成交记录 */
+    @Autowired
+    private IOtcTransactionUserDealService otcTransactionUserDealService;
+
     /** 用户信息 */
     @Autowired
     private IUserService serService;
@@ -428,32 +432,64 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
     }
 
     /**
-     * 用户确认收款
-     * @param otcTransactionUserDeal 记录信息
+     * 用户确认操作
+     * @param otcOrderNo 订单号
+     * @param userId 用户id
      * @return 确认成功：返回true，确认失败：返回false
      */
     @Transactional
-    public boolean userConfirmationOfReceipts(OtcTransactionUserDealDO otcTransactionUserDeal){
+    public JsonObjectBO userConfirmationOfReceipts(String otcOrderNo, int userId){
+        JsonObjectBO response = new JsonObjectBO();
         boolean executeSuccess = false;
+
+        //查询交易记录
+        OtcTransactionUserDealDO otcTransactionUserDeal = otcTransactionUserDealService.getOtcTransactionUsealByOrderNo(otcOrderNo);
+        if(otcTransactionUserDeal == null){
+            response.setCode(3);
+            response.setMessage("此订单不存在");
+            return response;
+        }
+
+        if(otcTransactionUserDeal.getUserId() != userId){
+            response.setCode(3);
+            response.setMessage("非法访问");
+            return response;
+        }
+        if(otcTransactionUserDeal.getDealStatus() == 3){
+            response.setCode(2);
+            response.setMessage("此订单已完成");
+            return response;
+        }
+
         //查询委托记录
         OtcTransactionPendOrderDO otcTransactionPendOrder = otcTransactionPendOrderService.getOtcTransactionPendOrderByOrderNo(otcTransactionUserDeal.getOtcPendingOrderNo());
         if(otcTransactionPendOrder == null){
-            return false;
+            response.setCode(3);
+            response.setMessage("委托记录不存在");
+            return response;
         }
 
         Timestamp currentTime = DateUtil.getCurrentTime();
         //交易记录状态修改
         if(otcTransactionUserDeal.getDealStatus() == 1){
             executeSuccess = updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),1,2, currentTime);
-            return executeSuccess;
-        } else {
-            executeSuccess = updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),2,3, currentTime);
-        }
+            if(!executeSuccess){
+                response.setCode(3);
+                response.setMessage("确认失败请重试");
+                return response;
+            }
 
-        if(!executeSuccess){
-            return false;
+            response.setCode(1);
+            response.setMessage("确认完成");
+            return response;
+        } else if(otcTransactionUserDeal.getDealStatus() == 3){
+            executeSuccess = updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),3,4, currentTime);
+            if(!executeSuccess){
+                response.setCode(3);
+                response.setMessage("确认失败请重试");
+                return response;
+            }
         }
-
 
         //经销商币解冻
         executeSuccess = serService.updateAddUserAmount(otcTransactionPendOrder.getUserId(), otcTransactionUserDeal.getCurrencyNumber(), 0);
@@ -465,7 +501,10 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
         if (!executeSuccess) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }
-        return executeSuccess;
+
+        response.setCode(1);
+        response.setMessage("确认完成");
+        return response;
     }
 
     /**

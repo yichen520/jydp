@@ -205,53 +205,8 @@ public class UserDealRecordController {
             return response;
         }
 
-        OtcTransactionUserDealDO otcTransactionUserDeal = otcTransactionUserDealService.getOtcTransactionUsealByOrderNo(otcOrderNo);
-        if(otcTransactionUserDeal == null){
-            response.setCode(3);
-            response.setMessage("此订单不存在");
-            return response;
-        }
+        JsonObjectBO userConfirmation = otcTransactionUserDealService.userConfirmationOfReceipts(otcOrderNo);
 
-        if(otcTransactionUserDeal.getUserId() != userBo.getUserId()){
-            response.setCode(3);
-            response.setMessage("非法访问");
-            return response;
-        }
-        if(otcTransactionUserDeal.getDealStatus() == 3){
-            response.setCode(2);
-            response.setMessage("此订单已完成");
-            return response;
-        }
-
-
-
-
-        boolean userConfirmation ;
-        Timestamp currentTime = DateUtil.getCurrentTime();
-        //用户确认收货
-        if(otcTransactionUserDeal.getDealType() == 1){
-            if(otcTransactionUserDeal.getDealStatus() == 1){
-                userConfirmation = otcTransactionUserDealService.updateDealStatusByOtcOrderNo(otcOrderNo,1,2, currentTime);
-            } else {
-                userConfirmation = otcTransactionUserDealService.updateDealStatusByOtcOrderNo(otcOrderNo,2,3, currentTime);
-            }
-        //用户确认收款
-        } else if(otcTransactionUserDeal.getDealType() == 2){
-            userConfirmation = otcTransactionUserDealService.userConfirmationOfReceipts(otcTransactionUserDeal);
-        } else {
-            response.setCode(3);
-            response.setMessage("该订单无法确认");
-            return response;
-        }
-
-        if(!userConfirmation){
-            response.setCode(3);
-            response.setMessage("该订单确认失败，请刷新页面后重试");
-            return response;
-        }
-
-        response.setCode(1);
-        response.setMessage("确认成功");
-        return response;
+        return userConfirmation;
     }
 }

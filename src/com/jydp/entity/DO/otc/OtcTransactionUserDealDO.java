@@ -21,7 +21,7 @@ public class OtcTransactionUserDealDO {
     private double feeNumber; //成交费率
     private double currencyTotalPrice; //成交总价
     private Timestamp pendTime; //挂单时间
-    private int dealStatus; //状态：1：待付款，2：已付款（待确认），3：已完成，4：用户取消，5：商家取消
+    private int dealStatus; //状态:1：待完成，2：用户确认（待确认），3：商家确认确认（待确认），4：已完成
     private String remark; //备注
     private Timestamp updateTime; //修改时间
     private Timestamp addTime; //添加时间
@@ -252,7 +252,7 @@ public class OtcTransactionUserDealDO {
     }
 
     /**
-     * 获取 状态
+     * 获取 状态:1：待完成，2：用户确认（待确认），3：商家确认确认（待确认），4：已完成
      * @return dealStatus
      */
     public int getDealStatus() {
@@ -260,7 +260,7 @@ public class OtcTransactionUserDealDO {
     }
 
     /**
-     * 设置 状态
+     * 设置 状态:1：待完成，2：用户确认（待确认），3：商家确认确认（待确认），4：已完成
      * @param dealStatus 状态
      */
     public void setDealStatus(int dealStatus) {
