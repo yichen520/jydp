@@ -1097,20 +1097,21 @@
                         lineWidth: 2
                     }],
                     series : [
-
                         {
-                            name : currencyName,
+                            name : '交易大盘',
                             type: 'candlestick',
+                            color: '#00be97',
+                            lineColor: '#00be97',
+                            upColor: '#ff6960',
+                            upLineColor: '#ff6960',
                             data : ohlc,
                             tooltip: {
 
                             },
-                            data: ohlc,
                             dataGrouping: {
                                 units: groupingUnits
                             },
                             yAxis: 0
-
                         },
                         {
                             name : '成交量',
