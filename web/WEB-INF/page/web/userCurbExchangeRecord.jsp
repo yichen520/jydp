@@ -263,8 +263,8 @@
             },
 
             error: function () {
-            userMessageBoo = false;
-            //openTips("数据加载出错，请稍候重试");
+                sureGetBoo = false;
+                openTips("数据加载出错，请稍候重试");
             }
         });
     }
