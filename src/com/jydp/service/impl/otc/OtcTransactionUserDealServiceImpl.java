@@ -417,22 +417,6 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
         //经销商币解冻
         executeSuccess = serService.updateAddUserAmount(otcTransactionPendOrder.getUserId(), otcTransactionUserDeal.getCurrencyNumber(), 0);
         if(executeSuccess){
-            //增加经销商可用XT添加记录
-            String orderNo = SystemCommonConfig.USER_BALANCE + DateUtil.longToTimeStr(currentTime.getTime(), DateUtil.dateFormat10) + NumberUtil.createNumberStr(10);
-            UserBalanceDO userBalanceDO = new UserBalanceDO();
-            userBalanceDO.setOrderNo(orderNo);  //记录号：业务类型（2）+日期（6）+随机位（10）
-            userBalanceDO.setUserId(userId);
-            userBalanceDO.setFromType("系统操作");
-            userBalanceDO.setCurrencyId(UserBalanceConfig.DOLLAR_ID);  //币种Id,美元id=999
-            userBalanceDO.setCurrencyName(UserBalanceConfig.DOLLAR);  //货币名称
-            userBalanceDO.setBalanceNumber(otcTransactionUserDeal.getCurrencyNumber());  //交易数量
-            userBalanceDO.setFrozenNumber(0);  //冻结数量
-            userBalanceDO.setRemark("线下XT出售订单完成经销商币种解冻");
-            userBalanceDO.setAddTime(currentTime);
-            //添加用户账户记录
-            executeSuccess = userBalanceService.insertUserBalance(userBalanceDO);
-        }
-        if(executeSuccess){
             executeSuccess = serService.updateReduceUserBalanceLock(otcTransactionPendOrder.getUserId(), otcTransactionUserDeal.getCurrencyNumber());
         }
         if(executeSuccess){
@@ -515,7 +499,7 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
             userBalanceDO.setCurrencyName(UserBalanceConfig.DOLLAR);  //货币名称
             userBalanceDO.setBalanceNumber(otcTransactionUserDeal.getCurrencyNumber());  //交易数量
             userBalanceDO.setFrozenNumber(otcTransactionUserDeal.getCurrencyNumber() * -1);  //冻结数量
-            userBalanceDO.setRemark("线下XT出售订单完成经销商币种解冻");
+            userBalanceDO.setRemark("线下XT购买订单完成用户币种解冻");
             userBalanceDO.setAddTime(currentTime);
             //添加用户账户记录
             executeSuccess = userBalanceService.insertUserBalance(userBalanceDO);
