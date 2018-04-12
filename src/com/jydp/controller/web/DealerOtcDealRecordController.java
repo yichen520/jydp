@@ -104,8 +104,8 @@ public class DealerOtcDealRecordController {
         queryParams.put("currencyId",currencyId);
         queryParams.put("dealType",dealType);
         queryParams.put("dealStatus",dealStatus);
-        queryParams.put("startAddTime",startAddTime);
-        queryParams.put("endAddTime",endAddTime);
+        queryParams.put("startAddTime",startAddTimeStr);
+        queryParams.put("endAddTime",endAddTimeStr);
         queryParams.put("paymentType",paymentType);
 
         int pageSize = 20;
