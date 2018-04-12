@@ -85,7 +85,7 @@
                     <td class="type"><c:if test="${otcPendOrder.orderType == '1' }">用户购买</c:if><c:if test="${otcPendOrder.orderType == '2' }">用户出售</c:if></td>
                     <td class="area">${otcPendOrder.area }</td>
                     <td class="proportion">1:<fmt:formatNumber type="number" value="${otcPendOrder.pendingRatio }" groupingUsed="FALSE" maxFractionDigits="4"/></td>
-                    <td class="limit"><span><fmt:formatNumber type="number" value="${otcPendOrder.minNumber }" groupingUsed="FALSE" maxFractionDigits="4"/></span>~<span><fmt:formatNumber type="number" value="${otcPendOrder.maxNumber }" groupingUsed="FALSE" maxFractionDigits="4"/></span>CNY</td>
+                    <td class="limit"><span><fmt:formatNumber type="number" value="${otcPendOrder.minNumber }" groupingUsed="FALSE" maxFractionDigits="2"/></span>~<span><fmt:formatNumber type="number" value="${otcPendOrder.maxNumber }" groupingUsed="FALSE" maxFractionDigits="2"/></span>CNY</td>
                     <td class="operate">
                         <input type="text" value="删&nbsp;除" class="delete" onfocus="this.blur()" onclick="openOrderDelete('${otcPendOrder.otcPendingOrderNo}')"/>
                     </td>
@@ -144,14 +144,14 @@
             <p class="popInput">
                 <label class="popName">币种<span class="star">*</span>：</label>
                 <select class="popSelected" id="currencyId" name="currencyId">
-                    <option disabled selected>选择币种</option>
+                    <option value="0" disabled selected>选择币种</option>
                     <option value="999">XT</option>
                 </select>
             </p>
             <p class="popInput">
                 <label class="popName">类型<span class="star">*</span>：</label>
                 <select class="popSelected" onchange="changeOrderType(this.value)" id="orderType" name="orderType">
-                    <option disabled selected>选择类型</option>
+                    <option value="0" disabled selected>选择类型</option>
                     <option value="2">用户出售</option>
                     <option value="1">用户购买</option>
                 </select>
@@ -159,19 +159,19 @@
             <p class="popInput">
                 <label class="popName">地区<span class="star">*</span>：</label>
                 <select class="popSelected" id="area" name="area">
-                    <option disabled selected>选择地区</option>
-                    <option>中国(CN)</option>
+                    <option value="0" disabled selected>选择地区</option>
+                    <option value="1">中国(CN)</option>
                 </select>
             </p>
             <p class="popInput">
                 <label class="popName">比例<span class="star">*</span>：</label>
-                <input type="text" id="pendingRatio" onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" name="pendingRatio" class="entry" placeholder="交易比例" />
-                <span class="remind">交易比例为：XT:兑换的货币单位，如1:100</span>
+                <input type="text" id="pendingRatio" maxlength="10"  onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" name="pendingRatio" class="entry" placeholder="交易比例" />
+                <span class="remind">交易比例为：XT:兑换的货币单位；若比例为1:100，则填100。</span>
             </p>
             <p class="popInput">
                 <label class="popName">交易限额<span class="star">*</span>：</label>
-                <input type="text"  id="minNumber" onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)"  name="minNumber" class="lowLimit" placeholder="交易最低限额" />&nbsp;～
-                <input type="text"  id="maxNumber" onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)"  name="maxNumber" class="highLimit" placeholder="交易最高限额" />
+                <input type="text"  id="minNumber" maxlength="10"  onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)"  name="minNumber" class="lowLimit" placeholder="最低限额,单位:CNY" />&nbsp;～
+                <input type="text"  id="maxNumber" maxlength="10" onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)"  name="maxNumber" class="highLimit" placeholder="最高限额,单位:CNY" />
             </p>
             <p class="choose">
                 <label class="popName">支付方式<span class="star">*</span>：</label>
@@ -197,20 +197,20 @@
 
                     <p class="popInput">
                         <label class="popName">银行卡号<span class="star">*</span>：</label>
-                        <input type="text" id="bankAccount" name="bankAccount" onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"
+                        <input type="text" id="bankAccount" name="bankAccount" maxlength="19" onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"
                                class="entry" placeholder="您的银行卡号" />
                     </p>
                     <p class="popInput">
                         <label class="popName">银行名称<span class="star">*</span>：</label>
-                        <input type="text" id="bankName" name="bankName" class="entry" placeholder="该银行卡的银行名称" />
+                        <input type="text" id="bankName" name="bankName" onkeyup="value=value.replace(/[^a-zA-Z0-9\u4E00-\u9FA5]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9\u4E00-\u9FA5]/g,'')" maxlength="15"  class="entry" placeholder="该银行卡的银行名称" />
                     </p>
                     <p class="popInput">
                         <label class="popName">支行名称<span class="star">*</span>：</label>
-                        <input type="text" id="bankBranch" name="bankBranch" class="entry" placeholder="该卡的支行名称" />
+                        <input type="text" id="bankBranch" name="bankBranch" onkeyup="value=value.replace(/[^a-zA-Z0-9\u4E00-\u9FA5]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9\u4E00-\u9FA5]/g,'')" maxlength="50" class="entry" placeholder="该卡的支行名称" />
                     </p>
                     <p class="popInput">
                         <label class="popName">预留姓名<span class="star">*</span>：</label>
-                        <input type="text" id="paymentName" name="paymentName" class="entry" placeholder="该银行卡的银行预留姓名" />
+                        <input type="text" id="paymentName" name="paymentName" onkeyup="value=value.replace(/[^a-zA-Z0-9\u4E00-\u9FA5]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9\u4E00-\u9FA5]/g,'')" maxlength="30" class="entry" placeholder="该银行卡的银行预留姓名" />
                     </p>
                     <p class="popInput">
                         <label class="popName">预留电话<span class="star">*</span>：</label>
@@ -225,7 +225,7 @@
 
                     <p class="popInput">
                         <label class="popName">支付宝账号<span class="star">*</span>：</label>
-                        <input type="text" id="alipayAccount" name="alipayAccount" class="entry" placeholder="您的支付宝账号" />
+                        <input type="text" id="alipayAccount" maxlength="30" name="alipayAccount" class="entry" placeholder="您的支付宝账号" />
                     </p>
                     <p class="popInput">
                         <label class="popName">收款码<span class="star">*</span>：</label>
@@ -242,7 +242,7 @@
 
                     <p class="popInput">
                         <label class="popName">微信账号<span class="star">*</span>：</label>
-                        <input type="text" id="wechatAccount" name="wechatAccount" class="entry" placeholder="您的微信账号" />
+                        <input type="text" id="wechatAccount" maxlength="30" name="wechatAccount" class="entry" placeholder="您的微信账号" />
                     </p>
                     <p class="popInput">
                         <label class="popName">收款码<span class="star">*</span>：</label>
@@ -882,6 +882,10 @@
                 openTips("最大限额要大于0");
                 return;
             }
+            if(parseInt(maxNumber) > parseInt(1000000)){
+                openTips("最大限额不能大于一百万");
+                return;
+            }
             if(parseInt(maxNumber) <= parseInt(minNumber)){
                 openTips("最大限额要大于最小限额");
                 return;
@@ -891,7 +895,7 @@
                 return;
             }
             if(parseInt(maxNumber) <= parseInt(pendingRatio)){
-                openTips("最大限额要大于挂单比例");
+                openTips("挂单比例要小于最大限额");
                 return;
             }
             if(orderType == 2){
@@ -921,6 +925,29 @@
         $(".cancel").click(function(){
             $(".mask").fadeOut("fast");
             $(popObj).fadeOut("fast");
+
+       //清空数据
+
+
+            $("#currencyId").val(0);//币种id
+            $("#orderType").val(0);//购买 1  出售 2  针对用户而言  经销商相反
+            $("#area").val(0);//挂单比例
+            $("#pendingRatio").val('');//挂单比例
+            $("#minNumber").val('');//最小限额
+            $("#maxNumber").val('');//最大限额
+            $("#bankAccount").val('');//收款银行账号
+            $("#alipayAccount").val('');//支付宝账号
+            $("#wechatAccount").val('');//微信账号
+            $("#bankName").val('');//收款银行
+            $("#bankBranch").val('');//收款支行
+            $("#paymentName").val('');//收款人姓名
+            $("#paymentPhone").val('');//收款人手机号
+            $("#changead_t1").val('');
+            $("#changead_t2").val('');
+            $(".choose").hide();
+            document.getElementById("bankBox").checked = false;
+            document.getElementById("alipayBox").checked = false;
+            document.getElementById("wechatBox").checked = false;
         });
         $(".yes").click(function(){
             // $(".mask").fadeOut("fast");
@@ -1089,9 +1116,14 @@
         $("#deleteOrderId").val(otcPendingOrderNo);
     }
 
-
+    var deleteOrderBoo = false;
     //删除订单
     function deleteOrder() {
+        if (deleteOrderBoo) {
+            return;
+        } else {
+            deleteOrderBoo = true;
+        }
         var deleteOrderId = $("#deleteOrderId").val();
         $.ajax({
             url: '<%=path %>' + "/userWeb/userMessage/deleteOtcTransactionPendOrder.htm",
@@ -1102,6 +1134,7 @@
             type: 'POST',
             async: true, //默认异步调用 (false：同步)
             success: function (resultData) {
+                deleteOrderBoo = false;
                 var code = resultData.code;
                 var message = resultData.message;
                 if (code != 1 && message != "") {
@@ -1131,9 +1164,15 @@
             $(".choose").hide();
         }
     }
+
+    var addOrderBoo = false;
 //添加订单
     function addOrder() {
-
+        if (addOrderBoo) {
+            return;
+        } else {
+            addOrderBoo = true;
+        }
         var currencyId = $("#currencyId").val();//币种id
         var orderType = $("#orderType").val();//购买 1  出售 2  针对用户而言  经销商相反
         var area = $("#area").val();//挂单比例
@@ -1154,38 +1193,47 @@
             return;
         }
         if(orderType == null){
+            addOrderBoo =false;
             openTips("请选择类型");
             return;
         }
         if(area == null){
+            addOrderBoo =false;
             openTips("请选择地区");
             return;
         }
         if(pendingRatio == ""){
+            addOrderBoo =false;
             openTips("请输入挂单比例");
             return;
         }
         if(pendingRatio <= 0){
+            addOrderBoo =false;
             openTips("挂单比例要大于0");
             return;
         }
         if(minNumber == ""){
+            addOrderBoo =false;
             openTips("请输入最小限额");
             return;
         }
         if(minNumber <= 0){
+            addOrderBoo =false;
             openTips("最小限额要大于0");
             return;
         }
         if(maxNumber == ""){
+            addOrderBoo =false;
             openTips("请输入最大限额");
             return;
         }
         if(maxNumber <= 0){
+            addOrderBoo =false;
             openTips("最大限额要大于0");
             return;
         }
         if(parseInt(maxNumber) <= parseInt(minNumber)){
+            addOrderBoo =false;
             openTips("最大限额要大于最小限额");
             return;
         }
@@ -1195,45 +1243,64 @@
         //银行
         if(document.getElementById("bankBox").checked){
             if(bankAccount == ""){
-                openTips("请输入银行账户");
+                addOrderBoo =false;
+                openTips("请输入银行卡号");
+                return;
+            }
+            if(bankAccount.length < 16 || bankAccount.length > 19){
+                addOrderBoo =false;
+                openTips("银行卡号位数不正确");
                 return;
             }
             if(bankName == ""){
+                addOrderBoo =false;
                 openTips("请输入银行名称");
                 return;
             }
             if(bankBranch == ""){
+                addOrderBoo =false;
                 openTips("请输入银行支行");
                 return;
             }
             if(paymentName == ""){
+                addOrderBoo =false;
                 openTips("请输入银行卡预留姓名");
                 return;
             }
             if(paymentPhone == ""){
+                addOrderBoo =false;
                 openTips("请输入银行卡预留手机号");
+                return;
+            }
+            if(paymentPhone.length != 11){
+                addOrderBoo =false;
+                openTips("请输入11位手机号");
                 return;
             }
         }
         //支付宝
         if(document.getElementById("alipayBox").checked){
             if(alipayAccount == ""){
+                addOrderBoo =false;
                 openTips("请输入支付宝账户");
                 return;
             }
             var alipayImageUrlStr = $("#changead_t1").val();
             if (alipayImageUrlStr == null || alipayImageUrlStr == '') {
+                addOrderBoo =false;
                 return openTips("请上传支付宝收款码图片");
             }
         }
         //微信
         if(document.getElementById("wechatBox").checked){
             if(wechatAccount == ""){
+                addOrderBoo =false;
                 openTips("请输入微信账户");
                 return;
             }
             var wechatImageUrlStr = $("#changead_t2").val();
             if (wechatImageUrlStr == null || wechatImageUrlStr == '') {
+                addOrderBoo =false;
                 return openTips("请上传微信收款码图片");
             }
         }
@@ -1262,6 +1329,7 @@
             processData : false,
             contentType : false,
             success: function (resultData) {
+                addOrderBoo =false;
                 var code = resultData.code;
                 var message = resultData.message;
                 if (code != 1 && message != "") {
@@ -1275,7 +1343,7 @@
             },
 
             error: function () {
-                deleteOrderBoo = false;
+                addOrderBoo =false;
                 openTips("数据加载出错，请稍候重试");
             }
         });
@@ -1294,7 +1362,7 @@
         var fileSize = 0;
         var filetypes = [".jpg", ".jpeg", ".png", ".JPG", ".JPEG", ".PNG"];
         var filepath = target.value;
-        var filemaxsize = 1024 * 10;//10M
+        var filemaxsize = 1024 * 3;//3M
         if (filepath) {
             var isnext = false;
             var fileend = filepath.substring(filepath.lastIndexOf("."));
@@ -1346,6 +1414,11 @@
         if(document.getElementById("bankBox").checked){
             $("#cardDiv").show()
         }else{
+            $("#bankAccount").val('');//收款银行账号
+            $("#bankName").val('');//收款银行
+            $("#bankBranch").val('');//收款支行
+            $("#paymentName").val('');//收款人姓名
+            $("#paymentPhone").val('');//收款人手机号
             $("#cardDiv").hide()
         }
     });
@@ -1353,6 +1426,8 @@
         if(document.getElementById("alipayBox").checked){
             $("#alipayDiv").show()
         }else{
+            $("#alipayAccount").val('');//支付宝账号
+            $("#changead_t1").val('');
             $("#alipayDiv").hide()
         }
     });
@@ -1360,6 +1435,8 @@
         if(document.getElementById("wechatBox").checked){
             $("#wechatDiv").show()
         }else{
+            $("#wechatAccount").val('');//微信账号
+            $("#changead_t2").val('');
             $("#wechatDiv").hide()
         }
     });
