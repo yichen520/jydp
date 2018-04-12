@@ -70,7 +70,7 @@
                     </c:if>
                     <td class="limit"><span><fmt:formatNumber type="number" value="${pendOrder.minNumber }" groupingUsed="FALSE" maxFractionDigits="2"/>
                             </span>~<span><fmt:formatNumber type="number" value="${pendOrder.maxNumber }" groupingUsed="FALSE" maxFractionDigits="2"/></span>CNY</td>
-                    <td class="proportion">1:<fmt:formatNumber type="number" value="${pendOrder.pendingRatio }" groupingUsed="FALSE" maxFractionDigits="2"/></td>
+                    <td class="proportion">1:<fmt:formatNumber type="number" value="${pendOrder.pendingRatio }" groupingUsed="FALSE" maxFractionDigits="4"/></td>
                     <td class="operate">
                         <c:if test="${pendOrder.orderType == 1}">
                             <input type="text" value="我要购买" class="tradeBuy" onfocus="this.blur()"
@@ -706,6 +706,12 @@
             return;
         }
 
+        if(paymentType <= 0 || paymentType == '' || paymentType == null){
+            toPayBoo = false;
+            openTips("请选择支付方式");
+            return;
+        }
+
         var min = parseInt($("#buyMin").val());
         var max = parseInt($("#buyMax").val());
 
@@ -718,12 +724,6 @@
         if(buySumNum > max){
             toPayBoo = false;
             openTips("交易额度不能大于最大限额");
-            return;
-        }
-
-        if(paymentType <= 0 || paymentType == '' || paymentType == null){
-            toPayBoo = false;
-            openTips("请选择支付方式");
             return;
         }
 

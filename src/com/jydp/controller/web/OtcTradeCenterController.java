@@ -88,6 +88,13 @@ public class OtcTradeCenterController {
             return resultJson;
         }
 
+        boolean fq =UserWebInterceptor.handleFrequent(request);
+        if(fq){
+            resultJson.setCode(2);
+            resultJson.setMessage("用户操作频繁");
+            return resultJson;
+        }
+
         //获取参数
         String otcPendingOrderNo = StringUtil.stringNullHandle(request.getParameter("otcPendingOrderNo"));
         String userIdStr = StringUtil.stringNullHandle(request.getParameter("userId"));
@@ -143,6 +150,13 @@ public class OtcTradeCenterController {
         if(userSession == null){
             resultJson.setCode(4);
             resultJson.setMessage("未登录");
+            return resultJson;
+        }
+
+        boolean fq =UserWebInterceptor.handleFrequent(request);
+        if(fq){
+            resultJson.setCode(2);
+            resultJson.setMessage("用户操作频繁");
             return resultJson;
         }
 
@@ -217,6 +231,13 @@ public class OtcTradeCenterController {
         if(userSession == null){
             resultJson.setCode(4);
             resultJson.setMessage("未登录");
+            return resultJson;
+        }
+
+        boolean fq =UserWebInterceptor.handleFrequent(request);
+        if(fq){
+            resultJson.setCode(2);
+            resultJson.setMessage("用户操作频繁");
             return resultJson;
         }
 
@@ -404,6 +425,13 @@ public class OtcTradeCenterController {
         if(userSession == null){
             resultJson.setCode(4);
             resultJson.setMessage("未登录");
+            return resultJson;
+        }
+
+        boolean fq =UserWebInterceptor.handleFrequent(request);
+        if(fq){
+            resultJson.setCode(2);
+            resultJson.setMessage("用户操作频繁");
             return resultJson;
         }
 
