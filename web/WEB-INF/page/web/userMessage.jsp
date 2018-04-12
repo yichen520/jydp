@@ -867,19 +867,19 @@
                 return;
             }
             if(minNumber == ""){
-                openTips("请输入最小限额");
+                openTips("请输入最低限额");
                 return;
             }
             if(minNumber <= 0){
-                openTips("最小限额要大于0");
+                openTips("最低限额要大于0");
                 return;
             }
             if(maxNumber == ""){
-                openTips("请输入最大限额");
+                openTips("请输入最高限额");
                 return;
             }
             if(maxNumber <= 0){
-                openTips("最大限额要大于0");
+                openTips("最高限额要大于0");
                 return;
             }
             if(Number(pendingRatio) > Number(999999.99)){
@@ -887,15 +887,15 @@
                 return;
             }
             if(Number(maxNumber) > Number(999999.99)){
-                openTips("最大限额要小于一百万");
+                openTips("最高限额要小于一百万");
                 return;
             }
             if(Number(maxNumber) <= Number(minNumber)){
-                openTips("最大限额要大于最小限额");
+                openTips("最高限额要大于最低限额");
                 return;
             }
             if(accMul(accMul(pendingRatio,0.0001),10000) > accMul(maxNumber,10000)){
-                openTips("最大限额过小");
+                openTips("最高限额过小");
                 return;
             }
             if(orderType == 2){
@@ -1218,27 +1218,27 @@
         }
         if(minNumber == ""){
             addOrderBoo =false;
-            openTips("请输入最小限额");
+            openTips("请输入最低限额");
             return;
         }
-        if(minNumber <= 0){
+        if(minNumber < 0){
             addOrderBoo =false;
-            openTips("最小限额要大于0");
+            openTips("最低限额不能小于0");
             return;
         }
         if(maxNumber == ""){
             addOrderBoo =false;
-            openTips("请输入最大限额");
+            openTips("请输入最高限额");
             return;
         }
         if(maxNumber <= 0){
             addOrderBoo =false;
-            openTips("最大限额要大于0");
+            openTips("最高限额要大于0");
             return;
         }
         if(Number(maxNumber) <= Number(minNumber)){
             addOrderBoo =false;
-            openTips("最大限额要大于最小限额");
+            openTips("最高限额要大于最低限额");
             return;
         }
         //若为购买类型 需验证付款方式
