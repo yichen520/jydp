@@ -356,7 +356,8 @@
                 <div class="ali">
                     <p class="popInput">
                         <label class="popName">支付宝账号<span class="star">*</span>：</label>
-                        <input type="text" class="entry" placeholder="您的支付宝账号" id="sellAliAccount" maxlength="30"/>
+                        <input type="text" class="entry" placeholder="您的支付宝账号" id="sellAliAccount" maxlength="30"
+                               onkeyup="value=value.replace(/[^a-zA-Z0-9\.@_-]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9\.@_-]/g,'')"/>
                     </p>
                     <p class="popInput">
                         <label class="popName">收款码<span class="star">*</span>：</label>
@@ -372,7 +373,7 @@
                     <p class="popInput">
                         <label class="popName">微信账号<span class="star">*</span>：</label>
                         <input type="text" class="entry" placeholder="您的微信账号" id="sellWxAccount" maxlength="30"
-                               onkeyup="value=value.replace(/[a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}/,'')" onblur="value=value.replace(/[a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}/,'')"/>
+                               onkeyup="value=value.replace(/[^a-zA-Z0-9\_-]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9\_-]/g,'')"/>
                     </p>
                     <p class="popInput">
                         <label class="popName">收款码<span class="star">*</span>：</label>
