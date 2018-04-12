@@ -19,7 +19,7 @@
     <ul class="nav">
         <li class="navInfo"><a id="webHome" href="<%=path %>/userWeb/homePage/show">首页</a></li>
         <li class="navInfo">
-            <a id="tradeCenter" class="tradeCenter" href="javascript:;">交易中心
+            <a id="tradeCenter" class="tradeCenter" href="javascript:;">场内交易
                 <img src="<%=path %>/resources/image/web/tradeCoin.png" class="tradeArrow" />
             </a>
             <ul class="coinLink">

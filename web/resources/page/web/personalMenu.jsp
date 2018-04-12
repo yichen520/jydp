@@ -57,7 +57,7 @@
             <li class="menuInfo"><a id="jydpUserCoinOutRecord" href="<%=path %>/userWeb/jydpUserCoinOutRecord/show.htm">提币记录</a></li>
             <li class="menuInfo"><a id="userDealRecord" href="<%=path %>/userWeb/userDealRecord/show.htm" >场外交易记录</a></li>
             <c:if test="${userSession.isDealer == 2}">
-                <li class="menuInfo"><a id="dealerOtcDealRecord" href="<%=path %>/userWeb/dealerOtcDealRecord/show.htm" >场外交易记录-经销商</a></li>
+                <li class="menuInfo"><a id="dealerOtcDealRecord" href="<%=path %>/userWeb/dealerOtcDealRecord/show.htm" >场外交易记录(商家)</a></li>
             </c:if>
         </ul>
     </li>
