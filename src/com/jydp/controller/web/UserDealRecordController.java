@@ -205,7 +205,7 @@ public class UserDealRecordController {
             return response;
         }
 
-        JsonObjectBO userConfirmation = otcTransactionUserDealService.userConfirmationOfReceipts(otcOrderNo);
+        JsonObjectBO userConfirmation = otcTransactionUserDealService.userConfirmationOfReceipts(otcOrderNo, userBo.getUserId());
 
         return userConfirmation;
     }
