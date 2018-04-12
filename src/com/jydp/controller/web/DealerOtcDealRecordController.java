@@ -172,17 +172,9 @@ public class DealerOtcDealRecordController {
 
         String otcPendingOrderNo = otcTransactionUserDeal.getOtcPendingOrderNo();
 
-        boolean result = otcTransactionUserDealService.dealerConfirmTakeForBuyBack(otcOrderNo,otcPendingOrderNo,userSession.getUserId());
+        responseJson = otcTransactionUserDealService.dealerConfirmTakeForBuyBack(otcOrderNo,otcPendingOrderNo,userSession.getUserId());
 
-        if (result) {
-            responseJson.setCode(1);
-            responseJson.setMessage("确认收货成功");
-            return responseJson;
-        } else {
-            responseJson.setCode(2);
-            responseJson.setMessage("确认收货失败");
-            return responseJson;
-        }
+        return responseJson;
     }
 
     /** 经销商出售币-确认收款 **/
@@ -220,17 +212,8 @@ public class DealerOtcDealRecordController {
             return responseJson;
         }
 
-        boolean result = otcTransactionUserDealService.dealerConfirmTakeForSellCoin(otcTransactionUserDeal,userSession.getUserId());
-
-        if (result) {
-            responseJson.setCode(1);
-            responseJson.setMessage("确认收款成功");
-            return responseJson;
-        } else {
-            responseJson.setCode(2);
-            responseJson.setMessage("确认收款失败");
-            return responseJson;
-        }
+        responseJson = otcTransactionUserDealService.dealerConfirmTakeForSellCoin(otcTransactionUserDeal,userSession.getUserId());
+        return responseJson;
     }
 
 }

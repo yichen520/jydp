@@ -97,7 +97,7 @@ public interface IOtcTransactionUserDealService {
      * @param userId 操作用户Id
      * @return  修改成功：返回true; 修改失败：返回false
      */
-    boolean dealerConfirmTakeForBuyBack(String otcOrderNo, String otcPendingOrderNo, int userId);
+    JsonObjectBO dealerConfirmTakeForBuyBack(String otcOrderNo, String otcPendingOrderNo, int userId);
 
     /**
      * 经销商出售币-确认收款
@@ -105,7 +105,7 @@ public interface IOtcTransactionUserDealService {
      * @param userId 操作用户Id
      * @return  修改成功：返回true; 修改失败：返回false
      */
-    boolean dealerConfirmTakeForSellCoin(OtcTransactionUserDealDO otcTransactionUserDeal, int userId);
+    JsonObjectBO dealerConfirmTakeForSellCoin(OtcTransactionUserDealDO otcTransactionUserDeal, int userId);
 
     /**
      * 根据经销商Id查询经销商成交记录

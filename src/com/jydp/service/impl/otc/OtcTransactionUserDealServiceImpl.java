@@ -528,20 +528,78 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
      * @return 修改成功：返回true; 修改失败：返回false
      */
     @Override
-    public boolean dealerConfirmTakeForBuyBack(String otcOrderNo, String otcPendingOrderNo, int userId) {
+    public JsonObjectBO dealerConfirmTakeForBuyBack(String otcOrderNo, String otcPendingOrderNo, int userId) {
+
+        JsonObjectBO response = new JsonObjectBO();
+        boolean executeSuccess = false;
+
+        //查询交易记录
+        OtcTransactionUserDealDO otcTransactionUserDeal = otcTransactionUserDealService.getOtcTransactionUsealByOrderNo(otcOrderNo);
+        if(otcTransactionUserDeal == null){
+            response.setCode(2);
+            response.setMessage("此订单不存在");
+            return response;
+        }
 
         OtcTransactionPendOrderDO otcTransactionPendOrder = otcTransactionPendOrderService.getOtcTransactionPendOrderByOrderNo(otcPendingOrderNo);
 
         if (otcTransactionPendOrder == null) {
-            return false;
+            response.setCode(2);
+            response.setMessage("此订单不存在");
+            return response;
+        }
+
+        if(!(otcTransactionUserDeal.getDealStatus() == 1 || otcTransactionUserDeal.getDealStatus() == 2)){
+            response.setCode(2);
+            response.setMessage("此订单不可操作");
+            return response;
         }
 
         //确认收货操作非挂单经销商本人
         if (otcTransactionPendOrder.getUserId() != userId) {
-            return false;
+            response.setCode(3);
+            response.setMessage("非挂单本人操作");
+            return response;
         }
+
         Timestamp updateTime = DateUtil.getCurrentTime();
-        return otcTransactionUserDealDao.updateDealStatusByOtcOrderNo(otcOrderNo,1,2,updateTime);
+        //交易记录状态修改
+        if(otcTransactionUserDeal.getDealStatus() == 1){
+            executeSuccess = otcTransactionUserDealDao.updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),1,3, updateTime);
+            if(!executeSuccess){
+                response.setCode(2);
+                response.setMessage("确认收货失败");
+                return response;
+            }
+
+            response.setCode(1);
+            response.setMessage("确认收货成功");
+            return response;
+        } else if(otcTransactionUserDeal.getDealStatus() == 2){
+            executeSuccess = otcTransactionUserDealDao.updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),2,4, updateTime);
+            if(!executeSuccess){
+                response.setCode(2);
+                response.setMessage("确认收货失败");
+                return response;
+            }
+        }
+
+        //经销商币解冻
+        if (executeSuccess) {
+            executeSuccess = serService.updateAddUserAmount(otcTransactionPendOrder.getUserId(), otcTransactionUserDeal.getCurrencyNumber(), 0);
+        }
+        if (executeSuccess) {
+            executeSuccess = serService.updateReduceUserBalanceLock(otcTransactionPendOrder.getUserId(), otcTransactionUserDeal.getCurrencyNumber());
+        }
+
+        // 数据回滚
+        if (!executeSuccess) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+
+        response.setCode(1);
+        response.setMessage("确认收货成功");
+        return response;
     }
 
     /**
@@ -552,19 +610,32 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
      */
     @Override
     @Transactional
-    public boolean dealerConfirmTakeForSellCoin(OtcTransactionUserDealDO otcTransactionUserDeal, int userId) {
+    public JsonObjectBO dealerConfirmTakeForSellCoin(OtcTransactionUserDealDO otcTransactionUserDeal, int userId) {
+
+        JsonObjectBO response = new JsonObjectBO();
+        boolean executeSuccess = false;
+
+        if(!(otcTransactionUserDeal.getDealStatus() == 1 || otcTransactionUserDeal.getDealStatus() == 2)){
+            response.setCode(2);
+            response.setMessage("此订单不可操作");
+            return response;
+        }
 
         String otcPendingOrderNo = otcTransactionUserDeal.getOtcPendingOrderNo();
         //查询挂单记录
         OtcTransactionPendOrderDO otcTransactionPendOrder = otcTransactionPendOrderService.getOtcTransactionPendOrderByOrderNo(otcPendingOrderNo);
 
         if (otcTransactionPendOrder == null) {
-            return false;
+            response.setCode(2);
+            response.setMessage("该笔订单不存在");
+            return response;
         }
 
         //确认收款操作非挂单经销商本人
         if (otcTransactionPendOrder.getUserId() != userId) {
-            return false;
+            response.setCode(2);
+            response.setMessage("非挂单本人操作");
+            return response;
         }
 
         //查询交易用户Id
@@ -589,14 +660,34 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
         }
 
         if (userLockCoin  < currencyNumber) {
-            return false;
+            response.setCode(2);
+            response.setMessage("冻结资产不足");
+            return response;
         }
 
-        boolean excuteSuccess = true;
+        boolean excuteSuccess = false;
 
         Timestamp updateTime = DateUtil.getCurrentTime();
-        //修改成交记录状态
-        excuteSuccess = otcTransactionUserDealDao.updateDealStatusByOtcOrderNo(otcOrderNo,1,2,updateTime);
+        //交易记录状态修改
+        if(otcTransactionUserDeal.getDealStatus() == 1){
+            executeSuccess = otcTransactionUserDealDao.updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),1,3, updateTime);
+            if(!executeSuccess){
+                response.setCode(2);
+                response.setMessage("确认收款失败");
+                return response;
+            }
+
+            response.setCode(1);
+            response.setMessage("确认收款成功");
+            return response;
+        } else if(otcTransactionUserDeal.getDealStatus() == 2){
+            executeSuccess = otcTransactionUserDealDao.updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),2,4, updateTime);
+            if(!executeSuccess){
+                response.setCode(2);
+                response.setMessage("确认收款失败");
+                return response;
+            }
+        }
 
         //增加用户可用XT
         if (currencyId == UserBalanceConfig.DOLLAR_ID) {
@@ -626,8 +717,14 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
         if (!excuteSuccess) {
             //数据回滚
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            response.setCode(2);
+            response.setMessage("确认收款失败");
+            return response;
+        } else {
+            response.setCode(1);
+            response.setMessage("确认收款成功");
+            return response;
         }
-        return excuteSuccess;
     }
 
     /**
