@@ -569,7 +569,7 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
         //查询交易记录(防止用户并发操作) 状态由1--> 3更新失败，原因可能是用户进行了操作
         otcTransactionUserDeal = otcTransactionUserDealService.getOtcTransactionUsealByOrderNo(otcOrderNo);
         if(otcTransactionUserDeal.getDealStatus() == 2){
-            executeSuccess = otcTransactionUserDealDao.updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),4,2, updateTime);
+            executeSuccess = otcTransactionUserDealDao.updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),2,4, updateTime);
             if(!executeSuccess){
                 response.setCode(2);
                 response.setMessage("确认收货失败");
