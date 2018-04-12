@@ -583,7 +583,7 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
         //查询交易记录(防止用户并发操作) 状态由1--> 3更新失败，原因可能是用户进行了操作
         otcTransactionUserDeal = otcTransactionUserDealService.getOtcTransactionUsealByOrderNo(otcOrderNo);
         if(otcTransactionUserDeal.getDealStatus() == 2){
-            executeSuccess = otcTransactionUserDealDao.updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),2,4, updateTime);
+            executeSuccess = otcTransactionUserDealDao.updateDealStatusByOtcOrderNo(otcTransactionUserDeal.getOtcOrderNo(),4,2, updateTime);
             if(!executeSuccess){
                 response.setCode(2);
                 response.setMessage("确认收货失败");
@@ -657,13 +657,13 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
         double userLockCoin = 0;
 
         if (currencyId == UserBalanceConfig.DOLLAR_ID) {
-            //查询经销商资产信息
-            UserDO user = userService.getUserByUserId(userId);
+            //查询用户资产信息
+            UserDO user = userService.getUserByUserId(transactionUserId);
             if (user != null) {
                 userLockCoin = user.getUserBalanceLock();
             }
         } else {
-            UserCurrencyNumDO userCurrencyNum = userCurrencyNumService.getUserCurrencyNumByUserIdAndCurrencyId(userId,currencyId);
+            UserCurrencyNumDO userCurrencyNum = userCurrencyNumService.getUserCurrencyNumByUserIdAndCurrencyId(transactionUserId,currencyId);
             if (userCurrencyNum != null) {
                 userLockCoin = userCurrencyNum.getCurrencyNumberLock();
             }
