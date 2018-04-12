@@ -184,7 +184,7 @@
 
             <div class="buttons">
                 <input type="text" value="取&nbsp;消" class="cancel" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="confirm" onfocus="this.blur()" />
+                <input type="text" value="确&nbsp;定" class="confirm" id="addOrderConfirmId" onfocus="this.blur()" />
             </div>
         </div>
 
@@ -257,7 +257,7 @@
 
             <div class="buttons">
                 <input type="text" value="返&nbsp;回" class="back" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="yes"  onclick="addOrder()"  />
+                <input type="text" value="确&nbsp;定" class="yes" id="addOrderId"  onclick="addOrder()"  />
             </div>
         </div>
 
@@ -839,6 +839,7 @@
             popObj = ".add_pop"
         });
         $(".confirm").click(function(){
+            $("#addOrderConfirmId").attr("disabled",true);
             var orderType = $("#orderType").val();//判断如果是  出售单  直接执行提交方法
             var currencyId = $("#currencyId").val();//币种id
             var orderType = $("#orderType").val();//购买 1  出售 2  针对用户而言  经销商相反
@@ -847,54 +848,67 @@
             var minNumber = $("#minNumber").val();//最小限额
             var maxNumber = $("#maxNumber").val();//最大限额
             if(currencyId == null){
+                $("#addOrderConfirmId").attr("disabled",false);
                 openTips("请选择币种");
                 return;
             }
             if(orderType == null){
+                $("#addOrderConfirmId").attr("disabled",false);
                 openTips("请选择类型");
                 return;
             }
             if(area == null){
+                $("#addOrderConfirmId").attr("disabled",false);
                 openTips("请选择地区");
                 return;
             }
             if(pendingRatio == ""){
+                $("#addOrderConfirmId").attr("disabled",false);
                 openTips("请输入挂单比例");
                 return;
             }
             if(pendingRatio <= 0){
+                $("#addOrderConfirmId").attr("disabled",false);
                 openTips("挂单比例要大于0");
                 return;
             }
             if(minNumber == ""){
+                $("#addOrderConfirmId").attr("disabled",false);
                 openTips("请输入最低限额");
                 return;
             }
             if(minNumber <= 0){
+                $("#addOrderConfirmId").attr("disabled",false);
                 openTips("最低限额要大于0");
                 return;
             }
             if(maxNumber == ""){
+                $("#addOrderConfirmId").attr("disabled",false);
                 openTips("请输入最高限额");
                 return;
             }
             if(maxNumber <= 0){
+                $("#addOrderConfirmId").attr("disabled",false);
                 openTips("最高限额要大于0");
                 return;
             }
             if(Number(pendingRatio) > Number(999999.99)){
+                $("#addOrderConfirmId").attr("disabled",false);
                 openTips("挂单比例要小于一百万");
                 return;
             }
             if(Number(maxNumber) > Number(999999.99)){
+                $("#addOrderConfirmId").attr("disabled",false);
                 openTips("最高限额要小于一百万");
                 return;
             }
             if(Number(maxNumber) <= Number(minNumber)){
+                $("#addOrderConfirmId").attr("disabled",false);
                 openTips("最高限额要大于最低限额");
                 return;
             }
             if(accMul(accMul(pendingRatio,0.0001),10000) > accMul(maxNumber,10000)){
+                $("#addOrderConfirmId").attr("disabled",false);
                 openTips("最高限额过小");
                 return;
             }
@@ -912,6 +926,7 @@
             }
         });
         $(".back").click(function(){
+            $("#addOrderConfirmId").attr("disabled",false);
             $(".mask").fadeIn();
             $(".add_pop").fadeIn();
             $(".pay_pop").hide();
@@ -1177,6 +1192,9 @@
         } else {
             addOrderBoo = true;
         }
+
+        $("#addOrderId").attr("disabled",true);
+
         var currencyId = $("#currencyId").val();//币种id
         var orderType = $("#orderType").val();//购买 1  出售 2  针对用户而言  经销商相反
         var area = $("#area").val();//挂单比例
@@ -1193,50 +1211,70 @@
         var alipayImageUrl = document.getElementById("changead_a1").files[0];
         var wechatImageUrl = document.getElementById("changead_a2").files[0];//微信图片
         if(currencyId == null){
+            $("#addOrderConfirmId").attr("disabled",false);
+            $("#addOrderId").attr("disabled",false);
             openTips("请选择币种");
             return;
         }
         if(orderType == null){
+            $("#addOrderConfirmId").attr("disabled",false);
+            $("#addOrderId").attr("disabled",false);
             addOrderBoo =false;
             openTips("请选择类型");
             return;
         }
         if(area == null){
+            $("#addOrderConfirmId").attr("disabled",false);
+            $("#addOrderId").attr("disabled",false);
             addOrderBoo =false;
             openTips("请选择地区");
             return;
         }
         if(pendingRatio == ""){
+            $("#addOrderConfirmId").attr("disabled",false);
+            $("#addOrderId").attr("disabled",false);
             addOrderBoo =false;
             openTips("请输入挂单比例");
             return;
         }
         if(pendingRatio <= 0){
+            $("#addOrderConfirmId").attr("disabled",false);
+            $("#addOrderId").attr("disabled",false);
             addOrderBoo =false;
             openTips("挂单比例要大于0");
             return;
         }
         if(minNumber == ""){
+            $("#addOrderConfirmId").attr("disabled",false);
+            $("#addOrderId").attr("disabled",false);
             addOrderBoo =false;
             openTips("请输入最低限额");
             return;
         }
         if(minNumber < 0){
+            $("#addOrderConfirmId").attr("disabled",false);
+            $("#addOrderId").attr("disabled",false);
             addOrderBoo =false;
             openTips("最低限额不能小于0");
             return;
         }
         if(maxNumber == ""){
+            $("#addOrderConfirmId").attr("disabled",false);
+            $("#addOrderId").attr("disabled",false);
             addOrderBoo =false;
             openTips("请输入最高限额");
             return;
         }
         if(maxNumber <= 0){
+            $("#addOrderConfirmId").attr("disabled",false);
+            $("#addOrderId").attr("disabled",false);
             addOrderBoo =false;
             openTips("最高限额要大于0");
             return;
         }
         if(Number(maxNumber) <= Number(minNumber)){
+            $("#addOrderConfirmId").attr("disabled",false);
+            $("#addOrderId").attr("disabled",false);
             addOrderBoo =false;
             openTips("最高限额要大于最低限额");
             return;
@@ -1247,36 +1285,50 @@
         //银行
         if(document.getElementById("bankBox").checked){
             if(bankAccount == ""){
+                $("#addOrderConfirmId").attr("disabled",false);
+                $("#addOrderId").attr("disabled",false);
                 addOrderBoo =false;
                 openTips("请输入银行卡号");
                 return;
             }
             if(bankAccount.length < 16 || bankAccount.length > 19){
+                $("#addOrderConfirmId").attr("disabled",false);
+                $("#addOrderId").attr("disabled",false);
                 addOrderBoo =false;
                 openTips("银行卡号位数不正确");
                 return;
             }
             if(bankName == ""){
+                $("#addOrderConfirmId").attr("disabled",false);
+                $("#addOrderId").attr("disabled",false);
                 addOrderBoo =false;
                 openTips("请输入银行名称");
                 return;
             }
             if(bankBranch == ""){
+                $("#addOrderConfirmId").attr("disabled",false);
+                $("#addOrderId").attr("disabled",false);
                 addOrderBoo =false;
                 openTips("请输入银行支行");
                 return;
             }
             if(paymentName == ""){
+                $("#addOrderConfirmId").attr("disabled",false);
+                $("#addOrderId").attr("disabled",false);
                 addOrderBoo =false;
                 openTips("请输入银行卡预留姓名");
                 return;
             }
             if(paymentPhone == ""){
+                $("#addOrderConfirmId").attr("disabled",false);
+                $("#addOrderId").attr("disabled",false);
                 addOrderBoo =false;
                 openTips("请输入银行卡预留手机号");
                 return;
             }
             if(paymentPhone.length != 11){
+                $("#addOrderConfirmId").attr("disabled",false);
+                $("#addOrderId").attr("disabled",false);
                 addOrderBoo =false;
                 openTips("请输入11位手机号");
                 return;
@@ -1285,18 +1337,24 @@
         //支付宝
         if(document.getElementById("alipayBox").checked){
             if(alipayAccount == ""){
+                $("#addOrderConfirmId").attr("disabled",false);
+                $("#addOrderId").attr("disabled",false);
                 addOrderBoo =false;
                 openTips("请输入支付宝账户");
                 return;
             }
             var alipayImageUrlStr = $("#changead_t1").val();
             if (alipayImageUrlStr == null || alipayImageUrlStr == '') {
+                $("#addOrderConfirmId").attr("disabled",false);
+                $("#addOrderId").attr("disabled",false);
                 addOrderBoo =false;
                 return openTips("请上传支付宝收款码图片");
             }
         }
         //微信
         if(document.getElementById("wechatBox").checked){
+            $("#addOrderConfirmId").attr("disabled",false);
+            $("#addOrderId").attr("disabled",false);
             if(wechatAccount == ""){
                 addOrderBoo =false;
                 openTips("请输入微信账户");
@@ -1304,6 +1362,8 @@
             }
             var wechatImageUrlStr = $("#changead_t2").val();
             if (wechatImageUrlStr == null || wechatImageUrlStr == '') {
+                $("#addOrderConfirmId").attr("disabled",false);
+                $("#addOrderId").attr("disabled",false);
                 addOrderBoo =false;
                 return openTips("请上传微信收款码图片");
             }
@@ -1337,9 +1397,11 @@
                 var code = resultData.code;
                 var message = resultData.message;
                 if (code == -1) {
+                    $("#addOrderConfirmId").attr("disabled",false);
                     openTipsLoad(message);
                     return;
                 }else if (code != 1 && message != "") {
+                    $("#addOrderConfirmId").attr("disabled",false);
                     addOrderBoo = false;
                     openTips(message);
                     return;
