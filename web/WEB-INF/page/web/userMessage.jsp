@@ -25,7 +25,7 @@
 
     <div class="contentRight">
         <div class="top">
-            <div class="title">个人信息</div>
+            <div class="title">个人信息 <c:if test="${userSession.isDealer == 2}"><span class="identity">经销商</span>  </c:if></div>
 
             <div class="accountInfo">
                 <p class="info">
@@ -82,7 +82,7 @@
                 <c:forEach items="${otcTransactionPendOrderList }" var="otcPendOrder">
                 <tr class="coinInfo" id="${otcPendOrder.otcPendingOrderNo}">
                     <td class="coin">${otcPendOrder.currencyName }</td>
-                    <td class="type"><c:if test="${otcPendOrder.orderType == '1' }">购买</c:if><c:if test="${otcPendOrder.orderType == '2' }">出售</c:if></td>
+                    <td class="type"><c:if test="${otcPendOrder.orderType == '1' }">用户购买</c:if><c:if test="${otcPendOrder.orderType == '2' }">用户出售</c:if></td>
                     <td class="area">${otcPendOrder.area }</td>
                     <td class="proportion">1:<fmt:formatNumber type="number" value="${otcPendOrder.pendingRatio }" groupingUsed="FALSE" maxFractionDigits="4"/></td>
                     <td class="limit"><span><fmt:formatNumber type="number" value="${otcPendOrder.minNumber }" groupingUsed="FALSE" maxFractionDigits="4"/></span>~<span><fmt:formatNumber type="number" value="${otcPendOrder.maxNumber }" groupingUsed="FALSE" maxFractionDigits="4"/></span>CNY</td>
@@ -152,8 +152,8 @@
                 <label class="popName">类型<span class="star">*</span>：</label>
                 <select class="popSelected" onchange="changeOrderType(this.value)" id="orderType" name="orderType">
                     <option disabled selected>选择类型</option>
-                    <option value="2">出售</option>
-                    <option value="1">购买</option>
+                    <option value="2">用户出售</option>
+                    <option value="1">用户购买</option>
                 </select>
             </p>
             <p class="popInput">
@@ -166,7 +166,7 @@
             <p class="popInput">
                 <label class="popName">比例<span class="star">*</span>：</label>
                 <input type="text" id="pendingRatio" onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" name="pendingRatio" class="entry" placeholder="交易比例" />
-                <span class="remind">交易比例为 XT:兑换的货币单位如1:100填100</span>
+                <span class="remind">交易比例为：XT:兑换的货币单位，如1:100</span>
             </p>
             <p class="popInput">
                 <label class="popName">交易限额<span class="star">*</span>：</label>
@@ -214,7 +214,8 @@
                     </p>
                     <p class="popInput">
                         <label class="popName">预留电话<span class="star">*</span>：</label>
-                        <input type="text" id="paymentPhone" name="paymentPhone" onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"
+                        <input type="text" id="paymentPhone" name="paymentPhone" maxlength="11" onkeyup="matchUtil(this, 'number')" onblur="matchUtil(this, 'number')"
+                               onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"
                                class="entry" placeholder="该银行卡的银行预留电话" />
                     </p>
                 </div>
@@ -885,6 +886,14 @@
                 openTips("最大限额要大于最小限额");
                 return;
             }
+            if(parseInt(minNumber) > parseInt(pendingRatio)){
+                openTips("最小限额要小于挂单比例");
+                return;
+            }
+            if(parseInt(maxNumber) <= parseInt(pendingRatio)){
+                openTips("最大限额要大于挂单比例");
+                return;
+            }
             if(orderType == 2){
              addOrder();
             }else{
@@ -1382,6 +1391,36 @@
             }
         }
     }
+
+    var mapMatch = {};
+    mapMatch['number'] = /[^\d]/g;
+    mapMatch['ENumber'] = /[^\a-\z\A-\Z\d]/g;
+    mapMatch['double'] = true;
+    mapMatch['phone'] = /[^\d]/g;
+    mapMatch['email'] = /([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+    function matchUtil(o, str, nu) {
+        if(mapMatch[str] === true){
+            matchDouble(o, nu);
+        }else {
+            o.value = o.value.replace(mapMatch[str], '');
+        }
+    }
+
+    function matchDouble(o, num){
+        var matchStr = /^-?\d+\.?\d{0,num}$/;
+        if(!matchStr.test(o.value)){
+            if(isNaN(o.value)){
+                o.value = '';
+            }else{
+                var n = o.value.indexOf('.');
+                var m = n + num + 1;
+                if(n > -1 && o.value.length > m){
+                    o.value = o.value.substring(0, m);
+                }
+            }
+        }
+    }
+
 </script>
 
 </body>
