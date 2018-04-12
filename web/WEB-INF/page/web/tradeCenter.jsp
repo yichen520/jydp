@@ -155,7 +155,7 @@
                 </p>
                 <p class="buyInput">
                     <label class="tradeName">卖出数量：</label>
-                    <input type="text" class="entry" placeholder="请输入您要卖出的该币种数量" id="sellNum" name="sellNum"
+                    <input type="text" class="entry" placeholder="请输入您要卖出的数量" id="sellNum" name="sellNum"
                            onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" maxlength="11"/>
                     <span class="max">最大可获得：<span id="sellMax">0</span> XT</span>
                 </p>
@@ -759,16 +759,19 @@
     var popObj;
     $(function(){
         $(".buyBtn").click(function(){
-            var buyPrice = $("#buyPrice").val();
-            var buyNum = $("#buyNum").val();
+            var buyPriceStr = $("#buyPrice").val();
+            var buyNumStr = $("#buyNum").val();
             var buyTotal = $("#buyTotal").html();
             var buyPwd = $("#buyPwd").val();
             var currencyId = $("#cucyId").val();
             var isPwd = $("#userIsPwd").val();
 
+            var buyPrice = ridZero(buyPriceStr);
+            var buyNum = ridZero(buyNumStr);
+
+            $("#buyPwdConfirm").val(buyPwd);
             $("#buyPriceConfirm").val(buyPrice);
             $("#buyNumConfirm").val(buyNum);
-            $("#buyPwdConfirm").val(buyPwd);
 
             document.getElementById("buyPrice").value = "";
             document.getElementById("buyNum").value = "";
@@ -827,12 +830,15 @@
             popObj = ".buyConfirm"
         });
         $(".sellBtn").click(function(){
-            var sellPrice = $("#sellPrice").val();
-            var sellNum = $("#sellNum").val();
+            var sellPriceStr = $("#sellPrice").val();
+            var sellNumStr = $("#sellNum").val();
             var sellTotal = $("#sellTotal").html();
             var sellPwd = $("#sellPwd").val();
             var currencyId = $("#cucyId").val();
             var isPwd = $("#userIsPwd").val();
+
+            var sellPrice = ridZero(sellPriceStr);
+            var sellNum = ridZero(sellNumStr);
 
             $("#sellPriceConfirm").val(sellPrice);
             $("#sellNumConfirm").val(sellNum);
@@ -1733,6 +1739,16 @@
     //返回首页
     function returnWebHome(){
         window.location.href = "<%=path%>" + "/userWeb/homePage/show";
+    }
+    //去掉数字前0
+    function ridZero(str) {
+        if (str.indexOf(".") == -1) {
+            return Number(str);
+        } else {
+            var fields = str.split(".");
+            fields[0] = new Number(fields[0]);
+            return fields.join(".");
+        }
     }
 </script>
 </body>
