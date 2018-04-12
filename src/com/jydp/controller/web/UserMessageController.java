@@ -568,6 +568,12 @@ public class UserMessageController {
             resultJson.setMessage("未登录");
             return resultJson;
         }
+        boolean fq =UserWebInterceptor.handleFrequent(request);
+        if(fq){
+            resultJson.setCode(2);
+            resultJson.setMessage("用户操作频繁");
+            return resultJson;
+        }
         //判断用户是否为经销商
         if(userSession.getIsDealer() != 2){//不是经销商
             resultJson.setCode(3);
@@ -605,6 +611,11 @@ public class UserMessageController {
         if(otcOrderVO.getMaxNumber() <= otcOrderVO.getMinNumber()){
             resultJson.setCode(3);
             resultJson.setMessage("最高限额要大于最低限额");
+            return resultJson;
+        }
+        if(otcOrderVO.getOrderType() !=1 && otcOrderVO.getOrderType() !=2){
+            resultJson.setCode(3);
+            resultJson.setMessage("订单类型不正确");
             return resultJson;
         }
         if (otcOrderVO.getOrderType() == 1) {//出售单需要判断 回购单不需要判断支付方式
