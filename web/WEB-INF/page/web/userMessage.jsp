@@ -85,7 +85,7 @@
                     <td class="type"><c:if test="${otcPendOrder.orderType == '1' }">用户购买</c:if><c:if test="${otcPendOrder.orderType == '2' }">用户出售</c:if></td>
                     <td class="area">${otcPendOrder.area }</td>
                     <td class="proportion">1:<fmt:formatNumber type="number" value="${otcPendOrder.pendingRatio }" groupingUsed="FALSE" maxFractionDigits="4"/></td>
-                    <td class="limit"><span><fmt:formatNumber type="number" value="${otcPendOrder.minNumber }" groupingUsed="FALSE" maxFractionDigits="4"/></span>~<span><fmt:formatNumber type="number" value="${otcPendOrder.maxNumber }" groupingUsed="FALSE" maxFractionDigits="4"/></span>CNY</td>
+                    <td class="limit"><span><fmt:formatNumber type="number" value="${otcPendOrder.minNumber }" groupingUsed="FALSE" maxFractionDigits="2"/></span>~<span><fmt:formatNumber type="number" value="${otcPendOrder.maxNumber }" groupingUsed="FALSE" maxFractionDigits="2"/></span>CNY</td>
                     <td class="operate">
                         <input type="text" value="删&nbsp;除" class="delete" onfocus="this.blur()" onclick="openOrderDelete('${otcPendOrder.otcPendingOrderNo}')"/>
                     </td>
@@ -166,12 +166,12 @@
             <p class="popInput">
                 <label class="popName">比例<span class="star">*</span>：</label>
                 <input type="text" id="pendingRatio" maxlength="10"  onkeyup="matchUtil(this, 'double', 4)" onblur="matchUtil(this, 'double', 4)" name="pendingRatio" class="entry" placeholder="交易比例" />
-                <span class="remind">交易比例为：XT:兑换的货币单位，如1:100</span>
+                <span class="remind">交易比例为：XT:兑换的货币单位；若比例为1:100，则填100。</span>
             </p>
             <p class="popInput">
                 <label class="popName">交易限额<span class="star">*</span>：</label>
-                <input type="text"  id="minNumber" maxlength="10"  onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)"  name="minNumber" class="lowLimit" placeholder="交易最低限额" />&nbsp;～
-                <input type="text"  id="maxNumber" maxlength="10" onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)"  name="maxNumber" class="highLimit" placeholder="交易最高限额" />
+                <input type="text"  id="minNumber" maxlength="10"  onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)"  name="minNumber" class="lowLimit" placeholder="最低限额,单位:CNY" />&nbsp;～
+                <input type="text"  id="maxNumber" maxlength="10" onkeyup="matchUtil(this, 'double', 2)" onblur="matchUtil(this, 'double', 2)"  name="maxNumber" class="highLimit" placeholder="最高限额,单位:CNY" />
             </p>
             <p class="choose">
                 <label class="popName">支付方式<span class="star">*</span>：</label>
