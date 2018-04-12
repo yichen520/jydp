@@ -142,6 +142,13 @@ public class DealerOtcDealRecordController {
 
         String otcOrderNo = StringUtil.stringNullHandle(request.getParameter("otcOrderNo"));
 
+        boolean fq =UserWebInterceptor.handleFrequent(request);
+        if(fq){
+            responseJson.setCode(2);
+            responseJson.setMessage("用户操作频繁");
+            return responseJson;
+        }
+
         if (!StringUtil.isNotNull(otcOrderNo)) {
             responseJson.setCode(3);
             responseJson.setMessage("参数错误");
@@ -183,6 +190,13 @@ public class DealerOtcDealRecordController {
         JsonObjectBO responseJson = new JsonObjectBO();
 
         String otcOrderNo = StringUtil.stringNullHandle(request.getParameter("otcOrderNo"));
+
+        boolean fq =UserWebInterceptor.handleFrequent(request);
+        if(fq){
+            responseJson.setCode(2);
+            responseJson.setMessage("用户操作频繁");
+            return responseJson;
+        }
 
         if (!StringUtil.isNotNull(otcOrderNo)) {
             responseJson.setCode(3);

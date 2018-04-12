@@ -568,6 +568,12 @@ public class UserMessageController {
             resultJson.setMessage("未登录");
             return resultJson;
         }
+        boolean fq =UserWebInterceptor.handleFrequent(request);
+        if(fq){
+            resultJson.setCode(2);
+            resultJson.setMessage("用户操作频繁");
+            return resultJson;
+        }
         //判断用户是否为经销商
         if(userSession.getIsDealer() != 2){//不是经销商
             resultJson.setCode(3);
