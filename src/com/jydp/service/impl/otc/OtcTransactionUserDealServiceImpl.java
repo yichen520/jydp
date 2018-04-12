@@ -526,7 +526,7 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
             UserBalanceDO userBalanceDO = new UserBalanceDO();
             userBalanceDO.setOrderNo(orderNo);  //记录号：业务类型（2）+日期（6）+随机位（10）
             userBalanceDO.setUserId(userId);
-            userBalanceDO.setFromType("系统操作");
+            userBalanceDO.setFromType("线下买入广告");
             userBalanceDO.setCurrencyId(UserBalanceConfig.DOLLAR_ID);  //币种Id,美元id=999
             userBalanceDO.setCurrencyName(UserBalanceConfig.DOLLAR);  //货币名称
             userBalanceDO.setBalanceNumber(otcTransactionUserDeal.getCurrencyNumber());  //交易数量
