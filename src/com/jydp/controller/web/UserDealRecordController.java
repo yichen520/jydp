@@ -226,9 +226,9 @@ public class UserDealRecordController {
 
         JsonObjectBO userConfirmation = null;
         if(otcTransactionUserDeal.getDealType() == 1){
-            userConfirmation = otcTransactionUserDealService.userConfirmationOfReceipts(otcTransactionUserDeal, userBo.getUserId());
-        } else if(otcTransactionUserDeal.getDealType() == 2){
             userConfirmation = otcTransactionUserDealService.userConfirmationOfReceiptsurchase(otcTransactionUserDeal, userBo.getUserId());
+        } else if(otcTransactionUserDeal.getDealType() == 2){
+            userConfirmation = otcTransactionUserDealService.userConfirmationOfReceipts(otcTransactionUserDeal, userBo.getUserId());
         } else {
             response.setCode(3);
             response.setMessage("非法类型");
