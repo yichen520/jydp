@@ -58,7 +58,7 @@
                     <select class="askSelect" id="dealStatus" name="dealStatus">
                         <option value="0">全部</option>
                         <option value="1">待完成</option>
-                        <option value="3">待确认</option>
+                        <option value="2">待确认</option>
                         <option value="4">已完成</option>
                     </select>
                 </p>
@@ -144,7 +144,7 @@
                                 <c:if test="${userDeal.dealStatus == 1}">
                                     <span class="wait">待完成</span>
                                 </c:if>
-                                <c:if test="${userDeal.dealStatus == 3}">
+                                <c:if test="${userDeal.dealStatus == 2 || userDeal.dealStatus == 3}">
                                     <span class="wait_confirm">待确认</span>
                                 </c:if>
                                 <c:if test="${userDeal.dealStatus == 4}">

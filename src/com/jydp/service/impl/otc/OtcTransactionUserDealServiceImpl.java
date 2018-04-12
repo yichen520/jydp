@@ -665,8 +665,6 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
             return response;
         }
 
-        boolean excuteSuccess = false;
-
         Timestamp updateTime = DateUtil.getCurrentTime();
         //交易记录状态修改
         if(otcTransactionUserDeal.getDealStatus() == 1){
@@ -693,28 +691,28 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
         if (currencyId == UserBalanceConfig.DOLLAR_ID) {
 
             //减少经销商锁定资产
-            if (excuteSuccess) {
-                excuteSuccess = userService.updateReduceUserBalanceLock(userId,currencyNumber);
+            if (executeSuccess) {
+                executeSuccess = userService.updateReduceUserBalanceLock(userId,currencyNumber);
             }
 
             //增加用户可用资产
-            if (excuteSuccess) {
-                excuteSuccess = userService.updateAddUserAmount(transactionUserId,currencyNumber,0);
+            if (executeSuccess) {
+                executeSuccess = userService.updateAddUserAmount(transactionUserId,currencyNumber,0);
             }
         } else {
 
             //减少经销商冻结币数量
-            if (excuteSuccess) {
-                excuteSuccess = userCurrencyNumService.reduceCurrencyNumberLock(userId,currencyId,currencyNumber);
+            if (executeSuccess) {
+                executeSuccess = userCurrencyNumService.reduceCurrencyNumberLock(userId,currencyId,currencyNumber);
             }
 
             //增加用户货币数量
-            if (excuteSuccess) {
-                excuteSuccess = userCurrencyNumService.increaseCurrencyNumber(transactionUserId,currencyId,currencyNumber);
+            if (executeSuccess) {
+                executeSuccess = userCurrencyNumService.increaseCurrencyNumber(transactionUserId,currencyId,currencyNumber);
             }
         }
 
-        if (!excuteSuccess) {
+        if (!executeSuccess) {
             //数据回滚
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             response.setCode(2);

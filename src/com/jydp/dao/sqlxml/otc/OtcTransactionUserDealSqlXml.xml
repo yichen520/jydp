@@ -116,8 +116,11 @@
         <if test="currencyId != null and currencyId != 0">
             AND OTUD.currencyId = #{currencyId}
         </if>
-        <if test="dealStatus != null and dealStatus != 0">
+        <if test="dealStatus != null and dealStatus != 0 and dealStatus != 2">
             AND OTUD.dealStatus = #{dealStatus}
+        </if>
+        <if test="dealStatus == 2">
+            AND (OTUD.dealStatus = 2 OR  OTUD.dealStatus = 3)
         </if>
         <if test="startAddTime != null">
             AND OTUD.addTime <![CDATA[ >= ]]> #{startAddTime}
@@ -150,8 +153,11 @@
         <if test="currencyId != null and currencyId != 0">
             AND OTUD.currencyId = #{currencyId}
         </if>
-        <if test="dealStatus != null and dealStatus != 0">
+        <if test="dealStatus != null and dealStatus != 0 and dealStatus != 2">
             AND OTUD.dealStatus = #{dealStatus}
+        </if>
+        <if test="dealStatus == 2">
+            AND (OTUD.dealStatus = 2 OR  OTUD.dealStatus = 3)
         </if>
         <if test="startAddTime != null">
             AND OTUD.addTime <![CDATA[ >= ]]> #{startAddTime}
