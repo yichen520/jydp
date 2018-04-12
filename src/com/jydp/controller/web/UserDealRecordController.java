@@ -2,6 +2,7 @@ package com.jydp.controller.web;
 
 import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.DateUtil;
+import com.iqmkj.utils.NumberUtil;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
@@ -94,6 +95,12 @@ public class UserDealRecordController {
         if(totalNumber > 0){
             otcTransactionUserDealList = otcTransactionUserDealService.listOtcTransactionUsealByUserId(userBo.getUserId(),
                     dealerName, currencyId, dealType, dealStatus, startAddTime, endAddTime, pageNumber, pageSize);
+            if(otcTransactionUserDealList != null && otcTransactionUserDealList.size() > 0){
+                for(OtcTransactionUserDealVO otcTransactionUserDeal : otcTransactionUserDealList){
+                    double currencyTotalPrice = NumberUtil.doubleFormat(otcTransactionUserDeal.getCurrencyTotalPrice(), 2);
+                    otcTransactionUserDeal.setCurrencyTotalPrice(currencyTotalPrice);
+                }
+            }
         }
 
         request.setAttribute("pageNumber", pageNumber);
@@ -173,6 +180,12 @@ public class UserDealRecordController {
         if(totalNumber > 0){
             otcTransactionUserDealList = otcTransactionUserDealService.listOtcTransactionUsealByUserId(userBo.getUserId(),
                     dealerName, currencyId, dealType, dealStatus, startAddTime, endAddTime, pageNumber, pageSize);
+            if(otcTransactionUserDealList != null && otcTransactionUserDealList.size() > 0){
+                for(OtcTransactionUserDealVO otcTransactionUserDeal : otcTransactionUserDealList){
+                    double currencyTotalPrice = NumberUtil.doubleFormat(otcTransactionUserDeal.getCurrencyTotalPrice(), 2);
+                    otcTransactionUserDeal.setCurrencyTotalPrice(currencyTotalPrice);
+                }
+            }
         }
         //返回对象
         JSONObject jsonObject = new JSONObject();
