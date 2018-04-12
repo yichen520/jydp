@@ -607,6 +607,11 @@ public class UserMessageController {
             resultJson.setMessage("最高限额要大于最低限额");
             return resultJson;
         }
+        if(otcOrderVO.getOrderType() !=1 && otcOrderVO.getOrderType() !=2){
+            resultJson.setCode(3);
+            resultJson.setMessage("订单类型不正确");
+            return resultJson;
+        }
         if (otcOrderVO.getOrderType() == 1) {//出售单需要判断 回购单不需要判断支付方式
             // 判断是否选择付款方式
             if (!StringUtil.isNotNull(otcOrderVO.getBankAccount()) && !StringUtil.isNotNull(otcOrderVO.getAlipayAccount()) && !StringUtil.isNotNull(otcOrderVO.getWechatAccount())) {
