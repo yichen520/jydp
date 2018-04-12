@@ -68,8 +68,9 @@
                     <c:if test="${pendOrder.orderType == 2}">
                         <td class="type sale">出售</td>
                     </c:if>
-                    <td class="limit"><span>${pendOrder.minNumber}</span>~<span>${pendOrder.maxNumber}</span>CNY</td>
-                    <td class="proportion">1:${pendOrder.pendingRatio}</td>
+                    <td class="limit"><span><fmt:formatNumber type="number" value="${pendOrder.minNumber }" groupingUsed="FALSE" maxFractionDigits="2"/>
+                            </span>~<span><fmt:formatNumber type="number" value="${pendOrder.maxNumber }" groupingUsed="FALSE" maxFractionDigits="2"/></span>CNY</td>
+                    <td class="proportion">1:<fmt:formatNumber type="number" value="${pendOrder.pendingRatio }" groupingUsed="FALSE" maxFractionDigits="2"/></td>
                     <td class="operate">
                         <c:if test="${pendOrder.orderType == 1}">
                             <input type="text" value="我要购买" class="tradeBuy" onfocus="this.blur()"
@@ -327,20 +328,23 @@
                 <div class="card">
                     <p class="popInput">
                         <label class="popName">银行卡号<span class="star">*</span>：</label>
-                        <input type="text" class="entry" placeholder="您的银行卡号" id="sellBankCard"
+                        <input type="text" class="entry" placeholder="您的银行卡号" id="sellBankCard" maxlength="19"
                                onkeyup="value=value.replace(/[^\d]/g,'')" onblur="value=value.replace(/[^\d]/g,'')"/>
                     </p>
                     <p class="popInput">
                         <label class="popName">银行名称<span class="star">*</span>：</label>
-                        <input type="text" class="entry" placeholder="该银行卡的银行名称" id="sellBankName"/>
+                        <input type="text" class="entry" placeholder="该银行卡的银行名称" id="sellBankName" maxlength="15"
+                               onkeyup="value=value.replace(/[^a-zA-Z0-9\u4E00-\u9FA5]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9\u4E00-\u9FA5]/g,'')"/>
                     </p>
                     <p class="popInput">
                         <label class="popName">支行名称<span class="star">*</span>：</label>
-                        <input type="text" class="entry" placeholder="该卡的支行名称" id="sellBankBranch"/>
+                        <input type="text" class="entry" placeholder="该卡的支行名称" id="sellBankBranch" maxlength="50"
+                               onkeyup="value=value.replace(/[^a-zA-Z0-9\u4E00-\u9FA5]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9\u4E00-\u9FA5]/g,'')"/>
                     </p>
                     <p class="popInput">
                         <label class="popName">预留姓名<span class="star">*</span>：</label>
-                        <input type="text" class="entry" placeholder="该银行卡的银行预留姓名" id="sellPaymentName"/>
+                        <input type="text" class="entry" placeholder="该银行卡的银行预留姓名" id="sellPaymentName" maxlength="30"
+                               onkeyup="value=value.replace(/[^a-zA-Z0-9\u4E00-\u9FA5]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9\u4E00-\u9FA5]/g,'')"/>
                     </p>
                     <p class="popInput">
                         <label class="popName">预留电话<span class="star">*</span>：</label>
@@ -352,7 +356,7 @@
                 <div class="ali">
                     <p class="popInput">
                         <label class="popName">支付宝账号<span class="star">*</span>：</label>
-                        <input type="text" class="entry" placeholder="您的支付宝账号" id="sellAliAccount"/>
+                        <input type="text" class="entry" placeholder="您的支付宝账号" id="sellAliAccount" maxlength="30"/>
                     </p>
                     <p class="popInput">
                         <label class="popName">收款码<span class="star">*</span>：</label>
@@ -367,7 +371,8 @@
                 <div class="wechat">
                     <p class="popInput">
                         <label class="popName">微信账号<span class="star">*</span>：</label>
-                        <input type="text" class="entry" placeholder="您的微信账号" id="sellWxAccount"/>
+                        <input type="text" class="entry" placeholder="您的微信账号" id="sellWxAccount" maxlength="30"
+                               onkeyup="value=value.replace(/[^a-zA-Z0-9]/g,'')" onblur="value=value.replace(/[^a-zA-Z0-9]/g,'')"/>
                     </p>
                     <p class="popInput">
                         <label class="popName">收款码<span class="star">*</span>：</label>
@@ -523,28 +528,7 @@
             $(".mask").fadeOut("fast");
             $(popObj).fadeOut("fast");
 
-            $("#buyNumber").val("");
-            $("#sellNumber").val("");
-            $("#buySum").html("¥0");
-            $("#sellSum").html("¥0");
-            $("#sellNumber").val("");
-            $("#sellSum").html("¥0");
-            $("#sellBankCard").val("");
-            $("#sellBankName").val("");
-            $("#sellBankBranch").val("");
-            $("#sellPaymentName").val("");
-            $("#sellPaymentPhone").val("");
-            $("#sellAliAccount").val("");
-            $("#changead_t1").val("");
-            $("#sellWxAccount").val("");
-            $("#changead_t2").val("");
-
-            $("#paymentType").val(0);
-            $("#sellPayType").val(0);
-            $(".card").hide();
-            $(".ali").hide();
-            $(".wechat").hide();
-
+            qingkong();
         });
         $(".yes").click(function(){
             $(".mask").fadeOut("fast");
@@ -572,6 +556,30 @@
             $(".ali").hide();
             $(".wechat").css("display" , "inline-block");
         }
+    }
+
+    function qingkong() {
+        $("#buyNumber").val("");
+        $("#sellNumber").val("");
+        $("#buySum").html("¥0");
+        $("#sellSum").html("¥0");
+        $("#sellNumber").val("");
+        $("#sellSum").html("¥0");
+        $("#sellBankCard").val("");
+        $("#sellBankName").val("");
+        $("#sellBankBranch").val("");
+        $("#sellPaymentName").val("");
+        $("#sellPaymentPhone").val("");
+        $("#sellAliAccount").val("");
+        $("#changead_t1").val("");
+        $("#sellWxAccount").val("");
+        $("#changead_t2").val("");
+
+        $("#paymentType").val(0);
+        $("#sellPayType").val(0);
+        $(".card").hide();
+        $(".ali").hide();
+        $(".wechat").hide();
     }
 </script>
 
@@ -815,10 +823,12 @@
                 var message = result.message;
                 $(".mask").fadeOut("fast");
                 $(popObj).fadeOut("fast");
+                qingkong();
                 openTips(message);
 
             }, error: function () {
-            buyFinalBoo = false;
+                buyFinalBoo = false;
+                qingkong();
                 openTips("请重新刷新页面后重试");
             }
         });
@@ -831,8 +841,8 @@
             return;
         }
 
-        $("#sellMin").val(min);
-        $("#sellMax").val(max);
+        $("#sellMin").val(parseInt(min));
+        $("#sellMax").val(parseInt(max));
         $("#sellDealerName").html(dealerName);
         $("#sellRatio").val(pendingRatio);
         $("#sellOrderNo").val(otcPendingOrderNo);
@@ -887,6 +897,10 @@
                 openTips("请输入银行卡号");
                 return;
             }
+            if(sellBankCard.length < 16 || sellBankCard.length >19){
+                openTips("银行卡号在16-19位之间");
+                return;
+            }
             if(sellBankName == null || sellBankName == ''){
                 openTips("请输入银行名称");
                 return;
@@ -901,6 +915,10 @@
             }
             if(sellPaymentPhone == null || sellPaymentPhone == ''){
                 openTips("请输入银行预留电话");
+                return;
+            }
+            if(sellPaymentPhone.length != 11){
+                openTips("请输入11位银行预留电话");
                 return;
             }
 
@@ -1016,10 +1034,12 @@
                 var message = result.message;
                 $(".mask").fadeOut("fast");
                 $(popObj).fadeOut("fast");
+                qingkong();
                 openTips(message);
 
             }, error: function () {
                 sellFinalBoo = false;
+                qingkong();
                 openTips("请重新刷新页面后重试");
             }
         });
@@ -1143,7 +1163,7 @@
         var fileSize = 0;
         var filetypes = [".jpg", ".jpeg", ".png", ".JPG", ".JPEG", ".PNG"];
         var filepath = target.value;
-        var filemaxsize = 1024 * 10;//10M
+        var filemaxsize = 1024 * 3;//10M
         if (filepath) {
             var isnext = false;
             var fileend = filepath.substring(filepath.lastIndexOf("."));
