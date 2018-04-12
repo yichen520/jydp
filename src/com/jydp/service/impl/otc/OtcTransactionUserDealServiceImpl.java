@@ -490,6 +490,10 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
                 response.setMessage("确认失败请重试");
                 return response;
             }
+        } else {
+            response.setCode(3);
+            response.setMessage("该订单已被确认或已完成，请刷新页面后重试");
+            return response;
         }
 
         //经销商币解冻
