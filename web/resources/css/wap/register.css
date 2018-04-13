@@ -70,11 +70,11 @@ header{
     float: left;
 }
 .registerContent div:nth-of-type(3) input{
-    width: 75%;
+    width: 65%;
     float: left;
 }
 .registerContent div:nth-of-type(3) p{
-    width: 25%;
+    width: 35%;
     float: right;
     text-align: right;
     color: #e83a33;
