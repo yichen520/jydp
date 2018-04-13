@@ -28,7 +28,7 @@
         <div class="showBoxContent">是否撤销该委托？</div>
         <div class="showBoxButton">
             <div class="cancelShow">取消</div>
-            <div class="okay" onclick="cancleOrder()">确定</div>
+            <div class="okay" onclick="sendAjax()">确定</div>
         </div>
     </div>
 </div>
@@ -305,29 +305,25 @@
 
     //撤销申请
     var pendingOrderNoCancel;
+    var clickFlag = false
     function applicationCanceled() {
         pendingOrderNoCancel = $(this).parent().children('.findClass').val();
         var bgHeight = $(document).height();
-            $('.bg').css("height", bgHeight + "px");
-            $('.bg').fadeIn();
-
-        $('.okay').on('click', function () {
-            $('.bg').css("height", "0");
-            $('.bg').fadeOut();
-        });
+        $('.bg').css("height", bgHeight + "px");
+        $('.bg').fadeIn();
 
         $('.cancelShow').on('click', function () {
             $('.bg').css("height", "0");
             $('.bg').fadeOut();
+            clickFlag = false;
         });
     }
-
     function cancleOrder() {
+        console.log('cancleOrder');
         if (pendingOrderNoCancel == "" || pendingOrderNoCancel == null) {
             openTips("挂单号错误");
             return;
         }
-
         $.ajax({
             url: webPath + "/userWap/wapTransactionPendOrderController/revoke.htm",
             data: {
@@ -352,6 +348,15 @@
                 openTips("数据加载出错，请稍候重试");
             }
         });
+    }
+    var timer = null;
+    function sendAjax() {
+        $('.bg').css("height", "0");
+        $('.bg').fadeOut();
+        clearTimeout(timer);
+        timer = setTimeout(function(){
+            cancleOrder();
+        },500)
     }
 
     function seeMore() {
