@@ -916,6 +916,7 @@
              addOrder();
             }else{
                     if(document.getElementById("bankBox").checked==false&&document.getElementById("alipayBox").checked==false&&document.getElementById("wechatBox").checked==false){
+                        $("#addOrderConfirmId").attr("disabled",false);
                         openTips("请勾选支付方式");
                         return;
                     }
