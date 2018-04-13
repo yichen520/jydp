@@ -230,6 +230,11 @@ public class BackerTransactionCurrencyController {
             response.setMessage("指导价必须大于0");
             return response;
         }
+        if (buyFee < 0 || sellFee < 0) {
+            response.setCode(3);
+            response.setMessage("费率不能小于0");
+            return response;
+        }
 
         TransactionCurrencyVO currurrencyName = transactionCurrencyService.getTransactionCurrencyByCurrencyName(currencyNameStr);
         TransactionCurrencyVO currencyByshortName = transactionCurrencyService.getTransactionCurrencyByCurrencyShortName(currencyShortNameStr);

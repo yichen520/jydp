@@ -585,6 +585,23 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
             executeSuccess = serService.updateReduceUserBalanceLock(otcTransactionPendOrder.getUserId(), otcTransactionUserDeal.getCurrencyNumber());
         }
 
+        if(executeSuccess){
+            //增加经销商冻结XT减少记录
+            String orderNo = SystemCommonConfig.USER_BALANCE + DateUtil.longToTimeStr(updateTime.getTime(), DateUtil.dateFormat10) + NumberUtil.createNumberStr(10);
+            UserBalanceDO userBalanceDO = new UserBalanceDO();
+            userBalanceDO.setOrderNo(orderNo);  //记录号：业务类型（2）+日期（6）+随机位（10）
+            userBalanceDO.setUserId(userId);
+            userBalanceDO.setFromType("线下出售广告");
+            userBalanceDO.setCurrencyId(UserBalanceConfig.DOLLAR_ID);  //币种Id,美元id=999
+            userBalanceDO.setCurrencyName(UserBalanceConfig.DOLLAR);  //货币名称
+            userBalanceDO.setBalanceNumber(otcTransactionUserDeal.getCurrencyNumber());  //交易数量
+            userBalanceDO.setFrozenNumber(otcTransactionUserDeal.getCurrencyNumber() * -1);  //冻结数量
+            userBalanceDO.setRemark("线下XT出售订单完成经销商币种解冻");
+            userBalanceDO.setAddTime(updateTime);
+            //添加用户账户记录
+            executeSuccess = userBalanceService.insertUserBalance(userBalanceDO);
+        }
+
         // 数据回滚
         if (!executeSuccess) {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -705,6 +722,23 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
             if (executeSuccess) {
                 executeSuccess = userCurrencyNumService.increaseCurrencyNumber(transactionUserId,currencyId,currencyNumber);
             }
+        }
+
+        if(executeSuccess){
+            //增加用户冻结XT减少记录
+            String orderNo = SystemCommonConfig.USER_BALANCE + DateUtil.longToTimeStr(updateTime.getTime(), DateUtil.dateFormat10) + NumberUtil.createNumberStr(10);
+            UserBalanceDO userBalanceDO = new UserBalanceDO();
+            userBalanceDO.setOrderNo(orderNo);  //记录号：业务类型（2）+日期（6）+随机位（10）
+            userBalanceDO.setUserId(userId);
+            userBalanceDO.setFromType("线下买入广告");
+            userBalanceDO.setCurrencyId(UserBalanceConfig.DOLLAR_ID);  //币种Id,美元id=999
+            userBalanceDO.setCurrencyName(UserBalanceConfig.DOLLAR);  //货币名称
+            userBalanceDO.setBalanceNumber(otcTransactionUserDeal.getCurrencyNumber());  //交易数量
+            userBalanceDO.setFrozenNumber(otcTransactionUserDeal.getCurrencyNumber() * -1);  //冻结数量
+            userBalanceDO.setRemark("线下XT购买订单完成用户币种解冻");
+            userBalanceDO.setAddTime(updateTime);
+            //添加用户账户记录
+            executeSuccess = userBalanceService.insertUserBalance(userBalanceDO);
         }
 
         if (!executeSuccess) {
