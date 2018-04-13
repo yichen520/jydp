@@ -26,6 +26,7 @@
         <form id="queryForm" action="<%=path %>/userWeb/otcTradeCenter/show" method="post">
             <p class="condition">币种：
                 <select class="askSelect" id="currencyId" name="currencyId">
+                    <option value="0">全部</option>
                     <option value="999">XT</option>
                 </select>
             </p>
@@ -38,6 +39,7 @@
             </p>
             <p class="condition">地区：
                 <select class="askSelect" id="area" name="area">
+                    <option value="">全部</option>
                     <option value="中国(CN)">中国(CN)</option>
                 </select>
             </p>
@@ -713,10 +715,10 @@
             return;
         }
 
-        var min = parseInt($("#buyMin").val());
-        var max = parseInt($("#buyMax").val());
+        var min = parseFloat($("#buyMin").val());
+        var max = parseFloat($("#buyMax").val());
 
-        var buySumNum = parseInt(buySum.substring(1));
+        var buySumNum = parseFloat(buySum.substring(1));
         if(buySumNum < min){
             toPayBoo = false;
             openTips("交易额度不能小于最小限额");
@@ -871,10 +873,10 @@
             return;
         }
 
-        var min = parseInt($("#sellMin").val());
-        var max = parseInt($("#sellMax").val());
+        var min = parseFloat($("#sellMin").val());
+        var max = parseFloat($("#sellMax").val());
 
-        var sellSumNum = parseInt(sum.substring(1));
+        var sellSumNum = parseFloat(sum.substring(1));
         if(sellSumNum < min){
             toPayBoo = false;
             openTips("交易额度不能小于最小限额");
