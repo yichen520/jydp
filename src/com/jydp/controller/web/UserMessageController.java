@@ -637,13 +637,13 @@ public class UserMessageController {
             if (StringUtil.isNotNull(otcOrderVO.getAlipayAccount())) {//支付宝
                 if (alipayImageUrl == null || alipayImageUrl.isEmpty()) {
                     resultJson.setCode(3);
-                    resultJson.setMessage("支付宝参数错误");
+                    resultJson.setMessage("支付宝账户参数错误");
                     return resultJson;
                 }
                 String alipayImage = ImageReduceUtil.reduceImageUploadRemote(alipayImageUrl, FileUrlConfig.file_remote_qeCodeImage_url);
                 if (alipayImage.equals("") || alipayImage == null) {
                     resultJson.setCode(3);
-                    resultJson.setMessage("微信二维码上传失败");
+                    resultJson.setMessage("支付宝收款码上传失败");
                     return resultJson;
                 }
                 otcOrderVO.setAlipayImage(alipayImage);
@@ -651,13 +651,13 @@ public class UserMessageController {
             if (StringUtil.isNotNull(otcOrderVO.getWechatAccount())) {//微信
                 if (wechatImageUrl == null || wechatImageUrl.isEmpty()) {
                     resultJson.setCode(3);
-                    resultJson.setMessage("微信参数错误");
+                    resultJson.setMessage("微信账户参数错误");
                     return resultJson;
                 }
                 String wechatImage = ImageReduceUtil.reduceImageUploadRemote(wechatImageUrl, FileUrlConfig.file_remote_qeCodeImage_url);
                 if (wechatImage.equals("") || wechatImage == null) {
                     resultJson.setCode(3);
-                    resultJson.setMessage("微信二维码上传失败");
+                    resultJson.setMessage("微信收款码上传失败");
                     return resultJson;
                 }
                 otcOrderVO.setWechatImage(wechatImage);
