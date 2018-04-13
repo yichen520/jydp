@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC
+		"-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jydp.dao.impl.user.UserPaymentTypeDaoImpl">
+
+	<insert id="UserPaymentType_insertUserPaymentType" useGeneratedKeys="true" keyProperty="typeId" parameterType="UserPaymentTypeDO">
+		INSERT INTO user_payment_type_tab
+		(userId, otcPendingOrderNo, paymentType, paymentAccount, bankName, bankCode, bankBranch,
+		 paymentName, paymentPhone, paymentImage, remark,addTime)
+		VALUES
+		(#{userId}, #{otcPendingOrderNo}, #{paymentType}, #{paymentAccount}, #{bankName}, #{bankCode}, #{bankBranch},
+		 #{paymentName}, #{paymentPhone}, #{paymentImage}, #{remark}, #{addTime})
+	</insert>
+
+	<select id="UserPaymentType_getUserPaymentType" parameterType="java.util.Map" resultType="UserPaymentTypeDO">
+		SELECT typeId,userId,otcPendingOrderNo,paymentType,paymentAccount,bankName,
+		bankCode,bankBranch,paymentName,paymentPhone,paymentImage,typeStatus,
+		remark,updateTime,addTime
+		FROM user_payment_type_tab
+		WHERE userId = #{userId}
+		  AND otcPendingOrderNo = #{otcPendingOrderNo}
+		  AND paymentType = #{paymentType}
+	</select>
+
+	<select id="UserPaymentType_listUserPaymentType" parameterType="java.util.Map" resultType="UserPaymentTypeDO">
+		SELECT typeId,userId,otcPendingOrderNo,paymentType,paymentAccount,bankName,
+		bankCode,bankBranch,paymentName,paymentPhone,paymentImage,typeStatus,
+		remark,updateTime,addTime
+		FROM user_payment_type_tab
+		WHERE userId = #{userId}
+		  AND otcPendingOrderNo = #{otcPendingOrderNo}
+	</select>
+
+</mapper>

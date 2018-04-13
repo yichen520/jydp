@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC
+		"-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jydp.dao.impl.otc.otcTransactionPendOrderDaoImpl">
+
+	<insert id="OtcTransactionPendOrde_insertOtcTransactionPendOrder" parameterType="OtcTransactionPendOrderDO">
+		INSERT INTO otc_transaction_pend_order_tab
+		(otcPendingOrderNo, userId, userAccount, orderType, currencyId, currencyName, pendingRatio, minNumber,
+		 maxNumber, addTime)
+		VALUES
+		(#{otcPendingOrderNo}, #{userId}, #{userAccount}, #{orderType}, #{currencyId}, #{currencyName}, #{pendingRatio},
+		 #{minNumber}, #{maxNumber}, #{addTime})
+	</insert>
+
+	<select id="OtcTransactionPendOrde_getOtcTransactionPendOrderByOrderNo" parameterType="java.lang.String" resultType="OtcTransactionPendOrderDO">
+		SELECT otcPendingOrderNo,userId,userAccount,orderType,currencyId,currencyName,pendingRatio,
+			minNumber,maxNumber,pendingNumber,dealNumber,buyFee,restBalanceLock,area,pendingStatus,endTime,
+			remark,updateTime,addTime
+		FROM otc_transaction_pend_order_tab
+		WHERE otcPendingOrderNo = #{orderNo}
+	</select>
+
+	<select id="OtcTransactionPendOrde_countOtcTransactionPendOrder" parameterType="java.util.Map" resultType="int">
+		SELECT  COUNT(otcPendingOrderNo)
+		FROM otc_transaction_pend_order_tab OTAB,otc_dealer_user_tab UTAB
+		WHERE
+			OTAB.userId = UTAB.userId
+			AND pendingStatus = 1
+		<if test="currencyId != 0">
+			AND currencyId = #{currencyId}
+		</if>
+		<if test="orderType != 0 ">
+			AND orderType = #{orderType}
+		</if>
+		<if test="area != null and area != ''">
+			AND area = #{area}
+		</if>
+	</select>
+
+	<select id="OtcTransactionPendOrde_getOtcTransactionPendOrderlist" parameterType="java.util.Map" resultType="OtcTransactionPendOrderVO">
+		SELECT otcPendingOrderNo,OTAB.userId,OTAB.userAccount,UTAB.dealerName,orderType,currencyId,currencyName,pendingRatio,
+			minNumber,maxNumber,pendingNumber,dealNumber,buyFee,restBalanceLock,area,pendingStatus,endTime,
+			OTAB.remark,OTAB.updateTime,OTAB.addTime
+		FROM otc_transaction_pend_order_tab OTAB,otc_dealer_user_tab UTAB
+		WHERE
+				OTAB.userId = UTAB.userId
+				AND pendingStatus = 1
+			<if test="currencyId != 0">
+				AND currencyId = #{currencyId}
+			</if>
+			<if test="orderType != 0 ">
+				AND orderType = #{orderType}
+			</if>
+			<if test="area != null and area != ''">
+				AND area = #{area}
+			</if>
+		ORDER BY addTime DESC
+		LIMIT #{startNumber}, #{pageSize}
+	</select>
+
+	<select id="OtcTransactionPendOrde_getOtcTransactionPendOrderByUserId" parameterType="int" resultType="OtcTransactionPendOrderDO">
+		SELECT otcPendingOrderNo,userId,userAccount,orderType,currencyId,currencyName,pendingRatio,
+		minNumber,maxNumber,pendingNumber,dealNumber,buyFee,restBalanceLock,area,pendingStatus,endTime,
+		remark,updateTime,addTime
+		FROM otc_transaction_pend_order_tab
+		WHERE userId = #{userId}
+	    AND pendingStatus = 1
+	    ORDER BY addTime DESC
+	</select>
+
+    <update id="OtcTransactionPendOrde_deleteOtcTransactionPendOrderByOtcPendingOrderNo" parameterType="java.util.Map">
+        UPDATE otc_transaction_pend_order_tab
+        SET pendingStatus = -1,
+        updateTime = #{updateTime}
+        WHERE otcPendingOrderNo = #{otcPendingOrderNo}
+        AND userId = #{userId}
+    </update>
+</mapper>

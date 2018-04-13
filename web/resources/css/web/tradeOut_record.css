@@ -1,0 +1,96 @@
+.askArea{
+    padding: 15px 15px 0 15px;
+    width: 988px;
+}
+.condition{
+    display: inline-block;
+    margin-left: 15px;
+    margin-bottom: 15px;
+    color: #666666;
+    font-size: 14px;
+}
+.askInput,.askTime{
+    padding-left: 4px;
+    width: 160px;
+    height: 35px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #898989;
+}
+.askSelect{
+    width: 150px;
+    height: 37px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #898989;
+}
+.ask{
+    margin-left: 20px;
+    width: 54px;
+    height: 37px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    background-color: #e83a33;
+    border-radius: 4px;
+    font-size: 15px;
+    color: #ffffff;
+}
+.ask:hover{
+    background-color: #d0342e;
+}
+.tableInfo td{
+    padding: 10px !important;
+}
+.apply{
+    width: 210px;
+}
+.sale{
+    color: #00be97;
+}
+.seller{
+    width: 230px;
+}
+.code{
+    width: 200px;
+}
+.my{
+    width: 195px;
+}
+.state{
+    width: 210px;
+}
+.wait{
+    color: #999999;
+}
+.wait_confirm{
+    color: #333333;
+}
+.finish,.buy{
+    color: #e83a33;
+}
+.tableInfo .apply,.tableInfo .seller,.tableInfo .my,.tableInfo .state{
+    text-align: left;
+}
+.operate{
+    width: 55px;
+}
+.confirm_coin,.confirm_money{
+    width: 55px;
+    height:25px;
+    text-align: center;
+    font-size: 13px;
+    color: #68adfa;
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+}
+.confirm_coin:hover,.confirm_money:hover{
+    color: #52a1f9;
+}
+
+.money_pop,.coin_pop{
+    display: none;
+}

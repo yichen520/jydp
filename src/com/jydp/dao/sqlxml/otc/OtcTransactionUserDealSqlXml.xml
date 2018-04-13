@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8" ?>
+        <!DOCTYPE mapper PUBLIC
+                "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jydp.dao.impl.otc.OtcTransactionUserDealDaoImpl">
+
+    <insert id="OtcTransactionUserDeal_insertOtcTransactionUserDeal" parameterType="OtcTransactionUserDealDO">
+        INSERT INTO otc_transaction_user_deal_tab(otcOrderNo, otcPendingOrderNo, userId, userAccount, dealType, typeId,
+        currencyId, currencyName, pendingRatio, currencyNumber, currencyTotalPrice, pendTime, dealStatus, addTime)
+        VALUES
+        (#{otcOrderNo}, #{otcPendingOrderNo}, #{userId}, #{userAccount}, #{dealType}, #{typeId}, #{currencyId}, #{currencyName}, #{pendingRatio},
+        #{currencyNumber}, #{currencyTotalPrice}, #{pendTime}, #{dealStatus}, #{addTime})
+    </insert>
+
+    <select id="OtcTransactionUserDeal_getOtcTransactionUsealByOrderNo" parameterType="java.lang.String" resultType="OtcTransactionUserDealDO">
+		SELECT otcOrderNo,otcPendingOrderNo,userId,userAccount,dealType,currencyId,typeId,
+            currencyName,transactionPrice,pendingRatio,currencyNumber,feeNumber,currencyTotalPrice,
+            pendTime,dealStatus,remark,updateTime,addTime
+        FROM otc_transaction_user_deal_tab
+        WHERE otcOrderNo = #{orderNo}
+    </select>
+
+    <select id="OtcTransactionUserDeal_numberOtcTransactionUsealByUserId" parameterType="java.util.Map" resultType="int">
+        SELECT COUNT(OTUD.otcOrderNo)
+        FROM otc_transaction_user_deal_tab OTUD
+        LEFT JOIN otc_transaction_pend_order_tab OTPO
+          ON OTUD.otcPendingOrderNo = OTPO.otcPendingOrderNo
+        LEFT JOIN otc_dealer_user_tab ODU
+        ON OTPO.userId = ODU.userId
+        WHERE OTUD.userId = #{userId}
+        <if test="dealerName != null and dealerName != ''">
+            AND ODU.dealerName LIKE CONCAT('%', #{dealerName}, '%')
+        </if>
+        <if test="currencyId != null and currencyId != 0">
+            AND OTUD.currencyId = #{currencyId}
+        </if>
+        <if test="dealType != null and dealType != 0">
+            AND OTUD.dealType = #{dealType}
+        </if>
+        <if test="dealStatus != null and dealStatus != 0 and dealStatus != 2">
+            AND OTUD.dealStatus = #{dealStatus}
+        </if>
+        <if test="dealStatus == 2">
+            AND (OTUD.dealStatus = 2 OR  OTUD.dealStatus = 3)
+        </if>
+        <if test="startAddTime != null">
+            AND OTUD.addTime <![CDATA[ >= ]]> #{startAddTime}
+        </if>
+        <if test="endAddTime != null">
+            AND OTUD.addTime <![CDATA[ <= ]]> #{endAddTime}
+        </if>
+    </select>
+
+    <select id="OtcTransactionUserDeal_listOtcTransactionUsealByUserId" parameterType="java.util.Map" resultType="OtcTransactionUserDealVO">
+        SELECT OTUD.otcOrderNo,OTUD.currencyNumber,OTUD.currencyTotalPrice,OTUD.currencyName,ODU.dealerName,UPT.paymentType,
+            UPT.paymentAccount,UPT.bankName,UPT.bankCode,UPT.bankBranch,UPT.paymentName,UPT.paymentPhone,UPT.paymentImage imageUrl,
+            OTUD.dealType,OTUD.dealStatus,OTUD.typeId,OTUD.remark,OTUD.updateTime, OTPO.area,OTUD.addTime,u.phoneNumber
+        FROM otc_transaction_user_deal_tab OTUD
+        LEFT JOIN user_payment_type_tab UPT
+          ON OTUD.typeId = UPT.typeId
+        LEFT JOIN otc_transaction_pend_order_tab OTPO
+          ON OTUD.otcPendingOrderNo = OTPO.otcPendingOrderNo
+        LEFT JOIN otc_dealer_user_tab ODU
+          ON OTPO.userId = ODU.userId
+        LEFT JOIN user_tab U
+          ON OTPO.userId = U.userId
+        WHERE OTUD.userId = #{userId}
+        <if test="dealerName != null and dealerName != ''">
+            AND ODU.dealerName LIKE CONCAT('%', #{dealerName}, '%')
+        </if>
+        <if test="currencyId != null and currencyId != 0">
+            AND OTUD.currencyId = #{currencyId}
+        </if>
+        <if test="dealType != null and dealType != 0">
+            AND OTUD.dealType = #{dealType}
+        </if>
+        <if test="dealStatus != null and dealStatus != 0 and dealStatus != 2">
+            AND OTUD.dealStatus = #{dealStatus}
+        </if>
+        <if test="dealStatus == 2">
+            AND (OTUD.dealStatus = 2 OR  OTUD.dealStatus = 3)
+        </if>
+        <if test="startAddTime != null">
+            AND OTUD.addTime <![CDATA[ >= ]]> #{startAddTime}
+        </if>
+        <if test="endAddTime != null">
+            AND OTUD.addTime <![CDATA[ <= ]]> #{endAddTime}
+        </if>
+        ORDER BY addTime DESC
+        LIMIT #{startNumber}, #{pageSize}
+
+    </select>
+
+    <update id="OtcTransactionUserDeal_updateDealStatusByOtcOrderNo" parameterType="java.util.Map">
+        UPDATE otc_transaction_user_deal_tab
+        SET dealStatus = #{changedStatus},
+            updateTime = #{updateTime}
+        WHERE otcOrderNo = #{otcOrderNo}
+        AND dealStatus = #{dealStatus}
+    </update>
+
+    <select id="OtcTransactionUserDeal_countOtcTransactionUserDeallistByDealerId" parameterType="java.util.Map" resultType="int">
+        SELECT COUNT(OTUD.otcOrderNo)
+        FROM otc_transaction_user_deal_tab OTUD LEFT JOIN user_payment_type_tab UPT
+          ON OTUD.typeId = UPT.typeId
+        LEFT JOIN otc_transaction_pend_order_tab OTPO
+          ON OTUD.otcPendingOrderNo = OTPO.otcPendingOrderNo
+        WHERE OTPO.userId = #{userId}
+        <if test="userAccount != null and userAccount != ''">
+            AND OTUD.userAccount LIKE CONCAT('%', #{userAccount}, '%')
+        </if>
+        <if test="paymentType != null and paymentType != 0">
+            AND UPT.paymentType = #{paymentType}
+        </if>
+        <if test="dealType != null and dealType != 0">
+            AND OTUD.dealType = #{dealType}
+        </if>
+        <if test="currencyId != null and currencyId != 0">
+            AND OTUD.currencyId = #{currencyId}
+        </if>
+        <if test="dealStatus != null and dealStatus != 0 and dealStatus != 2">
+            AND OTUD.dealStatus = #{dealStatus}
+        </if>
+        <if test="dealStatus == 2">
+            AND (OTUD.dealStatus = 2 OR  OTUD.dealStatus = 3)
+        </if>
+        <if test="startAddTime != null">
+            AND OTUD.addTime <![CDATA[ >= ]]> #{startAddTime}
+        </if>
+        <if test="endAddTime != null">
+            AND OTUD.addTime <![CDATA[ <= ]]> #{endAddTime}
+        </if>
+    </select>
+
+    <select id="OtcTransactionUserDeal_getOtcTransactionUserDealByDealerId" parameterType="java.util.Map" resultType="OtcTransactionUserDealVO">
+        SELECT OTUD.otcOrderNo,OTUD.currencyNumber,OTUD.userAccount,UTAB.phoneNumber AS userPhone,OTUD.currencyTotalPrice,OTUD.currencyName,UPT.paymentType,OTPO.area,
+            UPT.paymentAccount,UPT.bankName,UPT.bankCode,UPT.bankBranch,UPT.paymentName,UPT.paymentPhone,UPT.paymentImage imageUrl,
+            OTUD.dealType,OTUD.dealStatus,OTUD.typeId,OTUD.remark,OTUD.updateTime,OTUD.addTime
+        FROM otc_transaction_user_deal_tab OTUD LEFT JOIN user_payment_type_tab UPT
+          ON OTUD.typeId = UPT.typeId
+        LEFT JOIN otc_transaction_pend_order_tab OTPO
+            ON OTUD.otcPendingOrderNo = OTPO.otcPendingOrderNo
+        LEFT JOIN user_tab UTAB
+            ON  OTUD.userId = UTAB.userId
+        WHERE OTPO.userId = #{userId}
+        <if test="userAccount != null and userAccount != ''">
+            AND OTUD.userAccount LIKE CONCAT('%', #{userAccount}, '%')
+        </if>
+        <if test="paymentType != null and paymentType != 0">
+            AND UPT.paymentType = #{paymentType}
+        </if>
+        <if test="dealType != null and dealType != 0">
+            AND OTUD.dealType = #{dealType}
+        </if>
+        <if test="currencyId != null and currencyId != 0">
+            AND OTUD.currencyId = #{currencyId}
+        </if>
+        <if test="dealStatus != null and dealStatus != 0 and dealStatus != 2">
+            AND OTUD.dealStatus = #{dealStatus}
+        </if>
+        <if test="dealStatus == 2">
+            AND (OTUD.dealStatus = 2 OR  OTUD.dealStatus = 3)
+        </if>
+        <if test="startAddTime != null">
+            AND OTUD.addTime <![CDATA[ >= ]]> #{startAddTime}
+        </if>
+        <if test="endAddTime != null">
+            AND OTUD.addTime <![CDATA[ <= ]]> #{endAddTime}
+        </if>
+        ORDER BY addTime DESC
+        LIMIT #{startNumber}, #{pageSize}
+    </select>
+</mapper>

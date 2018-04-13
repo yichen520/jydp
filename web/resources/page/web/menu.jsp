@@ -19,13 +19,13 @@
     <ul class="nav">
         <li class="navInfo"><a id="webHome" href="<%=path %>/userWeb/homePage/show">首页</a></li>
         <li class="navInfo">
-            <a id="tradeCenter" class="tradeCenter" href="javascript:;">交易中心
+            <a id="tradeCenter" class="tradeCenter" href="javascript:;">场内交易
                 <img src="<%=path %>/resources/image/web/tradeCoin.png" class="tradeArrow" />
             </a>
             <ul class="coinLink">
             </ul>
         </li>
-        <%--<li class="navInfo"><a href="javascript:void(0)" onclick="disableTip()">我要充值</a></li>--%>
+        <li class="navInfo"><a id="otcTradeCenter" href="<%=path%>/userWeb/otcTradeCenter/show">场外交易</a></li>
         <li class="navInfo"><a id="message" href="<%=path %>/userWeb/userMessage/show.htm">个人中心</a></li>
     </ul>
 
@@ -85,6 +85,12 @@
         if (curUrl.indexOf("/userWeb/userMessage/show.htm") > 0) {
             menuObj = $("#message");
         }
+        if (curUrl.indexOf("/userWeb/userDealRecord/show.htm") > 0) {
+            menuObj = $("#message");
+        }
+        if (curUrl.indexOf("/userWeb/dealerOtcDealRecord/show.htm") > 0) {
+            menuObj = $("#message");
+        }
         if (curUrl.indexOf("/userWeb/accountRecord/show.htm") > 0) {
             menuObj = $("#message");
         }
@@ -114,6 +120,10 @@
             menuObj = $("#tradeCenter");
         }
 
+        if (curUrl.indexOf("/userWeb/otcTradeCenter/show") > 0) {
+            menuObj = $("#otcTradeCenter");
+        }
+
         if(menuObj != null){
             menuObj.addClass("nav_pitch");
             clearInterval(showPersonalMenuId);
@@ -126,7 +136,7 @@
         $("#menuCurrencyId").val(currencyId);
         $("#tradeCenterForm").submit();
     }
-    
+
     function disableTip() {
         openTips("该功能暂未开放");
     }

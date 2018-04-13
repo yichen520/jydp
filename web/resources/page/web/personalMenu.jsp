@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%
     String path = request.getContextPath();
@@ -46,6 +47,7 @@
             <img src="<%=path %>/resources/image/web/up.png" class="menu_up" />
         </p>
 
+
         <ul class="levelTwo">
             <%--<li class="menuInfo"><a id="accountRecord" href="<%=path %>/userWeb/accountRecord/show.htm">账户记录</a></li>--%>
             <li class="menuInfo"><a id="transactionPendOrderController" href="<%=path%>/userWeb/transactionPendOrderController/show.htm">委托记录</a></li>
@@ -53,6 +55,10 @@
             <%--<li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">充值记录</a></li>--%>
             <%--<li class="menuInfo"><a href="javascript:void(0)" onclick="disableTip()">提现记录</a></li> --%>
             <li class="menuInfo"><a id="jydpUserCoinOutRecord" href="<%=path %>/userWeb/jydpUserCoinOutRecord/show.htm">提币记录</a></li>
+            <li class="menuInfo"><a id="userDealRecord" href="<%=path %>/userWeb/userDealRecord/show.htm" >场外交易记录</a></li>
+            <c:if test="${userSession.isDealer == 2}">
+                <li class="menuInfo"><a id="dealerOtcDealRecord" href="<%=path %>/userWeb/dealerOtcDealRecord/show.htm" >场外交易记录(商家)</a></li>
+            </c:if>
         </ul>
     </li>
 
@@ -71,7 +77,6 @@
         </ul>
     </li>
 </ul>
-
 <script type="text/javascript">
     $(function() {
         $(".menuTitle").click(function () {
