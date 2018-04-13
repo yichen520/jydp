@@ -644,6 +644,8 @@
                 var number = parseFloat((Number(buyPrice.replace(".",""))*Number(buyNum.replace(".",""))/Math.pow(10,m)).toFixed(8));
                 number = mulMaxNumber(number);
                 $("#buyTotal").html(number + " XT");
+            }else {
+                $("#buyTotal").html("0 XT");
             }
 
             var userBalance = parseFloat($("#userBalance").val());
@@ -682,6 +684,8 @@
                 var number = parseFloat((Number(sellPrice.replace(".",""))*Number(sellNum.replace(".",""))/Math.pow(10,s)).toFixed(8));
                 number = mulMaxNumber(number);
                 $("#sellTotal").html(number + " XT");
+            }else {
+                $("#sellTotal").html("0 XT");
             }
 
             var currencyNumber = $("#currencyNumber").val();
