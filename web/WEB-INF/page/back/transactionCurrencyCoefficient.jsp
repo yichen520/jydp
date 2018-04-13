@@ -90,7 +90,7 @@
 <div class="mask">
     <div class="mask_content">
         <div class="add_pop">
-            <p class="popTitle">新增币种</p>
+            <p class="popTitle">新增系数</p>
             <p class="popInput">
                 <label class="popName">币种<span class="star">*</span></label>
                 <select class="popSelected" id="currencyNameAd" name="currencyNameAd">
