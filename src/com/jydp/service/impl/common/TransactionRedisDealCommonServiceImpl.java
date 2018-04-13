@@ -220,21 +220,16 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
             List<Integer> powInt = new ArrayList<>();
             Map<Integer, Double> map = new HashMap<>();
 
+            for (TransactionCurrencyDO curr: transactionCurrencyDOS) {
+                powInt.add(curr.getCurrencyId());
+                map.put(curr.getCurrencyId(), curr.getGuidancePrice());
+            }
+
             if (nowLastPrice != null && !nowLastPrice.isEmpty()) {
                 for (TransactionDealPriceDTO currDTO: nowLastPrice) {
                     lowInt.add(currDTO.getCurrencyId());
                 }
-                for (TransactionCurrencyDO curr: transactionCurrencyDOS) {
-                    powInt.add(curr.getCurrencyId());
-                    map.put(curr.getCurrencyId(), curr.getGuidancePrice());
-                }
-
                 powInt.removeAll(lowInt);
-            } else {
-                for (TransactionCurrencyDO curr: transactionCurrencyDOS) {
-                    powInt.add(curr.getCurrencyId());
-                    map.put(curr.getCurrencyId(), curr.getGuidancePrice());
-                }
             }
 
             for (Integer cuId: powInt) {
