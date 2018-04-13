@@ -90,7 +90,7 @@
                             <p>流水号：<span>${userDeal.otcOrderNo}</span></p>
                             <p>币种：<span>${userDeal.currencyName}</span></p>
                             <p>数量：<span><fmt:formatNumber type="number" value="${userDeal.currencyNumber}" maxFractionDigits="4"/></span></p>
-                            <p>金额：<span>¥<fmt:formatNumber type="number" value="${userDeal.currencyTotalPrice}" maxFractionDigits="6"/></span></p>
+                            <p>金额：<span>¥<fmt:formatNumber type="number" value="${userDeal.currencyTotalPrice}" maxFractionDigits="2"/></span></p>
                             <p>类型：
                                 <c:if test="${userDeal.dealType == 1}">
                                     <span class="buy">购买</span>
