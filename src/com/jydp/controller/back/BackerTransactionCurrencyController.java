@@ -332,6 +332,17 @@ public class BackerTransactionCurrencyController {
             currency.setGuidancePrice(guidancePrice);
         }
 
+        if (guidancePrice < 0) {
+            response.setCode(3);
+            response.setMessage("指导价不能小于0");
+            return response;
+        }
+        if (buyFee < 0 || sellFee < 0) {
+            response.setCode(3);
+            response.setMessage("费率不能小于0");
+            return response;
+        }
+
         String imageUrl = "";
         if (imgUrl != null && !imgUrl.isEmpty()) {
             imageUrl = ImageReduceUtil.reduceImageUploadRemote(imgUrl, FileUrlConfig.file_remote_transactionCyrrency_url);

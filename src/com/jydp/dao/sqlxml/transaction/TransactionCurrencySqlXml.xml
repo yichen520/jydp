@@ -184,12 +184,14 @@
     </update>
 
     <select id="TransactionCurrency_listTransactionCurrencyAll" resultType="TransactionCurrencyDO">
-        SELECT  currencyId, currencyShortName, currencyName, upStatus, upTime
+        SELECT  currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, guidancePrice,
+            paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
     </select>
 
     <select id="TransactionCurrency_getTransactionCurrencyMarketForWeb" resultType="TransactionUserDealDTO">
-        SELECT currencyId, currencyShortName, currencyName, currencyImg
+        SELECT currencyId, currencyShortName, currencyName, currencyImg, buyFee, sellFee, guidancePrice,
+            paymentType, upStatus, rankNumber, backerAccount, ipAddress, upTime, addTime
         FROM transaction_currency_tab
         WHERE upStatus IN (2,3)
         ORDER BY rankNumber ASC
