@@ -215,20 +215,27 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
 
         List<TransactionDealPriceDTO> nowLastPrice = transactionDealRedisService.getNowLastPrice(date);
         List<TransactionCurrencyDO> transactionCurrencyDOS = transactionCurrencyService.listTransactionCurrencyAll();
-        if (nowLastPrice != null && !nowLastPrice.isEmpty()  && transactionCurrencyDOS != null && !transactionCurrencyDOS.isEmpty()) {
+        if (transactionCurrencyDOS != null && !transactionCurrencyDOS.isEmpty()) {
             List<Integer> lowInt = new ArrayList<>();
             List<Integer> powInt = new ArrayList<>();
             Map<Integer, Double> map = new HashMap<>();
 
-            for (TransactionDealPriceDTO currDTO: nowLastPrice) {
-                lowInt.add(currDTO.getCurrencyId());
-            }
-            for (TransactionCurrencyDO curr: transactionCurrencyDOS) {
-                powInt.add(curr.getCurrencyId());
-                map.put(curr.getCurrencyId(), curr.getGuidancePrice());
-            }
+            if (nowLastPrice != null && !nowLastPrice.isEmpty()) {
+                for (TransactionDealPriceDTO currDTO: nowLastPrice) {
+                    lowInt.add(currDTO.getCurrencyId());
+                }
+                for (TransactionCurrencyDO curr: transactionCurrencyDOS) {
+                    powInt.add(curr.getCurrencyId());
+                    map.put(curr.getCurrencyId(), curr.getGuidancePrice());
+                }
 
-            powInt.removeAll(lowInt);
+                powInt.removeAll(lowInt);
+            } else {
+                for (TransactionCurrencyDO curr: transactionCurrencyDOS) {
+                    powInt.add(curr.getCurrencyId());
+                    map.put(curr.getCurrencyId(), curr.getGuidancePrice());
+                }
+            }
 
             for (Integer cuId: powInt) {
                 Double guidPrice = map.get(cuId);
