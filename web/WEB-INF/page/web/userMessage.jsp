@@ -257,7 +257,7 @@
 
             <div class="buttons">
                 <input type="text" value="返&nbsp;回" class="back" onfocus="this.blur()" />
-                <input type="text" value="确&nbsp;定" class="yes" id="addOrderId"  onclick="addOrder()"  />
+                <input type="text" value="确&nbsp;定" class="yes" onfocus="this.blur()" id="addOrderId"  onclick="addOrder()"  />
             </div>
         </div>
 
