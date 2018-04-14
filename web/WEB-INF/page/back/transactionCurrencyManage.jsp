@@ -578,16 +578,28 @@
             openTips("请上传徽标");
             return;
         }
-        if (buyFeeAd == null || buyFeeAd == "") {
+        if (buyFeeAd == null || buyFeeAd == "" || parseFloat(buyFeeAd) == null) {
             addBoo = false;
             openTips("请输入买入手续费");
             return;
         }
-        if (sellFeeAd == null || sellFeeAd == "") {
+        if (parseFloat(buyFeeAd) < 0){
+            addBoo = false;
+            openTips("买入手续费不能小于0");
+            return;
+        }
+
+        if (sellFeeAd == null || sellFeeAd == "" || parseFloat(sellFeeAd) == null) {
             addBoo = false;
             openTips("请输入卖出手续费");
             return;
         }
+        if (parseFloat(sellFeeAd) < 0){
+            addBoo = false;
+            openTips("卖出手续费不能小于0");
+            return;
+        }
+
         if (status == null || status == "") {
             addBoo = false;
             openTips("请选择执行方式");
@@ -709,21 +721,35 @@
             openTips("请输入英文标识");
             return;
         }
-        if (buyFeeUp == null || buyFeeUp == "") {
-            updateBoo = false;
-            openTips("请输入买入手续费");
-            return;
-        }
-        if (sellFeeUp == null || sellFeeUp == "") {
-            updateBoo = false;
-            openTips("请输入卖出手续费");
-            return;
-        }
-        if (guidUp == null || guidUp == "") {
+        if (guidUp == null || guidUp == "" || parseFloat(guidUp) < 0
+            || parseFloat(guidUp) == null || parseFloat(guidUp) == "") {
             updateBoo = false;
             openTips("请确认上市指导价");
             return;
         }
+
+        if (buyFeeUp == null || buyFeeUp == "" || parseFloat(buyFeeUp) == null) {
+            updateBoo = false;
+            openTips("请输入买入手续费");
+            return;
+        }
+        if (parseFloat(buyFeeUp) < 0){
+            updateBoo = false;
+            openTips("买入手续费不能小于0");
+            return;
+        }
+
+        if (sellFeeUp == null || sellFeeUp == "" || parseFloat(sellFeeUp) == null) {
+            updateBoo = false;
+            openTips("请输入卖出手续费");
+            return;
+        }
+        if (parseFloat(sellFeeUp) < 0){
+            updateBoo = false;
+            openTips("卖出手续费不能小于0");
+            return;
+        }
+
         if (upTimeUp == null || upTimeUp == "") {
             updateBoo = false;
             openTips("请选择正确的时间");

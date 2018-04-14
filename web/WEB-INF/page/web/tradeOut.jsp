@@ -583,8 +583,8 @@
         $(".card").hide();
         $(".ali").hide();
         $(".wechat").hide();
-        document.getElementById("changead_a1").files[0] = null;
-        document.getElementById("changead_a2").files[0] = null;
+        document.getElementById("changead_a1").value = '';
+        document.getElementById("changead_a2").value = '';
     }
 </script>
 

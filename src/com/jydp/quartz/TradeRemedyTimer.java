@@ -1,6 +1,7 @@
 package com.jydp.quartz;
 
 import com.iqmkj.utils.BigDecimalUtil;
+import com.iqmkj.utils.RabbitUtils;
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.service.ITradeCommonService;
@@ -32,8 +33,8 @@ public class TradeRemedyTimer {
 	@Autowired
 	private ITransactionCurrencyService transactionCurrencyService;
 
-	/** 交易补救（每5s执行一次） */
-	@Scheduled(cron="0/5 * *  * * ? ")
+	/** 交易补救（每3min执行一次） */
+	@Scheduled(cron="0 0/3 *  * * ? ")
 	public void transactionPendOrder(){
 		//获取所有币种
 		List<TransactionCurrencyVO> transactionCurrencyList = transactionCurrencyService.getTransactionCurrencyListForWeb();
@@ -76,7 +77,8 @@ public class TradeRemedyTimer {
 				}
 			}
 			//交易
-			tradeCommonService.trade(order);
+//			tradeCommonService.trade(order);
+			RabbitUtils.trdeOrder(order);//放入队列
 		}
 
 	}

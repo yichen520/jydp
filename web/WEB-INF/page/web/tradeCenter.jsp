@@ -645,7 +645,7 @@
                 number = mulMaxNumber(number);
                 $("#buyTotal").html(number + " XT");
             }else {
-                $("#buyTotal").html(0 + " XT");
+                $("#buyTotal").html("0 XT");
             }
 
             var userBalance = parseFloat($("#userBalance").val());
@@ -685,7 +685,7 @@
                 number = mulMaxNumber(number);
                 $("#sellTotal").html(number + " XT");
             }else {
-                $("#sellTotal").html(0 + " XT");
+                $("#sellTotal").html("0 XT");
             }
 
             var currencyNumber = $("#currencyNumber").val();
