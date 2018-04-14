@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xmlns:task="http://www.springframework.org/schema/task"  
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit-1.6.xsd
+           http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd"
+	>
+
+	<description>spring-rabbmitmq Configuration</description>
+
+	<!-- spring amqp默认的是jackson 的一个插件,目的将生产者生产的数据转换为json存入消息队列 -->  
+    <bean id="jsonMessageConverter"  class="org.springframework.amqp.support.converter.Jackson2JsonMessageConverter"/>  
+    
+	<!-- 创建connectionFactory --> 	
+    <!-- org.springframework.amqp.rabbit.connection.CachingConnectionFactory-->
+    <task:executor id="mqExecutor" pool-size="20-100" keep-alive="600" queue-capacity="2000" rejection-policy="CALLER_RUNS" />
+	<rabbit:connection-factory id="connectionFactory"
+							   addresses="139.224.196.2:5672"
+							   username="rabbitadmin"
+							   password="1qaz2wsx"
+							   executor="mqExecutor"/>
+
+
+		
+	<!-- org.springframework.amqp.rabbit.core.RabbitAdmin -->
+	<rabbit:admin connection-factory="connectionFactory" />
+	
+	<!-- queue 队列声明-->  
+	<!-- org.springframework.amqp.core.Queue -->
+	
+	
+	<rabbit:queue id="trade_order" name="trade_order" durable="true" auto-delete="false" exclusive="false" />
+	
+	<!-- exchange queue binging key 绑定 -->
+	<!-- 将Queue、Exchange设置为Durable即不会发生数据丢失问题 -->
+	<rabbit:direct-exchange id="rd-mq-exchange" name="rd-mq-exchange" durable="true" auto-delete="false" >
+		<rabbit:bindings>
+			
+			<rabbit:binding queue="trade_order" key="trade_order_key" />
+
+		</rabbit:bindings>
+	</rabbit:direct-exchange>
+	
+	<!-- 生产者配置:spring template声明 -->
+	<!-- org.springframework.amqp.rabbit.core.RabbitTemplate -->
+	<rabbit:template id="rabbitTemplate" exchange="rd-mq-exchange"
+		connection-factory="connectionFactory" message-converter="jsonMessageConverter"/>
+
+	<rabbit:listener-container connection-factory="connectionFactory" acknowledge="auto" requeue-rejected="false"
+		message-converter="jsonMessageConverter" ><!--  concurrency="10" task-executor="myExecutor" -->
+    	    	
+    	<rabbit:listener ref="tradeOrderListener" method="listen"  queues="trade_order" />
+    	
+	</rabbit:listener-container>
+
+</beans>

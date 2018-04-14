@@ -45,7 +45,7 @@ public class JydpGoSylDealController {
     @RequestMapping(value = "/getCoinNotify", method = RequestMethod.POST)
     public @ResponseBody JSONObject getCoinNotify(@RequestBody String requestJsonString) {
         JSONObject responseJson = new JSONObject();
-        JSONObject requestJson = null;
+        JSONObject requestJson;
         try {
             requestJson = JSONObject.parseObject(requestJsonString);
         } catch (Exception e) {
