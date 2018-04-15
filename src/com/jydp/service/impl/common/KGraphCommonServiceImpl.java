@@ -473,7 +473,7 @@ public class KGraphCommonServiceImpl implements IKGraphCommonService {
             return true;
         }
         long kGraphLong = initKGraph.getNodeTime().getTime();
-        long kGraphNode = foreHoursNodeTime(KGraphConfig.FOREHOURS, kGraphLong);
+        long kGraphNode = hoursNodeTime(KGraphConfig.FOREHOURS, kGraphLong);
         //统计节点重复，则重新对比计算该节点
         if (kGraphMap.containsKey(kGraphNode)) {
             KGraphFourHoursDO oldKGraph = kGraphMap.put(kGraphNode, initKGraph);
@@ -646,7 +646,7 @@ public class KGraphCommonServiceImpl implements IKGraphCommonService {
             long oneHoursNode = hoursNodeTime(KGraphConfig.ONEHOURS, addTime);
             kGraphOneHours(oneHoursNode, currencyId, transactionPrice, currencyNumber, addTime, oneHoursMap);
             //四小时节点
-            long foreHoursNode = foreHoursNodeTime(KGraphConfig.FOREHOURS, addTime);
+            long foreHoursNode = hoursNodeTime(KGraphConfig.FOREHOURS, addTime);
             kGraphFourHours(foreHoursNode, currencyId, transactionPrice, currencyNumber, addTime, fourHoursMap);
             //一天节点
             long oneDayNode = dayNodeTime(addTime);
@@ -990,27 +990,25 @@ public class KGraphCommonServiceImpl implements IKGraphCommonService {
      */
     private static long hoursNodeTime(long node, long addTime) {
         long minuteTimeLong = DateUtil.longToTimestampByFormat(addTime, DateUtil.dateFormat13).getTime() ;
-        long hoursTimeLong = DateUtil.longToTimestampByFormat(addTime, "yyyy-MM-dd 08:00:00.0").
+        long hoursTimeLong = DateUtil.longToTimestampByFormat(addTime, "yyyy-MM-dd 00:00:00.0").
                 getTime();
         long resultTime = (minuteTimeLong - hoursTimeLong) / node;//计算时间节点
         return hoursTimeLong + node * resultTime;
     }
 
     /**
-     * 按4小时计算时间节点
+     * 按4小时计算时间节点（此方法废除）
      * @param node 时间节点
      * @param addTime 当前时间
      * @return 返回当前时间节点
      */
-    private static long foreHoursNodeTime(long node, long addTime) {
-        addTime = addTime + 8 * 60 * 60 * 1000L;//8点开盘
+    /*private static long foreHoursNodeTime(long node, long addTime) {
         long minuteTimeLong = DateUtil.longToTimestampByFormat(addTime, DateUtil.dateFormat13).getTime() ;
-        long hoursTimeLong = DateUtil.longToTimestampByFormat(addTime, "yyyy-MM-dd 08:00:00.0")
+        long hoursTimeLong = DateUtil.longToTimestampByFormat(addTime, "yyyy-MM-dd 00:00:00.0")
                 .getTime();
         long resultTime = (minuteTimeLong - hoursTimeLong) / node;//计算时间节点
-        return hoursTimeLong + node * resultTime - 8 * 60 * 60 * 1000L;
-        //return hoursTimeLong + node * resultTime;
-    }
+        return hoursTimeLong + node * resultTime;
+    }*/
 
     /**
      * 按一天计算时间节点
@@ -1030,7 +1028,6 @@ public class KGraphCommonServiceImpl implements IKGraphCommonService {
      */
     private static long weekNodeTime(long node, long timeLong) {
         String initWeek = "2007-01-01 08:00:00.0";//2007-01-01为星期一
-        //String initWeek = "2007-01-01 00:00:00.0";//2007-01-01为星期一
         long initWeekLong = DateUtil.timeStrToLong(initWeek);
         timeLong = timeLong - 8 * 60 * 60 * 1000L;//8点开盘
         long weekTimeLong = DateUtil.longToTimestampByFormat(timeLong, "yyyy-MM-dd 08:00:00.0")

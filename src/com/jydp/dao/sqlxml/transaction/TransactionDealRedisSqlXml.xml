@@ -173,6 +173,7 @@
 		WHERE currencyId = #{currencyId}
 		AND addTime <![CDATA[ >= ]]> #{startTime}
 		AND addTime <![CDATA[ <= ]]> #{endTime}
+		ORDER BY addTime ASC
 	</select>
 
 	<select id="TransactionDealRedis_getTransactionCurrencyDealPrice" parameterType="java.util.Map" resultType="TransactionCurrencyDealPriceDTO">
