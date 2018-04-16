@@ -315,7 +315,7 @@
                 addCheckBoo = false;
                 $("#queryForm").submit();
             }, error: function () {
-                dealBoo = false;
+                addCheckBoo = false;
                 openTips("数据加载出错，请稍候重试");
             }
         });
