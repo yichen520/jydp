@@ -173,6 +173,13 @@ public class TradeCenterController {
             return resultJson;
         }
 
+        boolean fq =UserWebInterceptor.handleFrequent(request);
+        if(fq){
+            resultJson.setCode(2);
+            resultJson.setMessage("用户操作频繁");
+            return resultJson;
+        }
+
         //获取参数
         String buyPriceStr = StringUtil.stringNullHandle(request.getParameter("buyPrice"));
         String buyNumStr = StringUtil.stringNullHandle(request.getParameter("buyNum"));
@@ -286,10 +293,6 @@ public class TradeCenterController {
                 userSession.setIsPwd(1);
                 request.getSession().setAttribute("userSession", userSession);
 
-                JSONObject data = new JSONObject();
-                data.put("userIdPwd",1);
-                resultJson.setData(data);
-
                 resultJson.setCode(101);
                 resultJson.setMessage("支付密码错误");
                 return resultJson;
@@ -301,7 +304,7 @@ public class TradeCenterController {
                 request.getSession().setAttribute("userSession", userSession);
 
                 JSONObject data = new JSONObject();
-                data.put("userIdPwd",2);
+                data.put("userIsPwd",2);
                 resultJson.setData(data);
             }
         }
@@ -326,18 +329,18 @@ public class TradeCenterController {
             return resultJson;
         }
 
-        //从redis判断是否可以匹配交易
-        Object sellOneOb = redisService.getValue(RedisKeyConfig.SELL_ONE_KEY + currencyId);
-        double sellOne = 0;
-        if(sellOneOb != null && sellOneOb != ""){
-            sellOne = (double)sellOneOb;
-        }
-
-        if(sellOne > buyPrice || sellOne == 0){
-            resultJson.setCode(1);
-            resultJson.setMessage("挂单成功");
-            return resultJson;
-        }
+//        //从redis判断是否可以匹配交易
+//        Object sellOneOb = redisService.getValue(RedisKeyConfig.SELL_ONE_KEY + currencyId);
+//        double sellOne = 0;
+//        if(sellOneOb != null && sellOneOb != ""){
+//            sellOne = (double)sellOneOb;
+//        }
+//
+//        if(sellOne > buyPrice || sellOne == 0){
+//            resultJson.setCode(1);
+//            resultJson.setMessage("挂单成功");
+//            return resultJson;
+//        }
 
         //匹配交易
        // resultJson = tradeCommonService.trade(transactionPendOrder);
@@ -357,6 +360,13 @@ public class TradeCenterController {
         if (userSession == null) {
             resultJson.setCode(4);
             resultJson.setMessage("未登录");
+            return resultJson;
+        }
+
+        boolean fq =UserWebInterceptor.handleFrequent(request);
+        if(fq){
+            resultJson.setCode(2);
+            resultJson.setMessage("用户操作频繁");
             return resultJson;
         }
 
@@ -474,7 +484,7 @@ public class TradeCenterController {
                 request.getSession().setAttribute("userSession", userSession);
 
                 JSONObject data = new JSONObject();
-                data.put("userIdPwd",1);
+                data.put("userIsPwd",1);
                 resultJson.setData(data);
 
                 resultJson.setCode(101);
@@ -488,7 +498,7 @@ public class TradeCenterController {
                 request.getSession().setAttribute("userSession", userSession);
 
                 JSONObject data = new JSONObject();
-                data.put("userIdPwd",2);
+                data.put("userIsPwd",2);
                 resultJson.setData(data);
             }
         }
@@ -509,18 +519,18 @@ public class TradeCenterController {
             return resultJson;
         }
 
-        //从redis判断是否可以匹配交易
-        Object buyOneOb = redisService.getValue(RedisKeyConfig.BUY_ONE_KEY + currencyId);
-        double buyOne = 0;
-        if(buyOneOb != null && buyOneOb != ""){
-            buyOne = (double)buyOneOb;
-        }
-
-        if(buyOne < sellPrice){
-            resultJson.setCode(1);
-            resultJson.setMessage("挂单成功");
-            return resultJson;
-        }
+//        //从redis判断是否可以匹配交易
+//        Object buyOneOb = redisService.getValue(RedisKeyConfig.BUY_ONE_KEY + currencyId);
+//        double buyOne = 0;
+//        if(buyOneOb != null && buyOneOb != ""){
+//            buyOne = (double)buyOneOb;
+//        }
+//
+//        if(buyOne < sellPrice){
+//            resultJson.setCode(1);
+//            resultJson.setMessage("挂单成功");
+//            return resultJson;
+//        }
 
         //匹配交易
       //  resultJson = tradeCommonService.trade(transactionPendOrder);

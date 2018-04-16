@@ -322,7 +322,7 @@ public class WapTradeCenterController {
 
                 userSession.setIsPwd(1);
                 request.getSession().setAttribute("userSession", userSession);
-                response.put("userIdPwd", 1);
+                response.put("userIsPwd", 1);
 
                 response.put("code", 101);
                 response.put("message", "支付密码错误");
@@ -332,7 +332,7 @@ public class WapTradeCenterController {
             if (payPasswordStatus == 2 && isPwd == 1) {
                 userSession.setIsPwd(2);
                 request.getSession().setAttribute("userSession", userSession);
-                response.put("userIdPwd", 2);
+                response.put("userIsPwd", 2);
             }
         }
 
@@ -485,7 +485,7 @@ public class WapTradeCenterController {
                 userSession.setIsPwd(1);
                 request.getSession().setAttribute("userSession", userSession);
 
-                response.put("userIdPwd",1);
+                response.put("userIsPwd",1);
 
                 response.put("code", 101);
                 response.put("message", "支付密码错误");
@@ -495,7 +495,7 @@ public class WapTradeCenterController {
             if (payPasswordStatus == 2 && isPwd == 1) {
                 userSession.setIsPwd(2);
                 request.getSession().setAttribute("userSession", userSession);
-                response.put("userIdPwd", 2);
+                response.put("userIsPwd", 2);
             }
         }
 

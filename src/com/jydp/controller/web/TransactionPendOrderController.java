@@ -82,6 +82,13 @@ public class TransactionPendOrderController {
             return resultJson;
         }
 
+        boolean fq =UserWebInterceptor.handleFrequent(request);
+        if(fq){
+            resultJson.setCode(2);
+            resultJson.setMessage("用户操作频繁");
+            return resultJson;
+        }
+
         String pendingOrderNo = StringUtil.stringNullHandle(request.getParameter("pendingOrderNo"));
         if (!StringUtil.isNotNull(pendingOrderNo)) {
             resultJson.setCode(3);

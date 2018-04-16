@@ -71,7 +71,7 @@
                     </select>
                 </p>
                 <input type="hidden" id="queryPageNumber" name="pageNumber">
-                <input type="submit" value="查&nbsp;询" class="ask" onfocus="this.blur()" />
+                <input type="button" value="查&nbsp;询" class="ask" onfocus="this.blur()" onclick="submitForm()"/>
             </div>
             </form>
 
@@ -269,6 +269,10 @@
         $(".coin_pop").fadeIn();
         $('#otcOrderNo').val(otcOrderNo);
         popObj = ".coin_pop";
+    }
+
+    function submitForm() {
+        $("#queryForm").submit();
     }
 
     //确认收货
