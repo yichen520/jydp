@@ -3,11 +3,13 @@ package com.jydp.dao.impl.syl;
 import com.iqmkj.utils.LogUtil;
 import com.jydp.dao.ISylToJydpChainDao;
 import com.jydp.entity.DO.syl.SylToJydpChainDO;
+import com.jydp.entity.VO.UserRechargeCoinRecordVO;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -61,4 +63,44 @@ public class SylToJydpChainDaoImpl implements ISylToJydpChainDao {
 
         return result;
     }
+
+    /**
+     * 查询用户充币成功记录总数
+     *
+     * @param userId 用户id
+     * @return 查询成功：返回用户账户错误总数，查询失败：返回0
+     */
+    public int countUserRechargeCoinRecordForWap(int userId) {
+        int result = 0;
+        try {
+            result = sqlSessionTemplate.selectOne("SylToJydpChain_countUserRechargeCoinRecordForWap", userId);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return result;
+    }
+
+    /**
+     * 查询用户充币成功记录列表信息
+     *
+     * @param userId     用户id
+     * @param pageNumber 当前页数
+     * @param pageSize   每页条数
+     * @return 查询成功：返回用户账户错误总数，查询失败：返回0
+     */
+    public List<UserRechargeCoinRecordVO> listUserRechargeCoinRecordForWap(int userId, int pageNumber, int pageSize) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("startNumber", pageNumber * pageSize);
+        map.put("pageSize", pageSize);
+
+        List<UserRechargeCoinRecordVO> result = null;
+        try {
+            result = sqlSessionTemplate.selectList("SylToJydpChain_listUserRechargeCoinRecordForWap", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return result;
+    }
+
 }

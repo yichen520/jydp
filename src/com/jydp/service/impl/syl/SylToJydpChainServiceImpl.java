@@ -6,9 +6,12 @@ import com.jydp.dao.ISylToJydpChainDao;
 import com.jydp.entity.DO.syl.SylToJydpChainDO;
 import com.jydp.entity.DO.user.UserBalanceDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
-import com.jydp.entity.VO.TransactionCurrencyVO;
-import com.jydp.service.*;
-import config.SylConfig;
+import com.jydp.entity.VO.UserRechargeCoinRecordVO;
+import com.jydp.service.ISylToJydpChainService;
+import com.jydp.service.ITransactionCurrencyService;
+import com.jydp.service.IUserBalanceService;
+import com.jydp.service.IUserCurrencyNumService;
+import com.jydp.service.IUserService;
 import config.SystemCommonConfig;
 import config.UserBalanceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * SYL转账盛源链记录(SYL-->JYDP)
@@ -164,5 +168,27 @@ public class SylToJydpChainServiceImpl implements ISylToJydpChainService {
      */
     public SylToJydpChainDO getSylToJydpChainBysylRecordNo(String walletOrderNo, int currencyId){
         return sylToJydpChainDao.getSylToJydpChainBysylRecordNo(walletOrderNo, currencyId);
+    }
+
+    /**
+     * 查询用户充币成功记录总数
+     *
+     * @param userId 用户id
+     * @return 查询成功：返回用户账户错误总数，查询失败：返回0
+     */
+    public int countUserRechargeCoinRecordForWap(int userId) {
+        return sylToJydpChainDao.countUserRechargeCoinRecordForWap(userId);
+    }
+
+    /**
+     * 查询用户充币成功记录列表信息
+     *
+     * @param userId     用户id
+     * @param pageNumber 当前页数
+     * @param pageSize   每页条数
+     * @return 查询成功：返回用户账户错误总数，查询失败：返回0
+     */
+    public List<UserRechargeCoinRecordVO> listUserRechargeCoinRecordForWap(int userId, int pageNumber, int pageSize) {
+        return sylToJydpChainDao.listUserRechargeCoinRecordForWap(userId, pageNumber, pageSize);
     }
 }
