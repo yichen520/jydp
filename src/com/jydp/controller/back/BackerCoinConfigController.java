@@ -13,6 +13,7 @@ import com.jydp.interceptor.BackerWebInterceptor;
 import com.jydp.service.IJydpCoinConfigService;
 import com.jydp.service.ITransactionCurrencyService;
 import config.SystemCommonConfig;
+import config.UserBalanceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -69,6 +70,11 @@ public class BackerCoinConfigController {
         jydpCoinConfigList = jydpCoinConfigService.getJydpCoinConfigServiceList(startAddTime, endAddTime, backerAccount, currencyId);
         //获取币种信息
         List<TransactionCurrencyDO> transactionCurrencyList = transactionCurrencyService.listTransactionCurrencyAll();
+        TransactionCurrencyDO transactionCurrency = new TransactionCurrencyDO();
+        transactionCurrency.setCurrencyId(UserBalanceConfig.DOLLAR_ID);
+        transactionCurrency.setCurrencyName(UserBalanceConfig.DOLLAR);
+        transactionCurrency.setCurrencyShortName(UserBalanceConfig.DOLLAR);
+        transactionCurrencyList.add(transactionCurrency);
 
         request.setAttribute("jydpCoinConfigList", jydpCoinConfigList);
         request.setAttribute("transactionCurrencyList", transactionCurrencyList);
@@ -128,11 +134,17 @@ public class BackerCoinConfigController {
             return response;
         }
 
-        TransactionCurrencyVO transactionCurrencyVO = transactionCurrencyService.getTransactionCurrencyByCurrencyName(currencyName);
-        if(transactionCurrencyVO == null){
-            response.put("code", 3);
-            response.put("message", "该币种不存在！");
-            return response;
+        TransactionCurrencyVO transactionCurrencyVO = new TransactionCurrencyVO();
+        if(UserBalanceConfig.DOLLAR.equals(currencyName)){
+            transactionCurrencyVO.setCurrencyId(UserBalanceConfig.DOLLAR_ID);
+            transactionCurrencyVO.setCurrencyName(UserBalanceConfig.DOLLAR);
+        } else {
+            transactionCurrencyVO = transactionCurrencyService.getTransactionCurrencyByCurrencyName(currencyName);;//查询币种信息
+            if(transactionCurrencyVO == null){
+                response.put("code", 3);
+                response.put("message", "该币种不存在！");
+                return response;
+            }
         }
 
         double freeCurrencyNumber = Double.parseDouble(freeCurrencyNumberStr);
