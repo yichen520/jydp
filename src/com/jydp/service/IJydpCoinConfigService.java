@@ -65,4 +65,12 @@ public interface IJydpCoinConfigService {
      * @return 查询成功:返回币种转出管理信息, 查询失败:返回null
      */
     JydpCoinConfigDO getJydpCoinConfigByCurrencyId(int currencyId);
+
+    /**
+     * 查询币种管理信息,根据currencyId
+     * @param userId 用户id
+     * @param currencyId 币种id
+     * @return 查询成功:返回币种管理信息, 查询失败:返回null
+     */
+    UserCoinConfigVO getUserCoinConfigByCurrencyId(int userId, int currencyId);
 }
