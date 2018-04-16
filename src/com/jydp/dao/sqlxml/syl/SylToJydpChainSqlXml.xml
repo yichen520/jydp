@@ -7,15 +7,19 @@
 
 	<insert id="SylToJydpChain_insertSylToJydpChain" parameterType="SylToJydpChainDO">
 		INSERT INTO syl_to_jydp_chain_tab
-		(sylRecordNo, userAccount, userId, coinType, shengyuanCoin, handleMark, addTime)
+			(orderNo,walletOrderNo,userId,userAccount,walletUserAccount,currencyNumber,currencyId,
+				currencyName,coinType,orderTime,finishTime,remark,addTime)
 		VALUES
-		(#{sylRecordNo}, #{userAccount}, #{userId}, #{coinType}, #{shengyuanCoin}, #{handleMark}, #{addTime})
+			(#{orderNo}, #{walletOrderNo}, #{userId}, #{userAccount}, #{walletUserAccount}, #{currencyNumber}, #{currencyId},
+		 		#{currencyName}, #{coinType}, #{orderTime}, #{finishTime}, #{remark}, #{addTime})
 	</insert>
 
-	<select id="SylToJydpChain_getSylToJydpChainBysylRecordNo" parameterType="java.lang.String" resultType="SylToJydpChainDO">
-		SELECT sylRecordNo, userAccount, userId, coinType, shengyuanCoin, handleMark, addTime
+	<select id="SylToJydpChain_getSylToJydpChainBysylRecordNo" parameterType="java.util.Map" resultType="SylToJydpChainDO">
+		SELECT orderNo,walletOrderNo,userId,userAccount,walletUserAccount,currencyNumber,currencyId,
+			currencyName,coinType,orderTime,finishTime,remark,addTime
 		FROM syl_to_jydp_chain_tab  TDRT
-		WHERE sylRecordNo = #{sylRecordNo}
+		WHERE walletOrderNo = #{walletOrderNo}
+		AND currencyId = #{currencyId}
 	</select>
 
 </mapper>

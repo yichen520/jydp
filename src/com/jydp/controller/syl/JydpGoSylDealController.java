@@ -9,6 +9,7 @@ import com.jydp.service.IJydpUserCoinOutRecordService;
 import com.jydp.service.ITransactionCurrencyService;
 import com.jydp.service.IUserService;
 import config.SylConfig;
+import config.UserBalanceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -92,11 +93,16 @@ public class JydpGoSylDealController {
         }
 
         //查询币种信息
-        TransactionCurrencyVO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyShortName(coinType);
-        if(transactionCurrency == null){
-            responseJson.put("code", 403);
-            responseJson.put("message", "无效币种参数");
-            return responseJson;
+        TransactionCurrencyVO transactionCurrency = new TransactionCurrencyVO();
+        if(UserBalanceConfig.DOLLAR.equals(coinType)){
+            transactionCurrency.setCurrencyId(UserBalanceConfig.DOLLAR_ID);
+        } else {
+            transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyShortName(coinType);
+            if(transactionCurrency == null){
+                responseJson.put("code", 403);
+                responseJson.put("message", "无效币种参数");
+                return responseJson;
+            }
         }
 
         //根据币种及电子钱包操作记录号判定是否存在该订单回调

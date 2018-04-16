@@ -7,11 +7,10 @@ import com.jydp.entity.DO.syl.SylToJydpChainDO;
 import com.jydp.entity.DO.user.UserBalanceDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
-import com.jydp.service.ISylToJydpChainService;
-import com.jydp.service.ITransactionCurrencyService;
-import com.jydp.service.IUserBalanceService;
-import com.jydp.service.IUserCurrencyNumService;
+import com.jydp.service.*;
+import config.SylConfig;
 import config.SystemCommonConfig;
+import config.UserBalanceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,42 +42,58 @@ public class SylToJydpChainServiceImpl implements ISylToJydpChainService {
     @Autowired
     private ITransactionCurrencyService transactionCurrencyService;
 
+    /** 用户账号 */
+    @Autowired
+    private IUserService userService;
+
     /**
      * 新增 SYL转账盛源链记录(SYL-->JYDP)
-     * @param sylToJydpChain 待新增的 SYL转账盛源链记录(SYL-->JYDP)
+     * @param walletOrderNo 待新增的 SYL转账盛源链记录(SYL-->JYDP)
      * @return 新增成功：返回true, 新增失败：返回false
      */
-    public boolean insertSylToJydpChain(SylToJydpChainDO sylToJydpChain){
-        return sylToJydpChainDao.insertSylToJydpChain(sylToJydpChain);
+    public boolean insertSylToJydpChain(SylToJydpChainDO walletOrderNo){
+        return sylToJydpChainDao.insertSylToJydpChain(walletOrderNo);
     }
 
     /**
      * SYL转账盛源链执行(SYL-->JYDP)
-     * @param orderNo syl单号
+     * @param walletOrderNo syl单号
      * @param userId 用户Id
      * @param userAccount 用户账号
+     * @param walletUserAccount 钱包账号
      * @param coin 转账币数量
      * @param coinType 转账币类型
+     * @param orderTime 订单时间
+     * @param finishTime 完成时间
+     * @param currencyId 货币id
+     * @param currencyName 货币名称
      * @return 新增成功：返回true, 新增失败：返回false
      */
     @Transactional
-    public boolean operationSylToJydpChain(String orderNo,int userId, String userAccount, double coin, String coinType){
+    public boolean operationSylToJydpChain(String walletOrderNo,int userId, String userAccount, String walletUserAccount, double coin, String coinType,
+                                           Timestamp orderTime, Timestamp finishTime, int currencyId, String currencyName){
         boolean executeSuccess;
         SylToJydpChainDO sylToJydpChain = new SylToJydpChainDO();
 
-        TransactionCurrencyVO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyShortName(coinType);//查询币种信息
-        Timestamp date = DateUtil.getCurrentTime();
-        if(transactionCurrency == null){
-            return false;
-        }
+
 
         //转账记录添加
-        sylToJydpChain.setSylRecordNo(orderNo);
+        Timestamp date = DateUtil.getCurrentTime();
+        String orderNo = SystemCommonConfig.COIN_GIT +
+                DateUtil.longToTimeStr(date.getTime(), DateUtil.dateFormat10) +
+                NumberUtil.createNumberStr(7);
+        sylToJydpChain.setOrderNo(orderNo);
+        sylToJydpChain.setWalletOrderNo(walletOrderNo);
+        sylToJydpChain.setWalletUserAccount(walletUserAccount);
         sylToJydpChain.setUserId(userId);
-        sylToJydpChain.setShengyuanCoin(coin);
-        sylToJydpChain.setCoinType(coinType);
         sylToJydpChain.setUserAccount(userAccount);
-        sylToJydpChain.setHandleMark("盛源链app充值");
+        sylToJydpChain.setCurrencyNumber(coin);
+        sylToJydpChain.setCurrencyId(currencyId);
+        sylToJydpChain.setCoinType(coinType);
+        sylToJydpChain.setCurrencyName(currencyName);
+        sylToJydpChain.setRemark("盛源链app充值");
+        sylToJydpChain.setOrderTime(orderTime);
+        sylToJydpChain.setFinishTime(finishTime);
         sylToJydpChain.setAddTime(date);
         executeSuccess = insertSylToJydpChain(sylToJydpChain);
 
@@ -94,26 +109,44 @@ public class SylToJydpChainServiceImpl implements ISylToJydpChainService {
         userBalance.setOrderNo(userOrderNo);
         userBalance.setFrozenNumber(0);
         userBalance.setFromType("盛源链app充值");
-        userBalance.setCurrencyName(transactionCurrency.getCurrencyName());
-        userBalance.setCurrencyId(transactionCurrency.getCurrencyId());
+        userBalance.setCurrencyName(currencyName);
+        userBalance.setCurrencyId(currencyId);
         userBalance.setRemark("充值订单号：" + orderNo);
         userBalance.setBalanceNumber(coin);
         userBalance.setAddTime(date);
         executeSuccess = userBalanceService.insertUserBalance(userBalance);
 
-        //用户币增加
         if(executeSuccess){
-            executeSuccess = userCurrencyNumService.increaseCurrencyNumber(userId, transactionCurrency.getCurrencyId(), coin);
+            if(UserBalanceConfig.DOLLAR.equals(coinType)){//用户资金增加
+                executeSuccess = userService.updateAddUserAmount(userId, coin, 0);
+            } else {//用户币增加
+                executeSuccess = userCurrencyNumService.increaseCurrencyNumber(userId, currencyId, coin);
+                if (!executeSuccess) {
+                    UserCurrencyNumDO userCurrencyNum = new UserCurrencyNumDO();
+                    userCurrencyNum.setCurrencyId(currencyId);
+                    userCurrencyNum.setUserId(userId);
+                    userCurrencyNum.setCurrencyNumber(coin);
+                    userCurrencyNum.setCurrencyNumberLock(0);
+                    userCurrencyNum.setAddTime(date);
+                    executeSuccess = userCurrencyNumService.insertUserCurrencyNum(userCurrencyNum);
+                }
+            }
         }
-
-        if (!executeSuccess) {
-            UserCurrencyNumDO userCurrencyNum = new UserCurrencyNumDO();
-            userCurrencyNum.setCurrencyId(transactionCurrency.getCurrencyId());
-            userCurrencyNum.setUserId(userId);
-            userCurrencyNum.setCurrencyNumber(coin);
-            userCurrencyNum.setCurrencyNumberLock(0);
-            userCurrencyNum.setAddTime(date);
-            executeSuccess = userCurrencyNumService.insertUserCurrencyNum(userCurrencyNum);
+        if(executeSuccess){
+            //增加用户账户记录
+            orderNo = SystemCommonConfig.USER_BALANCE + DateUtil.longToTimeStr(date.getTime(), DateUtil.dateFormat10) + NumberUtil.createNumberStr(10);
+            UserBalanceDO userBalanceDO = new UserBalanceDO();
+            userBalanceDO.setOrderNo(orderNo);  //记录号：业务类型（2）+日期（6）+随机位（10）
+            userBalanceDO.setUserId(userId);
+            userBalanceDO.setFromType("电子钱包转入");
+            userBalanceDO.setCurrencyId(currencyId);  //币种Id,id=999
+            userBalanceDO.setCurrencyName(currencyName);  //货币名称
+            userBalanceDO.setBalanceNumber(coin);  //交易数量
+            userBalanceDO.setFrozenNumber(0);  //冻结数量
+            userBalanceDO.setRemark("电子钱包转入订单号：" + walletOrderNo);
+            userBalanceDO.setAddTime(date);
+            //添加用户账户记录
+            executeSuccess = userBalanceService.insertUserBalance(userBalanceDO);
         }
 
         // 数据回滚
@@ -125,10 +158,11 @@ public class SylToJydpChainServiceImpl implements ISylToJydpChainService {
 
     /**
      * 根据订单号查询订单信息
-     * @param sylRecordNo 订单号
+     * @param walletOrderNo 订单号
+     * @param currencyId 币种
      * @return 查询成功：返回订单信息, 查询失败或者没有相关信息：返回null
      */
-    public SylToJydpChainDO getSylToJydpChainBysylRecordNo(String sylRecordNo){
-        return sylToJydpChainDao.getSylToJydpChainBysylRecordNo(sylRecordNo);
+    public SylToJydpChainDO getSylToJydpChainBysylRecordNo(String walletOrderNo, int currencyId){
+        return sylToJydpChainDao.getSylToJydpChainBysylRecordNo(walletOrderNo, currencyId);
     }
 }

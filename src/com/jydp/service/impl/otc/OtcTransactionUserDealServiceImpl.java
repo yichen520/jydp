@@ -51,10 +51,6 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
     @Autowired
     private IOtcTransactionUserDealService otcTransactionUserDealService;
 
-    /** 用户信息 */
-    @Autowired
-    private IUserService serService;
-
     /** 用户账号 */
     @Autowired
     private IUserService userService;
@@ -408,9 +404,9 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
         }
 
         //经销商币解冻
-        executeSuccess = serService.updateAddUserAmount(otcTransactionPendOrder.getUserId(), otcTransactionUserDeal.getCurrencyNumber(), 0);
+        executeSuccess = userService.updateAddUserAmount(otcTransactionPendOrder.getUserId(), otcTransactionUserDeal.getCurrencyNumber(), 0);
         if(executeSuccess){
-            executeSuccess = serService.updateReduceUserBalanceLock(otcTransactionPendOrder.getUserId(), otcTransactionUserDeal.getCurrencyNumber());
+            executeSuccess = userService.updateReduceUserBalanceLock(otcTransactionPendOrder.getUserId(), otcTransactionUserDeal.getCurrencyNumber());
         }
         if(executeSuccess){
             //增加经销商冻结XT减少记录
@@ -470,9 +466,9 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
         }
 
         //用户币解冻
-        executeSuccess = serService.updateAddUserAmount(otcTransactionUserDeal.getUserId(), otcTransactionUserDeal.getCurrencyNumber(), 0);
+        executeSuccess = userService.updateAddUserAmount(otcTransactionUserDeal.getUserId(), otcTransactionUserDeal.getCurrencyNumber(), 0);
         if(executeSuccess){
-            executeSuccess = serService.updateReduceUserBalanceLock(otcTransactionUserDeal.getUserId(), otcTransactionUserDeal.getCurrencyNumber());
+            executeSuccess = userService.updateReduceUserBalanceLock(otcTransactionUserDeal.getUserId(), otcTransactionUserDeal.getCurrencyNumber());
         }
         if(executeSuccess){
             //增加用户冻结XT减少记录
@@ -579,10 +575,10 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
 
         //经销商币解冻
         if (executeSuccess) {
-            executeSuccess = serService.updateAddUserAmount(otcTransactionPendOrder.getUserId(), otcTransactionUserDeal.getCurrencyNumber(), 0);
+            executeSuccess = userService.updateAddUserAmount(otcTransactionPendOrder.getUserId(), otcTransactionUserDeal.getCurrencyNumber(), 0);
         }
         if (executeSuccess) {
-            executeSuccess = serService.updateReduceUserBalanceLock(otcTransactionPendOrder.getUserId(), otcTransactionUserDeal.getCurrencyNumber());
+            executeSuccess = userService.updateReduceUserBalanceLock(otcTransactionPendOrder.getUserId(), otcTransactionUserDeal.getCurrencyNumber());
         }
 
         if(executeSuccess){

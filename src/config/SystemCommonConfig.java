@@ -33,6 +33,8 @@ public class SystemCommonConfig {
 
 	/** 用户币种转出记录 -业务类型（2）+日期（6）+随机位（7） */
 	public static final String COIN_OUT = "40";
+	/** 用户币种转入记录 -业务类型（2）+日期（6）+随机位（7） */
+	public static final String COIN_GIT= "41";
 
 	/** 做单 -redis成交记录对应挂单记录号 -业务类型（2）+日期（6）+随机位（10）*/
 	public static final String TRANSACTION_MAKE_ORDER_PENDNO = "S0";

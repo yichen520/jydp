@@ -9,31 +9,98 @@ import java.sql.Timestamp;
  * @author sy
  */
 public class SylToJydpChainDO {
-    private String sylRecordNo;  //盛源链记录号
+    private String orderNo;  //订单号
+    private String walletOrderNo;  //钱包订单号
     private int userId;  //用户id
     private String userAccount;  //用户账号
+    private String walletUserAccount;//钱包账号
+    private double currencyNumber;  //币种数量
+    private int currencyId;  //币种Id
+    private String currencyName;  //货币名称
     private String coinType;  //币种类型
-    private double shengyuanCoin;  //盛源币
-    private String handleMark;  //操作说明
+    private Timestamp orderTime;  //订单时间
+    private Timestamp finishTime;  //完成时间
+    private String remark;  //备注	varchar
     private Timestamp addTime;  //添加时间
 
-
     /**
-     * 盛源链记录号
-     *
-     * @return the syl record no
+     * 订单号
+     * @return
      */
-    public String getSylRecordNo() {
-        return sylRecordNo;
+    public String getOrderNo() {
+        return orderNo;
     }
 
     /**
-     * 盛源链记录号
-     *
-     * @param sylRecordNo the syl record no
+     * 订单号
+     * @param orderNo
      */
-    public void setSylRecordNo(String sylRecordNo) {
-        this.sylRecordNo = sylRecordNo;
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
+    }
+
+    /**
+     * 钱包订单号
+     * @return
+     */
+    public String getWalletOrderNo() {
+        return walletOrderNo;
+    }
+
+    /**
+     * 钱包订单号
+     * @param walletOrderNo
+     */
+    public void setWalletOrderNo(String walletOrderNo) {
+        this.walletOrderNo = walletOrderNo;
+    }
+
+    /**
+     * 钱包账号
+     * @return
+     */
+    public String getWalletUserAccount() {
+        return walletUserAccount;
+    }
+
+    /**
+     * 钱包账号
+     * @param walletUserAccount
+     */
+    public void setWalletUserAccount(String walletUserAccount) {
+        this.walletUserAccount = walletUserAccount;
+    }
+
+    /**
+     * 币种数量
+     * @return
+     */
+    public double getCurrencyNumber() {
+        return currencyNumber;
+    }
+
+    /**
+     * 币种数量
+     * @param currencyNumber
+     */
+    public void setCurrencyNumber(double currencyNumber) {
+        this.currencyNumber = currencyNumber;
+    }
+
+    /**
+     * 完成时间
+     * @return
+     */
+    public Timestamp getFinishTime() {
+        return finishTime;
+    }
+
+    /**
+     * 完成时间
+     * @param finishTime
+     */
+    public void setFinishTime(Timestamp finishTime) {
+        this.finishTime = finishTime;
     }
 
     /**
@@ -91,39 +158,67 @@ public class SylToJydpChainDO {
     }
 
     /**
-     * 盛源币
-     *
-     * @return the shengyuan coin
+     * 币种Id
+     * @return
      */
-    public double getShengyuanCoin() {
-        return shengyuanCoin;
+    public int getCurrencyId() {
+        return currencyId;
     }
 
     /**
-     * 盛源币
-     *
-     * @param shengyuanCoin the shengyuan coin
+     * 币种Id
+     * @param currencyId
      */
-    public void setShengyuanCoin(double shengyuanCoin) {
-        this.shengyuanCoin = shengyuanCoin;
+    public void setCurrencyId(int currencyId) {
+        this.currencyId = currencyId;
     }
 
     /**
-     * 操作说明
-     *
-     * @return the handle mark
+     * 货币名称
+     * @return
      */
-    public String getHandleMark() {
-        return handleMark;
+    public String getCurrencyName() {
+        return currencyName;
     }
 
     /**
-     * 操作说明
-     *
-     * @param handleMark the handle mark
+     * 货币名称
+     * @param currencyName
      */
-    public void setHandleMark(String handleMark) {
-        this.handleMark = handleMark;
+    public void setCurrencyName(String currencyName) {
+        this.currencyName = currencyName;
+    }
+
+    /**
+     * 订单时间
+     * @return
+     */
+    public Timestamp getOrderTime() {
+        return orderTime;
+    }
+
+    /**
+     * 订单时间
+     * @param orderTime
+     */
+    public void setOrderTime(Timestamp orderTime) {
+        this.orderTime = orderTime;
+    }
+
+    /**
+     * 备注
+     * @return
+     */
+    public String getRemark() {
+        return remark;
+    }
+
+    /**
+     * 备注
+     * @param remark
+     */
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     /**
