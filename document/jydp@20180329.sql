@@ -313,16 +313,35 @@ CREATE TABLE `k_line_graph_one_week_tab` (
 -- ----------------------------
 DROP TABLE IF EXISTS `syl_to_jydp_chain_tab`;
 CREATE TABLE `syl_to_jydp_chain_tab` (
-  `sylRecordNo` varchar(20) NOT NULL COMMENT '盛源链记录号',
-  `userId` int(11) NOT NULL COMMENT '用户id',
-  `userAccount` varchar(16) NOT NULL COMMENT '用户账号',
-  `shengyuanCoin` decimal(18,8) NOT NULL COMMENT '盛源币',
-  `coinType` varchar(15) NOT NULL COMMENT '币种类型',
-  `handleMark` varchar(200) DEFAULT NULL COMMENT '操作说明',
-  `addTime` datetime NOT NULL COMMENT '添加时间,系统生成时间',
-  PRIMARY KEY (`sylRecordNo`),
-  UNIQUE KEY `sylRecordNo` (`sylRecordNo`) USING BTREE,
-  KEY `userId` (`userId`) USING BTREE
+  `orderNo`           VARCHAR(20)    NOT NULL
+  COMMENT '订单号',
+  `walletOrderNo`     VARCHAR(20)    NOT NULL
+  COMMENT '钱包订单号',
+  `userId`            int(11)        NOT NULL COMMENT '用户id',
+  `userAccount`       varchar(16)    NOT NULL COMMENT '用户账号',
+  `walletUserAccount` VARCHAR(16)    NOT NULL
+  COMMENT '钱包用户账号',
+  `currencyNumber`    DECIMAL(18, 8) NOT NULL
+  COMMENT '币种数量',
+  `currencyId`        INT(11)        NOT NULL DEFAULT '0'
+  COMMENT '币种Id',
+  `currencyName`      VARCHAR(10)    NOT NULL
+  COMMENT '货币名称',
+  `coinType`          VARCHAR(10)    NOT NULL
+  COMMENT '币种类型(币种简称)',
+  `orderTime`         DATETIME       NOT NULL
+  COMMENT '订单时间，电子钱包订单添加时间',
+  `finishTime`        DATETIME       NOT NULL
+  COMMENT '完成时间，电子钱包订单完成时间',
+  `addTime`           DATETIME       NOT NULL
+  COMMENT '添加时间',
+  `mark`              VARCHAR(200)            DEFAULT NULL
+  COMMENT '备注',
+  PRIMARY KEY (`orderNo`),
+  UNIQUE KEY `orderNo` (`orderNo`) USING BTREE,
+  KEY `userId` (`userId`) USING BTREE,
+  KEY `currencyId` (`currencyId`) USING BTREE,
+  KEY `walletOrderNo` (`walletOrderNo`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='SYL转账盛源链记录(SYL-->JYDP)';
 
 -- ----------------------------
