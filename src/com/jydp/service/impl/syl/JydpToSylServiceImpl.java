@@ -43,11 +43,16 @@ public class JydpToSylServiceImpl implements IJydpToSylService {
             String userAccount = jydpUserCoinOutRecord.getUserAccount();
             double currencyNumber = jydpUserCoinOutRecord.getCurrencyNumber();
             String coin = Double.toString(currencyNumber);
+            int currencyId = jydpUserCoinOutRecord.getCurrencyId();
 
             //进行参数加密
             TreeMap<String, String> map = new TreeMap<>();
             map.put("orderNo", orderNo);
-            map.put("coinType", SylConfig.SHENYUAN_COIN);
+            if(currencyId == 999){
+                map.put("coinType", SylConfig.XT_COIN);
+            }else {
+                map.put("coinType", SylConfig.SHENYUAN_COIN);
+            }
             map.put("userAccount", userAccount);
             map.put("coin", coin);
             String md5KeyStr = SignatureUtil.getSign(map, SylConfig.SIGN_SECRET_KEY);
@@ -57,11 +62,20 @@ public class JydpToSylServiceImpl implements IJydpToSylService {
             requestJson.put("orderNo", orderNo);
             requestJson.put("userAccount", userAccount);
             requestJson.put("coin", coin);
-            requestJson.put("coinType", SylConfig.SHENYUAN_COIN);
+            if(currencyId == 999){
+                requestJson.put("coinType", SylConfig.XT_COIN);
+            }else {
+                requestJson.put("coinType", SylConfig.SHENYUAN_COIN);
+            }
             requestJson.put("key", md5KeyStr);
 
             //发送请求
-            JSONObject responseJson = OKHttpUtil.postRequestJson(SylConfig.WITHDRAWALS_COIN_APPLY_URL, requestJson);
+            JSONObject responseJson;
+            if(currencyId == 999){
+                responseJson = OKHttpUtil.postRequestJson(SylConfig.WITHDRAWALS_XT_APPLY_URL, requestJson);
+            }else {
+                responseJson = OKHttpUtil.postRequestJson(SylConfig.WITHDRAWALS_COIN_APPLY_URL, requestJson);
+            }
 
             //打印日志
             if (responseJson != null) {
