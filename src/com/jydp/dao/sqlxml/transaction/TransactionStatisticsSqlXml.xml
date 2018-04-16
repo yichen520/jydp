@@ -21,10 +21,10 @@
             AND currencyId = #{currencyId}
         </if>
         <if test="startTime != null">
-            AND addTime <![CDATA[ >= ]]> #{startTime}
+            AND statisticsDate <![CDATA[ >= ]]> #{startTime}
         </if>
         <if test="endTime != null">
-            AND addTime <![CDATA[ <= ]]> #{endTime}
+            AND statisticsDate <![CDATA[ <= ]]> #{endTime}
         </if>
     </select>
 
@@ -38,10 +38,10 @@
             AND currencyId = #{currencyId}
         </if>
         <if test="startTime != null">
-            AND addTime <![CDATA[ >= ]]> #{startTime}
+            AND statisticsDate <![CDATA[ >= ]]> #{startTime}
         </if>
         <if test="endTime != null">
-            AND addTime <![CDATA[ <= ]]> #{endTime}
+            AND statisticsDate <![CDATA[ <= ]]> #{endTime}
         </if>
         ORDER BY currencyId, statisticsDate DESC
         LIMIT #{startNumber}, #{pageSize}
