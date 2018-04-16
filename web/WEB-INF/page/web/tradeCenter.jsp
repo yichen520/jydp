@@ -1252,22 +1252,33 @@
                 $(popObj).fadeOut("fast");
                 openTips(result.message);
 
-                var data = result.data;
-                var isPwd = data.userIsPwd;
-                $("#userIsPwd").val(isPwd);
+                var code = result.code;
+                if(code == 1){
+                    var data = result.data;
+                    var isPwd = data.userIsPwd;
+                    $("#userIsPwd").val(isPwd);
 
-                var isPwdS = "";
-                if (isPwd == 1) {
-                    isPwdS = "每笔交易都输入交易密码";
-                    document.getElementById("everyTrade").checked = true;
-                } else {
-                    isPwdS = "每次登录只输入一次交易密码";
-                    document.getElementById("onlyOneTrade").checked = true;
+                    var isPwdS = "";
+                    if (isPwd == 1) {
+                        isPwdS = "每笔交易都输入交易密码";
+                        document.getElementById("everyTrade").checked = true;
+                    } else {
+                        isPwdS = "每次登录只输入一次交易密码";
+                        document.getElementById("onlyOneTrade").checked = true;
+                    }
+                    $("#buyPayStatus1").html(isPwdS);
+                    $("#sellPayStatus1").html(isPwdS);
+                    $("#buyPayStatus2").html(isPwdS);
+                    $("#sellPayStatus2").html(isPwdS);
+                }else {
+                    var payPasswordStatus = parseInt('${payPasswordStatus}');
+
+                    if(payPasswordStatus == 1){
+                        document.getElementById("everyTrade").checked = true;
+                    }else if(payPasswordStatus == 2){
+                        document.getElementById("onlyOneTrade").checked = true;
+                    }
                 }
-                $("#buyPayStatus1").html(isPwdS);
-                $("#sellPayStatus1").html(isPwdS);
-                $("#buyPayStatus2").html(isPwdS);
-                $("#sellPayStatus2").html(isPwdS);
 
             }, error: function () {
                 PayPwdBoo = false;
