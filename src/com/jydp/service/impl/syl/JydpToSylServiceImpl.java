@@ -33,7 +33,7 @@ public class JydpToSylServiceImpl implements IJydpToSylService {
     public void jydpToSylApply(){
         //查询审核通过但未推送的
         List<JydpUserCoinOutRecordDO> jydpUserCoinOutRecordList = jydpUserCoinOutRecordService.listNotPushRecord();
-        if(jydpUserCoinOutRecordList == null && jydpUserCoinOutRecordList.size() <= 0){
+        if(jydpUserCoinOutRecordList == null || jydpUserCoinOutRecordList.size() <= 0){
             return;
         }
 
