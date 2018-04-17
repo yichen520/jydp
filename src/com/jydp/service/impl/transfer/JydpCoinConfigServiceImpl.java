@@ -6,12 +6,15 @@ import com.iqmkj.utils.NumberUtil;
 import com.jydp.dao.IJydpCoinConfigDao;
 import com.jydp.entity.DO.transfer.JydpCoinConfigDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
+import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.entity.VO.UserCoinConfigVO;
 import com.jydp.service.IJydpCoinConfigService;
 import com.jydp.service.ITransactionCurrencyService;
 import com.jydp.service.IUserCurrencyNumService;
+import com.jydp.service.IUserService;
 import config.SystemCommonConfig;
+import config.UserBalanceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +43,10 @@ public class JydpCoinConfigServiceImpl implements IJydpCoinConfigService {
     /** 用户币数量 */
     @Autowired
     private IUserCurrencyNumService userCurrencyNumService;
+
+    /** 用户账号 */
+    @Autowired
+    private IUserService userService;
     /**
      * 根据筛选条件获取JYDP币种转出管理
      * @param backerAccount  后台管理员帐号
@@ -90,12 +97,10 @@ public class JydpCoinConfigServiceImpl implements IJydpCoinConfigService {
 
         //查询用户币数量,(上线中,停牌的状态)
         List<UserCurrencyNumDO> userCurrencyNumList = userCurrencyNumService.listUserCurrencyNumByUserId(userId);
-        if (userCurrencyNumList == null || userCurrencyNumList.size() <= 0) {
-            return null;
-        }
-
-        for (UserCurrencyNumDO userCurrencyNum : userCurrencyNumList) {
-            map.put(userCurrencyNum.getCurrencyId(), userCurrencyNum);
+        if (userCurrencyNumList != null && userCurrencyNumList.size() > 0) {
+            for (UserCurrencyNumDO userCurrencyNum : userCurrencyNumList) {
+                map.put(userCurrencyNum.getCurrencyId(), userCurrencyNum);
+            }
         }
 
         //查询币种转出管理
@@ -114,6 +119,20 @@ public class JydpCoinConfigServiceImpl implements IJydpCoinConfigService {
                 userCoinConfig.setMinCurrencyNumber(jydpCoinConfig.getMinCurrencyNumber());
                 userCoinConfig.setCurrencyNumber(map.get(jydpCoinConfig.getCurrencyId()).getCurrencyNumber());
                 userCoinConfigList.add(userCoinConfig);
+            }
+
+            //币种为XT
+            if (jydpCoinConfig.getCurrencyId() == UserBalanceConfig.DOLLAR_ID) {
+                UserDO user = userService.getUserByUserId(userId);
+                if (user != null) {
+                    UserCoinConfigVO userCoinConfig = new UserCoinConfigVO();
+                    userCoinConfig.setCurrencyId(jydpCoinConfig.getCurrencyId());
+                    userCoinConfig.setCurrencyName(jydpCoinConfig.getCurrencyName());
+                    userCoinConfig.setFreeCurrencyNumber(jydpCoinConfig.getFreeCurrencyNumber());
+                    userCoinConfig.setMinCurrencyNumber(jydpCoinConfig.getMinCurrencyNumber());
+                    userCoinConfig.setCurrencyNumber( user.getUserBalance());
+                    userCoinConfigList.add(userCoinConfig);
+                }
             }
         }
 
@@ -137,4 +156,42 @@ public class JydpCoinConfigServiceImpl implements IJydpCoinConfigService {
     public JydpCoinConfigDO getJydpCoinConfigByCurrencyId(int currencyId) {
         return jydpCoinConfigDao.getJydpCoinConfigByCurrencyId(currencyId);
     }
+
+    /**
+     * 查询币种管理信息,根据currencyId
+     * @param userId 用户id
+     * @param currencyId 币种id
+     * @return 查询成功:返回币种管理信息, 查询失败:返回null
+     */
+    public UserCoinConfigVO getUserCoinConfigByCurrencyId(int userId, int currencyId) {
+        UserCoinConfigVO userCoinConfig = new UserCoinConfigVO();
+        JydpCoinConfigDO jydpCoinConfig = jydpCoinConfigDao.getJydpCoinConfigByCurrencyId(currencyId);
+        if (jydpCoinConfig == null) {
+            return null;
+        }
+
+        double currencyNumber = 0;
+        if (currencyId == UserBalanceConfig.DOLLAR_ID) {
+            UserDO user = userService.getUserByUserId(userId);
+            if (user == null) {
+                return null;
+            }
+            currencyNumber = user.getUserBalance();
+        } else {
+            UserCurrencyNumDO userCurrencyNum = userCurrencyNumService.getUserCurrencyNumByUserIdAndCurrencyId(userId, currencyId);
+            if (userCurrencyNum == null) {
+                return null;
+            }
+            currencyNumber = userCurrencyNum.getCurrencyNumber();
+        }
+
+        userCoinConfig.setUserId(userId);
+        userCoinConfig.setCurrencyId(currencyId);
+        userCoinConfig.setCurrencyName(jydpCoinConfig.getCurrencyName());
+        userCoinConfig.setMinCurrencyNumber(jydpCoinConfig.getMinCurrencyNumber());
+        userCoinConfig.setFreeCurrencyNumber(jydpCoinConfig.getFreeCurrencyNumber());
+        userCoinConfig.setCurrencyNumber(currencyNumber);
+
+        return userCoinConfig;
+ }
 }

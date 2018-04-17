@@ -42,4 +42,56 @@
         LIMIT #{startNumber}, #{pageSize}
     </select>
 
+	<select id="SylToJydpChain_countSylToJydpChainForBack" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(orderNo)
+		FROM syl_to_jydp_chain_tab
+		WHERE
+			1 = 1
+			<if test = "userAccount != null and userAccount != ''">
+				AND userAccount LIKE CONCAT('%', #{userAccount}, '%')
+			</if>
+			<if test="orderNo != null and orderNo != ''">
+				AND orderNo = #{orderNo}
+			</if>
+			<if test="walletOrderNo != null and walletOrderNo != ''">
+				AND walletOrderNo = #{walletOrderNo}
+			</if>
+			<if test="currencyId != 0">
+				AND currencyId = #{currencyId}
+			</if>
+			<if test="startTime != null">
+				AND orderTime <![CDATA[ >= ]]> #{startTime}
+			</if>
+			<if test="endTime != null">
+				AND orderTime <![CDATA[ <= ]]> #{endTime}
+			</if>
+	</select>
+
+	<select id="SylToJydpChain_listSylToJydpChainForBack" parameterType="java.util.Map" resultType="SylToJydpChainDO">
+		SELECT orderNo, walletOrderNo, userId, userAccount, walletUserAccount, currencyNumber, currencyId,
+				currencyName, coinType, orderTime, finishTime, addTime, remark
+		FROM syl_to_jydp_chain_tab
+		WHERE
+			1 = 1
+			<if test = "userAccount != null and userAccount != ''">
+				AND userAccount LIKE CONCAT('%', #{userAccount}, '%')
+			</if>
+			<if test="orderNo != null and orderNo != ''">
+				AND orderNo = #{orderNo}
+			</if>
+			<if test="walletOrderNo != null and walletOrderNo != ''">
+				AND walletOrderNo = #{walletOrderNo}
+			</if>
+			<if test="currencyId != 0">
+				AND currencyId = #{currencyId}
+			</if>
+			<if test="startTime != null">
+				AND orderTime <![CDATA[ >= ]]> #{startTime}
+			</if>
+			<if test="endTime != null">
+				AND orderTime <![CDATA[ <= ]]> #{endTime}
+			</if>
+		ORDER BY orderTime, orderNo DESC
+		LIMIT #{startNumber}, #{pageSize}
+	</select>
 </mapper>
