@@ -22,13 +22,13 @@
 		AND currencyId = #{currencyId}
 	</select>
 
-    <select id="SylToJydpChain_countUserRechargeCoinRecordForWap" parameterType="int" resultType="int">
+    <select id="SylToJydpChain_countUserRechargeCoinRecordForUser" parameterType="int" resultType="int">
         SELECT count(orderNo)
         FROM syl_to_jydp_chain_tab
         WHERE userId = #{userId}
     </select>
 
-    <select id="SylToJydpChain_listUserRechargeCoinRecordForWap" parameterType="java.util.Map"
+    <select id="SylToJydpChain_listUserRechargeCoinRecordForUser" parameterType="java.util.Map"
             resultType="UserRechargeCoinRecordVO">
         SELECT
             walletOrderNo,

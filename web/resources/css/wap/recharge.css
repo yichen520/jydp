@@ -1,0 +1,195 @@
+body {
+    background: #f5f5f5;
+}
+
+.wrapper {
+    margin-top: 1.11rem;
+}
+
+.main {
+    background: #fff;
+    width: 93%;
+    margin: 0 auto;
+    border-radius: 5px;
+    margin-top: 0.2rem;
+}
+
+.titleBox {
+    display: block;
+    height: 0.74rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.name {
+    padding-left: 0.2rem;
+    line-height: 0.74rem;
+    float: left;
+    color: #000;
+    font-size: 0.34rem;
+}
+
+.state {
+    padding-right: 0.2rem;
+    line-height: 0.74rem;
+    display: block;
+    float: right;
+    color: #e83a33;
+    font-size: 0.26rem;
+}
+
+.content {
+    padding: 0.3rem 0.2rem 0.3rem 0.2rem;
+    border-bottom: 1px solid #ddd;
+}
+
+.num {
+    font-size: 0.36rem;
+    color: #333;
+    font-weight: 600;
+}
+
+.timeTitle {
+    margin-top: 0.3rem;
+    width: 50%;
+    font-size: 0.26rem;
+    color: #555;
+    float: left;
+}
+
+.serialTitle {
+    margin-top: 0.3rem;
+    width: 50%;
+    font-size: 0.26rem;
+    color: #555;
+    float: left;
+}
+
+.time {
+    margin-top: 0.1rem;
+    color: #999;
+    font-size: 0.26rem;
+    float: left;
+    width: 50%;
+}
+
+.serial {
+    margin-top: 0.1rem;
+    color: #999;
+    font-size: 0.26rem;
+    float: left;
+    width: 50%;
+}
+
+.footer {
+    margin-top: 0.2rem;
+    padding-bottom: 0.2rem;
+}
+
+.withdraw {
+    margin-right: 0.2rem;
+    float: right;
+    width: 1.2rem;
+    height: 0.5rem;
+    color: #666;
+    font-size: 0.24rem;
+    line-height: 0.52rem;
+    text-align: center;
+    border-radius: 20px;
+    border: 1px solid #666;
+}
+
+.remark {
+    padding-left: 0.2rem;
+    float: left;
+    color: #999;
+    font-size: 0.26rem;
+}
+
+.more {
+    margin-bottom: 1rem;
+    margin-top: 0.3rem;
+    text-align: center;
+    width: 100%;
+    color: #999;
+    font-size: 0.26rem;
+}
+
+.money-state {
+    border-bottom: 1px solid #ddd;
+    padding: 0.2rem 0.2rem 0.3rem 0.2rem;
+    font-size: 0.26rem;
+}
+
+.money-state span {
+    color: #999;
+}
+
+/* 弹窗撤销 */
+.bg {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 99;
+}
+
+.cin {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 99;
+}
+
+.showBox {
+    border-radius: 6px;
+    width: 5.64rem;
+    height: 2.7rem;
+    position: fixed;
+    left: 50%;
+    margin-left: -2.82rem;
+    top: 50%;
+    margin-top: -1.35rem;
+    display: none;
+    z-index: 100;
+    opacity: 0;
+    background: #fff;
+}
+
+.showBoxTitle {
+    text-align: center;
+    widows: 100%;
+    height: 1rem;
+    line-height: 1rem;
+    font-size: 0.32rem;
+    color: #000;
+}
+
+.showBoxContent {
+    padding-left: 0.3rem;
+    font-size: 0.28rem;
+    color: #666;
+}
+
+.showBoxButton {
+    margin-top: 0.4rem;
+    height: 0.9rem;
+    display: flex;
+}
+
+.showBoxButton div {
+    flex: 1;
+    font-size: 0.32rem;
+    line-height: 0.9rem;
+    text-align: center;
+    color: #999;
+    border-top: 1px solid #d9d9d9;
+    border-right: 1px solid #d9d9d9;
+}
+
+.showBoxButton div:nth-of-type(2) {
+    color: #e83a33;
+    border-right: 0;
+}
