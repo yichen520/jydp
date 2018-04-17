@@ -12,7 +12,6 @@ import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.VO.UserCoinConfigVO;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.*;
-import config.UserBalanceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -114,7 +113,15 @@ public class UserCoinWithdrawalController {
 
         int currencyId = Integer.parseInt(currencyIdStr);
 
-        UserCoinConfigVO userCoinConfig = jydpCoinConfigService.getUserCoinConfigByCurrencyId(userBo.getUserId(), currencyId);
+        UserCoinConfigVO userCoinConfig = null;
+        List<UserCoinConfigVO> userCoinConfigList = jydpCoinConfigService.listUserCoinConfigByUserId(userBo.getUserId());
+        if (userCoinConfigList != null && userCoinConfigList.size() > 0) {
+            for (UserCoinConfigVO userCoinConfigVO : userCoinConfigList) {
+                if (userCoinConfigVO.getCurrencyId() == currencyId) {
+                    userCoinConfig = userCoinConfigVO;
+                }
+            }
+        }
 
         if (userCoinConfig == null) {
             response.setCode(3);
@@ -195,25 +202,17 @@ public class UserCoinWithdrawalController {
 //            return response;
 //        }
 
-        if (currencyId == UserBalanceConfig.DOLLAR_ID) {
-            if (user.getUserBalance() < number){
-                response.setCode(3);
-                response.setMessage("提现数量大于用户币种数量");
-                return response;
-            }
-        } else {
-            //查询用户币数量
-            UserCurrencyNumDO userCurrencyNum = userCurrencyNumService.getUserCurrencyNumByUserIdAndCurrencyId(userBo.getUserId(), currencyId);
-            if(userCurrencyNum == null){
-                response.setCode(3);
-                response.setMessage("币种信息获取失败,请稍候再试");
-                return response;
-            }
-            if (userCurrencyNum.getCurrencyNumber() < number) {
-                response.setCode(3);
-                response.setMessage("提现数量大于用户币种数量");
-                return response;
-            }
+        //查询用户币数量
+        UserCurrencyNumDO userCurrencyNum = userCurrencyNumService.getUserCurrencyNumByUserIdAndCurrencyId(userBo.getUserId(), currencyId);
+        if(userCurrencyNum == null){
+            response.setCode(3);
+            response.setMessage("币种信息获取失败,请稍候再试");
+            return response;
+        }
+        if (userCurrencyNum.getCurrencyNumber() < number) {
+            response.setCode(3);
+            response.setMessage("提现数量大于用户币种数量");
+            return response;
         }
 
         //验证码判定

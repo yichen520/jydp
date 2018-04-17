@@ -39,7 +39,7 @@ public class WebCustomerServiceController {
         }
 
         int totalNumber = userFeedbackService.countUserFeedbackForUser(userId);
-        int pageSize = 21;
+        int pageSize = 20;
 
         List<UserFeedbackDO> userFeedbackList = null;
         if (totalNumber > 0) {

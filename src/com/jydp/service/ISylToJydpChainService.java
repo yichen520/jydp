@@ -6,7 +6,6 @@ import com.jydp.entity.VO.UserRechargeCoinRecordVO;
 import java.util.List;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 /**
  * SYL转账盛源链记录(SYL-->JYDP)
@@ -63,30 +62,4 @@ public interface ISylToJydpChainService {
      * @return 查询成功：返回用户账户错误总数，查询失败：返回0
      */
     List<UserRechargeCoinRecordVO> listUserRechargeCoinRecordForWap(int userId, int pageNumber, int pageSize);
-
-    /**
-     * 查询用户充币成功记录总数(后台)
-     * @param userAccount 用户账号,没有填null
-     * @param orderNo 订单号,没有填null
-     * @param walletOrderNo 钱包订单号,没有填null
-     * @param currencyId 币种Id,查询全部填0
-     * @param startTime 订单起始时间
-     * @param endTime 订单结束时间
-     * @return 查询成功:返回用户充币成功记录总数, 查询失败:返回0
-     */
-    int countSylToJydpChainForBack(String userAccount, String orderNo, String walletOrderNo, int currencyId, Timestamp startTime, Timestamp endTime);
-
-    /**
-     * 查询用户充币成功记录(后台)
-     * @param userAccount 用户账号,没有填null
-     * @param orderNo 订单号,没有填null
-     * @param walletOrderNo 钱包订单号,没有填null
-     * @param currencyId 币种Id,查询全部填0
-     * @param startTime 订单起始时间
-     * @param endTime 订单结束时间
-     * @param pageNumber 当前页
-     * @param pageSize 页面大小
-     * @return 操作成功:返回用户充币成功记录集合, 操作失败:返回null
-     */
-    List<SylToJydpChainDO> listSylToJydpChainForBack(String userAccount, String orderNo, String walletOrderNo, int currencyId, Timestamp startTime, Timestamp endTime, int pageNumber, int pageSize);
 }

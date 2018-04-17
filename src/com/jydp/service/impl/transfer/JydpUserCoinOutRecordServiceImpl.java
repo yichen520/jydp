@@ -158,8 +158,10 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
      */
     @Transactional
     public boolean insertJydpUserCoinOutRecord(int currencyId, String currencyName, int userId, String userAccount, String userSylAccount, double number) {
+        //查询用户币数量
+        UserCurrencyNumDO userCurrencyNum = userCurrencyNumService.getUserCurrencyNumByUserIdAndCurrencyId(userId, currencyId);
         JydpCoinConfigDO jydpCoinConfig = jydpCoinConfigService.getJydpCoinConfigByCurrencyId(currencyId);
-        if(jydpCoinConfig == null){
+        if(userCurrencyNum == null || jydpCoinConfig == null){
             return false;
         }
 
@@ -167,15 +169,8 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
         String orderNo = "";
         String remark = "";
 
-        boolean excuteSuccess = false;
-
-        if (currencyId == UserBalanceConfig.DOLLAR_ID) {
-            //减少用户和可用资产
-            excuteSuccess = userService.updateReduceUserBalance(userId, number);
-        } else {
-            //减少用户币种数量
-            excuteSuccess = userCurrencyNumService.reduceCurrencyNumber(userId, currencyId, number);
-        }
+        //减少用户币种数量
+        boolean excuteSuccess = userCurrencyNumService.reduceCurrencyNumber(userId, currencyId, number);
 
         if (excuteSuccess) {
             orderNo = SystemCommonConfig.USER_BALANCE +
