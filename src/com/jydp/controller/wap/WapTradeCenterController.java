@@ -313,6 +313,7 @@ public class WapTradeCenterController {
         //判断是否需要验证交易密码以及验证交易密码
         int isPwd = userSession.getIsPwd();
         int payPasswordStatus = user.getPayPasswordStatus();
+        response.put("userIsPwd", isPwd);
         if (payPasswordStatus == 1 || (payPasswordStatus == 2 && isPwd == 1) || StringUtil.isNotNull(sellPwd)) {
             sellPwd = MD5Util.toMd5(sellPwd);
             boolean checkResult = userService.validateUserPay(user.getUserAccount(), sellPwd);
@@ -322,14 +323,15 @@ public class WapTradeCenterController {
 
                 userSession.setIsPwd(1);
                 request.getSession().setAttribute("userSession", userSession);
+
+                //与前端一致
                 response.put("userIsPwd", 1);
+                response.put("payPasswordStatus", 1);
 
                 response.put("code", 101);
                 response.put("message", "支付密码错误");
                 return response;
-            }
-            //修改session中是否输入过密码标识
-            if (payPasswordStatus == 2 && isPwd == 1) {
+            }else{
                 userSession.setIsPwd(2);
                 request.getSession().setAttribute("userSession", userSession);
                 response.put("userIsPwd", 2);
@@ -363,9 +365,10 @@ public class WapTradeCenterController {
             return response;
         }
 
-        JsonObjectBO trade = tradeCommonService.trade(transactionPendOrder);
-        response.put("code", trade.getCode());
-        response.put("message", trade.getMessage());
+     //   JsonObjectBO trade = tradeCommonService.trade(transactionPendOrder);
+        RabbitUtils.trdeOrder(transactionPendOrder);//放入队列
+        response.put("code", 1);
+        response.put("message", "挂单成功");
         return response;
     }
 
@@ -475,6 +478,7 @@ public class WapTradeCenterController {
         //判断是否需要验证交易密码以及验证交易密码
         int isPwd = userSession.getIsPwd();
         int payPasswordStatus = user.getPayPasswordStatus();
+        response.put("userIsPwd", isPwd);
         if (payPasswordStatus == 1 || (payPasswordStatus == 2 && isPwd == 1) || StringUtil.isNotNull(buyPwd)) {
             buyPwd = MD5Util.toMd5(buyPwd);
             boolean checkResult = userService.validateUserPay(user.getUserAccount(), buyPwd);
@@ -485,14 +489,13 @@ public class WapTradeCenterController {
                 userSession.setIsPwd(1);
                 request.getSession().setAttribute("userSession", userSession);
 
-                response.put("userIsPwd",1);
+                response.put("userIsPwd", 1);
+                response.put("payPasswordStatus", 1);
 
                 response.put("code", 101);
                 response.put("message", "支付密码错误");
                 return response;
-            }
-            //修改session中是否输入过密码标识
-            if (payPasswordStatus == 2 && isPwd == 1) {
+            }else{
                 userSession.setIsPwd(2);
                 request.getSession().setAttribute("userSession", userSession);
                 response.put("userIsPwd", 2);
@@ -528,9 +531,10 @@ public class WapTradeCenterController {
             return response;
         }
 
-        JsonObjectBO trade = tradeCommonService.trade(transactionPendOrder);
-        response.put("code", trade.getCode());
-        response.put("message", trade.getMessage());
+      //  JsonObjectBO trade = tradeCommonService.trade(transactionPendOrder);
+        RabbitUtils.trdeOrder(transactionPendOrder);//放入队列
+        response.put("code", 1);
+        response.put("message", "挂单成功");
         return response;
     }
 

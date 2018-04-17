@@ -6,6 +6,7 @@ import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
 import com.jydp.entity.DO.transaction.WapTransactionPendOrderDO;
+import com.jydp.entity.VO.TransactionPendOrderVO;
 import com.jydp.interceptor.UserWapInterceptor;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.ITransactionPendOrderService;
@@ -149,6 +150,16 @@ public class WapTransactionPendOrderController {
     @RequestMapping(value = "/revokeForDeal.htm", method = RequestMethod.POST)
     public @ResponseBody JSONObject revokeForDeal(HttpServletRequest request) {
         JSONObject response = new JSONObject();
+        List<TransactionPendOrderVO> transactionPendOrderList = null;
+
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyIdStr"));
+        //获取参数
+        if (!StringUtil.isNotNull(currencyIdStr)) {
+            response.put("code", 3);
+            response.put("message", "参数错误");
+            return response;
+        }
+        int currencyId = Integer.parseInt(currencyIdStr);
         UserSessionBO user = (UserSessionBO) request.getSession().getAttribute("userSession");
         if(user == null){
             response.put("code", 4);
@@ -181,6 +192,8 @@ public class WapTransactionPendOrderController {
             response.put("message", "撤单失败");
             return response;
         }
+        transactionPendOrderList = transactionPendOrderService.listPendOrderForWap(user.getUserId(), currencyId, 0, 10);
+        response.put("transactionPendOrderList", transactionPendOrderList);
         response.put("code", 0);
         response.put("message", "撤单成功");
         return response;
