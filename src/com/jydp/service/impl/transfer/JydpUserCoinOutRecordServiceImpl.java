@@ -134,7 +134,10 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
             excuteSuccess = userBalanceService.insertUserBalance(userBalance);
         }
 
-        if (excuteSuccess) {
+        //币种为XT,增加用户可用资产
+        if (excuteSuccess && currencyId == UserBalanceConfig.DOLLAR_ID) {
+            excuteSuccess = userService.updateAddUserAmount(userId,tradePriceSum,0);
+        } else if (excuteSuccess) {
             //增加用户币数量
             excuteSuccess = userCurrencyNumService.increaseCurrencyNumber(userId,currencyId,tradePriceSum);
         }
