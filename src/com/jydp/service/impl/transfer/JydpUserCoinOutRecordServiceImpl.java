@@ -98,11 +98,6 @@ public class JydpUserCoinOutRecordServiceImpl implements IJydpUserCoinOutRecordS
             return false;
         }
 
-        //撤单操作非本人
-        if (jydpUserCoinOutRecord.getUserId() != userId) {
-            return false;
-        }
-
         //业务执行状态
         boolean excuteSuccess = true;
         Timestamp curTime = DateUtil.getCurrentTime();
