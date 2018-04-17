@@ -8,6 +8,7 @@ import com.jydp.entity.DO.transfer.JydpUserCoinOutRecordDO;
 import com.jydp.service.IJydpToSylService;
 import com.jydp.service.IJydpUserCoinOutRecordService;
 import config.SylConfig;
+import config.UserBalanceConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +33,7 @@ public class JydpToSylServiceImpl implements IJydpToSylService {
     public void jydpToSylApply(){
         //查询审核通过但未推送的
         List<JydpUserCoinOutRecordDO> jydpUserCoinOutRecordList = jydpUserCoinOutRecordService.listNotPushRecord();
-        if(jydpUserCoinOutRecordList == null){
+        if(jydpUserCoinOutRecordList == null && jydpUserCoinOutRecordList.size() <= 0){
             return;
         }
 
@@ -71,7 +72,7 @@ public class JydpToSylServiceImpl implements IJydpToSylService {
 
             //发送请求
             JSONObject responseJson;
-            if(currencyId == 999){
+            if(currencyId == UserBalanceConfig.DOLLAR_ID){
                 responseJson = OKHttpUtil.postRequestJson(SylConfig.WITHDRAWALS_XT_APPLY_URL, requestJson);
             }else {
                 responseJson = OKHttpUtil.postRequestJson(SylConfig.WITHDRAWALS_COIN_APPLY_URL, requestJson);
