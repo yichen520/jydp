@@ -47,7 +47,7 @@ public class UserRechargeCoinRecordController {
             pageNumber = Integer.parseInt(pageNumberStr);
         }
 
-        int totalNumber = sylToJydpChainService.countUserRechargeCoinRecordForWap(userSession.getUserId());
+        int totalNumber = sylToJydpChainService.countUserRechargeCoinRecordForUser(userSession.getUserId());
 
         int pageSize = 20;
         int totalPageNumber = (int) Math.ceil(totalNumber / 1.0 / pageSize);
@@ -61,7 +61,7 @@ public class UserRechargeCoinRecordController {
 
         List<UserRechargeCoinRecordVO> userRechargeCoinRecordList = null;
         if (totalNumber > 0) {
-            userRechargeCoinRecordList = sylToJydpChainService.listUserRechargeCoinRecordForWap(userSession.getUserId(), pageNumber, pageSize);
+            userRechargeCoinRecordList = sylToJydpChainService.listUserRechargeCoinRecordForUser(userSession.getUserId(), pageNumber, pageSize);
         }
 
         request.setAttribute("code", 1);

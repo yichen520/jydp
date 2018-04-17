@@ -171,24 +171,24 @@ public class SylToJydpChainServiceImpl implements ISylToJydpChainService {
     }
 
     /**
-     * 查询用户充币成功记录总数
+     * 查询用户充币成功记录总数(用户展示数据)
      *
      * @param userId 用户id
-     * @return 查询成功：返回用户账户错误总数，查询失败：返回0
+     * @return 查询成功：返回用户充币成功记录总数，查询失败或无数据：返回0
      */
-    public int countUserRechargeCoinRecordForWap(int userId) {
-        return sylToJydpChainDao.countUserRechargeCoinRecordForWap(userId);
+    public int countUserRechargeCoinRecordForUser(int userId) {
+        return sylToJydpChainDao.countUserRechargeCoinRecordForUser(userId);
     }
 
     /**
-     * 查询用户充币成功记录列表信息
+     * 查询用户充币成功记录列表信息(用户展示数据)
      *
      * @param userId     用户id
      * @param pageNumber 当前页数
      * @param pageSize   每页条数
-     * @return 查询成功：返回用户账户错误总数，查询失败：返回0
+     * @return 查询成功：返回用户充币成功记录列表信息，查询失败或无数据：返回null
      */
-    public List<UserRechargeCoinRecordVO> listUserRechargeCoinRecordForWap(int userId, int pageNumber, int pageSize) {
-        return sylToJydpChainDao.listUserRechargeCoinRecordForWap(userId, pageNumber, pageSize);
+    public List<UserRechargeCoinRecordVO> listUserRechargeCoinRecordForUser(int userId, int pageNumber, int pageSize) {
+        return sylToJydpChainDao.listUserRechargeCoinRecordForUser(userId, pageNumber, pageSize);
     }
 }

@@ -27,14 +27,14 @@
         <p>成交记录</p>
         <img src="<%=path %>/resources/image/wap/nextIcon.png"/>
     </div>
-<%--    <div class="content">
-        <p>充值记录</p>
+    <div class="content" id="recharge">
+        <p>充币成功记录</p>
         <img src="<%=path %>/resources/image/wap/nextIcon.png"/>
     </div>
-    <div class="content">
-        <p>提现记录</p>
-        <img src="<%=path %>/resources/image/wap/nextIcon.png"/>
-    </div>--%>
+    <!--<div class="content present">-->
+    <!--<p>提现记录</p>-->
+    <!--<img src="./images/nextIcon.png" />-->
+    <!--</div>-->
     <div class="content currency" id="currency">
         <p>币种提现记录</p>
         <img src="<%=path %>/resources/image/wap/nextIcon.png"/>
@@ -59,6 +59,10 @@
     //成交记录
     $("#volume").click(function () {
         window.location.href = "<%=path %>"+"/userWap/wapDealRecord/show.htm";
+    })
+    //充币成功记录
+    $("#recharge").click(function () {
+        window.location.href = "<%=path %>" + "/userWap/wapRechargeCoinRecord/show.htm";
     })
     //币种提现记录
     $("#currency").click(function () {
