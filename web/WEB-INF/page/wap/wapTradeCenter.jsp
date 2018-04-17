@@ -359,6 +359,10 @@
     {{/each}}
 </script>
 </div>
+<!-- loading图 -->
+<div id="trateLoading" style="display:none;" >
+    <i></i>
+</div>
 
 <script type="text/javascript" src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.bootcss.com/handlebars.js/4.0.11/handlebars.min.js"></script>

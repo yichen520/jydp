@@ -163,9 +163,9 @@ var ParamsAndInit = {
         $('.cin').css("height", bgHeight + "px");
         $('.setting').on('click', function () {
             var userSession = $("#userSession").val();
-            if(userSession == undefined || userSession == null || userSession == ""){
+            if (userSession == undefined || userSession == null || userSession == "") {
                 openTips("请先登录再操作")
-                return ;
+                return;
             }
             $('.cin').fadeIn();
             //回显
@@ -359,6 +359,7 @@ var ParamsAndInit = {
         var buyTotal = $buyTotal.val();
         var buyPwd = $("#buyPwd").val();
         var isPwd = $("#userIsPwd").val();
+        var payPasswordStatus = $("#payPasswordStatus").val();
 
         $("#buyPriceConfirm").val(buyPrice);
         $("#buyNumConfirm").val(buyNum);
@@ -394,17 +395,27 @@ var ParamsAndInit = {
             openTips("数量不能小于等于0");
             return;
         }
-        if ((buyPwd == null || buyPwd == "") && isPwd == 1) {
-            openTips("交易密码不能为空");
-            return;
-        }
-        if (buyPwd.length < 6 && isPwd == 1) {
-            openTips("交易密码不能小于六位");
-            return;
-        }
         if (isNaN(buyPrice) || isNaN(buyNum)) {
             openTips("交易价格和购买数量必须是数字");
         }
+
+        if ((buyPwd == null || buyPwd == "") && payPasswordStatus == 1) {
+            openTips("交易密码不能为空");
+            return;
+        }
+        if ((buyPwd == null || buyPwd == "") && isPwd == 1 && payPasswordStatus == 2) {
+            openTips("交易密码不能为空");
+            return;
+        }
+        if (buyPwd.length < 6 && payPasswordStatus == 1) {
+            openTips("交易密码不能小于六位");
+            return;
+        }
+        if (buyPwd.length < 6 && isPwd == 1 && payPasswordStatus == 2) {
+            openTips("交易密码不能小于六位");
+            return;
+        }
+
         $("#buyPriceTips").html(buyPriceStr + " XT");
         $("#buyNumTips").html(buyNumStr);
         $("#buySumTips").html(buyTotal + " XT");
@@ -417,6 +428,7 @@ var ParamsAndInit = {
         var sellTotal = $sellTotal.val();
         var sellPwd = $("#sellPwd").val();
         var isPwd = $("#userIsPwd").val();
+        var payPasswordStatus = $("#payPasswordStatus").val();
 
         $("#sellPriceConfirm").val(sellPrice);
         $("#sellNumConfirm").val(sellNum);
@@ -452,18 +464,27 @@ var ParamsAndInit = {
             openTips("数量不能小于等于0");
             return;
         }
-        if ((sellPwd == null || sellPwd == "") && isPwd == 1) {
-            openTips("交易密码不能为空");
-            return;
-        }
-        if (sellPwd.length < 6 && isPwd == 1) {
-            openTips("交易密码不能小于六位");
-            return;
-        }
         if (isNaN(sellNum) || isNaN(sellPrice)) {
             openTips("出售数量和价格必须都是数字");
             retrurn;
         }
+        if ((sellPwd == null || sellPwd == "") && payPasswordStatus == 1) {
+            openTips("交易密码不能为空");
+            return;
+        }
+        if ((sellPwd == null || sellPwd == "") && isPwd == 1 && payPasswordStatus == 2) {
+            openTips("交易密码不能为空");
+            return;
+        }
+        if (sellPwd.length < 6 && payPasswordStatus == 1) {
+            openTips("交易密码不能小于六位");
+            return;
+        }
+        if (sellPwd.length < 6 && isPwd == 1 && payPasswordStatus == 2) {
+            openTips("交易密码不能小于六位");
+            return;
+        }
+
         $("#sellPriceTips").html(sellPriceStr + " XT");
         $("#sellNumTips").html(sellNumStr);
         $("#sellSumTips").html(sellTotal + " XT");
@@ -508,8 +529,8 @@ var ParamsAndInit = {
                 if (data.code == 101) {
                     $("#bMaxNum").text("当前设置: 每笔交易都输入密码");
                     $("#sMaxNum").text("当前设置: 每笔交易都输入密码");
-                    $("#payPasswordStatus").val(1);
-                    $("#userIsPwd").val(1);
+                    $("#payPasswordStatus").val(data.payPasswordStatus);
+                    $("#userIsPwd").val(data.userIsPwd);
                 }
                 if (data.code != 1) {
                     openTips(data.message);
@@ -555,8 +576,8 @@ var ParamsAndInit = {
                 if (data.code == 101) {
                     $("#bMaxNum").text("当前设置: 每笔交易都输入密码");
                     $("#sMaxNum").text("当前设置: 每笔交易都输入密码");
-                    $("#payPasswordStatus").val(1);
-                    $("#userIsPwd").val(1);
+                    $("#payPasswordStatus").val(data.payPasswordStatus);
+                    $("#userIsPwd").val(data.userIsPwd);
                 }
                 if (data.code != "1") {
                     openTips(data.message);
@@ -589,7 +610,12 @@ var ParamsAndInit = {
 
         var pendOrderNo = $("#pendOrderNoCancle").val();
         var webAppPath = $("#webAppPath").val();
-        var currencyId = $("#cucyId").val();
+        var currencyIdStr = $("#currencyId").val();
+        if (undefined == currencyIdStr || currencyIdStr == null || currencyIdStr == "") {
+            openTips("页面数据错误，请重新刷新页面");
+            $('.bg').css("height", "0");
+            return;
+        }
         if (pendOrderNo === undefined || pendOrderNo === null || pendOrderNo == "") {
             openTips("单号错误");
             $('.bg').css("height", "0");
@@ -600,7 +626,8 @@ var ParamsAndInit = {
             url: webAppPath + "/userWap/wapTransactionPendOrderController/revokeForDeal.htm",
             data: {
                 //参数
-                pendingOrderNo: pendOrderNo
+                pendingOrderNo: pendOrderNo,
+                "currencyIdStr": currencyIdStr
             },
             dataType: "json",
             type: 'POST',
@@ -611,10 +638,13 @@ var ParamsAndInit = {
                     $('.bg').css("height", "0");
                     return;
                 }
+                $('.bg').css("height", "0");
+                $("#trateLoading").css("display", "block");
+                //去重新加载数据
+                ParamsAndInit.entrust_ForRevoke(data.transactionPendOrderList);
+                $("#trateLoading").css("display", "none");
                 //如果cancel成功
                 openTips(data.message);
-                //去重新加载数据
-                ParamsAndInit.entrust_ForRevoke();
             },
             error: function () {
                 openTips("数据加载出错，请稍候重试");
@@ -623,7 +653,27 @@ var ParamsAndInit = {
             }
         });
     },
-    entrust_ForRevoke: function () {
+    entrust_ForRevoke: function (transactionPendOrderList) {
+        $(".entrust .entrust-content").empty();
+        data = transactionPendOrderList;
+        var str = "";
+        for (i in data) {
+            var paymentType = data[i].paymentType == 1 ? "<span class='red'>买入</span>" : "<span class='green'>卖出</span>"
+            str += "<li>"
+                + "<p>" + paymentType + "</p>"
+                + "<p>" + ParamsAndInit.formatNumber(data[i].pendingPrice, 2) + "</p>"
+                + "<p>" + ParamsAndInit.formatNumber(data[i].pendingNumber, 4) + "</p>"
+                + "<p>" + ParamsAndInit.formatNumber(data[i].dealNumber, 4) + "</p>"
+                + "<p class='toCancleOrder'>撤销" + "<input type='hidden' value='" + data[i].pendingOrderNo + "'/>" + "</p>"
+                + "<p class='clear'></p>" + "</li>";
+        }
+        $("#entrustUL").html(str);
+        $(".toCancleOrder").each(function () {
+            $(this).bind('click', ParamsAndInit.toCancel);
+        });
+
+    },
+    /*entrust_ForRevoke: function (transactionPendOrderList) {
         //获取currency数据
         var currencyIdStr = $("#currencyId").val();
         if (undefined == currencyIdStr || currencyIdStr == null || currencyIdStr == "") {
@@ -674,7 +724,7 @@ var ParamsAndInit = {
                 return;
             }
         });
-    },
+    },*/
     entrust: function () {
         //获取currency数据
         var currencyIdStr = $("#currencyId").val();
@@ -950,18 +1000,19 @@ var ParamsAndInit = {
         var u = navigator.userAgent;
         var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
         var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-        if(isAndroid){
-            var h=$(window).height();
-            $(window).resize(function() {
-                if($(window).height()<h){
+        if (isAndroid) {
+            var h = $(window).height();
+            $(window).resize(function () {
+                if ($(window).height() < h) {
                     $('footer').hide();
                 }
-                if($(window).height()>=h){
+                if ($(window).height() >= h) {
                     $('footer').show();
                 }
             });
-        };
-        if(isiOS){
+        }
+        ;
+        if (isiOS) {
             $("#sellPrice,#sellNum,#sellPwd,#buyPrice,#buyNum,#buyPwd").focus(function () {
                 $("header").css({"position": "relative", "top": 0});
                 $("section").css({"position": "relative", "top": '0'});
