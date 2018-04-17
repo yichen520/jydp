@@ -82,9 +82,12 @@ public class SylGoJydpDealController {
         //签名验证
         TreeMap<String, String> map = new TreeMap<String, String>();
         map.put("orderNo", orderNo);
+        map.put("walletUserAccount", walletUserAccount);
         map.put("userAccount", userAccount);
         map.put("coin", coinStr);
         map.put("coinType", coinType);
+        map.put("orderTime", orderTimeStr);
+        map.put("finishTime", finishTimeStr);
 
         String signature = SignatureUtil.getSign(map, SylConfig.SIGN_SECRET_KEY);
         if(!key.equals(signature)){
