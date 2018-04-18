@@ -55,9 +55,9 @@
     </div>
 
     <div class="settle-accounts">
-        <div class="item-quantity"><span>出售数量</span><span><fmt:formatNumber type="number" value="${buyNum}" groupingUsed="FALSE" maxFractionDigits="4"/></span></div>
+        <div class="item-quantity"><span>购买数量</span><span><fmt:formatNumber type="number" value="${buyNum}" groupingUsed="FALSE" maxFractionDigits="4"/></span></div>
         <div class="item-price">
-            <span>获得金额</span>
+            <span>支付金额</span>
             <div>
                 <span class="symbol">¥ </span>
                 <span><fmt:formatNumber type="number" value="${buyNum * otcTransactionPendOrder.pendingRatio}" groupingUsed="FALSE" maxFractionDigits="4"/></span>
