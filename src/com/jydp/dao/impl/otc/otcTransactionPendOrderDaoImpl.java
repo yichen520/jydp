@@ -62,6 +62,24 @@ public class otcTransactionPendOrderDaoImpl implements IOtcTransactionPendOrderD
     }
 
     /**
+     * 根据记录号查询挂单记录信息（有经销商名字）
+     * @param orderNo 记录号
+     * @return 查询成功：返回记录信息, 查询失败或者没有相应记录：返回null
+     */
+    public OtcTransactionPendOrderVO getOtcTransactionPendOrder(String orderNo){
+        OtcTransactionPendOrderVO result = null;
+
+        try {
+            result = sqlSessionTemplate.selectOne("OtcTransactionPendOrde_getOtcTransactionPendOrder", orderNo);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+
+        return result;
+    }
+
+
+    /**
      * 按条件查询全部场外交易挂单总数
      * @param currencyId 币种Id
      * @param orderType 挂单类型:1：出售，2：回购
@@ -155,5 +173,46 @@ public class otcTransactionPendOrderDaoImpl implements IOtcTransactionPendOrderD
         } else {
             return false;
         }
+    }
+
+    /**
+     * 根据用户id查询场外可用交易挂单列表总数
+     * @param userId 用户id
+     * @return 查询成功：返回记录信息数，查询失败：返回null
+     */
+    public int countOtcTransactionPendOrderByUserId(int userId){
+        int result = 0;
+        Map<String,Object> map = new HashMap<>();
+        map.put("userId", userId);
+
+        try {
+            result = sqlSessionTemplate.selectOne("OtcTransactionPendOrde_countOtcTransactionPendOrderByUserId", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+       return result;
+
+    }
+
+    /**
+     * 根据用户id查询场外可用交易挂单列表
+     * @param userId 用户id
+     * @param pageNumber 当前页数
+     * @param pageSize 每页条数
+     * @return 查询成功：返回记录信息，查询失败：返回null
+     */
+    public List<OtcTransactionPendOrderDO> listOtcTransactionPendOrder(int userId, int pageNumber, int pageSize){
+        List<OtcTransactionPendOrderDO> resultList = null;
+        Map<String,Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("startNumber", pageNumber * pageSize);
+        map.put("pageSize", pageSize);
+
+        try {
+            resultList = sqlSessionTemplate.selectList("OtcTransactionPendOrde_listOtcTransactionPendOrder", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return resultList;
     }
 }

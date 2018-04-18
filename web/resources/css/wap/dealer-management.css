@@ -1,0 +1,116 @@
+main {
+  margin-top: 1.1rem;
+  padding: 0 0.3rem 1.2rem 0.3rem;
+  box-sizing: border-box;
+}
+main .item-bar {
+  width: 100%;
+  height: 2rem;
+  border-radius: 0.1rem;
+  box-shadow: 0px 0px 12px rgba(122, 57, 55, 0.1);
+}
+main .item-bar:nth-child(n+2) {
+  margin-top: 0.2rem;
+}
+main .item-bar .item-header {
+  height: 0.8rem;
+  border-bottom: 1px solid #ececec;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.2rem;
+}
+main .item-bar .item-header > div:first-child {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+main .item-bar .item-header > div:first-child .item-header-label {
+  font-size: 0.32rem;
+  color: #35394f;
+  margin-right: 0.2rem;
+}
+main .item-bar .item-header > div:first-child > div:last-child {
+  border-radius: 0.04rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 0.7rem;
+  height: 0.35rem;
+  font-size: 0.24rem;
+}
+main .item-bar .item-header > div:first-child .buy {
+  background-color: #ffe6ea;
+  border: 1px solid #f62f4b;
+  color: #f62f4b;
+}
+main .item-bar .item-header > div:first-child .sell {
+  background-color: #e0ffe9;
+  border: 1px solid #51ba70;
+  color: #51ba70;
+}
+main .item-bar .item-header > div:last-child {
+  width: 1rem;
+  height: 0.45rem;
+  border-radius: 0.23rem;
+  color: #7f858c;
+  border: 1px solid #7f858c;
+  font-size: 0.26rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+main .item-bar .item-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 1.2rem;
+  box-sizing: border-box;
+  padding: 0.2rem 0.2rem 0.3rem;
+}
+main .item-bar .item-foot > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  text-align: right;
+  height: 100%;
+}
+main .item-bar .item-foot > div > span:first-child {
+  font-size: 0.24rem;
+  line-height: 0.24rem;
+  color: #7f858c;
+}
+main .item-bar .item-foot > div > span:last-child {
+  font-size: 0.28rem;
+  line-height: 0.28rem;
+  color: #35394f;
+}
+main .item-bar .item-foot > div:last-child span {
+  width: 100%;
+  text-align: right;
+}
+main .see-more {
+  font-size: 0.28rem;
+  color: #a3aab3;
+  margin-top: 0.3rem;
+  text-align: center;
+}
+.button {
+  font-size: 0.3rem;
+  color: #fff;
+  width: 6.9rem;
+  border-radius: 2px;
+  box-shadow: 0 5px 15px rgba(248, 183, 180, 0.6);
+  height: 0.9rem;
+  line-height: 0.9rem;
+  text-align: center;
+  background: -ms-linear-gradient(top, #fe5c5c, #e83e3a);
+  background: -moz-linear-gradient(top, #fe5c5c, #e83e3a);
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fe5c5c), to(#e83e3a));
+  background: -webkit-linear-gradient(top, #fe5c5c, #e83e3a);
+  background: -o-linear-gradient(top, #fe5c5c, #e83e3a);
+  position: fixed;
+  bottom: 0rem;
+  left: 0.3rem;
+}

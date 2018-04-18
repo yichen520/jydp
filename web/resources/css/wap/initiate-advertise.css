@@ -1,0 +1,240 @@
+main {
+  margin-top: 1.1rem;
+  padding: 0 0.3rem;
+  box-sizing: border-box;
+}
+main .base-info {
+  width: 100%;
+  border-radius: 0.1rem;
+  box-shadow: 0 0 12px rgba(122, 57, 55, 0.1);
+  box-sizing: border-box;
+  padding: 0.4rem 0.2rem;
+}
+main .base-info .item-base {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  box-sizing: border-box;
+  padding-bottom: 0.15rem;
+}
+main .base-info .item-base:nth-child(n+2) {
+  margin-top: 0.4rem;
+}
+main .base-info .item-base > div {
+  display: flex;
+  align-items: center;
+}
+main .base-info .item-base > div:first-child {
+  line-height: 0.28rem;
+  font-size: 0.28rem;
+}
+main .base-info .item-base > div:first-child > span:first-child {
+  font-size: 0.28rem;
+  color: #7f858c;
+}
+main .base-info .item-base > div:first-child > span:last-child {
+  color: #f62f4b;
+}
+main .base-info .item-base > div:last-child select {
+  font-size: 0.3rem;
+  color: #35394f;
+  margin-right: 0.2rem;
+  line-height: 0.3rem;
+  border: 0;
+  background-color: #fff;
+}
+main .base-info .item-base > div:last-child img {
+  width: 0.14rem;
+  height: 0.24rem;
+}
+main .order-info {
+  margin: 0.2rem auto 0 auto;
+  background: #fff;
+  padding: 0.4rem 0.24rem;
+  box-sizing: border-box;
+  border-radius: 0.1rem;
+  box-shadow: 0px 0px 12px rgba(122, 57, 55, 0.1);
+}
+main .order-info input::-webkit-input-placeholder,
+main .order-info textarea::-webkit-input-placeholder {
+  color: #a3aab3;
+  font-size: 0.3rem;
+  text-align: right;
+}
+main .order-info input:-moz-placeholder,
+main .order-info textarea:-moz-placeholder {
+  color: #a3aab3;
+  font-size: 0.3rem;
+  text-align: right;
+}
+main .order-info input::-moz-placeholder,
+main .order-info textarea::-moz-placeholder {
+  color: #a3aab3;
+  font-size: 0.3rem;
+  text-align: right;
+}
+main .order-info input:-ms-input-placeholder,
+main .order-info textarea:-ms-input-placeholder {
+  color: #a3aab3;
+  font-size: 0.3rem;
+  text-align: right;
+}
+main .order-info .order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+main .order-info .order-item:nth-child(n+2) {
+  margin-top: 0.4rem;
+}
+main .order-info .order-item > div:first-child {
+  width: 30%;
+  font-size: 0.28rem;
+}
+main .order-info .order-item > div:first-child span:first-child {
+  color: #7f858c;
+}
+main .order-info .order-item > div:first-child span:last-child {
+  color: #f62f4b;
+}
+main .order-info .order-item.item-proportion {
+  line-height: 0.38rem;
+  position: relative;
+  padding-bottom: 0.15rem;
+}
+main .order-info .order-item.item-proportion input:last-child {
+  color: #35394f;
+  font-size: 0.3rem;
+  width: 70%;
+  text-align: right;
+}
+main .order-info .order-item.item-quota {
+  line-height: 0.38rem;
+  position: relative;
+}
+main .order-info .order-item.item-quota div:last-child {
+  width: 70%;
+  display: flex;
+  align-items: center;
+}
+main .order-info .order-item.item-quota div:last-child input {
+  color: #35394f;
+  font-size: 0.3rem;
+  width: 2.2rem;
+  text-align: center;
+  padding-bottom: 0.15rem;
+  border-bottom: 1px solid #ececec;
+}
+main .order-info .order-item.item-quota div:last-child .min-quota::-webkit-input-placeholder,
+main .order-info .order-item.item-quota div:last-child textarea::-webkit-input-placeholder {
+  color: #a3aab3;
+  font-size: 0.3rem;
+  text-align: center;
+}
+main .order-info .order-item.item-quota div:last-child .min-quota:-moz-placeholder,
+main .order-info .order-item.item-quota div:last-child textarea:-moz-placeholder {
+  color: #a3aab3;
+  font-size: 0.3rem;
+  text-align: center;
+}
+main .order-info .order-item.item-quota div:last-child .min-quota::-moz-placeholder,
+main .order-info .order-item.item-quota div:last-child textarea::-moz-placeholder {
+  color: #a3aab3;
+  font-size: 0.3rem;
+  text-align: center;
+}
+main .order-info .order-item.item-quota div:last-child .min-quota:-ms-input-placeholder,
+main .order-info .order-item.item-quota div:last-child textarea:-ms-input-placeholder {
+  color: #a3aab3;
+  font-size: 0.3rem;
+  text-align: center;
+}
+main .order-info .order-item.item-quota div:last-child .max-quota::-webkit-input-placeholder,
+main .order-info .order-item.item-quota div:last-child textarea::-webkit-input-placeholder {
+  color: #a3aab3;
+  font-size: 0.3rem;
+  text-align: right;
+}
+main .order-info .order-item.item-quota div:last-child .max-quota:-moz-placeholder,
+main .order-info .order-item.item-quota div:last-child textarea:-moz-placeholder {
+  color: #a3aab3;
+  font-size: 0.3rem;
+  text-align: right;
+}
+main .order-info .order-item.item-quota div:last-child .max-quota::-moz-placeholder,
+main .order-info .order-item.item-quota div:last-child textarea::-moz-placeholder {
+  color: #a3aab3;
+  font-size: 0.3rem;
+  text-align: right;
+}
+main .order-info .order-item.item-quota div:last-child .max-quota:-ms-input-placeholder,
+main .order-info .order-item.item-quota div:last-child textarea:-ms-input-placeholder {
+  color: #a3aab3;
+  font-size: 0.3rem;
+  text-align: right;
+}
+main .order-info .order-item.item-quota div:last-child .min-quota {
+  padding-bottom: 0.15rem;
+  position: relative;
+}
+main .order-info .order-item.item-quota div:last-child div {
+  width: 0.5rem;
+  color: #35394f;
+  font-size: 0.3rem;
+}
+main .order-info .order-item.item-receipt-method {
+  line-height: 0.38rem;
+  position: relative;
+  padding-bottom: 0.15rem;
+  align-items: flex-start;
+}
+main .order-info .order-item.item-receipt-method > div:last-child {
+  display: flex;
+  flex-direction: column;
+  width: 3rem;
+}
+main .order-info .order-item.item-receipt-method > div:last-child .item-check {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+main .order-info .order-item.item-receipt-method > div:last-child .item-check:nth-child(n+2) {
+  margin-top: 0.3rem;
+}
+main .order-info .order-item.item-receipt-method > div:last-child .item-check img {
+  width: 0.5rem;
+  margin-right: 0.25rem;
+}
+main .order-info .order-item.item-receipt-method > div:last-child .item-check span {
+  font-size: 0.3rem;
+  color: #35394f;
+  margin-right: 0.3rem;
+  width: 1.6rem;
+}
+.border-b:after {
+  pointer-events: none;
+  width: 4.5rem;
+  background-color: #ececec;
+  bottom: 0;
+  position: absolute;
+  right: 0;
+  content: '';
+  border-bottom: 1px solid #ececec;
+}
+.button {
+  margin: 0.3rem auto 0.3rem auto;
+  font-size: 0.3rem;
+  color: #fff;
+  width: 6.9rem;
+  border-radius: 2px;
+  box-shadow: 0px 5px 15px rgba(248, 183, 180, 0.6);
+  height: 0.9rem;
+  line-height: 0.9rem;
+  text-align: center;
+  background: -ms-linear-gradient(top, #fe5c5c, #e83e3a);
+  background: -moz-linear-gradient(top, #fe5c5c, #e83e3a);
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fe5c5c), to(#e83e3a));
+  background: -webkit-linear-gradient(top, #fe5c5c, #e83e3a);
+  background: -o-linear-gradient(top, #fe5c5c, #e83e3a);
+}

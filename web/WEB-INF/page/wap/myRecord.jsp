@@ -39,6 +39,17 @@
         <p>币种提现记录</p>
         <img src="<%=path %>/resources/image/wap/nextIcon.png"/>
     </div>
+
+    <div class="content present" id="otcRecord">
+        <p>场外交易记录</p>
+        <img src="<%=path %>/resources/image/wap/nextIcon.png" />
+    </div>
+    <c:if test="${userSession.isDealer == 2}">
+        <div class="content present" id="otcRecordSell">
+            <p>场外交易记录-经销商</p>
+            <img src="<%=path %>/resources/image/wap/nextIcon.png" />
+        </div>
+    </c:if>
 </div>
 <!-- loading图 -->
 <div id="loading">
@@ -71,6 +82,13 @@
     //返回
     $("#back").click(function () {
         window.location.href = "<%=path%>"+"/userWap/userInfo/show.htm";
+    })
+    //场外交易记录
+    $("#otcRecord").click(function () {
+        window.location.href = "<%=path%>"+"/userWap/userOtcDealRecord/show.htm";
+    })
+    $("#otcRecordSell").click(function () {
+        window.location.href = "<%=path%>"+"/userWap/dealerOtcRecord/show.htm";
     })
 </script>
 </html>

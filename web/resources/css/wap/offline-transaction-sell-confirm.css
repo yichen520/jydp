@@ -1,0 +1,160 @@
+body {
+  background-color: #f5f5f5;
+}
+main {
+  padding: 0 0.3rem;
+  margin-top: 1.1rem;
+}
+main .base-info {
+  box-sizing: border-box;
+  padding: 0.4rem 0.2rem;
+  background-color: #fff;
+  border-radius: 0.1rem;
+  box-shadow: 0px 0px 12px rgba(122, 57, 55, 0.1);
+}
+main .base-info > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  line-height: 0.3rem;
+}
+main .base-info > div:nth-child(n + 2) {
+  margin-top: 0.4rem;
+}
+main .base-info > div span:first-child {
+  color: #7f858c;
+  font-size: 0.28rem;
+}
+main .base-info > div span:last-child {
+  font-size: 0.3rem;
+  color: #35394f;
+}
+main .receipt-method {
+  margin-top: 0.1rem;
+  padding: 0.4rem 0.2rem;
+  box-sizing: border-box;
+  background-color: #fff;
+  border-radius: 0.1rem;
+  box-shadow: 0px 0px 12px rgba(122, 57, 55, 0.1);
+}
+main .receipt-method .item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  line-height: 0.3rem;
+}
+main .receipt-method .item span:first-child {
+  color: #7f858c;
+  font-size: 0.28rem;
+}
+main .receipt-method .item span:last-child {
+  font-size: 0.3rem;
+  color: #35394f;
+}
+main .receipt-method .item:nth-child(n + 2) {
+  margin-top: 0.4rem;
+}
+main .receipt-method .qr-bar {
+  margin-top: 0.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+main .receipt-method .qr-bar img {
+  width: 1.9rem;
+  height: 1.9rem;
+}
+main .settle-accounts {
+  box-shadow: 0px 0px 12px rgba(122, 57, 55, 0.1);
+  margin-top: 0.1rem;
+  padding: 0.3rem 0.2rem;
+  box-sizing: border-box;
+  background-color: #fff;
+  border-radius: 0.1rem;
+  height: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+main .settle-accounts .item-quantity {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  line-height: 0.3rem;
+}
+main .settle-accounts .item-quantity span:first-child {
+  color: #7f858c;
+  font-size: 0.28rem;
+}
+main .settle-accounts .item-quantity span:last-child {
+  font-size: 0.3rem;
+  color: #35394f;
+}
+main .settle-accounts .item-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  line-height: 0.36rem;
+}
+main .settle-accounts .item-price > span:first-child {
+  color: #7f858c;
+  font-size: 0.28rem;
+}
+main .settle-accounts .item-price div {
+  color: #35394f;
+}
+main .settle-accounts .item-price div span:first-child {
+  font-size: 0.28rem;
+}
+main .settle-accounts .item-price div span:last-child {
+  font-size: 0.36rem;
+}
+main .tips {
+  display: flex;
+  margin-top: 0.2rem;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+main .tips img {
+  width: 0.3rem;
+  margin-right: 0.2rem;
+  position: relative;
+  flex-shrink: 0;
+}
+main .tips p {
+  font-size: 0.26rem;
+  margin-top: -0.065rem;
+  color: #a3aab3;
+}
+.button {
+  margin: 0.3rem auto 0.3rem auto;
+  font-size: 0.3rem;
+  color: #fff;
+  width: 6.9rem;
+  border-radius: 2px;
+  box-shadow: 0 5px 15px rgba(248, 183, 180, 0.6);
+  height: 0.9rem;
+  line-height: 0.9rem;
+  text-align: center;
+  background: -ms-linear-gradient(top, #fe5c5c, #e83e3a);
+  background: -moz-linear-gradient(top, #fe5c5c, #e83e3a);
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fe5c5c), to(#e83e3a));
+  background: -webkit-linear-gradient(top, #fe5c5c, #e83e3a);
+  background: -o-linear-gradient(top, #fe5c5c, #e83e3a);
+}
+.show-qr-bar {
+  width: 100vw;
+  height: 100vh;
+  background-color: #333;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.show-qr-bar img {
+  width: 100%;
+}

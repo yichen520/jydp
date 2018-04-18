@@ -800,4 +800,24 @@ public class OtcTransactionUserDealServiceImpl implements IOtcTransactionUserDea
         }
         return otcTransactionUserDealList;
     }
+
+    /**
+     * 根据用户Id和记录号查询成交记录信息
+     * @param userId 用户id (必填)
+     * @param otcOrderNo  成交记录号
+     * @return 查询成功：返回记录信息, 查询失败或者没有相应记录：返回null
+     */
+    public OtcTransactionUserDealVO getOtcTransactionUseal(int userId, String otcOrderNo){
+        return otcTransactionUserDealDao.getOtcTransactionUseal(userId, otcOrderNo);
+    }
+
+    /**
+     * 根据用户Id和记录号查询成交记录信息
+     * @param userId 用户id (必填)
+     * @param otcOrderNo  成交记录号
+     * @return 查询成功：返回记录信息, 查询失败或者没有相应记录：返回null
+     */
+    public OtcTransactionUserDealVO getOtcTransactionUsealForSell(int userId, String otcOrderNo){
+        return otcTransactionUserDealDao.getOtcTransactionUsealForSell(userId, otcOrderNo);
+    };
 }

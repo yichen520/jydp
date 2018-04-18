@@ -1,0 +1,131 @@
+body {
+  background-color: #f5f5f5;
+}
+main {
+  padding: 0 0.3rem;
+  margin-top: 1.1rem;
+  box-sizing: border-box;
+}
+main .item {
+  background-color: #fff;
+  border-radius: 0.1rem;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 12px rgba(122, 57, 55, 0.1);
+}
+main .item:nth-child(n + 2) {
+  margin-top: 0.2rem;
+}
+main .item .item-header {
+  font-size: 0.28rem;
+  color: #a3aab3;
+  padding: 0 0.2rem;
+  border-bottom: 1px solid #ededed;
+  height: 0.71rem;
+  line-height: 0.71rem;
+}
+main .item .item-title {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 0.2rem;
+  margin-top: 0.18rem;
+}
+main .item .item-title > div:first-child {
+  font-size: 0.32rem;
+  color: #35394f;
+  line-height: 0.32rem;
+  margin-right: 0.3rem;
+}
+main .item .item-title > div:last-child {
+  width: 1rem;
+  border-radius: 0.04rem;
+  height: 0.35rem;
+  font-size: 0.24rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+main .item .item-title .wait-completed {
+  background-color: #d7eaff;
+  border: 1px solid #68adfa;
+  color: #68adfa;
+}
+main .item .item-title .completed {
+  border: 1px solid #f62f4b;
+  color: #f62f4b;
+  background-color: #ffe6fa;
+}
+main .item .item-label {
+  margin-top: 0.26rem;
+  padding: 0 0.2rem;
+  display: flex;
+}
+main .item .item-label > div {
+  width: 50%;
+  text-align: left;
+  font-size: 0.26rem;
+  color: #7f858c;
+  line-height: 0.26rem;
+}
+main .item .item-text {
+  margin-top: 0.1rem;
+  padding: 0 0.2rem;
+  display: flex;
+}
+main .item .item-text > div {
+  width: 50%;
+  text-align: left;
+  font-size: 0.3rem;
+  color: #35394f;
+  line-height: 0.26rem;
+}
+main .item .item-text .sell {
+  color: #5ab170;
+}
+main .item .item-text .buy {
+  color: #f62f4b;
+}
+main .item .item-time {
+  margin-top: 0.1rem;
+  padding: 0 0.2rem;
+  display: flex;
+}
+main .item .item-time > div {
+  width: 50%;
+  text-align: left;
+  font-size: 0.28rem;
+  color: #7f858c;
+  line-height: 0.26rem;
+}
+main .item .item-foot {
+  margin-top: 0.18rem;
+  padding: 0 0.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  border-top: 1px solid #ededed;
+  font-size: 0.26rem;
+  height: 0.85rem;
+}
+main .item .item-foot div {
+  margin-right: 0.2rem;
+  width: 1.5rem;
+  height: 0.45rem;
+  border-radius: 0.23rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #7f858c;
+}
+main .item .item-foot .confirm-receipt {
+  color: #68adfa;
+  border: 1px solid #68adfa;
+}
+main .see-more {
+  font-size: 0.28rem;
+  color: #a3aab3;
+  line-height: 0.28rem;
+  width: 1.5rem;
+  margin: 0.28rem auto 0 auto;
+  padding-bottom: 0.3rem;
+}

@@ -223,6 +223,10 @@
             <img src="{{webAppPath}}/resources/image/wap/deal-chose.png" class="deal-icon"/>
             <p class="chose">交易</p>
         </a>
+        <a class="offline-transaction" href="{{webAppPath}}/userWap/otcTradeCenter/show">
+            <img src="{{webAppPath}}/resources/image/wap/offline-transaction-nochose.png" class="deal-icon"/>
+            <p>场外交易</p>
+        </a>
         <a href="{{webAppPath}}/userWap/userInfo/show.htm" class="mine">
             <img src="{{webAppPath}}/resources/image/wap/mine-nochose.png" class="mine-icon"/>
             <p>我的</p>

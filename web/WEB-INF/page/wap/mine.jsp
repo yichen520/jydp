@@ -88,6 +88,17 @@
                     </p>
                     <div class="clear"></div>
                 </li>
+
+                <c:if test="${userSession.isDealer == 2}">
+                <li id="sell">
+                    <img src="<%=path%>/resources/image/wap/dealer-management.png" class="icon"/>
+                    <p class="dealer-management">经销商管理
+                        <img src="<%=path%>/resources/image/wap/nextIcon.png" class="next" />
+                    </p>
+                    <div class="clear"></div>
+                </li>
+                </c:if>
+
                 <li id="myRecord">
                     <img src="<%=path%>/resources/image/wap/myrecordIco.png" class="icon"/>
                     <p>我的记录
@@ -156,6 +167,10 @@
         <a class="deal open">
             <img src="<%=path%>/resources/image/wap/deal-nochose.png"  class="deal-icon"/>
             <p>交易</p>
+        </a>
+        <a class="offline-transaction" href="<%=path %>/userWap/otcTradeCenter/show">
+            <img src="<%=path %>/resources/image/wap/offline-transaction-nochose.png" class="deal-icon"/>
+            <p>场外交易</p>
         </a>
         <a href="#" class="mine">
             <img src="<%=path%>/resources/image/wap/mine-chose.png"  class="mine-icon"/>
@@ -237,6 +252,9 @@
 
     $("#hotTopic").click(function () {
         window.location.href="<%=path%>/userWap/wapSystemHot/show";
+    })
+    $("#sell").click(function () {
+        window.location.href="<%=path%>/userWap/dealerManagment/show";
     })
 
     $('.choseBzBox-content ul').on('click', 'li', function () {

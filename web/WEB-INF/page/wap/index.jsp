@@ -88,6 +88,10 @@
         <img src="<%=path %>/resources/image/wap/deal-nochose.png" class="deal-icon"/>
         <p>交易</p>
     </a>
+    <a class="offline-transaction" href="<%=path %>/userWap/otcTradeCenter/show">
+        <img src="<%=path %>/resources/image/wap/offline-transaction-nochose.png" class="deal-icon"/>
+        <p>场外交易</p>
+    </a>
     <a href="<%=path %>/userWap/userInfo/show.htm" class="mine">
         <img src="<%=path %>/resources/image/wap/mine-nochose.png" class="mine-icon"/>
         <p>我的</p>

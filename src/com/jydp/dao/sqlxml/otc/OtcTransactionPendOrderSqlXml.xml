@@ -77,4 +77,33 @@
         WHERE otcPendingOrderNo = #{otcPendingOrderNo}
         AND userId = #{userId}
     </update>
+
+	<select id="OtcTransactionPendOrde_getOtcTransactionPendOrder" parameterType="java.lang.String" resultType="OtcTransactionPendOrderVO">
+		SELECT OTAB.otcPendingOrderNo,OTAB.userId,OTAB.userAccount,UTAB.dealerName,orderType,currencyId,currencyName,pendingRatio,
+		minNumber,maxNumber,pendingNumber,dealNumber,buyFee,restBalanceLock,area,pendingStatus,endTime,
+		OTAB.remark,OTAB.updateTime,OTAB.addTime
+		FROM otc_transaction_pend_order_tab OTAB,otc_dealer_user_tab UTAB
+		WHERE
+		OTAB.userId = UTAB.userId
+		AND OTAB.otcPendingOrderNo = #{otcPendingOrderNo}
+	</select>
+
+	<select id="OtcTransactionPendOrde_countOtcTransactionPendOrderByUserId" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(otcPendingOrderNo)
+		FROM otc_transaction_pend_order_tab
+		WHERE userId = #{userId}
+		AND pendingStatus = 1
+		ORDER BY addTime DESC
+	</select>
+
+	<select id="OtcTransactionPendOrde_listOtcTransactionPendOrder" parameterType="java.util.Map" resultType="OtcTransactionPendOrderDO">
+		SELECT otcPendingOrderNo,userId,userAccount,orderType,currencyId,currencyName,pendingRatio,
+		minNumber,maxNumber,pendingNumber,dealNumber,buyFee,restBalanceLock,area,pendingStatus,endTime,
+		remark,updateTime,addTime
+		FROM otc_transaction_pend_order_tab
+		WHERE userId = #{userId}
+		AND pendingStatus = 1
+		ORDER BY addTime DESC
+		LIMIT #{startNumber}, #{pageSize}
+	</select>
 </mapper>

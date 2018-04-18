@@ -230,4 +230,46 @@ public class OtcTransactionUserDealDaoImpl implements IOtcTransactionUserDealDao
         }
         return otcTransactionUserDealList;
     }
+
+    /**
+     * 根据用户Id和记录号查询成交记录信息
+     * @param userId 用户id (必填)
+     * @param otcOrderNo  成交记录号
+     * @return 查询成功：返回记录信息, 查询失败或者没有相应记录：返回null
+     */
+    public OtcTransactionUserDealVO getOtcTransactionUseal(int userId, String otcOrderNo){
+
+        OtcTransactionUserDealVO otcTransactionUserDeal = null;
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("otcOrderNo", otcOrderNo);
+
+        try {
+            otcTransactionUserDeal = sqlSessionTemplate.selectOne("OtcTransactionUserDeal_getOtcTransactionUseal", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return otcTransactionUserDeal;
+    }
+
+    /**
+     * 根据用户Id和记录号查询成交记录信息
+     * @param userId 用户id (必填)
+     * @param otcOrderNo  成交记录号
+     * @return 查询成功：返回记录信息, 查询失败或者没有相应记录：返回null
+     */
+    public OtcTransactionUserDealVO getOtcTransactionUsealForSell(int userId, String otcOrderNo){
+
+        OtcTransactionUserDealVO otcTransactionUserDeal = null;
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("otcOrderNo", otcOrderNo);
+
+        try {
+            otcTransactionUserDeal = sqlSessionTemplate.selectOne("OtcTransactionUserDeal_getOtcTransactionUsealForSell", map);
+        } catch (Exception e) {
+            LogUtil.printErrorLog(e);
+        }
+        return otcTransactionUserDeal;
+    }
 }

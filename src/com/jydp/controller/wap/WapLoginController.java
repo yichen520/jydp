@@ -4,11 +4,13 @@ import com.iqmkj.utils.Base64Util;
 import com.iqmkj.utils.MD5Util;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.UserSessionBO;
+import com.jydp.entity.DO.otc.OtcDealerUserDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DO.user.UserIdentificationDO;
 import com.jydp.entity.DO.user.UserIdentificationImageDO;
 import com.jydp.interceptor.UserWapInterceptor;
 import com.jydp.interceptor.UserWebInterceptor;
+import com.jydp.service.IOtcDealerUserService;
 import com.jydp.service.IUserIdentificationImageService;
 import com.jydp.service.IUserIdentificationService;
 import com.jydp.service.IUserService;
@@ -41,6 +43,10 @@ public class WapLoginController {
     /** 用户认证详情图 */
     @Autowired
     private IUserIdentificationImageService userIdentificationImageService;
+
+    /** 用户标识经销商相关操作*/
+    @Autowired
+    private IOtcDealerUserService otcDealerUserService;
 
     /**
      * 用户登录
@@ -106,6 +112,12 @@ public class WapLoginController {
         userSessionBO.setUserId(user.getUserId());
         userSessionBO.setUserAccount(user.getUserAccount());
         userSessionBO.setIsPwd(1);
+        OtcDealerUserDO otcDealerUserDO = otcDealerUserService.getOtcDealerUserByUserId(user.getUserId());
+        if(otcDealerUserDO != null){
+            userSessionBO.setIsDealer(2);//是经销商
+        }else{
+            userSessionBO.setIsDealer(1);//不是经销商
+        }
         UserWapInterceptor.loginSuccess(request, userSessionBO);
 
         return "redirect:/userWap/homePage/show";

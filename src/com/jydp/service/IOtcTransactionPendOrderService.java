@@ -28,6 +28,13 @@ public interface IOtcTransactionPendOrderService {
     OtcTransactionPendOrderDO getOtcTransactionPendOrderByOrderNo(String orderNo);
 
     /**
+     * 根据记录号查询挂单记录信息（有经销商名字）
+     * @param orderNo 记录号
+     * @return 查询成功：返回记录信息, 查询失败或者没有相应记录：返回null
+     */
+    OtcTransactionPendOrderVO getOtcTransactionPendOrder(String orderNo);
+
+    /**
      * 按条件查询全部场外交易挂单总数
      * @param currencyId 币种Id
      * @param orderType 挂单类型:1：出售，2：回购
@@ -62,5 +69,21 @@ public interface IOtcTransactionPendOrderService {
      * @return 新增成功：返回true, 新增失败：返回false
      */
     boolean deleteOtcTransactionPendOrderByOtcPendingOrderNo(int userId, String otcPendingOrderNo, Timestamp updateTime);
+
+    /**
+     * 根据用户id查询场外可用交易挂单列表总数
+     * @param userId 用户id
+     * @return 查询成功：返回记录信息数，查询失败：返回null
+     */
+    int countOtcTransactionPendOrderByUserId(int userId);
+
+    /**
+     * 根据用户id查询场外可用交易挂单列表
+     * @param userId 用户id
+     * @param pageNumber 当前页数
+     * @param pageSize 每页条数
+     * @return 查询成功：返回记录信息，查询失败：返回null
+     */
+    List<OtcTransactionPendOrderDO> listOtcTransactionPendOrder(int userId, int pageNumber, int pageSize);
 
 }

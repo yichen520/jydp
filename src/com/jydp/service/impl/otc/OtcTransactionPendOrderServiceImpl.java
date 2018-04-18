@@ -132,6 +132,15 @@ public class OtcTransactionPendOrderServiceImpl implements IOtcTransactionPendOr
     }
 
     /**
+     * 根据记录号查询挂单记录信息（有经销商名字）
+     * @param orderNo 记录号
+     * @return 查询成功：返回记录信息, 查询失败或者没有相应记录：返回null
+     */
+    public OtcTransactionPendOrderVO getOtcTransactionPendOrder(String orderNo){
+        return otcTransactionPendOrderDao.getOtcTransactionPendOrder(orderNo);
+    }
+
+    /**
      * 按条件查询全部场外交易挂单总数
      * @param currencyId 币种Id
      * @param orderType 挂单类型:1：出售，2：回购
@@ -175,5 +184,25 @@ public class OtcTransactionPendOrderServiceImpl implements IOtcTransactionPendOr
      */
     public boolean deleteOtcTransactionPendOrderByOtcPendingOrderNo(int userId, String otcPendingOrderNo, Timestamp updateTime){
         return otcTransactionPendOrderDao.deleteOtcTransactionPendOrderByOtcPendingOrderNo(userId, otcPendingOrderNo, updateTime);
+    }
+
+    /**
+     * 根据用户id查询场外可用交易挂单列表总数
+     * @param userId 用户id
+     * @return 查询成功：返回记录信息数，查询失败：返回null
+     */
+    public int countOtcTransactionPendOrderByUserId(int userId){
+        return otcTransactionPendOrderDao.countOtcTransactionPendOrderByUserId(userId);
+    }
+
+    /**
+     * 根据用户id查询场外可用交易挂单列表
+     * @param userId 用户id
+     * @param pageNumber 当前页数
+     * @param pageSize 每页条数
+     * @return 查询成功：返回记录信息，查询失败：返回null
+     */
+    public List<OtcTransactionPendOrderDO> listOtcTransactionPendOrder(int userId, int pageNumber, int pageSize){
+        return otcTransactionPendOrderDao.listOtcTransactionPendOrder(userId, pageNumber, pageSize);
     }
 }
