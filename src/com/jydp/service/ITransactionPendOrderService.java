@@ -133,6 +133,13 @@ public interface ITransactionPendOrderService {
     boolean revokePendOrder(String pendingOrderNo);
 
     /**
+     * wap撤销挂单
+     * @param transactionPendOrder 挂单记录
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    boolean revokePendOrderForWap(TransactionPendOrderDO transactionPendOrder);
+
+    /**
      * 查询最近的一笔正在挂单的挂单记录（仅用于匹配交易）
      * @param userId 用户Id（不根据userId时填0）
      * @param currencyId 币种Id

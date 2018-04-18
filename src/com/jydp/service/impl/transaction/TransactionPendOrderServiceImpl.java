@@ -15,12 +15,15 @@ import com.jydp.entity.VO.TransactionPendOrderVO;
 import com.jydp.service.*;
 import config.SystemCommonConfig;
 import config.UserBalanceConfig;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.sql.Timestamp;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -469,6 +472,150 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
     }
 
     /**
+     * wap撤销挂单
+     * @param transactionPendOrder 挂单记录
+     * @return 操作成功：返回true，操作失败：返回false
+     */
+    @Transactional
+    @Override
+    public boolean revokePendOrderForWap(TransactionPendOrderDO transactionPendOrder){
+        String pendingOrderNo = transactionPendOrder.getPendingOrderNo();
+        int paymentType = transactionPendOrder.getPaymentType();
+        int pendingStatus = transactionPendOrder.getPendingStatus();
+        int currencyId = transactionPendOrder.getCurrencyId();
+        int userId = transactionPendOrder.getUserId();
+        double dealNumber = transactionPendOrder.getDealNumber();
+        if(pendingStatus != 1 && pendingStatus != 2){
+            return false;
+        }
+        //获取币种信息
+        TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
+        if(transactionCurrency == null || transactionCurrency.getUpStatus() == 4){
+            return false;
+        }
+
+        //计算撤销的币数量
+        double num = BigDecimalUtil.sub(transactionPendOrder.getPendingNumber(), dealNumber);
+        if(num <= 0){
+            return false;
+        }
+        //业务执行状态
+        boolean excuteSuccess = true;
+        UserDO user = userService.getUserByUserId(userId);
+        if (user == null) {
+            return false;
+        }
+
+        if(paymentType == 1){ //如果是买入
+            //计算撤销的XT数量
+            double balanceRevoke = transactionPendOrder.getRestBalanceLock();
+            //判断冻结金额是否大于等于balanceRevoke
+            if(user.getUserBalanceLock() < balanceRevoke){
+                return false;
+            }
+            //减少冻结数量
+            if(excuteSuccess){
+                excuteSuccess = userService.updateReduceUserBalanceLock(userId, balanceRevoke);
+            }
+            //增加XT数量
+            if(excuteSuccess){
+                excuteSuccess = userService.updateAddUserAmount(userId, balanceRevoke,0);
+            }
+            //增加XT记录
+            if(excuteSuccess){
+                Timestamp curTime = DateUtil.getCurrentTime();
+                String orderNo = SystemCommonConfig.USER_BALANCE +
+                        DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
+                        NumberUtil.createNumberStr(10);
+
+                UserBalanceDO userBalance = new UserBalanceDO();
+                userBalance.setOrderNo(orderNo);
+                userBalance.setUserId(userId);
+                userBalance.setCurrencyId(UserBalanceConfig.DOLLAR_ID);
+                userBalance.setCurrencyName(UserBalanceConfig.DOLLAR);
+                userBalance.setFromType(UserBalanceConfig.REVOKE_BUY_ORDER);
+                userBalance.setBalanceNumber(balanceRevoke);
+                userBalance.setFrozenNumber(-balanceRevoke);
+                userBalance.setRemark("撤销买入挂单,返还冻结XT");
+                userBalance.setAddTime(curTime);
+
+                excuteSuccess = userBalanceService.insertUserBalance(userBalance);
+            }
+
+        }else if(paymentType == 2){ //如果是卖出
+            //查询用户币数量
+            UserCurrencyNumDO userCurrencyNum = userCurrencyNumService.getUserCurrencyNumByUserIdAndCurrencyId(
+                    userId, currencyId);
+            if(userCurrencyNum == null){
+                return false;
+            }
+            //判断冻结数量是否大于等于num
+            if(userCurrencyNum.getCurrencyNumberLock() < num){
+                return false;
+            }
+            //减少冻结数量
+            if(excuteSuccess){
+                excuteSuccess = userCurrencyNumService.reduceCurrencyNumberLock(userId, currencyId, num);
+            }
+            //增加币数量
+            if(excuteSuccess){
+                excuteSuccess = userCurrencyNumService.increaseCurrencyNumber(userId, currencyId, num);
+            }
+            //增加币记录
+            if(excuteSuccess){
+                Timestamp curTime = DateUtil.getCurrentTime();
+                String orderNo = SystemCommonConfig.USER_BALANCE +
+                        DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
+                        NumberUtil.createNumberStr(10);
+
+                UserBalanceDO userBalance = new UserBalanceDO();
+                userBalance.setOrderNo(orderNo);
+                userBalance.setUserId(userId);
+                userBalance.setCurrencyId(currencyId);
+                userBalance.setCurrencyName(transactionPendOrder.getCurrencyName());
+                userBalance.setFromType(UserBalanceConfig.REVOKE_SELL_ORDER);
+                userBalance.setBalanceNumber(num);
+                userBalance.setFrozenNumber(-num);
+                userBalance.setRemark("撤销卖出挂单，返还冻结币");
+                userBalance.setAddTime(curTime);
+
+                excuteSuccess = userBalanceService.insertUserBalance(userBalance);
+            }
+        }
+
+        //修改挂单状态
+        if(excuteSuccess) {
+            Timestamp curTime = DateUtil.getCurrentTime();
+            if (dealNumber > 0) {
+                //部分撤单
+                excuteSuccess = transactionPendOrderDao.updatePartRevoke(pendingOrderNo, num, curTime);
+            } else if (dealNumber == 0) {
+                //全部撤单
+                excuteSuccess = transactionPendOrderDao.updateAllRevoke(pendingOrderNo, num, curTime);
+            }
+        }
+
+        //增加撤单记录
+        if(excuteSuccess){
+            Timestamp curTime = DateUtil.getCurrentTime();
+            String orderNo = SystemCommonConfig.TRANSACTION_USER_DEAL +
+                    DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
+                    NumberUtil.createNumberStr(10);
+
+            excuteSuccess = transactionUserDealService.insertTransactionUserDeal(orderNo,
+                    transactionPendOrder.getPendingOrderNo(), userId, user.getUserAccount(),
+                    3, currencyId, transactionPendOrder.getCurrencyName(), transactionPendOrder.getPendingPrice(),
+                    num,0, 0,"撤销挂单", transactionPendOrder.getAddTime(), curTime);
+        }
+
+        if(!excuteSuccess){
+            //数据回滚
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return excuteSuccess;
+    }
+
+    /**
      * 查询最近的一笔正在挂单的挂单记录（仅用于匹配交易）
      * @param userId 用户Id（不根据userId时填0）
      * @param currencyId 币种Id
@@ -536,6 +683,15 @@ public class TransactionPendOrderServiceImpl implements ITransactionPendOrderSer
         List<TransactionPendOrderVO> transactionPendOrderList = transactionPendOrderDao.listPendOrderForWap(userId, currencyId, pageNumber, pageSize);
         if(transactionPendOrderList == null){
             return transactionPendOrderList;
+        }
+        //代码排序
+        if(CollectionUtils.isNotEmpty(transactionPendOrderList)){
+            Collections.sort(transactionPendOrderList, new Comparator<TransactionPendOrderVO>() {
+                @Override
+                public int compare(TransactionPendOrderVO t1, TransactionPendOrderVO t2) {
+                    return t2.getAddTime().compareTo(t1.getAddTime());
+                }
+            });
         }
         for (TransactionPendOrderVO result : transactionPendOrderList) {
             double countPrice = BigDecimalUtil.mul(result.getPendingPrice(), result.getPendingNumber());

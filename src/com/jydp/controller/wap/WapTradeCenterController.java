@@ -315,19 +315,17 @@ public class WapTradeCenterController {
         int payPasswordStatus = user.getPayPasswordStatus();
         response.put("userIsPwd", isPwd);
         if (payPasswordStatus == 1 || (payPasswordStatus == 2 && isPwd == 1) || StringUtil.isNotNull(sellPwd)) {
+            sellPwd = Base64Util.decode(sellPwd);
             sellPwd = MD5Util.toMd5(sellPwd);
             boolean checkResult = userService.validateUserPay(user.getUserAccount(), sellPwd);
             if (!checkResult) {
                 //重置交易密码状态
                 userService.updateUserPayPasswordStatus(user.getUserId(), 1);
-
                 userSession.setIsPwd(1);
                 request.getSession().setAttribute("userSession", userSession);
-
                 //与前端一致
                 response.put("userIsPwd", 1);
                 response.put("payPasswordStatus", 1);
-
                 response.put("code", 101);
                 response.put("message", "支付密码错误");
                 return response;
@@ -365,7 +363,6 @@ public class WapTradeCenterController {
             return response;
         }
 
-     //   JsonObjectBO trade = tradeCommonService.trade(transactionPendOrder);
         RabbitUtils.trdeOrder(transactionPendOrder);//放入队列
         response.put("code", 1);
         response.put("message", "挂单成功");
@@ -480,18 +477,16 @@ public class WapTradeCenterController {
         int payPasswordStatus = user.getPayPasswordStatus();
         response.put("userIsPwd", isPwd);
         if (payPasswordStatus == 1 || (payPasswordStatus == 2 && isPwd == 1) || StringUtil.isNotNull(buyPwd)) {
+            buyPwd = Base64Util.decode(buyPwd);
             buyPwd = MD5Util.toMd5(buyPwd);
             boolean checkResult = userService.validateUserPay(user.getUserAccount(), buyPwd);
             if (!checkResult) {
                 //重置交易密码状态
                 userService.updateUserPayPasswordStatus(user.getUserId(), 1);
-
                 userSession.setIsPwd(1);
                 request.getSession().setAttribute("userSession", userSession);
-
                 response.put("userIsPwd", 1);
                 response.put("payPasswordStatus", 1);
-
                 response.put("code", 101);
                 response.put("message", "支付密码错误");
                 return response;
@@ -531,7 +526,6 @@ public class WapTradeCenterController {
             return response;
         }
 
-      //  JsonObjectBO trade = tradeCommonService.trade(transactionPendOrder);
         RabbitUtils.trdeOrder(transactionPendOrder);//放入队列
         response.put("code", 1);
         response.put("message", "挂单成功");

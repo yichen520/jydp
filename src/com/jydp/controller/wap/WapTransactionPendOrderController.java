@@ -10,6 +10,7 @@ import com.jydp.entity.VO.TransactionPendOrderVO;
 import com.jydp.interceptor.UserWapInterceptor;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.ITransactionPendOrderService;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -186,7 +189,7 @@ public class WapTransactionPendOrderController {
             return response;
         }
 
-        boolean result = transactionPendOrderService.revokePendOrder(pendingOrderNo);
+        boolean result = transactionPendOrderService.revokePendOrderForWap(transactionPendOrder);
         if(!result){
             response.put("code", 5);
             response.put("message", "撤单失败");

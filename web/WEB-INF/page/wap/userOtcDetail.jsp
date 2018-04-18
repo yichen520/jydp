@@ -43,11 +43,11 @@
         </div>
         <div class="item-inner">
             <div>数量</div>
-            <div><fmt:formatNumber type="number" value="${otcTransactionUserDeal.currencyNumber}" maxFractionDigits="4"/></div>
+            <div><fmt:formatNumber type="number" value="${otcTransactionUserDeal.currencyNumber}" groupingUsed="FALSE" maxFractionDigits="4"/></div>
         </div>
         <div class="item-inner">
             <div>金额</div>
-            <div>¥<fmt:formatNumber type="number" value="${otcTransactionUserDeal.currencyTotalPrice}" maxFractionDigits="2"/></div>
+            <div>¥<fmt:formatNumber type="number" value="${otcTransactionUserDeal.currencyTotalPrice}" groupingUsed="FALSE" maxFractionDigits="2"/></div>
         </div>
         <div class="item-inner">
             <div>类型</div>
