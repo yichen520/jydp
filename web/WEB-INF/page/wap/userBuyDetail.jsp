@@ -166,6 +166,12 @@
                     openTips(message);
                     setTimeout('window.location.href = \"<%=path%>\" + \"/userWap/otcTradeCenter/show.htm\"', 1000);
                 }
+
+                if (code != "1" && message!="") {
+                    addCheckBoo = false;
+                    openTips(message);
+                    return;
+                }
             },
             error: function () {
                 addCheckBoo = false;
