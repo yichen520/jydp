@@ -28,6 +28,7 @@
 		WHERE
 			OTAB.userId = UTAB.userId
 			AND pendingStatus = 1
+			AND UTAB.dealStatus = 1
 		<if test="currencyId != 0">
 			AND currencyId = #{currencyId}
 		</if>
@@ -47,6 +48,7 @@
 		WHERE
 				OTAB.userId = UTAB.userId
 				AND pendingStatus = 1
+				AND UTAB.dealStatus = 1
 			<if test="currencyId != 0">
 				AND currencyId = #{currencyId}
 			</if>
