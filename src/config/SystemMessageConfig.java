@@ -155,4 +155,46 @@ public class SystemMessageConfig {
      * 交易中心和客服结束
      */
 
+    /** 登录接口状态码和信息开始 */
+
+    //登录成功
+    public static final int LOGIN_SUCCESS_CODE = 201001;
+    public static final String LOGIN_SUCCESS_MESSAGE = "登陆成功";
+    //账号或密码为空
+    public static final int USER_ACCOUNT_OR_PASSWORD_ISNULL_CODE = 201002;
+    public static final String USER_ACCOUNT_OR_PASSWORD_ISNULL_MESSAGE = "账号或密码不能为空";
+    //账号或密码错误
+    public static final int USER_ACCOUNT_OR_PASSWORD_ERROR_CODE = 201003;
+    public static final String USER_ACCOUNT_OR_PASSWORD_ERROR_MESSAGE = "账号或密码错误";
+    //登出成功
+    public static final int LOGOUT_SUCCESS_CODE = 201004;
+    public static final String LOGOUT_SUCCESS_MESSAGE = "登出成功";
+
+    /** 登录接口状态码和信息结束 */
+
+    /** 找回密码接口状态码和信息开始*/
+
+    //参数为空
+    public static final int PARAMETER_ISNULL_CODE = 204002;
+    public static final String PARAMETER_ISNULL_MESSAGE = "参数不能为空";
+    //用户不存在
+    public static final int USER_ISEXIST_CODE = 204003;
+    public static final String USER_ISEXIST_MESSAGE = "用户不存在";
+    //用户被禁用
+    public static final int USER_ISDISABLED_CODE = 204004;
+    public static final String USER_ISDISABLED_MESSAGE = "用户被禁用";
+    //手机号与用户所绑手机号不匹配
+    public static final int PHONENUMBER_AND_USERACCOUNT_NOTMATCHING_CODE = 204005;
+    public static final String PHONENUMBER_AND_USERACCOUNT_NOTMATCHING_MESSAGE = "手机号与用户所绑手机号不匹配";
+    //不可与支付密码相同
+    public static final int PASSWORD_IDENTICAL_CODE = 204006;
+    public static final String PASSWORD_IDENTICAL_MESSAGE = "不可与支付密码相同";
+    //不可与支付密码相同
+    public static final int BACK_SUCCESS_CODE = 204001;
+    public static final String BACK_SUCCESS_MESSAGE = "找回密码成功";
+    //找回密码失败
+    public static final int BACK_FAIL_CODE = 204007;
+    public static final String BACK_FAIL_MESSAGE = "找回密码失败";
+
+    /** 找回密码接口状态码和信息结束*/
 }
