@@ -26,6 +26,45 @@ public class SystemMessageConfig {
     public static final int SYSTEM_CODE_SERVER_EXCEPTION=5;
     public static final String SYSTEM_MESSAGE_SERVER_EXCEPTION="服务器异常";
 
+    /**
+     * 个人中心用户信息模块
+     */
+    //用户不存在
+    public static final int CODE_USER_NOT_EXIST=103001;
+    public static final String MESSAGE_USER_NOT_EXIST="用户不存在";
+    //查询无结果
+    public static final int CODE_NO_RESULT=103002;
+    public static final String MESSAGE_NO_RESULT="查询无结果";
+    //两次输入密码不一致
+    public static final int CODE_PASSWORD_NOT_IDENTICAL=103003;
+    public static final String MESSAGE_PASSWORD_NOT_IDENTICAL="两次输入密码不一致";
+    //新密码与原密码相同
+    public static final int CODE_PASSWORD_OLD_NEW_COMMON=103004;
+    public static final String MESSAGE_PASSWORD_OLD_NEW_COMMON="新密码不可与原密码相同";
+    //用户信息查询失败
+    public static final int CODE_USER_INFO_NULL=103005;
+    public static final String MESSAGE_USER_INFO_NULL="用户信息查询失败";
+    //原密码错误
+    public static final int CODE_PASSWORD_OLD_ERROR=103006;
+    public static final String MESSAGE_PASSWORD_OLD_ERROR="原密码错误";
+    //与支付密码相同
+    public static final int CODE_PASSWORD_WITH_PAYPASSWORD_COMMON=103007;
+    public static final String MESSAGE_PASSWORD_WITH_PAYPASSWORD_COMMON="与支付密码相同";
+    //操作失败
+    public static final int CODE_OPERATE_ERROR=103008;
+    public static final String MESSAGE_OPERATE_ERROR="操作失败";
+    //与登录密码相同
+    public static final int CODE_PAYPASSWORD_WITH_PASSWORD_COMMON=103009;
+    public static final String MESSAGE_PAYPASSWORD_WITH_PASSWORD_COMMON="与登录密码相同";
+    //新手机号与原手机号相同
+    public static final int CODE_PHONE_OLD_NEW_COMMON=103010;
+    public static final String MESSAGE_PHONE_OLD_NEW_COMMON="新手机号与原手机号相同";
+    //登录密码错误
+    public static final int CODE_PASSWORD_ERROR=103011;
+    public static final String MESSAGE_PASSWORD_ERROR="登录密码错误";
+    //手机号已被绑定
+    public static final int CODE_PHONE_BIND=103012;
+    public static final String MESSAGE_PHONE_BIND="手机号已被绑定";
     //查询成功
     public static final String SYSTEM_MESSAGE__GET_SUCCESS="查询成功";
 
