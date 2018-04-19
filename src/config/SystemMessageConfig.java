@@ -26,6 +26,8 @@ public class SystemMessageConfig {
     public static final int SYSTEM_CODE_SERVER_EXCEPTION=5;
     public static final String SYSTEM_MESSAGE_SERVER_EXCEPTION="服务器异常";
 
+    //查询成功
+    public static final String SYSTEM_MESSAGE__GET_SUCCESS="查询成功";
 
 
 
@@ -46,6 +48,23 @@ public class SystemMessageConfig {
     //交易中心
     public static final int REDIRECT_TO_TRADECENTER_CODE = 401000;
     public static final String REDIRECT_TO_TRADECENTER_MESSAGE = "/web/tradeCenter/show";
+
+    //系统公告
+    public static final int REDIRECT_TO_SYSNOTICE_CODE = 601001;
+    public static final String REDIRECT_TO_SYSNOTICE_MESSAGE = "/web/webSystemNotice/show";
+
+    //系统公告详情
+    public static final int REDIRECT_TO_SYSNOTICEDETAIL_CODE = 601002;
+    public static final String REDIRECT_TO_SYSNOTICEDETAIL_MESSAGE = "/web/webSystemNotice/show";
+
+
+    //热门话题
+    public static final int REDIRECT_TO_SYSHOT_CODE = 602001;
+    public static final String REDIRECT_TO_SYSHOT_MESSAGE = "/web/webSystemHot/show";
+
+    //热门话题详情
+    public static final int REDIRECT_TO_SYSHOTDETAIL_CODE = 602002;
+    public static final String REDIRECT_TO_SYSHOTDETAIL_MESSAGE = "page/web/systemHotDetail";
 
 
     /**
