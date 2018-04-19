@@ -123,4 +123,20 @@ public class SystemMessageConfig {
      * 交易中心和页面结束
      */
 
+    /* 登录接口状态码和信息开始 */
+
+    //登录成功
+    public static final int LOGIN_SUCCESS_CODE = 201001;
+    public static final String LOGIN_SUCCESS_MESSAGE = "登陆成功";
+    //账号或密码为空
+    public static final int USER_ACCOUNT_OR_PASSWORD_ISNULL_CODE = 201002;
+    public static final String USER_ACCOUNT_OR_PASSWORD_ISNULL_MESSAGE = "账号或密码不能为空";
+    //账号或密码错误
+    public static final int USER_ACCOUNT_OR_PASSWORD_ERROR_CODE = 201003;
+    public static final String USER_ACCOUNT_OR_PASSWORD_ERROR_MESSAGE = "账号或密码错误";
+    //登出成功
+    public static final int LOGOUT_SUCCESS_CODE = 201004;
+    public static final String LOGOUT_SUCCESS_MESSAGE = "登出成功";
+
+    /* 登录接口状态码和信息结束 */
 }
