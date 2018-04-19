@@ -236,4 +236,24 @@ public class SystemMessageConfig {
     public static final String BACK_FAIL_MESSAGE = "找回密码失败";
 
     /** 找回密码接口状态码和信息结束*/
+
+
+    /**
+     * 用户注册状态码和信息
+     */
+    //用户名重复
+    public static final int ACCOUNT_REPEAT_CODE = 2020001;
+    public static final String ACCOUNT_REPEAT_MESSAGE = "用户名重复";
+    //该手机号已被注册
+    public static final int PHONE_REGISTERED_CODE = 2020002;
+    public static final String PHONE_REGISTERED_MESSAGE = "该手机号已被注册";
+    //注册成功
+    public static final int REGISTER_SUCCESS_CODE = 2020003;
+    public static final String  REGISTER_SUCCESS_MESSAGE = "注册成功";
+    //注册失败
+    public static final int REGISTER_FAIL_CODE = 2020004;
+    public static final String  REGISTER_FAIL_MESSAGE = "注册失败";
+    //用户名可用
+    public static final int ACCOUNT_AVAILABLE_CODE = 2020005;
+    public static final String  ACCOUNT_AVAILABLE_MESSAGE = "用户名可用";
 }
