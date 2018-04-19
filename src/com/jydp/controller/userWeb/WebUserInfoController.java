@@ -59,15 +59,14 @@ public class WebUserInfoController {
     @ResponseBody
     public JsonObjectBO getUserInfo(HttpServletRequest request) {
         JsonObjectBO response = new JsonObjectBO();
-//        UserSessionBO user = WebInterceptor.getUser(request);
-//        if (user == null) {
-//            response.setCode(SystemMessageConfig.SYSTEM_CODE_LOGIN_EXPIRED);
-//            response.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_LOGIN_EXPIRED);
-//            return response;
-//        }
-//
-//        UserDO userInfo = userService.getUserByUserId(user.getUserId());
-        UserDO userInfo=userService.getUserByUserId(402);
+        UserSessionBO user = WebInterceptor.getUser(request);
+        if (user == null) {
+            response.setCode(SystemMessageConfig.SYSTEM_CODE_LOGIN_EXPIRED);
+            response.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_LOGIN_EXPIRED);
+            return response;
+        }
+
+        UserDO userInfo = userService.getUserByUserId(user.getUserId());
         if (userInfo == null) {
             response.setCode(SystemMessageConfig.CODE_USER_NOT_EXIST);
             response.setMessage(SystemMessageConfig.MESSAGE_USER_NOT_EXIST);
@@ -104,15 +103,14 @@ public class WebUserInfoController {
     @ResponseBody
     public JsonObjectBO getUserCurrencyAssets(HttpServletRequest request) {
         JsonObjectBO response = new JsonObjectBO();
-//        UserSessionBO user = WebInterceptor.getUser(request);
-//        if (user == null) {
-//            response.setCode(SystemMessageConfig.SYSTEM_CODE_LOGIN_EXPIRED);
-//            response.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_LOGIN_EXPIRED);
-//            return response;
-//        }
-//
-//        List<WapUserCurrencyAssetsVO> list = webUserCurrencyNumService.listWebUserCurrencyAssets(user.getUserId());
-        List<WapUserCurrencyAssetsVO> list = webUserCurrencyNumService.listWebUserCurrencyAssets(402);
+        UserSessionBO user = WebInterceptor.getUser(request);
+        if (user == null) {
+            response.setCode(SystemMessageConfig.SYSTEM_CODE_LOGIN_EXPIRED);
+            response.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_LOGIN_EXPIRED);
+            return response;
+        }
+
+        List<WapUserCurrencyAssetsVO> list = webUserCurrencyNumService.listWebUserCurrencyAssets(user.getUserId());
         if (CollectionUtils.isEmpty(list)) {
             response.setCode(SystemMessageConfig.CODE_NO_RESULT);
             response.setMessage(SystemMessageConfig.MESSAGE_NO_RESULT);
