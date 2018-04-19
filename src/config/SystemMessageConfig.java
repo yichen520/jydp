@@ -33,19 +33,23 @@ public class SystemMessageConfig {
     /**
      * 重定向消息
      */
+    //联系客服
+    public static final int REDIRECT_TO_WEBCUSTOMERSERVICE_CODE = 104000;
+    public static final String REDIRECT_TO_WEBCUSTOMERSERVICE_MESSAGE = "/web/webCustomerService/show";
+
     public static final int REDIRECT_TO_USERLOGIN_CODE = 201000;
     public static final String REDIRECT_TO_USERLOGIN_MESSAGE = "/web/userLogin/show";
 
     public static final int REDIRECT_TO_HOMEPAGE_CODE = 301000;
     public static final String REDIRECT_TO_HOMEPAGE_MESSAGE = "/web/homePage/show";
 
+    //交易中心
     public static final int REDIRECT_TO_TRADECENTER_CODE = 401000;
     public static final String REDIRECT_TO_TRADECENTER_MESSAGE = "/web/tradeCenter/show";
 
 
-
     /**
-     * 交易中心和帮助页面消息开始
+     * 交易中心和客服页面消息开始
      */
     //返回成功
     public static final int SUCCESS_OPT_CODE = 401001;
@@ -119,8 +123,17 @@ public class SystemMessageConfig {
     //查询无结果
     public static final int NO_RESULT_CODE = 401020;
     public static final String NO_RESULT_MESSAGE = "查询无结果";
+    //修改成功
+    public static final int COMMIT_SUCCESS_CODE = 100401;
+    public static final String COMMIT_SUCCESS_MESSAGE = "提交成功";
+    //修改失败
+    public static final int COMMIT_FAILD_CODE = 100402;
+    public static final String COMMIT_FAILD_MESSAGE = "提交失败";
+    //参数不能为空
+    public static final int PARAMETER_NOT_BE_NULL_CODE = 100403;
+    public static final String PARAMETER_NOT_BE_NULL_MESSAGE = "参数不能为空";
     /**
-     * 交易中心和页面结束
+     * 交易中心和客服结束
      */
 
 }
