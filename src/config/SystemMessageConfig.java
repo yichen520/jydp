@@ -33,6 +33,9 @@ public class SystemMessageConfig {
     /**
      * 重定向消息
      */
+    public static final int REDIRECT_TO_USERLOGIN_CODE = 201000;
+    public static final String REDIRECT_TO_USERLOGIN_MESSAGE = "/web/userLogin/show";
+
     public static final int REDIRECT_TO_HOMEPAGE_CODE = 301000;
     public static final String REDIRECT_TO_HOMEPAGE_MESSAGE = "/web/homePage/show";
 
