@@ -37,7 +37,7 @@ public class WebUserRechargeCoinRecordController {
     /**
      * 查询用户充币记录
      */
-    @RequestMapping("getUsrRechargeCoinRecord.htm")
+    @RequestMapping("/getUsrRechargeCoinRecord.htm")
     public JsonObjectBO getUsrRechargeCoinRecord(HttpServletRequest request, @RequestBody String requestJson) {
         JsonObjectBO responseJson = new JsonObjectBO();
         JSONObject jsonObject = new JSONObject();
