@@ -233,8 +233,8 @@ public class WebIdentificationController {
             return responseJson;
         }
 
-        responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
-        responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
+        responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_SUCCESS);
+        responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_SUCCESS);
         return responseJson;
     }
 }
