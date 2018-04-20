@@ -123,7 +123,7 @@ public class SystemMessageConfig {
 
     //用户未登录
     public static final int NOT_LOGININ_CODE = 401004;
-    public static final String NOT_LOGININ_MESSAGE = "未登录";
+    public static final String NOT_LOGININ_MESSAGE = "用户未登录";
 
 
     //全部币种没有上线
@@ -256,4 +256,6 @@ public class SystemMessageConfig {
     //用户名可用
     public static final int ACCOUNT_AVAILABLE_CODE = 2020005;
     public static final String  ACCOUNT_AVAILABLE_MESSAGE = "用户名可用";
+
+    //非本人挂单记录
 }

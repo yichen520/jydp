@@ -8,6 +8,7 @@ import com.jydp.entity.DO.transaction.TransactionPendOrderDO;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.interceptor.WebInterceptor;
 import com.jydp.service.ITransactionPendOrderService;
+import config.SystemMessageConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
@@ -40,8 +41,8 @@ public class WebTransactionPendOrderController {
         //登录校验
         UserSessionBO user = WebInterceptor.getUser(request);
         if (user == null){
-            responseJson.setCode(2);
-            responseJson.setMessage("用户未登录");
+            responseJson.setCode(SystemMessageConfig.NOT_LOGININ_CODE);
+            responseJson.setMessage(SystemMessageConfig.NOT_LOGININ_MESSAGE);
             return responseJson;
         }
 
@@ -71,11 +72,13 @@ public class WebTransactionPendOrderController {
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("transactionPendOrderRecordList", transactionPendOrderRecordList);
-        jsonObject.put("totalPageNumber",totalPageNumber);
+        jsonObject.put("totalPageNumber",totalPageNumber);  //总页数
+        jsonObject.put("pageNumber",pageNumber);            //当前页面数
+        jsonObject.put("totalNumber",totalNumber);          //总共记录数
 
         responseJson.setData(jsonObject);
-        responseJson.setCode(1);
-        responseJson.setMessage("数据请求成功");
+        responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_SUCCESS);
+        responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_SUCCESS);
         return responseJson;
     }
 
@@ -90,28 +93,28 @@ public class WebTransactionPendOrderController {
         //登录校验
         UserSessionBO user = WebInterceptor.getUser(request);
         if (user == null) {
-            responseJson.setCode(4);
-            responseJson.setMessage("未登录");
+            responseJson.setCode(SystemMessageConfig.NOT_LOGININ_CODE);
+            responseJson.setMessage(SystemMessageConfig.NOT_LOGININ_MESSAGE);
             return responseJson;
         }
 
         boolean fq =UserWebInterceptor.handleFrequent(request);
         if(fq){
-            responseJson.setCode(2);
-            responseJson.setMessage("用户操作频繁");
+            responseJson.setCode(SystemMessageConfig.OPERATING_FREQUENCY_CODE);
+            responseJson.setMessage(SystemMessageConfig.OPERATING_FREQUENCY_MESSAGE);
             return responseJson;
         }
 
         if (!StringUtil.isNotNull(pendingOrderNo)) {
-            responseJson.setCode(3);
-            responseJson.setMessage("参数错误");
+            responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
+            responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
             return responseJson;
         }
 
         TransactionPendOrderDO transactionPendOrder = transactionPendOrderService.getPendOrderByPendingOrderNo(pendingOrderNo);
         if(transactionPendOrder == null){
-            responseJson.setCode(3);
-            responseJson.setMessage("参数错误");
+            responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
+            responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
             return responseJson;
         }
 
@@ -123,8 +126,8 @@ public class WebTransactionPendOrderController {
 
         boolean updateResult = transactionPendOrderService.revokePendOrder(pendingOrderNo);
         if (updateResult) {
-            responseJson.setCode(1);
-            responseJson.setMessage("撤单成功");
+            responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_SUCCESS);
+            responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_SUCCESS);
         } else {
             responseJson.setCode(5);
             responseJson.setMessage("撤单失败");

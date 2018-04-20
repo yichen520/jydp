@@ -7,6 +7,7 @@ import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.VO.TransactionUserDealVO;
 import com.jydp.interceptor.WebInterceptor;
 import com.jydp.service.ITransactionUserDealService;
+import config.SystemMessageConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,8 +37,8 @@ public class WebDealRecordController {
 
         UserSessionBO userSession = WebInterceptor.getUser(request);
         if (userSession == null) {
-            responseJson.setCode(2);
-            responseJson.setMessage("用户未登录");
+            responseJson.setCode(SystemMessageConfig.NOT_LOGININ_CODE);
+            responseJson.setMessage(SystemMessageConfig.NOT_LOGININ_MESSAGE);
             return responseJson;
         }
 
@@ -76,8 +77,9 @@ public class WebDealRecordController {
             jsonObject.put("pendingOrderNo",pendingOrderNo);
             jsonObject.put("dealRecordList",dealRecordList);
 
-            responseJson.setCode(1);
-            responseJson.setMessage("查询成功");
+            //成功
+            responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_SUCCESS);
+            responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_SUCCESS);
             return responseJson;
         }
 
@@ -105,8 +107,8 @@ public class WebDealRecordController {
         jsonObject.put("totalPageNumber",totalPageNumber);
         jsonObject.put("transactionUserDealList",transactionUserDealList);
 
-        responseJson.setCode(1);
-        responseJson.setMessage("查询成功");
+        responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_SUCCESS);
+        responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_SUCCESS);
         responseJson.setData(jsonObject);
         return responseJson;
     }
