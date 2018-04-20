@@ -99,7 +99,7 @@ public class WebRegisterController{
             jsonObject.put("userId",userDO.getUserId());
             jsonObject.put("userAccount",userDO.getUserAccount());
             responseJson.setData(jsonObject);
-            responseJson.setCode(SystemMessageConfig.REGISTER_SUCCESS_CODE);
+            responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_SUCCESS);//1
             responseJson.setMessage(SystemMessageConfig.REGISTER_SUCCESS_MESSAGE);
         } else {
             responseJson.setCode(SystemMessageConfig.REGISTER_FAIL_CODE);
@@ -124,7 +124,7 @@ public class WebRegisterController{
 
         UserDO userDO = userService.getUserByUserAccount(userAccount);
         if (userDO == null) {
-            responseJson.setCode(SystemMessageConfig.ACCOUNT_AVAILABLE_CODE);
+            responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_SUCCESS);//1
             responseJson.setMessage(SystemMessageConfig.ACCOUNT_AVAILABLE_MESSAGE);
             return responseJson;
         }
