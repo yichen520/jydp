@@ -119,8 +119,8 @@ public class WebTransactionPendOrderController {
         }
 
         if(transactionPendOrder.getUserId() != user.getUserId()){
-            responseJson.setCode(4);
-            responseJson.setMessage("此操作非该挂单本人");
+            responseJson.setCode(SystemMessageConfig.OPERATION_NOT_PENDING_ORDER_CODE);
+            responseJson.setMessage(SystemMessageConfig.OPERATION_NOT_PENDING_ORDER_MESSAGE);
             return responseJson;
         }
 
@@ -129,8 +129,8 @@ public class WebTransactionPendOrderController {
             responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_SUCCESS);
             responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_SUCCESS);
         } else {
-            responseJson.setCode(5);
-            responseJson.setMessage("撤单失败");
+            responseJson.setCode(SystemMessageConfig.UNDO_FAILED_CODE);
+            responseJson.setMessage(SystemMessageConfig.UNDO_FAILED_MESSAGE);
         }
 
         return responseJson;

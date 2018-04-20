@@ -260,7 +260,18 @@ public class SystemMessageConfig {
     public static final int ACCOUNT_AVAILABLE_CODE = 2020005;
     public static final String  ACCOUNT_AVAILABLE_MESSAGE = "用户名可用";
 
-    //非本人挂单记录
+    /**
+     * 个人中心我的记录
+     */
+
+    //撤销失败
+    public static final int UNDO_FAILED_CODE = 1050001;
+    public static final String  UNDO_FAILED_MESSAGE = "撤销失败";
+
+    //此操作非该挂单本人
+    public static final int OPERATION_NOT_PENDING_ORDER_CODE = 1050002;
+    public static final String  OPERATION_NOT_PENDING_ORDER_MESSAGE = "此操作非该挂单本人";
+
 
     /** 用户认证接口状态码和信息开始*/
     // 未进行认证
@@ -286,4 +297,5 @@ public class SystemMessageConfig {
     public static final String IFICATION_CONDUCT_MESSAGE = "已有认证信息在审核中";
 
     /** 用户认证接口状态码和信息结束*/
+
 }
