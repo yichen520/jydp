@@ -11,7 +11,6 @@ import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DTO.TransactionPendOrderDTO;
 import com.jydp.entity.VO.*;
-import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.interceptor.WebInterceptor;
 import com.jydp.service.*;
 import config.RedisKeyConfig;
@@ -26,9 +25,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,9 +82,7 @@ public class WebTradeCenterController {
      * 展示交易页面
      **/
     @RequestMapping(value = "/show/{currencyIdStr}", method = RequestMethod.GET)
-    public @ResponseBody
-    JsonObjectBO show(HttpServletRequest request, HttpServletResponse response, @PathVariable String currencyIdStr) {
-        response.setHeader("Access-Control-Allow-Origin", "*");
+    public @ResponseBody JsonObjectBO show(HttpServletRequest request, HttpServletResponse response, @PathVariable String currencyIdStr) {
         //返回对象封装类
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         //数据封装的信息
@@ -120,7 +114,7 @@ public class WebTradeCenterController {
         transactionCurrency.setSellFee(transactionCurrency.getSellFee() * 100);
 
         //获取用户交易中心相关资产信息
-        UserSessionBO user = UserWebInterceptor.getUser(request);
+        UserSessionBO user = WebInterceptor.getUser(request);
         //用户密码是否输入过密码
         jo.put("userIsPwd", "");
         //用户是否需要输入密码的状态
@@ -197,18 +191,8 @@ public class WebTradeCenterController {
         jo.put("userDealCapitalMessage", userDealCapitalMessage);
 
         ResponseUtils.setResp(SystemMessageConfig.SUCCESS_OPT_CODE, SystemMessageConfig.SUCCESS_OPT_MESSAGE, jo, jsonObjectBO);
-        printJson(jsonObjectBO);
         return jsonObjectBO;
 
-    }
-    public static void printJson(JsonObjectBO jo){
-        try {
-            String path = WebTradeCenterController.class.getClassLoader().getResource("")+"/" + "aa.txt";
-            FileWriter fw = new FileWriter(new File(path));
-            fw.write(jo.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -220,7 +204,7 @@ public class WebTradeCenterController {
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         JSONObject jo = new JSONObject();
 
-        UserSessionBO userSession = UserWebInterceptor.getUser(request);
+        UserSessionBO userSession = WebInterceptor.getUser(request);
         if (userSession == null) {
             ResponseUtils.setResp(SystemMessageConfig.NOT_LOGININ_CODE, SystemMessageConfig.NOT_LOGININ_MESSAGE, null, jsonObjectBO);
             return jsonObjectBO;
@@ -376,7 +360,7 @@ public class WebTradeCenterController {
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         JSONObject jo = new JSONObject();
 
-        UserSessionBO userSession = UserWebInterceptor.getUser(request);
+        UserSessionBO userSession = WebInterceptor.getUser(request);
         if (userSession == null) {
             ResponseUtils.setResp(SystemMessageConfig.NOT_LOGININ_CODE, SystemMessageConfig.NOT_LOGININ_MESSAGE, null, jsonObjectBO);
             return jsonObjectBO;
@@ -630,8 +614,7 @@ public class WebTradeCenterController {
      * 获取委托记录
      */
     @RequestMapping(value = "/entrust.htm", method = RequestMethod.POST)
-    public @ResponseBody
-    JsonObjectBO entrust(HttpServletRequest request) {
+    public @ResponseBody JsonObjectBO entrust(HttpServletRequest request) {
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         JSONObject jo = new JSONObject();
         List<TransactionPendOrderVO> transactionPendOrderList = null;
@@ -644,7 +627,7 @@ public class WebTradeCenterController {
 
         int currencyId = 0;
         currencyId = Integer.parseInt(currencyIdStr);
-        UserSessionBO user = UserWebInterceptor.getUser(request);
+        UserSessionBO user = WebInterceptor.getUser(request);
         if (user != null) {
             transactionPendOrderList = transactionPendOrderService.listPendOrderForWeb(user.getUserId(), currencyId, 0, 10);
         }
@@ -683,14 +666,13 @@ public class WebTradeCenterController {
      * 获取交易相关价格（用户资金信息）
      */
     @RequestMapping(value = "/userMessage", method = RequestMethod.POST)
-    public @ResponseBody
-    JsonObjectBO userMessage(HttpServletRequest request) {
+    public @ResponseBody JsonObjectBO userMessage(HttpServletRequest request) {
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         JSONObject jo = new JSONObject();
         UserDealCapitalMessageVO userDealCapitalMessage = new UserDealCapitalMessageVO();
 
         //获取参数
-        UserSessionBO user = UserWebInterceptor.getUser(request);
+        UserSessionBO user = WebInterceptor.getUser(request);
         String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
         if (!StringUtil.isNotNull(currencyIdStr)) {
             ResponseUtils.setResp(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR, SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR, null, jsonObjectBO);
@@ -717,7 +699,7 @@ public class WebTradeCenterController {
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         JSONObject jo = new JSONObject();
 
-        UserSessionBO user = UserWebInterceptor.getUser(request);
+        UserSessionBO user = WebInterceptor.getUser(request);
         if (user == null) {
             ResponseUtils.setResp(SystemMessageConfig.NOT_LOGININ_CODE, SystemMessageConfig.NOT_LOGININ_MESSAGE, null, jsonObjectBO);
             return jsonObjectBO;
@@ -772,8 +754,7 @@ public class WebTradeCenterController {
      * k线图参数获取
      */
     @RequestMapping(value = "/gainGraphData", method = RequestMethod.POST)
-    public @ResponseBody
-    JsonObjectBO gainGraphData(HttpServletRequest request) {
+    public @ResponseBody JsonObjectBO gainGraphData(HttpServletRequest request) {
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         JSONObject jo = new JSONObject();
         List<TransactionGraphVO> transactionGraphList;

@@ -6,7 +6,6 @@ import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.user.UserFeedbackDO;
-import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.interceptor.WebInterceptor;
 import com.jydp.service.IUserFeedbackService;
 import config.SystemMessageConfig;
@@ -110,7 +109,7 @@ public class CustomerServiceController {
             return jsonObjectBO;
         }
 
-        boolean handleFrequent = UserWebInterceptor.handleFrequent(request);
+        boolean handleFrequent = WebInterceptor.handleFrequent(request);
         if (handleFrequent) {
             ResponseUtils.setResp(SystemMessageConfig.OPERATING_FREQUENCY_CODE, SystemMessageConfig.OPERATING_FREQUENCY_MESSAGE, null, jsonObjectBO);
             return jsonObjectBO;
