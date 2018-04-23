@@ -198,7 +198,7 @@ public class SystemMessageConfig {
 
     //登录成功
     public static final int LOGIN_SUCCESS_CODE = 201001;
-    public static final String LOGIN_SUCCESS_MESSAGE = "登陆成功";
+    public static final String LOGIN_SUCCESS_MESSAGE = "登录成功";
     //账号或密码为空
     public static final int USER_ACCOUNT_OR_PASSWORD_ISNULL_CODE = 201002;
     public static final String USER_ACCOUNT_OR_PASSWORD_ISNULL_MESSAGE = "账号或密码不能为空";

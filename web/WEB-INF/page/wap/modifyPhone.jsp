@@ -151,7 +151,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             return;
         }
         if (password=="") {
-            openTips("请输入登陆密码");
+            openTips("请输入登录密码");
             return;
         }
         $.ajax({
