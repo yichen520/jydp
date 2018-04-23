@@ -234,6 +234,9 @@ public class SystemMessageConfig {
     //找回密码失败
     public static final int BACK_FAIL_CODE = 204007;
     public static final String BACK_FAIL_MESSAGE = "找回密码失败";
+    //验证码错误
+    public static final int VALIDATECODE_ISERROR_CODE = 204008;
+    public static final String VALIDATECODE_ISERROR_MESSAGE = "验证码错误";
 
     /** 找回密码接口状态码和信息结束*/
 
@@ -257,5 +260,42 @@ public class SystemMessageConfig {
     public static final int ACCOUNT_AVAILABLE_CODE = 2020005;
     public static final String  ACCOUNT_AVAILABLE_MESSAGE = "用户名可用";
 
-    //非本人挂单记录
+    /**
+     * 个人中心我的记录
+     */
+
+    //撤销失败
+    public static final int UNDO_FAILED_CODE = 1050001;
+    public static final String  UNDO_FAILED_MESSAGE = "撤销失败";
+
+    //此操作非该挂单本人
+    public static final int OPERATION_NOT_PENDING_ORDER_CODE = 1050002;
+    public static final String  OPERATION_NOT_PENDING_ORDER_MESSAGE = "此操作非该挂单本人";
+
+
+    /** 用户认证接口状态码和信息开始*/
+    // 未进行认证
+    public static final int NOIDENTIFICATION_CODE = 203002;
+    public static final String NOIDENTIFICATION_MESSAGE = "未进行认证";
+    // 未通过认证
+    public static final int NOADOPT_CODE = 203003;
+    public static final String NOADOPT_MESSAGE = "未通过认证";
+    // 审核拒绝
+    public static final int REFUE_CODE = 203004;
+    public static final String REFUE_MESSAGE = "审核拒绝";
+    // 认证失败
+    public static final int IFICATION_FAIL_CODE = 203005;
+    public static final String IFICATION_FAIL_MESSAGE = "认证失败";
+    // 操作频繁
+    public static final int FREQUENT_OPERATION_CODE = 203006;
+    public static final String FREQUENT_OPERATION_MESSAGE = "操作频繁";
+    // 已有认证信息通过
+    public static final int IFICATION_ISEXIST_CODE = 203007;
+    public static final String IFICATION_ISEXIST_MESSAGE = "已有认证信息通过";
+    // 已有认证信息在审核中
+    public static final int IFICATION_CONDUCT_CODE = 203008;
+    public static final String IFICATION_CONDUCT_MESSAGE = "已有认证信息在审核中";
+
+    /** 用户认证接口状态码和信息结束*/
+
 }

@@ -1,7 +1,5 @@
 package com.jydp.controller.userWeb;
 
-import com.alibaba.fastjson.JSONObject;
-import com.iqmkj.utils.Base64Util;
 import com.iqmkj.utils.MD5Util;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
@@ -51,10 +49,6 @@ public class WebUserLoginController {
     @Autowired
     private IOtcDealerUserService otcDealerUserService;
 
-    @RequestMapping(value = "/login1",method = RequestMethod.GET)
-    public String getString(){
-        return "123";
-    }
     /**
      * 用户登录验证
      * @return wap首页
@@ -62,12 +56,13 @@ public class WebUserLoginController {
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public JsonObjectBO userLogin(@Param("userAccount") String userAccount, @Param("password") String password, HttpServletRequest request){
         JsonObjectBO responseJson = new JsonObjectBO();
+        // 参数不能为空
         if(!StringUtil.isNotNull(userAccount) || !StringUtil.isNotNull(password)){
             responseJson.setCode(SystemMessageConfig.USER_ACCOUNT_OR_PASSWORD_ISNULL_CODE);
             responseJson.setMessage(SystemMessageConfig.USER_ACCOUNT_OR_PASSWORD_ISNULL_MESSAGE);
             return responseJson;
         }
-
+        //用户是否存在
         password = MD5Util.toMd5(password);
         UserDO user = userService.validateUserLogin(userAccount, password);
         if (user == null) {
@@ -75,45 +70,32 @@ public class WebUserLoginController {
             responseJson.setMessage(SystemMessageConfig.USER_ACCOUNT_OR_PASSWORD_ERROR_MESSAGE);
             return responseJson;
         }
-/*
 
         //查询用户最新认证信息
         UserIdentificationDO userIdentification = userIdentificationService.getUserIdentificationByUserAccountLately(user.getUserAccount());
 
         //未进行认证
         if (userIdentification == null) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("userId",user.getUserId());
-            jsonObject.put("userAccount",user.getUserAccount());
-
-            responseJson.setData(jsonObject);
-            responseJson.setCode(4);
-            responseJson.setMessage("未进行认证");
+            responseJson.setCode(SystemMessageConfig.NOIDENTIFICATION_CODE);
+            responseJson.setMessage(SystemMessageConfig.NOIDENTIFICATION_MESSAGE);
             return responseJson;
         }
+
         //认证未通过
         if (userIdentification.getIdentificationStatus() != 2) {
             List<UserIdentificationImageDO> userIdentificationImageList =
                     userIdentificationImageService.listUserIdentificationImageByIdentificationId(userIdentification.getId());
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("userId",user.getUserId());
-            jsonObject.put("userAccount",user.getUserAccount());
-            jsonObject.put("identification",userIdentification);
-            jsonObject.put("identificationImageList",userIdentificationImageList);
-
-            responseJson.setData(jsonObject);
-            responseJson.setCode(5);
-            responseJson.setMessage("未通过认证");
+            responseJson.setCode(SystemMessageConfig.NOADOPT_CODE);
+            responseJson.setMessage(SystemMessageConfig.NOADOPT_MESSAGE);
             return responseJson;
         }
 
         // 用户被禁用
         if (user.getAccountStatus() != 1) {
-            responseJson.setCode(6);
-            responseJson.setMessage("用户被禁用");
+            responseJson.setCode(SystemMessageConfig.USER_ISDISABLED_CODE);
+            responseJson.setMessage(SystemMessageConfig.USER_ISDISABLED_MESSAGE);
             return responseJson;
         }
-*/
 
         UserSessionBO userSessionBO = new UserSessionBO();
         userSessionBO.setUserId(user.getUserId());
