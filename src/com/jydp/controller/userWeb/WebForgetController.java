@@ -51,11 +51,19 @@ public class WebForgetController {
         String validateCode = forgetVO.getValidateCode();  //验证码
         String phoneNumber = forgetVO.getPhoneNumber();  //手机号
         String phoneAreaCode = forgetVO.getPhoneAreaCode();  //区域号
+
         // 参数是否为空
         if (!StringUtil.isNotNull(userAccount) || !StringUtil.isNotNull(password) ||
                 !StringUtil.isNotNull(validateCode) || !StringUtil.isNotNull(phoneNumber) || !StringUtil.isNotNull(phoneAreaCode)) {
             responseJson.setCode(SystemMessageConfig.PARAMETER_ISNULL_CODE);
             responseJson.setMessage(SystemMessageConfig.PARAMETER_ISNULL_MESSAGE);
+            return responseJson;
+        }
+        // 验证参数是否合法
+        if(!checkValue(userAccount) || !checkValue(password) || !checkNumber(validateCode) ||
+                !checkNumber(phoneNumber) || validateCode.length() != 6 || phoneNumber.length() > 11){
+            responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
+            responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
             return responseJson;
         }
         // 验证码不匹配
@@ -105,4 +113,25 @@ public class WebForgetController {
             return responseJson;
         }
     }
+
+    /**
+     * 验证字符串
+     * @param str
+     * @return
+     */
+    private boolean checkValue(String str){
+        String matchStr = "^[0-9a-zA-Z]{6,16}$";
+        return str.matches(matchStr);
+    }
+
+    /**
+     * 验证纯数字
+     * @param str
+     * @return
+     */
+    private boolean checkNumber(String str){
+        String matchStr = "^?[0-9]*$";
+        return str.matches(matchStr);
+    }
+
 }

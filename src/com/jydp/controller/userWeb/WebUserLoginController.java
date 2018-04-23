@@ -62,6 +62,12 @@ public class WebUserLoginController {
             responseJson.setMessage(SystemMessageConfig.USER_ACCOUNT_OR_PASSWORD_ISNULL_MESSAGE);
             return responseJson;
         }
+        // 验证参数是否正确
+        if(!checkValue(userAccount) || !checkValue(password)){
+            responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
+            responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
+            return responseJson;
+        }
         //用户是否存在
         password = MD5Util.toMd5(password);
         UserDO user = userService.validateUserLogin(userAccount, password);
@@ -123,5 +129,15 @@ public class WebUserLoginController {
         responseJson.setCode(SystemMessageConfig.LOGOUT_SUCCESS_CODE);
         responseJson.setMessage(SystemMessageConfig.LOGOUT_SUCCESS_MESSAGE);
         return responseJson;
+    }
+
+    /**
+     * 验证字符串
+     * @param str
+     * @return
+     */
+    private boolean checkValue(String str){
+        String matchStr = "^[0-9a-zA-Z]{6,16}$";
+        return str.matches(matchStr);
     }
 }
