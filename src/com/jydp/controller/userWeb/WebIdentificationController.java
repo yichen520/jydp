@@ -1,6 +1,7 @@
 package com.jydp.controller.userWeb;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.*;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.user.UserDO;
@@ -13,6 +14,7 @@ import config.FileUrlConfig;
 import config.SystemMessageConfig;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,7 +51,10 @@ public class WebIdentificationController {
      * 获取用户状态
      */
     @RequestMapping(value = "/getState")
-    public JsonObjectBO forgetPassword(@Param("userAccount") String userAccount) {
+    public JsonObjectBO forgetPassword(@RequestBody String requestJson) {
+
+        JSONObject requestJsonObject = (JSONObject) JSONObject.parse(requestJson);
+        String userAccount = (String) requestJsonObject.get("userAccount");
         JsonObjectBO responseJson = new JsonObjectBO();
         if(!checkValue(userAccount)){
             responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
@@ -117,23 +122,8 @@ public class WebIdentificationController {
             responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
             return responseJson;
         }
-        // 验证姓名是否合法
-        if(userCertTypeStr.equals("1")){
-            if(!checkName(userName)){
-                responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
-                responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
-                return responseJson;
-            }
-        }
-        if(userCertTypeStr.equals("2")){
-            if(!checkStr(userName)){
-                responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
-                responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
-                return responseJson;
-            }
-        }
-        // 验证账号和证件号是否合法
-        if(!checkValue(userAccount) || !checkValue(userCertNo) ){
+        // 验证账号是否合法
+        if(!checkValue(userAccount)){
             responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
             responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
             return responseJson;
@@ -286,7 +276,7 @@ public class WebIdentificationController {
      * 验证姓名
      */
     private boolean checkName(String str){
-        String matchStr = "[\\u4e00-\\u9fa5]{6,16}+";
+        String matchStr = "[\\u4e00-\\u9fa5]{2,16}+";
         return str.matches(matchStr);
     }
 
