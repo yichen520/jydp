@@ -37,7 +37,7 @@ public class WebRegisterController{
     /**
      * 用户注册
      */
-    @RequestMapping(value = "/register")
+    @RequestMapping(value = "/register",method = RequestMethod.POST)
     public JsonObjectBO register(@RequestBody UserRegisterDO userRegisterDO) {
         JsonObjectBO responseJson = new JsonObjectBO();
         JSONObject jsonObject = new JSONObject();
@@ -118,7 +118,7 @@ public class WebRegisterController{
     }
 
     /** 校验用户名 */
-    @RequestMapping(value = "/validateAccount")
+    @RequestMapping(value = "/validateAccount",method = RequestMethod.POST)
     public JsonObjectBO validateAccount(@RequestBody String requestJson){
         JsonObjectBO responseJson = new JsonObjectBO();
 

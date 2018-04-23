@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,7 +41,7 @@ public class WebJydpUserCoinOutRecordController {
     private IUserService userService;
     
     /** 查询用户币种转出记录 */
-    @RequestMapping("/getUserCoinOutRecord.htm")
+    @RequestMapping(value = "/getUserCoinOutRecord.htm",method = RequestMethod.POST)
     public JsonObjectBO getJydpUserCoinOutRecord(HttpServletRequest request, @RequestBody String requestJson){
         JsonObjectBO responseJson = new JsonObjectBO();
         JSONObject jsonObject = new JSONObject();
@@ -90,7 +91,7 @@ public class WebJydpUserCoinOutRecordController {
     }
 
     /** 撤销用户币种转出申请 */
-    @RequestMapping("/withdrawCoinOutRecord.htm")
+    @RequestMapping(value = "/withdrawCoinOutRecord.htm",method = RequestMethod.POST)
     public JsonObjectBO withdrawUserCoinOutRecord(HttpServletRequest request,@RequestBody String requestJson){
         JsonObjectBO responseJson = new JsonObjectBO();
 
