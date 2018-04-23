@@ -1,5 +1,6 @@
 package com.jydp.controller.userWeb;
 
+import com.iqmkj.utils.Base64Util;
 import com.iqmkj.utils.MD5Util;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
@@ -69,6 +70,7 @@ public class WebUserLoginController {
             return responseJson;
         }
         //用户是否存在
+        password = Base64Util.decode(password);
         password = MD5Util.toMd5(password);
         UserDO user = userService.validateUserLogin(userAccount, password);
         if (user == null) {

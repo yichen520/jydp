@@ -1,5 +1,6 @@
 package com.jydp.controller.userWeb;
 
+import com.iqmkj.utils.Base64Util;
 import com.iqmkj.utils.MD5Util;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
@@ -48,6 +49,7 @@ public class WebForgetController {
 
         String userAccount = forgetVO.getUserAccount(); //账号
         String password = forgetVO.getPassword();  //密码
+
         String validateCode = forgetVO.getValidateCode();  //验证码
         String phoneNumber = forgetVO.getPhoneNumber();  //手机号
         String phoneAreaCode = forgetVO.getPhoneAreaCode();  //区域号
@@ -59,6 +61,7 @@ public class WebForgetController {
             responseJson.setMessage(SystemMessageConfig.PARAMETER_ISNULL_MESSAGE);
             return responseJson;
         }
+        password = Base64Util.decode(password);
         // 验证参数是否合法
         if(!checkValue(userAccount) || !checkValue(password) || !checkNumber(validateCode) ||
                 !checkNumber(phoneNumber) || validateCode.length() != 6 || phoneNumber.length() > 11){
