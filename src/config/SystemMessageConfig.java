@@ -11,64 +11,62 @@ public class SystemMessageConfig {
      * 系统返回码
      */
     //返回成功
-    public static final int SYSTEM_CODE_SUCCESS=1;
-    public static final String SYSTEM_MESSAGE_SUCCESS="操作成功";
+    public static final int SYSTEM_CODE_SUCCESS = 1;
+    public static final String SYSTEM_MESSAGE_SUCCESS = "操作成功";
     //参数错误
-    public static final int SYSTEM_CODE_PARAM_ERROR=2;
-    public static final String SYSTEM_MESSAGE_PARAM_ERROR="参数错误";
+    public static final int SYSTEM_CODE_PARAM_ERROR = 2;
+    public static final String SYSTEM_MESSAGE_PARAM_ERROR = "参数错误";
     //JSON格式错误
-    public static final int SYSTEM_CODE_JSON_ERROR=3;
-    public static final String SYSTEM_MESSAGE_JSON_ERROR="JSON格式错误";
+    public static final int SYSTEM_CODE_JSON_ERROR = 3;
+    public static final String SYSTEM_MESSAGE_JSON_ERROR = "JSON格式错误";
     //身份过期
-    public static final int SYSTEM_CODE_LOGIN_EXPIRED=4;
-    public static final String SYSTEM_MESSAGE_LOGIN_EXPIRED="身份过期";
+    public static final int SYSTEM_CODE_LOGIN_EXPIRED = 4;
+    public static final String SYSTEM_MESSAGE_LOGIN_EXPIRED = "身份过期";
     //服务器异常
-    public static final int SYSTEM_CODE_SERVER_EXCEPTION=5;
-    public static final String SYSTEM_MESSAGE_SERVER_EXCEPTION="服务器异常";
+    public static final int SYSTEM_CODE_SERVER_EXCEPTION = 5;
+    public static final String SYSTEM_MESSAGE_SERVER_EXCEPTION = "服务器异常";
 
     /**
      * 个人中心用户信息模块
      */
     //用户不存在
-    public static final int CODE_USER_NOT_EXIST=103001;
-    public static final String MESSAGE_USER_NOT_EXIST="用户不存在";
+    public static final int CODE_USER_NOT_EXIST = 103001;
+    public static final String MESSAGE_USER_NOT_EXIST = "用户不存在";
     //查询无结果
-    public static final int CODE_NO_RESULT=103002;
-    public static final String MESSAGE_NO_RESULT="查询无结果";
+    public static final int CODE_NO_RESULT = 103002;
+    public static final String MESSAGE_NO_RESULT = "查询无结果";
     //两次输入密码不一致
-    public static final int CODE_PASSWORD_NOT_IDENTICAL=103003;
-    public static final String MESSAGE_PASSWORD_NOT_IDENTICAL="两次输入密码不一致";
+    public static final int CODE_PASSWORD_NOT_IDENTICAL = 103003;
+    public static final String MESSAGE_PASSWORD_NOT_IDENTICAL = "两次输入密码不一致";
     //新密码与原密码相同
-    public static final int CODE_PASSWORD_OLD_NEW_COMMON=103004;
-    public static final String MESSAGE_PASSWORD_OLD_NEW_COMMON="新密码不可与原密码相同";
+    public static final int CODE_PASSWORD_OLD_NEW_COMMON = 103004;
+    public static final String MESSAGE_PASSWORD_OLD_NEW_COMMON = "新密码不可与原密码相同";
     //用户信息查询失败
-    public static final int CODE_USER_INFO_NULL=103005;
-    public static final String MESSAGE_USER_INFO_NULL="用户信息查询失败";
+    public static final int CODE_USER_INFO_NULL = 103005;
+    public static final String MESSAGE_USER_INFO_NULL = "用户信息查询失败";
     //原密码错误
-    public static final int CODE_PASSWORD_OLD_ERROR=103006;
-    public static final String MESSAGE_PASSWORD_OLD_ERROR="原密码错误";
+    public static final int CODE_PASSWORD_OLD_ERROR = 103006;
+    public static final String MESSAGE_PASSWORD_OLD_ERROR = "原密码错误";
     //与支付密码相同
-    public static final int CODE_PASSWORD_WITH_PAYPASSWORD_COMMON=103007;
-    public static final String MESSAGE_PASSWORD_WITH_PAYPASSWORD_COMMON="与支付密码相同";
+    public static final int CODE_PASSWORD_WITH_PAYPASSWORD_COMMON = 103007;
+    public static final String MESSAGE_PASSWORD_WITH_PAYPASSWORD_COMMON = "与支付密码相同";
     //操作失败
-    public static final int CODE_OPERATE_ERROR=103008;
-    public static final String MESSAGE_OPERATE_ERROR="操作失败";
+    public static final int CODE_OPERATE_ERROR = 103008;
+    public static final String MESSAGE_OPERATE_ERROR = "操作失败";
     //与登录密码相同
-    public static final int CODE_PAYPASSWORD_WITH_PASSWORD_COMMON=103009;
-    public static final String MESSAGE_PAYPASSWORD_WITH_PASSWORD_COMMON="与登录密码相同";
+    public static final int CODE_PAYPASSWORD_WITH_PASSWORD_COMMON = 103009;
+    public static final String MESSAGE_PAYPASSWORD_WITH_PASSWORD_COMMON = "与登录密码相同";
     //新手机号与原手机号相同
-    public static final int CODE_PHONE_OLD_NEW_COMMON=103010;
-    public static final String MESSAGE_PHONE_OLD_NEW_COMMON="新手机号与原手机号相同";
+    public static final int CODE_PHONE_OLD_NEW_COMMON = 103010;
+    public static final String MESSAGE_PHONE_OLD_NEW_COMMON = "新手机号与原手机号相同";
     //登录密码错误
-    public static final int CODE_PASSWORD_ERROR=103011;
-    public static final String MESSAGE_PASSWORD_ERROR="登录密码错误";
+    public static final int CODE_PASSWORD_ERROR = 103011;
+    public static final String MESSAGE_PASSWORD_ERROR = "登录密码错误";
     //手机号已被绑定
-    public static final int CODE_PHONE_BIND=103012;
-    public static final String MESSAGE_PHONE_BIND="手机号已被绑定";
+    public static final int CODE_PHONE_BIND = 103012;
+    public static final String MESSAGE_PHONE_BIND = "手机号已被绑定";
     //查询成功
-    public static final String SYSTEM_MESSAGE__GET_SUCCESS="查询成功";
-
-
+    public static final String SYSTEM_MESSAGE__GET_SUCCESS = "查询成功";
 
 
     /**
@@ -194,7 +192,9 @@ public class SystemMessageConfig {
      * 交易中心和客服结束
      */
 
-    /** 登录接口状态码和信息开始 */
+    /**
+     * 登录接口状态码和信息开始
+     */
 
     //登录成功
     public static final int LOGIN_SUCCESS_CODE = 201001;
@@ -211,7 +211,9 @@ public class SystemMessageConfig {
 
     /** 登录接口状态码和信息结束 */
 
-    /** 找回密码接口状态码和信息开始*/
+    /**
+     * 找回密码接口状态码和信息开始
+     */
 
     //参数为空
     public static final int PARAMETER_ISNULL_CODE = 204002;
@@ -252,13 +254,13 @@ public class SystemMessageConfig {
     public static final String PHONE_REGISTERED_MESSAGE = "该手机号已被注册";
     //注册成功
     public static final int REGISTER_SUCCESS_CODE = 2020003;
-    public static final String  REGISTER_SUCCESS_MESSAGE = "注册成功";
+    public static final String REGISTER_SUCCESS_MESSAGE = "注册成功";
     //注册失败
     public static final int REGISTER_FAIL_CODE = 2020004;
-    public static final String  REGISTER_FAIL_MESSAGE = "注册失败";
+    public static final String REGISTER_FAIL_MESSAGE = "注册失败";
     //用户名可用
     public static final int ACCOUNT_AVAILABLE_CODE = 2020005;
-    public static final String  ACCOUNT_AVAILABLE_MESSAGE = "用户名可用";
+    public static final String ACCOUNT_AVAILABLE_MESSAGE = "用户名可用";
 
     /**
      * 个人中心我的记录
@@ -266,14 +268,16 @@ public class SystemMessageConfig {
 
     //撤销失败
     public static final int UNDO_FAILED_CODE = 1050001;
-    public static final String  UNDO_FAILED_MESSAGE = "撤销失败";
+    public static final String UNDO_FAILED_MESSAGE = "撤销失败";
 
     //此操作非该挂单本人
     public static final int OPERATION_NOT_PENDING_ORDER_CODE = 1050002;
-    public static final String  OPERATION_NOT_PENDING_ORDER_MESSAGE = "此操作非该挂单本人";
+    public static final String OPERATION_NOT_PENDING_ORDER_MESSAGE = "此操作非该挂单本人";
 
 
-    /** 用户认证接口状态码和信息开始*/
+    /**
+     * 用户认证接口状态码和信息开始
+     */
     // 未进行认证
     public static final int NOIDENTIFICATION_CODE = 203002;
     public static final String NOIDENTIFICATION_MESSAGE = "未进行认证";
