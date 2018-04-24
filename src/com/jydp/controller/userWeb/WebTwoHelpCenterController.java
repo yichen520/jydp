@@ -1,6 +1,7 @@
 package com.jydp.controller.userWeb;
 
 import com.alibaba.fastjson.JSONObject;
+import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.system.SystemHelpDO;
 import com.jydp.service.ISystemHelpService;
@@ -32,10 +33,13 @@ public class WebTwoHelpCenterController {
         //默认加载
         int helpId = SystemHelpConfig.COMPANY_SYNOPSIS;
         String reg = "[0-9]*";
-        if (helpIdStr.length() < 11 && Pattern.matches(reg,helpIdStr)) {
-            int help = Integer.parseInt(helpIdStr);
-            if (SystemHelpConfig.userHelpMap.containsKey(help)) {
-                helpId = Integer.parseInt(helpIdStr);
+
+        if (StringUtil.isNotNull(helpIdStr)){
+            if (helpIdStr.length() < 11 && Pattern.matches(reg,helpIdStr)) {
+                int help = Integer.parseInt(helpIdStr);
+                if (SystemHelpConfig.userHelpMap.containsKey(help)) {
+                    helpId = Integer.parseInt(helpIdStr);
+                }
             }
         }
 
