@@ -68,12 +68,12 @@ public class WebUserLoginController {
         JSONObject requestJsonObject = (JSONObject) JSONObject.parse(requestJson);
         String userAccount = (String) requestJsonObject.get("userAccount");
         String password = (String) requestJsonObject.get("password");
-        password = Base64Util.decode(password);
         if(!StringUtil.isNotNull(userAccount) || !StringUtil.isNotNull(password)){
             responseJson.setCode(SystemMessageConfig.USER_ACCOUNT_OR_PASSWORD_ISNULL_CODE);
             responseJson.setMessage(SystemMessageConfig.USER_ACCOUNT_OR_PASSWORD_ISNULL_MESSAGE);
             return responseJson;
         }
+        password = Base64Util.decode(password);
         // 验证参数是否正确
         if(!checkValue(userAccount) || !checkValue(password)){
             responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);

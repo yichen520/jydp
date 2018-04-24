@@ -53,13 +53,14 @@ public class WebIdentificationController {
     @RequestMapping(value = "/getState")
     public JsonObjectBO forgetPassword(@RequestBody String requestJson) {
         JsonObjectBO responseJson = new JsonObjectBO();
-        if (!StringUtil.isNotNull(requestJson)) {
+
+        JSONObject requestJsonObject = (JSONObject) JSONObject.parse(requestJson);
+        String userAccount = (String) requestJsonObject.get("userAccount");
+        if (!StringUtil.isNotNull(userAccount)) {
             responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
             responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
             return responseJson;
         }
-        JSONObject requestJsonObject = (JSONObject) JSONObject.parse(requestJson);
-        String userAccount = (String) requestJsonObject.get("userAccount");
         if(!checkValue(userAccount)){
             responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
             responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
