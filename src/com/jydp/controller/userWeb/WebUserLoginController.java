@@ -60,7 +60,11 @@ public class WebUserLoginController {
     public JsonObjectBO userLogin(@RequestBody String requestJson, HttpServletRequest request){
         JsonObjectBO responseJson = new JsonObjectBO();
         // 参数不能为空
-
+        if (!StringUtil.isNotNull(requestJson)) {
+            responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
+            responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
+            return responseJson;
+        }
         JSONObject requestJsonObject = (JSONObject) JSONObject.parse(requestJson);
         String userAccount = (String) requestJsonObject.get("userAccount");
         String password = (String) requestJsonObject.get("password");

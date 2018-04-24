@@ -52,10 +52,14 @@ public class WebIdentificationController {
      */
     @RequestMapping(value = "/getState")
     public JsonObjectBO forgetPassword(@RequestBody String requestJson) {
-
+        JsonObjectBO responseJson = new JsonObjectBO();
+        if (!StringUtil.isNotNull(requestJson)) {
+            responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
+            responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
+            return responseJson;
+        }
         JSONObject requestJsonObject = (JSONObject) JSONObject.parse(requestJson);
         String userAccount = (String) requestJsonObject.get("userAccount");
-        JsonObjectBO responseJson = new JsonObjectBO();
         if(!checkValue(userAccount)){
             responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
             responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
@@ -80,6 +84,10 @@ public class WebIdentificationController {
 
         // 审核拒绝，进入查看实名认证信息页
         if (userDO.getAuthenticationStatus() == 3) {
+            UserIdentificationDO existIdentification = userIdentificationService.getUserIdentificationByUserAccountLately(userAccount);
+            JSONObject object = new JSONObject();
+            object.put("remark", existIdentification.getRemark());
+            responseJson.setData(object);
             responseJson.setCode(SystemMessageConfig.REFUE_CODE);
             responseJson.setMessage(SystemMessageConfig.REFUE_MESSAGE);
             return responseJson;
