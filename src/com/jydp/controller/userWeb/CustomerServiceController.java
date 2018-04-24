@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.HtmlUtils;
 
@@ -81,7 +82,7 @@ public class CustomerServiceController {
     }
 
     /**  意见反馈展示 */
-    @RequestMapping("/show.htm")
+    @RequestMapping(value = "/show.htm" , method = RequestMethod.GET)
     public @ResponseBody JsonObjectBO show(HttpServletRequest request) {
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         JSONObject jo = new JSONObject();
@@ -98,7 +99,7 @@ public class CustomerServiceController {
     }
 
    /*  意见反馈 */
-    @RequestMapping("/feedback.htm")
+    @RequestMapping(value = "/feedback.htm", method = RequestMethod.POST)
     public @ResponseBody JsonObjectBO feedback(HttpServletRequest request){
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         JSONObject jo = new JSONObject();
