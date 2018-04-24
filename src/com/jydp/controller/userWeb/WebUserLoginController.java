@@ -1,5 +1,7 @@
 package com.jydp.controller.userWeb;
 
+import com.alibaba.fastjson.JSONObject;
+import com.iqmkj.utils.Base64Util;
 import com.iqmkj.utils.MD5Util;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
@@ -17,6 +19,7 @@ import com.jydp.service.IUserService;
 import config.SystemMessageConfig;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,12 +57,23 @@ public class WebUserLoginController {
      * @return wap首页
      */
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public JsonObjectBO userLogin(@Param("userAccount") String userAccount, @Param("password") String password, HttpServletRequest request){
+    public JsonObjectBO userLogin(@RequestBody String requestJson, HttpServletRequest request){
         JsonObjectBO responseJson = new JsonObjectBO();
         // 参数不能为空
+
+        JSONObject requestJsonObject = (JSONObject) JSONObject.parse(requestJson);
+        String userAccount = (String) requestJsonObject.get("userAccount");
+        String password = (String) requestJsonObject.get("password");
+        password = Base64Util.decode(password);
         if(!StringUtil.isNotNull(userAccount) || !StringUtil.isNotNull(password)){
             responseJson.setCode(SystemMessageConfig.USER_ACCOUNT_OR_PASSWORD_ISNULL_CODE);
             responseJson.setMessage(SystemMessageConfig.USER_ACCOUNT_OR_PASSWORD_ISNULL_MESSAGE);
+            return responseJson;
+        }
+        // 验证参数是否正确
+        if(!checkValue(userAccount) || !checkValue(password)){
+            responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
+            responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
             return responseJson;
         }
         //用户是否存在
@@ -123,5 +137,15 @@ public class WebUserLoginController {
         responseJson.setCode(SystemMessageConfig.LOGOUT_SUCCESS_CODE);
         responseJson.setMessage(SystemMessageConfig.LOGOUT_SUCCESS_MESSAGE);
         return responseJson;
+    }
+
+    /**
+     * 验证字符串
+     * @param str
+     * @return
+     */
+    private boolean checkValue(String str){
+        String matchStr = "^[0-9a-zA-Z]{6,16}$";
+        return str.matches(matchStr);
     }
 }

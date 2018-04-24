@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +38,7 @@ public class WebUserRechargeCoinRecordController {
     /**
      * 查询用户充币记录
      */
-    @RequestMapping("/getUsrRechargeCoinRecord.htm")
+    @RequestMapping(value = "/getUsrRechargeCoinRecord.htm",method = RequestMethod.POST)
     public JsonObjectBO getUsrRechargeCoinRecord(HttpServletRequest request, @RequestBody String requestJson) {
         JsonObjectBO responseJson = new JsonObjectBO();
         JSONObject jsonObject = new JSONObject();

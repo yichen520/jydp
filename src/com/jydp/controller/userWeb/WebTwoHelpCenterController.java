@@ -21,7 +21,7 @@ public class WebTwoHelpCenterController {
     private ISystemHelpService systemHelpService;
 
     /** 显示帮助中心页面 */
-    @RequestMapping(value = "/getHelpInformation")
+    @RequestMapping(value = "/getHelpInformation",method = RequestMethod.POST)
     public JsonObjectBO getHelpInformation(@RequestBody String requestJson) {
         JsonObjectBO responseJson = new JsonObjectBO();
 

@@ -1,6 +1,7 @@
 package com.jydp.controller.userWeb;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.*;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.DO.user.UserDO;
@@ -13,6 +14,7 @@ import config.FileUrlConfig;
 import config.SystemMessageConfig;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,9 +51,19 @@ public class WebIdentificationController {
      * 获取用户状态
      */
     @RequestMapping(value = "/getState")
-    public JsonObjectBO forgetPassword(@Param("userAccount") String userAccount) {
-        UserDO userDO = userService.getUserByUserAccount(userAccount);
+    public JsonObjectBO forgetPassword(@RequestBody String requestJson) {
+
+        JSONObject requestJsonObject = (JSONObject) JSONObject.parse(requestJson);
+        String userAccount = (String) requestJsonObject.get("userAccount");
         JsonObjectBO responseJson = new JsonObjectBO();
+        if(!checkValue(userAccount)){
+            responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
+            responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
+            return responseJson;
+        }
+
+        UserDO userDO = userService.getUserByUserAccount(userAccount);
+
         // 用户不存在
         if(userDO == null){
             responseJson.setCode(SystemMessageConfig.USER_ISEXIST_CODE);
@@ -97,12 +109,26 @@ public class WebIdentificationController {
         String userName = StringUtil.stringNullHandle(request.getParameter("userName"));
         String userCertTypeStr = StringUtil.stringNullHandle(request.getParameter("userCertType"));
         String userCertNo = StringUtil.stringNullHandle(request.getParameter("userCertNo"));
+        // 判断是否为空
         if (!StringUtil.isNotNull(userAccount) || !StringUtil.isNotNull(userCertTypeStr)
                 ||!StringUtil.isNotNull(userName) || !StringUtil.isNotNull(userCertNo)) {
             responseJson.setCode(SystemMessageConfig.PARAMETER_ISNULL_CODE);
             responseJson.setMessage(SystemMessageConfig.PARAMETER_ISNULL_MESSAGE);
             return responseJson;
         }
+        // 验证证件类型
+        if(!userCertTypeStr.equals("1") && !userCertTypeStr.equals("2")){
+            responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
+            responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
+            return responseJson;
+        }
+        // 验证账号是否合法
+        if(!checkValue(userAccount)){
+            responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
+            responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
+            return responseJson;
+        }
+        // 验证长度
         if (userName.length() > 16 || userCertNo.length() < 6 || userCertNo.length() > 18) {
             responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
             responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
@@ -176,8 +202,6 @@ public class WebIdentificationController {
             }
         }
 
-
-
         //上传图片到图片服务器
         List<String> imageUrlList = new ArrayList<>();
         List<FileDataEntity> imageEntityList = new ArrayList<>();
@@ -236,5 +260,31 @@ public class WebIdentificationController {
         responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_SUCCESS);
         responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_SUCCESS);
         return responseJson;
+    }
+
+    /**
+     * 验证字符串
+     * @param str
+     * @return
+     */
+    private boolean checkValue(String str){
+        String matchStr = "^[0-9a-zA-Z]{6,16}$";
+        return str.matches(matchStr);
+    }
+
+    /**
+     * 验证姓名
+     */
+    private boolean checkName(String str){
+        String matchStr = "[\\u4e00-\\u9fa5]{2,16}+";
+        return str.matches(matchStr);
+    }
+
+    /**
+     * 验证字母
+     */
+    private boolean checkStr(String str){
+        String matchStr = "[a-zA-Z]{6,16}+";
+        return str.matches(matchStr);
     }
 }

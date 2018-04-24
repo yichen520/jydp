@@ -34,7 +34,7 @@ public class WebTransactionPendOrderController {
     /**
      * 获取委托记录
      */
-    @RequestMapping(value = "/getPendOrderList.htm")
+    @RequestMapping(value = "/getPendOrderList.htm",method = RequestMethod.POST)
     public JsonObjectBO getTransactionPendOrder(HttpServletRequest request,@RequestBody String requestJson) {
         JsonObjectBO responseJson = new JsonObjectBO();
 

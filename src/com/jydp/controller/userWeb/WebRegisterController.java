@@ -1,6 +1,7 @@
 package com.jydp.controller.userWeb;
 
 import com.alibaba.fastjson.JSONObject;
+import com.iqmkj.utils.Base64Util;
 import com.iqmkj.utils.DateUtil;
 import com.iqmkj.utils.MD5Util;
 import com.iqmkj.utils.StringUtil;
@@ -9,7 +10,6 @@ import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DO.user.UserRegisterDO;
 import com.jydp.service.ISystemValidatePhoneService;
 import com.jydp.service.IUserService;
-import config.SystemCommonConfig;
 import config.SystemMessageConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -37,7 +37,7 @@ public class WebRegisterController{
     /**
      * 用户注册
      */
-    @RequestMapping(value = "/register")
+    @RequestMapping(value = "/register",method = RequestMethod.POST)
     public JsonObjectBO register(@RequestBody UserRegisterDO userRegisterDO) {
         JsonObjectBO responseJson = new JsonObjectBO();
         JSONObject jsonObject = new JSONObject();
@@ -48,21 +48,30 @@ public class WebRegisterController{
             return responseJson;
         }
 
-        if (!StringUtil.isNotNull(userRegisterDO.getUserAccount()) || !StringUtil.isNotNull(userRegisterDO.getPassword()) || !StringUtil.isNotNull(userRegisterDO.getPhoneAreaCode()) ||
-                !StringUtil.isNotNull(userRegisterDO.getValidateCode()) || !StringUtil.isNotNull(userRegisterDO.getPhoneNumber()) || !StringUtil.isNotNull(userRegisterDO.getPayPassword())) {
+        String userAccount = StringUtil.stringNullHandle(userRegisterDO.getUserAccount());
+        String password = StringUtil.stringNullHandle(userRegisterDO.getPassword());
+        password = Base64Util.decode(password);
+        String payPassword = StringUtil.stringNullHandle(userRegisterDO.getPayPassword());
+        payPassword = Base64Util.decode(payPassword);
+        String validateCode = StringUtil.stringNullHandle(userRegisterDO.getValidateCode());
+        String phoneAreaCode = StringUtil.stringNullHandle(userRegisterDO.getPhoneAreaCode());
+        String phoneNumber = StringUtil.stringNullHandle(userRegisterDO.getPhoneNumber());
+
+        if (!StringUtil.isNotNull(userAccount) || !StringUtil.isNotNull(password) || !StringUtil.isNotNull(phoneAreaCode) ||
+                !StringUtil.isNotNull(validateCode) || !StringUtil.isNotNull(phoneNumber) || !StringUtil.isNotNull(payPassword)) {
             responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
             responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
             return responseJson;
         }
 
-        UserDO validateUserDO = userService.getUserByUserAccount(userRegisterDO.getUserAccount());
+        UserDO validateUserDO = userService.getUserByUserAccount(userAccount);
         if (validateUserDO != null) {
             responseJson.setCode(SystemMessageConfig.ACCOUNT_REPEAT_CODE);
             responseJson.setMessage(SystemMessageConfig.ACCOUNT_REPEAT_MESSAGE);
             return responseJson;
         }
 
-        UserDO user = userService.getUserByPhone(userRegisterDO.getPhoneNumber());
+        UserDO user = userService.getUserByPhone(phoneNumber);
         if (user != null) {
             responseJson.setCode(SystemMessageConfig.PHONE_REGISTERED_CODE);
             responseJson.setMessage(SystemMessageConfig.PHONE_REGISTERED_MESSAGE);
@@ -70,22 +79,22 @@ public class WebRegisterController{
         }
 
         //校验用户注册信息合法性
-        responseJson = userService.validateUserInfo(userRegisterDO.getUserAccount(),userRegisterDO.getPassword(),userRegisterDO.getPayPassword());
+        responseJson = userService.validateUserInfo(userAccount,password,payPassword);
         if (responseJson.getCode() != 1) {
             return responseJson;
         }
 
-        responseJson = systemValidatePhoneService.validatePhone(userRegisterDO.getPhoneAreaCode()+userRegisterDO.getPhoneNumber(), userRegisterDO.getValidateCode());
+        responseJson = systemValidatePhoneService.validatePhone(phoneAreaCode+phoneNumber, validateCode);
         if (responseJson.getCode() != 1) {
             return responseJson;
         }
 
         UserDO userDO = new UserDO();
-        userDO.setUserAccount(userRegisterDO.getUserAccount());
-        userDO.setPassword(MD5Util.toMd5(userRegisterDO.getPassword()));
-        userDO.setPhoneAreaCode(userRegisterDO.getPhoneAreaCode());
-        userDO.setPhoneNumber(userRegisterDO.getPhoneNumber());
-        userDO.setPayPassword(MD5Util.toMd5(userRegisterDO.getPayPassword()));
+        userDO.setUserAccount(userAccount);
+        userDO.setPassword(MD5Util.toMd5(password));
+        userDO.setPhoneAreaCode(phoneAreaCode);
+        userDO.setPhoneNumber(phoneNumber);
+        userDO.setPayPassword(MD5Util.toMd5(payPassword));
 
         userDO.setPayPasswordStatus(1);
         userDO.setAccountStatus(2);
@@ -109,7 +118,7 @@ public class WebRegisterController{
     }
 
     /** 校验用户名 */
-    @RequestMapping(value = "/validateAccount")
+    @RequestMapping(value = "/validateAccount",method = RequestMethod.POST)
     public JsonObjectBO validateAccount(@RequestBody String requestJson){
         JsonObjectBO responseJson = new JsonObjectBO();
 
