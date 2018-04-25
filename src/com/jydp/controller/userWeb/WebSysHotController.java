@@ -32,10 +32,12 @@ public class WebSysHotController {
     /**  热门话题展示  */
     @RequestMapping("/show")
     public @ResponseBody
-    JsonObjectBO show(@RequestParam(value ="pageNumber")String pageNumber) {
+    JsonObjectBO show(@RequestBody String requestJson) {
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
 
-        jsonObjectBO.setData(showList(pageNumber));
+        JSONObject requestJsonObject = (JSONObject) JSONObject.parse(requestJson);
+        String pageNumberStr = (String) requestJsonObject.get("pageNumber");
+        jsonObjectBO.setData(showList(pageNumberStr));
         jsonObjectBO.setCode(SystemMessageConfig.REDIRECT_TO_SYSHOT_CODE);
         jsonObjectBO.setMessage(SystemMessageConfig.SYSTEM_MESSAGE__GET_SUCCESS);
 
@@ -46,17 +48,18 @@ public class WebSysHotController {
     public JSONObject showList(String pageNumberInt) {
         String pageNumberStr = StringUtil.stringNullHandle(pageNumberInt);
 
-        int pageNumber = 0;
+        int pageNumber = 1;
         if (StringUtil.isNotNull(pageNumberStr)) {
             pageNumber = Integer.parseInt(pageNumberStr);
         }
 
         int totalNumber = systemHotService.countSystemHotForUser();
-        int pageSize = 20;
+        //int pageSize = 20;
+        int pageSize=5;
 
         List<SystemHotDO> systemHotList = null;
         if (totalNumber > 0) {
-            systemHotList = systemHotService.listSystemHotForUser(pageNumber, pageSize);
+            systemHotList = systemHotService.listSystemHotForUser(pageNumber-1, pageSize);
         }
 
         if (systemHotList != null && systemHotList.size() > 0) {

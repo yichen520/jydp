@@ -15,6 +15,7 @@ import config.SystemMessageConfig;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
@@ -45,6 +46,10 @@ public class WebInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
+        httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
+        httpServletResponse.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+        httpServletResponse.setHeader("Access-Control-Max-Age", "3600");
+        httpServletResponse.setHeader("Access-Control-Allow-Headers", "x-requested-with");
         UserSessionBO userSession = (UserSessionBO) httpServletRequest.getSession().getAttribute("userSession");
 
         if (userSession != null) {
@@ -77,7 +82,7 @@ public class WebInterceptor implements HandlerInterceptor {
      * @param userSession 用户信息
      * @return 操作成功：返回sessionId，操作失败：返回null
      */
-    public static void loginSuccess(HttpServletRequest request, UserSessionBO userSession) {
+    public static void loginSuccess(HttpServletRequest request ,UserSessionBO userSession) {
         Timestamp curTime = DateUtil.getCurrentTime();
         String sessionId = SystemCommonConfig.LOGIN_USER + DateUtil.longToTimeStr(curTime.getTime(), DateUtil.dateFormat10) +
                 NumberUtil.createNumberStr(12);
@@ -103,6 +108,7 @@ public class WebInterceptor implements HandlerInterceptor {
         getRedisService().addList(SESSION_USER_KEY, SESSION_SESSIONS_KEY, SessionConfig.SESSION_TIME_OUT);
         return;
     }
+
     /**
      * 用户操作频繁
      * @param request
@@ -138,7 +144,7 @@ public class WebInterceptor implements HandlerInterceptor {
      */
     public static void loginOut(HttpServletRequest request) {
         UserSessionBO userSession = (UserSessionBO) request.getSession().getAttribute("userSession");
-        if(userSession != null){
+        if(userSession != null) {
             String SESSION_USER_KEY = SessionConfig.SESSION_USER_ID + String.valueOf(userSession.getUserId());
             getRedisService().deleteValue(SESSION_USER_KEY);
         }

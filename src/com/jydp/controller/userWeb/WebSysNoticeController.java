@@ -31,9 +31,10 @@ public class WebSysNoticeController {
 
     /** 系统公告展示  */
     @RequestMapping(value = "/show")
-    public @ResponseBody JsonObjectBO show(@RequestParam(value ="pageNumber")String pageNumber) {
+    public @ResponseBody JsonObjectBO show(@RequestBody String requestJson) {
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
-        jsonObjectBO.setData(showList(pageNumber));
+        JSONObject jsonObject=JSONObject.parseObject(requestJson);
+        jsonObjectBO.setData(showList((String) jsonObject.get("pageNumber")));
         jsonObjectBO.setCode(SystemMessageConfig.REDIRECT_TO_SYSNOTICE_CODE);
         jsonObjectBO.setMessage(SystemMessageConfig.SYSTEM_MESSAGE__GET_SUCCESS);
 
@@ -44,17 +45,18 @@ public class WebSysNoticeController {
     public JSONObject showList(String pageNumberInt) {
         String pageNumberStr = StringUtil.stringNullHandle(pageNumberInt);
 
-        int pageNumber = 0;
+        int pageNumber = 1;
         if (StringUtil.isNotNull(pageNumberStr)) {
             pageNumber = Integer.parseInt(pageNumberStr);
         }
 
         int totalNumber = systemNoticeService.countSystemNoticeForUser();
-        int pageSize = 20;
+        int pageSize=5;
+        //int pageSize = 20;
 
         List<SystemNoticeDO> systemNoticeList = null;
         if (totalNumber > 0) {
-            systemNoticeList = systemNoticeService.listSystemNoticeForUser(pageNumber, pageSize);
+            systemNoticeList = systemNoticeService.listSystemNoticeForUser(pageNumber-1, pageSize);
         }
 
         if (systemNoticeList != null && systemNoticeList.size() > 0) {

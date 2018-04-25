@@ -8,6 +8,7 @@ package com.jydp.entity.DTO;
 public class BackerUserCurrencyNumDTO {
     private int currencyId;  //币种Id
     private String currencyName;  //货币名称
+    private String currencyShortName; //货币简写名称
     private double currencyNumber;  //货币数量
     private double currencyNumberLock;  //冻结数量
 
@@ -81,5 +82,14 @@ public class BackerUserCurrencyNumDTO {
      */
     public void setCurrencyNumberLock(double currencyNumberLock) {
         this.currencyNumberLock = currencyNumberLock;
+    }
+
+    //货币简写名称
+    public String getCurrencyShortName() {
+        return currencyShortName;
+    }
+    //货币简写名称
+    public void setCurrencyShortName(String currencyShortName) {
+        this.currencyShortName = currencyShortName;
     }
 }

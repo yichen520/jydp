@@ -42,6 +42,7 @@ public class WebUserCurrencyNumServiceImpl implements IWebUserCurrencyNumService
                 Double totalCurrencyAssets= BigDecimalUtil.add(currencyNumber,currencyNumberLock);
 
                 userCurrency.setCurrencyId(userCurrencyNumDTO.getCurrencyId());
+                userCurrency.setCurrencyShortName(userCurrencyNumDTO.getCurrencyShortName());
                 userCurrency.setCurrencyName(userCurrencyNumDTO.getCurrencyName());
                 userCurrency.setCurrencyNumber(currencyNumber);
                 userCurrency.setCurrencyNumberLock(currencyNumberLock);

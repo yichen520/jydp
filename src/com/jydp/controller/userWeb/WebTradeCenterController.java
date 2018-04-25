@@ -11,6 +11,7 @@ import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DTO.TransactionPendOrderDTO;
 import com.jydp.entity.VO.*;
+import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.interceptor.WebInterceptor;
 import com.jydp.service.*;
 import config.RedisKeyConfig;

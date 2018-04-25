@@ -14,6 +14,11 @@ public class WapUserCurrencyAssetsVO {
      * 货币名称
      */
     private String currencyName;
+
+    /**
+     * 货币简写名称
+     */
+    private String currencyShortName;
     /**
      * 货币数量
      */
@@ -86,5 +91,18 @@ public class WapUserCurrencyAssetsVO {
      */
     public void setTotalCurrencyAssets(Double totalCurrencyAssets) {
         this.totalCurrencyAssets = totalCurrencyAssets;
+    }
+
+    /**
+     * 货币简写名称
+     */
+    public String getCurrencyShortName() {
+        return currencyShortName;
+    }
+    /**
+     * 货币简写名称
+     */
+    public void setCurrencyShortName(String currencyShortName) {
+        this.currencyShortName = currencyShortName;
     }
 }
