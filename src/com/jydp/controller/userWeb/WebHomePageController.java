@@ -46,7 +46,8 @@ public class WebHomePageController {
 
     /** 跳转至首页 */
     @RequestMapping("/show")
-    public @ResponseBody JsonObjectBO getHomePageData(){
+    public @ResponseBody JsonObjectBO getHomePageData(HttpServletRequest request){
+        String path = request.getServerName();
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         //查询首页广告列表
         List<SystemAdsHomepagesDO> systemAdsHomepagesList = null;
@@ -139,6 +140,7 @@ public class WebHomePageController {
             redisService.addValue(RedisKeyConfig.HOMEPAGE_PARTNER,systemBusinessesPartnerList);
         }
         JSONObject jsonObject = new JSONObject();
+        jsonObject.put("path",path);
         jsonObject.put("systemAdsHomepagesList",systemAdsHomepagesList);
         jsonObject.put("systemNoticeList",systemNoticeList);
         jsonObject.put("systemHotList",systemHotList);
@@ -148,8 +150,6 @@ public class WebHomePageController {
         jsonObjectBO.setMessage("查询成功");
         jsonObjectBO.setData(jsonObject);
         return jsonObjectBO;
-
-//        return "page/web/home";
     }
 
     /** 获取币种行情信息 */
