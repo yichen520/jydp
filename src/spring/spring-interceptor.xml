@@ -26,9 +26,17 @@
 
         <!--WEB拦截器-->
         <mvc:interceptor>
+            <mvc:mapping path="/web/**/**"/>
+            <bean class="com.jydp.interceptor.SessionInterceptor"></bean>
+        </mvc:interceptor>
+
+        <!--WEB拦截器-->
+        <mvc:interceptor>
             <mvc:mapping path="/web/**/*.htm"/>
             <bean class="com.jydp.interceptor.WebInterceptor"></bean>
         </mvc:interceptor>
+
+
 
         <!--用户WAP拦截器(WAP端访问)-->
         <mvc:interceptor>
