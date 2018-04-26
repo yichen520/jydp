@@ -149,14 +149,17 @@ public class WebUserInfoController {
             response.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
             return response;
         }
+        String oldPassword=Base64Util.decode(userModifyPayPasswordDTO.getOldPassword());
+        String newPassword=Base64Util.decode(userModifyPayPasswordDTO.getNewPassword());
+        String confirmPassword=Base64Util.decode(userModifyPayPasswordDTO.getConfirmPassword());
         //两次密码对比
-        if (!userModifyPayPasswordDTO.getNewPassword().equals(userModifyPayPasswordDTO.getConfirmPassword())) {
+        if (!newPassword.equals(confirmPassword)) {
             response.setCode(SystemMessageConfig.CODE_PASSWORD_NOT_IDENTICAL);
             response.setMessage(SystemMessageConfig.MESSAGE_PASSWORD_NOT_IDENTICAL);
             return response;
         }
         //新密码与原密码对比
-        if (userModifyPayPasswordDTO.getNewPassword().equals(userModifyPayPasswordDTO.getOldPassword())) {
+        if (newPassword.equals(oldPassword)) {
             response.setCode(SystemMessageConfig.CODE_PASSWORD_OLD_NEW_COMMON);
             response.setMessage(SystemMessageConfig.MESSAGE_PASSWORD_OLD_NEW_COMMON);
             return response;
@@ -169,14 +172,14 @@ public class WebUserInfoController {
             return response;
         }
         //判断支付密码是否正确
-        boolean userPay = userService.validateUserPay(user.getUserAccount(), MD5Util.toMd5(userModifyPayPasswordDTO.getOldPassword()));
+        boolean userPay = userService.validateUserPay(user.getUserAccount(), MD5Util.toMd5(oldPassword));
         if (!userPay) {
             response.setCode(SystemMessageConfig.CODE_PASSWORD_OLD_ERROR);
             response.setMessage(SystemMessageConfig.MESSAGE_PASSWORD_OLD_ERROR);
             return response;
         }
         //判断支付密码是否与登录密码相同
-        UserDO userLog = userService.validateUserLogin(user.getUserAccount(), MD5Util.toMd5(userModifyPayPasswordDTO.getNewPassword()));
+        UserDO userLog = userService.validateUserLogin(user.getUserAccount(), MD5Util.toMd5(newPassword));
         if (userLog != null) {
             response.setCode(SystemMessageConfig.CODE_PAYPASSWORD_WITH_PASSWORD_COMMON);
             response.setMessage(SystemMessageConfig.MESSAGE_PASSWORD_WITH_PAYPASSWORD_COMMON);
@@ -184,7 +187,7 @@ public class WebUserInfoController {
         }
 
         //修改支付密码
-        boolean forgetPwd = userService.forgetPayPwd(user.getUserId(), MD5Util.toMd5(userModifyPayPasswordDTO.getNewPassword()));
+        boolean forgetPwd = userService.forgetPayPwd(user.getUserId(), MD5Util.toMd5(newPassword));
         if (!forgetPwd) {
             response.setCode(SystemMessageConfig.CODE_OPERATE_ERROR);
             response.setMessage(SystemMessageConfig.MESSAGE_OPERATE_ERROR);
@@ -219,8 +222,11 @@ public class WebUserInfoController {
             response.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
             return response;
         }
+
+        String newPassword=Base64Util.decode(userModifyPayPasswordDTO.getNewPassword());
+        String confirmPassword=Base64Util.decode(userModifyPayPasswordDTO.getConfirmPassword());
         //两次密码对比
-        if (!userModifyPayPasswordDTO.getNewPassword().equals(userModifyPayPasswordDTO.getConfirmPassword())) {
+        if (!newPassword.equals(confirmPassword)) {
             response.setCode(SystemMessageConfig.CODE_PASSWORD_NOT_IDENTICAL);
             response.setMessage(SystemMessageConfig.MESSAGE_PASSWORD_NOT_IDENTICAL);
             return response;
@@ -240,7 +246,7 @@ public class WebUserInfoController {
             return response;
         }
         //判断支付密码是否与登录密码相同
-        UserDO userLog = userService.validateUserLogin(user.getUserAccount(), MD5Util.toMd5(userModifyPayPasswordDTO.getNewPassword()));
+        UserDO userLog = userService.validateUserLogin(user.getUserAccount(), MD5Util.toMd5(newPassword));
         if (userLog != null) {
             response.setCode(SystemMessageConfig.CODE_PAYPASSWORD_WITH_PASSWORD_COMMON);
             response.setMessage(SystemMessageConfig.MESSAGE_PAYPASSWORD_WITH_PASSWORD_COMMON);
@@ -248,7 +254,7 @@ public class WebUserInfoController {
         }
 
         //修改支付密码
-        boolean forgetPwd = userService.forgetPayPwd(user.getUserId(), MD5Util.toMd5(userModifyPayPasswordDTO.getNewPassword()));
+        boolean forgetPwd = userService.forgetPayPwd(user.getUserId(), MD5Util.toMd5(newPassword));
         if (!forgetPwd) {
             response.setCode(SystemMessageConfig.CODE_OPERATE_ERROR);
             response.setMessage(SystemMessageConfig.MESSAGE_OPERATE_ERROR);
@@ -283,14 +289,18 @@ public class WebUserInfoController {
             response.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
             return response;
         }
+
+        String oldPassword=Base64Util.decode(userModifyPasswordDTO.getOldPassword());
+        String newPassword=Base64Util.decode(userModifyPasswordDTO.getNewPassword());
+        String confirmPassword=Base64Util.decode(userModifyPasswordDTO.getConfirmPassword());
         //两次密码对比
-        if (!userModifyPasswordDTO.getNewPassword().equals(userModifyPasswordDTO.getConfirmPassword())) {
+        if (!newPassword.equals(confirmPassword)) {
             response.setCode(SystemMessageConfig.CODE_PASSWORD_NOT_IDENTICAL);
             response.setMessage(SystemMessageConfig.MESSAGE_PASSWORD_NOT_IDENTICAL);
             return response;
         }
         //新密码与原密码对比
-        if (userModifyPasswordDTO.getNewPassword().equals(userModifyPasswordDTO.getOldPassword())) {
+        if (newPassword.equals(oldPassword)) {
             response.setCode(SystemMessageConfig.CODE_PASSWORD_OLD_NEW_COMMON);
             response.setMessage(SystemMessageConfig.MESSAGE_PASSWORD_OLD_NEW_COMMON);
             return response;
@@ -311,21 +321,21 @@ public class WebUserInfoController {
         }
 
         //原密码判定
-        UserDO userLog = userService.validateUserLogin(user.getUserAccount(), MD5Util.toMd5(userModifyPasswordDTO.getOldPassword()));
+        UserDO userLog = userService.validateUserLogin(user.getUserAccount(), MD5Util.toMd5(oldPassword));
         if (userLog == null) {
             response.setCode(SystemMessageConfig.CODE_PASSWORD_OLD_ERROR);
             response.setMessage(SystemMessageConfig.MESSAGE_PASSWORD_OLD_ERROR);
             return response;
         }
         //判断新密码是否与支付密码相同
-        boolean userPay = userService.validateUserPay(user.getUserAccount(), MD5Util.toMd5(userModifyPasswordDTO.getNewPassword()));
+        boolean userPay = userService.validateUserPay(user.getUserAccount(), MD5Util.toMd5(newPassword));
         if (userPay) {
             response.setCode(SystemMessageConfig.CODE_PASSWORD_WITH_PAYPASSWORD_COMMON);
             response.setMessage(SystemMessageConfig.MESSAGE_PASSWORD_WITH_PAYPASSWORD_COMMON);
             return response;
         }
         //更新密码
-        boolean forgetPwd = userService.forgetPwd(user.getUserAccount(), MD5Util.toMd5(userModifyPasswordDTO.getNewPassword()));
+        boolean forgetPwd = userService.forgetPwd(user.getUserAccount(), MD5Util.toMd5(newPassword));
         if (!forgetPwd) {
             response.setCode(SystemMessageConfig.CODE_OPERATE_ERROR);
             response.setMessage(SystemMessageConfig.MESSAGE_OPERATE_ERROR);
@@ -372,6 +382,7 @@ public class WebUserInfoController {
             return response;
         }
 
+        password=Base64Util.decode(password);
         //获取用户信息
         UserDO userMessage = userService.getUserByUserId(user.getUserId());
         if (userMessage == null) {
