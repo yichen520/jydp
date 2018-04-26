@@ -108,7 +108,7 @@ public class SystemMessageConfig {
      * 交易中心和客服页面消息开始
      */
     //返回成功
-    public static final int SUCCESS_OPT_CODE = 401001;
+    public static final int SUCCESS_OPT_CODE = 1;
     public static final String SUCCESS_OPT_MESSAGE = "查询成功";
 
     //操作频繁
@@ -180,7 +180,7 @@ public class SystemMessageConfig {
     public static final int NO_RESULT_CODE = 401020;
     public static final String NO_RESULT_MESSAGE = "查询无结果";
     //修改成功
-    public static final int COMMIT_SUCCESS_CODE = 100401;
+    public static final int COMMIT_SUCCESS_CODE = 1;
     public static final String COMMIT_SUCCESS_MESSAGE = "提交成功";
     //修改失败
     public static final int COMMIT_FAILD_CODE = 100402;
