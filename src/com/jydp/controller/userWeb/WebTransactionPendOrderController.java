@@ -21,7 +21,7 @@ import java.util.List;
  * @create 2018-04-19
  */
 @RestController
-@RequestMapping("/web/webTransactionPendOrderController")
+@RequestMapping("/web/webTransactionPendOrder")
 @Scope(value = "prototype")
 public class WebTransactionPendOrderController {
 
@@ -48,10 +48,10 @@ public class WebTransactionPendOrderController {
 
         //参数获取
         JSONObject requestJsonObject = (JSONObject) JSONObject.parse(requestJson);
-        String pageNumberStr = (String) requestJsonObject.get("pageNumber");
+        String pageNumberStr =  String.valueOf(requestJsonObject.get("pageNumber"));
         int userId = user.getUserId();
 
-        int pageNumber = 0;
+        int pageNumber = 1;
         if (StringUtil.isNotNull(pageNumberStr)) {
             pageNumber = Integer.parseInt(pageNumberStr);
         }
@@ -67,7 +67,7 @@ public class WebTransactionPendOrderController {
 
         List<TransactionPendOrderDO> transactionPendOrderRecordList = null;
         if (totalNumber > 0) {
-            transactionPendOrderRecordList = transactionPendOrderService.listPendOrderByUserId(user.getUserId(),pageNumber, pageSize);
+            transactionPendOrderRecordList = transactionPendOrderService.listPendOrderByUserId(user.getUserId(),pageNumber-1, pageSize);
         }
 
         JSONObject jsonObject = new JSONObject();
