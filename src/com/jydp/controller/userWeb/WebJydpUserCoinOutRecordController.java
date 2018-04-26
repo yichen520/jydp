@@ -56,9 +56,9 @@ public class WebJydpUserCoinOutRecordController {
 
         //参数获取
         JSONObject requestJsonObject = (JSONObject) JSONObject.parse(requestJson);
-        String pageNumberStr = (String) requestJsonObject.get("pageNumber");
+        String pageNumberStr = String.valueOf(requestJsonObject.get("pageNumber"));
 
-        int pageNumber = 0;
+        int pageNumber = 1;
         if (StringUtil.isNotNull(pageNumberStr)) {
             pageNumber = Integer.parseInt(pageNumberStr);
         }
@@ -71,13 +71,10 @@ public class WebJydpUserCoinOutRecordController {
         if (totalPageNumber <= 0) {
             totalPageNumber = 1;
         }
-        if (totalPageNumber <= pageNumber) {
-            pageNumber = totalPageNumber - 1;
-        }
 
         List<JydpUserCoinOutRecordDO> jydpUserCoinOutRecordList = null;
         if (totalNumber > 0) {
-            jydpUserCoinOutRecordList = jydpUserCoinOutRecordService.getJydpUserCoinOutRecordlist(userId,pageNumber,pageSize);
+            jydpUserCoinOutRecordList = jydpUserCoinOutRecordService.getJydpUserCoinOutRecordlist(userId,pageNumber-1,pageSize);
         }
 
         jsonObject.put("pageNumber",pageNumber);

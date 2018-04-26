@@ -73,11 +73,12 @@ public class WebDealRecordController {
             jsonObject.put("totalNumber",totalNumber);
             jsonObject.put("totalPageNumber",totalPageNumber);
             jsonObject.put("pendingOrderNo",pendingOrderNo);
-            jsonObject.put("dealRecordList",dealRecordList);
+            jsonObject.put("transactionUserDealList",dealRecordList);
 
             //成功
             responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_SUCCESS);
             responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_SUCCESS);
+            responseJson.setData(jsonObject);
             return responseJson;
         }
 
