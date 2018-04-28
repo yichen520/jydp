@@ -121,10 +121,7 @@ public class WebUserLoginController {
             userSessionBO.setIsDealer(1);//不是经销商
         }
         WebInterceptor.loginSuccess(request, userSessionBO);
-        JSONObject object = new JSONObject();
-        String springSessionId = request.getSession().getId();
-        object.put("jsession",springSessionId);
-        responseJson.setData(object);
+
         responseJson.setCode(SystemMessageConfig.LOGIN_SUCCESS_CODE);
         responseJson.setMessage(SystemMessageConfig.LOGIN_SUCCESS_MESSAGE);
         return responseJson;

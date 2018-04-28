@@ -1,5 +1,6 @@
 package com.jydp.service.impl.transaction;
 
+import com.alibaba.fastjson.JSONArray;
 import com.iqmkj.utils.BigDecimalUtil;
 import com.iqmkj.utils.DateUtil;
 import com.jydp.dao.ITransactionDealRedisDao;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -273,6 +275,36 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
     }
 
     /**
+     * web2.0从redis获取k线图数据
+     * @param currencyId  币种Id
+     * @param node  时间节点 ：5分钟 5m、15分钟 15m、30分钟 30m、1小时 1h、4小时 4h、1天 1d 、1周 1w
+     * @return 操作成功:返回k线图数据, 操作失败:返回null
+     */
+    public JSONArray gainGraphDataWithNode(int currencyId,String node){
+        List<TransactionGraphVO> transactionGraphList = new ArrayList<TransactionGraphVO>();
+        //当前价
+        Object graphData = redisService.getValue(RedisKeyConfig.GRAPH_DATA + currencyId + node);
+        if(graphData != null){
+            transactionGraphList = (List<TransactionGraphVO>) graphData;
+        }
+        JSONArray result = new JSONArray();
+        JSONArray ja = null;
+        if(transactionGraphList != null){
+            for(TransactionGraphVO transactionGraphVO : transactionGraphList) {
+                ja = new JSONArray();
+                ja.add(DateUtil.longToTimeStr(transactionGraphVO.getDealDate().getTime(), DateUtil.dateFormat2));
+                ja.add(transactionGraphVO.getOpenPrice());
+                ja.add(transactionGraphVO.getClosPrice());
+                ja.add(transactionGraphVO.getMinPrice());
+                ja.add(transactionGraphVO.getMaxPrice());
+                ja.add(transactionGraphVO.getCountPrice());
+                result.add(ja);
+            }
+        }
+        return result;
+    }
+
+    /**
      * 每日交易统计
      * @param orderNoPrefix  订单号开头
      * @param date  昨日凌晨
@@ -321,7 +353,6 @@ public class TransactionDealRedisServiceImpl implements ITransactionDealRedisSer
         } else {
             dateLon = dateLon - RedisKeyConfig.DAY_TIME + RedisKeyConfig.OPENING_TIME;
             date = DateUtil.longToTimestamp(dateLon);
-
         }
         return transactionDealRedisDao.getTransactionCurrencyDealPrice(date);
     }

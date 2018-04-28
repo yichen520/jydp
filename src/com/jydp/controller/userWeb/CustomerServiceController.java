@@ -6,6 +6,7 @@ import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.user.UserFeedbackDO;
+import com.jydp.entity.VO.CustomerServiceParametersVO;
 import com.jydp.interceptor.WebInterceptor;
 import com.jydp.service.IUserFeedbackService;
 import config.SystemMessageConfig;
@@ -100,7 +101,7 @@ public class CustomerServiceController {
 
    /*  意见反馈 */
     @RequestMapping(value = "/feedback.htm", method = RequestMethod.POST)
-    public @ResponseBody JsonObjectBO feedback(HttpServletRequest request){
+    public @ResponseBody JsonObjectBO feedback(HttpServletRequest request, CustomerServiceParametersVO customerServiceParametersVO){
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         JSONObject jo = new JSONObject();
 
@@ -116,8 +117,8 @@ public class CustomerServiceController {
             return jsonObjectBO;
         }
 
-        String feedbackTitle = StringUtil.stringNullHandle(request.getParameter("feedbackTitle"));
-        String feedbackContent = StringUtil.stringNullHandle(request.getParameter("feedbackContent"));
+        String feedbackTitle = customerServiceParametersVO.getFeedbackTitle();
+        String feedbackContent = customerServiceParametersVO.getFeedbackTitle();
 
         if (!StringUtil.isNotNull(feedbackTitle) || !StringUtil.isNotNull(feedbackContent)) {
             ResponseUtils.setResp(SystemMessageConfig.PARAMETER_NOT_BE_NULL_CODE, SystemMessageConfig.PARAMETER_NOT_BE_NULL_MESSAGE, null, jsonObjectBO);
