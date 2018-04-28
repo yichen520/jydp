@@ -143,15 +143,16 @@ public class WebUserInfoController {
             response.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_LOGIN_EXPIRED);
             return response;
         }
-        if (userModifyPayPasswordDTO == null || !StringUtil.isNotNull(userModifyPayPasswordDTO.getOldPassword()) ||
-                !StringUtil.isNotNull(userModifyPayPasswordDTO.getNewPassword()) || !StringUtil.isNotNull(userModifyPayPasswordDTO.getConfirmPassword())) {
+
+        String oldPassword=Base64Util.decode(userModifyPayPasswordDTO.getOldPassword());
+        String newPassword=Base64Util.decode(userModifyPayPasswordDTO.getNewPassword());
+        String confirmPassword=Base64Util.decode(userModifyPayPasswordDTO.getConfirmPassword());
+        if (!StringUtil.isNotNull(oldPassword) || !StringUtil.isNotNull(newPassword) || !StringUtil.isNotNull(confirmPassword)) {
             response.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
             response.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
             return response;
         }
-        String oldPassword=Base64Util.decode(userModifyPayPasswordDTO.getOldPassword());
-        String newPassword=Base64Util.decode(userModifyPayPasswordDTO.getNewPassword());
-        String confirmPassword=Base64Util.decode(userModifyPayPasswordDTO.getConfirmPassword());
+
         //两次密码对比
         if (!newPassword.equals(confirmPassword)) {
             response.setCode(SystemMessageConfig.CODE_PASSWORD_NOT_IDENTICAL);
@@ -216,8 +217,7 @@ public class WebUserInfoController {
             response.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_LOGIN_EXPIRED);
             return response;
         }
-        if (userModifyPayPasswordDTO == null || !StringUtil.isNotNull(userModifyPayPasswordDTO.getValidCode()) ||
-                !StringUtil.isNotNull(userModifyPayPasswordDTO.getNewPassword()) || !StringUtil.isNotNull(userModifyPayPasswordDTO.getConfirmPassword())) {
+        if (!StringUtil.isNotNull(userModifyPayPasswordDTO.getValidCode())) {
             response.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
             response.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
             return response;
@@ -225,6 +225,12 @@ public class WebUserInfoController {
 
         String newPassword=Base64Util.decode(userModifyPayPasswordDTO.getNewPassword());
         String confirmPassword=Base64Util.decode(userModifyPayPasswordDTO.getConfirmPassword());
+        if (!StringUtil.isNotNull(newPassword) || !StringUtil.isNotNull(confirmPassword)) {
+            response.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
+            response.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
+            return response;
+        }
+
         //两次密码对比
         if (!newPassword.equals(confirmPassword)) {
             response.setCode(SystemMessageConfig.CODE_PASSWORD_NOT_IDENTICAL);
@@ -283,8 +289,7 @@ public class WebUserInfoController {
             response.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_LOGIN_EXPIRED);
             return response;
         }
-        if (userModifyPasswordDTO == null || !StringUtil.isNotNull(userModifyPasswordDTO.getValidCode()) || !StringUtil.isNotNull(userModifyPasswordDTO.getOldPassword()) ||
-                !StringUtil.isNotNull(userModifyPasswordDTO.getNewPassword()) || !StringUtil.isNotNull(userModifyPasswordDTO.getConfirmPassword())) {
+        if (!StringUtil.isNotNull(userModifyPasswordDTO.getValidCode())) {
             response.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
             response.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
             return response;
@@ -293,6 +298,12 @@ public class WebUserInfoController {
         String oldPassword=Base64Util.decode(userModifyPasswordDTO.getOldPassword());
         String newPassword=Base64Util.decode(userModifyPasswordDTO.getNewPassword());
         String confirmPassword=Base64Util.decode(userModifyPasswordDTO.getConfirmPassword());
+        if (!StringUtil.isNotNull(oldPassword) || !StringUtil.isNotNull(newPassword) || !StringUtil.isNotNull(confirmPassword)) {
+            response.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
+            response.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
+            return response;
+        }
+
         //两次密码对比
         if (!newPassword.equals(confirmPassword)) {
             response.setCode(SystemMessageConfig.CODE_PASSWORD_NOT_IDENTICAL);
@@ -375,7 +386,7 @@ public class WebUserInfoController {
         String areaCode = StringUtil.stringNullHandle(userModifyPhoneDTO.getAreaCode());
         String phone = StringUtil.stringNullHandle(userModifyPhoneDTO.getPhone());
 
-        if (!StringUtil.isNotNull(validateCode) || !StringUtil.isNotNull(password) || !StringUtil.isNotNull(newVerifyCode)
+        if (!StringUtil.isNotNull(validateCode) || !StringUtil.isNotNull(newVerifyCode)
                 || !StringUtil.isNotNull(phone) || !StringUtil.isNotNull(areaCode)) {
             response.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
             response.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
@@ -383,6 +394,12 @@ public class WebUserInfoController {
         }
 
         password=Base64Util.decode(password);
+        if (!StringUtil.isNotNull(password)) {
+            response.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
+            response.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR);
+            return response;
+        }
+
         //获取用户信息
         UserDO userMessage = userService.getUserByUserId(user.getUserId());
         if (userMessage == null) {
@@ -416,7 +433,7 @@ public class WebUserInfoController {
         password = MD5Util.toMd5(password);
         UserDO userLog = userService.validateUserLogin(user.getUserAccount(), password);
         if (userLog == null) {
-            response.setCode(SystemMessageConfig.CODE_PASSWORD_ERROR);
+            response.setCode(SystemMessageConfig.CODE_PASSWORD_ERROR); 
             response.setMessage(SystemMessageConfig.MESSAGE_PASSWORD_ERROR);
             return response;
         }
@@ -428,6 +445,8 @@ public class WebUserInfoController {
             response.setMessage(SystemMessageConfig.MESSAGE_PHONE_BIND);
             return response;
         }
+
+
 
         //手机号修改
         boolean updatePhone = userService.updatePhone(user.getUserId(), areaCode, phone);

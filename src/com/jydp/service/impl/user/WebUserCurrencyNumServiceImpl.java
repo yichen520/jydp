@@ -44,6 +44,7 @@ public class WebUserCurrencyNumServiceImpl implements IWebUserCurrencyNumService
                 userCurrency.setCurrencyId(userCurrencyNumDTO.getCurrencyId());
                 userCurrency.setCurrencyShortName(userCurrencyNumDTO.getCurrencyShortName());
                 userCurrency.setCurrencyName(userCurrencyNumDTO.getCurrencyName());
+                userCurrency.setCurrencyImg(userCurrencyNumDTO.getCurrencyImg());
                 userCurrency.setCurrencyNumber(currencyNumber);
                 userCurrency.setCurrencyNumberLock(currencyNumberLock);
                 userCurrency.setTotalCurrencyAssets(totalCurrencyAssets);

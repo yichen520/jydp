@@ -27,7 +27,7 @@
     </select>
 
     <select id="UserCurrencyNum_getUserCurrencyNumByUserIdForWeb" parameterType="int" resultType="BackerUserCurrencyNumDTO">
-        SELECT transactionCurrencyTab.currencyId, transactionCurrencyTab.currencyName,transactionCurrencyTab.currencyShortName, userCurrencyNumTab.currencyNumber, userCurrencyNumTab.currencyNumberLock
+        SELECT transactionCurrencyTab.currencyId, transactionCurrencyTab.currencyName,transactionCurrencyTab.currencyImg,transactionCurrencyTab.currencyShortName, userCurrencyNumTab.currencyNumber, userCurrencyNumTab.currencyNumberLock
         FROM user_currency_num_tab AS userCurrencyNumTab
         INNER JOIN transaction_currency_tab AS transactionCurrencyTab ON userCurrencyNumTab.currencyId = transactionCurrencyTab.currencyId
         WHERE userCurrencyNumTab.userId = #{userId}

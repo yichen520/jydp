@@ -32,6 +32,11 @@ public class WapUserCurrencyAssetsVO {
      * 币种总资产
      */
     private Double totalCurrencyAssets;
+
+    /**
+     * 币种图片地址
+     */
+    private String currencyImg;
     /**
      * 币种id
      */
@@ -104,5 +109,17 @@ public class WapUserCurrencyAssetsVO {
      */
     public void setCurrencyShortName(String currencyShortName) {
         this.currencyShortName = currencyShortName;
+    }
+    /**
+     * 币种图片地址
+     */
+    public String getCurrencyImg() {
+        return currencyImg;
+    }
+    /**
+     * 币种图片地址
+     */
+    public void setCurrencyImg(String currencyImg) {
+        this.currencyImg = currencyImg;
     }
 }
