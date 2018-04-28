@@ -14,6 +14,21 @@ public class StandardParameterVO {
     private double todayRange; //今日涨幅
     private double yesterdayPrice; //昨日收盘价
     private double dayTurnove; //今日成交量
+    private double dayTransaction; //今日成交额度
+
+    /**
+     *今日成交额
+     */
+    public double getDayTransaction() {
+        return dayTransaction;
+    }
+
+    /**
+     * 今日成交额度
+     */
+    public void setDayTransaction(double dayTransaction) {
+        this.dayTransaction = dayTransaction;
+    }
 
     /**
      * 今日涨幅

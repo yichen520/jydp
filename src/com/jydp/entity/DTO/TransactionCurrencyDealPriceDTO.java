@@ -12,8 +12,22 @@ public class TransactionCurrencyDealPriceDTO {
     private double highestPrice; //最高价
     private double lowestPrice; //最低价
     private double turnover; //成交量
-
+    private double dayTransaction; //今日成交额度
     private Timestamp addTime; //添加时间
+
+    /**
+     *今日成交额
+     */
+    public double getDayTransaction() {
+        return dayTransaction;
+    }
+
+    /**
+     * 今日成交额度
+     */
+    public void setDayTransaction(double dayTransaction) {
+        this.dayTransaction = dayTransaction;
+    }
 
     /**
      * 币种id
