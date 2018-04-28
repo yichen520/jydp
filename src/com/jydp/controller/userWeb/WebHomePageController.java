@@ -147,7 +147,7 @@ public class WebHomePageController {
         jsonObject.put("systemHotList",systemHotList);
         jsonObject.put("systemBusinessesPartnerList",systemBusinessesPartnerList);
         jsonObject.put("transactionUserDealList",transactionUserDealList);
-        jsonObjectBO.setCode(300000);
+        jsonObjectBO.setCode(1);
         jsonObjectBO.setMessage("查询成功");
         jsonObjectBO.setData(jsonObject);
         return jsonObjectBO;

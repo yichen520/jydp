@@ -51,8 +51,8 @@ public class WebSysNoticeController {
         }
 
         int totalNumber = systemNoticeService.countSystemNoticeForUser();
-        int pageSize=5;
-        //int pageSize = 20;
+
+        int pageSize = 20;
 
         List<SystemNoticeDO> systemNoticeList = null;
         if (totalNumber > 0) {

@@ -54,8 +54,7 @@ public class WebSysHotController {
         }
 
         int totalNumber = systemHotService.countSystemHotForUser();
-        //int pageSize = 20;
-        int pageSize=5;
+        int pageSize = 20;
 
         List<SystemHotDO> systemHotList = null;
         if (totalNumber > 0) {
