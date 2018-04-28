@@ -27,6 +27,7 @@
         <!--WEB拦截器-->
         <mvc:interceptor>
             <mvc:mapping path="/web/**/**"/>
+            <mvc:mapping path="/sendCode/**"/>
             <bean class="com.jydp.interceptor.SessionInterceptor"></bean>
         </mvc:interceptor>
 
