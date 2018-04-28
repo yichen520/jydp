@@ -900,7 +900,6 @@ public class WapTradeCenterController {
         currencyId = Integer.parseInt(currencyIdStr);
         transactionGraphList = transactionDealRedisService.gainGraphData(currencyId, node);
         if (null != transactionGraphList && !transactionGraphList.isEmpty()) {
-            //Collections.reverse(transactionGraphList);
             Collections.sort(transactionGraphList, new Comparator<TransactionGraphVO>() {
                 @Override
                 public int compare(TransactionGraphVO transactionGraphVO, TransactionGraphVO t1) {
