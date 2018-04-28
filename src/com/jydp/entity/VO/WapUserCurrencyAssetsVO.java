@@ -37,6 +37,11 @@ public class WapUserCurrencyAssetsVO {
      * 币种图片地址
      */
     private String currencyImg;
+
+    /**
+     * 币种图片完整路径
+     */
+    private String currencyImgFormat;
     /**
      * 币种id
      */
@@ -121,5 +126,17 @@ public class WapUserCurrencyAssetsVO {
      */
     public void setCurrencyImg(String currencyImg) {
         this.currencyImg = currencyImg;
+    }
+    /**
+     * 币种图片完整路径
+     */
+    public String getCurrencyImgFormat() {
+        return currencyImgFormat;
+    }
+    /**
+     * 币种图片完整路径
+     */
+    public void setCurrencyImgFormat(String currencyImgFormat) {
+        this.currencyImgFormat = currencyImgFormat;
     }
 }

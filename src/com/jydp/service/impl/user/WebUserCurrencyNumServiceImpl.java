@@ -6,6 +6,7 @@ import com.jydp.dao.IUserCurrencyNumDao;
 import com.jydp.entity.DTO.BackerUserCurrencyNumDTO;
 import com.jydp.entity.VO.WapUserCurrencyAssetsVO;
 import com.jydp.service.IWebUserCurrencyNumService;
+import config.FileUrlConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -48,6 +49,7 @@ public class WebUserCurrencyNumServiceImpl implements IWebUserCurrencyNumService
                 userCurrency.setCurrencyNumber(currencyNumber);
                 userCurrency.setCurrencyNumberLock(currencyNumberLock);
                 userCurrency.setTotalCurrencyAssets(totalCurrencyAssets);
+                userCurrency.setCurrencyImgFormat(FileUrlConfig.file_visit_url+userCurrencyNumDTO.getCurrencyImg());
                 userCurrencyAssets.add(userCurrency);
             }
             return userCurrencyAssets;
