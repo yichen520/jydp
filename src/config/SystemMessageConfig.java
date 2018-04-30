@@ -27,8 +27,11 @@ public class SystemMessageConfig {
     //服务器异常
     public static final int SYSTEM_CODE_SERVER_EXCEPTION = 5;
     public static final String SYSTEM_MESSAGE_SERVER_EXCEPTION = "服务器异常";
-
-    public static final int SYSTEM_CODE_NO_RESULT = 6;
+    //操作频繁
+    public static final int SYSTEM_CODE_FREQUENT  = 6;
+    public static final String SYSTEM_MESSAGE_FREQUENT  = "操作频繁";
+    //查询无结果
+    public static final int SYSTEM_CODE_NO_RESULT = 7;
     public static final String SYSTEM_MESSAGE_NO_RESULT = "查询无结果";
 
     /**
@@ -329,4 +332,49 @@ public class SystemMessageConfig {
     //非法类型
     public static final int CODE_TYPE_ILLEGAL = 700006;
     public static final String MESSAGE_TYPE_ILLEGAL = "非法类型";
+
+    /** 场外交易-交易中心 */
+    /** 交易数量不能小于等于0 （703001） */
+    public static final int TRADE_NUM_MIN_CODE = 703001;
+    public static final String TRADE_NUM_MIN_MESSAGE = "交易数量不能小于等于0";
+    /**  上传二维码失败（703002）*/
+    public static final int QR_UP_CODE = 703002;
+    public static final String QR_UP_MESSAGE = "上传二维码失败";
+    /**  不在交易时间段内（703003）*/
+    public static final int TRADE_NOT_TIME_CODE = 703003;
+    public static final String TRADE_NOT_TIME_MESSAGE = "不在交易时间段内";
+    /**  该用户不存在（703004）*/
+    public static final int USER_NOT_EXSITE_CODE = 703004;
+    public static final String USER_NOT_EXSITE_MESSAGE = "该用户不存在";
+    /**  该账号已被禁用（703005）*/
+    public static final int USER_DISABLE_CODE = 703005;
+    public static final String USER_DISABLE_MESSAGE = "该账号已被禁用";
+    /** 该广告不存在 （703006）*/
+    public static final int TRADE_NOT_EXSITE_CODE = 703006;
+    public static final String TRADE_NOT_EXSITE_MESSAGE = "该广告不存在";
+    /**  交易额度不能低于最低限额（703007）*/
+    public static final int TRADE_LIMIT_MIN_CODE = 703007;
+    public static final String TRADE_LIMIT_MIN__MESSAGE = "交易额度不能低于最低限额";
+    /** 交易额度不能高于最高限额 （703008）*/
+    public static final int TRADE_LIMIT_MAX_CODE = 703008;
+    public static final String TRADE_LIMIT_MAX__MESSAGE = "交易额度不能高于最高限额";
+    /**  该经销商不存在（703009）*/
+    public static final int DEALER_NOT_EXSITE_CODE = 703009;
+    public static final String DEALER_NOT_EXSITE_MESSAGE = "该经销商不存在";
+    /** 该经销商已被禁用 （703010）*/
+    public static final int DEALER_DISABLE_CODE = 703010;
+    public static final String DEALER_DISABLE_MESSAGE = "该经销商已被禁用";
+    /**  用户币不足（703011）*/
+    public static final int USER_NO_COIN_CODE = 703011;
+    public static final String USER_NO_COIN_MESSAGE = "用户币不足";
+    /** 该币种不存在 （703012）*/
+    public static final int CURRENCY_NOT_EXSITE_CODE = 703012;
+    public static final String CURRENCY_NOT_EXSITE_MESSAGE = "该币种不存在";
+    /** 该币种已下线（703013）*/
+    public static final int CURRENCY_DISABLE_CODE = 703013;
+    public static final String CURRENCY_DISABLE_MESSAGE = "该币种已下线";
+    /** 经销商币不足 （703011）*/
+    public static final int DEALER_NO_COIN_CODE = 703014;
+    public static final String DEALER_NO_COIN_MESSAGE = "经销商币不足";
+
 }
