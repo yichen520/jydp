@@ -1,5 +1,7 @@
 package config;
 
+import org.springframework.amqp.rabbit.support.PublisherCallbackChannelImpl;
+
 /**
  * 系统返回消息类型和提示配置类
  *
@@ -25,6 +27,9 @@ public class SystemMessageConfig {
     //服务器异常
     public static final int SYSTEM_CODE_SERVER_EXCEPTION = 5;
     public static final String SYSTEM_MESSAGE_SERVER_EXCEPTION = "服务器异常";
+
+    public static final int SYSTEM_CODE_NO_RESULT = 6;
+    public static final String SYSTEM_MESSAGE_NO_RESULT = "查询无结果";
 
     /**
      * 个人中心用户信息模块
@@ -302,4 +307,26 @@ public class SystemMessageConfig {
 
     /** 用户认证接口状态码和信息结束*/
 
+
+    /**
+     * 场外交易
+     */
+    //操作频繁
+    public static final int CODE_OPERATE_FREQUENT = 700001;
+    public static final String MESSAGE_OPERATE_FREQUENT = "用户操作频繁";
+    //用户不是经销商
+    public static final int CODE_USER_NOT_DEALER = 700002;
+    public static final String MESSAGE_USER_NOT_DEALER = "用户不是经销商";
+    //订单不存在
+    public static final int CODE_ORDER_NOT_EXIST = 700003;
+    public static final String MESSAGE_ORDER_NOT_EXIST = "订单不存在";
+    //非法访问
+    public static final int CODE_VISIT_ILLEGAL = 700004;
+    public static final String MESSAGE_VISIT_ILLEGAL = "非法访问";
+    //订单已完成
+    public static final int CODE_ORDER_FINISHED = 700005;
+    public static final String MESSAGE_ORDER_FINISHED = "订单已完成";
+    //非法类型
+    public static final int CODE_TYPE_ILLEGAL = 700006;
+    public static final String MESSAGE_TYPE_ILLEGAL = "非法类型";
 }
