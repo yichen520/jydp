@@ -174,7 +174,7 @@ public class WebDealerOtcDealRecordController {
     /**
      * 经销商回购币-确认收货
      **/
-    @RequestMapping(value = "/confirmTakeCoin.htm", method = RequestMethod.POST)
+    @RequestMapping(value = "/confirmTakeCoin", method = RequestMethod.POST)
     @ResponseBody
     public JsonObjectBO confirmTakeCoin(HttpServletRequest request,
                                         @RequestBody QueryParamDTO queryParamDTO) {

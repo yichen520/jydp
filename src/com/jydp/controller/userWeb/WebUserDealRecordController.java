@@ -113,9 +113,9 @@ public class WebUserDealRecordController {
      * 分页查询用户成交记录
      */
     @RequestMapping("/separateQueryUserDeal/list")
-    public @ResponseBody
-    JsonObjectBO separateQueryUserDeal(HttpServletRequest request,
-                                       @RequestBody QueryParamDTO queryParamDTO) {
+    @ResponseBody
+    public JsonObjectBO separateQueryUserDeal(HttpServletRequest request,
+                                              @RequestBody QueryParamDTO queryParamDTO) {
         UserSessionBO userBo = WebInterceptor.getUser(request);
         JsonObjectBO response = new JsonObjectBO();
         if (userBo == null) {
@@ -190,10 +190,10 @@ public class WebUserDealRecordController {
     /**
      * 用户确认（出售 回购（收款，收货））
      */
-    @RequestMapping(value = "userConfirm.htm")
-    public @ResponseBody
-    JsonObjectBO userConfirm(HttpServletRequest request,
-                             @RequestBody QueryParamDTO queryParamDTO) {
+    @RequestMapping(value = "/userConfirm", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonObjectBO userConfirm(HttpServletRequest request,
+                                    @RequestBody QueryParamDTO queryParamDTO) {
         JsonObjectBO response = new JsonObjectBO();
         if (StringUtil.isNull(queryParamDTO.getOtcOrderNo())) {
             response.setCode(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR);
