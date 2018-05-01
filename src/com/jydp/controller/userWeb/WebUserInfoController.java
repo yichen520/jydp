@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.*;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
+import com.jydp.entity.DO.otc.OtcTransactionPendOrderDO;
 import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DTO.WapUserModifyPayPasswordDTO;
 import com.jydp.entity.DTO.WapUserModifyPhoneDTO;
@@ -11,6 +12,7 @@ import com.jydp.entity.VO.WapUserCurrencyAssetsVO;
 import com.jydp.entity.VO.WebUserVO;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.interceptor.WebInterceptor;
+import com.jydp.service.IOtcTransactionPendOrderService;
 import com.jydp.service.ISystemValidatePhoneService;
 import com.jydp.service.IUserService;
 import com.jydp.service.IWebUserCurrencyNumService;
@@ -51,6 +53,12 @@ public class WebUserInfoController {
     ISystemValidatePhoneService systemValidatePhoneService;
 
     /**
+     * 场外交易
+     */
+    @Autowired
+    public IOtcTransactionPendOrderService otcTransactionPendOrderService;
+
+    /**
      * 根据userId获取用户信息
      *
      * @return
@@ -86,8 +94,15 @@ public class WebUserInfoController {
         userVO.setUserBalanceLock(userBalanceLock);
         userVO.setTotalUserBalance(totalUserBalance);
 
+        //判断用户是否为经销商
+        List<OtcTransactionPendOrderDO> otcTransactionPendOrderList = null;
+        if(user.getIsDealer() == 2){
+            otcTransactionPendOrderList = otcTransactionPendOrderService.getOtcTransactionPendOrderByUserId(user.getUserId());
+        }
+
         JSONObject data = new JSONObject();
         data.put("userInfo", userVO);
+        data.put("otcTransactionPendOrderList",otcTransactionPendOrderList);
         response.setCode(SystemMessageConfig.SYSTEM_CODE_SUCCESS);
         response.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_SUCCESS);
         response.setData(data);
