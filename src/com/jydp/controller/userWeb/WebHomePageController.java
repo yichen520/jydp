@@ -80,9 +80,12 @@ public class WebHomePageController {
         //查询系统公告列表
         List<SystemNoticeDO> systemNoticeList = null;
         Object systemNoticListObject = redisService.getValue(RedisKeyConfig.HOMEPAGE_NOTICE);;
-        if (systemNoticListObject != null) {
-            systemNoticeList = ((List<SystemNoticeDO>)systemNoticListObject).subList(0, 4);
-
+        if (systemNoticListObject != null ) {
+            if (((List<SystemNoticeDO>)systemNoticListObject).size()>4) {
+                systemNoticeList = ((List<SystemNoticeDO>)systemNoticListObject).subList(0, 4);
+            } else {
+                systemNoticeList = ((List<SystemNoticeDO>)systemNoticListObject);
+            }
         }
 
         if (systemNoticeList != null && systemNoticeList.size() > 0) {
@@ -95,7 +98,10 @@ public class WebHomePageController {
             }
         } else {
             //redis中没有，从数据库中查询并添加至redis中
-            systemNoticeList = homePageService.getSystemNoticeList().subList(0, 4);
+            systemNoticeList = homePageService.getSystemNoticeList();
+            if (systemNoticeList.size()>4) {
+                systemNoticeList=systemNoticeList.subList(0,4);
+            }
             redisService.addValue(RedisKeyConfig.HOMEPAGE_NOTICE,systemNoticeList);
         }
 
@@ -103,7 +109,11 @@ public class WebHomePageController {
         List<SystemHotDO> systemHotList = null;
         Object systemHotListObject = redisService.getValue(RedisKeyConfig.HOMEPAGE_HOT_TOPIC);
         if (systemHotListObject != null) {
-            systemHotList = ((List<SystemHotDO>)systemHotListObject).subList(0, 4);
+            if (((List<SystemNoticeDO>)systemNoticListObject).size()>4) {
+                systemNoticeList = ((List<SystemNoticeDO>)systemNoticListObject).subList(0, 4);
+            } else {
+                systemNoticeList = ((List<SystemNoticeDO>)systemNoticListObject);
+            }
         }
 
         if (systemHotList != null && systemHotList.size() > 0) {
@@ -116,7 +126,10 @@ public class WebHomePageController {
             }
         } else {
             //redis中没有，从数据库中查询并添加至redis中
-            systemHotList = homePageService.getSystemHotList().subList(0, 4);
+            systemNoticeList = homePageService.getSystemNoticeList();
+            if (systemNoticeList.size()>4) {
+                systemNoticeList=systemNoticeList.subList(0,4);
+            }
             redisService.addValue(RedisKeyConfig.HOMEPAGE_HOT_TOPIC,systemHotList);
         }
 
