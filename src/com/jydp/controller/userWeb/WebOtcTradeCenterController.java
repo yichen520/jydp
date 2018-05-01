@@ -13,6 +13,7 @@ import com.jydp.entity.DO.user.UserDO;
 import com.jydp.entity.DO.user.UserIdentificationDO;
 import com.jydp.entity.DTO.UserPaymentTypeDTO;
 import com.jydp.entity.VO.OtcTransactionPendOrderVO;
+import com.jydp.entity.VO.TransactionCurrencyVO;
 import com.jydp.interceptor.UserWebInterceptor;
 import com.jydp.service.*;
 import config.FileUrlConfig;
@@ -20,6 +21,7 @@ import config.SystemMessageConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -765,6 +767,29 @@ public class WebOtcTradeCenterController {
         resultJson.setCode(SystemMessageConfig.SYSTEM_CODE_SUCCESS);
         resultJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_SUCCESS);
         return resultJson;
+    }
+
+    /**
+     * 获取所有的币种列表
+     *
+     * @return
+     */
+    @RequestMapping(value = "/currency/list", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonObjectBO getCurrencyList() {
+        JsonObjectBO response = new JsonObjectBO();
+        List<TransactionCurrencyVO> transactionCurrencyList = transactionCurrencyService.getOnlineAndSuspensionCurrencyForWeb();
+        if (CollectionUtils.isEmpty(transactionCurrencyList)) {
+            response.setCode(SystemMessageConfig.SYSTEM_CODE_NO_RESULT);
+            response.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_NO_RESULT);
+            return response;
+        }
+        response.setCode(SystemMessageConfig.SYSTEM_CODE_SUCCESS);
+        response.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_SUCCESS);
+        JSONObject data = new JSONObject();
+        data.put("transactionCurrencyList", transactionCurrencyList);
+        response.setData(data);
+        return response;
     }
 
 }

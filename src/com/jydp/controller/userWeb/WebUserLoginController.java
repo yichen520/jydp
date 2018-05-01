@@ -124,6 +124,9 @@ public class WebUserLoginController {
 
         responseJson.setCode(SystemMessageConfig.LOGIN_SUCCESS_CODE);
         responseJson.setMessage(SystemMessageConfig.LOGIN_SUCCESS_MESSAGE);
+        JSONObject data=new JSONObject();
+        data.put("isDealer",userSessionBO.getIsDealer());
+        responseJson.setData(data);
         return responseJson;
     }
 
