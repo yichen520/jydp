@@ -22,9 +22,9 @@
 	<!-- 创建connectionFactory --> 	
     <!-- org.springframework.amqp.rabbit.connection.CachingConnectionFactory -->
 	<rabbit:connection-factory id="connectionFactory"
-							   addresses="139.224.196.2:5672"
-							   username="rabbitadmin"
-							   password="1qaz2wsx" />
+							   addresses="127.0.0.1:15672"
+							   username="guest"
+							   password="guest" />
 		
 	<!-- org.springframework.amqp.rabbit.core.RabbitAdmin -->
 	<rabbit:admin connection-factory="connectionFactory" />

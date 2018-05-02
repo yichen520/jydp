@@ -24,7 +24,7 @@ import java.util.List;
  * @create 2018-04-19
  */
 @RestController
-@RequestMapping("/web/webDealRecordController")
+@RequestMapping("/web/webDealRecord")
 @Scope(value = "prototype")
 public class WebDealRecordController {
 
@@ -45,10 +45,10 @@ public class WebDealRecordController {
 
         //参数获取
         JSONObject requestJsonObject = (JSONObject) JSONObject.parse(requestJson);
-        String pageNumberStr = (String) requestJsonObject.get("pageNumber");
-        String pendingOrderNo = StringUtil.stringNullHandle(request.getParameter("pendingOrderNo"));
+        String pageNumberStr = String.valueOf(requestJsonObject.get("pageNumber"));
+        String pendingOrderNo = StringUtil.stringNullHandle(requestJsonObject.get("pendingOrderNo")+"");
 
-        int pageNumber = 0;
+        int pageNumber = 1;
         if (StringUtil.isNotNull(pageNumberStr)) {
             pageNumber = Integer.parseInt(pageNumberStr);
         }
@@ -62,13 +62,10 @@ public class WebDealRecordController {
             if (totalPageNumber <= 0) {
                 totalPageNumber = 1;
             }
-            if (totalPageNumber <= pageNumber) {
-                pageNumber = totalPageNumber - 1;
-            }
 
             List<TransactionUserDealVO> dealRecordList = null;
             if (totalNumber > 0) {
-                dealRecordList = transactionUserDealService.listTransactionUserDealByPendNo(pendingOrderNo, userSession.getUserId(), pageNumber, pageSize);
+                dealRecordList = transactionUserDealService.listTransactionUserDealByPendNo(pendingOrderNo, userSession.getUserId(), pageNumber-1, pageSize);
             }
 
             JSONObject jsonObject = new JSONObject();
@@ -76,11 +73,12 @@ public class WebDealRecordController {
             jsonObject.put("totalNumber",totalNumber);
             jsonObject.put("totalPageNumber",totalPageNumber);
             jsonObject.put("pendingOrderNo",pendingOrderNo);
-            jsonObject.put("dealRecordList",dealRecordList);
+            jsonObject.put("transactionUserDealList",dealRecordList);
 
             //成功
             responseJson.setCode(SystemMessageConfig.SYSTEM_CODE_SUCCESS);
             responseJson.setMessage(SystemMessageConfig.SYSTEM_MESSAGE_SUCCESS);
+            responseJson.setData(jsonObject);
             return responseJson;
         }
 
@@ -93,13 +91,9 @@ public class WebDealRecordController {
             totalPageNumber = 1;
         }
 
-        if (totalPageNumber <= pageNumber) {
-            pageNumber = totalPageNumber -1;
-        }
-
         List<TransactionUserDealVO> transactionUserDealList = null;
         if (totalNumber > 0) {
-            transactionUserDealList = transactionUserDealService.getTransactionUserDeallist(userId,pageNumber,pageSize);
+            transactionUserDealList = transactionUserDealService.getTransactionUserDeallist(userId,pageNumber-1,pageSize);
         }
 
         JSONObject jsonObject = new JSONObject();

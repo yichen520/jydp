@@ -1,5 +1,6 @@
 package com.jydp.controller.userWeb;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.iqmkj.utils.*;
 import com.jydp.entity.BO.JsonObjectBO;
@@ -19,10 +20,7 @@ import config.SystemMessageConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -116,10 +114,7 @@ public class WebTradeCenterController {
 
         //获取用户交易中心相关资产信息
         UserSessionBO user = WebInterceptor.getUser(request);
-        //用户密码是否输入过密码
-        jo.put("userIsPwd", "");
-        //用户是否需要输入密码的状态
-        jo.put("payPasswordStatus", "");
+
         if (user != null) {
             //如果用户session在线
             //交易界面用户的币和钱信息设置
@@ -147,6 +142,11 @@ public class WebTradeCenterController {
             jo.put("userIsPwd", user.getIsPwd());
             //用户是否需要输入密码的状态
             jo.put("payPasswordStatus", userDO.getPayPasswordStatus());
+        }else{
+            //用户密码是否输入过密码
+            jo.put("userIsPwd", 1);
+            //用户是否需要输入密码的状态
+            jo.put("payPasswordStatus", 1);
         }
 
         //获取币种基准信息
@@ -517,21 +517,21 @@ public class WebTradeCenterController {
      */
     @RequestMapping(value = "/deal", method = RequestMethod.POST)
     public @ResponseBody
-    JsonObjectBO deal(HttpServletRequest request) {
+    JsonObjectBO deal(HttpServletRequest request, @RequestBody TransactionCurrencyParametersVO transactionCurrencyParametersDO) {
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         JSONObject jo = new JSONObject();
 
         //获取参数
-        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+        String currencyIdStr = StringUtil.stringNullHandle(transactionCurrencyParametersDO.getCurrencyId());
         if (!StringUtil.isNotNull(currencyIdStr)) {
             ResponseUtils.setResp(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR, SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR, null, jsonObjectBO);
             return jsonObjectBO;
         }
         int currencyId = 0;
         currencyId = Integer.parseInt(currencyIdStr);
-
         //获取币种信息
         int updatetus = transactionCurrencyService.getCurrencyUpstatusByCurrencyId(currencyId);
+
         if (updatetus == 0) {
             ResponseUtils.setResp(SystemMessageConfig.NOT_HAVE_CURRENCY_INFO_CODE, SystemMessageConfig.NOT_HAVE_CURRENCY_INFO_MESSAGE, null, jsonObjectBO);
             return jsonObjectBO;
@@ -561,13 +561,12 @@ public class WebTradeCenterController {
      */
     @RequestMapping(value = "/pend", method = RequestMethod.POST)
     public @ResponseBody
-    JsonObjectBO pend(HttpServletRequest request) {
+    JsonObjectBO pend(HttpServletRequest request, @RequestBody TransactionCurrencyParametersVO transactionCurrencyParametersDO) {
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         JSONObject jo = new JSONObject();
         //获取参数
-        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
-
-        if (!StringUtil.isNotNull(currencyIdStr)) {
+       String currencyIdStr = StringUtil.stringNullHandle(transactionCurrencyParametersDO.getCurrencyId());
+       if (!StringUtil.isNotNull(currencyIdStr)) {
             ResponseUtils.setResp(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR, SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR, null, jsonObjectBO);
             return jsonObjectBO;
         }
@@ -615,12 +614,12 @@ public class WebTradeCenterController {
      * 获取委托记录
      */
     @RequestMapping(value = "/entrust.htm", method = RequestMethod.POST)
-    public @ResponseBody JsonObjectBO entrust(HttpServletRequest request) {
+    public @ResponseBody JsonObjectBO entrust(HttpServletRequest request, @RequestBody TransactionCurrencyParametersVO transactionCurrencyParametersDO) {
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         JSONObject jo = new JSONObject();
         List<TransactionPendOrderVO> transactionPendOrderList = null;
         //获取参数
-        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+        String currencyIdStr = StringUtil.stringNullHandle(transactionCurrencyParametersDO.getCurrencyId());
         if (!StringUtil.isNotNull(currencyIdStr)) {
             ResponseUtils.setResp(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR, SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR, null, jsonObjectBO);
             return jsonObjectBO;
@@ -643,11 +642,11 @@ public class WebTradeCenterController {
      */
     @RequestMapping(value = "/gainDealPrice", method = RequestMethod.POST)
     public @ResponseBody
-    JsonObjectBO gainDealPrice(HttpServletRequest request) {
+    JsonObjectBO gainDealPrice(HttpServletRequest request, @RequestBody TransactionCurrencyParametersVO transactionCurrencyParametersDO) {
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         JSONObject jo = new JSONObject();
         //获取参数
-        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter(transactionCurrencyParametersDO.getCurrencyId()));
         if (!StringUtil.isNotNull(currencyIdStr)) {
             ResponseUtils.setResp(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR, SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR, null, jsonObjectBO);
             return jsonObjectBO;
@@ -667,14 +666,13 @@ public class WebTradeCenterController {
      * 获取交易相关价格（用户资金信息）
      */
     @RequestMapping(value = "/userMessage", method = RequestMethod.POST)
-    public @ResponseBody JsonObjectBO userMessage(HttpServletRequest request) {
+    public @ResponseBody JsonObjectBO userMessage(HttpServletRequest request, @RequestBody TransactionCurrencyParametersVO transactionCurrencyParametersDO) {
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         JSONObject jo = new JSONObject();
         UserDealCapitalMessageVO userDealCapitalMessage = new UserDealCapitalMessageVO();
-
         //获取参数
         UserSessionBO user = WebInterceptor.getUser(request);
-        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
+        String currencyIdStr = StringUtil.stringNullHandle(transactionCurrencyParametersDO.getCurrencyId());
         if (!StringUtil.isNotNull(currencyIdStr)) {
             ResponseUtils.setResp(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR, SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR, null, jsonObjectBO);
             return jsonObjectBO;
@@ -696,7 +694,7 @@ public class WebTradeCenterController {
      */
     @RequestMapping(value = "/rememberPwd.htm", method = RequestMethod.POST)
     public @ResponseBody
-    JsonObjectBO rememberPwd(HttpServletRequest request) {
+    JsonObjectBO rememberPwd(HttpServletRequest request,@RequestBody TransactionCurrencyParametersVO transactionCurrencyParametersDO) {
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         JSONObject jo = new JSONObject();
 
@@ -707,9 +705,9 @@ public class WebTradeCenterController {
         }
 
         //获取参数
-        String rememberPwd = StringUtil.stringNullHandle(request.getParameter("rememberPwd"));
+        String rememberPwd = StringUtil.stringNullHandle(transactionCurrencyParametersDO.getRememberPwd());
         rememberPwd = Base64Util.decode(rememberPwd);
-        String payPasswordStatusStr = StringUtil.stringNullHandle(request.getParameter("payPasswordStatus"));
+        String payPasswordStatusStr = StringUtil.stringNullHandle(transactionCurrencyParametersDO.getPayPasswordStatus());
         if (!StringUtil.isNotNull(rememberPwd)) {
             ResponseUtils.setResp(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR, SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR, null, jsonObjectBO);
             return jsonObjectBO;
@@ -755,25 +753,26 @@ public class WebTradeCenterController {
      * k线图参数获取
      */
     @RequestMapping(value = "/gainGraphData", method = RequestMethod.POST)
-    public @ResponseBody JsonObjectBO gainGraphData(HttpServletRequest request) {
+    public @ResponseBody JsonObjectBO gainGraphData(HttpServletRequest request,@RequestBody TransactionCurrencyParametersVO transactionCurrencyParametersVO) {
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         JSONObject jo = new JSONObject();
-        List<TransactionGraphVO> transactionGraphList;
 
-        String currencyIdStr = StringUtil.stringNullHandle(request.getParameter("currencyId"));
-        String node = StringUtil.stringNullHandle(request.getParameter("node"));
+        String currencyIdStr = StringUtil.stringNullHandle(transactionCurrencyParametersVO.getCurrencyId());
+        String node = StringUtil.stringNullHandle(transactionCurrencyParametersVO.getNode());
+        if (!StringUtil.isNotNull(currencyIdStr)) {
+            ResponseUtils.setResp(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR, SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR, null, jsonObjectBO);
+            return jsonObjectBO;
+        }
 
-        if (!StringUtil.isNotNull(currencyIdStr) || !StringUtil.isNotNull(node)) {
+        if (!StringUtil.isNotNull(node)) {
             ResponseUtils.setResp(SystemMessageConfig.SYSTEM_CODE_PARAM_ERROR, SystemMessageConfig.SYSTEM_MESSAGE_PARAM_ERROR, null, jsonObjectBO);
             return jsonObjectBO;
         }
 
         int currencyId = 0;
         currencyId = Integer.parseInt(currencyIdStr);
-        transactionGraphList = transactionDealRedisService.gainGraphData(currencyId, node);
-
+        JSONArray transactionGraphList = transactionDealRedisService.gainGraphDataWithNode(currencyId, node);
         jo.put("transactionGraphList", transactionGraphList);
-
         ResponseUtils.setResp(SystemMessageConfig.SUCCESS_OPT_CODE, SystemMessageConfig.SUCCESS_OPT_MESSAGE, jo, jsonObjectBO);
         return jsonObjectBO;
     }

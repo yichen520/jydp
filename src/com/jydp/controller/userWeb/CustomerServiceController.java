@@ -6,12 +6,14 @@ import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
 import com.jydp.entity.DO.user.UserFeedbackDO;
+import com.jydp.entity.VO.CustomerServiceParametersVO;
 import com.jydp.interceptor.WebInterceptor;
 import com.jydp.service.IUserFeedbackService;
 import config.SystemMessageConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,15 +31,19 @@ import java.util.List;
 @Scope(value = "prototype")
 public class CustomerServiceController {
 
-    /**  意见反馈 */
+    /**
+     * 意见反馈
+     */
     @Autowired
     private IUserFeedbackService userFeedbackService;
 
-    /**  查询意见反馈列表 */
+    /**
+     * 查询意见反馈列表
+     */
     public void showList(HttpServletRequest request, JSONObject jo, int userId) {
         String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
 
-        int pageNumber = 0;
+        int pageNumber = 1;
         if (StringUtil.isNotNull(pageNumberStr)) {
             pageNumber = Integer.parseInt(pageNumberStr);
         }
@@ -47,7 +53,7 @@ public class CustomerServiceController {
 
         List<UserFeedbackDO> userFeedbackList = null;
         if (totalNumber > 0) {
-            userFeedbackList = userFeedbackService.listUserFeedbackForUser(userId, pageNumber, pageSize);
+            userFeedbackList = userFeedbackService.listUserFeedbackForUser(userId, pageNumber - 1, pageSize);
         }
 
         if (userFeedbackList != null && userFeedbackList.size() > 0) {
@@ -81,9 +87,12 @@ public class CustomerServiceController {
         jo.put("userFeedbackList", userFeedbackList);
     }
 
-    /**  意见反馈展示 */
-    @RequestMapping(value = "/show.htm" , method = RequestMethod.GET)
-    public @ResponseBody JsonObjectBO show(HttpServletRequest request) {
+    /**
+     * 意见反馈展示
+     */
+    @RequestMapping(value = "/show.htm", method = RequestMethod.GET)
+    public @ResponseBody
+    JsonObjectBO show(HttpServletRequest request) {
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         JSONObject jo = new JSONObject();
 
@@ -98,9 +107,10 @@ public class CustomerServiceController {
         return jsonObjectBO;
     }
 
-   /*  意见反馈 */
+    /*  意见反馈 */
     @RequestMapping(value = "/feedback.htm", method = RequestMethod.POST)
-    public @ResponseBody JsonObjectBO feedback(HttpServletRequest request){
+    public @ResponseBody
+    JsonObjectBO feedback(HttpServletRequest request, @RequestBody CustomerServiceParametersVO customerServiceParametersVO) {
         JsonObjectBO jsonObjectBO = new JsonObjectBO();
         JSONObject jo = new JSONObject();
 
@@ -116,8 +126,8 @@ public class CustomerServiceController {
             return jsonObjectBO;
         }
 
-        String feedbackTitle = StringUtil.stringNullHandle(request.getParameter("feedbackTitle"));
-        String feedbackContent = StringUtil.stringNullHandle(request.getParameter("feedbackContent"));
+        String feedbackTitle = customerServiceParametersVO.getFeedbackTitle();
+        String feedbackContent = customerServiceParametersVO.getFeedbackContent();
 
         if (!StringUtil.isNotNull(feedbackTitle) || !StringUtil.isNotNull(feedbackContent)) {
             ResponseUtils.setResp(SystemMessageConfig.PARAMETER_NOT_BE_NULL_CODE, SystemMessageConfig.PARAMETER_NOT_BE_NULL_MESSAGE, null, jsonObjectBO);

@@ -481,6 +481,14 @@ public class TransactionCurrencyServiceImpl implements ITransactionCurrencyServi
             standardParameter.setDayTurnove(dayTurnove);
         }
 
+        //今日小时成交额
+        Object dayTransactionStr = redisService.getValue(RedisKeyConfig.DAY_VOLUME_OF_TRANSACTION  + currencyId);
+        if(dayTransactionStr != null){
+            double dayTransaction = Double.parseDouble(dayTransactionStr.toString());
+            dayTransaction = NumberUtil.doubleFormat(dayTransaction, 4);
+            standardParameter.setDayTransaction(dayTransaction);
+        }
+
         return standardParameter;
     }
 

@@ -11,6 +11,7 @@ public class BackerUserCurrencyNumDTO {
     private String currencyShortName; //货币简写名称
     private double currencyNumber;  //货币数量
     private double currencyNumberLock;  //冻结数量
+    private String currencyImg;  //币种图片地址
 
     /**
      * 币种Id
@@ -88,8 +89,18 @@ public class BackerUserCurrencyNumDTO {
     public String getCurrencyShortName() {
         return currencyShortName;
     }
+
     //货币简写名称
     public void setCurrencyShortName(String currencyShortName) {
         this.currencyShortName = currencyShortName;
+    }
+
+    //币种图片地址
+    public String getCurrencyImg() {
+        return currencyImg;
+    }
+    //币种图片地址
+    public void setCurrencyImg(String currencyImg) {
+        this.currencyImg = currencyImg;
     }
 }

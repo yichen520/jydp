@@ -6,7 +6,7 @@
 <mapper namespace="com.jydp.dao.impl.transaction.TranactionDealRedisDaoImpl">
 
 	<select id="TransactionDealRedis_listTransactionDealRedis" parameterType="java.util.Map" resultType="TransactionDealRedisDO">
-		SELECT paymentType, transactionPrice, currencyNumber, addTime
+		SELECT paymentType, transactionPrice, currencyNumber, addTime, currencyTotalPrice
 	  	FROM transaction_deal_redis_tab
 	  	WHERE currencyId = #{currencyId}
 			AND addTime <![CDATA[ <= ]]> #{addTime}
@@ -177,7 +177,7 @@
 	</select>
 
 	<select id="TransactionDealRedis_getTransactionCurrencyDealPrice" parameterType="java.util.Map" resultType="TransactionCurrencyDealPriceDTO">
-		SELECT SUM(TDRT.currencyNumber) turnover,MAX(TDRT.transactionPrice) highestPrice, MIN(TDRT.transactionPrice) lowestPrice, TDRT.currencyId
+		SELECT SUM(TDRT.currencyNumber) turnover, SUM(TDRT.currencyTotalPrice) dayTransaction,MAX(TDRT.transactionPrice) highestPrice, MIN(TDRT.transactionPrice) lowestPrice, TDRT.currencyId
 		FROM transaction_deal_redis_tab  TDRT
 		WHERE TDRT.addTime <![CDATA[ >= ]]> #{date}
 			  AND addTime <![CDATA[ <= ]]> #{addTime}

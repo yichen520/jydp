@@ -139,6 +139,9 @@ public class TransactionRedisDealCommonServiceImpl implements ITransactionRedisD
                 //今日最低价
                 redisService.addValue(RedisKeyConfig.TODAY_MIN_PRICE + transactionCurrencyDealPrice.getCurrencyId(),
                         transactionCurrencyDealPrice.getLowestPrice());
+                //今日成交额度
+                redisService.addValue(RedisKeyConfig.DAY_VOLUME_OF_TRANSACTION + transactionCurrencyDealPrice.getCurrencyId(),
+                        transactionCurrencyDealPrice.getDayTransaction());
             }
         }
 

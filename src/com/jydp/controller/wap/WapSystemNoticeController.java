@@ -28,21 +28,27 @@ import java.util.regex.Pattern;
 @Scope(value = "prototype")
 public class WapSystemNoticeController {
 
-    /**  系统公告 */
+    /**
+     * 系统公告
+     */
     @Autowired
     private ISystemNoticeService systemNoticeService;
 
-    /** 系统公告展示  */
+    /**
+     * 系统公告展示
+     */
     @RequestMapping(value = "/show")
     public String show(HttpServletRequest request) {
         showList(request);
 
         request.setAttribute("code", 1);
         request.setAttribute("message", "查询成功!");
-        return  "page/wap/notice";
+        return "page/wap/notice";
     }
 
-    /**  系统公告列表查询 */
+    /**
+     * 系统公告列表查询
+     */
     public void showList(HttpServletRequest request) {
         String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
 
@@ -69,36 +75,38 @@ public class WapSystemNoticeController {
             }
         }
 
-        int totalPageNumber = (int)Math.ceil(totalNumber / (pageSize * 1.0));
+        int totalPageNumber = (int) Math.ceil(totalNumber / (pageSize * 1.0));
         if (totalPageNumber <= 0) {
             totalPageNumber = 1;
         }
 
         ObjectMapper mapper = new ObjectMapper();
-        try{
+        try {
             String systemNoticeListJson = mapper.writeValueAsString(systemNoticeList);
-            request.setAttribute("systemNoticeList",systemNoticeListJson);
-            request.setAttribute("pageNumber",pageNumber);
-            request.setAttribute("totalNumber",totalNumber);
-            request.setAttribute("totalPageNumber",totalPageNumber);
-        }catch(Exception e){
+            request.setAttribute("systemNoticeList", systemNoticeListJson);
+            request.setAttribute("pageNumber", pageNumber);
+            request.setAttribute("totalNumber", totalNumber);
+            request.setAttribute("totalPageNumber", totalPageNumber);
+        } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
     }
 
-    /**  打开系统公告详情页面 */
+    /**
+     * 打开系统公告详情页面
+     */
     @RequestMapping(value = "/showNoticeDetail/{idStr}", method = RequestMethod.GET)
     public String showNoticeDetail(HttpServletRequest request, @PathVariable String idStr) {
-        if(!StringUtil.isNotNull(idStr)){
+        if (!StringUtil.isNotNull(idStr)) {
             showList(request);
             request.setAttribute("code", 3);
             request.setAttribute("message", "参数错误！");
-            return  "page/wap/notice";
+            return "page/wap/notice";
         }
 
         int id = 0;
         String reg = "[0-9]*";
-        if (idStr.length() < 11 && Pattern.matches(reg,idStr)) {
+        if (idStr.length() < 11 && Pattern.matches(reg, idStr)) {
             id = Integer.parseInt(idStr);
         }
         SystemNoticeDO systemNotice = systemNoticeService.getSystemNoticeById(id);
@@ -110,14 +118,14 @@ public class WapSystemNoticeController {
             }
         }
         ObjectMapper mapper = new ObjectMapper();
-        try{
+        try {
             String systemNoticeJson = mapper.writeValueAsString(systemNotice);
-            request.setAttribute("systemNotice",systemNoticeJson);
+            request.setAttribute("systemNotice", systemNoticeJson);
 
-        }catch(Exception e){
+        } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
-        return  "page/wap/noticeDetail";
+        return "page/wap/noticeDetail";
 
     }
 
@@ -126,7 +134,8 @@ public class WapSystemNoticeController {
      * @return 加载更多公告跳转到公告页面
      */
     @RequestMapping(value = "/showMoreNotice", method = RequestMethod.POST)
-    public @ResponseBody JSONObject showMoreNotice(HttpServletRequest request) {
+    public @ResponseBody
+    JSONObject showMoreNotice(HttpServletRequest request) {
         JSONObject response = new JSONObject();
         String pageNumberStr = StringUtil.stringNullHandle(request.getParameter("pageNumber"));
 
@@ -153,19 +162,19 @@ public class WapSystemNoticeController {
             }
         }
 
-        int totalPageNumber = (int)Math.ceil(totalNumber / (pageSize * 1.0));
+        int totalPageNumber = (int) Math.ceil(totalNumber / (pageSize * 1.0));
         if (totalPageNumber <= 0) {
             totalPageNumber = 1;
         }
 
-        try{
-            response.put("systemNoticeList",systemNoticeList);
-            response.put("pageNumber",pageNumber);
-            response.put("totalNumber",totalNumber);
-            response.put("totalPageNumber",totalPageNumber);
+        try {
+            response.put("systemNoticeList", systemNoticeList);
+            response.put("pageNumber", pageNumber);
+            response.put("totalNumber", totalNumber);
+            response.put("totalPageNumber", totalPageNumber);
             response.put("code", 1);
             response.put("message", "查询成功!");
-        }catch(Exception e){
+        } catch (Exception e) {
             LogUtil.printErrorLog(e);
         }
 
