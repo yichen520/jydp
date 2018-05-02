@@ -6,6 +6,8 @@ import com.iqmkj.utils.MD5Util;
 import com.iqmkj.utils.StringUtil;
 import com.jydp.entity.BO.JsonObjectBO;
 import com.jydp.entity.BO.UserSessionBO;
+import com.jydp.entity.DO.syl.SylUserBoundDO;
+import com.jydp.entity.DO.transaction.TransactionCurrencyDO;
 import com.jydp.entity.DO.transfer.JydpCoinConfigDO;
 import com.jydp.entity.DO.user.UserCurrencyNumDO;
 import com.jydp.entity.DO.user.UserDO;
@@ -55,6 +57,13 @@ public class WebUserCoinWithdrawalController {
     /** JYDP用户币种转出记录 */
     @Autowired
     private  IJydpUserCoinOutRecordService jydpUserCoinOutRecordService;
+
+    /**
+     * 交易币种
+     */
+    @Autowired
+    private ITransactionCurrencyService transactionCurrencyService;
+
 
     /**  币种提现页面展示 */
     @RequestMapping("/show.htm")
@@ -192,13 +201,6 @@ public class WebUserCoinWithdrawalController {
             return response;
         }
 
-        //查询用户是否有电子钱包帐户
-//        SylUserBoundDO sylUserBound = sylUserBoundService.getSylUserBoundByUserId(userBo.getUserId());
-//        if (sylUserBound == null) {
-//            response.setCode(3);
-//            response.setMessage("该账号未绑定电子钱包帐户");
-//            return response;
-//        }
 
         if (currencyId == UserBalanceConfig.DOLLAR_ID) {
             if (user.getUserBalance() < number){
@@ -207,6 +209,26 @@ public class WebUserCoinWithdrawalController {
                 return response;
             }
         } else {
+            //获取币种信息
+            TransactionCurrencyDO transactionCurrency = transactionCurrencyService.getTransactionCurrencyByCurrencyId(currencyId);
+            if (transactionCurrency == null) {
+                response.setCode(3);
+                response.setMessage("币种信息获取失败,请稍候再试");
+                return response;
+            }
+
+            if (transactionCurrency.getUpStatus() == 4) {
+                response.setCode(5);
+                response.setMessage("该币种已下线");
+                return response;
+            }
+            //目前仅支持 盛源链 提币  判断为 MUC
+            if (!"MUC".equals(transactionCurrency.getCurrencyShortName())) {
+                response.setCode(3);
+                response.setMessage("该币种未开放提币");
+                return response;
+            }
+
             //查询用户币数量
             UserCurrencyNumDO userCurrencyNum = userCurrencyNumService.getUserCurrencyNumByUserIdAndCurrencyId(userBo.getUserId(), currencyId);
             if(userCurrencyNum == null){
@@ -219,6 +241,13 @@ public class WebUserCoinWithdrawalController {
                 response.setMessage("提现数量大于用户币种数量");
                 return response;
             }
+        }
+
+        SylUserBoundDO sylUserBound = sylUserBoundService.getSylUserBoundByUserId(user.getUserId());
+        if (sylUserBound == null) {
+            response.setCode(3);
+            response.setMessage("用户未绑定盛源链APP用户帐号");
+            return response;
         }
 
         //验证码判定
