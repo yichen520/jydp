@@ -289,7 +289,6 @@ public class WebUserCoinWithdrawalController {
             response.setCode(2);
             response.setMessage("操作失败!");
         }
-
         return  response;
     }
 }
