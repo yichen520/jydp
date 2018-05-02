@@ -167,7 +167,7 @@ public class SystemMessageConfig {
     public static final int PEND_FAILURE_CODE = 401014;
     public static final String PEND_FAILURE_MESSAGE = "挂单失败";
     //挂单成功
-    public static final int PEND_SUCCESS_CODE = 401015;
+    public static final int PEND_SUCCESS_CODE = 1;
     public static final String PEND_SUCCESS_MESSAGE = "挂单成功";
     //币种信息不存在
     public static final int NOT_HAVE_CURRENCY_INFO_CODE = 401016;
@@ -176,7 +176,7 @@ public class SystemMessageConfig {
     public static final int COIN_NOT_ENOUGH_CODE = 401017;
     public static final String COIN_NOT_ENOUGH_MESSAGE = "用户币不足";
     //修改成功
-    public static final int MODIFY_SUCCESS_CODE = 401018;
+    public static final int MODIFY_SUCCESS_CODE = 1;
     public static final String MODIFY_SUCCESS_MESSAGE = "修改成功";
     //修改失败
     public static final int MODIFY_FAILD_CODE = 401019;
